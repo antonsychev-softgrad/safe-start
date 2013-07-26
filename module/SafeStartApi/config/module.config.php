@@ -1,30 +1,34 @@
 <?php
 
 return array(
+    'params' => array(
+        'version' => 0.1,
+        'output' => 'json',
+        'href' => '/api/',
+    ),
     'router' => array(
         'routes' => array(
             'api' => array(
-                'type'    => 'Literal',
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/api',
+                    'route' => '/api',
                     'defaults' => array(
                         '__NAMESPACE__' => 'SafeStartApi\Controller',
-                        'controller'    => 'Index',
-                        'action'        => 'index',
+                        'controller' => 'Index',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route' => '/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array(
-                            ),
+                            'defaults' => array(),
                         ),
                     ),
                 ),
@@ -39,14 +43,47 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+        'factories' => array(
+            'ErrorLogger' => function ($sm) {
+                $logger = new \Zend\Log\Logger;
+                if (!is_dir('./data/logs/')) {
+                    if (mkdir('./data/logs/', 0777)) {
+                        // todo: handle exception
+                    }
+                }
+                if (!is_dir('./data/logs/errors')) {
+                    if (mkdir('./data/logs/errors/', 0777)) {
+
+                    }
+                }
+                $writer = new \Zend\Log\Writer\Stream('./data/logs/errors/' . date('Y-m-d') . '.log');
+                $logger->addWriter($writer);
+                return $logger;
+            },
+            'RequestLogger' => function ($sm) {
+                $logger = new \Zend\Log\Logger;
+                if (!is_dir('./data/logs/')) {
+                    if (mkdir('./data/logs/', 0777)) {
+
+                    }
+                }
+                if (!is_dir('./data/logs/requests')) {
+                    if (mkdir('./data/logs/requests/', 0777)) {
+                    }
+                }
+                $writer = new \Zend\Log\Writer\Stream('./data/logs/requests/' . date('Y-m-d') . '.log');
+                $logger->addWriter($writer);
+                return $logger;
+            },
+        ),
     ),
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
             array(
-                'type'     => 'gettext',
+                'type' => 'gettext',
                 'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
+                'pattern' => '%s.mo',
             ),
         ),
     ),
@@ -57,9 +94,9 @@ return array(
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
-        'display_exceptions'       => true,
+        'display_exceptions' => true,
         'template_map' => array(
-            'ajax/layout'           => __DIR__ . '/../view/ajax/layout.phtml',
+            'ajax/layout' => __DIR__ . '/../view/ajax/layout.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -68,6 +105,15 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                'ping-api' => array(
+                    'options' => array(
+                        'route'    => 'ping api [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\CronController',
+                            'action'     => 'index'
+                        )
+                    )
+                ),
             ),
         ),
     ),

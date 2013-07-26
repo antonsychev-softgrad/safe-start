@@ -1,1 +1,3 @@
-<?php echo json_encode($this->answer);
+<?php
+$response =  isset($this->answer) ? $this->answer : array('done' => false, 'error' => '500 api exception occurred');
+echo json_encode(array_merge($response, array('status' => 500)));

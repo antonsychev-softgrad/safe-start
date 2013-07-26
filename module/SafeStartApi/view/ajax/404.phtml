@@ -1,3 +1,3 @@
 <?php
     $response =  isset($this->answer) ? $this->answer : array('done' => false, 'error' => '404 api method not found');
-    echo json_encode(array_merge($response, array('status' => 200)));
+    echo json_encode(array_merge($response, array('status' => 404)));
