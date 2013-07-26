@@ -3,13 +3,29 @@
 return array(
     'router' => array(
         'routes' => array(
-            'ping' => array(
-                'type' => 'segment',
+            'api' => array(
+                'type'    => 'Literal',
                 'options' => array(
-                    'route' => '/api',
+                    'route'    => '/api',
                     'defaults' => array(
-                        'controller' => 'SafeStartApi\Controller\Index',
-                        'action' => 'index',
+                        '__NAMESPACE__' => 'SafeStartApi\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:controller[/:action]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -42,11 +58,8 @@ return array(
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
-        'not_found_template'       => 'ajax/404',
-        'exception_template'       => 'ajax/500',
         'template_map' => array(
-            'error/404'               => __DIR__ . '/../view/ajax/404.phtml',
-            'error/index'             => __DIR__ . '/../view/ajax/500.phtml',
+            'ajax/layout'           => __DIR__ . '/../view/ajax/layout.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
