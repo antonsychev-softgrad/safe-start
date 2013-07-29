@@ -107,14 +107,28 @@ return array(
             'routes' => array(
                 'ping-api' => array(
                     'options' => array(
-                        'route'    => 'ping api [--verbose|-v]',
+                        'route' => 'ping api [--verbose|-v]',
                         'defaults' => array(
                             'controller' => 'SafeStartApi\Controller\CronController',
-                            'action'     => 'index'
+                            'action' => 'index'
                         )
                     )
                 ),
             ),
         ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'application_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/SafeStartApi/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'SafeStartApi\Entity' => 'application_entities'
+                )
+            )
+        )
     ),
 );

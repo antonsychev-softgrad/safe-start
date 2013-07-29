@@ -1,0 +1,33 @@
+1. Test server access:
+
+    http://safe-start.dev2.ocsico.com/
+    http://safe-start.dev2.ocsico.local/
+    ftp://safe-start.dev2.ocsico.local/
+    http://phpmyadmin.ocsico.com
+
+    login: safe-start
+    pass: Newpassw0rd
+
+2. GIT access
+    git clone https://ocsico@bitbucket.org/ocsico/safe-start.git
+
+    login: ocsico
+    pass: Pass!@
+
+3. PHP vendors install:
+
+    php composer.phar update
+
+4. MySQL\Doctrine 2:
+     a) Update\Create:
+        ./vendor/bin/doctrine-module orm:schema-tool:create
+        ./vendor/bin/doctrine-module orm:schema-tool:update
+        ./vendor/bin/doctrine-module orm:validate-schema
+
+     b) Generate setters:
+        ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --generate-annotations=true
+
+
+
+
+

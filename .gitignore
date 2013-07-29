@@ -10,5 +10,7 @@
 .settings
 composer.phar
 composer.lock
-vendor/bin
+vendor
+autoload/api.dev.php
+autoload/api.prod.php
 
