@@ -1,9 +1,9 @@
 {
     "name": "API reference",
     "description": "Safe Start APP API reference",
-    "type": "object",
     "properties": {
         "/api/index/ping" : {
+            "description": "Check if API is alive",
             "type": "object",
             "properties": {
                 "request": {

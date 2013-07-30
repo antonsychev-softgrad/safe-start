@@ -1,11 +1,9 @@
 {
-    "name": "API ping request",
-    "description": "Check if API is alive",
+    "description": "API ping request",
     "type": "object",
     "properties": {
         "meta": {
-            "title": "Response meta",
-            "description": "",
+            "description": "Response meta",
             "type": "object",
             "properties": {
                 "request_id": {
