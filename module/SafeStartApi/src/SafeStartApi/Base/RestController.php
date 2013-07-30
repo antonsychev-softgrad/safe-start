@@ -3,14 +3,10 @@
 namespace SafeStartApi\Base;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
 
 class RestController extends AbstractActionController
 {
-
     protected $moduleConfig;
-
-    protected $viewModel;
 
     protected $answer;
 
@@ -21,9 +17,6 @@ class RestController extends AbstractActionController
 
     public function onDispatchEvent()
     {
-        $this->viewModel = new ViewModel;
-        $this->viewModel->setTemplate('ajax/200');
-        $this->viewModel->setTerminal(true);
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
     }
 

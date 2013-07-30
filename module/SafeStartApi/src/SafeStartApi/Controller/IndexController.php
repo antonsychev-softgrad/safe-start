@@ -14,11 +14,9 @@ class IndexController extends RestController
     public function pingAction()
     {
         $this->answer = array(
-            'done' => true,
             'version' => $this->moduleConfig['params']['version'],
         );
 
-        $this->viewModel->setVariable('answer', $this->answer);
-        return $this->viewModel;
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }

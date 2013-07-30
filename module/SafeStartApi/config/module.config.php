@@ -2,7 +2,7 @@
 
 return array(
     'params' => array(
-        'version' => 0.1,
+        'version' => '0.1',
         'output' => 'json',
         'href' => '/api/',
     ),
@@ -140,5 +140,10 @@ return array(
                 'SafeStartApi' => __DIR__ . '/../public',
             ),
         ),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
+        )
     ),
 );
