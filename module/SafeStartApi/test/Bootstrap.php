@@ -78,7 +78,7 @@ class Bootstrap
 
     public static function getJsonSchemaRequest($method = "index/ping") {
         $schemaFile =  __DIR__ . '/../public/schemas/' . $method . '/request.json';
-        if (!file_exists($method)) {
+        if (!file_exists($schemaFile)) {
             static::$console->write("WARNING: JSON schema request file for ". $method ." not found! \r\n", 2);
             return new \stdClass();
         }
@@ -88,9 +88,9 @@ class Bootstrap
 
     public static function getJsonSchemaResponse($method = "index/ping") {
         $schemaFile =  realpath(__DIR__ . '/../public/schemas/' . $method . '/response.json');
-        if (!file_exists($method)) {
+        if (!file_exists($schemaFile)) {
             static::$console->write("WARNING: JSON schema response file for ". $method ." not found! \r\n", 2);
-         //   return new \stdClass();
+            return new \stdClass();
         }
         return static::$jsonSchemaRetriever->retrieve('file://' . $schemaFile);
     }

@@ -1,0 +1,12 @@
+<?php
+
+echo json_encode(
+    $response = array(
+        'meta' => array(
+            'status' => 404,
+            'requestId' => isset($this->requestId) ? $this->requestId : '',
+            'error' => true,
+        ),
+        'data' => isset($this->answer) ? $this->answer : array('done' => false, 'error' => '404 api method not found')
+    )
+);

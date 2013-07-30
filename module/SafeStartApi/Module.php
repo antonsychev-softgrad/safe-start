@@ -23,10 +23,10 @@ class Module
         $sharedEvents = $moduleManager->getEventManager()->getSharedManager();
 
         // set empty layout on dispatch event
-       /* $sharedEvents->attach(__NAMESPACE__, 'dispatch', function ($e) {
+        $sharedEvents->attach(__NAMESPACE__, 'dispatch', function ($e) {
             $controller = $e->getTarget();
-            $controller->layout('ajax/layout');
-        }, 100);*/
+            $controller->layout('safe-start-api/layout');
+        }, 100);
 
         // handle global error event
         $module = $this;
@@ -50,16 +50,17 @@ class Module
         if ($request instanceof \Zend\Console\Request) return;
         $requestUri = $request->getRequestUri();
         // if api method call need disable layout
-        if (substr($requestUri, 0, 4) === '/api') {
+        if (substr($requestUri, 0, 4) === '/api/') {
             $viewModel = $e->getViewModel();
             $viewModel->setTerminal(true);
             $serviceManager = $e->getApplication()->getServiceManager();
             if ($e->getParam('exception')) {
-                $viewModel->setTemplate('ajax/500');
+                $viewModel->setTemplate('json/500');
+                $viewModel->setVariable('exception', $e->getParam('exception'));
                 // log exception
                 $serviceManager->get('ErrorLogger')->crit($e->getParam('exception'));
             } else {
-                $viewModel->setTemplate('ajax/404');
+                $viewModel->setTemplate('json/404');
                 // log error
                 $serviceManager->get('ErrorLogger')->err('api method not found');
             }
