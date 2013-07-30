@@ -50,7 +50,7 @@ class Module
         if ($request instanceof \Zend\Console\Request) return;
         $requestUri = $request->getRequestUri();
         // if api method call need disable layout
-        if (substr($requestUri, 0, 4) === '/api/') {
+        if (substr($requestUri, 0, 5) === '/api/') {
             $viewModel = $e->getViewModel();
             $viewModel->setTerminal(true);
             $serviceManager = $e->getApplication()->getServiceManager();

@@ -1,11 +1,9 @@
 {
-    "name": "API ping response",
-    "description": "Check if API is alive",
+    "description": "API ping response",
     "type": "object",
     "properties": {
         "meta": {
-            "title": "Response meta",
-            "description": "",
+            "description": "Response meta",
             "type": "object",
             "required": true,
             "properties": {
@@ -21,8 +19,7 @@
             }
         },
         "data": {
-            "title": "Response data",
-            "description": "",
+            "description": "Response data",
             "type": "object",
             "required": true,
             "properties": {
