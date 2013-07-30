@@ -1,0 +1,46 @@
+section {
+  clear:left;
+  margin:0 20px 7px 20px;
+}
+headergroup {
+  clear:left;
+  display:block;
+  margin:0 0 0 17px;
+}
+headergroup p {
+  width:600px;
+}
+dl {
+  margin:0 0 7px 17px;
+  clear:left;
+}
+dt {
+  padding:1px 0;
+  line-height:18px;
+  position:relative;
+  float:left;
+  clear:left;
+  display:inline-block;
+  font-weight:bold;
+  width:150px;
+}
+dd {
+  padding:1px 0;
+  line-height:18px;
+}
+dd.new-block {
+  display:block;
+  clear:left;
+}
+dt.property {
+  cursor:pointer;
+  color:#09c;
+}
+span.required {
+  display: inline-block;
+  margin:0 0 0 -17px;
+  color:red;
+  font-weight:bold;
+  float:left;
+  font-size:10px;
+}

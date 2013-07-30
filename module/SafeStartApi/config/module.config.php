@@ -89,7 +89,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'SafeStartApi\Controller\Index' => 'SafeStartApi\Controller\IndexController'
+            'SafeStartApi\Controller\Index' => 'SafeStartApi\Controller\IndexController',
+            'SafeStartApi\Controller\Docs' => 'SafeStartApi\Controller\DocsController',
+            'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
         ),
     ),
     'view_manager' => array(
@@ -130,5 +132,12 @@ return array(
                 )
             )
         )
+    ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                'SafeStartApi' => __DIR__ . '/../public',
+            ),
+        ),
     ),
 );

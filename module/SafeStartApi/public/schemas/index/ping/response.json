@@ -1,0 +1,37 @@
+{
+    "name": "API ping response",
+    "description": "Check if API is alive",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "title": "Response meta",
+            "description": "",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "request_id": {
+                    "description": "Unique ID of request",
+                    "type": "string"
+                },
+                "status": {
+                    "description": " HTTP status code",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "title": "Response data",
+            "description": "",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "version": {
+                    "description": "Current API version",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

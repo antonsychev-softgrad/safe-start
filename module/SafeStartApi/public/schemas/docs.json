@@ -1,0 +1,22 @@
+{
+    "name": "API reference",
+    "description": "Safe Start APP API reference",
+    "type": "object",
+    "properties": {
+        "/api/index/ping" : {
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "index/ping/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "index/ping/response.json"
+                    }
+                }
+            }
+        }
+    }
+}

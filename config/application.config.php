@@ -3,15 +3,15 @@
 $env = getenv('APP_ENV') ?: 'dev';
 
 $modules =  array(
-    'ZendDeveloperTools',
     'DoctrineModule',
+    'AssetManager',
     'DoctrineORMModule',
     'Application',
     'SafeStartApi',
 );
 
 if ($env == 'dev') {
-    $modules[] = 'ZendDeveloperTools';
+ //   $modules[] = 'ZendDeveloperTools';
 }
 
 return array(

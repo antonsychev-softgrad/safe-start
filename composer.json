@@ -1,10 +1,10 @@
 {
     "name": "safestart/api-and-web-panel",
-    "description": "Safe Start ",
-    "license": "BSD-3-Clause",
+    "description": "Safe Start APP",
+    "license": "",
     "keywords": [
-        "framework",
-        "zf2"
+        "zf2",
+        ""
     ],
     "homepage": "http://framework.zend.com/",
     "require": {
@@ -12,6 +12,7 @@
         "zendframework/zendframework": ">2.2.0rc1",
         "doctrine/doctrine-orm-module":"0.7.*",
         "zendframework/zend-developer-tools": "dev-master",
+        "rwoverdijk/assetmanager": "*",
         "justinrainbow/json-schema": "~1.3"
     }
 }

@@ -23,10 +23,10 @@ class Module
         $sharedEvents = $moduleManager->getEventManager()->getSharedManager();
 
         // set empty layout on dispatch event
-        $sharedEvents->attach(__NAMESPACE__, 'dispatch', function ($e) {
+       /* $sharedEvents->attach(__NAMESPACE__, 'dispatch', function ($e) {
             $controller = $e->getTarget();
             $controller->layout('ajax/layout');
-        }, 100);
+        }, 100);*/
 
         // handle global error event
         $module = $this;

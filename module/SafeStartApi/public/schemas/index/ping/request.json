@@ -1,0 +1,18 @@
+{
+    "name": "API ping request",
+    "description": "Check if API is alive",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "title": "Response meta",
+            "description": "",
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "description": "Unique ID of request",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

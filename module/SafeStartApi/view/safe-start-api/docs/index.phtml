@@ -1,0 +1,3 @@
+<?php
+    echo $this->headLink()->prependStylesheet($this->basePath() . '/css/api-docs.css');
+    echo file_get_contents(__DIR__ . '/../../../public/web/docs.html');
