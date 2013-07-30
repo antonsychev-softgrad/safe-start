@@ -92,6 +92,7 @@ return array(
             'SafeStartApi\Controller\Index' => 'SafeStartApi\Controller\IndexController',
             'SafeStartApi\Controller\Docs' => 'SafeStartApi\Controller\DocsController',
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
+            'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\CronController',
         ),
     ),
     'view_manager' => array(
