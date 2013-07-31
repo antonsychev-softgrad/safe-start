@@ -132,6 +132,15 @@ return array(
                     'SafeStartApi\Entity' => 'application_entities'
                 )
             )
+        ),
+        'authentication' => array(
+            'orm_default' => array(
+                'objectManager' => 'Doctrine\ORM\EntityManager',
+                'identityClass' => 'SafeStartApi\Entity\User',
+                'identityProperty' => 'username',
+                'credentialProperty' => 'password',
+                'credentialCallable' => 'SafeStartApi\Entity\User::verifyPassword'
+            ),
         )
     ),
     'asset_manager' => array(

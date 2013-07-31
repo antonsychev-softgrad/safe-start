@@ -4,6 +4,7 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Zend\Crypt\Password\Bcrypt;
 
 // @UniqueEntity("email")
 
@@ -320,5 +321,19 @@ class User extends BaseEntity
     public function toArray()
     {
 
+    }
+
+    public static function hashPassword($password)
+    {
+        $bcrypt = new Bcrypt();
+
+        return $bcrypt->create($password);
+    }
+
+    public static function verifyPassword(User $user, $password)
+    {
+        $bcrypt = new Bcrypt();
+
+        return $bcrypt->verify($password, $user->getPassword());
     }
 }
