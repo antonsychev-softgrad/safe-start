@@ -10,6 +10,7 @@ class AnswerPlugin extends AbstractPlugin
 
     public function format($answer, $status='200', $type='json')
     {
+        //TODO: set status header
         $this->viewModel = new ViewModel;
         $this->viewModel->setTemplate($type . '/' . $status);
         $this->viewModel->setTerminal(true);
