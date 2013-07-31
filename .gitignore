@@ -13,4 +13,5 @@ composer.lock
 vendor
 autoload/api.dev.php
 autoload/api.prod.php
+module/SafeStartApp/public/lib
 
