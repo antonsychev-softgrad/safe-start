@@ -22,6 +22,8 @@
                     $microLoaderScript = 'testing.js';
                     break;
             }
+            //TODO: set prod mode
+            $microLoaderScript = 'development.js';
         ?>
 
         <?php echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript); ?>
