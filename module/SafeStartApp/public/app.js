@@ -10,6 +10,11 @@ SafeStartApp = {
 
     baseHref: "http://safe-start.dev/api/",
 
+    defMenu: [
+        'Auth',
+        'Contact'
+    ],
+
     AJAX: function(url, data, successCalBack, failureCalBack) {
         var meta = {
             requestId: this.getHash()
@@ -22,7 +27,11 @@ SafeStartApp = {
                 data: data
             },
             success: function(response){
-                var text = response.responseText;
+                var result = Ext.decode(response.responseText);
+                if (result.meta && result.meta.status == 200) {
+                    if (successCalBack && typeof successCalBack == 'function') successCalBack(result.data || {});
+                }
+
             }
         });
     },
@@ -64,18 +73,19 @@ Ext.application({
     },
 
     launch: function() {
+        var self = this;
+        SafeStartApp.AJAX('web-panel/index', {}, function(result) {
+            self.setViewPort(result.mainMenu || null);
+        });
 
-        SafeStartApp.AJAX('index/ping');
+    },
 
+    setViewPort: function(menu) {
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
-        Ext.Viewport.add(Ext.create('SafeStartApp.view.Main'));
-    },
-
-    setViewPort: function() {
-
+        Ext.Viewport.add(Ext.create('SafeStartApp.view.Main', {menuItems: menu || SafeStartApp.defMenu}));
     },
 
     onUpdated: function() {

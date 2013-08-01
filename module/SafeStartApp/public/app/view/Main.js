@@ -1,43 +1,30 @@
 Ext.define('SafeStartApp.view.Main', {
     extend: 'Ext.tab.Panel',
-    xtype: 'main',
+    xtype: 'mainTabPanel',
+
     requires: [
-        'Ext.TitleBar',
-        'Ext.Video'
+        'SafeStartApp.view.pages.Auth',
+        'SafeStartApp.view.pages.Contact'
     ],
+
     config: {
         tabBarPosition: 'bottom',
+        menuItems: []
+    },
 
-        items: [
-            {
-                title: 'Welcome',
-                iconCls: 'home',
+    initConfig: function() {
+        this.addAfterListener('show', this.createMenuTabs);
+        this.callParent(arguments);
+    },
 
-                styleHtmlContent: true,
-                scrollable: true,
-
-                items: {
-                    docked: 'top',
-                    xtype: 'titlebar',
-                    title: 'Welcome to Safe Start App'
-                },
-
-                html: [
-                    "content here"
-                ].join("")
-            },
-            {
-                title: 'Get Started',
-                iconCls: 'action',
-
-                items: [
-                    {
-                        docked: 'top',
-                        xtype: 'titlebar',
-                        title: 'Getting Started'
-                    }
-                ]
-            }
-        ]
+    createMenuTabs: function() {
+        var panelToAdd = [];
+        Ext.each(this.config.menuItems, function(item) {
+            panelToAdd.push(
+                Ext.create('SafeStartApp.view.pages.'+item)
+            );
+        }, this);
+        this.add(panelToAdd);
     }
+
 });
