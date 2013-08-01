@@ -4,6 +4,10 @@
      */
     "name": "SafeStartApp",
 
+    "version": "1.0",
+
+    "baseHref": "http://safe-start.dev/",
+
     /**
      * The file path to this application's front HTML document, relative to this app.json file
      */
@@ -40,7 +44,7 @@
      */
     "js": [
         {
-            "path": "touch/sencha-touch.js",
+            "path": "touch/sencha-touch-all.js",
             "x-bootstrap": true
         },
         {
@@ -108,7 +112,8 @@
      * File / directory name matchers to ignore when copying to the builds, must be valid regular expressions
      */
     "ignore": [
-        "\.svn$"
+        "\.svn$",
+        "\.git$",
     ],
 
     /**
