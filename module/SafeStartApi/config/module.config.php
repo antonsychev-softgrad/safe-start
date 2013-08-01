@@ -135,11 +135,11 @@ return array(
         ),
         'authentication' => array(
             'orm_default' => array(
-                'objectManager' => 'Doctrine\ORM\EntityManager',
-                'identityClass' => 'SafeStartApi\Entity\User',
-                'identityProperty' => 'username',
-                'credentialProperty' => 'password',
-                'credentialCallable' => 'SafeStartApi\Entity\User::verifyPassword'
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'SafeStartApi\Entity\User',
+                'identity_property' => 'username',
+                'credential_property' => 'password',
+                'credential_callable' => 'SafeStartApi\Entity\User::verifyPassword'
             ),
         )
     ),

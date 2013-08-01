@@ -29,6 +29,8 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 
     public function testLoginActionCanBeAccessed()
     {
+        print_r(Bootstrap::getConfig());
+
         $this->dispatch('/api/user/login', 'POST', array(
             'username' => 'user',
             'password' => 'pass',

@@ -16,7 +16,7 @@ class UserController extends RestController
 
         $serviceLocator = $this->getServiceLocator();
 
-        $authService = $serviceLocator->get('doctrine.authentication.orm_default');
+        $authService = $serviceLocator->get('doctrine.authenticationservice.orm_default');
         $adapter = $authService->getAdapter();
         $adapter->setIdentityValue($username);
         $adapter->setCredentialValue($password);
@@ -44,11 +44,6 @@ class UserController extends RestController
             'auth_message' => $auth_message,
         );
 
-        $this->answer = array(
-            'auth_token' => '',
-            'auth_code' => 0,
-            'auth_message' => '',
-        );
         return $this->AnswerPlugin()->format($this->answer);
     }
 
