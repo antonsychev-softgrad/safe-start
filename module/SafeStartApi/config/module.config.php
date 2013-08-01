@@ -155,4 +155,17 @@ return array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
         )
     ),
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'SafeStartAppUser',
+            ),
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
 );
