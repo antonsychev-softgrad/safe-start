@@ -11,7 +11,8 @@
 composer.phar
 composer.lock
 vendor
-autoload/api.dev.php
-autoload/api.prod.php
+config/autoload/api.dev.php
+config/autoload/api.prod.php
+config/autoload/api.test.php
 module/SafeStartApp/public/lib
 
