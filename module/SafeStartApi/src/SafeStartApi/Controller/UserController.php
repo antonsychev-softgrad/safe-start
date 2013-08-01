@@ -5,6 +5,7 @@ namespace SafeStartApi\Controller;
 use SafeStartApi\Base\RestController;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
+use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends RestController
 {
@@ -17,6 +18,7 @@ class UserController extends RestController
         $serviceLocator = $this->getServiceLocator();
 
         $authService = $serviceLocator->get('doctrine.authenticationservice.orm_default');
+        $authService->setStorage(new SessionStorage('SafeStartAppUser'));
         $adapter = $authService->getAdapter();
         $adapter->setIdentityValue($username);
         $adapter->setCredentialValue($password);
@@ -32,6 +34,10 @@ class UserController extends RestController
                 break;
             case Result::SUCCESS:
                 $auth_message = 'SUCCESS';
+
+                $accessToken = substr(md5($username. time() . rand()), 0, 12);
+                SessionStorage::setId($accessToken);
+
                 break;
             default:
                 $auth_message = '';
