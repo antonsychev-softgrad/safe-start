@@ -5,7 +5,7 @@ $env = getenv('APP_ENV') ?: 'dev';
 if ($env == 'dev') {
     if(isset($this->exception) && $this->exception instanceof Exception) {
         $data['trace'] = array(
-            'exception' => get_class($this->exception),
+            'errorMessage' => get_class($this->exception),
             'file' => $this->exception->getFile() . ':'. $this->exception->getLine(),
             'message' => $this->exception->getMessage(),
             'stack' => $this->exception->getTraceAsString(),

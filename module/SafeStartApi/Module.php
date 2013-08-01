@@ -38,6 +38,7 @@ class Module
                 $module->onDispatchError($e);
             },
             100);
+
     }
 
     public function onBootstrap(MvcEvent $e)

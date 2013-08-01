@@ -17,10 +17,10 @@ class Bootstrap
     protected static $serviceManager;
     protected static $config;
     protected static $bootstrap;
-    protected static $console;
     protected static $jsonSchemaRetriever;
     protected static $jsonSchemaRefResolver;
     public static $jsonSchemaValidator;
+    public static $console;
 
     public static function init()
     {

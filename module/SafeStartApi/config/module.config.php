@@ -160,6 +160,8 @@ return array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
                 'name' => 'SafeStartAppUser',
+                'remember_me_seconds' => 360,
+                'use_cookies' => true,
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',

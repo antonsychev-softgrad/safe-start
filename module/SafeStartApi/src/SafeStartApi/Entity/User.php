@@ -320,7 +320,13 @@ class User extends BaseEntity
 
     public function toArray()
     {
-
+        return array(
+          'email' => (!is_null($this->email)) ? $this->email : '',
+          'username' => (!is_null($this->username)) ? $this->username : '',
+          'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
+          'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
+          'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
+        );
     }
 
     public static function hashPassword($password)
@@ -335,5 +341,12 @@ class User extends BaseEntity
         $bcrypt = new Bcrypt();
 
         return $bcrypt->verify($password, $user->getPassword());
+    }
+
+    public function setPlainPassword($plain_password)
+    {
+        $this->password = self::hashPassword($plain_password);
+
+        return $this;
     }
 }
