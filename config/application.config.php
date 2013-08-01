@@ -6,7 +6,7 @@ $modules =  array(
     'DoctrineModule',
     'AssetManager',
     'DoctrineORMModule',
-    'Application',
+    'SafeStartApp',
     'SafeStartApi',
 );
 
