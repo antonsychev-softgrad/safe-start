@@ -4,6 +4,36 @@ Ext.Loader.setPath({
 });
 //</debug>
 
+SafeStartApp = {
+
+    version: "1.0",
+
+    baseHref: "http://safe-start.dev/api/",
+
+    AJAX: function(url, data, successCalBack, failureCalBack) {
+        var meta = {
+            requestId: this.getHash()
+        };
+        data = data || {};
+        Ext.Ajax.request({
+            url: this.baseHref + url,
+            params: {
+                meta: meta,
+                data: data
+            },
+            success: function(response){
+                var text = response.responseText;
+            }
+        });
+    },
+
+    getHash: function(length) {
+        length = length || 12;
+        return Math.random().toString(36).substring(length);
+    }
+
+};
+
 Ext.application({
     name: 'SafeStartApp',
 
@@ -34,11 +64,18 @@ Ext.application({
     },
 
     launch: function() {
+
+        SafeStartApp.AJAX('index/ping');
+
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
         // Initialize the main view
         Ext.Viewport.add(Ext.create('SafeStartApp.view.Main'));
+    },
+
+    setViewPort: function() {
+
     },
 
     onUpdated: function() {
