@@ -51,7 +51,7 @@ return array(
                         // todo: handle exception
                     }
                 }
-                if (!is_dir('./data/logs/errors')) {
+                if (!is_dir('./data/logs/errors/')) {
                     if (mkdir('./data/logs/errors/', 0777)) {
 
                     }
@@ -62,13 +62,13 @@ return array(
             },
             'RequestLogger' => function ($sm) {
                 $logger = new \Zend\Log\Logger;
-                if (!is_dir('./data/logs/')) {
-                    if (mkdir('./data/logs/', 0777)) {
+                if (!is_dir('./data/logs')) {
+                    if (mkdir('./data/logs', 0777)) {
 
                     }
                 }
                 if (!is_dir('./data/logs/requests')) {
-                    if (mkdir('./data/logs/requests/', 0777)) {
+                    if (mkdir('./data/logs/requests', 0777)) {
                     }
                 }
                 $writer = new \Zend\Log\Writer\Stream('./data/logs/requests/' . date('Y-m-d') . '.log');

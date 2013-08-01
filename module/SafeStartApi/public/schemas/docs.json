@@ -17,6 +17,22 @@
                     }
                 }
             }
+        },
+        "/api/user/login" : {
+            "description": "User login",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "index/ping/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "index/ping/response.json"
+                    }
+                }
+            }
         }
     }
 }

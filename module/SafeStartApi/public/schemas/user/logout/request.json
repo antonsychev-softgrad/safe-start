@@ -1,0 +1,16 @@
+{
+    "description": "API ping request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "description": "Unique ID of request",
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

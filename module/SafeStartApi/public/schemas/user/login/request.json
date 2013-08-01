@@ -1,0 +1,33 @@
+{
+    "description": "User login request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "description": "Unique ID of request",
+                    "type": "string"
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "username": {
+                    "description": "Username",
+                    "type": "string",
+                    "required": true
+                },
+                "password": {
+                    "description": "User password",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

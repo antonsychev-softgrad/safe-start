@@ -8,6 +8,7 @@ use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
 use Zend\Console\Adapter\AdapterInterface as Console;
+use Zend\Authentication\AuthenticationService;
 
 class Module
 {

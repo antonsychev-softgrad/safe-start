@@ -10,22 +10,25 @@ class UserController extends RestController
 {
     public function loginAction()
     {
+
         $username = '';
         $password = '';
 
-        $auth = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
-        $adapter = $auth->getAdapter();
+        $serviceLocator = $this->getServiceLocator();
+
+        $authService = $serviceLocator->get('doctrine.authentication.orm_default');
+        $adapter = $authService->getAdapter();
         $adapter->setIdentityValue($username);
         $adapter->setCredentialValue($password);
-        $result = $auth->authenticate();
+        $result = $authService->authenticate();
 
         $authCode = $result->getCode();
         switch ($authCode) {
             case Result::FAILURE_IDENTITY_NOT_FOUND:
-                $auth_message = 'FAILURE. Identity not found';
+                $auth_message = 'FAILURE: Identity not found';
                 break;
             case Result::FAILURE_CREDENTIAL_INVALID:
-                $auth_message = 'FAILURE. Invalid credential';
+                $auth_message = 'FAILURE: Invalid credential';
                 break;
             case Result::SUCCESS:
                 $auth_message = 'SUCCESS';
@@ -36,11 +39,16 @@ class UserController extends RestController
         }
 
         $this->answer = array(
-            'sessionId' => 0,
-            'authCode' => $authCode,
-            'authMessage' => $auth_message,
+            'session_id' => 0,
+            'auth_code' => $authCode,
+            'auth_message' => $auth_message,
         );
 
+        $this->answer = array(
+            'auth_token' => '',
+            'auth_code' => 0,
+            'auth_message' => '',
+        );
         return $this->AnswerPlugin()->format($this->answer);
     }
 
