@@ -9,14 +9,13 @@ use Zend\Session\Container;
 
 class UserController extends RestController
 {
-    const USER_NOT_FOUND = 101;
-    const INVALID_CREDENTIAL = 102;
+    const USER_NOT_FOUND = 4011;
+    const INVALID_CREDENTIAL = 4001;
 
     public function loginAction()
     {
-
-        $username = $this->params()->fromPost('username', '');
-        $password = $this->params()->fromPost('password', '');
+        $username = isset($this->data['username']) ? $this->data['username'] : '';
+        $password = isset($this->data['password']) ? $this->data['password'] : '';
 
         $serviceLocator = $this->getServiceLocator();
 
@@ -31,7 +30,6 @@ class UserController extends RestController
 
         $authCode = $result->getCode();
         $userInfo = '';
-        $authToken = '';
         $errorCode = 0;
         switch ($authCode) {
             case Result::SUCCESS:
@@ -43,8 +41,6 @@ class UserController extends RestController
                 $user->setLastLogin(new \DateTime());
                 $em->merge($user);
                 $em->flush();
-
-                $authToken = substr(md5($username. time() . rand()), 0, 12);
 
                 break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
@@ -61,7 +57,7 @@ class UserController extends RestController
         }
 
         $this->answer = array(
-            'authToken' => $authToken,
+            'authToken' => $this->authToken,
             'userInfo' => $userInfo,
             'errorMessage' => $errorMessage,
         );

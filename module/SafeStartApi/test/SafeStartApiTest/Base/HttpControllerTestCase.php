@@ -13,6 +13,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\ORM\EntityManager;
+use Zend\Session\SessionManager;
 
 class HttpControllerTestCase extends AbstractHttpControllerTestCase
 {
@@ -25,6 +26,8 @@ class HttpControllerTestCase extends AbstractHttpControllerTestCase
 
     protected function setUp()
     {
+        parent::setUp();
+
         $this->setApplicationConfig(
             Bootstrap::getConfig()
         );
@@ -33,8 +36,6 @@ class HttpControllerTestCase extends AbstractHttpControllerTestCase
         $this->em = $serviceManager->get('doctrine.entitymanager.orm_default');
         //$this->em->beginTransaction();
         $this->loadFixtures();
-
-        parent::setUp();
     }
 
     protected function addFixtures($fixtures)
