@@ -101,11 +101,11 @@ class Module
         $session = $e->getApplication()
             ->getServiceManager()
             ->get('Zend\Session\SessionManager');
-        $session->start();
+        //$session->start();
 
         $container = new Container('initialized');
         if (!isset($container->init)) {
-            $session->regenerateId(true);
+            //$session->regenerateId(true);
             $container->init = 1;
         }
     }

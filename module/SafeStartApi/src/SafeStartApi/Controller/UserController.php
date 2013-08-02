@@ -14,7 +14,6 @@ class UserController extends RestController
 
     public function loginAction()
     {
-
         $username = $this->params()->fromPost('username', '');
         $password = $this->params()->fromPost('password', '');
 
