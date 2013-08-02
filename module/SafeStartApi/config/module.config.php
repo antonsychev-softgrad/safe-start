@@ -93,6 +93,7 @@ return array(
             'SafeStartApi\Controller\Docs' => 'SafeStartApi\Controller\DocsController',
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
+            'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
         ),
     ),
     'view_manager' => array(
