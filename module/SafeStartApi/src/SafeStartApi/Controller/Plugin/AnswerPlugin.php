@@ -10,13 +10,13 @@ class AnswerPlugin extends AbstractPlugin
 
     public function format($answer, $errorCode=0, $status=200, $type='json')
     {
-        //TODO: set status header
         $this->getController()->getResponse()->setStatusCode($status);
         $this->viewModel = new ViewModel;
-        $this->viewModel->setTemplate($type . '/' . $status);
+        $this->viewModel->setTemplate($type . '/response');
         $this->viewModel->setTerminal(true);
         $this->viewModel->setVariable('answer', $answer);
         $this->viewModel->setVariable('errorCode', $errorCode);
+        $this->viewModel->setVariable('statusCode', $status);
         return $this->viewModel;
     }
 }
