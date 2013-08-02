@@ -4,13 +4,15 @@ namespace SafeStartApiTest\Controller;
 
 use SafeStartApiTest\Bootstrap;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
-use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use SafeStartApiTest\Base\HttpControllerTestCase;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
+use SafeStartApiTest\Fixtures\LoadUsersData;
+use Zend\Stdlib\Parameters;
 
-class UserControllerTest extends AbstractHttpControllerTestCase
+class UserControllerTest extends HttpControllerTestCase
 {
     protected $controller;
     protected $request;
@@ -20,19 +22,25 @@ class UserControllerTest extends AbstractHttpControllerTestCase
 
     protected function setUp()
     {
-        $this->setApplicationConfig(
-            Bootstrap::getConfig()
-        );
+        $this->addFixtures(new LoadUsersData());
         parent::setUp();
-
     }
 
     public function testLoginActionCanBeAccessed()
     {
-        $this->dispatch('/api/user/login', 'POST', array(
-            'username' => 'user',
-            'password' => 'pass',
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setPost(new Parameters(array(
+                'username' => 'username',
+                'password' => '12345',
+             )));
+
+        $this->getRequest()->getHeaders()->addHeaders(array(
+            'X-Auth-Token' => 'e2f8981e26ec'
         ));
+
+        $this->dispatch('/api/user/login');
 
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('user/login');

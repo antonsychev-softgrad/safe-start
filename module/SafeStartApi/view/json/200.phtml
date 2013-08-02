@@ -5,6 +5,7 @@ echo json_encode(
         'meta' => array(
             'status' => 200,
             'requestId' => isset($this->requestId) ? $this->requestId : '',
+            'errorCode' => isset($this->errorCode) ? $this->errorCode : 0,
         ),
         'data' => isset($this->answer) ? $this->answer : array('done' => false, 'error' => 'no answer')
     )

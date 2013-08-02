@@ -7,6 +7,6 @@ echo json_encode(
             'requestId' => isset($this->requestId) ? $this->requestId : '',
             'error' => true,
         ),
-        'data' => isset($this->answer) ? $this->answer : array('done' => false, 'error' => '404 api method not found')
+        'data' => isset($this->answer) ? $this->answer : array('done' => false, 'errorMessage' => '404 api method not found')
     )
 );

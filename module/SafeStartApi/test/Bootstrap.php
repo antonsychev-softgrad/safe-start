@@ -17,10 +17,10 @@ class Bootstrap
     protected static $serviceManager;
     protected static $config;
     protected static $bootstrap;
-    protected static $console;
     protected static $jsonSchemaRetriever;
     protected static $jsonSchemaRefResolver;
     public static $jsonSchemaValidator;
+    public static $console;
 
     public static function init()
     {
@@ -64,6 +64,10 @@ class Bootstrap
         static::$jsonSchemaRetriever = new \JsonSchema\Uri\UriRetriever();
         static::$jsonSchemaRefResolver = new \JsonSchema\RefResolver;
         static::$jsonSchemaValidator = new \JsonSchema\Validator();
+
+        putenv("APP_ENV=test");
+        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update');
+        static::$console->write($output . "\r\n", 3);
     }
 
     public static function getServiceManager()

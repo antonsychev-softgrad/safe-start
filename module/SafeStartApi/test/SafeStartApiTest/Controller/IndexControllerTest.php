@@ -4,13 +4,13 @@ namespace SafeStartApiTest\Controller;
 
 use SafeStartApiTest\Bootstrap;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
-use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
+use SafeStartApiTest\Base\HttpControllerTestCase;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 
-class IndexControllerTest extends AbstractHttpControllerTestCase
+class IndexControllerTest extends HttpControllerTestCase
 {
     protected $controller;
     protected $request;
@@ -20,11 +20,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
 
     protected function setUp()
     {
-        $this->setApplicationConfig(
-            Bootstrap::getConfig()
-        );
         parent::setUp();
-
     }
 
     public function testIndexActionCanBeAccessed()

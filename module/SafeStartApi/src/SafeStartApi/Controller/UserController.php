@@ -5,52 +5,68 @@ namespace SafeStartApi\Controller;
 use SafeStartApi\Base\RestController;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
-use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\Session\Container;
 
 class UserController extends RestController
 {
+    const USER_NOT_FOUND = 101;
+    const INVALID_CREDENTIAL = 102;
+
     public function loginAction()
     {
 
-        $username = '';
-        $password = '';
+        $username = $this->params()->fromPost('username', '');
+        $password = $this->params()->fromPost('password', '');
 
         $serviceLocator = $this->getServiceLocator();
 
         $authService = $serviceLocator->get('doctrine.authenticationservice.orm_default');
-        $authService->setStorage(new SessionStorage('SafeStartAppUser'));
         $adapter = $authService->getAdapter();
         $adapter->setIdentityValue($username);
         $adapter->setCredentialValue($password);
         $result = $authService->authenticate();
 
+        $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $user_rep = $em->getRepository('SafeStartApi\Entity\User');
+
         $authCode = $result->getCode();
+        $userInfo = '';
+        $authToken = '';
+        $errorCode = 0;
         switch ($authCode) {
+            case Result::SUCCESS:
+                $errorMessage = '';
+                $user = $user_rep->findOneByUsername('username');
+                if($user) {
+                    $userInfo = $user->toArray();
+                }
+                $user->setLastLogin(new \DateTime());
+                $em->merge($user);
+                $em->flush();
+
+                $authToken = substr(md5($username. time() . rand()), 0, 12);
+
+                break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
-                $auth_message = 'FAILURE: Identity not found';
+                $errorMessage = 'Identity not found';
+                $errorCode = self::USER_NOT_FOUND;
                 break;
             case Result::FAILURE_CREDENTIAL_INVALID:
-                $auth_message = 'FAILURE: Invalid credential';
-                break;
-            case Result::SUCCESS:
-                $auth_message = 'SUCCESS';
-
-                $accessToken = substr(md5($username. time() . rand()), 0, 12);
-                SessionStorage::setId($accessToken);
-
+                $errorMessage = 'Invalid credential';
+                $errorCode = self::INVALID_CREDENTIAL;
                 break;
             default:
-                $auth_message = '';
+                $errorMessage = '';
                 break;
         }
 
         $this->answer = array(
-            'session_id' => 0,
-            'auth_code' => $authCode,
-            'auth_message' => $auth_message,
+            'authToken' => $authToken,
+            'userInfo' => $userInfo,
+            'errorMessage' => $errorMessage,
         );
 
-        return $this->AnswerPlugin()->format($this->answer);
+        return $this->AnswerPlugin()->format($this->answer, $errorCode);
     }
 
     public function logoutAction()

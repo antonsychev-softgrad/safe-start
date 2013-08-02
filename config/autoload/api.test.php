@@ -12,7 +12,7 @@ return array(
                     'port'     => '3306',
                     'user'     => 'root',
                     'password' => 'Pass!@',
-                    'dbname'   => 'safe_start',
+                    'dbname'   => 'safe_start_tests',
                 )
             )
         )
