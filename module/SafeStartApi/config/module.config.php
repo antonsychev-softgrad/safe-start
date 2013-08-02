@@ -75,6 +75,47 @@ return array(
                 $logger->addWriter($writer);
                 return $logger;
             },
+            'Zend\Session\SessionManager' => function ($sm) {
+                $config = $sm->get('config');
+                if (isset($config['session'])) {
+                    $session = $config['session'];
+
+                    $sessionConfig = null;
+                    if (isset($session['config'])) {
+                        $class = isset($session['config']['class'])  ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
+                        $options = isset($session['config']['options']) ? $session['config']['options'] : array();
+                        $sessionConfig = new $class();
+                        $sessionConfig->setOptions($options);
+                    }
+
+                    $sessionStorage = null;
+                    if (isset($session['storage'])) {
+                        $class = $session['storage'];
+                        $sessionStorage = new $class();
+                    }
+
+                    $sessionSaveHandler = null;
+                    if (isset($session['save_handler'])) {
+                        // class should be fetched from service manager since it will require constructor arguments
+                        $sessionSaveHandler = $sm->get($session['save_handler']);
+                    }
+
+                    $sessionManager = new \Zend\Session\SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
+
+                    if (isset($session['validators'])) {
+                        $chain = $sessionManager->getValidatorChain();
+                        foreach ($session['validators'] as $validator) {
+                            $validator = new $validator();
+                            $chain->attach('session.validate', array($validator, 'isValid'));
+
+                        }
+                    }
+                } else {
+                    $sessionManager = new \Zend\Session\SessionManager();
+                }
+                \Zend\Session\Container::setDefaultManager($sessionManager);
+                return $sessionManager;
+            },
         ),
     ),
     'translator' => array(
@@ -163,6 +204,7 @@ return array(
                 'name' => 'SafeStartAppUser',
                 'remember_me_seconds' => 360,
                 'use_cookies' => true,
+                'save_path' =>  __DIR__ . '/../../../data/sessions',
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',

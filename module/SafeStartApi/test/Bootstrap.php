@@ -67,7 +67,7 @@ class Bootstrap
 
         putenv("APP_ENV=test");
         $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update');
-        static::$console->write($output . "\r\n", 3);
+        //static::$console->write($output . "\r\n", 3);
     }
 
     public static function getServiceManager()

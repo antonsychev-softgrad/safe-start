@@ -12,6 +12,7 @@ use Zend\Mvc\Router\RouteMatch;
 use SafeStartApiTest\Fixtures\LoadUsersData;
 use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
+use Zend\Session\SessionManager;
 
 class UserControllerTest extends HttpControllerTestCase
 {
@@ -36,10 +37,6 @@ class UserControllerTest extends HttpControllerTestCase
                 'password' => '12345',
              )));
 
-        $this->getRequest()->getHeaders()->addHeaders(array(
-            'X-Auth-Token' => 'e2f8981e26ec'
-        ));
-
         $this->dispatch('/api/user/login');
 
         $this->assertResponseStatusCode(200);
@@ -52,10 +49,17 @@ class UserControllerTest extends HttpControllerTestCase
 
     public function testUserIsLogged()
     {
-        $this->getRequest()->getHeaders()->addHeaders(array(
-            'X-Auth-Token' => 'e2f8981e26ec'
+        $this->dispatch('/api/user/login', 'POST', array(
+            'username' => 'username',
+            'password' => '12345',
         ));
+        $this->assertResponseStatusCode(200);
+        $data = json_decode($this->getResponse()->getContent());
 
+        $this->getRequest()
+            ->getHeaders()->addHeaders(array(
+            'X-Auth-Token' => $data->data->authToken,
+        ));
         $this->dispatch('/api');
 
         $this->assertResponseStatusCode(200);
