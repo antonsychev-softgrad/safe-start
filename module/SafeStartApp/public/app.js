@@ -3,9 +3,7 @@ Ext.Loader.setPath({
     'Ext': 'touch/src'
 });
 //</debug>
-
-SafeStartApp = {
-
+SafeStartApp = SafeStartApp || {
     version: "1.0",
 
     baseHref: "http://safe-start.dev/api/",
@@ -13,8 +11,10 @@ SafeStartApp = {
     defMenu: [
         'Auth',
         'Contact'
-    ],
+    ]
+};
 
+Ext.apply(SafeStartApp,  {
     AJAX: function(url, data, successCalBack, failureCalBack) {
         var meta = {
             requestId: this.getHash()
@@ -40,8 +40,7 @@ SafeStartApp = {
         length = length || 12;
         return Math.random().toString(36).substring(length);
     }
-
-};
+});
 
 Ext.application({
     name: 'SafeStartApp',
@@ -51,7 +50,14 @@ Ext.application({
     ],
 
     views: [
-        'Main'
+        'Main',
+        'pages.Auth',
+        'pages.Contact'
+    ],
+
+    controllers: [
+        'Main',
+        'Auth'
     ],
 
     icon: {
@@ -74,6 +80,12 @@ Ext.application({
 
     launch: function() {
         var self = this;
+
+        // Destroy the #appLoadingIndicator element
+        Ext.fly('appLoadingIndicator').destroy();
+
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+
         SafeStartApp.AJAX('web-panel/index', {}, function(result) {
             self.setViewPort(result.mainMenu || null);
         });
@@ -81,11 +93,30 @@ Ext.application({
     },
 
     setViewPort: function(menu) {
-        // Destroy the #appLoadingIndicator element
-        Ext.fly('appLoadingIndicator').destroy();
+        SafeStartApp.currentMenu = [];
 
-        // Initialize the main view
-        Ext.Viewport.add(Ext.create('SafeStartApp.view.Main', {menuItems: menu || SafeStartApp.defMenu}));
+        Ext.each(menu || SafeStartApp.defMenu, function(item) {
+            SafeStartApp.currentMenu.push(
+                {
+                    xclass: 'SafeStartApp.view.pages.'+item
+                }
+            )
+        }, this);
+
+        Ext.define('SafeStartApp.view.ViewPort', {
+            extend: 'SafeStartApp.view.Main',
+            xtype: 'SafeStartViewPort',
+            config: {
+                tabBarPosition: 'bottom',
+                items: SafeStartApp.currentMenu
+            }
+        });
+
+        Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
+
+
+        Ext.Viewport.setMasked(false);
+
     },
 
     onUpdated: function() {

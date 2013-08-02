@@ -26,6 +26,10 @@
             $microLoaderScript = 'development.js';
         ?>
 
+        <script>
+            var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
+        </script>
+
         <?php echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript); ?>
 
     </head>

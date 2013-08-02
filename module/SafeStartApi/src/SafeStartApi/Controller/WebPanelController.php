@@ -10,7 +10,8 @@ class WebPanelController extends RestController
     {
         $this->answer = array(
             'mainMenu' => array(
-                'Auth'
+                'Auth',
+                'Contact'
             ),
         );
 

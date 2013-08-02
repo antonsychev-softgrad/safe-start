@@ -16,5 +16,13 @@ return array(
                 )
             )
         )
+    ),
+    'safe-start-app' => array(
+        'version' => '1.0',
+        'baseHref' => 'http://safe-start.dev/api/',
+        'defMenu' => array(
+            'Auth',
+            'Contact'
+        )
     )
 );
