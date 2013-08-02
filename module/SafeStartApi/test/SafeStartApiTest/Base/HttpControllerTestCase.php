@@ -14,6 +14,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\ORM\EntityManager;
 use Zend\Session\SessionManager;
+use Zend\Authentication\AuthenticationService;
 
 class HttpControllerTestCase extends AbstractHttpControllerTestCase
 {
@@ -55,6 +56,18 @@ class HttpControllerTestCase extends AbstractHttpControllerTestCase
             $executor->execute($loader->getFixtures());
         }
     }
+
+    protected function _loginUser($username, $password) {
+        $this->dispatch('/api/user/login', 'POST', array(
+            'username' => $username,
+            'password' => $password,
+        ));
+
+        $auth = new AuthenticationService();
+
+        return $auth->hasIdentity();
+    }
+
 
     /**
      * Shuts the kernel down if it was used in the test.

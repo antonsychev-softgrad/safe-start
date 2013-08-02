@@ -321,6 +321,7 @@ class User extends BaseEntity
     public function toArray()
     {
         return array(
+          'id' => $this->getId(),
           'email' => (!is_null($this->email)) ? $this->email : '',
           'username' => (!is_null($this->username)) ? $this->username : '',
           'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',

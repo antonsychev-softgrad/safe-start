@@ -2,6 +2,7 @@
 
 namespace SafeStartApiTest\Controller;
 
+use Doctrine\Tests\Models\Generic\BooleanModel;
 use SafeStartApiTest\Bootstrap;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use SafeStartApiTest\Base\HttpControllerTestCase;
@@ -11,8 +12,6 @@ use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use SafeStartApiTest\Fixtures\LoadUsersData;
 use Zend\Stdlib\Parameters;
-use Zend\Authentication\AuthenticationService;
-use Zend\Session\SessionManager;
 
 class UserControllerTest extends HttpControllerTestCase
 {
@@ -42,32 +41,25 @@ class UserControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('user/login');
         $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
-    public function testUserIsLogged()
+    public function testLoginActionCanNotBeAccessed()
     {
-        $this->dispatch('/api/user/login', 'POST', array(
-            'username' => 'username',
-            'password' => '12345',
-        ));
-        $this->assertResponseStatusCode(200);
-        $data = json_decode($this->getResponse()->getContent());
-
-        $this->getRequest()
-            ->getHeaders()->addHeaders(array(
-            'X-Auth-Token' => $data->data->authToken,
-        ));
-        $this->dispatch('/api');
-
-        $this->assertResponseStatusCode(200);
-
-        $auth = new AuthenticationService();
-        if ($auth->hasIdentity()) {
-            $identity = $auth->getIdentity();
-            print_r($identity);
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
+
+        $this->dispatch('/api/user/login');
+
+        $this->assertResponseStatusCode(200);
+
+        $data = json_decode($this->getResponse()->getContent());
+        $schema = Bootstrap::getJsonSchemaResponse('user/login');
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+        $this->assertTrue($data->meta->errorCode === \SafeStartApi\Controller\UserController::USER_ALREADY_LOGGED_IN);
+
     }
 }
