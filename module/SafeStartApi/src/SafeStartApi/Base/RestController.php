@@ -5,7 +5,6 @@ namespace SafeStartApi\Base;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\Authentication\AuthenticationService;
-use Zend\Session\SessionManager;
 
 class RestController extends AbstractActionController
 {
@@ -15,11 +14,17 @@ class RestController extends AbstractActionController
 
     public function __construct()
     {
-        $container = new Container('SafeStartAppUser');
 
         $authToken = $this->params()->fromHeader('X-Auth-Token');
+        $session = $this->getEventManager()
+            ->getApplication()
+            ->getServiceManager()
+            ->get('Zend\Session\SessionManager');
         if (!empty($authToken)) {
-            $container->setId($authToken);
+            $session->setId($authToken);
+        } else {
+            $authToken = substr(md5(time() . rand()), 0, 12);
+            $session->setId($authToken);
         }
 
         $this->getEventManager()->attach('dispatch', array($this, 'onDispatchEvent'), 100);

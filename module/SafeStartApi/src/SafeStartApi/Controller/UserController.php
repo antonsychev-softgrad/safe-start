@@ -44,8 +44,6 @@ class UserController extends RestController
                 $em->merge($user);
                 $em->flush();
 
-                $authToken = substr(md5($username. time() . rand()), 0, 12);
-
                 break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
                 $errorMessage = 'Identity not found';

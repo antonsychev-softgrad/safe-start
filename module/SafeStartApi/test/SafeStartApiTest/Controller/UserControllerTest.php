@@ -11,6 +11,7 @@ use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use SafeStartApiTest\Fixtures\LoadUsersData;
 use Zend\Stdlib\Parameters;
+use Zend\Authentication\AuthenticationService;
 
 class UserControllerTest extends HttpControllerTestCase
 {
@@ -28,7 +29,6 @@ class UserControllerTest extends HttpControllerTestCase
 
     public function testLoginActionCanBeAccessed()
     {
-
         $this->getRequest()
             ->setMethod('POST')
             ->setPost(new Parameters(array(
@@ -45,8 +45,25 @@ class UserControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('user/login');
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
+    public function testUserIsLogged()
+    {
+        $this->getRequest()->getHeaders()->addHeaders(array(
+            'X-Auth-Token' => 'e2f8981e26ec'
+        ));
+
+        $this->dispatch('/api');
+
+        $this->assertResponseStatusCode(200);
+
+        $auth = new AuthenticationService();
+        if ($auth->hasIdentity()) {
+            $identity = $auth->getIdentity();
+            print_r($identity);
+        }
     }
 }
