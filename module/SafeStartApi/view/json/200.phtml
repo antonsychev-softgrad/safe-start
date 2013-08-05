@@ -1,12 +1,15 @@
 <?php
 
-echo json_encode(
-    $response = array(
-        'meta' => array(
-            'status' => 200,
-            'requestId' => isset($this->requestId) ? $this->requestId : '',
-            'errorCode' => isset($this->errorCode) ? $this->errorCode : 0,
-        ),
-        'data' => isset($this->answer) ? $this->answer : array('done' => false, 'error' => 'no answer')
-    )
+$errorCode = $this->answer ? 0 : 2041;
+
+$output = array(
+    'meta' => array(
+        'status' => isset($this->statusCode) ? $this->statusCode : 200,
+        'requestId' => isset($this->requestId) ? $this->requestId : '',
+        'errorCode' => isset($this->errorCode) ? $this->errorCode : $errorCode,
+    ),
+    'data' => isset($this->answer) ? $this->answer : array('errorMessage' => 'no content')
 );
+
+$this->getlogResponse($output);
+echo json_encode($output);

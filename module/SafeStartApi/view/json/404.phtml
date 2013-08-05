@@ -1,12 +1,13 @@
 <?php
 
-echo json_encode(
-    $response = array(
-        'meta' => array(
-            'status' => 404,
-            'requestId' => isset($this->requestId) ? $this->requestId : '',
-            'error' => true,
-        ),
-        'data' => isset($this->answer) ? $this->answer : array('done' => false, 'errorMessage' => '404 api method not found')
-    )
+$output = array(
+    'meta' => array(
+        'status' => 404,
+        'requestId' => isset($this->requestId) ? $this->requestId : '',
+        'errorCode' => 404,
+    ),
+    'data' => isset($this->answer) ? $this->answer : array('errorMessage' => '404 api method not found')
 );
+
+$this->getlogResponse($output);
+echo json_encode($output);

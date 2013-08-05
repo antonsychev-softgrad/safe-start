@@ -16,6 +16,8 @@ class UserController extends RestController
 
     public function loginAction()
     {
+        if (!$this->_requestIsValide('user/login')) return $this->_showBadRequest();
+
         if ($this->authService->hasIdentity()) {
             $userInfo = $this->authService->getStorage()->read();
             $errorCode = static::USER_ALREADY_LOGGED_IN;
@@ -27,8 +29,8 @@ class UserController extends RestController
             return $this->AnswerPlugin()->format($this->answer, $errorCode);
         }
 
-        $username = isset($this->data['username']) ? $this->data['username'] : '';
-        $password = isset($this->data['password']) ? $this->data['password'] : '';
+        $username = isset($this->data->username) ? $this->data->username : '';
+        $password = isset($this->data->password) ? $this->data->password : '';
 
         $adapter = $this->authService->getAdapter();
         $adapter->setIdentityValue($username);

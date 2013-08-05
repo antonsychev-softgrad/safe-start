@@ -71,6 +71,23 @@ class Module
         }
     }
 
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'RequestLoggerHelper' => 'SafeStartApi\View\Helper\RequestLogger',
+            ),
+            'factories' => array(
+                'getlogResponse' => function ($helperPluginManager) {
+                    $serviceLocator = $helperPluginManager->getServiceLocator();
+                    $viewHelper = new View\Helper\RequestLogger();
+                    $viewHelper->setServiceLocator($serviceLocator);
+                    return $viewHelper;
+                }
+            ),
+        );
+    }
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';

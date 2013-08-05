@@ -29,12 +29,15 @@ class UserControllerTest extends HttpControllerTestCase
 
     public function testLoginActionCanBeAccessed()
     {
+        $data = array(
+            'username' => 'username',
+            'password' => '12345',
+        );
+
         $this->getRequest()
             ->setMethod('POST')
-            ->setPost(new Parameters(array(
-                'username' => 'username',
-                'password' => '12345',
-             )));
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+         //   ->setPost(new Parameters($this->_setApiResponseFormat($data))); // two ways of sending request
 
         $this->dispatch('/api/user/login');
 
@@ -43,6 +46,20 @@ class UserControllerTest extends HttpControllerTestCase
         $data = json_decode($this->getResponse()->getContent());
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
+    public function testLoginActionBadRequest() {
+        $data = array(
+            'username' => 'username',
+        );
+
+        $this->getRequest()
+            ->setMethod('POST')
+          ->setPost(new Parameters($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/user/login');
+
+        $this->assertResponseStatusCode(400);
     }
 
     public function testLoginActionCanNotBeAccessed()
