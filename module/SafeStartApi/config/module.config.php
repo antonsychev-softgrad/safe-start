@@ -196,6 +196,7 @@ return array(
     'controller_plugins' => array(
         'invokables' => array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
+            'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
         )
     ),
     'session' => array(
