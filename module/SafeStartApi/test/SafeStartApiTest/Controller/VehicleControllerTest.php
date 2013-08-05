@@ -28,7 +28,7 @@ class UserDataControllerTest extends HttpControllerTestCase
         parent::setUp();
     }
 
-    public function testVehiclesListActionCanBeAccessed()
+    public function testGetListActionCanBeAccessed()
     {
         /*
         $this->getRequest()
@@ -38,17 +38,17 @@ class UserDataControllerTest extends HttpControllerTestCase
                 'password' => '12345',
              )));
         */
-        $this->dispatch('/api/userdata/vehicleslist');
+        $this->dispatch('/api/vehicle/getlist');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('userdata/vehicleslist');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getlist');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
-    public function testVehicleDataActionCanBeAccessed()
+    public function testGetDataByIdActionCanBeAccessed()
     {
         /*
         $this->getRequest()
@@ -58,10 +58,10 @@ class UserDataControllerTest extends HttpControllerTestCase
                 'password' => '12345',
              )));
         */
-        $this->dispatch('/api/userdata/vehicledata');
+        $this->dispatch('/api/vehicle/getdatabyid');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('userdata/vehicledata');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getdatabyid');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);

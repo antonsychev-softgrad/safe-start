@@ -4,9 +4,9 @@ namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestController;
 
-class UserDataController extends RestController
+class VehicleController extends RestController
 {
-    public function vehiclesListAction()
+    public function getListAction()
     {
 
         $vehiclesList = array(
@@ -15,12 +15,12 @@ class UserDataController extends RestController
                 'type' => 'Type 1',
             ),
             array(
-                'id' => '1',
-                'type' => 'Type 1',
+                'id' => '2',
+                'type' => 'Type 2',
             ),
             array(
-                'id' => '1',
-                'type' => 'Type 1',
+                'id' => '3',
+                'type' => 'Type 3',
             ),
         );
 
@@ -31,7 +31,7 @@ class UserDataController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function vehicleDataAction()
+    public function getDataByIdAction()
     {
 
         $objDateTime = new \DateTime('NOW');
