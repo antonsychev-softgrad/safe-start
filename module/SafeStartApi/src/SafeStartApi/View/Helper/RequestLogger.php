@@ -54,6 +54,7 @@ class RequestLogger extends AbstractHelper
      */
     public function __invoke($value)
     {
+    {
         $logger = $this->serviceLocator->get('RequestLogger');
         $request = $this->serviceLocator->get('Request');
         $this->requestJson = $request->getContent() ? $request->getContent() : json_encode($request->getPost());
