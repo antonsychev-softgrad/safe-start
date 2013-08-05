@@ -3,34 +3,48 @@
 namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestController;
-use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Result;
 use Zend\Session\Container;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends RestController
 {
     const USER_NOT_FOUND = 4011;
     const INVALID_CREDENTIAL = 4001;
+    const USER_ALREADY_LOGGED_IN = 4002;
 
     public function loginAction()
     {
-        $username = isset($this->data['username']) ? $this->data['username'] : '';
-        $password = isset($this->data['password']) ? $this->data['password'] : '';
+        if (!$this->_requestIsValide('user/login')) return $this->_showBadRequest();
 
-        $serviceLocator = $this->getServiceLocator();
+        if ($this->authService->hasIdentity()) {
+            $userInfo = $this->authService->getStorage()->read();
+            $errorCode = static::USER_ALREADY_LOGGED_IN;
+            $this->answer = array(
+                'authToken' => $this->sessionManager->getId(),
+                'userInfo' => $userInfo->toArray(),
+                'errorMessage' => 'User already logged in',
+            );
+            return $this->AnswerPlugin()->format($this->answer, $errorCode);
+        }
 
-        $authService = $serviceLocator->get('doctrine.authenticationservice.orm_default');
-        $adapter = $authService->getAdapter();
+        $username = isset($this->data->username) ? $this->data->username : '';
+        $password = isset($this->data->password) ? $this->data->password : '';
+
+        $adapter = $this->authService->getAdapter();
         $adapter->setIdentityValue($username);
         $adapter->setCredentialValue($password);
-        $result = $authService->authenticate();
+        $result = $this->authService->authenticate();
 
-        $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
         $user_rep = $em->getRepository('SafeStartApi\Entity\User');
 
         $authCode = $result->getCode();
+        $test = $this->sessionManager->sessionExists();
         $userInfo = '';
         $errorCode = 0;
+
         switch ($authCode) {
             case Result::SUCCESS:
                 $errorMessage = '';
@@ -41,7 +55,10 @@ class UserController extends RestController
                 $user->setLastLogin(new \DateTime());
                 $em->merge($user);
                 $em->flush();
-
+                $userData = new \stdClass();
+                $userData->user = $userInfo;
+                $this->authService->getStorage()->write($user);
+                $this->authToken = $this->sessionManager->getId();
                 break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
                 $errorMessage = 'Identity not found';

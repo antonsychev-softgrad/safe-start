@@ -202,16 +202,16 @@ return array(
         'config' => array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
-                'name' => 'SafeStartAppUser',
+                'name' => 'SafeStartApi',
                 'remember_me_seconds' => 360,
-                'use_cookies' => true,
+              //  'use_cookies' => true,
                 'save_path' =>  __DIR__ . '/../../../data/sessions',
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
-            'Zend\Session\Validator\RemoteAddr',
-            'Zend\Session\Validator\HttpUserAgent',
+           // 'Zend\Session\Validator\RemoteAddr',
+          //  'Zend\Session\Validator\HttpUserAgent',
         ),
     ),
 );

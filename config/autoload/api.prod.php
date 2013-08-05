@@ -3,7 +3,7 @@
 * api.dev - config for developer PC
 */
 return array(
-    'doctrine' => array(
+    /*'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
                 'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
@@ -16,5 +16,5 @@ return array(
                 )
             )
         )
-    )
+    )*/
 );

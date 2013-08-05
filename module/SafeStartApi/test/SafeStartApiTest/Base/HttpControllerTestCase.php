@@ -14,6 +14,7 @@ use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\ORM\EntityManager;
 use Zend\Session\SessionManager;
+use Zend\Authentication\AuthenticationService;
 
 class HttpControllerTestCase extends AbstractHttpControllerTestCase
 {
@@ -34,7 +35,6 @@ class HttpControllerTestCase extends AbstractHttpControllerTestCase
 
         $serviceManager = Bootstrap::getServiceManager();
         $this->em = $serviceManager->get('doctrine.entitymanager.orm_default');
-        //$this->em->beginTransaction();
         $this->loadFixtures();
     }
 
@@ -56,11 +56,36 @@ class HttpControllerTestCase extends AbstractHttpControllerTestCase
         }
     }
 
+    protected function _loginUser($username, $password) {
+        $this->dispatch('/api/user/login', 'POST', $this->_setApiResponseFormat(array(
+            'username' => $username,
+            'password' => $password,
+        )));
+
+        $auth = new AuthenticationService();
+
+        return $auth->hasIdentity();
+    }
+
+    protected function _setApiResponseFormat($data) {
+        return array(
+            'meta' => array(
+                'requestId' => ''
+            ),
+            'data' => $data
+        );
+    }
+
+    protected function _getRandHash($length = 12) {
+        return substr(md5(time() . rand()), 0, $length);
+    }
+
+
     /**
      * Shuts the kernel down if it was used in the test.
      */
     protected function tearDown()
     {
-        //$this->em->rollback();
+
     }
 }
