@@ -72,7 +72,8 @@ class AclPlugin extends AbstractPlugin
     public function isAllowed($resource = null, $privilege = null)
     {
         if($this->getController()->authService->hasIdentity()) {
-            $role = $this->authService->getStorage()->get('role');
+            $user = $this->authService->getStorage()->read();
+            $role = $user('role');
         } else {
             $role = 'guest';
         }
