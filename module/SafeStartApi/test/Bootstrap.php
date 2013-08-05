@@ -94,9 +94,9 @@ class Bootstrap
         static::$jsonSchemaValidator = new \JsonSchema\Validator();
 
         putenv("APP_ENV=test");
-        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:metadata');
-        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:result');
-        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:query');
+        //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:metadata');
+        //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:result');
+        //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:query');
         $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update');
         static::$console->write($output . "\r\n", 3);
     }
