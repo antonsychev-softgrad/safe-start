@@ -37,7 +37,7 @@ class RestController extends AbstractActionController
 
         $serviceLocator = $this->getServiceLocator();
         $session = $serviceLocator->get('Zend\Session\SessionManager');
-        $session->setId($this->authToken);
+        //$session->setId($this->authToken);
         $session->start();
 
     }

@@ -135,6 +135,7 @@ return array(
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
+            'SafeStartApi\Controller\UserData' => 'SafeStartApi\Controller\UserDataController',
         ),
     ),
     'view_manager' => array(

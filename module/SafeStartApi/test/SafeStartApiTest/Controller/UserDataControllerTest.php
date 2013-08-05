@@ -14,7 +14,7 @@ use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
 
-class UserControllerTest extends HttpControllerTestCase
+class UserDataControllerTest extends HttpControllerTestCase
 {
     protected $controller;
     protected $request;
@@ -28,46 +28,43 @@ class UserControllerTest extends HttpControllerTestCase
         parent::setUp();
     }
 
-    public function testLoginActionCanBeAccessed()
+    public function testVehiclesListActionCanBeAccessed()
     {
+        /*
         $this->getRequest()
             ->setMethod('POST')
             ->setPost(new Parameters(array(
                 'username' => 'username',
                 'password' => '12345',
              )));
-
-        $this->dispatch('/api/user/login');
+        */
+        $this->dispatch('/api/userdata/vehicleslist');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('user/login');
+        $schema = Bootstrap::getJsonSchemaResponse('userdata/vehicleslist');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
-    public function testUserIsLogged()
+    public function testVehicleDataActionCanBeAccessed()
     {
-        $this->dispatch('/api/user/login', 'POST', array(
-            'username' => 'username',
-            'password' => '12345',
-        ));
-        $this->assertResponseStatusCode(200);
-        $data = json_decode($this->getResponse()->getContent());
-
+        /*
         $this->getRequest()
-            ->getHeaders()->addHeaders(array(
-            'X-Auth-Token' => $data->data->authToken,
-        ));
-        $this->dispatch('/api');
+            ->setMethod('POST')
+            ->setPost(new Parameters(array(
+                'username' => 'username',
+                'password' => '12345',
+             )));
+        */
+        $this->dispatch('/api/userdata/vehicledata');
 
         $this->assertResponseStatusCode(200);
-
-        $auth = new AuthenticationService();
-        if ($auth->hasIdentity()) {
-            $identity = $auth->getIdentity();
-            //print_r($identity);
-        }
+        $schema = Bootstrap::getJsonSchemaResponse('userdata/vehicledata');
+        $data = json_decode($this->getResponse()->getContent());
+        //print_r($data);
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 }

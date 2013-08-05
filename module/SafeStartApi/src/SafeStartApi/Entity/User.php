@@ -44,6 +44,11 @@ class User extends BaseEntity
     protected $email;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $role = 'guest';
+
+    /**
      * @ORM\Column(type="string", name="first_name", nullable=true)
      */
     protected $firstName;
