@@ -41,7 +41,6 @@ class UserController extends RestController
         $user_rep = $em->getRepository('SafeStartApi\Entity\User');
 
         $authCode = $result->getCode();
-        $test = $this->sessionManager->sessionExists();
         $userInfo = '';
         $errorCode = 0;
 

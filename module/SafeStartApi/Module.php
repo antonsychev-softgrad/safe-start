@@ -12,10 +12,20 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
 use Zend\Session\Container;
 
+/**
+ * Class Module
+ * @package SafeStartApi
+ */
 class Module
 {
+    /**
+     * @var array
+     */
     public $params = array();
 
+    /**
+     * @param ModuleManager $moduleManager
+     */
     public function init(ModuleManager $moduleManager)
     {
         // config params
@@ -41,6 +51,9 @@ class Module
 
     }
 
+    /**
+     * @param MvcEvent $e
+     */
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager = $e->getApplication()->getEventManager();
@@ -48,6 +61,9 @@ class Module
         $moduleRouteListener->attach($eventManager);
     }
 
+    /**
+     * @param MvcEvent $e
+     */
     public function onDispatchError(MvcEvent $e)
     {
         $request = $e->getRequest();
@@ -71,6 +87,9 @@ class Module
         }
     }
 
+    /**
+     * @return array
+     */
     public function getViewHelperConfig()
     {
         return array(
@@ -88,11 +107,17 @@ class Module
         );
     }
 
+    /**
+     * @return mixed
+     */
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
     }
 
+    /**
+     * @return array
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -104,6 +129,10 @@ class Module
         );
     }
 
+    /**
+     * @param Console $console
+     * @return array
+     */
     public function getConsoleUsage(Console $console){
         return array(
             // Describe available commands
