@@ -12,16 +12,44 @@ use RuntimeException;
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
+/**
+ * Class Bootstrap
+ * @package SafeStartApiTest
+ */
 class Bootstrap
 {
+    /**
+     * @var
+     */
     protected static $serviceManager;
+    /**
+     * @var
+     */
     protected static $config;
+    /**
+     * @var
+     */
     protected static $bootstrap;
+    /**
+     * @var
+     */
     protected static $jsonSchemaRetriever;
+    /**
+     * @var
+     */
     protected static $jsonSchemaRefResolver;
+    /**
+     * @var
+     */
     public static $jsonSchemaValidator;
+    /**
+     * @var
+     */
     public static $console;
 
+    /**
+     *
+     */
     public static function init()
     {
 
@@ -66,23 +94,33 @@ class Bootstrap
         static::$jsonSchemaValidator = new \JsonSchema\Validator();
 
         putenv("APP_ENV=test");
-        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:metadata');
-        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:result');
-        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:query');
+        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:metadata');
+        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:result');
+        shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:query');
         $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update');
-        //static::$console->write($output . "\r\n", 3);
+        static::$console->write($output . "\r\n", 3);
     }
 
+    /**
+     * @return mixed
+     */
     public static function getServiceManager()
     {
         return static::$serviceManager;
     }
 
+    /**
+     * @return mixed
+     */
     public static function getConfig()
     {
         return static::$config;
     }
 
+    /**
+     * @param string $method
+     * @return \stdClass
+     */
     public static function getJsonSchemaRequest($method = "index/ping") {
         $schemaFile =  __DIR__ . '/../public/schemas/' . $method . '/request.json';
         if (!file_exists($schemaFile)) {
@@ -93,6 +131,10 @@ class Bootstrap
         return $schema;
     }
 
+    /**
+     * @param string $method
+     * @return \stdClass
+     */
     public static function getJsonSchemaResponse($method = "index/ping") {
         $schemaFile =  realpath(__DIR__ . '/../public/schemas/' . $method . '/response.json');
         if (!file_exists($schemaFile)) {
@@ -102,6 +144,9 @@ class Bootstrap
         return static::$jsonSchemaRetriever->retrieve('file://' . $schemaFile);
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     protected static function initAutoloader()
     {
         $vendorPath = static::findParentPath('vendor');
@@ -129,6 +174,10 @@ class Bootstrap
         ));
     }
 
+    /**
+     * @param $path
+     * @return bool|string
+     */
     protected static function findParentPath($path)
     {
         $dir = __DIR__;
