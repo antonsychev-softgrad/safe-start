@@ -38,12 +38,12 @@ class RestController extends AbstractActionController
 
     public function onDispatchEvent()
     {
-        $this->_parseRequestFromat();
+        $this->_parseRequestFormat();
         $this->_checkAuthToken();
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
     }
 
-    protected function _parseRequestFromat()
+    protected function _parseRequestFormat()
     {
         $this->requestJson = $this->getRequest()->getContent() ? $this->getRequest()->getContent() : json_encode($this->params()->fromPost());
         $this->headers = $this->params()->fromHeader();
@@ -73,7 +73,7 @@ class RestController extends AbstractActionController
         return $schema;
     }
 
-    protected function _requestIsValide($method = "index/ping") {
+    protected function _requestIsValid($method = "index/ping") {
         $schema = $this->_getJsonSchemaRequest($method);
         $data = json_decode($this->requestJson);
         $this->jsonSchemaValidator->check($data, $schema);

@@ -16,7 +16,7 @@ class UserController extends RestController
 
     public function loginAction()
     {
-        if (!$this->_requestIsValide('user/login')) return $this->_showBadRequest();
+        if (!$this->_requestIsValid('user/login')) return $this->_showBadRequest();
 
         if ($this->authService->hasIdentity()) {
             $userInfo = $this->authService->getStorage()->read();
