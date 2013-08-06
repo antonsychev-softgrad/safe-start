@@ -72,7 +72,6 @@ class RequestLogger extends AbstractHelper
                 $logger->debug("POST data:\n" . $writer->toString(json_decode($this->requestJson, true)));
             } else {
                 $logger->debug("POST data:\n" . $this->requestJson);
-                $logger->debug("Response:\n" . json_encode($value));
             }
         }
         // log response
