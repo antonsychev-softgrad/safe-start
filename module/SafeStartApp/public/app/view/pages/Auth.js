@@ -10,43 +10,15 @@ Ext.define('SafeStartApp.view.pages.Auth', {
         title: 'Welcome',
         iconCls: 'home',
 
-        layout: 'auto',
+        layout: 'fit',
         styleHtmlContent: false,
-        scrollable: true
+        scrollable: false
     },
 
 
     initialize: function () {
         this.callParent();
-
         this.AuthForm = this.add(Ext.create('SafeStartApp.form.Auth'));
-
-     /*   var myPanel = Ext.create('Ext.Panel', {
-         items: [
-         {
-         xtype: 'fieldset',
-         title: 'Contact Us',
-         instructions: '(email address is optional)',
-         items: [
-         {
-         xtype: 'textfield',
-         label: 'Name'
-         },
-         {
-         xtype: 'emailfield',
-         label: 'Email'
-         }
-         ]
-         },
-         {
-         xtype: 'button',
-         text: 'Send',
-         ui: 'confirm'
-         }
-         ]
-         });
-
-         this.add(myPanel);*/
     }
 
 });

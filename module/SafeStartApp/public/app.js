@@ -20,6 +20,7 @@ Ext.apply(SafeStartApp,  {
             requestId: this.getHash()
         };
         data = data || {test: 1};
+        Ext.Viewport.setMasked({ xtype: 'loadmask' });
         Ext.Ajax.request({
             url: this.baseHref + url,
             params: Ext.encode({
@@ -27,11 +28,11 @@ Ext.apply(SafeStartApp,  {
                 data: data
             }),
             success: function(response){
+                Ext.Viewport.setMasked(false);
                 var result = Ext.decode(response.responseText);
                 if (result.meta && result.meta.status == 200) {
                     if (successCalBack && typeof successCalBack == 'function') successCalBack(result.data || {});
                 }
-
             }
         });
     },
@@ -39,6 +40,23 @@ Ext.apply(SafeStartApp,  {
     getHash: function(length) {
         length = length || 12;
         return Math.random().toString(36).substring(length);
+    },
+
+    showSuccessInfoMsg: function() {
+       /* Ext.Msg.show({
+            title: 'Address',
+            message: 'Please enter your address',
+            multiLine: false,
+            buttons: [],
+            masked: false,
+            hideOnMaskTap: true,
+            listeners: {
+                show: function(){
+                    console.log(this);
+                }
+            },
+            fn: Ext.emptyFn()
+        });*/
     }
 });
 
@@ -84,8 +102,6 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        Ext.Viewport.setMasked({ xtype: 'loadmask' });
-
         SafeStartApp.AJAX('web-panel/index', {}, function(result) {
             self.setViewPort(result.mainMenu || null);
         });
@@ -113,10 +129,6 @@ Ext.application({
         });
 
         Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
-
-
-        Ext.Viewport.setMasked(false);
-
     },
 
     onUpdated: function() {
