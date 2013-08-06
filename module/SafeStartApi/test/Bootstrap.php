@@ -9,6 +9,7 @@ use Zend\Console\Console;
 use Zend\Console\Exception\RuntimeException as ConsoleException;
 use RuntimeException;
 
+putenv("APP_ENV=test");
 error_reporting(E_ALL | E_STRICT);
 chdir(__DIR__);
 
@@ -93,11 +94,12 @@ class Bootstrap
         static::$jsonSchemaRefResolver = new \JsonSchema\RefResolver;
         static::$jsonSchemaValidator = new \JsonSchema\Validator();
 
-        putenv("APP_ENV=test");
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+        static::$console->write("Current environment ". $env ." \r\n", 3);
         //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:metadata');
         //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:result');
         //shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:clear-cache:query');
-        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update');
+        $output = shell_exec(__DIR__ . '/../../../vendor/bin/doctrine-module orm:schema-tool:update --force');
         static::$console->write($output . "\r\n", 3);
     }
 

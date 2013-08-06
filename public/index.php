@@ -3,7 +3,7 @@
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
-$env = getenv('APP_ENV') ?: 'dev';
+$env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
 
 if ($env == 'dev') {
     ini_set('display_errors', true);

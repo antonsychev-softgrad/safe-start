@@ -61,6 +61,7 @@ return array(
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
+            'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserData' => 'SafeStartApi\Controller\UserDataController',
         ),
     ),
@@ -81,8 +82,17 @@ return array(
                     'options' => array(
                         'route' => 'ping api [--verbose|-v]',
                         'defaults' => array(
-                            'controller' => 'SafeStartApi\Controller\CronController',
+                            'controller' => 'SafeStartApi\Controller\Cron',
                             'action' => 'index'
+                        )
+                    )
+                ),
+                'set-def-bd-data' => array(
+                    'options' => array(
+                        'route' => 'doctrine set-def-data [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Doctrine',
+                            'action' => 'setDefData'
                         )
                     )
                 ),

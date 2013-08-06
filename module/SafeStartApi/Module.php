@@ -138,6 +138,7 @@ class Module
         return array(
             // Describe available commands
             'ping api [--verbose|-v]' => 'Return current api version',
+            'doctrine set-def-data [--verbose|-v]' => 'Update database with fixtures data',
             array('--verbose|-v', '(optional) turn on verbose mode'),
         );
     }
