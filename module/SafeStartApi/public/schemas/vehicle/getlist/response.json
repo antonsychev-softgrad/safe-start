@@ -33,7 +33,7 @@
                         "type": "object",
                         "required": false,
                         "properties": {
-                            "deviceId": {
+                            "vehicleId": {
                                 "description": "Vehicle ID",
                                 "type": "integer",
                                 "required": true
@@ -41,6 +41,11 @@
                             "typeId": {
                                 "description": "Vehicle type ID",
                                 "type": "integer",
+                                "required": true
+                            },
+                            "vehicleName": {
+                                "description": "Vehicle Name",
+                                "type": "string",
                                 "required": true
                             }
                         }

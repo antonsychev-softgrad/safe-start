@@ -356,6 +356,8 @@ class User extends BaseEntity
           'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
           'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
           'role' => $this->getRole(),
+          // TODO add company to user
+          'companyId' => 0,
         );
     }
 

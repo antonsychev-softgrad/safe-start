@@ -30,14 +30,15 @@ class UserDataControllerTest extends HttpControllerTestCase
 
     public function testGetListActionCanBeAccessed()
     {
-        /*
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
+        }
+
+        $data = array();
         $this->getRequest()
             ->setMethod('POST')
-            ->setPost(new Parameters(array(
-                'username' => 'username',
-                'password' => '12345',
-             )));
-        */
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
         $this->dispatch('/api/vehicle/getlist');
 
         $this->assertResponseStatusCode(200);
@@ -50,18 +51,46 @@ class UserDataControllerTest extends HttpControllerTestCase
 
     public function testGetDataByIdActionCanBeAccessed()
     {
-        /*
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
+        }
+
+        $data = array(
+            'vehicleId' => 1,
+        );
+
         $this->getRequest()
             ->setMethod('POST')
-            ->setPost(new Parameters(array(
-                'username' => 'username',
-                'password' => '12345',
-             )));
-        */
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
         $this->dispatch('/api/vehicle/getdatabyid');
 
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getdatabyid');
+        $data = json_decode($this->getResponse()->getContent());
+        //print_r($data);
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
+    public function testGetChecklistByVehicleId()
+    {
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
+        }
+        
+        $data = array(
+            'vehicleId' => 1,
+        );
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/vehicle/getchecklistbyvehicleid');
+
+        $this->assertResponseStatusCode(200);
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklistbyvehicleid');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
