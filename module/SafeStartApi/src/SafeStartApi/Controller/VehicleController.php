@@ -58,6 +58,12 @@ class VehicleController extends RestController
                                 'fieldName' => 'Test field 2',
                                 'fieldType' => 'textField',
                                 'fieldValue' => 'Test text of the field',
+                                'alerts' => array(
+                                    array(
+                                        'alertMessage' => 'Alert! You choose NO',
+                                        'fieldCondition' => 'No'
+                                    )
+                                )
                             ),
                         )
                     ),
