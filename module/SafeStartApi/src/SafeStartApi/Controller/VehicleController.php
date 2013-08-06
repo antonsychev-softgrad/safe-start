@@ -11,16 +11,16 @@ class VehicleController extends RestController
 
         $vehiclesList = array(
             array(
-                'id' => '1',
-                'type' => 'Type 1',
+                'vehicleId' => 1,
+                'typeId' => 1,
             ),
             array(
-                'id' => '2',
-                'type' => 'Type 2',
+                'vehicleId' => 1,
+                'typeId' => 1,
             ),
             array(
-                'id' => '3',
-                'type' => 'Type 3',
+                'vehicleId' => 1,
+                'typeId' => 1,
             ),
         );
 
@@ -50,11 +50,13 @@ class VehicleController extends RestController
                         'groupName' => 'Trailer',
                         'fields' => array(
                             array(
+                                'fieldId' => 0,
                                 'fieldName' => 'Test field 1',
                                 'fieldType' => 'radioButton',
                                 'fieldValue' => 'Yes',
                             ),
                             array(
+                                'fieldId' => 1,
                                 'fieldName' => 'Test field 2',
                                 'fieldType' => 'textField',
                                 'fieldValue' => 'Test text of the field',
@@ -71,11 +73,13 @@ class VehicleController extends RestController
                         'groupName' => 'Auxiliary Motor',
                         'fields' => array(
                             array(
+                                'fieldId' => 2,
                                 'fieldName' => 'Test field 1',
                                 'fieldType' => 'radioButton',
                                 'fieldValue' => 'Yes',
                             ),
                             array(
+                                'fieldId' => 3,
                                 'fieldName' => 'Test field 2',
                                 'fieldType' => 'textField',
                                 'fieldValue' => 'Test text of the field',

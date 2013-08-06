@@ -87,6 +87,11 @@
                                             "type": "object",
                                             "required": false,
                                             "properties": {
+                                                "fieldId": {
+                                                    "description": "Field ID",
+                                                    "type": "integer",
+                                                    "required": true
+                                                },
                                                 "fieldName": {
                                                     "description": "Field name",
                                                     "type": "string",
@@ -100,11 +105,6 @@
                                                 "fieldValue": {
                                                     "description": "Field value",
                                                     "type": "string",
-                                                    "required": true
-                                                },
-                                                "fieldId": {
-                                                    "description": "Field ID",
-                                                    "type": "integer",
                                                     "required": true
                                                 },
                                                 "alerts": {

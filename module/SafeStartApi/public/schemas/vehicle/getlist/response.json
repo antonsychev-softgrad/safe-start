@@ -33,14 +33,14 @@
                         "type": "object",
                         "required": false,
                         "properties": {
-                            "id": {
+                            "deviceId": {
                                 "description": "Vehicle ID",
-                                "type": "string",
+                                "type": "integer",
                                 "required": true
                             },
-                            "type": {
-                                "description": "Vehicle type",
-                                "type": "string",
+                            "typeId": {
+                                "description": "Vehicle type ID",
+                                "type": "integer",
                                 "required": true
                             }
                         }
