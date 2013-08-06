@@ -19,13 +19,13 @@ Ext.apply(SafeStartApp,  {
         var meta = {
             requestId: this.getHash()
         };
-        data = data || {};
+        data = data || {test: 1};
         Ext.Ajax.request({
             url: this.baseHref + url,
-            params: {
+            params: Ext.encode({
                 meta: meta,
                 data: data
-            },
+            }),
             success: function(response){
                 var result = Ext.decode(response.responseText);
                 if (result.meta && result.meta.status == 200) {

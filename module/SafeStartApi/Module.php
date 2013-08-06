@@ -133,11 +133,93 @@ class Module
      * @param Console $console
      * @return array
      */
-    public function getConsoleUsage(Console $console){
+    public function getConsoleUsage(Console $console)
+    {
         return array(
             // Describe available commands
             'ping api [--verbose|-v]' => 'Return current api version',
-             array( '--verbose|-v',     '(optional) turn on verbose mode' ),
+            'doctrine set-def-data [--verbose|-v]' => 'Update database with fixtures data',
+            array('--verbose|-v', '(optional) turn on verbose mode'),
+        );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Zend\Session\SessionManager' => function ($sm) {
+                    $config = $sm->get('config');
+                    if (isset($config['session'])) {
+                        $session = $config['session'];
+
+                        $sessionConfig = null;
+                        if (isset($session['config'])) {
+                            $class = isset($session['config']['class']) ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
+                            $options = isset($session['config']['options']) ? $session['config']['options'] : array();
+                            $sessionConfig = new $class();
+                            $sessionConfig->setOptions($options);
+                        }
+
+                        $sessionStorage = null;
+                        if (isset($session['storage'])) {
+                            $class = $session['storage'];
+                            $sessionStorage = new $class();
+                        }
+
+                        $sessionSaveHandler = null;
+                        if (isset($session['save_handler'])) {
+                            // class should be fetched from service manager since it will require constructor arguments
+                            $sessionSaveHandler = $sm->get($session['save_handler']);
+                        }
+
+                        $sessionManager = new SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
+
+                        if (isset($session['validators'])) {
+                            $chain = $sessionManager->getValidatorChain();
+                            foreach ($session['validators'] as $validator) {
+                                $validator = new $validator();
+                                $chain->attach('session.validate', array($validator, 'isValid'));
+
+                            }
+                        }
+                    } else {
+                        $sessionManager = new SessionManager();
+                    }
+                    Container::setDefaultManager($sessionManager);
+                    return $sessionManager;
+                },
+                'RequestLogger' => function ($sm) {
+                    $logger = new \Zend\Log\Logger;
+                    if (!is_dir('./data/logs')) {
+                        if (mkdir('./data/logs', 0777)) {
+
+                        }
+                    }
+                    if (!is_dir('./data/logs/requests')) {
+                        if (mkdir('./data/logs/requests', 0777)) {
+                        }
+                    }
+                    $writer = new \Zend\Log\Writer\Stream('./data/logs/requests/' . date('Y-m-d') . '.log');
+                    $logger->addWriter($writer);
+                    return $logger;
+                },
+                'ErrorLogger' => function ($sm) {
+                    $logger = new \Zend\Log\Logger;
+                    if (!is_dir('./data/logs/')) {
+                        if (mkdir('./data/logs/', 0777)) {
+                            // todo: handle exception
+                        }
+                    }
+                    if (!is_dir('./data/logs/errors/')) {
+                        if (mkdir('./data/logs/errors/', 0777)) {
+
+                        }
+                    }
+                    $writer = new \Zend\Log\Writer\Stream('./data/logs/errors/' . date('Y-m-d') . '.log');
+                    $logger->addWriter($writer);
+                    return $logger;
+                },
+            ),
         );
     }
 }

@@ -43,80 +43,6 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
-        'factories' => array(
-            'ErrorLogger' => function ($sm) {
-                $logger = new \Zend\Log\Logger;
-                if (!is_dir('./data/logs/')) {
-                    if (mkdir('./data/logs/', 0777)) {
-                        // todo: handle exception
-                    }
-                }
-                if (!is_dir('./data/logs/errors/')) {
-                    if (mkdir('./data/logs/errors/', 0777)) {
-
-                    }
-                }
-                $writer = new \Zend\Log\Writer\Stream('./data/logs/errors/' . date('Y-m-d') . '.log');
-                $logger->addWriter($writer);
-                return $logger;
-            },
-            'RequestLogger' => function ($sm) {
-                $logger = new \Zend\Log\Logger;
-                if (!is_dir('./data/logs')) {
-                    if (mkdir('./data/logs', 0777)) {
-
-                    }
-                }
-                if (!is_dir('./data/logs/requests')) {
-                    if (mkdir('./data/logs/requests', 0777)) {
-                    }
-                }
-                $writer = new \Zend\Log\Writer\Stream('./data/logs/requests/' . date('Y-m-d') . '.log');
-                $logger->addWriter($writer);
-                return $logger;
-            },
-            'Zend\Session\SessionManager' => function ($sm) {
-                $config = $sm->get('config');
-                if (isset($config['session'])) {
-                    $session = $config['session'];
-
-                    $sessionConfig = null;
-                    if (isset($session['config'])) {
-                        $class = isset($session['config']['class'])  ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
-                        $options = isset($session['config']['options']) ? $session['config']['options'] : array();
-                        $sessionConfig = new $class();
-                        $sessionConfig->setOptions($options);
-                    }
-
-                    $sessionStorage = null;
-                    if (isset($session['storage'])) {
-                        $class = $session['storage'];
-                        $sessionStorage = new $class();
-                    }
-
-                    $sessionSaveHandler = null;
-                    if (isset($session['save_handler'])) {
-                        // class should be fetched from service manager since it will require constructor arguments
-                        $sessionSaveHandler = $sm->get($session['save_handler']);
-                    }
-
-                    $sessionManager = new \Zend\Session\SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
-
-                    if (isset($session['validators'])) {
-                        $chain = $sessionManager->getValidatorChain();
-                        foreach ($session['validators'] as $validator) {
-                            $validator = new $validator();
-                            $chain->attach('session.validate', array($validator, 'isValid'));
-
-                        }
-                    }
-                } else {
-                    $sessionManager = new \Zend\Session\SessionManager();
-                }
-                \Zend\Session\Container::setDefaultManager($sessionManager);
-                return $sessionManager;
-            },
-        ),
     ),
     'translator' => array(
         'locale' => 'en_US',
@@ -135,8 +61,8 @@ return array(
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
-            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
-        ),
+            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',         
+			'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -155,8 +81,17 @@ return array(
                     'options' => array(
                         'route' => 'ping api [--verbose|-v]',
                         'defaults' => array(
-                            'controller' => 'SafeStartApi\Controller\CronController',
+                            'controller' => 'SafeStartApi\Controller\Cron',
                             'action' => 'index'
+                        )
+                    )
+                ),
+                'set-def-bd-data' => array(
+                    'options' => array(
+                        'route' => 'doctrine set-def-data [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Doctrine',
+                            'action' => 'setDefData'
                         )
                     )
                 ),
