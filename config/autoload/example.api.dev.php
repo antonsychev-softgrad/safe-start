@@ -3,7 +3,8 @@
     * api.dev - config for developer PC
     */
 return array(
-   /* 'doctrine' => array(
+   /* return array(
+    'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
                 'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
@@ -16,5 +17,14 @@ return array(
                 )
             )
         )
+    ),
+    'safe-start-app' => array(
+        'version' => '1.0',
+        'baseHref' => isset($_SERVER['HTTP_HOST']) ? 'http://'.$_SERVER['HTTP_HOST'].'/api/' : './',
+        'defMenu' => array(
+            'Auth',
+            'Contact'
+        )
+    )
     )*/
 );
