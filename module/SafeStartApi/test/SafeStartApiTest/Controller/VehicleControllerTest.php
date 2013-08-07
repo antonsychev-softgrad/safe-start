@@ -78,7 +78,7 @@ class UserDataControllerTest extends HttpControllerTestCase
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
-        
+
         $data = array(
             'vehicleId' => 1,
         );
