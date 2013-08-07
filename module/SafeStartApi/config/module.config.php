@@ -61,9 +61,8 @@ return array(
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
-            'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
-            'SafeStartApi\Controller\UserData' => 'SafeStartApi\Controller\UserDataController',
-        ),
+            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',         
+			'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -132,6 +131,7 @@ return array(
     'controller_plugins' => array(
         'invokables' => array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
+            'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
         )
     ),
     'session' => array(

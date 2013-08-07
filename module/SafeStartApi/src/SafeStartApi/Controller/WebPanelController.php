@@ -11,9 +11,12 @@ class WebPanelController extends RestController
         $this->answer = array(
             'mainMenu' => array(
                 'Auth',
-                'Contact'
             ),
         );
+
+        if($this->AclPlugin()->isAllowed('adminPanel', 'view')) {
+            $this->answer['mainMenu'][] = 'Contact';
+        }
 
         return $this->AnswerPlugin()->format($this->answer);
     }

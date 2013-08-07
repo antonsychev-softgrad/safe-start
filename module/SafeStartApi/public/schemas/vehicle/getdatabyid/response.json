@@ -1,0 +1,72 @@
+{
+    "description": "Vehicle data response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                },
+                "status": {
+                    "description": "HTTP status code",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "description": "Response data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "vehicleData": {
+                    "description": "Vehicle data",
+                    "type": "object",
+                    "required": true,
+                    "properties": {
+                        "id": {
+                            "description": "Vehicle ID",
+                            "type": "string",
+                            "required": true
+                        },
+                        "type": {
+                            "description": "Vehicle type",
+                            "type": "string",
+                            "required": true
+                        },
+                        "projectName": {
+                            "description": "Project name",
+                            "type": "string",
+                            "required": true
+                        },
+                        "projectType": {
+                            "description": "Project type",
+                            "type": "string",
+                            "required": true
+                        },
+                        "expiryDate": {
+                            "description": "Expiry Date",
+                            "type": "string",
+                            "required": true
+                        },
+                        "kmsUntilNext": {
+                            "description": "Kilometres until next service due",
+                            "type": "integer",
+                            "required": true
+                        },
+                        "hoursUntilNext": {
+                            "description": "Hours until next service due",
+                            "type": "integer",
+                            "required": true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

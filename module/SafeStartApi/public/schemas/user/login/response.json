@@ -63,6 +63,11 @@
                             "description": "User's second name",
                             "type": "string",
                             "required": false
+                        },
+                        "companyId": {
+                            "description": "Company Id",
+                            "type": "integer",
+                            "required": false
                         }
                     }
                 },

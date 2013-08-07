@@ -82,10 +82,17 @@ class RestController extends AbstractActionController
 
     protected function _showBadRequest() {
         $this->answer = array(
-            'errorMessage' => 'Wrong requesr params',
+            'errorMessage' => 'Wrong request params',
             'stack' => $this->jsonSchemaValidator->getErrors()
         );
         return $this->AnswerPlugin()->format($this->answer, 400, 400);
+    }
+
+    protected function _showUnauthorisedRequest() {
+        $this->answer = array(
+            'errorMessage' => 'Unauthorised user',
+        );
+        return $this->AnswerPlugin()->format($this->answer, 401, 401);
     }
 
 }
