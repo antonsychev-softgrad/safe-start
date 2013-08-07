@@ -90,7 +90,7 @@ class RestController extends AbstractActionController
 
     protected function _showUnauthorisedRequest() {
         $this->answer = array(
-            'errorMessage' => 'Unauthorised user',
+            'errorMessage' => 'Access denied',
         );
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
     }
