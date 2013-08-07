@@ -55,18 +55,16 @@ class UserDataControllerTest extends HttpControllerTestCase
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
 
-        $data = array(
-            'vehicleId' => 1,
-        );
+        $data = array();
 
         $this->getRequest()
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/getdatabyid');
+        $this->dispatch('/api/vehicle/1/getinfo');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getdatabyid');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getinfo');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
@@ -79,15 +77,13 @@ class UserDataControllerTest extends HttpControllerTestCase
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
 
-        $data = array(
-            'vehicleId' => 1,
-        );
+        $data = array();
 
         $this->getRequest()
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/getchecklistbyvehicleid');
+        $this->dispatch('/api/vehicle/1/getchecklist');
 
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklistbyvehicleid');

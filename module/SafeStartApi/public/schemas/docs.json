@@ -24,12 +24,76 @@
             "properties": {
                 "request": {
                     "properties": {
-                        "$ref": "index/ping/request.json"
+                        "$ref": "user/login/request.json"
                     }
                 },
                 "response": {
                     "properties": {
-                        "$ref": "index/ping/response.json"
+                        "$ref": "user/login/response.json"
+                    }
+                }
+            }
+        },
+        "/api/user/logout" : {
+            "description": "User logout",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "user/logout/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "user/logout/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/getChecklist" : {
+            "description": "Get vehicle checklist by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/getInfo" : {
+            "description": "Get vehicle info by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getinfo/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getinfo/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/getList" : {
+            "description": "Get vehicles list of authorised user",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getlist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getlist/response.json"
                     }
                 }
             }
