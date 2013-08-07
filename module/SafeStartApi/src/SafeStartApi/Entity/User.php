@@ -148,18 +148,41 @@ class User extends BaseEntity
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     * @return User
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 
     /**
@@ -332,6 +355,9 @@ class User extends BaseEntity
           'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
           'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
           'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
+          'role' => $this->getRole(),
+          // TODO add company to user
+          'companyId' => 0,
         );
     }
 

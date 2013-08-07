@@ -19,7 +19,7 @@ return array(
     ),
     'safe-start-app' => array(
         'version' => '1.0',
-        'baseHref' => 'http://'.$_SERVER['HTTP_HOST'].'/api/',
+        'baseHref' => isset($_SERVER['HTTP_HOST']) ? 'http://'.$_SERVER['HTTP_HOST'].'/api/' : './',
         'defMenu' => array(
             'Auth',
             'Contact'
