@@ -65,6 +65,8 @@ class RequestLogger extends AbstractHelper
         if (!empty($this->meta) && isset($this->meta->requestId)) $this->requestId = $this->meta->requestId;
         $logger->debug("\n\n\n============[". $this->requestId ."]==================\n");
         $logger->debug("New " . $request->getMethod() . " request to " . $request->getRequestUri());
+        $logger->debug("Headers: " . json_encode($this->headers) . "\n");
+        if (isset($this->headers['X-Auth-Token'])) $logger->debug("X-Auth-Token: " . $this->headers['X-Auth-Token'] . "\n");
         // log POST data
         if ($request->getMethod() == 'POST') {
             if (function_exists('yaml_emit')) {
