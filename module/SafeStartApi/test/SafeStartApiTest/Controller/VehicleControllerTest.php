@@ -44,7 +44,7 @@ class UserDataControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getlist');
         $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
+        print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
@@ -86,7 +86,7 @@ class UserDataControllerTest extends HttpControllerTestCase
         $this->dispatch('/api/vehicle/1/getchecklist');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklistbyvehicleid');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);

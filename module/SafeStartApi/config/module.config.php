@@ -59,6 +59,20 @@ return array(
                             ),
                         ),
                     ),
+                    'complete-vehicle-checklist' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/completechecklist',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'SafeStartApi\Controller',
+                                'controller' => 'Vehicle',
+                                'action' => 'completechecklist',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -167,7 +181,7 @@ return array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
                 'name' => 'SafeStartApi',
-                'remember_me_seconds' => 360,
+                'remember_me_seconds' => 3600,
               //  'use_cookies' => true,
                 'save_path' =>  __DIR__ . '/../../../data/sessions',
             ),

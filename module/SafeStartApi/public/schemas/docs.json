@@ -50,18 +50,18 @@
                 }
             }
         },
-        "/api/vehicle/[id]/getChecklist" : {
-            "description": "Get vehicle checklist by vehicle ID",
+        "/api/vehicle/getList" : {
+            "description": "Get vehicles list of authorised user",
             "type": "object",
             "properties": {
                 "request": {
                     "properties": {
-                        "$ref": "vehicle/getchecklist/request.json"
+                        "$ref": "vehicle/getlist/request.json"
                     }
                 },
                 "response": {
                     "properties": {
-                        "$ref": "vehicle/getchecklist/response.json"
+                        "$ref": "vehicle/getlist/response.json"
                     }
                 }
             }
@@ -82,18 +82,34 @@
                 }
             }
         },
-        "/api/vehicle/getList" : {
-            "description": "Get vehicles list of authorised user",
+        "/api/vehicle/[id]/getChecklist" : {
+            "description": "Get vehicle checklist by vehicle ID",
             "type": "object",
             "properties": {
                 "request": {
                     "properties": {
-                        "$ref": "vehicle/getlist/request.json"
+                        "$ref": "vehicle/getchecklist/request.json"
                     }
                 },
                 "response": {
                     "properties": {
-                        "$ref": "vehicle/getlist/response.json"
+                        "$ref": "vehicle/getchecklist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/completeChecklist" : {
+            "description": "Complete vehicle's checklist with vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/response.json"
                     }
                 }
             }
