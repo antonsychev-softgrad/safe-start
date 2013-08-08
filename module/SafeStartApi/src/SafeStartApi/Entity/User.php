@@ -5,6 +5,12 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Crypt\Password\Bcrypt;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumn;
+
 
 // @UniqueEntity("email")
 
@@ -18,6 +24,7 @@ class User extends BaseEntity
     public function __construct()
     {
         $this->enabled = false;
+        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -64,6 +71,34 @@ class User extends BaseEntity
     protected $secondName;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     **/
+    protected $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Department", inversedBy="users")
+     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
+     **/
+    protected $department;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CompanyPosition")
+     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
+     **/
+    protected $position;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Vehicle")
+     * @ORM\JoinTable(name="users_vehicles_asigned",
+     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="vehicle_asigned_id", referencedColumnName="id", unique=true)}
+     *      )
+    */
+    protected $vehiclesAsigned;
+
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $locale;
@@ -86,7 +121,7 @@ class User extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -102,14 +137,14 @@ class User extends BaseEntity
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -125,14 +160,14 @@ class User extends BaseEntity
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -194,14 +229,14 @@ class User extends BaseEntity
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-    
+
         return $this;
     }
 
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -217,14 +252,14 @@ class User extends BaseEntity
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-    
+
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -240,14 +275,14 @@ class User extends BaseEntity
     public function setSecondName($secondName)
     {
         $this->secondName = $secondName;
-    
+
         return $this;
     }
 
     /**
      * Get secondName
      *
-     * @return string 
+     * @return string
      */
     public function getSecondName()
     {
@@ -263,14 +298,14 @@ class User extends BaseEntity
     public function setLocale($locale)
     {
         $this->locale = $locale;
-    
+
         return $this;
     }
 
     /**
      * Get locale
      *
-     * @return string 
+     * @return string
      */
     public function getLocale()
     {
@@ -286,14 +321,14 @@ class User extends BaseEntity
     public function setTimezone($timezone)
     {
         $this->timezone = $timezone;
-    
+
         return $this;
     }
 
     /**
      * Get timezone
      *
-     * @return string 
+     * @return string
      */
     public function getTimezone()
     {
@@ -309,14 +344,14 @@ class User extends BaseEntity
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
-    
+
         return $this;
     }
 
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -332,14 +367,14 @@ class User extends BaseEntity
     public function setLastLogin($lastLogin)
     {
         $this->lastLogin = $lastLogin;
-    
+
         return $this;
     }
 
     /**
      * Get lastLogin
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastLogin()
     {
@@ -349,15 +384,14 @@ class User extends BaseEntity
     public function toArray()
     {
         return array(
-          'id' => $this->getId(),
-          'email' => (!is_null($this->email)) ? $this->email : '',
-          'username' => (!is_null($this->username)) ? $this->username : '',
-          'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
-          'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
-          'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
-          'role' => $this->getRole(),
-          // TODO add company to user
-          'companyId' => 0,
+          'id'          => $this->getId(),
+          'email'       => (!is_null($this->email)) ? $this->email : '',
+          'username'    => (!is_null($this->username)) ? $this->username : '',
+          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
+          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
+          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
+          'role'        => $this->getRole(),
+          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
         );
     }
 
@@ -380,5 +414,107 @@ class User extends BaseEntity
         $this->password = self::hashPassword($plain_password);
 
         return $this;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \SafeStartApi\Entity\Company $company
+     * @return User
+     */
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \SafeStartApi\Entity\Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set department
+     *
+     * @param \SafeStartApi\Entity\Department $department
+     * @return User
+     */
+    public function setDepartment(\SafeStartApi\Entity\Department $department = null)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return \SafeStartApi\Entity\Department
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Set position
+     *
+     * @param \SafeStartApi\Entity\CompanyPosition $position
+     * @return User
+     */
+    public function setPosition(\SafeStartApi\Entity\CompanyPosition $position = null)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return \SafeStartApi\Entity\CompanyPosition
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Add vehiclesAsigned
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     * @return User
+     */
+    public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    {
+        $this->vehiclesAsigned[] = $vehiclesAsigned;
+
+        return $this;
+    }
+
+    /**
+     * Remove vehiclesAsigned
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     */
+    public function removeVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    {
+        $this->vehiclesAsigned->removeElement($vehiclesAsigned);
+    }
+
+    /**
+     * Get vehiclesAsigned
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVehiclesAsigned()
+    {
+        return $this->vehiclesAsigned;
     }
 }
