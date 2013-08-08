@@ -57,9 +57,9 @@ class RestController extends AbstractActionController
         $this->authService = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
         // if session not started and X-Auth-Token set need restart session by id
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
+        $logger = $this->getServiceLocator()->get('RequestLogger');
         $logger->debug("RestController Auth Token: " . $this->authToken . "\n");
         if (!empty($authToken) && !$this->authService->hasIdentity()) {
-            $logger = $this->getServiceLocator()->get('RequestLogger');
             $logger->debug("RestController: " . $this->authToken . "\n");
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
