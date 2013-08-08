@@ -62,6 +62,8 @@ class RestController extends AbstractActionController
         // if session not started and X-Auth-Token set need restart session by id
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
         if (!empty($authToken) && !$this->authService->hasIdentity()) {
+            $logger = $this->getServiceLocator()->get('RequestLogger');
+            $logger->debug("X-Auth-Token:" . $this->headers['X-Auth-Token'] . "\n");
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
         }
