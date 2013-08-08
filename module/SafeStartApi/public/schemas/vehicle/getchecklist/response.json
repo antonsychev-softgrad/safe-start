@@ -75,7 +75,29 @@
                                         "fieldValue": {
                                             "description": "Field value",
                                             "type": "string",
-                                            "required": true
+                                            "required": false
+                                        },
+                                        "variants": {
+                                            "description": "Answer variants",
+                                            "type": "array",
+                                            "required": false,
+                                            "items": {
+                                                "description": "Answer variant",
+                                                "type": "object",
+                                                "required": true,
+                                                "properties": {
+                                                    "variantId": {
+                                                        "description": "Answer ID",
+                                                        "type": "integer",
+                                                        "required": true
+                                                    },
+                                                    "variantLabel": {
+                                                        "description": "Answer label",
+                                                        "type": "string",
+                                                        "required": true
+                                                    }
+                                                }
+                                            }
                                         },
                                         "alerts": {
                                             "description": "Field alerts",
