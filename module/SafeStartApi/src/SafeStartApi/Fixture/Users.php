@@ -10,11 +10,23 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        // GUEST
         $user = new User();
         $user->setEmail('test@test.test');
         $user->setUsername('username');
         $user->setLastName('Test User');
         $user->setFirstName('Test User');
+        $user->setPlainPassword('12345');
+        $manager->persist($user);
+        $manager->flush();
+
+        // SUPER ADMIN
+        $user = new User();
+        $user->setEmail('super@test.test');
+        $user->setUsername('super');
+        $user->setLastName('Super');
+        $user->setFirstName('User');
+        $user->setRole('superAdmin');
         $user->setPlainPassword('12345');
         $manager->persist($user);
         $manager->flush();

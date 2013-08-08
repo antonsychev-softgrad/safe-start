@@ -5,23 +5,21 @@ $env = getenv('APP_ENV') ? : 'dev';
 if ($env == 'dev') {
     if (isset($this->exception) && $this->exception instanceof Exception) {
         $data['trace'] = array(
-            'errorMessage' => get_class($this->exception),
             'file' => $this->exception->getFile() . ':' . $this->exception->getLine(),
             'message' => $this->exception->getMessage(),
             'stack' => $this->exception->getTraceAsString(),
         );
+        $data['errorMessage'] =  $this->exception->getMessage();
     }
 }
 
 $output = array(
     'meta' => array(
         'status' => 500,
-        'requestId' => isset($this->requestId) ? $this->requestId : '',
         'errorCode' => 500,
     ),
     'data' => $data
 );
-
 
 $this->getlogResponse($output);
 echo json_encode($output);

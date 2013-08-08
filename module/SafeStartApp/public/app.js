@@ -16,6 +16,7 @@ SafeStartApp = SafeStartApp || {
 
 Ext.apply(SafeStartApp,  {
     AJAX: function(url, data, successCalBack, failureCalBack) {
+        var self = this;
         var meta = {
             requestId: this.getHash()
         };
@@ -30,9 +31,15 @@ Ext.apply(SafeStartApp,  {
             success: function(response){
                 Ext.Viewport.setMasked(false);
                 var result = Ext.decode(response.responseText);
-                if (result.meta && result.meta.status == 200) {
+                if (result.meta && result.meta.status == 200 && !parseInt(result.meta.errorCode)) {
                     if (successCalBack && typeof successCalBack == 'function') successCalBack(result.data || {});
+                } else {
+                    self.showRequestFailureInfoMsg(result, failureCalBack);
                 }
+            },
+            failure : function(response){
+                Ext.Viewport.setMasked(false);
+                self.showRequestFailureInfoMsg(Ext.decode(response.responseText), failureCalBack);
             }
         });
     },
@@ -40,6 +47,19 @@ Ext.apply(SafeStartApp,  {
     getHash: function(length) {
         length = length || 12;
         return Math.random().toString(36).substring(length);
+    },
+
+    showRequestFailureInfoMsg: function(result, failureCalBack) {
+        var func = Ext.emptyFn();
+        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
+        var errorMessage = '';
+        if (result.data && result.data.errorMessage) errorMessage = result.data.errorMessage;
+        this.showFailureInfoMsg(errorMessage, func);
+    },
+
+    showFailureInfoMsg: function(msg, failureCalBack) {
+        msg = msg || 'Operation filed';
+        Ext.Msg.alert("Server response error", msg, failureCalBack);
     },
 
     showSuccessInfoMsg: function() {
@@ -57,6 +77,38 @@ Ext.apply(SafeStartApp,  {
             },
             fn: Ext.emptyFn()
         });*/
+    },
+
+    loadMainMenu: function() {
+        this.AJAX('web-panel/getMainMenu', {}, function(result) {
+            SafeStartApp.setViewPort(result.mainMenu || null);
+        });
+    },
+
+    setViewPort: function(menu) {
+
+        Ext.Viewport.removeAll(true);
+
+        this.currentMenu = [];
+
+        Ext.each(menu || this.defMenu, function(item) {
+            SafeStartApp.currentMenu.push(
+                {
+                    xclass: 'SafeStartApp.view.pages.'+item
+                }
+            )
+        }, this);
+
+        Ext.define('SafeStartApp.view.ViewPort', {
+            extend: 'SafeStartApp.view.Main',
+            xtype: 'SafeStartViewPort',
+            config: {
+                tabBarPosition: 'bottom',
+                items: SafeStartApp.currentMenu
+            }
+        });
+
+        Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
     }
 });
 
@@ -70,7 +122,8 @@ Ext.application({
     views: [
         'Main',
         'pages.Auth',
-        'pages.Contact'
+        'pages.Contact',
+        'pages.Companies'
     ],
 
     controllers: [
@@ -102,33 +155,9 @@ Ext.application({
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
 
-        SafeStartApp.AJAX('web-panel/index', {}, function(result) {
-            self.setViewPort(result.mainMenu || null);
-        });
+        // Load current user menu and update view port
+        SafeStartApp.loadMainMenu();
 
-    },
-
-    setViewPort: function(menu) {
-        SafeStartApp.currentMenu = [];
-
-        Ext.each(menu || SafeStartApp.defMenu, function(item) {
-            SafeStartApp.currentMenu.push(
-                {
-                    xclass: 'SafeStartApp.view.pages.'+item
-                }
-            )
-        }, this);
-
-        Ext.define('SafeStartApp.view.ViewPort', {
-            extend: 'SafeStartApp.view.Main',
-            xtype: 'SafeStartViewPort',
-            config: {
-                tabBarPosition: 'bottom',
-                items: SafeStartApp.currentMenu
-            }
-        });
-
-        Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
     },
 
     onUpdated: function() {
