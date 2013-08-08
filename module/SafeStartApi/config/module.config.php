@@ -167,7 +167,7 @@ return array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
                 'name' => 'SafeStartApi',
-                'remember_me_seconds' => 360,
+                'remember_me_seconds' => 3600,
               //  'use_cookies' => true,
                 'save_path' =>  __DIR__ . '/../../../data/sessions',
             ),
