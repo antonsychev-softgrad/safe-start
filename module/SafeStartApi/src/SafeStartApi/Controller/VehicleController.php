@@ -151,4 +151,13 @@ class VehicleController extends RestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function completeChecklist()
+    {
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+
+        $id = $this->params('id');
+
+    }
 }

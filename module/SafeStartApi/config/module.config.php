@@ -59,6 +59,20 @@ return array(
                             ),
                         ),
                     ),
+                    'complete-vehicle-checklist' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/completechecklist',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'SafeStartApi\Controller',
+                                'controller' => 'Vehicle',
+                                'action' => 'completechecklist',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
