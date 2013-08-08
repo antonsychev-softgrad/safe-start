@@ -48,10 +48,12 @@ class VehicleController extends RestController
 
         $vehicleData = array(
             'id' => $id,
+            'plantId' => 'PLANTIDTEST',
+            'registration' => 'REGISTRATION',
             'vehicleName' => 'Name',
             'type' => 'Test vehicle type',
             'projectName' => 'Test project name',
-            'projectType' => 'Test project type',
+            'projectNumber' => 1123,
             'expiryDate' => $expiryDate,
             'kmsUntilNext' => 150,
             'hoursUntilNext' => 200,

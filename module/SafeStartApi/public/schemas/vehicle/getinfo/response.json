@@ -34,6 +34,16 @@
                             "type": "string",
                             "required": true
                         },
+                        "plantId": {
+                            "description": "Vehicle plant ID",
+                            "type": "string",
+                            "required": true
+                        },
+                        "registration": {
+                            "description": "Vehicle registration number",
+                            "type": "string",
+                            "required": true
+                        },
                         "type": {
                             "description": "Vehicle type",
                             "type": "string",
@@ -44,9 +54,9 @@
                             "type": "string",
                             "required": true
                         },
-                        "projectType": {
-                            "description": "Project type",
-                            "type": "string",
+                        "projectNumber": {
+                            "description": "Project number",
+                            "type": "integer",
                             "required": true
                         },
                         "expiryDate": {
