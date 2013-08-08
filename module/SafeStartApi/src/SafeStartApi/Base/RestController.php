@@ -59,7 +59,7 @@ class RestController extends AbstractActionController
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
         $logger = $this->getServiceLocator()->get('RequestLogger');
         $logger->debug("RestController Auth Token: " . $this->authToken . "\n");
-        if (!empty($authToken) && !$this->authService->hasIdentity()) {
+        if (!empty($this->authToken) && !$this->authService->hasIdentity()) {
             $logger->debug("RestController: " . $this->authToken . "\n");
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
