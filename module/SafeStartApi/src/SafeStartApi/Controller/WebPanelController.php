@@ -6,17 +6,20 @@ use SafeStartApi\Base\RestController;
 
 class WebPanelController extends RestController
 {
-    public function indexAction()
+    public function getMainMenuAction()
     {
-        $this->answer = array(
-            'mainMenu' => array(
-                'Auth',
-            ),
-        );
+        $mainMenu = array();
 
-        if($this->AclPlugin()->isAllowed('adminPanel', 'view')) {
-            $this->answer['mainMenu'][] = 'Contact';
+        if (!$this->authService->hasIdentity()) {
+            $mainMenu[] = 'Auth';
+            $mainMenu[] = 'Contact';
         }
+
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompaniesPage')) $mainMenu[] = 'Companies';
+
+        $this->answer = array(
+            'mainMenu' => $mainMenu
+        );
 
         return $this->AnswerPlugin()->format($this->answer);
     }

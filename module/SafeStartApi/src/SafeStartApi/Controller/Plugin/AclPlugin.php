@@ -57,6 +57,13 @@ class AclPlugin extends AbstractPlugin
                     'access' => 'allow'
                 ),
             ),
+            'superAdmin' => array(
+                array(
+                    'resource' => 'adminPanel',
+                    'action' => 'viewCompaniesPage',
+                    'access' => 'allow'
+                ),
+            )
         ));
     }
 
@@ -73,7 +80,7 @@ class AclPlugin extends AbstractPlugin
     {
         if($this->getController()->authService->hasIdentity()) {
             $user = $this->getController()->authService->getStorage()->read();
-            $role = $user('role');
+            $role = $user->getRole();
         } else {
             $role = 'guest';
         }

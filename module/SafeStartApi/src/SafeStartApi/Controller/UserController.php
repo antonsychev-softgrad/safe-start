@@ -47,7 +47,7 @@ class UserController extends RestController
         switch ($authCode) {
             case Result::SUCCESS:
                 $errorMessage = '';
-                $user = $user_rep->findOneByUsername('username');
+                $user = $user_rep->findOneByUsername($username);
                 if($user) {
                     $userInfo = $user->toArray();
                 }

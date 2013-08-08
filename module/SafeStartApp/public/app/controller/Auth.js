@@ -19,6 +19,7 @@ Ext.define('SafeStartApp.controller.Auth', {
     },
 
     doLogin: function () {
+        var self = this;
         var validateMessage = "";
         var formFields = this.getLoginForm().getFields();
         var model = Ext.create('SafeStartApp.model.UserAuth');
@@ -34,12 +35,12 @@ Ext.define('SafeStartApp.controller.Auth', {
         });
         if (errors.isValid()) {
             SafeStartApp.AJAX('user/login', this.getLoginForm().getValues(), function (result) {
-                console.log(result);
+                SafeStartApp.currentUser = result.userInfo;
+                SafeStartApp.loadMainMenu();
             });
         } else {
             Ext.Msg.alert("Please fill required fields.", validateMessage, Ext.emptyFn());
             return false;
         }
     }
-
 });
