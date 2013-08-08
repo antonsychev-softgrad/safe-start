@@ -49,6 +49,7 @@ class RestController extends AbstractActionController
         $requestData = json_decode($this->requestJson);
         $this->data = isset($requestData->data) ? $requestData->data : null;
         $this->meta = isset($requestData->meta) ? $requestData->meta : null;
+        if (is_null($this->data) && is_null($this->meta)) $this->requestJson = json_encode(array('meta'=>array(), 'data'=>array()));
     }
 
     protected function _checkAuthToken()
