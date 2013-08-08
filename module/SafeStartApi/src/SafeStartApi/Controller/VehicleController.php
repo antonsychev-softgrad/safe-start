@@ -66,7 +66,7 @@ class VehicleController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function getChecklistByVehicleIdAction()
+    public function getChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
