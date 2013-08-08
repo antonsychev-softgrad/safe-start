@@ -63,8 +63,16 @@ class RequestLogger extends AbstractHelper
         $this->meta = isset($requestData->meta) ? $requestData->meta : null;
         if (isset($this->headers['X-Request-Id'])) $this->requestId = $this->headers['X-Request-Id'];
         if (!empty($this->meta) && isset($this->meta->requestId)) $this->requestId = $this->meta->requestId;
+
         $logger->debug("\n\n\n============[". $this->requestId ."]==================\n");
         $logger->debug("New " . $request->getMethod() . " request to " . $request->getRequestUri());
+        //log headers
+        if (function_exists('yaml_emit')) {
+            $writer = new YamlWriter();
+            $logger->debug("Headers:\n" . $writer->toString($this->headers));
+        } else {
+            $logger->debug("Headers:\n" . json_encode($this->headers));
+        }
         // log POST data
         if ($request->getMethod() == 'POST') {
             if (function_exists('yaml_emit')) {

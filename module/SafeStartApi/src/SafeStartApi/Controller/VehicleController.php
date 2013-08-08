@@ -8,8 +8,8 @@ class VehicleController extends RestController
 {
     public function getListAction()
     {
-        if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
         $vehiclesList = array(
             array(
@@ -38,14 +38,16 @@ class VehicleController extends RestController
 
     public function getDataByIdAction()
     {
-        if (!$this->_requestIsValid('vehicle/getdatabyid')) return $this->_showBadRequest();
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
+
+        $id = $this->params('id');
 
         $objDateTime = new \DateTime('NOW');
         $expiryDate = $objDateTime->format(\DateTime::RFC850);
 
         $vehicleData = array(
-            'id' => '1',
+            'id' => $id,
             'vehicleName' => 'Name',
             'type' => 'Test vehicle type',
             'projectName' => 'Test project name',
@@ -64,8 +66,10 @@ class VehicleController extends RestController
 
     public function getChecklistByVehicleIdAction()
     {
-        if (!$this->_requestIsValid('vehicle/getchecklistbyvehicleid')) return $this->_showBadRequest();
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
+
+        $id = $this->params('id');
 
         $checklist = array(
             'groups' => array(

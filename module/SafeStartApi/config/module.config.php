@@ -31,6 +31,34 @@ return array(
                             'defaults' => array(),
                         ),
                     ),
+                    'get-vehicle-info' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/getinfo',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'SafeStartApi\Controller',
+                                'controller' => 'Vehicle',
+                                'action' => 'getdatabyid',
+                            ),
+                        ),
+                    ),
+                    'get-vehicle-checklist' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/getchecklist',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'SafeStartApi\Controller',
+                                'controller' => 'Vehicle',
+                                'action' => 'getchecklistbyvehicleid',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

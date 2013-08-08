@@ -17,17 +17,6 @@
                     "required": false
                 }
             }
-        },
-        "data": {
-            "description": "Request data",
-            "type": "object",
-            "properties": {
-                "vehicleId": {
-                    "description": "Vehicle Id",
-                    "type": "integer",
-                    "required": true
-                }
-            }
         }
     }
 }
