@@ -47,6 +47,8 @@ class RestController extends AbstractActionController
     {
         $this->requestJson = $this->getRequest()->getContent() ? $this->getRequest()->getContent() : json_encode($this->params()->fromPost());
         $this->headers = $this->params()->fromHeader();
+        $logger = $this->getServiceLocator()->get('RequestLogger');
+        $logger->debug("Headers: " . json_encode($this->headers) . "\n");
         $requestData = json_decode($this->requestJson);
         $this->data = isset($requestData->data) ? $requestData->data : null;
         $this->meta = isset($requestData->meta) ? $requestData->meta : null;
@@ -63,7 +65,7 @@ class RestController extends AbstractActionController
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
         if (!empty($authToken) && !$this->authService->hasIdentity()) {
             $logger = $this->getServiceLocator()->get('RequestLogger');
-            $logger->debug("X-Auth-Token:" . $this->headers['X-Auth-Token'] . "\n");
+            $logger->debug("X-Auth-Token: " . $this->headers['X-Auth-Token'] . "\n");
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
         }
