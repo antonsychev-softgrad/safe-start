@@ -64,6 +64,8 @@ class RestController extends AbstractActionController
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
             $logger->debug("New Session Id: " . $this->sessionManager->getId() . "\n");
+            $userInfo = $this->authService->getStorage()->read();
+            $logger->debug("Current User: " . json_encode($userInfo->toArray()) . "\n");
         }
     }
 
