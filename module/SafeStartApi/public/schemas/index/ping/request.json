@@ -10,11 +10,6 @@
                     "description": "Unique ID of request",
                     "type": "string",
                     "required": false
-                },
-                "deviceId": {
-                    "description": "Unique ID of device",
-                    "type": "string",
-                    "required": false
                 }
             }
         }
