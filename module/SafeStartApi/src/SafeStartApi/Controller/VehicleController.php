@@ -74,7 +74,6 @@ class VehicleController extends RestController
         $id = $this->params('id');
 
         $checklist = array(
-            'groups' => array(
                 array(
                     'groupName' => 'Trailer',
                     'groupId' => 1,
@@ -143,8 +142,7 @@ class VehicleController extends RestController
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
-                ),
-            )
+                )
         );
 
         $this->answer = array(
