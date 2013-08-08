@@ -49,7 +49,13 @@ class RestController extends AbstractActionController
         $requestData = json_decode($this->requestJson);
         $this->data = isset($requestData->data) ? $requestData->data : null;
         $this->meta = isset($requestData->meta) ? $requestData->meta : null;
-        if (is_null($this->data) && is_null($this->meta)) $this->requestJson = json_encode(array('meta'=>array(), 'data'=>array()));
+        // set def meta for validation
+        if (is_null($this->data) && is_null($this->meta)) {
+            $reqMeta = new \stdClass();
+            $reqMeta->meta = new \stdClass();
+            $reqMeta->data = new \stdClass();
+            $this->requestJson = json_encode($reqMeta);
+        }
     }
 
     protected function _checkAuthToken()
@@ -58,15 +64,15 @@ class RestController extends AbstractActionController
         $this->authService = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
         // if session not started and X-Auth-Token set need restart session by id
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
-        $logger = $this->getServiceLocator()->get('RequestLogger');
-        $logger->debug("RestController Auth Token: " . $this->authToken . "\n");
-        $logger->debug("RestController Current SessID: " . $this->sessionManager->getId() . "\n");
+        //$logger = $this->getServiceLocator()->get('RequestLogger');
+       // $logger->debug("RestController Auth Token: " . $this->authToken . "\n");
+        //$logger->debug("RestController Current SessID: " . $this->sessionManager->getId() . "\n");
         if (!empty($this->authToken) && !$this->sessionManager->getId()) {
             $this->sessionManager->setId($this->authToken);
             $this->sessionManager->start();
-            $logger->debug("New Session Id: " . $this->sessionManager->getId() . "\n");
+            //$logger->debug("New Session Id: " . $this->sessionManager->getId() . "\n");
             $userInfo = $this->authService->getStorage()->read();
-            $logger->debug("Current User: " . json_encode($userInfo->toArray()) . "\n");
+           // $logger->debug("Current User: " . json_encode($userInfo->toArray()) . "\n");
         }
     }
 
