@@ -4,6 +4,11 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 
 /**
@@ -32,34 +37,38 @@ class Company extends BaseEntity
     protected $address;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $phone;
-
-    /**
-     * @ORM\Column(type="string", name="admin_name", nullable=true)
-     */
-    protected $adminName;
-
-    /**
-     * @ORM\Column(type="string", name="admin_email", nullable=true)
-     */
-    protected $adminEmail;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Department", mappedBy="company")
-     **/
-    protected $departments;
-
-    /**
      * @ORM\OneToMany(targetEntity="CompanyPosition", mappedBy="company")
      **/
     protected $positions;
 
     /**
+     * @ORM\ManyToMany(targetEntity="User")
+     * @ORM\JoinTable(name="companies_admins",
+     *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
+     *      )
+     */
+    protected $admins;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="company")
+     **/
+    protected $vehicles;
+
+    /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="company")
      **/
     protected $users;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $phone;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Department", mappedBy="company")
+     **/
+    protected $departments;
 
 
     /**
@@ -93,11 +102,22 @@ class Company extends BaseEntity
     {
         return get_object_vars($this);
     }
-
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->positions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->admins = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -113,91 +133,64 @@ class Company extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
         return $this->title;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Add users
+     * Set address
      *
-     * @param \SafeStartApi\Entity\User $users
+     * @param string $address
      * @return Company
      */
-    public function addUser(\SafeStartApi\Entity\User $users)
+    public function setAddress($address)
     {
-        $this->users[] = $users;
-
+        $this->address = $address;
+    
         return $this;
     }
 
     /**
-     * Remove users
+     * Get address
      *
-     * @param \SafeStartApi\Entity\User $users
+     * @return string 
      */
-    public function removeUser(\SafeStartApi\Entity\User $users)
+    public function getAddress()
     {
-        $this->users->removeElement($users);
+        return $this->address;
     }
 
     /**
-     * Get users
+     * Set phone
      *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * Add departments
-     *
-     * @param \SafeStartApi\Entity\Department $departments
+     * @param string $phone
      * @return Company
      */
-    public function addDepartment(\SafeStartApi\Entity\Department $departments)
+    public function setPhone($phone)
     {
-        $this->departments[] = $departments;
-
+        $this->phone = $phone;
+    
         return $this;
     }
 
     /**
-     * Remove departments
+     * Get phone
      *
-     * @param \SafeStartApi\Entity\Department $departments
+     * @return string 
      */
-    public function removeDepartment(\SafeStartApi\Entity\Department $departments)
+    public function getPhone()
     {
-        $this->departments->removeElement($departments);
-    }
-
-    /**
-     * Get departments
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDepartments()
-    {
-        return $this->departments;
+        return $this->phone;
     }
 
     /**
@@ -209,7 +202,7 @@ class Company extends BaseEntity
     public function addPosition(\SafeStartApi\Entity\CompanyPosition $positions)
     {
         $this->positions[] = $positions;
-
+    
         return $this;
     }
 
@@ -226,7 +219,7 @@ class Company extends BaseEntity
     /**
      * Get positions
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getPositions()
     {
@@ -234,94 +227,134 @@ class Company extends BaseEntity
     }
 
     /**
-     * Set address
+     * Add admins
      *
-     * @param string $address
+     * @param \SafeStartApi\Entity\User $admins
      * @return Company
      */
-    public function setAddress($address)
+    public function addAdmin(\SafeStartApi\Entity\User $admins)
     {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get address
-     *
-     * @return string
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Company
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return string
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
-
-    /**
-     * Set adminEmail
-     *
-     * @param string $adminEmail
-     * @return Company
-     */
-    public function setAdminEmail($adminEmail)
-    {
-        $this->adminEmail = $adminEmail;
-
-        return $this;
-    }
-
-    /**
-     * Get adminEmail
-     *
-     * @return string
-     */
-    public function getAdminEmail()
-    {
-        return $this->adminEmail;
-    }
-
-    /**
-     * Set adminName
-     *
-     * @param string $adminName
-     * @return Company
-     */
-    public function setAdminName($adminName)
-    {
-        $this->adminName = $adminName;
+        $this->admins[] = $admins;
     
         return $this;
     }
 
     /**
-     * Get adminName
+     * Remove admins
      *
-     * @return string 
+     * @param \SafeStartApi\Entity\User $admins
      */
-    public function getAdminName()
+    public function removeAdmin(\SafeStartApi\Entity\User $admins)
     {
-        return $this->adminName;
+        $this->admins->removeElement($admins);
+    }
+
+    /**
+     * Get admins
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAdmins()
+    {
+        return $this->admins;
+    }
+
+    /**
+     * Add vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     * @return Company
+     */
+    public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles[] = $vehicles;
+    
+        return $this;
+    }
+
+    /**
+     * Remove vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     */
+    public function removeVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles->removeElement($vehicles);
+    }
+
+    /**
+     * Get vehicles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVehicles()
+    {
+        return $this->vehicles;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     * @return Company
+     */
+    public function addUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     */
+    public function removeUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Add departments
+     *
+     * @param \SafeStartApi\Entity\Department $departments
+     * @return Company
+     */
+    public function addDepartment(\SafeStartApi\Entity\Department $departments)
+    {
+        $this->departments[] = $departments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove departments
+     *
+     * @param \SafeStartApi\Entity\Department $departments
+     */
+    public function removeDepartment(\SafeStartApi\Entity\Department $departments)
+    {
+        $this->departments->removeElement($departments);
+    }
+
+    /**
+     * Get departments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDepartments()
+    {
+        return $this->departments;
     }
 }

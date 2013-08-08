@@ -20,6 +20,24 @@ class Vehicle extends BaseEntity
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="vehicles")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     **/
+    protected $company;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="vehiclesAsigned")
+     * @ORM\JoinColumn(name="responsible_user_id", referencedColumnName="id")
+     **/
+    protected $responsibleUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     **/
+    protected $user;
+
+    /**
      * @ORM\ManyToOne(targetEntity="VehicleType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      **/
@@ -101,34 +119,11 @@ class Vehicle extends BaseEntity
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set type
-     *
-     * @param \SafeStartApi\Entity\VehicleType $type
-     * @return Vehicle
-     */
-    public function setType(\SafeStartApi\Entity\VehicleType $type = null)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \SafeStartApi\Entity\VehicleType
-     */
-    public function getType()
-    {
-        return $this->type;
     }
 
     /**
@@ -140,14 +135,14 @@ class Vehicle extends BaseEntity
     public function setVehicleName($vehicleName)
     {
         $this->vehicleName = $vehicleName;
-
+    
         return $this;
     }
 
     /**
      * Get vehicleName
      *
-     * @return string
+     * @return string 
      */
     public function getVehicleName()
     {
@@ -163,14 +158,14 @@ class Vehicle extends BaseEntity
     public function setProjectName($projectName)
     {
         $this->projectName = $projectName;
-
+    
         return $this;
     }
 
     /**
      * Get projectName
      *
-     * @return string
+     * @return string 
      */
     public function getProjectName()
     {
@@ -186,14 +181,14 @@ class Vehicle extends BaseEntity
     public function setProjectNumber($projectNumber)
     {
         $this->projectNumber = $projectNumber;
-
+    
         return $this;
     }
 
     /**
      * Get projectNumber
      *
-     * @return string
+     * @return string 
      */
     public function getProjectNumber()
     {
@@ -209,14 +204,14 @@ class Vehicle extends BaseEntity
     public function setExpiryDate($expiryDate)
     {
         $this->expiryDate = $expiryDate;
-
+    
         return $this;
     }
 
     /**
      * Get expiryDate
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getExpiryDate()
     {
@@ -232,14 +227,14 @@ class Vehicle extends BaseEntity
     public function setKmsUntilNext($kmsUntilNext)
     {
         $this->kmsUntilNext = $kmsUntilNext;
-
+    
         return $this;
     }
 
     /**
      * Get kmsUntilNext
      *
-     * @return integer
+     * @return integer 
      */
     public function getKmsUntilNext()
     {
@@ -255,17 +250,109 @@ class Vehicle extends BaseEntity
     public function setHoursUntilNext($hoursUntilNext)
     {
         $this->hoursUntilNext = $hoursUntilNext;
-
+    
         return $this;
     }
 
     /**
      * Get hoursUntilNext
      *
-     * @return integer
+     * @return integer 
      */
     public function getHoursUntilNext()
     {
         return $this->hoursUntilNext;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \SafeStartApi\Entity\Company $company
+     * @return Vehicle
+     */
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \SafeStartApi\Entity\Company 
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set responsibleUser
+     *
+     * @param \SafeStartApi\Entity\User $responsibleUser
+     * @return Vehicle
+     */
+    public function setResponsibleUser(\SafeStartApi\Entity\User $responsibleUser = null)
+    {
+        $this->responsibleUser = $responsibleUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get responsibleUser
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getResponsibleUser()
+    {
+        return $this->responsibleUser;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \SafeStartApi\Entity\User $user
+     * @return Vehicle
+     */
+    public function setUser(\SafeStartApi\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \SafeStartApi\Entity\VehicleType $type
+     * @return Vehicle
+     */
+    public function setType(\SafeStartApi\Entity\VehicleType $type = null)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \SafeStartApi\Entity\VehicleType 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

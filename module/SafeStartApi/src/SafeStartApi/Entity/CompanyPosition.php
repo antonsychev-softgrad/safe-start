@@ -21,15 +21,15 @@ class CompanyPosition extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
-     */
-    protected $title;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Company", inversedBy="positions")
      * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
      **/
     protected $company;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    protected $title;
 
     /**
     * Magic getter to expose protected properties.
@@ -66,7 +66,7 @@ class CompanyPosition extends BaseEntity
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -77,19 +77,19 @@ class CompanyPosition extends BaseEntity
      * Set title
      *
      * @param string $title
-     * @return Position
+     * @return CompanyPosition
      */
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
