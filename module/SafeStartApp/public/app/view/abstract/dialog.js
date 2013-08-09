@@ -21,7 +21,27 @@ Ext.define('SafeStartApp.view.abstract.dialog', {
         width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
         height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 400,
         styleHtmlContent: true,
-        scrollable: true
+        scrollable: false,
+        items: [
+            {
+                xtype: 'toolbar',
+                docked: 'bottom',
+                items: [
+                    {
+                        text: 'Cancel',
+                        ui: 'action',
+                        handler: function() {
+                            this.up('SafeStartAbstractDialog').hide();
+                        }
+                    },
+                    { xtype: 'spacer' },
+                    {
+                        text: 'Save',
+                        ui: 'confirm'
+                    }
+                ]
+            }
+        ]
     }
 
 });
