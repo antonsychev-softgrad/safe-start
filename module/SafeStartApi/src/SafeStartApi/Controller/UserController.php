@@ -82,7 +82,7 @@ class UserController extends RestController
     public function logoutAction()
     {
         $this->answer = array(
-            'authorised' => 0,
+            'done' => $this->authService->clearIdentity(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);

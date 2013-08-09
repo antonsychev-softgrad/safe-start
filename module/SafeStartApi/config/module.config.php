@@ -185,7 +185,7 @@ return array(
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
-           // 'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\RemoteAddr',
           //  'Zend\Session\Validator\HttpUserAgent',
         ),
     ),

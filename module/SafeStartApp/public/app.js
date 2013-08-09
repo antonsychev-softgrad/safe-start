@@ -18,7 +18,7 @@ Ext.apply(SafeStartApp,  {
     AJAX: function(url, data, successCalBack, failureCalBack) {
         var self = this;
         var meta = {
-            requestId: this.getHash()
+            requestId: 'WEB_'+this.getHash(12)
         };
         data = data || {test: 1};
         Ext.Viewport.setMasked({ xtype: 'loadmask' });
@@ -44,9 +44,15 @@ Ext.apply(SafeStartApp,  {
         });
     },
 
-    getHash: function(length) {
-        length = length || 12;
-        return Math.random().toString(36).substring(length);
+    getHash: function(len, charSet) {
+        len = len || 12;
+        charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var randomString = '';
+        for (var i = 0; i < len; i++) {
+            var randomPoz = Math.floor(Math.random() * charSet.length);
+            randomString += charSet.substring(randomPoz,randomPoz+1);
+        }
+        return randomString;
     },
 
     showRequestFailureInfoMsg: function(result, failureCalBack) {
@@ -62,27 +68,22 @@ Ext.apply(SafeStartApp,  {
         Ext.Msg.alert("Server response error", msg, failureCalBack);
     },
 
-    showSuccessInfoMsg: function() {
-       /* Ext.Msg.show({
-            title: 'Address',
-            message: 'Please enter your address',
-            multiLine: false,
-            buttons: [],
-            masked: false,
-            hideOnMaskTap: true,
-            listeners: {
-                show: function(){
-                    console.log(this);
-                }
-            },
-            fn: Ext.emptyFn()
-        });*/
+    showInfoMsg: function(msg) {
+        msg = msg || 'Info message'
+        Ext.Msg.alert("Info", msg, Ext.emptyFn());
     },
+
+    userInfo: {},
 
     loadMainMenu: function() {
         this.AJAX('web-panel/getMainMenu', {}, function(result) {
             SafeStartApp.setViewPort(result.mainMenu || null);
+            SafeStartApp.userInfo = result.userInfo;
         });
+    },
+
+    getUserInfo: function() {
+        return this.userInfo;
     },
 
     setViewPort: function(menu) {
@@ -122,8 +123,7 @@ Ext.application({
     views: [
         'Main',
         'pages.Auth',
-        'pages.Contact',
-        'pages.Companies'
+        'pages.Contact'
     ],
 
     controllers: [
