@@ -21,11 +21,6 @@ class Department extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $title;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Company", inversedBy="departments")
      * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
      **/
@@ -36,6 +31,10 @@ class Department extends BaseEntity
      **/
     protected $users;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $title;
 
     /**
     * Magic getter to expose protected properties.

@@ -89,11 +89,7 @@ class User extends BaseEntity
     protected $position;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Vehicle")
-     * @ORM\JoinTable(name="users_vehicles_asigned",
-     *      joinColumns={@JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="vehicle_asigned_id", referencedColumnName="id", unique=true)}
-     *      )
+     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUser")
     */
     protected $vehiclesAsigned;
 
@@ -117,6 +113,43 @@ class User extends BaseEntity
      * @ORM\Column(type="datetime", nullable=true, unique=true, name="last_login")
      */
     protected $lastLogin;
+
+
+    public function toArray()
+    {
+        return array(
+          'id'          => $this->getId(),
+          'email'       => (!is_null($this->email)) ? $this->email : '',
+          'username'    => (!is_null($this->username)) ? $this->username : '',
+          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
+          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
+          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
+          'role'        => $this->getRole(),
+          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+        );
+    }
+
+    public static function hashPassword($password)
+    {
+        $bcrypt = new Bcrypt();
+
+        return $bcrypt->create($password);
+    }
+
+    public static function verifyPassword(User $user, $password)
+    {
+        $bcrypt = new Bcrypt();
+
+        return $bcrypt->verify($password, $user->getPassword());
+    }
+
+    public function setPlainPassword($plain_password)
+    {
+        $this->password = self::hashPassword($plain_password);
+
+        return $this;
+    }
+
 
     /**
      * Get id
@@ -381,41 +414,6 @@ class User extends BaseEntity
         return $this->lastLogin;
     }
 
-    public function toArray()
-    {
-        return array(
-          'id'          => $this->getId(),
-          'email'       => (!is_null($this->email)) ? $this->email : '',
-          'username'    => (!is_null($this->username)) ? $this->username : '',
-          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
-          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
-          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
-          'role'        => $this->getRole(),
-          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
-        );
-    }
-
-    public static function hashPassword($password)
-    {
-        $bcrypt = new Bcrypt();
-
-        return $bcrypt->create($password);
-    }
-
-    public static function verifyPassword(User $user, $password)
-    {
-        $bcrypt = new Bcrypt();
-
-        return $bcrypt->verify($password, $user->getPassword());
-    }
-
-    public function setPlainPassword($plain_password)
-    {
-        $this->password = self::hashPassword($plain_password);
-
-        return $this;
-    }
-
     /**
      * Set company
      *
@@ -425,14 +423,14 @@ class User extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-
+    
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company
+     * @return \SafeStartApi\Entity\Company 
      */
     public function getCompany()
     {
@@ -448,14 +446,14 @@ class User extends BaseEntity
     public function setDepartment(\SafeStartApi\Entity\Department $department = null)
     {
         $this->department = $department;
-
+    
         return $this;
     }
 
     /**
      * Get department
      *
-     * @return \SafeStartApi\Entity\Department
+     * @return \SafeStartApi\Entity\Department 
      */
     public function getDepartment()
     {
@@ -471,14 +469,14 @@ class User extends BaseEntity
     public function setPosition(\SafeStartApi\Entity\CompanyPosition $position = null)
     {
         $this->position = $position;
-
+    
         return $this;
     }
 
     /**
      * Get position
      *
-     * @return \SafeStartApi\Entity\CompanyPosition
+     * @return \SafeStartApi\Entity\CompanyPosition 
      */
     public function getPosition()
     {
@@ -494,7 +492,7 @@ class User extends BaseEntity
     public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
     {
         $this->vehiclesAsigned[] = $vehiclesAsigned;
-
+    
         return $this;
     }
 
@@ -511,7 +509,7 @@ class User extends BaseEntity
     /**
      * Get vehiclesAsigned
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getVehiclesAsigned()
     {
