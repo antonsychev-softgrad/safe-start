@@ -12,6 +12,35 @@
                     "required": false
                 }
             }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "checklist": {
+                    "description": "Fields with data",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Field",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "fieldId": {
+                                "description": "Field id",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "fieldValue": {
+                                "description": "Field value",
+                                "type": "integer",
+                                "required": true
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -24,9 +24,9 @@
                     "type": "object",
                     "required": true,
                     "properties": {
-                        "id": {
+                        "vehicleId": {
                             "description": "Vehicle ID",
-                            "type": "string",
+                            "type": "integer",
                             "required": true
                         },
                         "plantId": {
