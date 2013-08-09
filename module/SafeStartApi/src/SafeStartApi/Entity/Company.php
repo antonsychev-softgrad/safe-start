@@ -4,6 +4,7 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;

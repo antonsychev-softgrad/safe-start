@@ -47,7 +47,7 @@ class VehicleController extends RestController
         $expiryDate = $objDateTime->format(\DateTime::RFC850);
 
         $vehicleData = array(
-            'id' => $id,
+            'vehicleId' => $id,
             'plantId' => 'PLANTIDTEST',
             'registration' => 'REGISTRATION',
             'vehicleName' => 'Name',
