@@ -93,6 +93,10 @@ class User extends BaseEntity
     */
     protected $vehiclesAsigned;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="endUsers")
+    */
+    protected $vehicles;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -514,5 +518,38 @@ class User extends BaseEntity
     public function getVehiclesAsigned()
     {
         return $this->vehiclesAsigned;
+    }
+
+    /**
+     * Add vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     * @return User
+     */
+    public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles[] = $vehicles;
+    
+        return $this;
+    }
+
+    /**
+     * Remove vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     */
+    public function removeVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles->removeElement($vehicles);
+    }
+
+    /**
+     * Get vehicles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVehicles()
+    {
+        return $this->vehicles;
     }
 }

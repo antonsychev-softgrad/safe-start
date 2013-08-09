@@ -4,6 +4,11 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity
@@ -32,16 +37,26 @@ class Vehicle extends BaseEntity
     protected $responsibleUser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     **/
-    protected $user;
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="vehicles")
+     * @ORM\JoinTable(name="vehicles_users")
+     */
+    protected $endUsers;
 
     /**
      * @ORM\ManyToOne(targetEntity="VehicleType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      **/
     protected $type;
+
+    /**
+     * @ORM\Column(type="string", name="plant_id", nullable=false)
+     **/
+    protected $plantId;
+
+    /**
+     * @ ORM \ Column(type="string", name="registration", nullable=false)
+     **/
+    //protected $registration;
 
     /**
      * @ORM\Column(type="string", length=255, name="vehicle_name")
@@ -109,7 +124,7 @@ class Vehicle extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -125,14 +140,14 @@ class Vehicle extends BaseEntity
     public function setVehicleName($vehicleName)
     {
         $this->vehicleName = $vehicleName;
-    
+
         return $this;
     }
 
     /**
      * Get vehicleName
      *
-     * @return string 
+     * @return string
      */
     public function getVehicleName()
     {
@@ -148,14 +163,14 @@ class Vehicle extends BaseEntity
     public function setProjectName($projectName)
     {
         $this->projectName = $projectName;
-    
+
         return $this;
     }
 
     /**
      * Get projectName
      *
-     * @return string 
+     * @return string
      */
     public function getProjectName()
     {
@@ -171,14 +186,14 @@ class Vehicle extends BaseEntity
     public function setProjectNumber($projectNumber)
     {
         $this->projectNumber = $projectNumber;
-    
+
         return $this;
     }
 
     /**
      * Get projectNumber
      *
-     * @return string 
+     * @return string
      */
     public function getProjectNumber()
     {
@@ -194,14 +209,14 @@ class Vehicle extends BaseEntity
     public function setExpiryDate($expiryDate)
     {
         $this->expiryDate = $expiryDate;
-    
+
         return $this;
     }
 
     /**
      * Get expiryDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getExpiryDate()
     {
@@ -217,14 +232,14 @@ class Vehicle extends BaseEntity
     public function setKmsUntilNext($kmsUntilNext)
     {
         $this->kmsUntilNext = $kmsUntilNext;
-    
+
         return $this;
     }
 
     /**
      * Get kmsUntilNext
      *
-     * @return integer 
+     * @return integer
      */
     public function getKmsUntilNext()
     {
@@ -240,14 +255,14 @@ class Vehicle extends BaseEntity
     public function setHoursUntilNext($hoursUntilNext)
     {
         $this->hoursUntilNext = $hoursUntilNext;
-    
+
         return $this;
     }
 
     /**
      * Get hoursUntilNext
      *
-     * @return integer 
+     * @return integer
      */
     public function getHoursUntilNext()
     {
@@ -263,14 +278,14 @@ class Vehicle extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-    
+
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company 
+     * @return \SafeStartApi\Entity\Company
      */
     public function getCompany()
     {
@@ -286,14 +301,14 @@ class Vehicle extends BaseEntity
     public function setResponsibleUser(\SafeStartApi\Entity\User $responsibleUser = null)
     {
         $this->responsibleUser = $responsibleUser;
-    
+
         return $this;
     }
 
     /**
      * Get responsibleUser
      *
-     * @return \SafeStartApi\Entity\User 
+     * @return \SafeStartApi\Entity\User
      */
     public function getResponsibleUser()
     {
@@ -309,14 +324,14 @@ class Vehicle extends BaseEntity
     public function setUser(\SafeStartApi\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \SafeStartApi\Entity\User 
+     * @return \SafeStartApi\Entity\User
      */
     public function getUser()
     {
@@ -332,17 +347,80 @@ class Vehicle extends BaseEntity
     public function setType(\SafeStartApi\Entity\VehicleType $type = null)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return \SafeStartApi\Entity\VehicleType 
+     * @return \SafeStartApi\Entity\VehicleType
      */
     public function getType()
     {
         return $this->type;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->endUsers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add endUsers
+     *
+     * @param \SafeStartApi\Entity\User $endUsers
+     * @return Vehicle
+     */
+    public function addEndUser(\SafeStartApi\Entity\User $endUsers)
+    {
+        $this->endUsers[] = $endUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove endUsers
+     *
+     * @param \SafeStartApi\Entity\User $endUsers
+     */
+    public function removeEndUser(\SafeStartApi\Entity\User $endUsers)
+    {
+        $this->endUsers->removeElement($endUsers);
+    }
+
+    /**
+     * Get endUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEndUsers()
+    {
+        return $this->endUsers;
+    }
+
+    /**
+     * Set plantId
+     *
+     * @param string $plantId
+     * @return Vehicle
+     */
+    public function setPlantId($plantId)
+    {
+        $this->plantId = $plantId;
+
+        return $this;
+    }
+
+    /**
+     * Get plantId
+     *
+     * @return string
+     */
+    public function getPlantId()
+    {
+        return $this->plantId;
     }
 }
