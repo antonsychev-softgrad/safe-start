@@ -6,7 +6,6 @@ use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Companies
  * @ORM\Entity
  * @ORM\Table(name="departments")
  */
@@ -67,6 +66,7 @@ class Department extends BaseEntity
     {
         return get_object_vars($this);
     }
+
     /**
      * Constructor
      */
