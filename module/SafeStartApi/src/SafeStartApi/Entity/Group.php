@@ -5,12 +5,13 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity
- * @ORM\Table(name="company_positions")
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="inspection_groups")
  */
-
-class CompanyPosition extends BaseEntity
+class Group extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -20,20 +21,21 @@ class CompanyPosition extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", inversedBy="positions")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="GroupField", mappedBy="group")
      **/
-    protected $company;
+    protected $fields;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="position")
-     **/
-    protected $users;
-
-    /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", name="title")
      */
     protected $title;
+
+    /**
+     * @ORM\Column(type="integer", name="sort_order")
+     */
+    protected $order;
+
+
 
     /**
     * Magic getter to expose protected properties.
@@ -68,11 +70,20 @@ class CompanyPosition extends BaseEntity
     }
 
     /**
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
+     */
+    public function doStuffOnPrePersist()
+    {
+        $this->order = (!is_null($this->order)) ? $this->order : 0;
+    }
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -89,7 +100,7 @@ class CompanyPosition extends BaseEntity
      * Set title
      *
      * @param string $title
-     * @return CompanyPosition
+     * @return Group
      */
     public function setTitle($title)
     {
@@ -109,58 +120,58 @@ class CompanyPosition extends BaseEntity
     }
 
     /**
-     * Set company
+     * Set order
      *
-     * @param \SafeStartApi\Entity\Company $company
-     * @return CompanyPosition
+     * @param integer $order
+     * @return Group
      */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    public function setOrder($order)
     {
-        $this->company = $company;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Get company
+     * Get order
      *
-     * @return \SafeStartApi\Entity\Company
+     * @return integer
      */
-    public function getCompany()
+    public function getOrder()
     {
-        return $this->company;
+        return $this->order;
     }
 
     /**
-     * Add users
+     * Add fields
      *
-     * @param \SafeStartApi\Entity\User $users
-     * @return CompanyPosition
+     * @param \SafeStartApi\Entity\GroupField $fields
+     * @return Group
      */
-    public function addUser(\SafeStartApi\Entity\User $users)
+    public function addField(\SafeStartApi\Entity\GroupField $fields)
     {
-        $this->users[] = $users;
+        $this->fields[] = $fields;
 
         return $this;
     }
 
     /**
-     * Remove users
+     * Remove fields
      *
-     * @param \SafeStartApi\Entity\User $users
+     * @param \SafeStartApi\Entity\GroupField $fields
      */
-    public function removeUser(\SafeStartApi\Entity\User $users)
+    public function removeField(\SafeStartApi\Entity\GroupField $fields)
     {
-        $this->users->removeElement($users);
+        $this->fields->removeElement($fields);
     }
 
     /**
-     * Get users
+     * Get fields
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers()
+    public function getFields()
     {
-        return $this->users;
+        return $this->fields;
     }
 }
