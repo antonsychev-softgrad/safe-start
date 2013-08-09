@@ -6,6 +6,26 @@ use SafeStartApi\Base\RestController;
 
 class VehicleController extends RestController
 {
+
+    public function checkPlantIdAction()
+    {
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/checkplantid')) return $this->_showBadRequest();
+
+        $plantId = $this->data->plantId;
+
+        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $veh = $vehRep->findBy(array('plantId' => $plantId));
+
+        print_r($veh);
+
+        $this->answer = array(
+            'foundInDatabase' => 1,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function getListAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
@@ -41,7 +61,7 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
-        $id = $this->params('id');
+        $id = (int)$this->params('id');
 
         $objDateTime = new \DateTime('NOW');
         $expiryDate = $objDateTime->format(\DateTime::RFC850);
@@ -94,16 +114,16 @@ class VehicleController extends RestController
                             'fieldValue' => '',
                             'variants' => array(
                                 array(
-                                    'answerId' => 0,
-                                    'answerLabel' => 'First variant'
+                                    'variantId' => 0,
+                                    'variantLabel' => 'First variant'
                                 ),
                                 array(
-                                    'answerId' => 1,
-                                    'answerLabel' => 'Second variant'
+                                    'variantId' => 1,
+                                    'variantLabel' => 'Second variant'
                                 ),
                                 array(
-                                    'answerId' => 2,
-                                    'answerLabel' => 'Third variant'
+                                    'variantId' => 2,
+                                    'variantLabel' => 'Third variant'
                                 ),
                             ),
                         ),
@@ -173,12 +193,18 @@ class VehicleController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function completeChecklist()
+    public function completeChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
         $id = $this->params('id');
+
+        $this->answer = array(
+            'checklist' => '',
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
 
     }
 }

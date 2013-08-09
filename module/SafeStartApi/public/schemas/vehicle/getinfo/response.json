@@ -1,5 +1,5 @@
 {
-    "description": "Vehicle data response",
+    "description": "Get vehicle info response",
     "type": "object",
     "properties": {
         "meta": {

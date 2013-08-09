@@ -1,5 +1,5 @@
 {
-    "description": "Vehicle data request",
+    "description": "Get Ckecklist request",
     "type": "object",
     "properties": {
         "meta": {

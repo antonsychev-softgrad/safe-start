@@ -37,8 +37,7 @@ class UserController extends RestController
         $adapter->setCredentialValue($password);
         $result = $this->authService->authenticate();
 
-        $em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        $user_rep = $em->getRepository('SafeStartApi\Entity\User');
+        $user_rep = $this->em->getRepository('SafeStartApi\Entity\User');
 
         $authCode = $result->getCode();
         $userInfo = '';
@@ -52,8 +51,7 @@ class UserController extends RestController
                     $userInfo = $user->toArray();
                 }
                 $user->setLastLogin(new \DateTime());
-                $em->merge($user);
-                $em->flush();
+                $this->em->flush();
                 $userData = new \stdClass();
                 $userData->user = $userInfo;
                 $this->authService->getStorage()->write($user);

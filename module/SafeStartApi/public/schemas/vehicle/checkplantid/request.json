@@ -1,0 +1,29 @@
+{
+    "description": "Check PlantId request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "plantId": {
+                    "description": "Plant Id for check in Database",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

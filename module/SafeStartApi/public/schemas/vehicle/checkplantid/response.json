@@ -1,5 +1,5 @@
 {
-    "description": "Complete checklist response",
+    "description": "Check PlantId response",
     "type": "object",
     "properties": {
         "meta": {
@@ -19,6 +19,11 @@
             "type": "object",
             "required": true,
             "properties": {
+                "foundInDatabase": {
+                    "description": "If PlantId found in DB then return 1, else return 0",
+                    "type": "integer",
+                    "required": true
+                }
             }
         }
     }
