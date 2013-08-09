@@ -27,6 +27,11 @@ class CompanyPosition extends BaseEntity
     protected $company;
 
     /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="position")
+     **/
+    protected $users;
+
+    /**
      * @ORM\Column(type="string", unique=true)
      */
     protected $title;
@@ -63,6 +68,14 @@ class CompanyPosition extends BaseEntity
         return get_object_vars($this);
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -117,5 +130,38 @@ class CompanyPosition extends BaseEntity
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     * @return CompanyPosition
+     */
+    public function addUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     */
+    public function removeUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

@@ -83,7 +83,7 @@ class User extends BaseEntity
     protected $department;
 
     /**
-     * @ORM\ManyToOne(targetEntity="CompanyPosition")
+     * @ORM\ManyToOne(targetEntity="CompanyPosition", inversedBy="users")
      * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
      **/
     protected $position;
@@ -423,14 +423,14 @@ class User extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-    
+
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company 
+     * @return \SafeStartApi\Entity\Company
      */
     public function getCompany()
     {
@@ -446,14 +446,14 @@ class User extends BaseEntity
     public function setDepartment(\SafeStartApi\Entity\Department $department = null)
     {
         $this->department = $department;
-    
+
         return $this;
     }
 
     /**
      * Get department
      *
-     * @return \SafeStartApi\Entity\Department 
+     * @return \SafeStartApi\Entity\Department
      */
     public function getDepartment()
     {
@@ -469,14 +469,14 @@ class User extends BaseEntity
     public function setPosition(\SafeStartApi\Entity\CompanyPosition $position = null)
     {
         $this->position = $position;
-    
+
         return $this;
     }
 
     /**
      * Get position
      *
-     * @return \SafeStartApi\Entity\CompanyPosition 
+     * @return \SafeStartApi\Entity\CompanyPosition
      */
     public function getPosition()
     {
@@ -492,7 +492,7 @@ class User extends BaseEntity
     public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
     {
         $this->vehiclesAsigned[] = $vehiclesAsigned;
-    
+
         return $this;
     }
 
@@ -509,7 +509,7 @@ class User extends BaseEntity
     /**
      * Get vehiclesAsigned
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getVehiclesAsigned()
     {

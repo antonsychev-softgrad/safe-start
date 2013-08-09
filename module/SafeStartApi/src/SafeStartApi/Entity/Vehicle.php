@@ -103,18 +103,8 @@ class Vehicle extends BaseEntity
     public function toArray()
     {
         return get_object_vars($this);
-
-        return array(
-            'id'    => (!is_null($this->id)) ? $this->id : '',
-            'type'  => (!is_null($this->type)) ? $this->getType()->getTitle() : '',
-            'vehicleName' => (!is_null($this->getVehicleName())) ? $this->getVehicleName() : '',
-            "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getExpiryDate() : '',
-            "expiryDate"  => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : '',
-            "kmsUntilNext" => (!is_null($this->getKmsUntilNext())) ? $this->getKmsUntilNext() : 0,
-            "hoursUntilNext" => (!is_null($this->getHoursUntilNext())) ? $this->getHoursUntilNext() : 0,
-        );
     }
+
 
     /**
      * Get id
