@@ -39,7 +39,6 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'SafeStartApi\Controller',
                                 'controller' => 'Vehicle',
                                 'action' => 'getdatabyid',
                             ),
@@ -53,9 +52,8 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'SafeStartApi\Controller',
                                 'controller' => 'Vehicle',
-                                'action' => 'getchecklistbyvehicleid',
+                                'action' => 'getchecklist',
                             ),
                         ),
                     ),
@@ -67,7 +65,6 @@ return array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
-                                '__NAMESPACE__' => 'SafeStartApi\Controller',
                                 'controller' => 'Vehicle',
                                 'action' => 'completechecklist',
                             ),

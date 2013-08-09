@@ -6,7 +6,7 @@
             "description": "Response meta",
             "type": "object",
             "properties": {
-                "request_id": {
+                "requestId": {
                     "description": "Unique ID of request",
                     "type": "string"
                 }

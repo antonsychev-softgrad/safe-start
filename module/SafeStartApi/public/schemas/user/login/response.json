@@ -7,11 +7,6 @@
             "type": "object",
             "required": true,
             "properties": {
-                "requestId": {
-                    "description": "Unique ID of request",
-                    "type": "string",
-                    "required": false
-                },
                 "status": {
                     "description": " HTTP status code",
                     "type": "integer",

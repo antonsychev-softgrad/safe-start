@@ -7,11 +7,6 @@
             "type": "object",
             "required": true,
             "properties": {
-                "requestId": {
-                    "description": "Unique ID of request",
-                    "type": "string",
-                    "required": false
-                },
                 "status": {
                     "description": "HTTP status code",
                     "type": "integer",
@@ -34,6 +29,16 @@
                             "type": "string",
                             "required": true
                         },
+                        "plantId": {
+                            "description": "Vehicle plant ID",
+                            "type": "string",
+                            "required": true
+                        },
+                        "registration": {
+                            "description": "Vehicle registration number",
+                            "type": "string",
+                            "required": true
+                        },
                         "type": {
                             "description": "Vehicle type",
                             "type": "string",
@@ -44,9 +49,9 @@
                             "type": "string",
                             "required": true
                         },
-                        "projectType": {
-                            "description": "Project type",
-                            "type": "string",
+                        "projectNumber": {
+                            "description": "Project number",
+                            "type": "integer",
                             "required": true
                         },
                         "expiryDate": {

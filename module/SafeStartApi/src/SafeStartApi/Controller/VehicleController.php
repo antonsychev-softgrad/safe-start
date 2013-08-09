@@ -48,10 +48,12 @@ class VehicleController extends RestController
 
         $vehicleData = array(
             'id' => $id,
+            'plantId' => 'PLANTIDTEST',
+            'registration' => 'REGISTRATION',
             'vehicleName' => 'Name',
             'type' => 'Test vehicle type',
             'projectName' => 'Test project name',
-            'projectType' => 'Test project type',
+            'projectNumber' => 1123,
             'expiryDate' => $expiryDate,
             'kmsUntilNext' => 150,
             'hoursUntilNext' => 200,
@@ -64,7 +66,7 @@ class VehicleController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function getChecklistByVehicleIdAction()
+    public function getChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
@@ -72,7 +74,6 @@ class VehicleController extends RestController
         $id = $this->params('id');
 
         $checklist = array(
-            'groups' => array(
                 array(
                     'groupName' => 'Trailer',
                     'groupId' => 1,
@@ -88,7 +89,28 @@ class VehicleController extends RestController
                         array(
                             'fieldId' => 1,
                             'fieldOrder' => 2,
-                            'fieldName' => 'Test field 2',
+                            'fieldName' => 'Test checkbox field 2',
+                            'fieldType' => 'checkbox',
+                            'fieldValue' => '',
+                            'variants' => array(
+                                array(
+                                    'answerId' => 0,
+                                    'answerLabel' => 'First variant'
+                                ),
+                                array(
+                                    'answerId' => 1,
+                                    'answerLabel' => 'Second variant'
+                                ),
+                                array(
+                                    'answerId' => 2,
+                                    'answerLabel' => 'Third variant'
+                                ),
+                            ),
+                        ),
+                        array(
+                            'fieldId' => 2,
+                            'fieldOrder' => 3,
+                            'fieldName' => 'Test field 3',
                             'fieldType' => 'textField',
                             'fieldValue' => 'Test text of the field',
                             'alerts' => array(
@@ -141,8 +163,7 @@ class VehicleController extends RestController
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
-                ),
-            )
+                )
         );
 
         $this->answer = array(
