@@ -10,6 +10,11 @@ Ext.define('SafeStartApp.view.pages.Contact', {
 
         styleHtmlContent: true,
         scrollable: true
+    },
+
+    initialize: function () {
+        this.callParent();
+        this.ContactForm = this.add(Ext.create('SafeStartApp.view.forms.Contact'));
     }
 
 });

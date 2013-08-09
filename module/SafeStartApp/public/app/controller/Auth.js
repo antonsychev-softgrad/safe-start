@@ -1,24 +1,34 @@
 Ext.define('SafeStartApp.controller.Auth', {
     extend: 'Ext.app.Controller',
     require: [
-        'SafeStartApp.model.UserAuth'
+        //models
+        'SafeStartApp.model.UserAuth',
+        // dialogs
+        'SafeStartApp.view.dialogs.UserProfile'
     ],
 
     config: {
         control: {
             loginButton: {
-                tap: 'doLogin'
+                tap: 'loginAction'
+            },
+            logoutButton: {
+                tap: 'logoutAction'
+            },
+            showProfileDlgButton: {
+                tap: 'showProfileDlgAction'
             }
         },
 
         refs: {
             loginButton: 'SafeStartAuthForm > button[action=login]',
-            loginForm: 'SafeStartAuthForm'
+            logoutButton: 'SafeStartMainToolbar > button[action=logout]',
+            loginForm: 'SafeStartAuthForm',
+            showProfileDlgButton: 'SafeStartMainToolbar > button[action=update_profile]'
         }
-
     },
 
-    doLogin: function () {
+    loginAction: function () {
         var self = this;
         var validateMessage = "";
         var formFields = this.getLoginForm().getFields();
@@ -42,5 +52,23 @@ Ext.define('SafeStartApp.controller.Auth', {
             Ext.Msg.alert("Please fill required fields.", validateMessage, Ext.emptyFn());
             return false;
         }
+    },
+
+    logoutAction: function() {
+        SafeStartApp.AJAX('user/logout', {}, function (result) {
+            SafeStartApp.currentUser = result.userInfo;
+            SafeStartApp.loadMainMenu();
+        });
+    },
+
+    showProfileDlgAction: function() {
+        if (!this.profileDlg) {
+            this.profileDlg = Ext.Viewport.add(Ext.create('SafeStartApp.view.dialogs.UserProfile'))
+        }
+        this.profileDlg.show();
+    },
+
+    updateProfileAction: function() {
+
     }
 });

@@ -1,4 +1,4 @@
-Ext.define('SafeStartApp.form.Auth', {
+Ext.define('SafeStartApp.view.forms.Auth', {
     extend: 'Ext.form.Panel',
     xtype: 'SafeStartAuthForm',
     config: {

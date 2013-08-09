@@ -23,9 +23,9 @@
             "type": "object",
             "required": true,
             "properties": {
-                "version": {
-                    "description": "Current API version",
-                    "type": "string",
+                "done": {
+                    "description": "Indicate operation success or not",
+                    "type": "boolean",
                     "required": true
                 }
             }
