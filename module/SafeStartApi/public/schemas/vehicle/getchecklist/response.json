@@ -1,5 +1,5 @@
 {
-    "description": "Vehicle data response",
+    "description": "Get Checklist response",
     "type": "object",
     "properties": {
         "meta": {
@@ -68,8 +68,9 @@
                                             "required": true
                                         },
                                         "fieldType": {
-                                            "description": "Field type",
-                                            "type": "string",
+                                            "description": "Field type: 1 - Radio button. 2 - Text field. 3 - Checkbox. 4 - Photo. 5 - GPS co-ordinates.",
+                                            "type": "integer",
+                                            "enum": [1, 2, 3, 4, 5],
                                             "required": true
                                         },
                                         "fieldValue": {

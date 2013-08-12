@@ -6,6 +6,26 @@ use SafeStartApi\Base\RestController;
 
 class VehicleController extends RestController
 {
+
+    public function checkPlantIdAction()
+    {
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/checkplantid')) return $this->_showBadRequest();
+
+        $plantId = $this->data->plantId;
+
+        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $veh = $vehRep->findBy(array('plantId' => $plantId));
+
+        $inDb = !empty($veh);
+
+        $this->answer = array(
+            'foundInDatabase' => (int)$inDb,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function getListAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
@@ -41,7 +61,7 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
-        $id = $this->params('id');
+        $id = (int)$this->params('id');
 
         $objDateTime = new \DateTime('NOW');
         $expiryDate = $objDateTime->format(\DateTime::RFC850);
@@ -83,27 +103,27 @@ class VehicleController extends RestController
                             'fieldId' => 0,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 1,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test checkbox field 2',
-                            'fieldType' => 'checkbox',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['checkbox'],
                             'fieldValue' => '',
                             'variants' => array(
                                 array(
-                                    'answerId' => 0,
-                                    'answerLabel' => 'First variant'
+                                    'variantId' => 0,
+                                    'variantLabel' => 'First variant'
                                 ),
                                 array(
-                                    'answerId' => 1,
-                                    'answerLabel' => 'Second variant'
+                                    'variantId' => 1,
+                                    'variantLabel' => 'Second variant'
                                 ),
                                 array(
-                                    'answerId' => 2,
-                                    'answerLabel' => 'Third variant'
+                                    'variantId' => 2,
+                                    'variantLabel' => 'Third variant'
                                 ),
                             ),
                         ),
@@ -111,7 +131,7 @@ class VehicleController extends RestController
                             'fieldId' => 2,
                             'fieldOrder' => 3,
                             'fieldName' => 'Test field 3',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                             'alerts' => array(
                                 array(
@@ -131,14 +151,14 @@ class VehicleController extends RestController
                             'fieldId' => 2,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 3,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test field 2',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
@@ -152,14 +172,14 @@ class VehicleController extends RestController
                             'fieldId' => 4,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 5,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test field 2',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
@@ -173,12 +193,18 @@ class VehicleController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function completeChecklist()
+    public function completeChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
         $id = $this->params('id');
+
+        $this->answer = array(
+            'checklist' => '',
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
 
     }
 }

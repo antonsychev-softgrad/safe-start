@@ -189,4 +189,11 @@ return array(
           //  'Zend\Session\Validator\HttpUserAgent',
         ),
     ),
+    'fieldTypes' => array(
+        'radio' => 1,
+        'text' => 2,
+        'checkbox' => 3,
+        'photo' => 4,
+        'coordinates' => 5,
+    ),
 );

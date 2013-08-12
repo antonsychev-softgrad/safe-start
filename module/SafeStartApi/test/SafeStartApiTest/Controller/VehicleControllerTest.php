@@ -10,6 +10,7 @@ use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use SafeStartApiTest\Fixtures\LoadUsersData;
+use SafeStartApiTest\Fixtures\LoadVehicleData;
 use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
@@ -25,6 +26,7 @@ class UserDataControllerTest extends HttpControllerTestCase
     protected function setUp()
     {
         $this->addFixtures(new LoadUsersData());
+        $this->addFixtures(new LoadVehicleData());
         parent::setUp();
     }
 
@@ -44,7 +46,7 @@ class UserDataControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getlist');
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
@@ -89,6 +91,54 @@ class UserDataControllerTest extends HttpControllerTestCase
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
+    public function testCheckPlantIdFound()
+    {
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
+        }
+
+        $data = array(
+            'plantId' => 'ACHJDJ34234',
+        );
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/vehicle/checkplantid');
+
+        $this->assertResponseStatusCode(200);
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/checkplantid');
+        $data = json_decode($this->getResponse()->getContent());
+        print_r($data);
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
+    public function testCheckPlantIdNotFound()
+    {
+        if (!$this->_loginUser('username', '12345')) {
+            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
+        }
+
+        $data = array(
+            'plantId' => 'ACHJDJ342341',
+        );
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/vehicle/checkplantid');
+
+        $this->assertResponseStatusCode(200);
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/checkplantid');
+        $data = json_decode($this->getResponse()->getContent());
+        print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }

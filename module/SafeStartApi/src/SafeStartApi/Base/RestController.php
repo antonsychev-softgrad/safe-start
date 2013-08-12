@@ -26,6 +26,8 @@ class RestController extends AbstractActionController
     protected $jsonSchemaRefResolver;
     public $jsonSchemaValidator;
 
+    protected $em;
+
     public function __construct()
     {
         $this->getEventManager()->attach('dispatch', array($this, 'onDispatchEvent'), 100);
@@ -39,7 +41,9 @@ class RestController extends AbstractActionController
     {
         $this->_parseRequestFormat();
         $this->_checkAuthToken();
+
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
+        $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
     }
 
     protected function _parseRequestFormat()

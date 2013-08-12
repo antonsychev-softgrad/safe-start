@@ -1,5 +1,5 @@
 {
-    "description": "Vehicle data request",
+    "description": "Complete Checklist request",
     "type": "object",
     "properties": {
         "meta": {

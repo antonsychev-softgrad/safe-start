@@ -50,6 +50,22 @@
                 }
             }
         },
+        "/api/vehicle/checkPlantId" : {
+            "description": "Check is PlantID in Database",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/getList" : {
             "description": "Get vehicles list of authorised user",
             "type": "object",

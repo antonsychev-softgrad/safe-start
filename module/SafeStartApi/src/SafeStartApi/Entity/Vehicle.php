@@ -54,9 +54,9 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ ORM \ Column(type="string", name="registration", nullable=false)
+     * @ORM\Column(type="string", name="registration_number", nullable=false)
      **/
-    //protected $registration;
+    protected $registrationNumber;
 
     /**
      * @ORM\Column(type="string", length=255, name="vehicle_name")
@@ -117,7 +117,19 @@ class Vehicle extends BaseEntity
     */
     public function toArray()
     {
-        return get_object_vars($this);
+
+        //return get_object_vars($this);
+
+        return array(
+            'vehicleId'    => (!is_null($this->id)) ? $this->id : '',
+            'type'  => (!is_null($this->type)) ? $this->getType()->getTitle() : '',
+            'vehicleName' => (!is_null($this->getVehicleName())) ? $this->getVehicleName() : '',
+            "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getExpiryDate() : '',
+            "expiryDate"  => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : '',
+            "kmsUntilNext" => (!is_null($this->getKmsUntilNext())) ? $this->getKmsUntilNext() : 0,
+            "hoursUntilNext" => (!is_null($this->getHoursUntilNext())) ? $this->getHoursUntilNext() : 0,
+        );
     }
 
 
@@ -422,5 +434,28 @@ class Vehicle extends BaseEntity
     public function getPlantId()
     {
         return $this->plantId;
+    }
+
+    /**
+     * Set registrationNumber
+     *
+     * @param string $registrationNumber
+     * @return Vehicle
+     */
+    public function setRegistrationNumber($registrationNumber)
+    {
+        $this->registrationNumber = $registrationNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get registrationNumber
+     *
+     * @return string 
+     */
+    public function getRegistrationNumber()
+    {
+        return $this->registrationNumber;
     }
 }
