@@ -18,7 +18,12 @@
             "type": "object",
             "required": true,
             "properties": {
-                "checklist": {
+                "date": {
+                    "description": "Date of filling",
+                    "type": "string",
+                    "required": true
+                },
+                "answers": {
                     "description": "Fields with data",
                     "type": "array",
                     "required": true,
@@ -40,6 +45,7 @@
                         }
                     }
                 }
+
             }
         }
     }
