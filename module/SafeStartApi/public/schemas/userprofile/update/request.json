@@ -1,0 +1,38 @@
+{
+    "description": "User login request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "description": "First name",
+                    "type": "string",
+                    "required": true
+                },
+                "lastName": {
+                    "description": "Last name",
+                    "type": "string",
+                    "required": false
+                },
+                "email": {
+                    "description": "Email",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

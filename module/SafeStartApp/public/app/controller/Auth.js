@@ -59,10 +59,12 @@ Ext.define('SafeStartApp.controller.Auth', {
     },
 
     updateProfileAction: function(dlg, e) {
+        var self = this;
         if (!this.userProfileModel)this.userProfileModel = Ext.create('SafeStartApp.model.User');
         if (this.validateFormByModel(this.userProfileModel, this.getUpdateProfileForm())) {
-            SafeStartApp.AJAX('user/'+SafeStartApp.userModel.get('id')+'/update-profile', this.getUpdateProfileForm().getValues(), function (result) {
-                Ext.iterate(this.getUpdateProfileForm().getFields(), function (key, item) { SafeStartApp.userModel.set(key, item.getValue()); }, this);
+            SafeStartApp.AJAX('user/'+SafeStartApp.userModel.get('id')+'/profile/update', this.getUpdateProfileForm().getValues(), function (result) {
+                Ext.iterate(self.getUpdateProfileForm().getFields(), function (key, item) { SafeStartApp.userModel.set(key, item.getValue()); }, this);
+                self.getShowProfileDlgButton().setText(SafeStartApp.userModel.get('firstName') +' '+ SafeStartApp.userModel.get('lastName'));
                 dlg.hide();
             });
         }
