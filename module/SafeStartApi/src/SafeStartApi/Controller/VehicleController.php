@@ -103,14 +103,14 @@ class VehicleController extends RestController
                             'fieldId' => 0,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 1,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test checkbox field 2',
-                            'fieldType' => 'checkbox',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['checkbox'],
                             'fieldValue' => '',
                             'variants' => array(
                                 array(
@@ -131,7 +131,7 @@ class VehicleController extends RestController
                             'fieldId' => 2,
                             'fieldOrder' => 3,
                             'fieldName' => 'Test field 3',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                             'alerts' => array(
                                 array(
@@ -151,14 +151,14 @@ class VehicleController extends RestController
                             'fieldId' => 2,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 3,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test field 2',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
@@ -172,14 +172,14 @@ class VehicleController extends RestController
                             'fieldId' => 4,
                             'fieldOrder' => 1,
                             'fieldName' => 'Test field 1',
-                            'fieldType' => 'radioButton',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
                         ),
                         array(
                             'fieldId' => 5,
                             'fieldOrder' => 2,
                             'fieldName' => 'Test field 2',
-                            'fieldType' => 'textField',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
                         ),
                     )
