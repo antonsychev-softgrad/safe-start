@@ -69,7 +69,7 @@
                                         },
                                         "fieldType": {
                                             "description": "Field type: 1 - Radio button. 2 - Text field. 3 - Checkbox. 4 - Photo. 5 - GPS co-ordinates.",
-                                            "type": "enum",
+                                            "type": "integer",
                                             "enum": [1, 2, 3, 4, 5],
                                             "required": true
                                         },

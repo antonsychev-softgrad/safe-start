@@ -13,6 +13,13 @@ class LoadVehicleData extends AbstractFixture implements OrderedFixtureInterface
 
         $vehicle = new Vehicle();
         $vehicle->setPlantId('ACHJDJ34234');
+        $vehicle->setRegistrationNumber('REGNUMBER');
+        $vehicle->setVehicleName('Name');
+        $vehicle->setProjectName('Project name');
+        $vehicle->setProjectNumber(123);
+        $vehicle->setKmsUntilNext(100);
+        $vehicle->setHoursUntilNext(100);
+        $vehicle->setExpiryDate(new \DateTime());
         $manager->persist($vehicle);
         $manager->flush();
     }
