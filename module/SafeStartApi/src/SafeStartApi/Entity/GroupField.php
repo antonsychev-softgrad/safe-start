@@ -43,7 +43,9 @@ class GroupField extends BaseEntity
      */
     protected $order;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="GroupFieldVariant", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     **/
     protected $variants;
 
 
@@ -177,17 +179,57 @@ class GroupField extends BaseEntity
     public function setOrder($order)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrder()
     {
         return $this->order;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add variants
+     *
+     * @param \SafeStartApi\Entity\GroupFieldVariant $variants
+     * @return GroupField
+     */
+    public function addVariant(\SafeStartApi\Entity\GroupFieldVariant $variants)
+    {
+        $this->variants[] = $variants;
+
+        return $this;
+    }
+
+    /**
+     * Remove variants
+     *
+     * @param \SafeStartApi\Entity\GroupFieldVariant $variants
+     */
+    public function removeVariant(\SafeStartApi\Entity\GroupFieldVariant $variants)
+    {
+        $this->variants->removeElement($variants);
+    }
+
+    /**
+     * Get variants
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getVariants()
+    {
+        return $this->variants;
     }
 }
