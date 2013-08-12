@@ -6,13 +6,8 @@ Ext.define('SafeStartApp.view.dialogs.UserProfile', {
 
     initialize: function () {
         this.callParent();
-        this.add(
-            {
-                docked: 'top',
-                xtype: 'toolbar',
-                title: 'Update profile'
-            }
-        )
+        this.profileForm = this.add(Ext.create('SafeStartApp.view.forms.UserProfile'));
+        this.profileForm.setRecord(SafeStartApp.userModel);
     }
 
 });

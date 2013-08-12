@@ -5,12 +5,13 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity
- * @ORM\Table(name="vehicle_types")
+ * @ORM\Table(name="inspection_field_types")
+ *
  */
-
-class VehicleType extends BaseEntity
+class GroupFieldType extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -20,9 +21,10 @@ class VehicleType extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     protected $title;
+
 
 
     /**
@@ -57,6 +59,7 @@ class VehicleType extends BaseEntity
         return get_object_vars($this);
     }
 
+
     /**
      * Get id
      *
@@ -71,7 +74,7 @@ class VehicleType extends BaseEntity
      * Set title
      *
      * @param string $title
-     * @return VehicleType
+     * @return GroupFieldType
      */
     public function setTitle($title)
     {

@@ -13,7 +13,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 
 /**
- * Companies
  * @ORM\Entity
  * @ORM\Table(name="companies")
  *

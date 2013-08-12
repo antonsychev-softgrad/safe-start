@@ -413,4 +413,26 @@ class Vehicle extends BaseEntity
         return $this->endUsers;
     }
 
+    /**
+     * Set plantId
+     *
+     * @param string $plantId
+     * @return Vehicle
+     */
+    public function setPlantId($plantId)
+    {
+        $this->plantId = $plantId;
+
+        return $this;
+    }
+
+    /**
+     * Get plantId
+     *
+     * @return string
+     */
+    public function getPlantId()
+    {
+        return $this->plantId;
+    }
 }
