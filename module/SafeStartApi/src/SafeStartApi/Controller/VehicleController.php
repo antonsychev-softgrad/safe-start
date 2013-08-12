@@ -17,10 +17,10 @@ class VehicleController extends RestController
         $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         $veh = $vehRep->findBy(array('plantId' => $plantId));
 
-        print_r($veh);
+        $inDb = !empty($veh);
 
         $this->answer = array(
-            'foundInDatabase' => 1,
+            'foundInDatabase' => (int)$inDb,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
