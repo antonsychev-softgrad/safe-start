@@ -22,7 +22,7 @@ class GroupFieldAnswer extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="GroupField")
+     * @ORM\ManyToOne(targetEntity="GroupField", inversedBy="answers")
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
     protected $field;
