@@ -57,10 +57,11 @@ class VehicleType extends BaseEntity
         return get_object_vars($this);
     }
 
+
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -76,14 +77,14 @@ class VehicleType extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {

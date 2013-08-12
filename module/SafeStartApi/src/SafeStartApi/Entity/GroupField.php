@@ -49,7 +49,6 @@ class GroupField extends BaseEntity
     protected $variants;
 
 
-
     /**
     * Magic getter to expose protected properties.
     *
@@ -92,9 +91,17 @@ class GroupField extends BaseEntity
     }
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -110,18 +117,41 @@ class GroupField extends BaseEntity
     public function setLabel($label)
     {
         $this->label = $label;
-
+    
         return $this;
     }
 
     /**
      * Get label
      *
-     * @return string
+     * @return string 
      */
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set order
+     *
+     * @param integer $order
+     * @return GroupField
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+    
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return integer 
+     */
+    public function getOrder()
+    {
+        return $this->order;
     }
 
     /**
@@ -133,14 +163,14 @@ class GroupField extends BaseEntity
     public function setGroup(\SafeStartApi\Entity\Group $group = null)
     {
         $this->group = $group;
-
+    
         return $this;
     }
 
     /**
      * Get group
      *
-     * @return \SafeStartApi\Entity\Group
+     * @return \SafeStartApi\Entity\Group 
      */
     public function getGroup()
     {
@@ -156,48 +186,18 @@ class GroupField extends BaseEntity
     public function setType(\SafeStartApi\Entity\GroupFieldType $type = null)
     {
         $this->type = $type;
-
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return \SafeStartApi\Entity\GroupFieldType
+     * @return \SafeStartApi\Entity\GroupFieldType 
      */
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Set order
-     *
-     * @param integer $order
-     * @return GroupField
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-
-        return $this;
-    }
-
-    /**
-     * Get order
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -209,7 +209,7 @@ class GroupField extends BaseEntity
     public function addVariant(\SafeStartApi\Entity\GroupFieldVariant $variants)
     {
         $this->variants[] = $variants;
-
+    
         return $this;
     }
 
@@ -226,7 +226,7 @@ class GroupField extends BaseEntity
     /**
      * Get variants
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getVariants()
     {

@@ -26,7 +26,7 @@ class Group extends BaseEntity
     protected $fields;
 
     /**
-     * @ORM\Column(type="string", name="title")
+     * @ORM\Column(type="string", name="title", unique=true)
      */
     protected $title;
 
@@ -85,11 +85,11 @@ class Group extends BaseEntity
     {
         $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -105,14 +105,14 @@ class Group extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -128,14 +128,14 @@ class Group extends BaseEntity
     public function setOrder($order)
     {
         $this->order = $order;
-
+    
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer
+     * @return integer 
      */
     public function getOrder()
     {
@@ -151,7 +151,7 @@ class Group extends BaseEntity
     public function addField(\SafeStartApi\Entity\GroupField $fields)
     {
         $this->fields[] = $fields;
-
+    
         return $this;
     }
 
@@ -168,7 +168,7 @@ class Group extends BaseEntity
     /**
      * Get fields
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getFields()
     {

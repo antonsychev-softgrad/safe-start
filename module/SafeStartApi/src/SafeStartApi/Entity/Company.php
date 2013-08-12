@@ -5,11 +5,6 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinTable;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 
 /**
@@ -39,8 +34,8 @@ class Company extends BaseEntity
     /**
      * @ORM\ManyToMany(targetEntity="User")
      * @ORM\JoinTable(name="companies_admins",
-     *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
      *      )
      */
     protected $admins;
@@ -48,8 +43,8 @@ class Company extends BaseEntity
     /**
      * @ORM\ManyToMany(targetEntity="User")
      * @ORM\JoinTable(name="companies_responsible_persons",
-     *      joinColumns={@JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
      *      )
      */
     protected $responsiblePersons;
@@ -65,7 +60,7 @@ class Company extends BaseEntity
     protected $vehicles;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $title;
 
@@ -124,11 +119,11 @@ class Company extends BaseEntity
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -144,14 +139,14 @@ class Company extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -167,14 +162,14 @@ class Company extends BaseEntity
     public function setAddress($address)
     {
         $this->address = $address;
-
+    
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string
+     * @return string 
      */
     public function getAddress()
     {
@@ -190,14 +185,14 @@ class Company extends BaseEntity
     public function setPhone($phone)
     {
         $this->phone = $phone;
-
+    
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string
+     * @return string 
      */
     public function getPhone()
     {
@@ -213,7 +208,7 @@ class Company extends BaseEntity
     public function addDepartment(\SafeStartApi\Entity\Department $departments)
     {
         $this->departments[] = $departments;
-
+    
         return $this;
     }
 
@@ -230,7 +225,7 @@ class Company extends BaseEntity
     /**
      * Get departments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getDepartments()
     {
@@ -246,7 +241,7 @@ class Company extends BaseEntity
     public function addPosition(\SafeStartApi\Entity\CompanyPosition $positions)
     {
         $this->positions[] = $positions;
-
+    
         return $this;
     }
 
@@ -263,7 +258,7 @@ class Company extends BaseEntity
     /**
      * Get positions
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getPositions()
     {
@@ -279,7 +274,7 @@ class Company extends BaseEntity
     public function addAdmin(\SafeStartApi\Entity\User $admins)
     {
         $this->admins[] = $admins;
-
+    
         return $this;
     }
 
@@ -296,7 +291,7 @@ class Company extends BaseEntity
     /**
      * Get admins
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getAdmins()
     {
@@ -312,7 +307,7 @@ class Company extends BaseEntity
     public function addResponsiblePerson(\SafeStartApi\Entity\User $responsiblePersons)
     {
         $this->responsiblePersons[] = $responsiblePersons;
-
+    
         return $this;
     }
 
@@ -329,7 +324,7 @@ class Company extends BaseEntity
     /**
      * Get responsiblePersons
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getResponsiblePersons()
     {
@@ -345,7 +340,7 @@ class Company extends BaseEntity
     public function addUser(\SafeStartApi\Entity\User $users)
     {
         $this->users[] = $users;
-
+    
         return $this;
     }
 
@@ -362,7 +357,7 @@ class Company extends BaseEntity
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getUsers()
     {
@@ -378,7 +373,7 @@ class Company extends BaseEntity
     public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
     {
         $this->vehicles[] = $vehicles;
-
+    
         return $this;
     }
 
@@ -395,7 +390,7 @@ class Company extends BaseEntity
     /**
      * Get vehicles
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getVehicles()
     {
