@@ -1,7 +1,6 @@
 Ext.define('SafeStartApp.view.abstract.dialog', {
-
     extend: 'Ext.Panel',
-
+    mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartAbstractDialog',
 
     config:{
@@ -37,7 +36,11 @@ Ext.define('SafeStartApp.view.abstract.dialog', {
                     { xtype: 'spacer' },
                     {
                         text: 'Save',
-                        ui: 'confirm'
+                        action: 'save-data',
+                        ui: 'confirm',
+                        handler: function() {
+                            this.up('SafeStartAbstractDialog').fireEvent('save-data', this.up('SafeStartAbstractDialog'));
+                        }
                     }
                 ]
             }
