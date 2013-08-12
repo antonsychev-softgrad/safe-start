@@ -54,9 +54,9 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ ORM \ Column(type="string", name="registration", nullable=false)
+     * @ORM\Column(type="string", name="registration_number", nullable=false)
      **/
-    //protected $registration;
+    protected $registrationNumber;
 
     /**
      * @ORM\Column(type="string", length=255, name="vehicle_name")
@@ -434,5 +434,28 @@ class Vehicle extends BaseEntity
     public function getPlantId()
     {
         return $this->plantId;
+    }
+
+    /**
+     * Set registrationNumber
+     *
+     * @param string $registrationNumber
+     * @return Vehicle
+     */
+    public function setRegistrationNumber($registrationNumber)
+    {
+        $this->registrationNumber = $registrationNumber;
+    
+        return $this;
+    }
+
+    /**
+     * Get registrationNumber
+     *
+     * @return string 
+     */
+    public function getRegistrationNumber()
+    {
+        return $this->registrationNumber;
     }
 }
