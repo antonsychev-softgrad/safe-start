@@ -74,11 +74,11 @@ class Department extends BaseEntity
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -94,14 +94,14 @@ class Department extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -117,14 +117,14 @@ class Department extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-
+    
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company
+     * @return \SafeStartApi\Entity\Company 
      */
     public function getCompany()
     {
@@ -140,7 +140,7 @@ class Department extends BaseEntity
     public function addUser(\SafeStartApi\Entity\User $users)
     {
         $this->users[] = $users;
-
+    
         return $this;
     }
 
@@ -157,7 +157,7 @@ class Department extends BaseEntity
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getUsers()
     {

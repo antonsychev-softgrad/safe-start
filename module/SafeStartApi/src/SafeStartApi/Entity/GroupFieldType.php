@@ -21,7 +21,7 @@ class GroupFieldType extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     protected $title;
 
@@ -63,7 +63,7 @@ class GroupFieldType extends BaseEntity
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -79,14 +79,14 @@ class GroupFieldType extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {

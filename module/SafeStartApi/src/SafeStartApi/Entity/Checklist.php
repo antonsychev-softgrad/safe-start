@@ -81,11 +81,11 @@ class Checklist extends BaseEntity
     {
         $this->groups = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -101,14 +101,14 @@ class Checklist extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-
+    
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string
+     * @return string 
      */
     public function getTitle()
     {
@@ -124,14 +124,14 @@ class Checklist extends BaseEntity
     public function setType(\SafeStartApi\Entity\VehicleType $type = null)
     {
         $this->type = $type;
-
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return \SafeStartApi\Entity\VehicleType
+     * @return \SafeStartApi\Entity\VehicleType 
      */
     public function getType()
     {
@@ -147,7 +147,7 @@ class Checklist extends BaseEntity
     public function addGroup(\SafeStartApi\Entity\Group $groups)
     {
         $this->groups[] = $groups;
-
+    
         return $this;
     }
 
@@ -164,7 +164,7 @@ class Checklist extends BaseEntity
     /**
      * Get groups
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getGroups()
     {

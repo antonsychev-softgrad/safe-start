@@ -21,12 +21,6 @@ use Doctrine\ORM\Mapping\JoinColumn;
  */
 class User extends BaseEntity
 {
-    public function __construct()
-    {
-        $this->enabled = false;
-        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -118,7 +112,6 @@ class User extends BaseEntity
      */
     protected $lastLogin;
 
-
     public function toArray()
     {
         return array(
@@ -154,6 +147,15 @@ class User extends BaseEntity
         return $this;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = false;
+        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -529,7 +531,7 @@ class User extends BaseEntity
     public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
     {
         $this->vehicles[] = $vehicles;
-    
+
         return $this;
     }
 
@@ -546,7 +548,7 @@ class User extends BaseEntity
     /**
      * Get vehicles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getVehicles()
     {

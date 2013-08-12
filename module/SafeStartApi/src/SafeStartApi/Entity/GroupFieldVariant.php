@@ -78,6 +78,7 @@ class GroupFieldVariant extends BaseEntity
         $this->order = (!is_null($this->order)) ? $this->order : 0;
     }
 
+
     /**
      * Get id
      *
