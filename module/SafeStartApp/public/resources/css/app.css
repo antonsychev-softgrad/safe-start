@@ -3780,7 +3780,7 @@ body.x-desktop {
 
 /* line 25, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 .x-layout-card-item {
-  background: #eeeeee;
+  background: #eeeeee  url(/resources/img/x-layout-card-item_bg.jpg) repeat;
 }
 
 /**
@@ -4731,7 +4731,7 @@ body.x-desktop {
   border-radius: 0.3em;
   -webkit-box-shadow: rgba(0, 0, 0, 0.8) 0 0.2em 0.6em;
   -moz-box-shadow: rgba(0, 0, 0, 0.8) 0 0.2em 0.6em;
-  box-shadow: rgba(0, 0, 0, 0.8) 0 0.2em 0.6em;
+  box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   background-image: none;
   background-color: #03111a;
 }
