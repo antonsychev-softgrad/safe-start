@@ -2,7 +2,7 @@
 
 namespace SafeStartApi\Base\Exception;
 
-class Rest401 extends \Exception
+class Rest403 extends \Exception
 {
 
 }

@@ -64,7 +64,7 @@ class VehicleController extends RestController
         $id = (int)$this->params('id');
 
         $objDateTime = new \DateTime('NOW');
-        $expiryDate = $objDateTime->format(\DateTime::RFC850);
+        $expiryDate = $objDateTime->getTimestamp();
 
         $vehicleData = array(
             'vehicleId' => $id,
