@@ -48,6 +48,10 @@ class GroupField extends BaseEntity
      **/
     protected $variants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="GroupFieldAnswer", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     **/
+    protected $answers;
 
     /**
     * Magic getter to expose protected properties.
@@ -96,6 +100,7 @@ class GroupField extends BaseEntity
     public function __construct()
     {
         $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -231,5 +236,38 @@ class GroupField extends BaseEntity
     public function getVariants()
     {
         return $this->variants;
+    }
+
+    /**
+     * Add answers
+     *
+     * @param \SafeStartApi\Entity\GroupFieldAnswer $answers
+     * @return GroupField
+     */
+    public function addAnswer(\SafeStartApi\Entity\GroupFieldAnswer $answers)
+    {
+        $this->answers[] = $answers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove answers
+     *
+     * @param \SafeStartApi\Entity\GroupFieldAnswer $answers
+     */
+    public function removeAnswer(\SafeStartApi\Entity\GroupFieldAnswer $answers)
+    {
+        $this->answers->removeElement($answers);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 }
