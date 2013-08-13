@@ -7,6 +7,8 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         'SafeStartApp.store.Companies'
     ],
 
+    mixins: ['SafeStartApp.store.mixins.FilterByField'],
+
     xtype: 'SafeStartCompaniesPage',
 
     config: {
@@ -51,7 +53,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
 
         this.add({
             xtype: 'list',
-            id: 'companies',
+            name: 'companies',
             itemTpl: '<div class="contact">{title}</div>',
             docked: 'left',
             width: 300,
@@ -72,35 +74,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                                     self.companiesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    var value = field.getValue(),
-                                        store = self.companiesStore;
-                                    store.clearFilter(!!value);
-                                    if (value) {
-                                        var searches = value.split(','),
-                                            regexps = [],
-                                            i, regex;
-
-                                        //loop them all
-                                        for (i = 0; i < searches.length; i++) {
-                                            //if it is nothing, continue
-                                            if (!searches[i]) continue;
-                                            regex = searches[i].trim();
-                                            regex = regex.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-                                            //if found, create a new regular expression which is case insenstive
-                                            regexps.push(new RegExp(regex.trim(), 'i'));
-                                        }
-                                        store.filter(function (record) {
-                                            var matched = [];
-                                            //loop through each of the regular expressions
-                                            for (i = 0; i < regexps.length; i++) {
-                                                var search = regexps[i],
-                                                    didMatch = search.test(record.get('title'));
-                                                //if it matched the first or last name, push it into the matches array
-                                                matched.push(didMatch);
-                                            }
-                                            return (regexps.length && matched.indexOf(true) !== -1);
-                                        });
-                                    }
+                                   return self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
                                 }
                             }
                         },

@@ -6,20 +6,25 @@ Ext.define('SafeStartApp.controller.Companies', {
 
     ],
 
+    init: function(){
+
+    },
+
     config: {
         control: {
-            nav: {
-                tap: 'onCompanySelectAction'
+            navMain: {
+                itemsingletap: 'onCompanySelectAction'
             }
         },
 
         refs: {
-            nav: '#companies'
+            navMain: 'SafeStartCompaniesPage > list[name=companies]'
         }
     },
 
-    onCompanySelectAction: function(component, list, index) {
-        var record = list.getStore().getAt(index);
+
+    onCompanySelectAction: function(element, index, target, record, e, eOpts) {
+        var record = element.getStore().getAt(index);
         console.log(record);
     }
 
