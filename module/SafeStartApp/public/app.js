@@ -152,9 +152,8 @@ Ext.application({
         Ext.fly('appLoadingIndicator').destroy();
 
         // Load current user menu and update view port
-        SafeStartApp.loadMainMenu();
         SafeStartApp.userModel = Ext.create('SafeStartApp.model.User');
-
+        SafeStartApp.loadMainMenu();
     },
 
     onUpdated: function() {
