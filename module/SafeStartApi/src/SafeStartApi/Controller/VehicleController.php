@@ -58,10 +58,8 @@ class VehicleController extends RestController
 
     public function getDataByIdAction()
     {
-        $this->MailPlugin()->send('Subj', 'dsf@ssdf.ru', 'mail.phtml', array('name' => 'Name'));
-
-        //if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        //if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
         $id = (int)$this->params('id');
 
