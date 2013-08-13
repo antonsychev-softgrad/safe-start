@@ -58,13 +58,15 @@ class VehicleController extends RestController
 
     public function getDataByIdAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
+        $this->MailPlugin()->send('Subj', 'dsf@ssdf.ru', 'mail.phtml', array('name' => 'Name'));
+
+        //if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        //if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
         $id = (int)$this->params('id');
 
         $objDateTime = new \DateTime('NOW');
-        $expiryDate = $objDateTime->format(\DateTime::RFC850);
+        $expiryDate = $objDateTime->getTimestamp();
 
         $vehicleData = array(
             'vehicleId' => $id,
