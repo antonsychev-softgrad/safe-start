@@ -3,6 +3,9 @@ Ext.define('SafeStartApp.view.pages.Contact', {
     extend: 'Ext.Container',
 
     xtype: 'SafeStartContactPage',
+    requires: [
+        'SafeStartApp.view.forms.Contact'
+    ],
 
     config:{
         title: 'Contact',
