@@ -75,8 +75,28 @@ class Module
             $viewModel->setTerminal(true);
             $serviceManager = $e->getApplication()->getServiceManager();
             if ($e->getParam('exception')) {
-                $viewModel->setTemplate('json/500');
-                $viewModel->setVariable('exception', $e->getParam('exception'));
+                switch (get_class($e->getParam('exception'))) {
+                    case 'SafeStartApi\Base\Exception\Rest401':
+                        $viewModel->setTemplate('json/response');
+                        $viewModel->setVariable('answer', array(
+                            'errorMessage' => 'Access denied: Authorization required.',
+                        ));
+                        $viewModel->setVariable('errorCode', 401);
+                        $viewModel->setVariable('statusCode', 401);
+                        break;
+                    case 'SafeStartApi\Base\Exception\Rest403':
+                        $viewModel->setTemplate('json/response');
+                        $viewModel->setVariable('answer', array(
+                            'errorMessage' => 'Access denied: Not enough permissions.',
+                        ));
+                        $viewModel->setVariable('errorCode', 403);
+                        $viewModel->setVariable('statusCode', 403);
+                        break;
+                    default:
+                        $viewModel->setTemplate('json/500');
+                        $viewModel->setVariable('exception', $e->getParam('exception'));
+                        break;
+                }
                 // log exception
                 $serviceManager->get('ErrorLogger')->crit($e->getParam('exception'));
             } else {

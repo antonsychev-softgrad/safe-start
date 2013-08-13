@@ -70,6 +70,19 @@ return array(
                             ),
                         ),
                     ),
+                    'update-user-profile' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/profile/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'UserProfile',
+                                'action' => 'update',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -100,8 +113,11 @@ return array(
             'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
-            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',         
-			'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',        ),
+            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
+            'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
+            'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
+            'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
+        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -179,14 +195,14 @@ return array(
             'options' => array(
                 'name' => 'SafeStartApi',
                 'remember_me_seconds' => 3600,
-              //  'use_cookies' => true,
-                'save_path' =>  __DIR__ . '/../../../data/sessions',
+                //  'use_cookies' => true,
+                'save_path' => __DIR__ . '/../../../data/sessions',
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
             'Zend\Session\Validator\RemoteAddr',
-          //  'Zend\Session\Validator\HttpUserAgent',
+            //  'Zend\Session\Validator\HttpUserAgent',
         ),
     ),
     'fieldTypes' => array(

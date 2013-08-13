@@ -2,7 +2,7 @@
     "name": "API reference",
     "description": "Safe Start APP API reference",
     "properties": {
-        "/api/index/ping" : {
+        "/api/index/ping": {
             "description": "Check if API is alive",
             "type": "object",
             "properties": {
@@ -18,7 +18,7 @@
                 }
             }
         },
-        "/api/user/login" : {
+        "/api/user/login": {
             "description": "User login",
             "type": "object",
             "properties": {
@@ -34,7 +34,7 @@
                 }
             }
         },
-        "/api/user/logout" : {
+        "/api/user/logout": {
             "description": "User logout",
             "type": "object",
             "properties": {
@@ -50,7 +50,23 @@
                 }
             }
         },
-        "/api/vehicle/checkPlantId" : {
+        "/api/user/[id]/profile/update": {
+            "description": "Update own user profile",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "userprofile/update/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "userprofile/update/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/checkPlantId": {
             "description": "Check is PlantID in Database",
             "type": "object",
             "properties": {
@@ -66,7 +82,7 @@
                 }
             }
         },
-        "/api/vehicle/getList" : {
+        "/api/vehicle/getList": {
             "description": "Get vehicles list of authorised user",
             "type": "object",
             "properties": {
@@ -82,7 +98,7 @@
                 }
             }
         },
-        "/api/vehicle/[id]/getInfo" : {
+        "/api/vehicle/[id]/getInfo": {
             "description": "Get vehicle info by vehicle ID",
             "type": "object",
             "properties": {
@@ -98,7 +114,7 @@
                 }
             }
         },
-        "/api/vehicle/[id]/getChecklist" : {
+        "/api/vehicle/[id]/getChecklist": {
             "description": "Get vehicle checklist by vehicle ID",
             "type": "object",
             "properties": {
@@ -114,7 +130,7 @@
                 }
             }
         },
-        "/api/vehicle/[id]/completeChecklist" : {
+        "/api/vehicle/[id]/completeChecklist": {
             "description": "Complete vehicle's checklist with vehicle ID",
             "type": "object",
             "properties": {
