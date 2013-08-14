@@ -19,7 +19,7 @@ class WebPanelController extends RestController
         }
 
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompaniesPage')) $mainMenu[] = 'Companies';
-
+        $mainMenu[] = 'Contact';
         $this->answer = array(
             'mainMenu' => $mainMenu,
             'userInfo' => $userInfo

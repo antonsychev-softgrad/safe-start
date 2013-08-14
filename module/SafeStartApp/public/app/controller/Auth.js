@@ -1,7 +1,7 @@
 Ext.define('SafeStartApp.controller.Auth', {
     extend: 'Ext.app.Controller',
     mixins: ['SafeStartApp.controller.mixins.Form'],
-    require: [
+    requires: [
         //models
         'SafeStartApp.model.UserAuth',
         // dialogs

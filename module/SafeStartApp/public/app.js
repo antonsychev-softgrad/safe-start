@@ -124,7 +124,8 @@ Ext.application({
 
     controllers: [
         'Main',
-        'Auth'
+        'Auth',
+        'Companies'
     ],
 
     icon: {
