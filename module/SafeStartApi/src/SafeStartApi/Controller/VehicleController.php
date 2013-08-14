@@ -105,6 +105,26 @@ class VehicleController extends RestController
                             'fieldName' => 'Test field 1',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
                             'fieldValue' => 'Yes',
+                            'variants' => array(
+                                array(
+                                    'variantId' => 0,
+                                    'variantLabel' => 'Yes'
+                                ),
+                                array(
+                                    'variantId' => 1,
+                                    'variantLabel' => 'No'
+                                ),
+                                array(
+                                    'variantId' => 2,
+                                    'variantLabel' => 'N/A'
+                                ),
+                            ),
+                            'alerts' => array(
+                                array(
+                                    'alertMessage' => 'Alert! You choose NO',
+                                    'fieldCondition' => 1,
+                                )
+                            ),
                         ),
                         array(
                             'fieldId' => 1,
@@ -114,17 +134,22 @@ class VehicleController extends RestController
                             'fieldValue' => '',
                             'variants' => array(
                                 array(
-                                    'variantId' => 0,
+                                    'variantId' => 3,
                                     'variantLabel' => 'First variant'
                                 ),
                                 array(
-                                    'variantId' => 1,
+                                    'variantId' => 4,
                                     'variantLabel' => 'Second variant'
                                 ),
                                 array(
-                                    'variantId' => 2,
+                                    'variantId' => 5,
                                     'variantLabel' => 'Third variant'
                                 ),
+                            ),
+                            'alerts' => array(
+                                array(
+                                    'alertMessage' => 'Alert! You choose wrong item',
+                                )
                             ),
                         ),
                         array(
@@ -133,12 +158,6 @@ class VehicleController extends RestController
                             'fieldName' => 'Test field 3',
                             'fieldType' => $this->moduleConfig['fieldTypes']['text'],
                             'fieldValue' => 'Test text of the field',
-                            'alerts' => array(
-                                array(
-                                    'alertMessage' => 'Alert! You choose NO',
-                                    'fieldCondition' => 'No'
-                                )
-                            )
                         ),
                     )
                 ),

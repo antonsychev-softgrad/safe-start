@@ -115,7 +115,7 @@
                                                         "required": true
                                                     },
                                                     "fieldCondition": {
-                                                        "description": "If fieldValue = alertCondition then show Alert message",
+                                                        "description": "If answer ID = alertCondition then popup Alert message",
                                                         "type": "string",
                                                         "required": true
                                                     }
