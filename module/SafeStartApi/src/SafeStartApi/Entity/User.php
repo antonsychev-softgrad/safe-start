@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 
 
 // @UniqueEntity("email")
+// @UniqueEntity("username")
 
 /**
  * @ORM\Entity
@@ -35,7 +36,7 @@ class User extends BaseEntity
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $password;
 

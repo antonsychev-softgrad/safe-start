@@ -22,7 +22,7 @@
             "description": "Request data",
             "type": "object",
             "properties": {
-                "identity": {
+                "username": {
                     "description": "Username or Email",
                     "type": "string",
                     "required": true

@@ -206,40 +206,6 @@ class Company extends BaseEntity
         return $this->description;
     }
 
-
-    /**
-     * Add admins
-     *
-     * @param \SafeStartApi\Entity\User $admins
-     * @return Company
-     */
-    public function addAdmin(\SafeStartApi\Entity\User $admins)
-    {
-        $this->admins[] = $admins;
-    
-        return $this;
-    }
-
-    /**
-     * Remove admins
-     *
-     * @param \SafeStartApi\Entity\User $admins
-     */
-    public function removeAdmin(\SafeStartApi\Entity\User $admins)
-    {
-        $this->admins->removeElement($admins);
-    }
-
-    /**
-     * Get admins
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAdmins()
-    {
-        return $this->admins;
-    }
-
     /**
      * Add responsiblePersons
      *
@@ -429,5 +395,51 @@ class Company extends BaseEntity
     public function getMaxVehicles()
     {
         return $this->maxVehicles;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Company
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param \SafeStartApi\Entity\User $admin
+     * @return Company
+     */
+    public function setAdmin(\SafeStartApi\Entity\User $admin = null)
+    {
+        $this->admin = $admin;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 }

@@ -26,16 +26,17 @@ class UserController extends RestController
             return $this->AnswerPlugin()->format($this->answer, $errorCode);
         }
 
-        $identity = isset($this->data->identity) ? $this->data->identity : '';
+        $identity = isset($this->data->username) ? $this->data->username : '';
         $password = isset($this->data->password) ? $this->data->password : '';
 
         $adapter = $this->authService->getAdapter();
 
-        if ($this->validationPlugin()->isValidEmail($identity)) {
+        //todo: У меня не подключается плагин
+      /*  if ($this->ValidationPlugin()->isValidEmail($identity)) {
             $identityProperty = 'email';
-        } else {
+        } else {*/
             $identityProperty = 'username';
-        }
+   /*     }*/
 
         $adapterOptions = $this->moduleConfig['doctrine']['authentication']['orm_default'];
         $adapterOptions['object_manager'] = $this->getServiceLocator()->get($adapterOptions['object_manager']);
@@ -43,7 +44,7 @@ class UserController extends RestController
 
         $adapter->setOptions($adapterOptions);
 
-        $adapter->setIdentityValue($identity);
+        $adapter->setIdentityValue($identityProperty);
         $adapter->setCredentialValue($password);
         $result = $this->authService->authenticate();
 
@@ -59,13 +60,16 @@ class UserController extends RestController
                 $user = $userRep->findOneBy(array($identityProperty => $identity));
                 if($user) {
                     $userInfo = $user->toArray();
+                    $user->setLastLogin(new \DateTime());
+                    $this->em->flush();
+                    $userData = new \stdClass();
+                    $userData->user = $userInfo;
+                    $this->authService->getStorage()->write($user);
+                    $this->authToken = $this->sessionManager->getId();
+                } else {
+                    $errorMessage = 'Identity not found';
+                    $errorCode = RestController::USER_NOT_FOUND_ERROR;
                 }
-                $user->setLastLogin(new \DateTime());
-                $this->em->flush();
-                $userData = new \stdClass();
-                $userData->user = $userInfo;
-                $this->authService->getStorage()->write($user);
-                $this->authToken = $this->sessionManager->getId();
                 break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
                 $errorMessage = 'Identity not found';

@@ -56,7 +56,7 @@ class AdminController extends AdminAccessRestController
         $company->setAddress($this->data->address);
         $company->setPhone($this->data->phone);
         $company->setDescription($this->data->description);
-        $company->setsetRestricted((bool)$this->data->restricted);
+        $company->setRestricted((bool)$this->data->restricted);
         $company->setMaxUsers($this->data->restricted ? (int) $this->data->max_users : 0);
         $company->setMaxVehicles($this->data->restricted ? (int) $this->data->max_vehicles : 0);
         if ($this->data->restricted) {
@@ -64,7 +64,29 @@ class AdminController extends AdminAccessRestController
             $expiryDate->setTimestamp((int) $this->data->expiry_date);
             $company->setExpiryDate($expiryDate);
         }
-
+        $this->em->persist($company);
         // set company admin
+        $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
+        $user = $userRep->findOneBy(array('email' => $this->data->email));
+
+        if (!$user) {
+            // todo: Проверить на существование email, если есть ошибка
+            $user = new \SafeStartApi\Entity\User();
+            $user->setEmail($this->data->email);
+            $user->setEmail($this->data->email);
+            $user->setUsername($this->data->email);
+            $this->em->persist($user);
+        }
+
+        $company->setAdmin($user);
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
     }
 }

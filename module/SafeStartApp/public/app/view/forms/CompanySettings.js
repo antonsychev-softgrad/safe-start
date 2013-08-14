@@ -71,8 +71,8 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                             {
                                 xtype: 'numberfield',
                                 value: 0,
-                                maxValue: 99,
-                                minValue: 0,
+                                maxValue: 1000,
+                                minValue: 1,
                                 name: 'max_users',
                                 required: true,
                                 label: 'Number of users'
@@ -80,8 +80,8 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                             {
                                 xtype: 'numberfield',
                                 value: 0,
-                                maxValue: 99,
-                                minValue: 0,
+                                maxValue: 1000,
+                                minValue: 1,
                                 name: 'max_vehicles',
                                 required: true,
                                 label: 'Number of vehicles'

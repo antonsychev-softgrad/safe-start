@@ -2,15 +2,13 @@ Ext.define('SafeStartApp.model.CompanySubscription', {
     extend: "Ext.data.Model",
     config: {
         fields: [
-            {name: 'users', type: 'int', defaultValue: false},
-            {name: 'vehicles', type: 'int', defaultValue: false},
-            {name: 'expiry_date', type: 'date', defaultValue: false}
+            {name: 'max_users', type: 'int', defaultValue: 0},
+            {name: 'max_vehicles', type: 'int', defaultValue: 0},
+            {name: 'expiry_date', type: 'date', defaultValue: new Date()}
         ],
         validations: [
-            {type: 'presence', name: 'users', message:"Please set max allowed users"},
-            {type: 'presence', name: 'vehicles', message:"Please set max allowed vehicles"},
-            {type: 'presence', name: 'expiry_date', message:"Please set expiry date."}
-
+            {type: 'presence', name: 'max_users', message:"Please set max allowed users"},
+            {type: 'presence', name: 'max_vehicles', message:"Please set max allowed vehicles"}
         ]
     }
 });
