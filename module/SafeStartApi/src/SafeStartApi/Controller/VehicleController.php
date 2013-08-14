@@ -108,8 +108,8 @@ class VehicleController extends RestController
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                             'alerts' => array(
                                 array(
-                                    'alertMessage' => 'Alert! You choose NO',
-                                    'triggerValue' => 'NO',
+                                    'alertMessage' => 'Alert! You choose No',
+                                    'triggerValue' => 'No',
                                 )
                             ),
                         ),
@@ -122,8 +122,8 @@ class VehicleController extends RestController
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                             'alerts' => array(
                                 array(
-                                    'alertMessage' => 'Alert! You choose NO',
-                                    'triggerValue' => 'NO',
+                                    'alertMessage' => 'Alert! You choose No',
+                                    'triggerValue' => 'No',
                                 )
                             ),
                         ),
@@ -132,7 +132,7 @@ class VehicleController extends RestController
                             'fieldOrder' => 3,
                             'fieldName' => 'Describe the vechicle status.',
                             'fieldType' => $this->moduleConfig['fieldTypes']['text']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['text']['default'],
                         ),
                     )
                 ),

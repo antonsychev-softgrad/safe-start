@@ -22,8 +22,8 @@
             "description": "Request data",
             "type": "object",
             "properties": {
-                "username": {
-                    "description": "Username",
+                "identity": {
+                    "description": "Username or Email",
                     "type": "string",
                     "required": true
                 },

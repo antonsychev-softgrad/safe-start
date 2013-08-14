@@ -23,6 +23,11 @@
                     "type": "string",
                     "required": true
                 },
+                "vehicleId": {
+                    "description": "Vehicle ID",
+                    "type": "integer",
+                    "reuired": true
+                },
                 "answers": {
                     "description": "Fields with data",
                     "type": "array",
@@ -37,15 +42,41 @@
                                 "type": "integer",
                                 "required": true
                             },
-                            "fieldValue": {
-                                "description": "Field value",
+                            "answerValue": {
+                                "description": "Answer value",
+                                "type": "string",
+                                "required": false
+                            },
+                            "answerId": {
+                                "description": "Answer ID",
+                                "type": "integer",
+                                "required": false
+                            }
+                        }
+                    }
+                },
+                "alerts": {
+                    "description": "Report alerts",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Field",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "fieldId": {
+                                "description": "Field id",
                                 "type": "integer",
                                 "required": true
+                            },
+                            "answerValue": {
+                                "description": "Answer value",
+                                "type": "string",
+                                "required": false
                             }
                         }
                     }
                 }
-
             }
         }
     }

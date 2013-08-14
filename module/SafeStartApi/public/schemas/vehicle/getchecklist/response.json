@@ -78,7 +78,7 @@
                                             "type": "string",
                                             "required": false
                                         },
-                                        "variants": {
+                                        "options": {
                                             "description": "Answer variants",
                                             "type": "array",
                                             "required": false,
@@ -87,13 +87,13 @@
                                                 "type": "object",
                                                 "required": true,
                                                 "properties": {
-                                                    "variantId": {
-                                                        "description": "Answer ID",
-                                                        "type": "integer",
+                                                    "value": {
+                                                        "description": "Option ID or Value",
+                                                        "type": "string",
                                                         "required": true
                                                     },
-                                                    "variantLabel": {
-                                                        "description": "Answer label",
+                                                    "label": {
+                                                        "description": "Option label",
                                                         "type": "string",
                                                         "required": true
                                                     }
@@ -115,7 +115,7 @@
                                                         "required": true
                                                     },
                                                     "fieldCondition": {
-                                                        "description": "If answer ID = alertCondition then popup Alert message",
+                                                        "description": "If option Value = alertCondition then popup Alert message",
                                                         "type": "string",
                                                         "required": true
                                                     }

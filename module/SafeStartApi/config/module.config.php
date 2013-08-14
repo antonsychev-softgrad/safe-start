@@ -183,7 +183,6 @@ return array(
             'orm_default' => array(
                 'object_manager' => 'Doctrine\ORM\EntityManager',
                 'identity_class' => 'SafeStartApi\Entity\User',
-                'identity_property' => 'username',
                 'credential_property' => 'password',
                 'credential_callable' => 'SafeStartApi\Entity\User::verifyPassword'
             ),
@@ -201,6 +200,7 @@ return array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
+            'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
         )
     ),
     'session' => array(
