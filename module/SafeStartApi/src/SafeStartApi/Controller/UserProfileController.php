@@ -23,6 +23,8 @@ class UserProfileController extends RestrictedAccessRestController
         $user->setEmail($this->data->email);
         $this->em->flush();
 
+        $this->authService->getStorage()->write($user);
+
         $this->answer = array(
             'done' => true,
         );

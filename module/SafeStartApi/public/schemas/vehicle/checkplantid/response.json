@@ -21,7 +21,7 @@
             "properties": {
                 "foundInDatabase": {
                     "description": "If PlantId found in DB then return 1, else return 0",
-                    "type": "integer",
+                    "type": "boolean",
                     "required": true
                 }
             }

@@ -187,6 +187,7 @@ return array(
         'invokables' => array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
+            'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
         )
     ),
     'session' => array(
@@ -211,5 +212,19 @@ return array(
         'checkbox' => 3,
         'photo' => 4,
         'coordinates' => 5,
+    ),
+    'mail' => array(
+        'from' => 'our-male@email.org',
+        'transport' => array(
+            'options' => array(
+                'host'              => 'smtp.gmail.com',
+                'connection_class'  => 'plain',
+                'connection_config' => array(
+                    'username' => 'example@example.org',
+                    'password' => '',
+                    'ssl' => 'tls'
+                ),
+            ),
+        ),
     ),
 );
