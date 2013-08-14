@@ -18,14 +18,21 @@ Ext.define('SafeStartApp.controller.Companies', {
         },
 
         refs: {
-            navMain: 'SafeStartCompaniesPage > list[name=companies]'
+            main: 'SafeStartCompaniesPage',
+            navMain: 'SafeStartCompaniesPage > list[name=companies]',
+            companyInfo: 'SafeStartCompaniesPage > panel[name=company-info]'
         }
     },
 
 
     onCompanySelectAction: function(element, index, target, record, e, eOpts) {
         var record = element.getStore().getAt(index);
-        console.log(record);
+        if (!this.currentCompanyForm) {
+            this.currentCompanyForm = Ext.create('SafeStartApp.view.forms.CompanySettings');
+            this.getCompanyInfo().removeAll(true);
+            this.getCompanyInfo().add(this.currentCompanyForm);
+        }
+        this.currentCompanyForm.setRecord(record);
     }
 
 });

@@ -100,64 +100,39 @@ class VehicleController extends RestController
                     'groupOrder' => 1,
                     'fields' => array(
                         array(
-                            'fieldId' => 0,
+                            'fieldId' => 1,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Test field 1',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
-                            'fieldValue' => 'Yes',
-                            'variants' => array(
-                                array(
-                                    'variantId' => 0,
-                                    'variantLabel' => 'Yes'
-                                ),
-                                array(
-                                    'variantId' => 1,
-                                    'variantLabel' => 'No'
-                                ),
-                                array(
-                                    'variantId' => 2,
-                                    'variantLabel' => 'N/A'
-                                ),
-                            ),
+                            'fieldName' => 'Is the vechicle stable?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                             'alerts' => array(
                                 array(
                                     'alertMessage' => 'Alert! You choose NO',
-                                    'fieldCondition' => 1,
-                                )
-                            ),
-                        ),
-                        array(
-                            'fieldId' => 1,
-                            'fieldOrder' => 2,
-                            'fieldName' => 'Test checkbox field 2',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['checkbox'],
-                            'fieldValue' => '',
-                            'variants' => array(
-                                array(
-                                    'variantId' => 3,
-                                    'variantLabel' => 'First variant'
-                                ),
-                                array(
-                                    'variantId' => 4,
-                                    'variantLabel' => 'Second variant'
-                                ),
-                                array(
-                                    'variantId' => 5,
-                                    'variantLabel' => 'Third variant'
-                                ),
-                            ),
-                            'alerts' => array(
-                                array(
-                                    'alertMessage' => 'Alert! You choose wrong item',
+                                    'triggerValue' => 'NO',
                                 )
                             ),
                         ),
                         array(
                             'fieldId' => 2,
+                            'fieldOrder' => 2,
+                            'fieldName' => 'Is the vechicle clean and all items secure?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
+                            'alerts' => array(
+                                array(
+                                    'alertMessage' => 'Alert! You choose NO',
+                                    'triggerValue' => 'NO',
+                                )
+                            ),
+                        ),
+                        array(
+                            'fieldId' => 3,
                             'fieldOrder' => 3,
-                            'fieldName' => 'Test field 3',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
-                            'fieldValue' => 'Test text of the field',
+                            'fieldName' => 'Describe the vechicle status.',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['text']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['radio']['default'],
                         ),
                     )
                 ),
@@ -167,18 +142,39 @@ class VehicleController extends RestController
                     'groupOrder' => 2,
                     'fields' => array(
                         array(
-                            'fieldId' => 2,
+                            'fieldId' => 4,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Test field 1',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
-                            'fieldValue' => 'Yes',
+                            'fieldName' => '2.1 Some question aobut the vechicle?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
+                            'alerts' => array(
+                                array(
+                                    'alertMessage' => 'Alert! You choose NO',
+                                    'triggerValue' => 'NO',
+                                )
+                            ),
                         ),
                         array(
-                            'fieldId' => 3,
+                            'fieldId' => 5,
                             'fieldOrder' => 2,
-                            'fieldName' => 'Test field 2',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
-                            'fieldValue' => 'Test text of the field',
+                            'fieldName' => '2.2 Some question aobut the vechicle?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                            'alerts' => array(
+                                array(
+                                    'alertMessage' => 'Alert! You choose NO',
+                                    'triggerValue' => 'NO',
+                                )
+                            ),
+                        ),
+                        array(
+                            'fieldId' => 6,
+                            'fieldOrder' => 3,
+                            'fieldName' => 'Add vechicle CPS coordinates.',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['coordinates']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['coordinates']['default'],
                         ),
                     )
                 ),
@@ -188,18 +184,54 @@ class VehicleController extends RestController
                     'groupOrder' => 3,
                     'fields' => array(
                         array(
-                            'fieldId' => 4,
+                            'fieldId' => 7,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Test field 1',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio'],
-                            'fieldValue' => 'Yes',
-                        ),
-                        array(
-                            'fieldId' => 5,
-                            'fieldOrder' => 2,
-                            'fieldName' => 'Test field 2',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['text'],
-                            'fieldValue' => 'Test text of the field',
+                            'fieldName' => 'Are the fluid levels accepatble',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['group']['id'],
+                            'items' => array(
+                                array(
+                                    'fieldId' => 8,
+                                    'fieldOrder' => 1,
+                                    'fieldName' => 'Water',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                    'alerts' => array(
+                                        array(
+                                            'alertMessage' => 'Alert! You choose NO',
+                                            'triggerValue' => 'NO',
+                                        )
+                                    ),
+                                ),
+                                array(
+                                    'fieldId' => 9,
+                                    'fieldOrder' => 2,
+                                    'fieldName' => 'Hydraulic',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                    'alerts' => array(
+                                        array(
+                                            'alertMessage' => 'Alert! You choose NO',
+                                            'triggerValue' => 'NO',
+                                        )
+                                    ),
+                                ),
+                                array(
+                                    'fieldId' => 9,
+                                    'fieldOrder' => 2,
+                                    'fieldName' => 'Battery',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                    'alerts' => array(
+                                        array(
+                                            'alertMessage' => 'Alert! You choose NO',
+                                            'triggerValue' => 'NO',
+                                        )
+                                    ),
+                                ),
+                            )
                         ),
                     )
                 )

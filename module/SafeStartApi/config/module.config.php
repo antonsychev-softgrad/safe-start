@@ -208,18 +208,60 @@ return array(
         ),
     ),
     'fieldTypes' => array(
-        'radio' => 1,
-        'text' => 2,
-        'checkbox' => 3,
-        'photo' => 4,
-        'coordinates' => 5,
+        'radio' => array(
+            'id' => 1,
+            'options' => array(
+                array(
+                    'value' => 'Yes',
+                    'label' => 'Yes'
+                ),
+                array(
+                    'value' => 'No',
+                    'label' => 'No'
+                ),
+                array(
+                    'value' => 'N/A',
+                    'label' => 'N/A'
+                ),
+            ),
+            'default' => ''
+        ),
+        'text' =>  array(
+            'id' => 2,
+            'default' => ''
+        ),
+        'checkbox' => array(
+            'id' => 3,
+            'options' => array(
+                array(
+                    'value' => 'Yes',
+                    'label' => 'Yes'
+                ),
+                array(
+                    'value' => 'No',
+                    'label' => 'No'
+                ),
+            ),
+            'default' => ''
+        ),
+        'photo' => array(
+            'id' => 4,
+            'default' => ''
+        ),
+        'coordinates' =>array(
+            'id' => 5,
+            'default' => ''
+        ),
+        'group' => array(
+            'id' => 6,
+        )
     ),
     'mail' => array(
         'from' => 'our-male@email.org',
         'transport' => array(
             'options' => array(
-                'host'              => 'smtp.gmail.com',
-                'connection_class'  => 'plain',
+                'host' => 'smtp.gmail.com',
+                'connection_class' => 'plain',
                 'connection_config' => array(
                     'username' => 'example@example.org',
                     'password' => '',
