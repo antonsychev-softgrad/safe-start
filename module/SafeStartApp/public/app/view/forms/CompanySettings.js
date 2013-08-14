@@ -40,6 +40,11 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         name: 'address'
                     },
                     {
+                        xtype: 'textfield',
+                        label: 'Phone',
+                        name: 'phone'
+                    },
+                    {
                         xtype: 'textareafield',
                         label: 'Info',
                         name: 'description'
@@ -68,7 +73,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 value: 0,
                                 maxValue: 99,
                                 minValue: 0,
-                                name: 'users',
+                                name: 'max_users',
                                 required: true,
                                 label: 'Number of users'
                             },
@@ -77,7 +82,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 value: 0,
                                 maxValue: 99,
                                 minValue: 0,
-                                name: 'vehicles',
+                                name: 'max_vehicles',
                                 required: true,
                                 label: 'Number of vehicles'
                             },

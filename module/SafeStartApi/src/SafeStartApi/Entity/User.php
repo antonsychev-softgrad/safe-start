@@ -65,22 +65,10 @@ class User extends BaseEntity
     protected $secondName;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
+     * @ORM\OneToOne(targetEntity="Company", inversedBy="users")
      * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
      **/
     protected $company;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="users")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
-     **/
-    protected $department;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="CompanyPosition", inversedBy="users")
-     * @ORM\JoinColumn(name="position_id", referencedColumnName="id")
-     **/
-    protected $position;
 
     /**
      * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUser")

@@ -25,4 +25,4 @@
         ./vendor/bin/doctrine-module orm:validate-schema
 
      b) Generate setters:
-        ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --generate-annotations=true
+        ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true

@@ -8,9 +8,10 @@ Ext.define('SafeStartApp.model.Company', {
             {name: 'firstName', type: 'string'},
             {name: 'description', type: 'string'},
             {name: 'address', type: 'string'},
+            {name: 'phone', type: 'string'},
             {name: 'restricted', type: 'boolean', defaultValue: false},
-            {name: 'users', type: 'int', defaultValue: false},
-            {name: 'vehicles', type: 'int', defaultValue: false},
+            {name: 'max_users', type: 'int', defaultValue: false},
+            {name: 'max_users', type: 'int', defaultValue: false},
             {name: 'expiry_date', type: 'int'}
         ],
         validations: [

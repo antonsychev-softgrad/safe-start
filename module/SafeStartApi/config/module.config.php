@@ -83,6 +83,19 @@ return array(
                             ),
                         ),
                     ),
+                    'update-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/:id/company/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'updateCompany',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
