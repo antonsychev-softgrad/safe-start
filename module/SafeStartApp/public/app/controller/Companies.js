@@ -32,6 +32,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             this.getCompanyInfo().removeAll(true);
             this.getCompanyInfo().add(this.currentCompanyForm);
         }
+        this.currentCompanyForm.setRecord(record);
     }
 
 });
