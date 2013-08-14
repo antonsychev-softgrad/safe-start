@@ -1,4 +1,4 @@
-/**
+text-sh/**
  * @class Global_CSS
  * Global CSS variables and mixins of Sencha Touch's Default Theme.
  */
@@ -648,6 +648,7 @@
  * @param {string} $font-family The `font-family` used for this icon. Defaults to the `Pictos` font.
  */
 /* line 2, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/layout/_Abstract.scss */
+
 html,
 body {
   position: relative;
@@ -1356,7 +1357,6 @@ body {
 
 /* line 1, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/_Class.scss */
 html, body {
-  font-family: "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   font-weight: normal;
   -webkit-text-size-adjust: none;
   margin: 0;
@@ -1494,7 +1494,6 @@ input, textarea {
   line-height: 1.5;
   color: #333;
   font-size: .8em;
-  padding: 1.2em;
 }
 /* line 33, /Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/blueprint/stylesheets/blueprint/_typography.scss */
 .x-html body {
@@ -2190,7 +2189,7 @@ audio {
 .x-panel.x-floating,
 .x-msgbox,
 .x-form.x-floating {
-  padding: 6px;
+  padding: 3px;
   background-color: #ccc;
 }
 /* line 17, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/_Panel.scss */
@@ -2261,7 +2260,6 @@ audio {
 .x-title {
   font-size: 1.2em;
   text-align: center;
-  font-weight: bold;
   max-width: 100%;
 }
 /* line 38, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/_Toolbar.scss */
@@ -2745,10 +2743,7 @@ audio {
 .x-form-label {
   display: none !important;
 }
-/* line 5, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/form/_Panel.scss */
-.x-form-label span {
-  font-weight: bold;
-}
+
 /* line 9, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/form/_Panel.scss */
 .x-form-label-nowrap .x-form-label {
   white-space: nowrap;
@@ -2950,10 +2945,6 @@ input[type="search"]::-webkit-search-cancel-button {
   flex: 1 0 auto;
 }
 
-/* line 198, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/form/_Panel.scss */
-.x-form-fieldset-title {
-  font-weight: bold;
-}
 /* line 201, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/form/_Panel.scss */
 .x-form-fieldset-title .x-innerhtml {
   white-space: nowrap;
@@ -3581,10 +3572,6 @@ input[type="search"]::-webkit-search-cancel-button {
  *
  * See background-gradient mixin.
  */
-/* line 1, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
-html, body {
-  font-family: "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
-}
 
 /* line 5, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 .x-ios.x-tablet .x-landscape * {
@@ -3609,11 +3596,6 @@ body.x-ios.x-phone {
 /* line 21, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 body.x-desktop {
   font-size: 114%;
-}
-
-/* line 25, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
-.x-layout-card-item {
-  background: #eeeeee;
 }
 
 /* line 174, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/mixins/_Class.scss */
@@ -3748,9 +3730,13 @@ body.x-desktop {
   animation-iteration-count: infinite;
 }
 
+@font-face {
+    font-family: HelveticaNeueLTStd; /* Имя шрифта */
+    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.ttf); /* Путь к файлу со шрифтом */
+}
 /* line 1, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 html, body {
-  font-family: "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: HelveticaNeueLTStd, "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
 /* line 5, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
@@ -3780,7 +3766,7 @@ body.x-desktop {
 
 /* line 25, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 .x-layout-card-item {
-  background: #eeeeee  url(/resources/img/x-layout-card-item_bg.jpg) repeat;
+  background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
 }
 
 /**
@@ -3796,7 +3782,6 @@ body.x-desktop {
   -ms-border-radius: 0.4em;
   -o-border-radius: 0.4em;
   border-radius: 0.4em;
-  min-height: 1.8em;
   padding: 0.3em 0.6em;
 }
 /* line 13, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -3819,6 +3804,7 @@ body.x-desktop {
   background-image: -moz-linear-gradient(top, #f2f2f2, #d9d9d9 3%, #bfbfbf);
   background-image: -o-linear-gradient(top, #f2f2f2, #d9d9d9 3%, #bfbfbf);
   background-image: linear-gradient(top, #f2f2f2, #d9d9d9 3%, #bfbfbf);
+  cursor: pointer;
 }
 /* line 31, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
 .x-button.x-button-pressing, .x-button.x-button-pressing:after, .x-button.x-button-pressed, .x-button.x-button-pressed:after, .x-button.x-button-active, .x-button.x-button-active:after, .x-toolbar .x-button.x-button-pressing, .x-toolbar .x-button.x-button-pressing:after, .x-toolbar .x-button.x-button-pressed, .x-toolbar .x-button.x-button-pressed:after, .x-toolbar .x-button.x-button-active, .x-toolbar .x-button.x-button-active:after {
@@ -3866,6 +3852,7 @@ body.x-desktop {
 /* line 47, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Button.scss */
 .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {
   margin-left: .6em;
+    margin-top: 5px;
 }
 
 /* line 50, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Button.scss */
@@ -3882,7 +3869,6 @@ body.x-desktop {
 
 /* line 60, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Button.scss */
 .x-button-label, .x-badge, .x-hasbadge .x-badge {
-  font-weight: bold;
   line-height: 1.2em;
 }
 
@@ -4514,13 +4500,8 @@ body.x-desktop {
 .x-button.x-button-action-small, .x-toolbar
 .x-button.x-button-action-small.x-button-back:after, .x-toolbar
 .x-button.x-button-action-small.x-button-forward:after {
-  background-image: none;
-  background-color: #006bb6;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #0398ff), color-stop(3%, #007ad0), color-stop(100%, #005c9d));
-  background-image: -webkit-linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
-  background-image: -moz-linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
-  background-image: -o-linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
-  background-image: linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
+    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 -16px;
+    border: none;
 }
 /* line 31, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
 .x-button.x-button-action.x-button-pressing, .x-button.x-button-action.x-button-pressing:after, .x-button.x-button-action.x-button-pressed, .x-button.x-button-action.x-button-pressed:after, .x-button.x-button-action.x-button-active, .x-button.x-button-action.x-button-active:after, .x-toolbar .x-button.x-button-action.x-button-pressing, .x-toolbar .x-button.x-button-action.x-button-pressing:after, .x-toolbar .x-button.x-button-action.x-button-pressed, .x-toolbar .x-button.x-button-action.x-button-pressed:after, .x-toolbar .x-button.x-button-action.x-button-active, .x-toolbar .x-button.x-button-action.x-button-active:after,
@@ -4548,13 +4529,7 @@ body.x-desktop {
 .x-button.x-button-action-small.x-button-pressed:after, .x-toolbar
 .x-button.x-button-action-small.x-button-active, .x-toolbar
 .x-button.x-button-action-small.x-button-active:after {
-  background-image: none;
-  background-color: #0062a7;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #004474), color-stop(10%, #00538d), color-stop(65%, #0062a7), color-stop(100%, #0064a9));
-  background-image: -webkit-linear-gradient(top, #004474, #00538d 10%, #0062a7 65%, #0064a9);
-  background-image: -moz-linear-gradient(top, #004474, #00538d 10%, #0062a7 65%, #0064a9);
-  background-image: -o-linear-gradient(top, #004474, #00538d 10%, #0062a7 65%, #0064a9);
-  background-image: linear-gradient(top, #004474, #00538d 10%, #0062a7 65%, #0064a9);
+    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 100%;
 }
 
 /* line 13, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -4594,13 +4569,7 @@ body.x-desktop {
 .x-button.x-button-confirm-small, .x-toolbar
 .x-button.x-button-confirm-small.x-button-back:after, .x-toolbar
 .x-button.x-button-confirm-small.x-button-forward:after {
-  background-image: none;
-  background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a2e306), color-stop(3%, #7eb105), color-stop(100%, #5b7f03));
-  background-image: -webkit-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
-  background-image: -moz-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
-  background-image: -o-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
-  background-image: linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
+  background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x;
 }
 /* line 31, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
 .x-button.x-button-confirm.x-button-pressing, .x-button.x-button-confirm.x-button-pressing:after, .x-button.x-button-confirm.x-button-pressed, .x-button.x-button-confirm.x-button-pressed:after, .x-button.x-button-confirm.x-button-active, .x-button.x-button-confirm.x-button-active:after, .x-toolbar .x-button.x-button-confirm.x-button-pressing, .x-toolbar .x-button.x-button-confirm.x-button-pressing:after, .x-toolbar .x-button.x-button-confirm.x-button-pressed, .x-toolbar .x-button.x-button-confirm.x-button-pressed:after, .x-toolbar .x-button.x-button-confirm.x-button-active, .x-toolbar .x-button.x-button-confirm.x-button-active:after,
@@ -4628,13 +4597,7 @@ body.x-desktop {
 .x-button.x-button-confirm-small.x-button-pressed:after, .x-toolbar
 .x-button.x-button-confirm-small.x-button-active, .x-toolbar
 .x-button.x-button-confirm-small.x-button-active:after {
-  background-image: none;
-  background-color: #628904;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3e5702), color-stop(10%, #507003), color-stop(65%, #628904), color-stop(100%, #648c04));
-  background-image: -webkit-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
-  background-image: -moz-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
-  background-image: -o-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
-  background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
+    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 -47px;
 }
 
 /* line 13, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -4729,11 +4692,11 @@ body.x-desktop {
   -ms-border-radius: 0.3em;
   -o-border-radius: 0.3em;
   border-radius: 0.3em;
-  -webkit-box-shadow: rgba(0, 0, 0, 0.8) 0 0.2em 0.6em;
-  -moz-box-shadow: rgba(0, 0, 0, 0.8) 0 0.2em 0.6em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
+  -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   background-image: none;
-  background-color: #03111a;
+  background-color: #fff;
 }
 /* line 19, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Panel.scss */
 .x-panel.x-floating.x-floating-light,
@@ -4936,8 +4899,7 @@ body.x-desktop {
 
 /* line 87, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_MessageBox.scss */
 .x-msgbox-dark .x-msgbox-text {
-  color: rgba(190, 224, 247, 0.9);
-  text-shadow: rgba(0, 0, 0, 0.5) 0 -0.08em 0;
+  color: #577990;
 }
 /* line 91, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_MessageBox.scss */
 .x-msgbox-dark .x-msgbox-input {
@@ -4992,20 +4954,11 @@ body.x-desktop {
 * @param {string} $gradient: $toolbar-gradien Background gradient style for the UI.
 */
 /* line 44, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
-.x-toolbar-dark {
-  background-image: none;
-  background-color: #1468a2;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #1e93e4), color-stop(3%, #1676b9), color-stop(100%, #11598c));
-  background-image: -webkit-linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
-  background-image: -moz-linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
-  background-image: -o-linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
-  background-image: linear-gradient(top, #1e93e4, #1676b9 3%, #11598c);
-  border-color: black;
-}
+
 /* line 48, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
 .x-toolbar-dark .x-title {
-  color: white;
-  text-shadow: rgba(0, 0, 0, 0.5) 0 -0.08em 0;
+padding-top: 10px;
+color: #577990;
 }
 /* line 53, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
 .x-toolbar-dark.x-docked-top {
@@ -5593,7 +5546,7 @@ body.x-desktop {
  */
 /* line 6, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/form/_Panel.scss */
 .x-form .x-scroll-container {
-  background-color: #eeeeee;
+    background: url(/resources/img/log-form_bg.jpg) repeat;
 }
 
 /* line 17, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/form/_Panel.scss */
@@ -5616,10 +5569,7 @@ body.x-desktop {
 .x-form-fieldset {
   margin: 0.5em 0.5em 1.5em;
 }
-/* line 8, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/form/_FieldSet.scss */
-.x-form-fieldset .x-form-label {
-  border-top: 1px solid white;
-}
+
 /* line 12, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/form/_FieldSet.scss */
 .x-form-fieldset .x-form-fieldset-inner {
   border: 1px solid #dddddd;
@@ -5756,7 +5706,6 @@ body.x-desktop {
 /* line 36, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/field/_Field.scss */
 .x-input-el {
   padding: .4em;
-  min-height: 2.5em;
   border-width: 0;
   -webkit-appearance: none;
 }
@@ -6785,7 +6734,6 @@ body.x-desktop {
 .x-tabbar.x-docked-bottom .x-tab {
   background: transparent none;
   border: 0;
-  padding-top: .2em;
   -webkit-border-radius: 0.25em;
   -moz-border-radius: 0.25em;
   -ms-border-radius: 0.25em;
@@ -6884,19 +6832,11 @@ body.x-desktop {
 
 /* line 135, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark {
-  border-top-color: #0b3c5e;
-  border-bottom-color: #061f31;
-  background-image: none;
-  background-color: #0e4b75;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #1676b9), color-stop(3%, #11598c), color-stop(100%, #0b3c5e));
-  background-image: -webkit-linear-gradient(top, #1676b9, #11598c 3%, #0b3c5e);
-  background-image: -moz-linear-gradient(top, #1676b9, #11598c 3%, #0b3c5e);
-  background-image: -o-linear-gradient(top, #1676b9, #11598c 3%, #0b3c5e);
-  background-image: linear-gradient(top, #1676b9, #11598c 3%, #0b3c5e);
+    background: #2a2c30 url(/resources/img/foot_bg.jpg) repeat-x;
 }
 /* line 140, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark .x-tab {
-  color: #63b4ec;
+  color: #fff;
   border-bottom: 1px solid transparent;
 }
 /* line 145, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
@@ -6906,7 +6846,7 @@ body.x-desktop {
 }
 /* line 149, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark .x-tab-active .x-button-icon:before {
-  color: #50b7ff;
+  /*color: #50b7ff;*/
 }
 /* line 154, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark .x-tab-pressed {
@@ -6920,20 +6860,16 @@ body.x-desktop {
 /* line 165, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark.x-docked-bottom .x-tab-active {
   background-image: none;
-  background-color: #0b3c5e;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #061f31), color-stop(10%, #092e47), color-stop(65%, #0b3c5e), color-stop(100%, #0c3e60));
-  background-image: -webkit-linear-gradient(top, #061f31, #092e47 10%, #0b3c5e 65%, #0c3e60);
-  background-image: -moz-linear-gradient(top, #061f31, #092e47 10%, #0b3c5e 65%, #0c3e60);
-  background-image: -o-linear-gradient(top, #061f31, #092e47 10%, #0b3c5e 65%, #0c3e60);
-  background-image: linear-gradient(top, #061f31, #092e47 10%, #0b3c5e 65%, #0c3e60);
+  background-color: #333539;
   text-shadow: rgba(0, 0, 0, 0.5) 0 -0.08em 0;
-  -webkit-box-shadow: #092e47 0 0 0.25em inset;
-  -moz-box-shadow: #092e47 0 0 0.25em inset;
-  box-shadow: #092e47 0 0 0.25em inset;
+  -webkit-box-shadow: #27292c 0 0 3px inset;
+  -moz-box-shadow: #27292c 0 0 3px inset;
+  box-shadow: #27292c 0 0 3px inset;
+  border: 2px inset #27292c;
 }
 /* line 173, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
 .x-tabbar-dark.x-docked-bottom .x-tab-active .x-button-icon:before {
-  color: #50b7ff;
+  /*color: #50b7ff;*/
 }
 
 /* line 182, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/tab/_Panel.scss */
@@ -7012,4 +6948,137 @@ body.x-desktop {
   background-image: -o-linear-gradient(top, #bababa, #c7c7c7 10%, #d3d3d3 65%, #d5d5d5);
   background-image: linear-gradient(top, #bababa, #c7c7c7 10%, #d3d3d3 65%, #d5d5d5);
   color: black;
+}
+
+/* main */
+
+div.logo {
+    position: absolute;
+    top: 50%;
+    width: 96%;
+    margin: -325px 2% 0;
+    text-align: center;
+}
+.sfa-auth-form  .logo img {
+    max-width: 100% !important;
+    position: relative;
+}
+.x-form.sfa-auth-form.x-floating.x-sized, .x-form.sfa-auth-form .x-scroll-container {
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-khtml-border-radius: 10px;
+-o-border-radius: 10px;
+border-radius: 10px;
+}
+.sfa-auth-form .x-unsized.x-button.x-button-confirm {
+   display: inline-block;
+   padding: 8px 30px 10px;
+    font-size: 22px;
+
+}
+.sfa-auth-form .x-unsized.x-button.x-button-confirm span {
+    line-height: 1;
+}
+.sfa-auth-form .x-form-fieldset-title {
+    margin: 0 0 15px;
+    font-size: 33px;
+    color: #2e7fb7;
+}
+.x-unsized.x-button.x-button-confirm {
+    border: none;
+}
+.x-form-label span {
+    font-size: 22px;
+    color: #565555;
+}
+
+.sfa-auth-form .x-field {
+   display: block;
+}
+.sfa-auth-form .x-form-label {
+    padding: 0 0 5px;
+    background: none;
+}
+.sfa-auth-form .x-container.x-field-text, .sfa-auth-form .x-inner.x-form-fieldset-inner {
+    border: none;
+    background: none;
+}
+
+.sfa-auth-form .x-inner.x-form-inner {
+    padding: 30px 60px;
+}
+.sfa-auth-form .x-form-fieldset {
+    margin: 0;
+}
+.sfa-auth-form .x-input-el.x-form-field {
+padding: 6px 7px 9px;
+font-size: 22px;
+color: #565555;
+border: 1px solid #cacaca;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+-khtml-border-radius: 10px;
+-o-border-radius: 10px;
+border-radius: 10px;
+    font-family: HelveticaNeueLTStd, sans-serif;
+}
+.sfa-auth-form .x-container.x-field {
+    height: 100px;
+}
+
+.sfa-auth-form .x-container.x-form-fieldset {
+margin-bottom: 20px;
+}
+.sfa-auth-form .x-container.x-field-textarea.x-field {
+    height: 189px;
+}
+.sfa-auth-form input.x-input-el.x-form-field:focus, textarea.x-input-el.x-input-text:focus {
+    border: 3px solid #2e7fb7;
+}
+.sfa-auth-form .x-field-clearable .x-field-input {
+    padding-right: 0;
+}
+.sfa-auth-form .x-field-clearable .x-field-input input, .sfa-auth-form .x-field-clearable .x-field-input textarea {
+    padding-right: 10%;
+}
+
+
+
+
+
+/* Inside */
+
+.x-dock-body .x-toolbar-dark .x-title {
+   font-size: 40px;
+    color: #397390;
+}
+
+.x-layout-card .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
+    position: relative;
+    z-index: 999;
+    height: 90px;
+    margin-bottom: 20px;
+    border: none;
+    background: url(/resources/img/log-form_bg.jpg) repeat;
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.x-docked-left .x-dock-vertical  .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
+    background: none;
+    box-shadow: none;
+}
+.x-docked-left .contact {
+   color: #54a9d3;
+    font-size: 22px;
+}
+.x-docked-left .x-innerhtml {
+padding: 18px 15px !important;
+}
+
+.x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button {
+    color: #397390;
+    font-size: 24px;
+    background: none;
 }

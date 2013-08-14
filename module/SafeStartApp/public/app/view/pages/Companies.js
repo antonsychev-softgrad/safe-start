@@ -14,9 +14,9 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     config: {
         title: 'Companies',
         iconCls: 'team',
-
         styleHtmlContent: true,
         scrollable: true,
+        cls: 'inside',
 
         layout: {
             type: 'card',
