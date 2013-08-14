@@ -13,13 +13,14 @@ class WebPanelController extends RestController
 
         if (!$this->authService->hasIdentity()) {
             $mainMenu[] = 'Auth';
-            $mainMenu[] = 'Contact';
         } else {
             $userInfo = $this->authService->getStorage()->read()->toArray();
         }
 
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompaniesPage')) $mainMenu[] = 'Companies';
+
         $mainMenu[] = 'Contact';
+
         $this->answer = array(
             'mainMenu' => $mainMenu,
             'userInfo' => $userInfo

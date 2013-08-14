@@ -3,12 +3,10 @@ Ext.define('SafeStartApp.store.mixins.FilterByField', {
     filterStoreDataBySearchFiled: function(store, searchField, recordField) {
         var value = searchField.getValue();
         store.clearFilter(!!value);
-        console.log(value);
         if (value) {
             var searches = value.split(','),
                 regexps = [],
                 i, regex;
-
             //loop them all
             for (i = 0; i < searches.length; i++) {
                 //if it is nothing, continue
