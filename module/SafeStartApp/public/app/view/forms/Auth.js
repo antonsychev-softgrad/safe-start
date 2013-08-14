@@ -23,9 +23,9 @@ Ext.define('SafeStartApp.view.forms.Auth', {
                 items: [
 
                     {
-                        name: 'username',
+                        name: 'identity',
                         xtype: 'textfield',
-                        label: 'Name',
+                        label: 'Name / Email',
                         required: true,
                         allowBlank:false
                     },
