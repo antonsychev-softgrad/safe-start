@@ -188,6 +188,7 @@ return array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
+            'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
         )
     ),
     'session' => array(

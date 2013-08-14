@@ -37,7 +37,7 @@ class UserController extends RestController
         $adapter->setCredentialValue($password);
         $result = $this->authService->authenticate();
 
-        $user_rep = $this->em->getRepository('SafeStartApi\Entity\User');
+        $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
 
         $authCode = $result->getCode();
         $userInfo = '';
@@ -46,7 +46,7 @@ class UserController extends RestController
         switch ($authCode) {
             case Result::SUCCESS:
                 $errorMessage = '';
-                $user = $user_rep->findOneByUsername($username);
+                $user = $userRep->findOneByUsername($username);
                 if($user) {
                     $userInfo = $user->toArray();
                 }
