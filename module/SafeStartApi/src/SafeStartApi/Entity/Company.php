@@ -101,7 +101,7 @@ class Company extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="deleted", nullable=true)
      */
-    protected $deleted;
+    protected $deleted = 0;
 
     /**
      * Get id
