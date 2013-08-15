@@ -1,4 +1,4 @@
-text-sh/**
+/*text-sh**
  * @class Global_CSS
  * Global CSS variables and mixins of Sencha Touch's Default Theme.
  */
@@ -1505,7 +1505,8 @@ input, textarea {
 /* line 51, /Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/blueprint/stylesheets/blueprint/_typography.scss */
 .x-html h1, .x-html h2, .x-html h3, .x-html h4, .x-html h5, .x-html h6 {
   font-weight: normal;
-  color: #222222;
+    text-align: center;
+  color: #565555;
 }
 /* line 52, /Library/Ruby/Gems/1.8/gems/compass-0.12.2/frameworks/blueprint/stylesheets/blueprint/_typography.scss */
 .x-html h1 img, .x-html h2 img, .x-html h3 img, .x-html h4 img, .x-html h5 img, .x-html h6 img {
@@ -3732,7 +3733,7 @@ body.x-desktop {
 
 @font-face {
     font-family: HelveticaNeueLTStd; /* Имя шрифта */
-    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.ttf); /* Путь к файлу со шрифтом */
+    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.otf); /* Путь к файлу со шрифтом */
 }
 /* line 1, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 html, body {
@@ -5402,7 +5403,7 @@ color: #577990;
   border-radius: 0.3em;
   -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0 0.1em 0 inset, rgba(0, 0, 0, 0.5) 0 -0.1em 0 inset, rgba(0, 0, 0, 0.5) 0.1em 0 0 inset, rgba(0, 0, 0, 0.5) -0.1em 0 0 inset, rgba(0, 0, 0, 0.5) 0 0.15em 0.4em inset;
   -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0.1em 0 inset, rgba(0, 0, 0, 0.5) 0 -0.1em 0 inset, rgba(0, 0, 0, 0.5) 0.1em 0 0 inset, rgba(0, 0, 0, 0.5) -0.1em 0 0 inset, rgba(0, 0, 0, 0.5) 0 0.15em 0.4em inset;
-  box-shadow: rgba(0, 0, 0, 0.5) 0 0.1em 0 inset, rgba(0, 0, 0, 0.5) 0 -0.1em 0 inset, rgba(0, 0, 0, 0.5) 0.1em 0 0 inset, rgba(0, 0, 0, 0.5) -0.1em 0 0 inset, rgba(0, 0, 0, 0.5) 0 0.15em 0.4em inset;
+  box-shadow: rgba(100, 100, 100, 0.5) 0 0.1em 0 inset, rgba(100, 100, 100, 0.5) 0 -0.1em 0 inset, rgba(100, 100, 100, 0.5) 0.1em 0 0 inset, rgba(100, 100, 100, 0.5) -0.1em 0 0 inset, rgba(100, 100, 100, 0.5) 0 0.15em 0.4em inset;
 }
 /* line 204, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
 .x-toolbar .x-form-label {
@@ -5423,7 +5424,7 @@ color: #577990;
 }
 /* line 220, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
 .x-toolbar .x-form-field:focus {
-  color: black;
+  color: #565555;
 }
 /* line 227, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Toolbar.scss */
 .x-toolbar .x-field-select .x-component-outer,
@@ -6950,13 +6951,14 @@ color: #577990;
   color: black;
 }
 
+
 /* main */
 
 div.logo {
     position: absolute;
     top: 50%;
     width: 96%;
-    margin: -325px 2% 0;
+    margin: -316px 2% 0;
     text-align: center;
 }
 .sfa-auth-form  .logo img {
@@ -7005,7 +7007,7 @@ border-radius: 10px;
 }
 
 .sfa-auth-form .x-inner.x-form-inner {
-    padding: 30px 60px;
+    padding: 24px 50px;
 }
 .sfa-auth-form .x-form-fieldset {
     margin: 0;
@@ -7020,7 +7022,6 @@ border: 1px solid #cacaca;
 -khtml-border-radius: 10px;
 -o-border-radius: 10px;
 border-radius: 10px;
-    font-family: HelveticaNeueLTStd, sans-serif;
 }
 .sfa-auth-form .x-container.x-field {
     height: 100px;
@@ -7050,7 +7051,7 @@ margin-bottom: 20px;
 
 .x-dock-body .x-toolbar-dark .x-title {
    font-size: 40px;
-    color: #397390;
+    color: #558FAC;
 }
 
 .x-layout-card .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
@@ -7070,7 +7071,7 @@ margin-bottom: 20px;
     box-shadow: none;
 }
 .x-docked-left .contact {
-   color: #54a9d3;
+   color: #558FAC;
     font-size: 22px;
 }
 .x-docked-left .x-innerhtml {
@@ -7078,7 +7079,57 @@ padding: 18px 15px !important;
 }
 
 .x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button {
-    color: #397390;
+    color: #558FAC;
     font-size: 24px;
     background: none;
+}
+
+.x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl {
+    background: #efefef;
+}
+.x-list-normal .x-list-item.x-item-selected.x-list-item-tpl, .x-list-normal .x-list-item.x-item-selected .x-dock-horizontal {
+    border-top-color: #DEDEDE;
+}
+/* левая колонка на внутренней странице */
+.x-container.x-list-normal.x-list.x-list-ungrouped.x-dock-item.x-docked-left {
+    background: none;
+}
+
+.card .x-form .x-scroll-container, .card .x-form-fieldset .x-form-fieldset-inner,
+.card .x-form-label{
+    background: none;
+}
+
+
+/* контент внутренней страницы */
+
+.card .x-button.x-button-confirm {
+   display: inline-block;
+    padding: 8px 30px 10px;
+    font-size: 22px;
+}
+
+.card  .x-unsized.x-form-fieldset-title .x-innerhtml {
+   padding-left: 30%;
+    font-size: 28px;
+}
+
+.card input, .card textarea {
+    font-size: 22px;
+    padding: 6px 30px 9px 7px;
+    color: #565555;
+    border: 1px solid #cacaca;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.card .x-field-clearable .x-field-input {
+    padding-right: 0;
+}
+
+.card .x-form-fieldset .x-form-fieldset-inner, .card .x-form-fieldset .x-field{
+    border: none;
 }
