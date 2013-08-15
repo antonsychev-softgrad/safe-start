@@ -68,19 +68,19 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         id: 'subscription',
                         items: [
                             {
-                                xtype: 'numberfield',
-                                value: 0,
+                                xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
+                                increment: 1,
                                 name: 'max_users',
                                 required: true,
                                 label: 'Number of users'
                             },
                             {
-                                xtype: 'numberfield',
-                                value: 0,
+                                xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
+                                increment: 1,
                                 name: 'max_vehicles',
                                 required: true,
                                 label: 'Number of vehicles'
@@ -112,6 +112,17 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         iconCls: 'delete',
                         handler: function() {
                             this.up('SafeStartCompanySettingsForm').fireEvent('delete-data', this.up('SafeStartCompanySettingsForm'));
+                        }
+                    },
+                    { xtype: 'spacer' },
+                    {
+                        xtype: 'button',
+                        name: 'manage',
+                        text: 'Manage',
+                        ui: 'action',
+                        iconCls: 'compose',
+                        handler: function() {
+                            this.up('SafeStartCompanySettingsForm').fireEvent('manage', this.up('SafeStartCompanySettingsForm'));
                         }
                     },
                     { xtype: 'spacer' },
