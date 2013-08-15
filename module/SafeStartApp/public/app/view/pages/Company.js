@@ -14,27 +14,12 @@ Ext.define('SafeStartApp.view.pages.Company', {
     config: {
         title: 'Company',
         iconCls: 'more',
-
         styleHtmlContent: true,
         scrollable: true,
-
-        layout: {
-            type: 'card',
-            animation: {
-                type: 'slide',
-                direction: 'left',
-                duration: 250
-            }
-        },
+        layout: 'hbox',
 
         items: [
-            {
-                cls: 'card',
-                xtype: 'panel',
-                name: 'company-info',
-                scrollable: true,
-                html: '<div><h2></h2></div>'
-            }
+
         ],
 
         listeners: {
@@ -56,63 +41,30 @@ Ext.define('SafeStartApp.view.pages.Company', {
         });
 
         this.vehiclesStore = Ext.create('SafeStartApp.store.Vehicles');
+        this.add(this.getVehiclesList());
 
-        this.add({
+        this.add(this.getInfoPanel());
+
+        this.alertsStore = Ext.create('SafeStartApp.store.AllAlerts');
+        this.add(this.getAlertsList());
+
+        this.disable();
+    },
+
+    getVehiclesList: function() {
+        return {
             xtype: 'list',
             name: 'vehicles',
             itemTpl: '<div class="contact">{title}</div>',
-            docked: 'left',
-            width: 300,
+            minWidth: 150,
+            maxWidth: 300,
+            flex:1,
             store: this.vehiclesStore,
             items: [
                 {
                     xtype: 'toolbar',
                     docked: 'top',
-
                     items: [
-                        { xtype: 'spacer' },
-                        {
-                            xtype: 'searchfield',
-                            placeHolder: 'Search...',
-                            listeners: {
-                                scope: this,
-                                clearicontap: function () {
-                                    self.vehiclesStore.clearFilter();
-                                },
-                                keyup: function (field) {
-                                   return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
-                                }
-                            }
-                        },
-                        { xtype: 'spacer' },
-                        {
-                            xtype: 'button',
-                            name: 'reload',
-                            ui: 'action',
-                            iconCls: 'refresh',
-                            handler: function() {
-                                this.up('list[name=vehicles]').getStore().loadData();
-                            }
-                        }
-                    ]
-                }
-            ]
-        });
-
-        this.add({
-            xtype: 'list',
-            name: 'alerts',
-            itemTpl: '<div class="contact">{title}</div>',
-            docked: 'right',
-            width: 300,
-            store: this.vehiclesStore,
-            items: [
-                {
-                    xtype: 'toolbar',
-                    docked: 'top',
-
-                    items: [
-                        { xtype: 'spacer' },
                         {
                             xtype: 'searchfield',
                             placeHolder: 'Search...',
@@ -133,15 +85,48 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             ui: 'action',
                             iconCls: 'refresh',
                             handler: function() {
-                                this.up('list[name=alerts]').getStore().loadData();
+                                this.up('list[name=vehicles]').getStore().loadData();
                             }
                         }
                     ]
                 }
             ]
-        });
+        };
+    },
 
-        this.disable();
+    getInfoPanel: function() {
+        return {
+            cls: 'card',
+            xtype: 'panel',
+            name: 'company-info',
+            layout: 'card',
+            minWidth: 150,
+            flex: 2,
+            scrollable: true,
+            html: '<div><h2></h2></div>'
+        };
+    },
+
+    getAlertsList: function() {
+        return {
+            xtype: 'list',
+            name: 'alerts',
+            itemTpl: '<div class="contact">{title}</div>',
+            minWidth: 150,
+            maxWidth: 300,
+            flex:3,
+            store: this.alertsStore,
+            items: [
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+                    title: 'Alerts',
+                    items: [
+
+                    ]
+                }
+            ]
+        }
     },
 
     loadData: function() {
