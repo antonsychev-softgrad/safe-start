@@ -22,6 +22,9 @@ Ext.define('SafeStartApp.controller.Companies', {
 
         refs: {
             main: 'SafeStartCompaniesPage',
+            pages: 'SafeStartMainView',
+            companyPage: 'SafeStartCompanyPage',
+            usersPage: 'SafeStartUsersPage',
             navMain: 'SafeStartCompaniesPage > list[name=companies]',
             companyInfoPanel: 'SafeStartCompaniesPage > panel[name=company-info]',
             addCompanyButton: 'SafeStartMainToolbar > button[action=add-company]'
@@ -36,7 +39,9 @@ Ext.define('SafeStartApp.controller.Companies', {
         if (record.get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(record.get('expiry_date') * 1000));
         this.currentCompanyForm.down('button[name=delete-data]').show();
         this.currentCompanyForm.down('button[name=send-credentials]').show();
+        this.currentCompanyForm.down('button[name=manage]').show();
         this.currentCompanyForm.down('button[name=reset-data]').hide();
+        SafeStartApp.companyModel = record;
     },
 
     addAction: function () {
@@ -50,6 +55,7 @@ Ext.define('SafeStartApp.controller.Companies', {
         this.currentCompanyForm.down('fieldset').down('fieldset').disable();
         this.currentCompanyForm.down('button[name=delete-data]').hide();
         this.currentCompanyForm.down('button[name=send-credentials]').hide();
+        this.currentCompanyForm.down('button[name=manage]').hide();
         this.currentCompanyForm.down('button[name=reset-data]').show();
     },
 
@@ -74,19 +80,29 @@ Ext.define('SafeStartApp.controller.Companies', {
     },
 
     deleteAction: function () {
-        //todo: show confirm dialog
         var self = this;
-        SafeStartApp.AJAX('admin/company/' + this.currentCompanyForm.getValues().id + '/delete', {}, function (result) {
-            self.getNavMain().getStore().loadData();
-            self.currentCompanyForm.reset();
-            self.currentCompanyForm.down('button[name=delete-data]').hide();
-            self.currentCompanyForm.down('button[name=send-credentials]').hide();
-            self.currentCompanyForm.down('button[name=reset-data]').show();
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function(){
+            SafeStartApp.AJAX('admin/company/' + self.currentCompanyForm.getValues().id + '/delete', {}, function (result) {
+                self.getNavMain().getStore().loadData();
+                self.currentCompanyForm.reset();
+                self.currentCompanyForm.down('button[name=delete-data]').hide();
+                self.currentCompanyForm.down('button[name=send-credentials]').hide();
+                self.currentCompanyForm.down('button[name=manage]').hide();
+                self.currentCompanyForm.down('button[name=reset-data]').show();
+                self.getCompanyPage().disable();
+                self.getUsersPage().disable();
+            });
         });
     },
 
     resetAction: function() {
         this.currentCompanyForm.reset();
+    },
+
+    openSelectedAction: function() {
+        this.getCompanyPage().enable();
+        this.getUsersPage().enable();
+        this.getPages().setActiveItem(1);
     },
 
     _createForm: function () {
@@ -99,6 +115,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             this.currentCompanyForm.addListener('send-credentials', this.sendCredentialsAction, this);
             this.currentCompanyForm.addListener('reset-data', this.resetAction, this);
             this.currentCompanyForm.addListener('delete-data', this.deleteAction, this);
+            this.currentCompanyForm.addListener('manage', this.openSelectedAction, this);
         }
     },
 
@@ -120,7 +137,12 @@ Ext.define('SafeStartApp.controller.Companies', {
     _reloadStore: function (companyId) {
         this.getNavMain().getStore().loadData();
         this.getNavMain().getStore().addListener('data-load-success', function () {
+            if (!companyId) return;
             this.currentCompanyForm.setRecord(this.getNavMain().getStore().getById(companyId));
+            SafeStartApp.companyModel = this.getNavMain().getStore().getById(companyId);
+            if (!this.getNavMain().getStore().getById(companyId).get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
+            if (this.getNavMain().getStore().getById(companyId).get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(this.getNavMain().getStore().getById(companyId).get('expiry_date') * 1000));
+            self.currentCompanyForm.down('button[name=manage]').show();
         }, this);
 
     }

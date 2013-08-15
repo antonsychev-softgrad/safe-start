@@ -15,6 +15,9 @@ SafeStartApp = SafeStartApp || {
 };
 
 Ext.apply(SafeStartApp,  {
+    userModel: {},
+    companyModel: {},
+
     AJAX: function(url, data, successCalBack, failureCalBack) {
         var self = this;
         var meta = {
@@ -73,8 +76,6 @@ Ext.apply(SafeStartApp,  {
         Ext.Msg.alert("Info", msg, Ext.emptyFn());
     },
 
-    userModel: {},
-
     loadMainMenu: function() {
         this.AJAX('web-panel/getMainMenu', {}, function(result) {
             SafeStartApp.setViewPort(result.mainMenu || null);
@@ -119,13 +120,18 @@ Ext.application({
     views: [
         'Main',
         'pages.Auth',
-        'pages.Contact'
+        'pages.Contact',
+        'pages.Companies',
+        'pages.Company',
+        'pages.Users'
     ],
 
     controllers: [
         'Main',
         'Auth',
-        'Companies'
+        'Companies',
+        'Users',
+        'Company'
     ],
 
     icon: {
