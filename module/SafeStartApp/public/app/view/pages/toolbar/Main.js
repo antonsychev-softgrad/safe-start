@@ -7,6 +7,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
     ],
 
     config: {
+        cls: 'sfa-main-toolbar',
         scrollable: {
             direction: 'horizontal',
             indicators: false

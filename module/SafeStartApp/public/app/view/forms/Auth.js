@@ -6,7 +6,7 @@ Ext.define('SafeStartApp.view.forms.Auth', {
         floating: false,
         centered: true,
         cls: 'sfa-auth-form',
-        height: 385,
+        height: 405,
         width: 480,
         scrollable: false,
         items: [

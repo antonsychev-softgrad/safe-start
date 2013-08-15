@@ -50,6 +50,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                 minWidth: 150,
                 maxWidth: 300,
                 flex: 1,
+                cls: 'sfa-left-container',
                 store: this.companiesStore,
                 items: [
                 {
@@ -75,6 +76,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                             xtype: 'button',
                             name: 'reload',
                             ui: 'action',
+                            cls:'sfa-search-reload',
                             iconCls: 'refresh',
                             handler: function() {
                                 this.up('list[name=companies]').getStore().loadData();
@@ -88,7 +90,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
 
     getInfoPanel: function() {
         return  {
-            cls: 'card',
+            cls: 'sfa-info-container',
             xtype: 'panel',
             layout: 'card',
             flex: 2,
