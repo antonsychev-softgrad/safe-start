@@ -80,7 +80,16 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                                 }
                             }
                         },
-                        { xtype: 'spacer' }
+                        { xtype: 'spacer' },
+                        {
+                            xtype: 'button',
+                            name: 'reload',
+                            ui: 'action',
+                            iconCls: 'refresh',
+                            handler: function() {
+                                this.up('list[name=companies]').getStore().loadData();
+                            }
+                        }
                     ]
                 }
             ]

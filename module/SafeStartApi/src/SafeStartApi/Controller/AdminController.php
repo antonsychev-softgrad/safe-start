@@ -14,7 +14,7 @@ class AdminController extends AdminAccessRestController
         */
         $this->answer = array();
 
-        $query = $this->em->createQuery('SELECT c FROM SafeStartApi\Entity\Company c');
+        $query = $this->em->createQuery('SELECT c FROM SafeStartApi\Entity\Company c WHERE c.deleted = 0');
         $items = $query->getResult();
 
         foreach ($items as $item) {
@@ -77,19 +77,38 @@ class AdminController extends AdminAccessRestController
 
         $this->answer = array(
             'done' => true,
+            'companyId' => $company->getId(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
 
     }
 
-    public function sendCredentailsAction()
+    public function sendCredentialsAction()
     {
         $companyId = (int)$this->params('id');
+
     }
 
     public function deleteCompanyAction()
     {
         $companyId = (int)$this->params('id');
+        if ($companyId) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            }
+        }
+        $company->setDeleted(1);
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }

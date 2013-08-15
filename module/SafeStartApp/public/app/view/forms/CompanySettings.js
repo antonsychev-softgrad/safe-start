@@ -105,15 +105,20 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                 docked: 'bottom',
                 items: [
                     {
+                        xtype: 'button',
+                        name: 'delete-data',
                         text: 'Delete',
-                        ui: 'confirm',
+                        ui: 'decline',
+                        iconCls: 'delete',
                         handler: function() {
                             this.up('SafeStartCompanySettingsForm').fireEvent('delete-data', this.up('SafeStartCompanySettingsForm'));
                         }
                     },
                     { xtype: 'spacer' },
                     {
+                        xtype: 'button',
                         text: 'Reset',
+                        name: 'reset-data',
                         handler: function() {
                             this.up('SafeStartCompanySettingsForm').fireEvent('reset-data', this.up('SafeStartCompanySettingsForm'));
                         }
@@ -121,8 +126,8 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     {
                         xtype: 'button',
                         text: 'Send Credentials',
-                        action: 'save-company',
-                        ui: 'confirm',
+                        name: 'send-credentials',
+                        ui: 'action',
                         handler: function() {
                             this.up('SafeStartCompanySettingsForm').fireEvent('send-credentials', this.up('SafeStartCompanySettingsForm'));
                         }
@@ -130,7 +135,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     {
                         xtype: 'button',
                         text: 'Save',
-                        action: 'save-company',
+                        name: 'save-data',
                         ui: 'confirm',
                         handler: function() {
                             this.up('SafeStartCompanySettingsForm').fireEvent('save-data', this.up('SafeStartCompanySettingsForm'));
