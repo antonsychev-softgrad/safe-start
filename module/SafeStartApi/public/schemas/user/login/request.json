@@ -23,7 +23,7 @@
             "type": "object",
             "properties": {
                 "username": {
-                    "description": "Username",
+                    "description": "Username or Email",
                     "type": "string",
                     "required": true
                 },

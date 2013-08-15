@@ -8,15 +8,15 @@ Ext.define('SafeStartApp.controller.mixins.Form', {
         Ext.iterate(formFields, function (key, val) {
             if (errors.getByField(key)[0]) {
                 validateMessage += errors.getByField(key)[0].getMessage() + "<br>";
-                val.addCls('x-invalid');
+              //  val.addCls('x-invalid');
             } else {
-                val.removeCls('x-invalid');
+             //   val.removeCls('x-invalid');
             }
         });
         if (errors.isValid()) {
            return true;
         } else {
-            Ext.Msg.alert(title || "Please fill required fields.", validateMessage, Ext.emptyFn());
+            Ext.Msg.alert(title || "Please check required fields.", validateMessage, Ext.emptyFn());
             return false;
         }
     }

@@ -83,6 +83,19 @@ return array(
                             ),
                         ),
                     ),
+                    'update-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/:id/company/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'updateCompany',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -170,7 +183,6 @@ return array(
             'orm_default' => array(
                 'object_manager' => 'Doctrine\ORM\EntityManager',
                 'identity_class' => 'SafeStartApi\Entity\User',
-                'identity_property' => 'username',
                 'credential_property' => 'password',
                 'credential_callable' => 'SafeStartApi\Entity\User::verifyPassword'
             ),
@@ -188,6 +200,7 @@ return array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
+            'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
         )
     ),
     'session' => array(

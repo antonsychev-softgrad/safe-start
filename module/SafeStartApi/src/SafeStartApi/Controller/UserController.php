@@ -10,9 +10,6 @@ use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends RestController
 {
-    const USER_NOT_FOUND = 4011;
-    const INVALID_CREDENTIAL = 4001;
-    const USER_ALREADY_LOGGED_IN = 4002;
 
     public function loginAction()
     {
@@ -20,7 +17,7 @@ class UserController extends RestController
 
         if ($this->authService->hasIdentity()) {
             $userInfo = $this->authService->getStorage()->read();
-            $errorCode = static::USER_ALREADY_LOGGED_IN;
+            $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
             $this->answer = array(
                 'authToken' => $this->sessionManager->getId(),
                 'userInfo' => $userInfo->toArray(),
@@ -29,15 +26,29 @@ class UserController extends RestController
             return $this->AnswerPlugin()->format($this->answer, $errorCode);
         }
 
-        $username = isset($this->data->username) ? $this->data->username : '';
+        $identity = isset($this->data->username) ? $this->data->username : '';
         $password = isset($this->data->password) ? $this->data->password : '';
 
         $adapter = $this->authService->getAdapter();
-        $adapter->setIdentityValue($username);
+
+        //todo: У меня не подключается плагин
+      /*  if ($this->ValidationPlugin()->isValidEmail($identity)) {
+            $identityProperty = 'email';
+        } else {*/
+            $identityProperty = 'username';
+   /*     }*/
+
+        $adapterOptions = $this->moduleConfig['doctrine']['authentication']['orm_default'];
+        $adapterOptions['object_manager'] = $this->getServiceLocator()->get($adapterOptions['object_manager']);
+        $adapterOptions['identityProperty'] = $identityProperty;
+
+        $adapter->setOptions($adapterOptions);
+
+        $adapter->setIdentityValue($identityProperty);
         $adapter->setCredentialValue($password);
         $result = $this->authService->authenticate();
 
-        $user_rep = $this->em->getRepository('SafeStartApi\Entity\User');
+        $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
 
         $authCode = $result->getCode();
         $userInfo = '';
@@ -46,24 +57,27 @@ class UserController extends RestController
         switch ($authCode) {
             case Result::SUCCESS:
                 $errorMessage = '';
-                $user = $user_rep->findOneByUsername($username);
+                $user = $userRep->findOneBy(array($identityProperty => $identity));
                 if($user) {
                     $userInfo = $user->toArray();
+                    $user->setLastLogin(new \DateTime());
+                    $this->em->flush();
+                    $userData = new \stdClass();
+                    $userData->user = $userInfo;
+                    $this->authService->getStorage()->write($user);
+                    $this->authToken = $this->sessionManager->getId();
+                } else {
+                    $errorMessage = 'Identity not found';
+                    $errorCode = RestController::USER_NOT_FOUND_ERROR;
                 }
-                $user->setLastLogin(new \DateTime());
-                $this->em->flush();
-                $userData = new \stdClass();
-                $userData->user = $userInfo;
-                $this->authService->getStorage()->write($user);
-                $this->authToken = $this->sessionManager->getId();
                 break;
             case Result::FAILURE_IDENTITY_NOT_FOUND:
                 $errorMessage = 'Identity not found';
-                $errorCode = self::USER_NOT_FOUND;
+                $errorCode = RestController::USER_NOT_FOUND_ERROR;
                 break;
             case Result::FAILURE_CREDENTIAL_INVALID:
                 $errorMessage = 'Invalid credential';
-                $errorCode = self::INVALID_CREDENTIAL;
+                $errorCode = RestController::INVALID_CREDENTIAL_ERROR;
                 break;
             default:
                 $errorMessage = '';
