@@ -44,7 +44,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Users');
         this.add({
-            xtype: 'SafeStartCompanyToolbar',
+            xtype: 'SafeStartUsersToolbar',
             docked: 'top'
         });
 

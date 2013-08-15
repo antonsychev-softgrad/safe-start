@@ -51,7 +51,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Company');
         this.add({
-            xtype: 'SafeStartMainToolbar',
+            xtype: 'SafeStartCompanyToolbar',
             docked: 'top'
         });
 
@@ -99,11 +99,54 @@ Ext.define('SafeStartApp.view.pages.Company', {
             ]
         });
 
+        this.add({
+            xtype: 'list',
+            name: 'alerts',
+            itemTpl: '<div class="contact">{title}</div>',
+            docked: 'right',
+            width: 300,
+            store: this.vehiclesStore,
+            items: [
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+
+                    items: [
+                        { xtype: 'spacer' },
+                        {
+                            xtype: 'searchfield',
+                            placeHolder: 'Search...',
+                            listeners: {
+                                scope: this,
+                                clearicontap: function () {
+                                    self.vehiclesStore.clearFilter();
+                                },
+                                keyup: function (field) {
+                                    return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
+                                }
+                            }
+                        },
+                        { xtype: 'spacer' },
+                        {
+                            xtype: 'button',
+                            name: 'reload',
+                            ui: 'action',
+                            iconCls: 'refresh',
+                            handler: function() {
+                                this.up('list[name=alerts]').getStore().loadData();
+                            }
+                        }
+                    ]
+                }
+            ]
+        });
+
         this.disable();
     },
 
     loadData: function() {
         this.vehiclesStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
+        this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
         this.vehiclesStore.loadData();
     }
 
