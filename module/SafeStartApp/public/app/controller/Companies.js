@@ -64,6 +64,12 @@ Ext.define('SafeStartApp.controller.Companies', {
         }
     },
 
+    sendCredentialsAction: function() {
+        SafeStartApp.AJAX('admin/'+this.currentCompanyForm.getValues().id+'/company/send-credentials', {}, function (result) {
+
+        });
+    },
+
     _createForm: function() {
         if (!this.currentCompanyForm) {
             this.currentCompanyForm = Ext.create('SafeStartApp.view.forms.CompanySettings');
@@ -71,6 +77,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             this.getCompanyInfoPanel().setHtml('');
             this.getCompanyInfoPanel().add(this.currentCompanyForm);
             this.currentCompanyForm.addListener('save-data', this.saveAction, this);
+            this.currentCompanyForm.addListener('send-credentials', this.sendCredentialsAction, this);
         }
     }
 

@@ -3,14 +3,13 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartCompanySettingsForm',
     config: {
-        height: 800,
+        height: 640,
         maxWidth: 600,
         scrollable: false,
         items: [
             {
                 xtype: 'fieldset',
                 title: 'Company Settings',
-                instructions: 'You chan change company settings info above.',
                 items: [
                     {
                         xtype: 'hiddenfield',
@@ -102,13 +101,42 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                 ]
             },
             {
-                xtype: 'button',
-                text: 'Save',
-                action: 'save-company',
-                ui: 'confirm',
-                handler: function() {
-                    this.up('SafeStartCompanySettingsForm').fireEvent('save-data', this.up('SafeStartCompanySettingsForm'));
-                }
+                xtype: 'toolbar',
+                docked: 'bottom',
+                items: [
+                    {
+                        text: 'Delete',
+                        ui: 'confirm',
+                        handler: function() {
+                            this.up('SafeStartCompanySettingsForm').fireEvent('delete-data', this.up('SafeStartCompanySettingsForm'));
+                        }
+                    },
+                    { xtype: 'spacer' },
+                    {
+                        text: 'Reset',
+                        handler: function() {
+                            this.up('SafeStartCompanySettingsForm').fireEvent('reset-data', this.up('SafeStartCompanySettingsForm'));
+                        }
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Send Credentials',
+                        action: 'save-company',
+                        ui: 'confirm',
+                        handler: function() {
+                            this.up('SafeStartCompanySettingsForm').fireEvent('send-credentials', this.up('SafeStartCompanySettingsForm'));
+                        }
+                    },
+                    {
+                        xtype: 'button',
+                        text: 'Save',
+                        action: 'save-company',
+                        ui: 'confirm',
+                        handler: function() {
+                            this.up('SafeStartCompanySettingsForm').fireEvent('save-data', this.up('SafeStartCompanySettingsForm'));
+                        }
+                    }
+                ]
             }
         ]
     }
