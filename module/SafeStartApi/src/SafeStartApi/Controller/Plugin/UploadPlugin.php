@@ -209,13 +209,13 @@ class UploadPlugin extends AbstractPlugin
         $user = $this->options['user_dirs'];
         $user_folder = '';
         if(is_integer($user)) {
-            $user_folder = ($user > 0) ? "{$user}/" : '';
+            $user_folder = ($user > 0) ? "{$user}" : '';
         } elseif (is_string($user)) {
-            $user_folder = (strlen($user) > 0) ? "{$user}/" : '';
+            $user_folder = (strlen($user) > 0) ? "{$user}" : '';
         } elseif (is_array($user)) {
-            $user_folder = isset($user['id']) ? "{$user[id]}/" : '';
+            $user_folder = isset($user['id']) ? "{$user[id]}" : '';
         } elseif($user instanceof SafeStartApi\Entity\User) {
-            $user_folder = isset($user->id) ? "".$user->getId()."/" : '';
+            $user_folder = isset($user->id) ? "".$user->getId() : '';
         } else {
             return '';
         }
