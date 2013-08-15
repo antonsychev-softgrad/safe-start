@@ -7078,19 +7078,29 @@ margin-bottom: 20px;
 padding: 18px 15px !important;
 }
 
-.x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button {
+.card .x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button {
     color: #558FAC;
     font-size: 24px;
     background: none;
 }
-
-.x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl {
+.card .x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button span {
+   font-size: 24px;
+}
+form.comp-settings  .x-button {
+   background-position: 0 0 !important;
+}
+form.comp-settings .x-toolbar {
+   background: none;
+}
+.card .x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl {
     background: none;
     color: red;
 }
-.x-list-normal .x-list-item.x-item-selected.x-list-item-tpl, .x-list-normal .x-list-item.x-item-selected .x-dock-horizontal {
+.card .x-list-normal .x-list-item.x-item-selected.x-list-item-tpl, .x-list-normal .x-list-item.x-item-selected .x-dock-horizontal {
     border-top-color: #DEDEDE;
 }
+
+
 /* левая колонка на внутренней странице */
 .x-container.x-list-normal.x-list.x-list-ungrouped.x-dock-item.x-docked-left {
     background: none;
@@ -7106,7 +7116,7 @@ padding: 18px 15px !important;
 
 .card .x-button {
     display: inline-block;
-    padding: 8px 24px 10px;
+    padding: 4px 10px 6px;
     margin: 0 5px;
     border: none !important;
     font-size: 22px;
@@ -7140,13 +7150,15 @@ padding: 18px 15px !important;
 .card .x-field-clearable .x-field-input {
     padding-right: 0;
 }
-
+.card .x-iconalign-left .x-button-label {
+    margin-left: 0;
+}
 .card .x-form-fieldset .x-form-fieldset-inner, .card .x-form-fieldset .x-field{
     border: none;
 }
 
 .card  form {
-    padding: 10px 10px 0 1px;
+    padding: 10px 10px 25px 1px;
     margin-left: 20px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;

@@ -156,6 +156,7 @@ return array(
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
+            'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
         ),
     ),
     'view_manager' => array(
@@ -295,6 +296,7 @@ return array(
         ),
         'datePicker' => array(
             'id' => 7,
+            'default' => ''
         )
     ),
     'mail' => array(

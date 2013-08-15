@@ -76,7 +76,7 @@ class UserControllerTest extends HttpControllerTestCase
         $schema = Bootstrap::getJsonSchemaResponse('user/login');
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
-        $this->assertTrue($data->meta->errorCode === \SafeStartApi\Controller\UserController::USER_ALREADY_LOGGED_IN);
+        $this->assertTrue($data->meta->errorCode === \SafeStartApi\Base\RestController::USER_ALREADY_LOGGED_IN_ERROR);
 
     }
 }

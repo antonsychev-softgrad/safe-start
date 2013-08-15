@@ -3,9 +3,10 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartCompanySettingsForm',
     config: {
-        height: 810,
+        height: 820,
         maxWidth: 600,
         scrollable: false,
+        cls: 'comp-settings',
         items: [
             {
                 xtype: 'fieldset',
