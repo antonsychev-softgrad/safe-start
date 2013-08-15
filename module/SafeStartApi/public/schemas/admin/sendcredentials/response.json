@@ -1,0 +1,40 @@
+{
+    "description": "User login response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "status": {
+                    "description": " HTTP status code",
+                    "type": "integer",
+                    "required": true
+                },
+                "errorCode": {
+                    "description": "If errorCode == 0 auth success",
+                    "type": "number",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "description": "Response data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "done": {
+                    "description": "Mail send",
+                    "type": "boolean",
+                    "required": true
+                },
+                "companyId": {
+                    "description": "Company's ID",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        }
+    }
+}

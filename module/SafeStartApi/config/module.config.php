@@ -305,7 +305,7 @@ return array(
                 'host' => 'smtp.gmail.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'test21141@gmail.org',
+                    'username' => 'test21141@gmail.com',
                     'password' => 'test211411',
                     'ssl' => 'tls'
                 ),

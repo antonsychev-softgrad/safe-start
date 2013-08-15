@@ -26,10 +26,7 @@ class AdminController extends AdminAccessRestController
 
     public function updateCompanyAction()
     {
-        /*
-          todo: add json schema
-          if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
-        */
+        if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
 
         $companyId = (int)$this->params('id');
         if ($companyId) {
@@ -66,7 +63,7 @@ class AdminController extends AdminAccessRestController
             $user = new \SafeStartApi\Entity\User();
             $user->setEmail($this->data->email);
             $user->setFirstName($this->data->firstName);
-            $user->setUsername($this->data->email);
+            $user->setUsername($this->data->firstName);
             $user->setRole('companyAdmin');
             $this->em->persist($user);
         }
@@ -86,8 +83,43 @@ class AdminController extends AdminAccessRestController
 
     public function sendCredentialsAction()
     {
+        if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
+
         $companyId = (int)$this->params('id');
 
+        if ($companyId) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            }
+        } else {
+            $this->_showBadRequest();
+        }
+
+        $user = $company->getAdmin();
+        $password = md5($user->getId() . time() . rand());
+        $user->setPlainPassword($password);
+        $this->em->flush();
+
+        $this->MailPlugin()->send(
+            'Credentials',
+            $user->getEmail(),
+            'creds.phtml',
+            array(
+                'username' => $user->getUsername(),
+                'password' => $password,
+            )
+        );
+
+        $this->answer = array(
+            'done' => true,
+            'companyId' => $company->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 
     public function deleteCompanyAction()
