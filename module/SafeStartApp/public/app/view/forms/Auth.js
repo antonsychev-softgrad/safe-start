@@ -6,16 +6,14 @@ Ext.define('SafeStartApp.view.forms.Auth', {
         floating: false,
         centered: true,
         cls: 'sfa-auth-form',
-        height: 384,
-        width: 450,
+        height: 385,
+        width: 480,
         scrollable: false,
-
         items: [
-
             {
                 xtype: 'fieldset',
-                title: 'Login',
-                //instructions: 'If you do not have password please contact us',
+                title: 'Auth',
+                instructions: 'If you do not have password please contact us',
                 items: [
 
                     {
@@ -36,7 +34,7 @@ Ext.define('SafeStartApp.view.forms.Auth', {
             },
             {
                 xtype: 'button',
-                text: 'Enter',
+                text: 'Sign In',
                 action: 'login',
                 ui: 'confirm'
             }

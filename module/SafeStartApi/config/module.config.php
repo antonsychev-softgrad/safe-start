@@ -86,13 +86,39 @@ return array(
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/admin/:id/company/update',
+                            'route' => '/admin/company/:id/update',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin',
                                 'action' => 'updateCompany',
+                            ),
+                        ),
+                    ),
+                    'delete-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/company/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'deleteCompany',
+                            ),
+                        ),
+                    ),
+                    'credentials-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/company/:id/send-credentials',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'sendCredentials',
                             ),
                         ),
                     ),
