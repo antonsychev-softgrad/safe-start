@@ -28,6 +28,45 @@
                     "type": "integer",
                     "reuired": true
                 },
+                "groups": {
+                    "description": "Checklist groups",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Checklist Group",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "id": {
+                                "description": "Group id",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "fields": {
+                                "description": "Fields with data",
+                                "type": "array",
+                                "required": true,
+                                "items": {
+                                    "description": "Field",
+                                    "type": "object",
+                                    "required": false,
+                                    "properties": {
+                                        "id": {
+                                            "description": "Field id",
+                                            "type": "integer",
+                                            "required": true
+                                        },
+                                        "value": {
+                                            "description": "Field value",
+                                            "type": "string",
+                                            "required": false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "answers": {
                     "description": "Fields with data",
                     "type": "array",
@@ -50,28 +89,6 @@
                             "answerId": {
                                 "description": "Answer ID",
                                 "type": "integer",
-                                "required": false
-                            }
-                        }
-                    }
-                },
-                "alerts": {
-                    "description": "Report alerts",
-                    "type": "array",
-                    "required": true,
-                    "items": {
-                        "description": "Field",
-                        "type": "object",
-                        "required": false,
-                        "properties": {
-                            "fieldId": {
-                                "description": "Field id",
-                                "type": "integer",
-                                "required": true
-                            },
-                            "answerValue": {
-                                "description": "Answer value",
-                                "type": "string",
                                 "required": false
                             }
                         }
