@@ -18,24 +18,18 @@ Ext.define('SafeStartApp.view.pages.Users', {
         styleHtmlContent: true,
         scrollable: true,
 
-        layout: {
-            type: 'card',
-            animation: {
-                type: 'slide',
-                direction: 'left',
-                duration: 250
-            }
-        },
+        layout: 'hbox',
 
         items: [
-            {
-                cls: 'card',
-                xtype: 'panel',
-                name: 'company-info',
-                scrollable: true,
-                html: '<div><h2></h2></div>'
+
+        ],
+
+        listeners: {
+            scope: this,
+            show: function(page) {
+                page.loadData();
             }
-        ]
+        }
     },
 
     initialize: function () {
@@ -50,12 +44,18 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
         this.usersStore = Ext.create('SafeStartApp.store.Users');
 
-        this.add({
+        this.add(this.getUsersList());
+
+        this.disable();
+    },
+
+    getUsersList: function() {
+        return {
             xtype: 'list',
             name: 'users',
             itemTpl: '<div class="contact">{title}</div>',
-            docked: 'left',
-            width: 300,
+            maxWidth: 300,
+            minWidth: 150,
             store: this.usersStore,
             items: [
                 {
@@ -73,7 +73,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                                     self.usersStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                   return self.filterStoreDataBySearchFiled(self.usersStore, field, 'title');
+                                    return self.filterStoreDataBySearchFiled(self.usersStore, field, 'title');
                                 }
                             }
                         },
@@ -90,8 +90,25 @@ Ext.define('SafeStartApp.view.pages.Users', {
                     ]
                 }
             ]
-        });
+        };
+    },
 
-        this.disable();
+    getInfoPanel: function() {
+        return {
+            cls: 'card',
+            xtype: 'panel',
+            name: 'company-info',
+            layout: 'card',
+            minWidth: 150,
+            flex: 2,
+            scrollable: true,
+            html: '<div><h2></h2></div>'
+        };
+    },
+
+    loadData: function() {
+        this.down('SafeStartUsersToolbar').setTitle(SafeStartApp.companyModel.get('title')+': '+'users');
+        this.usersStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
+        this.usersStore.loadData();
     }
 });

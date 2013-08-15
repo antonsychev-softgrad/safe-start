@@ -15,27 +15,11 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     config: {
         title: 'Companies',
         iconCls: 'team',
-
         styleHtmlContent: true,
         scrollable: true,
-
-        layout: {
-            type: 'card',
-            animation: {
-                type: 'slide',
-                direction: 'left',
-                duration: 250
-            }
-        },
-
+        layout: 'hbox',
         items: [
-            {
-                cls: 'card',
-                xtype: 'panel',
-                name: 'company-info',
-                scrollable: true,
-                html: '<div><h2>Select company for see info</h2></div>'
-            }
+
         ]
     },
 
@@ -53,20 +37,26 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         this.companiesStore = Ext.create('SafeStartApp.store.Companies');
         this.companiesStore.loadData();
 
-        this.add({
+        this.add(this.getCompanyList());
+
+        this.add(this.getInfoPanel());
+    },
+
+    getCompanyList: function() {
+        return {
             xtype: 'list',
-            name: 'companies',
-            itemTpl: '<div class="contact">{title}</div>',
-            docked: 'left',
-            width: 300,
-            store: this.companiesStore,
-            items: [
+                name: 'companies',
+                itemTpl: '<div class="contact">{title}</div>',
+                minWidth: 150,
+                maxWidth: 300,
+                flex: 1,
+                store: this.companiesStore,
+                items: [
                 {
                     xtype: 'toolbar',
                     docked: 'top',
 
                     items: [
-                        { xtype: 'spacer' },
                         {
                             xtype: 'searchfield',
                             placeHolder: 'Search...',
@@ -76,7 +66,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                                     self.companiesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                   return self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
+                                    return self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
                                 }
                             }
                         },
@@ -93,6 +83,19 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                     ]
                 }
             ]
-        });
+        };
+    },
+
+    getInfoPanel: function() {
+        return  {
+            cls: 'card',
+            xtype: 'panel',
+            layout: 'card',
+            flex: 2,
+            minWidth: 150,
+            name: 'company-info',
+            scrollable: true,
+            html: '<div><h2>Select company for see info</h2></div>'
+        };
     }
 });
