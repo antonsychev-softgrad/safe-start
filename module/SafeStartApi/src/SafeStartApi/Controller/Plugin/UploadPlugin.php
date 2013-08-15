@@ -2,13 +2,19 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Role\GenericRole as Role;
+use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 use SafeStartApi\Model\ImageProcessor;
 use SafeStartApi\Base\Entity;
-
 use Zend\Validator;
 
 class UploadPlugin extends AbstractPlugin
 {
+    const THUMBNAIL_FULL = '1024x768';
+    const THUMBNAIL_MEDIUM = '320x220';
+    const THUMBNAIL_SMALL = '70x70';
+
     protected $options;
 
     // PHP File Upload error message codes:
@@ -46,7 +52,7 @@ class UploadPlugin extends AbstractPlugin
             'script_url' => $this->get_full_url().'/',
             'upload_dir' => $this->get_filter_path('/data/users/'),
             'upload_url' => $this->get_full_url().'/data/users/',
-            'user_dirs' => false,
+            'user_dirs' => true,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
             'rename_file' => true,
@@ -93,8 +99,8 @@ class UploadPlugin extends AbstractPlugin
             // Image resolution restrictions:
             'max_width' => null,
             'max_height' => null,
-            'min_width' => 1,
-            'min_height' => 1,
+            'min_width' => 70,
+            'min_height' => 70,
             // Set the following option to false to enable resumable uploads:
             'discard_aborted_uploads' => true,
             // Set to false to disable rotating images based on EXIF meta data:
@@ -102,17 +108,24 @@ class UploadPlugin extends AbstractPlugin
             'use_versions_path' => false,
             'versions_delimiter' => '_',
             'image_versions' => array(
-                'thumbnail' => array(
-                    'crop' => true,
-                    'max_width' => 80,
-                    'max_height' => 80,
+                'full' => array(
+                    'max_width' => 1024,
+                    'max_height' => 768,
                     'jpeg_quality' => 95,
                     'png_quality' => 9
                 ),
-                '200x200' => array(
-                    'max_width' => 200,
-                    'max_height' => 200,
-                    'jpeg_quality' => 95
+                'medium' => array(
+                    'max_width' => 320,
+                    'max_height' => 220,
+                    'jpeg_quality' => 95,
+                    'png_quality' => 9
+                ),
+                'small' => array(
+                    'crop' => true,
+                    'max_width' => 70,
+                    'max_height' => 70,
+                    'jpeg_quality' => 95,
+                    'png_quality' => 9
                 ),
             )
         );
@@ -206,18 +219,27 @@ class UploadPlugin extends AbstractPlugin
      */
     protected function get_user_id() {
 
-        $user = $this->options['user_dirs'];
+        $userDirs = $this->options['user_dirs'];
         $user_folder = '';
-        if(is_integer($user)) {
-            $user_folder = ($user > 0) ? "{$user}" : '';
-        } elseif (is_string($user)) {
-            $user_folder = (strlen($user) > 0) ? "{$user}" : '';
-        } elseif (is_array($user)) {
-            $user_folder = isset($user['id']) ? "{$user[id]}" : '';
-        } elseif($user instanceof SafeStartApi\Entity\User) {
-            $user_folder = isset($user->id) ? "".$user->getId() : '';
+        if(is_integer($userDirs)) {
+            $user_folder = ($userDirs > 0) ? "{$userDirs}/" : '';
+        } elseif (is_string($userDirs)) {
+            $user_folder = (strlen($userDirs) > 0) ? "{$userDirs}/" : '';
+        } elseif (is_array($userDirs)) {
+            $user_folder = isset($user['id']) ? "{$userDirs[id]}/" : '';
+        } elseif($userDirs instanceof SafeStartApi\Entity\User) {
+            $user_folder = isset($userDirs->id) ? "".$userDirs->getId() . "/" : '';
         } else {
-            return '';
+            try{
+                if(isset($this->getController()->authService)) {
+                    if($this->getController()->authService->hasIdentity()) {
+                        $user = $this->getController()->authService->getStorage()->read();
+                        $user_folder = isset($user->id) ? "".$user->getId() . "/" : '';
+                    }
+                }
+            } catch(\Exception $e) {
+
+            }
         }
 
         return $user_folder;
@@ -229,8 +251,8 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function get_user_path() {
-        if ($this->options['user_dirs'] !== false) {
-            return $this->get_user_id().'/';
+        if ($this->options['user_dirs']) {
+            return $this->get_user_id();
         }
         return '';
     }
@@ -247,8 +269,6 @@ class UploadPlugin extends AbstractPlugin
         if (empty($version)) {
             $version_path = '';
         } else {
-
-
             if($this->options['use_versions_path']) {
                 $version_dir = @$this->options['image_versions'][$version]['upload_dir'];
                 if ($version_dir) {
@@ -261,15 +281,6 @@ class UploadPlugin extends AbstractPlugin
                 }
                 $version_path = '';
             }
-
-            /** /
-            $version_dir = @$this->options['image_versions'][$version]['upload_dir'];
-            if ($version_dir) {
-                return $version_dir.$this->get_user_path().$file_name;
-            }
-            $version_path = $version.'/';
-            /**/
-
         }
         return $this->options['upload_dir'].$this->get_user_path()
             .$version_path.$file_name;
@@ -306,15 +317,6 @@ class UploadPlugin extends AbstractPlugin
         if (empty($version)) {
             $version_path = '';
         } else {
-
-            /** /
-            $version_url = @$this->options['image_versions'][$version]['upload_url'];
-            if ($version_url) {
-                return $version_url.$this->get_user_path().rawurlencode($file_name);
-            }
-            $version_path = rawurlencode($version).'/';
-            /**/
-
             if($this->options['use_versions_path']) {
                 $version_url = @$this->options['image_versions'][$version]['upload_url'];
                 if ($version_url) {
@@ -325,8 +327,6 @@ class UploadPlugin extends AbstractPlugin
                 $file_name = $this->get_version_file_name($file_name, $version);
                 $version_path = '';
             }
-
-
         }
         return $this->options['upload_url'].$this->get_user_path()
             .$version_path.rawurlencode($file_name);
@@ -339,16 +339,6 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function set_additional_file_properties($file) {
-        /*
-        $file->deleteUrl = $this->options['script_url']
-            .$this->get_query_separator($this->options['script_url'])
-            .$this->get_singular_param_name()
-            .'='.rawurlencode($file->name);
-        $file->deleteType = $this->options['delete_type'];
-        if ($file->deleteType !== 'DELETE') {
-            $file->deleteUrl .= '&_method=DELETE';
-        }
-        */
         if ($this->options['access_control_allow_credentials']) {
             $file->deleteWithCredentials = true;
         }
@@ -484,6 +474,13 @@ class UploadPlugin extends AbstractPlugin
         if (!$img_width || !$img_height) {
             return false;
         }
+
+        /* using ImageProcessor > * /
+        $asd = new ImageProcessor($file_path);
+        $asd->contain(array('width'=>$options['max_width'], 'height'=>$options['max_height']));
+        return $asd->save($new_file_path);
+        /* > end. */
+
         $max_width = $options['max_width'];
         $max_height = $options['max_height'];
         $scale = min(
@@ -560,6 +557,7 @@ class UploadPlugin extends AbstractPlugin
         // Free up memory (imagedestroy does not delete files):
         imagedestroy($src_img);
         imagedestroy($new_img);
+
         return $success;
     }
 
