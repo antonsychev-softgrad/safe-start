@@ -292,17 +292,20 @@ return array(
         ),
         'group' => array(
             'id' => 6,
+        ),
+        'datePicker' => array(
+            'id' => 7,
         )
     ),
     'mail' => array(
-        'from' => 'our-male@email.org',
+        'from' => 'test21141@gmail.org',
         'transport' => array(
             'options' => array(
                 'host' => 'smtp.gmail.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'example@example.org',
-                    'password' => '',
+                    'username' => 'test21141@gmail.org',
+                    'password' => 'test211411',
                     'ssl' => 'tls'
                 ),
             ),
