@@ -295,6 +295,7 @@ return array(
         ),
         'datePicker' => array(
             'id' => 7,
+            'default' => ''
         )
     ),
     'mail' => array(
