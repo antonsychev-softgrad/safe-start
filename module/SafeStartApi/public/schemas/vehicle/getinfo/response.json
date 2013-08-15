@@ -56,7 +56,7 @@
                         },
                         "expiryDate": {
                             "description": "Expiry Date",
-                            "type": "string",
+                            "type": "integer",
                             "required": true
                         },
                         "kmsUntilNext": {

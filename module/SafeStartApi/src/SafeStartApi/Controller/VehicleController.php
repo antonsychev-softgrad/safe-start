@@ -20,7 +20,7 @@ class VehicleController extends RestController
         $inDb = !empty($veh);
 
         $this->answer = array(
-            'foundInDatabase' => (int)$inDb,
+            'foundInDatabase' => (bool)$inDb,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -88,8 +88,8 @@ class VehicleController extends RestController
 
     public function getChecklistAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
+        //if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        //if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
 
         $id = $this->params('id');
 
@@ -123,21 +123,23 @@ class VehicleController extends RestController
                             'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                             'additionalFields' => array(
-                                'field' => array(
-                                    'fieldId' => 4,
-                                    'fieldOrder' => 4,
-                                    'fieldName' => 'Are you authorised to inflate or change tyres?',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                                    'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                                    'alerts' => array(
-                                        array(
-                                            'alertMessage' => 'Do not work on tyres unless authorised',
-                                            'triggerValue' => 'No',
-                                        )
+                                array(
+                                    'field' => array(
+                                        'fieldId' => 4,
+                                        'fieldOrder' => 4,
+                                        'fieldName' => 'Are you authorised to inflate or change tyres?',
+                                        'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                                        'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                                        'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
+                                        'alerts' => array(
+                                            array(
+                                                'alertMessage' => 'Do not work on tyres unless authorised',
+                                                'triggerValue' => 'No',
+                                            )
+                                        ),
                                     ),
+                                    'triggerValue' => 'No'
                                 ),
-                                'condition' => 'No'
                             ),
                         ),
                         array(
@@ -174,8 +176,6 @@ class VehicleController extends RestController
                             'fieldOrder' => 2,
                             'fieldName' => 'Are the fluid levels acceptable?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['group']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['group']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['group']['options'],
                             'items' => array(
                                 array(
                                     'fieldId' => 8,

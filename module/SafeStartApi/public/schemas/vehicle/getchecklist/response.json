@@ -124,8 +124,8 @@
                                                         "type": "string",
                                                         "required": true
                                                     },
-                                                    "fieldCondition": {
-                                                        "description": "If option Value = fieldCondition then popup Alert message",
+                                                    "triggerValue": {
+                                                        "description": "If option Value = triggerValue then popup Alert message",
                                                         "type": "string",
                                                         "required": true
                                                     }
@@ -146,8 +146,8 @@
                                                         "type": "object",
                                                         "required": true
                                                     },
-                                                    "condition": {
-                                                        "description": "If Option value = condition then show this additional field",
+                                                    "triggerValue": {
+                                                        "description": "If Option value = triggerValue then show this additional field",
                                                         "type": "string",
                                                         "required": true
                                                     }
