@@ -10,6 +10,13 @@ use Zend\Session\Container as SessionContainer;
 
 class RestController extends AbstractActionController
 {
+
+    const USER_NOT_FOUND_ERROR = 4011;
+    const INVALID_CREDENTIAL_ERROR = 4001;
+    const USER_ALREADY_LOGGED_IN_ERROR = 4002;
+    const EMAIL_ALREADY_EXISTS_ERROR = 4003;
+    const EMAIL_INVALID_ERROR = 40004;
+
     protected $moduleConfig;
 
     protected $answer;
@@ -21,12 +28,11 @@ class RestController extends AbstractActionController
     public $sessionManager;
     public $authService;
     public $authToken = null;
+    public $em;
 
     protected $jsonSchemaRetriever;
     protected $jsonSchemaRefResolver;
     public $jsonSchemaValidator;
-
-    protected $em;
 
     public function __construct()
     {
@@ -101,6 +107,20 @@ class RestController extends AbstractActionController
             'errorMessage' => 'Access denied',
         );
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
+    }
+
+    protected function _showEmailExists() {
+        $this->answer = array(
+            'errorMessage' => 'Email already in use',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR, 400);
+    }
+
+    protected function _showEmailInvalid() {
+        $this->answer = array(
+            'errorMessage' => 'Email invalid',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_INVALID_ERROR, 400);
     }
 
 }

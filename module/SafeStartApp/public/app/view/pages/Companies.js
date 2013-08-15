@@ -2,9 +2,10 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Main',
+        'SafeStartApp.view.pages.toolbar.Companies',
         'SafeStartApp.model.Company',
-        'SafeStartApp.store.Companies'
+        'SafeStartApp.store.Companies',
+        'SafeStartApp.view.forms.CompanySettings'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -30,7 +31,8 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         items: [
             {
                 cls: 'card',
-                name: 'info',
+                xtype: 'panel',
+                name: 'company-info',
                 scrollable: true,
                 html: '<div><h2>Select company for see info</h2></div>'
             }
@@ -41,7 +43,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Main');
+        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Companies');
         this.add({
             xtype: 'SafeStartMainToolbar',
             docked: 'top',

@@ -15,6 +15,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Company extends BaseEntity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->responsiblePersons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->restricted = false;
+    }
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="IDENTITY")
@@ -22,23 +33,10 @@ class Company extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Department", mappedBy="company")
-     **/
-    protected $departments;
-
-    /**
-     * @ORM\OneToMany(targetEntity="CompanyPosition", mappedBy="company")
-     **/
-    protected $positions;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="User")
-     * @ORM\JoinTable(name="companies_admins",
-     *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
-     *      )
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="admin_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $admins;
+    protected $admin;
 
     /**
      * @ORM\ManyToMany(targetEntity="User")
@@ -76,50 +74,35 @@ class Company extends BaseEntity
 
 
     /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
-    public function toArray()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
-     * Constructor
+     * @ORM\Column(type="text", name="description", nullable = true)
      */
-    public function __construct()
-    {
-        $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->positions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->admins = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->responsiblePersons = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+    protected $description;
+
+    /**
+     * @ORM\Column(type="boolean", name="restricted", nullable=true)
+     */
+    protected $restricted;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true, name="expiry_date")
+     */
+    protected $expiryDate;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, name="max_users")
+     */
+    protected $maxUsers;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, name="max_vehicles")
+     */
+    protected $maxVehicles;
+
+    /**
+     * @ORM\Column(type="boolean", name="deleted", nullable=true)
+     */
+    protected $deleted;
+
     /**
      * Get id
      *
@@ -200,102 +183,27 @@ class Company extends BaseEntity
     }
 
     /**
-     * Add departments
+     * Set description
      *
-     * @param \SafeStartApi\Entity\Department $departments
+     * @param string $description
      * @return Company
      */
-    public function addDepartment(\SafeStartApi\Entity\Department $departments)
+    public function setDescription($description)
     {
-        $this->departments[] = $departments;
-    
+        $this->description = $description;
+
         return $this;
     }
 
-    /**
-     * Remove departments
-     *
-     * @param \SafeStartApi\Entity\Department $departments
-     */
-    public function removeDepartment(\SafeStartApi\Entity\Department $departments)
-    {
-        $this->departments->removeElement($departments);
-    }
 
     /**
-     * Get departments
+     * Get description
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return string
      */
-    public function getDepartments()
+    public function getDescription()
     {
-        return $this->departments;
-    }
-
-    /**
-     * Add positions
-     *
-     * @param \SafeStartApi\Entity\CompanyPosition $positions
-     * @return Company
-     */
-    public function addPosition(\SafeStartApi\Entity\CompanyPosition $positions)
-    {
-        $this->positions[] = $positions;
-    
-        return $this;
-    }
-
-    /**
-     * Remove positions
-     *
-     * @param \SafeStartApi\Entity\CompanyPosition $positions
-     */
-    public function removePosition(\SafeStartApi\Entity\CompanyPosition $positions)
-    {
-        $this->positions->removeElement($positions);
-    }
-
-    /**
-     * Get positions
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPositions()
-    {
-        return $this->positions;
-    }
-
-    /**
-     * Add admins
-     *
-     * @param \SafeStartApi\Entity\User $admins
-     * @return Company
-     */
-    public function addAdmin(\SafeStartApi\Entity\User $admins)
-    {
-        $this->admins[] = $admins;
-    
-        return $this;
-    }
-
-    /**
-     * Remove admins
-     *
-     * @param \SafeStartApi\Entity\User $admins
-     */
-    public function removeAdmin(\SafeStartApi\Entity\User $admins)
-    {
-        $this->admins->removeElement($admins);
-    }
-
-    /**
-     * Get admins
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAdmins()
-    {
-        return $this->admins;
+        return $this->description;
     }
 
     /**
@@ -395,5 +303,143 @@ class Company extends BaseEntity
     public function getVehicles()
     {
         return $this->vehicles;
+    }
+
+    /**
+     * Set restricted
+     *
+     * @param boolean $restricted
+     * @return Company
+     */
+    public function setRestricted($restricted)
+    {
+        $this->restricted = $restricted;
+    
+        return $this;
+    }
+
+    /**
+     * Get restricted
+     *
+     * @return boolean 
+     */
+    public function getRestricted()
+    {
+        return $this->restricted;
+    }
+
+    /**
+     * Set expiryDate
+     *
+     * @param \DateTime $expiryDate
+     * @return Company
+     */
+    public function setExpiryDate($expiryDate)
+    {
+        $this->expiryDate = $expiryDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get expiryDate
+     *
+     * @return \DateTime 
+     */
+    public function getExpiryDate()
+    {
+        return $this->expiryDate;
+    }
+
+    /**
+     * Set maxUsers
+     *
+     * @param integer $maxUsers
+     * @return Company
+     */
+    public function setMaxUsers($maxUsers)
+    {
+        $this->maxUsers = $maxUsers;
+    
+        return $this;
+    }
+
+    /**
+     * Get maxUsers
+     *
+     * @return integer 
+     */
+    public function getMaxUsers()
+    {
+        return $this->maxUsers;
+    }
+
+    /**
+     * Set maxVehicles
+     *
+     * @param integer $maxVehicles
+     * @return Company
+     */
+    public function setMaxVehicles($maxVehicles)
+    {
+        $this->maxVehicles = $maxVehicles;
+    
+        return $this;
+    }
+
+    /**
+     * Get maxVehicles
+     *
+     * @return integer 
+     */
+    public function getMaxVehicles()
+    {
+        return $this->maxVehicles;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Company
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set admin
+     *
+     * @param \SafeStartApi\Entity\User $admin
+     * @return Company
+     */
+    public function setAdmin(\SafeStartApi\Entity\User $admin = null)
+    {
+        $this->admin = $admin;
+    
+        return $this;
+    }
+
+    /**
+     * Get admin
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getAdmin()
+    {
+        return $this->admin;
     }
 }
