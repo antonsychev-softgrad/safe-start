@@ -68,9 +68,9 @@
                                             "required": true
                                         },
                                         "fieldType": {
-                                            "description": "Field type: 1 - Radio button. 2 - Text field. 3 - Checkbox. 4 - Photo. 5 - GPS co-ordinates. 6 - Groups.",
+                                            "description": "Field type: 1 - Radio button. 2 - Text field. 3 - Checkbox. 4 - Photo. 5 - GPS co-ordinates. 6 - Groups. 7 - Date picker",
                                             "type": "integer",
-                                            "enum": [1, 2, 3, 4, 5, 6],
+                                            "enum": [1, 2, 3, 4, 5, 6, 7],
                                             "required": true
                                         },
                                         "fieldValue": {
@@ -125,7 +125,29 @@
                                                         "required": true
                                                     },
                                                     "fieldCondition": {
-                                                        "description": "If option Value = alertCondition then popup Alert message",
+                                                        "description": "If option Value = fieldCondition then popup Alert message",
+                                                        "type": "string",
+                                                        "required": true
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "additionalFields": {
+                                            "description": "Additional fields. Show it when user select Condition value",
+                                            "type": "array",
+                                            "required": false,
+                                            "items": {
+                                                "description": "Field description",
+                                                "type": "object",
+                                                "required": false,
+                                                "properties": {
+                                                    "field": {
+                                                        "description": "Additional field. The same field as other fields",
+                                                        "type": "object",
+                                                        "required": true
+                                                    },
+                                                    "condition": {
+                                                        "description": "If Option value = condition then show this additional field",
                                                         "type": "string",
                                                         "required": true
                                                     }

@@ -292,6 +292,9 @@ return array(
         ),
         'group' => array(
             'id' => 6,
+        ),
+        'datePicker' => array(
+            'id' => 7,
         )
     ),
     'mail' => array(
