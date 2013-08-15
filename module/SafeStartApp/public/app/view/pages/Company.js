@@ -14,27 +14,12 @@ Ext.define('SafeStartApp.view.pages.Company', {
     config: {
         title: 'Company',
         iconCls: 'more',
-
         styleHtmlContent: true,
         scrollable: true,
-
-        layout: {
-            type: 'card',
-            animation: {
-                type: 'slide',
-                direction: 'left',
-                duration: 250
-            }
-        },
+        layout: 'hbox',
 
         items: [
-            {
-                cls: 'card',
-                xtype: 'panel',
-                name: 'company-info',
-                scrollable: true,
-                html: '<div><h2></h2></div>'
-            }
+
         ],
 
         listeners: {
@@ -51,26 +36,35 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Company');
         this.add({
-            xtype: 'SafeStartMainToolbar',
+            xtype: 'SafeStartCompanyToolbar',
             docked: 'top'
         });
 
         this.vehiclesStore = Ext.create('SafeStartApp.store.Vehicles');
+        this.add(this.getVehiclesList());
 
-        this.add({
+        this.add(this.getInfoPanel());
+
+        this.alertsStore = Ext.create('SafeStartApp.store.AllAlerts');
+        this.add(this.getAlertsList());
+
+        this.disable();
+    },
+
+    getVehiclesList: function() {
+        return {
             xtype: 'list',
             name: 'vehicles',
             itemTpl: '<div class="contact">{title}</div>',
-            docked: 'left',
-            width: 300,
+            minWidth: 150,
+            maxWidth: 300,
+            flex:1,
             store: this.vehiclesStore,
             items: [
                 {
                     xtype: 'toolbar',
                     docked: 'top',
-
                     items: [
-                        { xtype: 'spacer' },
                         {
                             xtype: 'searchfield',
                             placeHolder: 'Search...',
@@ -80,7 +74,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                                     self.vehiclesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                   return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
+                                    return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
                                 }
                             }
                         },
@@ -97,13 +91,47 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     ]
                 }
             ]
-        });
+        };
+    },
 
-        this.disable();
+    getInfoPanel: function() {
+        return {
+            cls: 'card',
+            xtype: 'panel',
+            name: 'company-info',
+            layout: 'card',
+            minWidth: 150,
+            flex: 2,
+            scrollable: true,
+            html: '<div><h2></h2></div>'
+        };
+    },
+
+    getAlertsList: function() {
+        return {
+            xtype: 'list',
+            name: 'alerts',
+            itemTpl: '<div class="contact">{title}</div>',
+            minWidth: 150,
+            maxWidth: 300,
+            flex:3,
+            store: this.alertsStore,
+            items: [
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+                    title: 'Alerts',
+                    items: [
+
+                    ]
+                }
+            ]
+        }
     },
 
     loadData: function() {
         this.vehiclesStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
+        this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
         this.vehiclesStore.loadData();
     }
 
