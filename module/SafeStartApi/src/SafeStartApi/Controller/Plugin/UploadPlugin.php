@@ -33,35 +33,6 @@ class UploadPlugin extends AbstractPlugin
     );
 
     /**
-     * UploadPlugin::getUrl()
-     *
-     * @param mixed $user
-     * @return
-     */
-    public static function getUrl($user = null) {
-        $user_folder = null;
-        if(is_integer($user)) {
-            if($user > 0) {
-                $user_folder = "{$user}";
-            } else {
-                return false;
-            }
-        } elseif (is_array($user)) {
-            if(isset($user['id'])) {
-                $user_folder = "{$user[id]}";
-            } else {
-                return false;
-            }
-        } elseif($user instanceof SafeStartApi\Entity\User) {
-            $user_folder = "" . $user->getId();
-        } else {
-            return false;
-        }
-
-        return $url;
-    }
-
-    /**
      * UploadPlugin::__construct()
      *
      * @param mixed $options
@@ -129,25 +100,14 @@ class UploadPlugin extends AbstractPlugin
             // Set to false to disable rotating images based on EXIF meta data:
             'orient_image' => true,
             'use_versions_path' => false,
+            'versions_delimiter' => '_',
             'image_versions' => array(
-                // Uncomment the following version to restrict the size of
-                // uploaded images:
-                /*
-                '' => array(
-                    // Uncomment the following to force the max
-                    // dimensions and e.g. create square thumbnails:
-                    // 'crop' => true,
-                    'max_width' => 1920,
-                    'max_height' => 1200,
-                    'jpeg_quality' => 75,
-                    'png_quality' => 9
-                ),
-                */
                 'thumbnail' => array(
                     'crop' => true,
                     'max_width' => 80,
                     'max_height' => 80,
-                    'jpeg_quality' => 95
+                    'jpeg_quality' => 95,
+                    'png_quality' => 9
                 ),
                 '200x200' => array(
                     'max_width' => 200,
@@ -297,7 +257,7 @@ class UploadPlugin extends AbstractPlugin
                 $version_path = $version.'/';
             } else {
                 if($file_name !== '') {
-                    $file_name = preg_replace('/(\..*)$/isU', "_{$version}$1", $file_name);
+                    $file_name = $this->get_version_file_name($file_name, $version);
                 }
                 $version_path = '';
             }
@@ -362,7 +322,7 @@ class UploadPlugin extends AbstractPlugin
                 }
                 $version_path = rawurlencode($version).'/';
             } else {
-                $file_name = preg_replace('/(\..*)$/isU', "_{$version}$1", $file_name);
+                $file_name = $this->get_version_file_name($file_name, $version);
                 $version_path = '';
             }
 
@@ -506,7 +466,7 @@ class UploadPlugin extends AbstractPlugin
         $file_path = $this->get_upload_path($file_name);
         if (!empty($version)) {
             if(!$this->options['use_versions_path']) {
-                $file_name = preg_replace('/(\..*)$/isU', "_{$version}$1", $file_name);
+                $file_name = $this->get_version_file_name($file_name, $version);
             }
             $version_dir = $this->get_upload_path(null, $version);
             if (!is_dir($version_dir)) {
@@ -830,6 +790,17 @@ class UploadPlugin extends AbstractPlugin
             $index,
             $content_range
         );
+    }
+
+    /**
+     * UploadPlugin::get_version_file_name()
+     *
+     * @param mixed $file_name
+     * @param mixed $version
+     * @return
+     */
+    protected function get_version_file_name($file_name, $version) {
+        return preg_replace('/(\..*)$/isU', $this->options['versions_delimiter'] . "{$version}$1", $file_name);
     }
 
     /**
