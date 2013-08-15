@@ -1,20 +1,19 @@
-Ext.define('SafeStartApp.view.pages.Companies', {
+Ext.define('SafeStartApp.view.pages.Users', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Companies',
+        'SafeStartApp.view.pages.toolbar.Users',
         'SafeStartApp.model.Company',
-        'SafeStartApp.store.Companies',
-        'SafeStartApp.view.forms.CompanySettings'
+        'SafeStartApp.store.Users'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
 
-    xtype: 'SafeStartCompaniesPage',
+    xtype: 'SafeStartUsersPage',
 
     config: {
-        title: 'Companies',
-        iconCls: 'team',
+        title: 'Users',
+        iconCls: 'user',
 
         styleHtmlContent: true,
         scrollable: true,
@@ -34,7 +33,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                 xtype: 'panel',
                 name: 'company-info',
                 scrollable: true,
-                html: '<div><h2>Select company for see info</h2></div>'
+                html: '<div><h2></h2></div>'
             }
         ]
     },
@@ -43,23 +42,21 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Companies');
+        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Users');
         this.add({
-            xtype: 'SafeStartMainToolbar',
-            docked: 'top',
-            title: 'Companies'
+            xtype: 'SafeStartUsersToolbar',
+            docked: 'top'
         });
 
-        this.companiesStore = Ext.create('SafeStartApp.store.Companies');
-        this.companiesStore.loadData();
+        this.usersStore = Ext.create('SafeStartApp.store.Users');
 
         this.add({
             xtype: 'list',
-            name: 'companies',
+            name: 'users',
             itemTpl: '<div class="contact">{title}</div>',
             docked: 'left',
             width: 300,
-            store: this.companiesStore,
+            store: this.usersStore,
             items: [
                 {
                     xtype: 'toolbar',
@@ -73,10 +70,10 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                             listeners: {
                                 scope: this,
                                 clearicontap: function () {
-                                    self.companiesStore.clearFilter();
+                                    self.usersStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                   return self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
+                                   return self.filterStoreDataBySearchFiled(self.usersStore, field, 'title');
                                 }
                             }
                         },
@@ -87,12 +84,14 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                             ui: 'action',
                             iconCls: 'refresh',
                             handler: function() {
-                                this.up('list[name=companies]').getStore().loadData();
+                                this.up('list[name=users]').getStore().loadData();
                             }
                         }
                     ]
                 }
             ]
         });
+
+        this.disable();
     }
 });

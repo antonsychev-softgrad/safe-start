@@ -9,7 +9,12 @@ Ext.define('SafeStartApp.view.pages.Auth', {
 
         layout: 'fit',
         styleHtmlContent: false,
-        scrollable: false
+        scrollable: false,
+
+        html: [
+            '<div class="logo"><img height=100 src="/logo.png" /><div>'
+        ].join("")
+        
     },
 
 

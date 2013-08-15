@@ -31,12 +31,11 @@ class UserController extends RestController
 
         $adapter = $this->authService->getAdapter();
 
-        //todo: У меня не подключается плагин
-      /*  if ($this->ValidationPlugin()->isValidEmail($identity)) {
+        if ($this->ValidationPlugin()->isValidEmail($identity)) {
             $identityProperty = 'email';
-        } else {*/
+        } else {
             $identityProperty = 'username';
-   /*     }*/
+        }
 
         $adapterOptions = $this->moduleConfig['doctrine']['authentication']['orm_default'];
         $adapterOptions['object_manager'] = $this->getServiceLocator()->get($adapterOptions['object_manager']);
@@ -44,7 +43,7 @@ class UserController extends RestController
 
         $adapter->setOptions($adapterOptions);
 
-        $adapter->setIdentityValue($identityProperty);
+        $adapter->setIdentityValue($identity);
         $adapter->setCredentialValue($password);
         $result = $this->authService->authenticate();
 

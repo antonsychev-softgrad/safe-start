@@ -20,7 +20,7 @@ class VehicleController extends RestController
         $inDb = !empty($veh);
 
         $this->answer = array(
-            'foundInDatabase' => (int)$inDb,
+            'foundInDatabase' => (bool)$inDb,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -88,93 +88,144 @@ class VehicleController extends RestController
 
     public function getChecklistAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
+        //if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        //if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
 
         $id = $this->params('id');
 
         $checklist = array(
                 array(
-                    'groupName' => 'Trailer',
+                    'groupName' => 'Daily inspection checklist structural',
                     'groupId' => 1,
                     'groupOrder' => 1,
                     'fields' => array(
                         array(
                             'fieldId' => 1,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Is the vechicle stable?',
+                            'fieldName' => 'Is the vechicle free of damage?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
                             'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                            'alerts' => array(
-                                array(
-                                    'alertMessage' => 'Alert! You choose No',
-                                    'triggerValue' => 'No',
-                                )
-                            ),
                         ),
                         array(
                             'fieldId' => 2,
                             'fieldOrder' => 2,
-                            'fieldName' => 'Is the vechicle clean and all items secure?',
+                            'fieldName' => 'Are all safety guards in place?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                            'alerts' => array(
-                                array(
-                                    'alertMessage' => 'Alert! You choose No',
-                                    'triggerValue' => 'No',
-                                )
-                            ),
                         ),
                         array(
                             'fieldId' => 3,
                             'fieldOrder' => 3,
-                            'fieldName' => 'Describe the vechicle status.',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['text']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['text']['default'],
+                            'fieldName' => 'Are the tyres correctly inflated, with good tread and wheel nuts tight?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
+                            'additionalFields' => array(
+                                array(
+                                    'field' => array(
+                                        'fieldId' => 4,
+                                        'fieldOrder' => 4,
+                                        'fieldName' => 'Are you authorised to inflate or change tyres?',
+                                        'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                                        'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                                        'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
+                                        'alerts' => array(
+                                            array(
+                                                'alertMessage' => 'Do not work on tyres unless authorised',
+                                                'triggerValue' => 'No',
+                                            )
+                                        ),
+                                    ),
+                                    'triggerValue' => 'No'
+                                ),
+                            ),
+                        ),
+                        array(
+                            'fieldId' => 5,
+                            'fieldOrder' => 5,
+                            'fieldName' => 'Is the windscreen and mirrors clean and free of damage?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
+                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                         ),
                     )
                 ),
                 array(
-                    'groupName' => 'Auxiliary Motor',
+                    'groupName' => 'Daily inspection checklist mechanical',
                     'groupId' => 2,
                     'groupOrder' => 2,
                     'fields' => array(
                         array(
-                            'fieldId' => 4,
+                            'fieldId' => 6,
                             'fieldOrder' => 1,
-                            'fieldName' => '2.1 Some question aobut the vechicle?',
+                            'fieldName' => 'Have you isolated the vechicle?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
                             'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                             'alerts' => array(
                                 array(
-                                    'alertMessage' => 'Alert! You choose NO',
-                                    'triggerValue' => 'NO',
+                                    'alertMessage' => 'Isolate vehicle before continuing',
+                                    'triggerValue' => 'No',
                                 )
                             ),
                         ),
                         array(
-                            'fieldId' => 5,
+                            'fieldId' => 7,
                             'fieldOrder' => 2,
-                            'fieldName' => '2.2 Some question aobut the vechicle?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                            'alerts' => array(
+                            'fieldName' => 'Are the fluid levels acceptable?',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['group']['id'],
+                            'items' => array(
                                 array(
-                                    'alertMessage' => 'Alert! You choose NO',
-                                    'triggerValue' => 'NO',
-                                )
-                            ),
-                        ),
-                        array(
-                            'fieldId' => 6,
-                            'fieldOrder' => 3,
-                            'fieldName' => 'Add vechicle CPS coordinates.',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['coordinates']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['coordinates']['default'],
+                                    'fieldId' => 8,
+                                    'fieldOrder' => 3,
+                                    'fieldName' => 'Water',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                                array(
+                                    'fieldId' => 9,
+                                    'fieldOrder' => 4,
+                                    'fieldName' => 'Hydraulic',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                                array(
+                                    'fieldId' => 10,
+                                    'fieldOrder' => 5,
+                                    'fieldName' => 'Brake',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                                array(
+                                    'fieldId' => 11,
+                                    'fieldOrder' => 6,
+                                    'fieldName' => 'Coolant',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                                array(
+                                    'fieldId' => 12,
+                                    'fieldOrder' => 7,
+                                    'fieldName' => 'Transmission',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                                array(
+                                    'fieldId' => 13,
+                                    'fieldOrder' => 8,
+                                    'fieldName' => 'Battery',
+                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
+                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
+                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
+                                ),
+                            )
                         ),
                     )
                 ),
@@ -184,54 +235,18 @@ class VehicleController extends RestController
                     'groupOrder' => 3,
                     'fields' => array(
                         array(
-                            'fieldId' => 7,
+                            'fieldId' => 14,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Are the fluid levels accepatble',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['group']['id'],
-                            'items' => array(
-                                array(
-                                    'fieldId' => 8,
-                                    'fieldOrder' => 1,
-                                    'fieldName' => 'Water',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                    'alerts' => array(
-                                        array(
-                                            'alertMessage' => 'Alert! You choose NO',
-                                            'triggerValue' => 'NO',
-                                        )
-                                    ),
-                                ),
-                                array(
-                                    'fieldId' => 9,
-                                    'fieldOrder' => 2,
-                                    'fieldName' => 'Hydraulic',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                    'alerts' => array(
-                                        array(
-                                            'alertMessage' => 'Alert! You choose NO',
-                                            'triggerValue' => 'NO',
-                                        )
-                                    ),
-                                ),
-                                array(
-                                    'fieldId' => 9,
-                                    'fieldOrder' => 2,
-                                    'fieldName' => 'Battery',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                    'alerts' => array(
-                                        array(
-                                            'alertMessage' => 'Alert! You choose NO',
-                                            'triggerValue' => 'NO',
-                                        )
-                                    ),
-                                ),
-                            )
+                            'fieldName' => 'Add vechicle CPS coordinates.',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['coordinates']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['coordinates']['default'],
+                        ),
+                        array(
+                            'fieldId' => 15,
+                            'fieldOrder' => 2,
+                            'fieldName' => 'Add date.',
+                            'fieldType' => $this->moduleConfig['fieldTypes']['datePicker']['id'],
+                            'fieldValue' => $this->moduleConfig['fieldTypes']['datePicker']['default'],
                         ),
                     )
                 )

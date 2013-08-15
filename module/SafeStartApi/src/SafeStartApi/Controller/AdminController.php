@@ -12,21 +12,14 @@ class AdminController extends AdminAccessRestController
             todo: add json schema
             if (!$this->_requestIsValid('admin/getcompanies')) return $this->_showBadRequest();
         */
+        $this->answer = array();
 
-        $this->answer = array(
-            array(
-                'id' => 1,
-                'title' => 'Company 1'
-            ),
-            array(
-                'id' => 2,
-                'title' => 'Company 2'
-            ),
-            array(
-                'id' => 3,
-                'title' => 'Company 3',
-            )
-        );
+        $query = $this->em->createQuery('SELECT c FROM SafeStartApi\Entity\Company c WHERE c.deleted = 0');
+        $items = $query->getResult();
+
+        foreach ($items as $item) {
+            $this->answer[] = $item->toArray();
+        }
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -57,11 +50,11 @@ class AdminController extends AdminAccessRestController
         $company->setPhone($this->data->phone);
         $company->setDescription($this->data->description);
         $company->setRestricted((bool)$this->data->restricted);
-        $company->setMaxUsers($this->data->restricted ? (int) $this->data->max_users : 0);
-        $company->setMaxVehicles($this->data->restricted ? (int) $this->data->max_vehicles : 0);
+        $company->setMaxUsers($this->data->restricted ? (int)$this->data->max_users : 0);
+        $company->setMaxVehicles($this->data->restricted ? (int)$this->data->max_vehicles : 0);
         if ($this->data->restricted) {
             $expiryDate = new \DateTime();
-            $expiryDate->setTimestamp((int) $this->data->expiry_date);
+            $expiryDate->setTimestamp((int)$this->data->expiry_date);
             $company->setExpiryDate($expiryDate);
         }
         $this->em->persist($company);
@@ -70,11 +63,11 @@ class AdminController extends AdminAccessRestController
         $user = $userRep->findOneBy(array('email' => $this->data->email));
 
         if (!$user) {
-            // todo: Проверить на существование email, если есть ошибка
             $user = new \SafeStartApi\Entity\User();
             $user->setEmail($this->data->email);
-            $user->setEmail($this->data->email);
+            $user->setFirstName($this->data->firstName);
             $user->setUsername($this->data->email);
+            $user->setRole('companyAdmin');
             $this->em->persist($user);
         }
 
@@ -84,9 +77,38 @@ class AdminController extends AdminAccessRestController
 
         $this->answer = array(
             'done' => true,
+            'companyId' => $company->getId(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
 
+    }
+
+    public function sendCredentialsAction()
+    {
+        $companyId = (int)$this->params('id');
+
+    }
+
+    public function deleteCompanyAction()
+    {
+        $companyId = (int)$this->params('id');
+        if ($companyId) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            }
+        }
+        $company->setDeleted(1);
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }

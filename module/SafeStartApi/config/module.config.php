@@ -86,13 +86,39 @@ return array(
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '/admin/:id/company/update',
+                            'route' => '/admin/company/:id/update',
                             'constraints' => array(
                                 'id' => '[0-9]*',
                             ),
                             'defaults' => array(
                                 'controller' => 'Admin',
                                 'action' => 'updateCompany',
+                            ),
+                        ),
+                    ),
+                    'delete-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/company/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'deleteCompany',
+                            ),
+                        ),
+                    ),
+                    'credentials-company-subscription' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/company/:id/send-credentials',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'sendCredentials',
                             ),
                         ),
                     ),
@@ -130,6 +156,7 @@ return array(
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
+            'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
         ),
     ),
     'view_manager' => array(
@@ -266,17 +293,21 @@ return array(
         ),
         'group' => array(
             'id' => 6,
+        ),
+        'datePicker' => array(
+            'id' => 7,
+            'default' => ''
         )
     ),
     'mail' => array(
-        'from' => 'our-male@email.org',
+        'from' => 'test21141@gmail.org',
         'transport' => array(
             'options' => array(
                 'host' => 'smtp.gmail.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'example@example.org',
-                    'password' => '',
+                    'username' => 'test21141@gmail.org',
+                    'password' => 'test211411',
                     'ssl' => 'tls'
                 ),
             ),

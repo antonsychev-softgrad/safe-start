@@ -101,7 +101,7 @@ class Company extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="deleted", nullable=true)
      */
-    protected $deleted;
+    protected $deleted = 0;
 
     /**
      * Get id
@@ -348,7 +348,7 @@ class Company extends BaseEntity
      */
     public function getExpiryDate()
     {
-        return $this->expiryDate;
+        return $this->expiryDate ? $this->expiryDate->getTimestamp() : null;
     }
 
     /**
@@ -441,5 +441,27 @@ class Company extends BaseEntity
     public function getAdmin()
     {
         return $this->admin;
+    }
+
+    /**
+     * Convert the object to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $company = array();
+        $company['id'] = $this->getId();
+        $company['title'] = $this->getTitle();
+        $company['address'] = $this->getAddress();
+        $company['restricted'] = $this->restricted;
+        $company['phone'] = $this->phone;
+        $company['description'] = $this->description;
+        $company['max_users'] = $this->getMaxUsers();
+        $company['max_vehicles'] = $this->getMaxVehicles();
+        $company['expiry_date'] = $this->getExpiryDate();
+        $company['email'] = $this->admin->email;
+        $company['firstName'] = $this->admin->firstName;
+        return $company;
     }
 }

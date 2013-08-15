@@ -6,7 +6,7 @@ Ext.define('SafeStartApp.controller.Companies', {
         'SafeStartApp.model.CompanySubscription'
     ],
 
-    init: function(){
+    init: function () {
 
     },
 
@@ -22,6 +22,9 @@ Ext.define('SafeStartApp.controller.Companies', {
 
         refs: {
             main: 'SafeStartCompaniesPage',
+            pages: 'SafeStartMainView',
+            companyPage: 'SafeStartCompanyPage',
+            usersPage: 'SafeStartUsersPage',
             navMain: 'SafeStartCompaniesPage > list[name=companies]',
             companyInfoPanel: 'SafeStartCompaniesPage > panel[name=company-info]',
             addCompanyButton: 'SafeStartMainToolbar > button[action=add-company]'
@@ -29,14 +32,19 @@ Ext.define('SafeStartApp.controller.Companies', {
     },
 
 
-    onSelectAction: function(element, index, target, record, e, eOpts) {
+    onSelectAction: function (element, index, target, record, e, eOpts) {
         if (!this.currentCompanyForm) this._createForm();
         this.currentCompanyForm.setRecord(record);
         if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
         if (record.get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(record.get('expiry_date') * 1000));
+        this.currentCompanyForm.down('button[name=delete-data]').show();
+        this.currentCompanyForm.down('button[name=send-credentials]').show();
+        this.currentCompanyForm.down('button[name=manage]').show();
+        this.currentCompanyForm.down('button[name=reset-data]').hide();
+        SafeStartApp.companyModel = record;
     },
 
-    addAction: function() {
+    addAction: function () {
         if (!this.currentCompanyForm) this._createForm();
         if (this.companyModel) {
             //todo: check if form bot empty
@@ -45,33 +53,98 @@ Ext.define('SafeStartApp.controller.Companies', {
         this.companyModel = Ext.create('SafeStartApp.model.Company');
         this.currentCompanyForm.setRecord(this.companyModel);
         this.currentCompanyForm.down('fieldset').down('fieldset').disable();
+        this.currentCompanyForm.down('button[name=delete-data]').hide();
+        this.currentCompanyForm.down('button[name=send-credentials]').hide();
+        this.currentCompanyForm.down('button[name=manage]').hide();
+        this.currentCompanyForm.down('button[name=reset-data]').show();
     },
 
-    saveAction: function() {
-        var self = this;
+    saveAction: function () {
         if (!this.companyModel) this.companyModel = Ext.create('SafeStartApp.model.Company');
         if (this.validateFormByModel(this.companyModel, this.currentCompanyForm)) {
             if (!this.companySubscriptionModel) this.companySubscriptionModel = Ext.create('SafeStartApp.model.CompanySubscription');
             if (this.currentCompanyForm.getValues().restricted) {
                 if (this.validateFormByModel(this.companySubscriptionModel, this.currentCompanyForm)) {
-                    var formValues = this.currentCompanyForm.getValues();
-                    formValues.expiry_date = (this.currentCompanyForm.down('datepickerfield').getValue().getTime() / 1000);
-                    SafeStartApp.AJAX('admin/'+this.currentCompanyForm.getValues().id+'/company/update', formValues, function (result) {
-
-                    });
+                    this._saveData();
                 }
+            } else {
+                this._saveData();
             }
         }
     },
 
-    _createForm: function() {
+    sendCredentialsAction: function () {
+        SafeStartApp.AJAX('admin/company/' + this.currentCompanyForm.getValues().id + '/send-credentials', {}, function (result) {
+
+        });
+    },
+
+    deleteAction: function () {
+        var self = this;
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function(){
+            SafeStartApp.AJAX('admin/company/' + self.currentCompanyForm.getValues().id + '/delete', {}, function (result) {
+                self.getNavMain().getStore().loadData();
+                self.currentCompanyForm.reset();
+                self.currentCompanyForm.down('button[name=delete-data]').hide();
+                self.currentCompanyForm.down('button[name=send-credentials]').hide();
+                self.currentCompanyForm.down('button[name=manage]').hide();
+                self.currentCompanyForm.down('button[name=reset-data]').show();
+                self.getCompanyPage().disable();
+                self.getUsersPage().disable();
+            });
+        });
+    },
+
+    resetAction: function() {
+        this.currentCompanyForm.reset();
+    },
+
+    openSelectedAction: function() {
+        this.getCompanyPage().enable();
+        this.getUsersPage().enable();
+        this.getPages().setActiveItem(1);
+    },
+
+    _createForm: function () {
         if (!this.currentCompanyForm) {
             this.currentCompanyForm = Ext.create('SafeStartApp.view.forms.CompanySettings');
             this.getCompanyInfoPanel().removeAll(true);
             this.getCompanyInfoPanel().setHtml('');
             this.getCompanyInfoPanel().add(this.currentCompanyForm);
             this.currentCompanyForm.addListener('save-data', this.saveAction, this);
+            this.currentCompanyForm.addListener('send-credentials', this.sendCredentialsAction, this);
+            this.currentCompanyForm.addListener('reset-data', this.resetAction, this);
+            this.currentCompanyForm.addListener('delete-data', this.deleteAction, this);
+            this.currentCompanyForm.addListener('manage', this.openSelectedAction, this);
         }
+    },
+
+    _saveData: function () {
+        var self = this;
+        var formValues = this.currentCompanyForm.getValues();
+        if (this.currentCompanyForm.down('datepickerfield').getValue()) formValues.expiry_date = (this.currentCompanyForm.down('datepickerfield').getValue().getTime() / 1000);
+        else formValues.expiry_date = null;
+        SafeStartApp.AJAX('admin/company/' + this.currentCompanyForm.getValues().id + '/update', formValues, function (result) {
+            if (result.companyId) {
+                self._reloadStore(result.companyId);
+                self.currentCompanyForm.down('button[name=delete-data]').show();
+                self.currentCompanyForm.down('button[name=send-credentials]').show();
+                self.currentCompanyForm.down('button[name=reset-data]').hide();
+            }
+        });
+    },
+
+    _reloadStore: function (companyId) {
+        this.getNavMain().getStore().loadData();
+        this.getNavMain().getStore().addListener('data-load-success', function () {
+            if (!companyId) return;
+            this.currentCompanyForm.setRecord(this.getNavMain().getStore().getById(companyId));
+            SafeStartApp.companyModel = this.getNavMain().getStore().getById(companyId);
+            if (!this.getNavMain().getStore().getById(companyId).get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
+            if (this.getNavMain().getStore().getById(companyId).get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(this.getNavMain().getStore().getById(companyId).get('expiry_date') * 1000));
+            self.currentCompanyForm.down('button[name=manage]').show();
+        }, this);
+
     }
 
 });

@@ -9,13 +9,7 @@ Ext.define('SafeStartApp.view.forms.Auth', {
         height: 385,
         width: 480,
         scrollable: false,
-
         items: [
-            {
-                html: [
-                    '<div class="logo"><img height=100 src="/logo.png" /><div>'
-                ].join("")
-            },
             {
                 xtype: 'fieldset',
                 title: 'Auth',
@@ -23,9 +17,9 @@ Ext.define('SafeStartApp.view.forms.Auth', {
                 items: [
 
                     {
-                        name: 'identity',
+                        name: 'username',
                         xtype: 'textfield',
-                        label: 'Name / Email',
+                        label: 'Username',
                         required: true,
                         allowBlank:false
                     },

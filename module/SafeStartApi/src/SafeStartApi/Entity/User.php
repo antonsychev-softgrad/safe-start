@@ -433,52 +433,6 @@ class User extends BaseEntity
     }
 
     /**
-     * Set department
-     *
-     * @param \SafeStartApi\Entity\Department $department
-     * @return User
-     */
-    public function setDepartment(\SafeStartApi\Entity\Department $department = null)
-    {
-        $this->department = $department;
-
-        return $this;
-    }
-
-    /**
-     * Get department
-     *
-     * @return \SafeStartApi\Entity\Department
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * Set position
-     *
-     * @param \SafeStartApi\Entity\CompanyPosition $position
-     * @return User
-     */
-    public function setPosition(\SafeStartApi\Entity\CompanyPosition $position = null)
-    {
-        $this->position = $position;
-
-        return $this;
-    }
-
-    /**
-     * Get position
-     *
-     * @return \SafeStartApi\Entity\CompanyPosition
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
      * Add vehiclesAsigned
      *
      * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
