@@ -46,6 +46,29 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                         xtype: 'textfield',
                         label: 'Sector/Department',
                         name: 'department'
+                    },
+                    {
+                        xtype: 'selectfield',
+                        name: 'role',
+                        label: 'Company role',
+                        valueField: 'rank',
+                        displayField: 'title',
+                        store: {
+                            data: [
+                                { rank: 'companyManager', title: 'Manager'},
+                                { rank: 'companyUser', title: 'User'}
+                            ]
+                        }
+                    },
+                    {
+                        xtype: 'togglefield',
+                        name: 'enabled',
+                        label: 'Enabled',
+                        listeners: {
+                            change: function(field, slider, thumb, newValue, oldValue) {
+
+                            }
+                        }
                     }
 
                 ]

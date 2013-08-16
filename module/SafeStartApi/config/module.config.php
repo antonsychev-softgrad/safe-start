@@ -83,6 +83,19 @@ return array(
                             ),
                         ),
                     ),
+                    'update-user' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'update',
+                            ),
+                        ),
+                    ),
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(

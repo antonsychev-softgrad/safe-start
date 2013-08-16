@@ -57,7 +57,7 @@ class UserController extends RestController
             case Result::SUCCESS:
                 $errorMessage = '';
                 $user = $userRep->findOneBy(array($identityProperty => $identity));
-                if($user) {
+                if ($user) {
                     $userInfo = $user->toArray();
                     $user->setLastLogin(new \DateTime());
                     $this->em->flush();
@@ -99,5 +99,71 @@ class UserController extends RestController
         );
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function updateAction()
+    {
+        if (!$this->authService->hasIdentity()) throw new Rest401('Access denied');
+
+        // todo: check access to user updating
+
+        $userId = (int)$this->params('id');
+
+        if ($userId) {
+            $user = $this->em->find('SafeStartApi\Entity\User', $userId);
+            if (!$user) {
+                $this->answer = array(
+                    "errorMessage" => "User not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            }
+        } else {
+            $user = new \SafeStartApi\Entity\User();
+        }
+
+        // todo: check if unique email and username
+
+        $user->setEmail($this->data->email);
+        $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
+
+        $user->setFirstName($this->data->firstName);
+        $user->setLastName($this->data->lastName);
+        $user->setPosition($this->data->position);
+        $user->setDepartment($this->data->department);
+
+        if (isset($this->data->role)) {
+            if (!in_array($this->data->role, array('companyUser', 'companyManager'))) {
+                $this->answer = array(
+                    "errorMessage" => "Wrong user role"
+                );
+                return $this->AnswerPlugin()->format($this->answer, 401, 401);
+            }
+            $user->setRole($this->data->role);
+        }
+        if ($this->data->enabled) $user->setEnabled((bool)$this->data->enabled);
+
+        $this->em->persist($user);
+
+        if (isset($this->data->companyId)) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            }
+
+            $user->setCompany($company);
+        }
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'userId' => $user->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
     }
 }
