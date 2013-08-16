@@ -16,8 +16,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
         iconCls: 'user',
 
         styleHtmlContent: true,
-        scrollable: true,
-
+        scrollable: false,
         layout: 'hbox',
 
         items: [
@@ -45,6 +44,8 @@ Ext.define('SafeStartApp.view.pages.Users', {
         this.usersStore = Ext.create('SafeStartApp.store.Users');
 
         this.add(this.getUsersList());
+
+        this.add(this.getInfoPanel());
 
         this.disable();
     },
@@ -99,7 +100,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
         return {
             cls: 'card',
             xtype: 'panel',
-            name: 'company-info',
+            name: 'user-info',
             layout: 'card',
             minWidth: 150,
             flex: 2,

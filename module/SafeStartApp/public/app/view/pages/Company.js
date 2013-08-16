@@ -100,7 +100,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         return {
             cls: 'card',
             xtype: 'panel',
-            name: 'company-info',
+            name: 'vehicle-info',
             layout: 'card',
             minWidth: 150,
             flex: 2,

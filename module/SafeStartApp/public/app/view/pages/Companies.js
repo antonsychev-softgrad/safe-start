@@ -16,7 +16,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         title: 'Companies',
         iconCls: 'team',
         styleHtmlContent: true,
-        scrollable: true,
+        scrollable: false,
         layout: 'hbox',
         items: [
 
@@ -96,7 +96,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
             flex: 2,
             minWidth: 150,
             name: 'company-info',
-            scrollable: true
+            scrollable: false
         };
     }
 });

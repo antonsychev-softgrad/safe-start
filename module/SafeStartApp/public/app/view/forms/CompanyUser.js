@@ -3,7 +3,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartCompanyUserForm',
     config: {
-        height: 640,
+        minHeight: 400,
         maxWidth: 600,
         scrollable: false,
         items: [
@@ -14,6 +14,10 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                     {
                         xtype: 'hiddenfield',
                         name: 'id'
+                    },
+                    {
+                        xtype: 'hiddenfield',
+                        name: 'companyId'
                     },
                     {
                         xtype: 'emailfield',
@@ -32,6 +36,16 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                         label: 'Last name',
                         required: true,
                         name: 'lastName'
+                    },
+                    {
+                        xtype: 'textfield',
+                        label: 'Position',
+                        name: 'position'
+                    },
+                    {
+                        xtype: 'textfield',
+                        label: 'Sector/Department',
+                        name: 'department'
                     }
 
                 ]
