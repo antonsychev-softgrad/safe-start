@@ -7278,6 +7278,52 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 
 /* Всплывающие алерты */
 
-.x-msgbox .x-button {
+.sfa-modal-form .x-toolbar .x-button .x-button-label {
+    font-size: 1.3em;
+}
+
+.sfa-modal-form .x-button.x-button-confirm {
+    border: none !important;
+}
+.sfa-modal-form .x-button.x-button-action {
+    background-position: 0 -1px;
+}
+.sfa-modal-form .x-toolbar, .sfa-modal-form .x-form .x-scroll-container {
+    background: none;
+}
+.sfa-modal-form .x-container.x-form-fieldset {
+    margin-bottom: 0;
+}
+.sfa-modal-form .x-form-fieldset-instructions.x-docked-bottom,
+.sfa-modal-form .x-form-fieldset-title.x-docked-top,
+.sfa-modal-form .x-input-el.x-form-field {
+    font-size: 22px;
+    color: #565555;
+}
+.sfa-modal-form .x-form-label {
+    background: none;
+}
+.sfa-modal-form .x-component-outer {
+    border: 1px solid #cacaca;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+.sfa-modal-form  .x-form-fieldset .x-field, .sfa-modal-form .x-form-fieldset .x-form-fieldset-inner {
     border: none;
+}
+.sfa-modal-form .x-component-outer input {
+    padding: 0.4em 0;
+    margin: 0 0.4em;
+    width: 90%;
+}
+.sfa-modal-form .x-container.x-field.x-field-labeled {
+    margin-bottom: 5px;
+}
+.sfa-modal-form .x-form-fieldset-title.x-docked-top {
+    margin: 0 0 0.4em;
+    text-align: center;
+    font-size: 28px;
 }
