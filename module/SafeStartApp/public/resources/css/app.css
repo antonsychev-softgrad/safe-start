@@ -4598,7 +4598,7 @@ body.x-desktop {
 .x-button.x-button-confirm-small.x-button-pressed:after, .x-toolbar
 .x-button.x-button-confirm-small.x-button-active, .x-toolbar
 .x-button.x-button-confirm-small.x-button-active:after {
-    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 -47px;
+    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 -48px;
 }
 
 /* line 13, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -7179,12 +7179,16 @@ form.comp-settings .x-toolbar {
 
 .sfa-info-container  .x-button {
     display: inline-block;
-    padding: 4px 10px 6px;
+    padding: 0 20px 5px;
     margin: 0 5px;
     border: none !important;
     font-size: 22px;
+    height: 46px;
+    background-position: 0 -1px !important;
 }
-
+.sfa-info-container  .x-button.x-button-pressing {
+    background-position: 0 -48px !important;
+}
 .x-toolbar.x-docked-bottom {
     border: none;
 }
@@ -7198,7 +7202,7 @@ background-size: 85% auto;
 }
 
 .sfa-info-container    .x-unsized.x-form-fieldset-title .x-innerhtml {
-   padding-left: 30%;
+   padding: 12px 0 0 30%;
     font-size: 28px;
 }
 
@@ -7223,9 +7227,7 @@ background-size: 85% auto;
 .sfa-info-container  .x-form-fieldset .x-form-fieldset-inner, .card .x-form-fieldset .x-field{
     border: none;
 }
-
 .sfa-info-container  form {
-padding: 10px 10px 25px 1px;
 margin-left: 20px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
@@ -7240,7 +7242,25 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 .sfa-info-container .x-form-fieldset {
     margin-bottom: 0;
 }
-
+.sfa-info-container .x-form-label {
+    padding-left: 0;
+}
+.sfa-info-container .x-container.x-form-fieldset {
+    margin: 0 20px;
+}
 .sfa-info-container .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top {
     margin: 0 0 10px;
+}
+.sfa-info-container .x-field-focused input {
+    border: 3px solid #2E7FB7;
+}
+.sfa-info-container .x-toolbar {
+    top: -20px;
+    padding: 0 20px;
+    background: none;
+}
+
+.sfa-info-container .sfa-datepicker .x-input-el {
+    position: relative;
+    z-index: 999;
 }

@@ -92,6 +92,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 required: true,
                                 label: 'Expiry Date',
                                 value: new Date(),
+                                cls: 'sfa-datepicker',
                                 picker: {
                                     yearFrom: new Date().getFullYear(),
                                     yearTo: new Date().getFullYear() + 10
