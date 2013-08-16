@@ -300,7 +300,7 @@ return array(
         )
     ),
     'mail' => array(
-        'from' => 'test21141@gmail.org',
+        'from' => 'admin@safe-start.dev',
         'transport' => array(
             'options' => array(
                 'host' => 'smtp.gmail.com',

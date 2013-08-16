@@ -26,7 +26,7 @@ class AdminController extends AdminAccessRestController
 
     public function updateCompanyAction()
     {
-        if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
+      //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
 
         $companyId = (int)$this->params('id');
         if ($companyId) {
@@ -83,7 +83,7 @@ class AdminController extends AdminAccessRestController
 
     public function sendCredentialsAction()
     {
-        if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
+     //   if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
 
         $companyId = (int)$this->params('id');
 
