@@ -72,12 +72,12 @@
             "properties": {
                 "request": {
                     "properties": {
-                        "$ref": "vehicle/completechecklist/request.json"
+                        "$ref": "vehicle/checkplantid/request.json"
                     }
                 },
                 "response": {
                     "properties": {
-                        "$ref": "vehicle/completechecklist/response.json"
+                        "$ref": "vehicle/checkplantid/response.json"
                     }
                 }
             }

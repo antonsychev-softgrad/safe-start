@@ -129,9 +129,9 @@ class User extends BaseEntity
         return $bcrypt->verify($password, $user->getPassword());
     }
 
-    public function setPlainPassword($plain_password)
+    public function setPlainPassword($plainPassword)
     {
-        $this->password = self::hashPassword($plain_password);
+        $this->password = self::hashPassword($plainPassword);
 
         return $this;
     }

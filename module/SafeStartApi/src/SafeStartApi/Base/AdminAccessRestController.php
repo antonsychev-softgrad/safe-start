@@ -2,6 +2,7 @@
 namespace SafeStartApi\Base;
 
 use SafeStartApi\Base\Exception\Rest403;
+use SafeStartApi\Base\RestrictedAccessRestController;
 
 class AdminAccessRestController extends RestrictedAccessRestController
 {

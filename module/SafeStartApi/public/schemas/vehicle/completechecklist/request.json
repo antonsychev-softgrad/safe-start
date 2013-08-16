@@ -20,7 +20,7 @@
             "properties": {
                 "date": {
                     "description": "Date of filling",
-                    "type": "string",
+                    "type": "integer",
                     "required": true
                 },
                 "vehicleId": {
@@ -63,33 +63,6 @@
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                },
-                "answers": {
-                    "description": "Fields with data",
-                    "type": "array",
-                    "required": true,
-                    "items": {
-                        "description": "Field",
-                        "type": "object",
-                        "required": false,
-                        "properties": {
-                            "fieldId": {
-                                "description": "Field id",
-                                "type": "integer",
-                                "required": true
-                            },
-                            "answerValue": {
-                                "description": "Answer value",
-                                "type": "string",
-                                "required": false
-                            },
-                            "answerId": {
-                                "description": "Answer ID",
-                                "type": "integer",
-                                "required": false
                             }
                         }
                     }
