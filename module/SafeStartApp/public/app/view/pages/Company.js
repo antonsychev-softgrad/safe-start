@@ -58,6 +58,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             itemTpl: '<div class="contact">{title}</div>',
             minWidth: 150,
             maxWidth: 300,
+            cls: 'sfa-left-container',
             flex:1,
             store: this.vehiclesStore,
             items: [
@@ -84,6 +85,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             name: 'reload',
                             ui: 'action',
                             iconCls: 'refresh',
+                            cls:'sfa-search-reload',
                             handler: function() {
                                 this.up('list[name=vehicles]').getStore().loadData();
                             }
@@ -116,6 +118,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             itemTpl: '<div class="contact">{title}</div>',
             minWidth: 150,
             maxWidth: 300,
+            cls: 'sfa-right-container',
             flex:3,
             store: this.alertsStore,
             items: [

@@ -56,6 +56,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
             itemTpl: '<div class="contact">{title}</div>',
             maxWidth: 300,
             minWidth: 150,
+            cls: 'sfa-left-container',
             store: this.usersStore,
             items: [
                 {
@@ -83,6 +84,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             name: 'reload',
                             ui: 'action',
                             iconCls: 'refresh',
+                            cls:'sfa-search-reload',
                             handler: function() {
                                 this.up('list[name=users]').getStore().loadData();
                             }
