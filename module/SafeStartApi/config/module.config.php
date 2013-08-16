@@ -122,6 +122,16 @@ return array(
                             ),
                         ),
                     ),
+                    'upload-images' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/upload-images',
+                            'defaults' => array(
+                                'controller' => 'ProcessData',
+                                'action' => 'uploadImages',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -157,6 +167,7 @@ return array(
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
             'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
+            'SafeStartApi\Controller\ProcessData' => 'SafeStartApi\Controller\ProcessDataController',
         ),
     ),
     'view_manager' => array(
@@ -228,6 +239,7 @@ return array(
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
+            'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
         )
     ),
     'session' => array(

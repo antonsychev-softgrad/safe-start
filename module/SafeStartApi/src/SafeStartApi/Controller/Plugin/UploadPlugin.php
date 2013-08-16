@@ -47,7 +47,36 @@ class UploadPlugin extends AbstractPlugin
      * @param mixed $error_messages
      * @return
      */
-    function __construct($options = null, $initialize = true, $error_messages = null) {
+    public function __construct($options = null, $initialize = false, $error_messages = null) {
+        $this->setOptions($options);
+
+        if ($error_messages) {
+            $this->error_messages = array_merge($this->error_messages, $error_messages);
+        }
+
+        if ($initialize) {
+            $this->initialize();
+        }
+    }
+
+    /**
+     * UploadPlugin::__invoke()
+     *
+     * @param mixed $options
+     * @return
+     */
+    public function __invoke($options = null) {
+        $this->setOptions($options);
+        return $this;
+    }
+
+    /**
+     * UploadPlugin::setOptions()
+     *
+     * @param mixed $options
+     * @return void
+     */
+    protected function setOptions($options = null) {
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
             'upload_dir' => $this->get_filter_path('/data/users/'),
@@ -129,16 +158,11 @@ class UploadPlugin extends AbstractPlugin
                 ),
             )
         );
+
         if ($options) {
             if(isset($options['upload_dir']))
                 $options['upload_dir'] = $this->get_filter_path($options['upload_dir']);
             $this->options = array_merge($this->options, $options);
-        }
-        if ($error_messages) {
-            $this->error_messages = array_merge($this->error_messages, $error_messages);
-        }
-        if ($initialize) {
-            $this->initialize();
         }
     }
 
@@ -990,12 +1014,12 @@ class UploadPlugin extends AbstractPlugin
 
         $file = new \stdClass();
         $file->name = $this->get_file_name($name, $type, $index, $content_range);
-        $file->name_only  = preg_replace('/(.*)\..*$/is','$1',$file->name);
+        $file->nameOnly  = preg_replace('/(.*)\..*$/is','$1',$file->name);
         $file->ext  = preg_replace('/.*\.(.*)$/is','$1',$file->name);
         $file->type = $type;
         $file->size = $this->fix_integer_overflow(intval($size));
-        $file->thumb_names = array_keys($this->options['image_versions']);
-        $file->use_thumb_fldr = $this->options['use_versions_path'];
+        $file->thumbNames = array_keys($this->options['image_versions']);
+        $file->useThumbFolder = $this->options['use_versions_path'];
 
         if ($this->validate($uploaded_file, $file, $error, $index)) {
             $this->handle_form_data($file, $index);
@@ -1107,6 +1131,8 @@ class UploadPlugin extends AbstractPlugin
     protected function generate_response($content, $print_response = true) {
         if ($print_response) {
             $json = json_encode($content);
+
+            /* show in head > * /
             $redirect = isset($_REQUEST['redirect']) ?
                 stripslashes($_REQUEST['redirect']) : null;
             if ($redirect) {
@@ -1114,6 +1140,7 @@ class UploadPlugin extends AbstractPlugin
                 return;
             }
             $this->head();
+
             if ($this->get_server_var('HTTP_CONTENT_RANGE')) {
                 $files = isset($content[$this->options['param_name']]) ?
                     $content[$this->options['param_name']] : null;
@@ -1123,7 +1150,9 @@ class UploadPlugin extends AbstractPlugin
                     ));
                 }
             }
+
             $this->body($json);
+            /* > end show in head. */
         }
         return $content;
     }
