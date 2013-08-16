@@ -103,7 +103,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
             minWidth: 150,
             flex: 2,
             scrollable: true,
-            html: '<div><h2></h2></div>'
+            items: [
+
+            ]
         };
     },
 

@@ -2,8 +2,8 @@ Ext.define('SafeStartApp.model.User', {
     extend: "Ext.data.Model",
     config: {
         fields: [
-            {name: 'id', type: 'integer'},
-            {name: 'companyId', type: 'integer'},
+            {name: 'id', type: 'int'},
+            {name: 'companyId', type: 'int'},
             {name: 'username', type: 'string'},
             {name: 'role', type: 'string'},
             {name: 'firstName', type: 'string'},

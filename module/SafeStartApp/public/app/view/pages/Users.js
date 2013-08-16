@@ -101,8 +101,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
             layout: 'card',
             minWidth: 150,
             flex: 2,
-            scrollable: true,
-            html: '<div><h2></h2></div>'
+            scrollable: true
         };
     },
 
