@@ -83,6 +83,19 @@ return array(
                             ),
                         ),
                     ),
+                    'update-user' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'update',
+                            ),
+                        ),
+                    ),
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -122,6 +135,16 @@ return array(
                             ),
                         ),
                     ),
+                    'upload-images' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/upload-images',
+                            'defaults' => array(
+                                'controller' => 'ProcessData',
+                                'action' => 'uploadImages',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
@@ -157,6 +180,7 @@ return array(
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
             'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
+            'SafeStartApi\Controller\ProcessData' => 'SafeStartApi\Controller\ProcessDataController',
         ),
     ),
     'view_manager' => array(
@@ -228,6 +252,7 @@ return array(
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
+            'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
         )
     ),
     'session' => array(
@@ -300,13 +325,13 @@ return array(
         )
     ),
     'mail' => array(
-        'from' => 'test21141@gmail.org',
+        'from' => 'admin@safe-start.dev',
         'transport' => array(
             'options' => array(
                 'host' => 'smtp.gmail.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'test21141@gmail.org',
+                    'username' => 'test21141@gmail.com',
                     'password' => 'test211411',
                     'ssl' => 'tls'
                 ),

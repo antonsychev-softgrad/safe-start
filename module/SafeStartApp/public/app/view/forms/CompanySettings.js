@@ -5,7 +5,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     config: {
         height: 810,
         maxWidth: 600,
-        scrollable: false,
+        scrollable: true,
         cls: 'comp-settings',
         items: [
             {
@@ -73,7 +73,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
-                                increment: 1,
+                                stepValue: 1,
                                 name: 'max_users',
                                 required: true,
                                 label: 'Number of users'
@@ -82,7 +82,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
-                                increment: 1,
+                                stepValue: 1,
                                 name: 'max_vehicles',
                                 required: true,
                                 label: 'Number of vehicles'

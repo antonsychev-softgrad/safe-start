@@ -57,6 +57,8 @@ Ext.define('SafeStartApp.controller.Companies', {
         this.currentCompanyForm.down('button[name=send-credentials]').hide();
         this.currentCompanyForm.down('button[name=manage]').hide();
         this.currentCompanyForm.down('button[name=reset-data]').show();
+        this.getCompanyPage().disable();
+        this.getUsersPage().disable();
     },
 
     saveAction: function () {

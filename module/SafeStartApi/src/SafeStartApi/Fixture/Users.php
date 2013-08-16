@@ -20,6 +20,8 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($user);
         $manager->flush();
 
+        $this->addReference('guest', $user);
+
         // SUPER ADMIN
         $user = new User();
         $user->setEmail('super@test.test');
@@ -30,6 +32,21 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setPlainPassword('12345');
         $manager->persist($user);
         $manager->flush();
+
+        $this->addReference('super_admin', $user);
+
+        // COMPANY ADMIN
+        $user = new User();
+        $user->setEmail('company1@test.test');
+        $user->setUsername('company1');
+        $user->setLastName('Admin');
+        $user->setFirstName('Company1');
+        $user->setRole('companyAdmin');
+        $user->setPlainPassword('12345');
+        $manager->persist($user);
+        $manager->flush();
+
+        $this->addReference('company_admin', $user);
     }
 
     /**

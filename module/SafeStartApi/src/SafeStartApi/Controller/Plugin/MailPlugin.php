@@ -14,23 +14,19 @@ class MailPlugin extends AbstractPlugin
     {
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
 
-        $view = new \Zend\View\Renderer\PhpRenderer();
-        $resolver = new \Zend\View\Resolver\TemplateMapResolver();
-        $resolver->setMap(array(
-            'mailTemplate' => 'email/' . $template,
-        ));
-        $view->setResolver($resolver);
-        $viewModel = new \Zend\View\Model\ViewModel();
-        $viewModel
-            ->setTemplate('mailTemplate')
-            ->setVariables($params);
+        $viewModel = new ViewModel($params);
+        $viewModel->setTemplate('mail/' . $template);
+
+        $html = $this->getController()->getServiceLocator()
+            ->get('viewrenderer')
+            ->render($viewModel);
 
         $message = new Message();
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
         $message
             ->setSubject($subject)
-            ->setBody($view->render($viewModel))
+            ->setBody($html)
             ->setFrom($moduleConfig['mail']['from'])
             ->setTo($to);
         $transport->send($message);
