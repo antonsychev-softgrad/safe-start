@@ -7152,12 +7152,7 @@ form.comp-settings .x-toolbar {
 .sfa-search-reload span.refresh {
     margin-bottom: 5px;
 }
-/*
-.sfa-info-container .x-form .x-scroll-container, .sfa-info-container .x-form-fieldset .x-form-fieldset-inner,
-.sfa-info-container .x-form-label{
-    background: none;
-}
-*/
+
 
 /* контент внутренней страницы */
 
@@ -7263,4 +7258,26 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 .sfa-info-container .sfa-datepicker .x-input-el {
     position: relative;
     z-index: 999;
+}
+
+/* Правая колонка */
+
+.sfa-right-container, .sfa-right-container .x-toolbar {
+    background: none;
+}
+.sfa-right-container .x-toolbar {
+    margin-bottom: 20px;
+    border: none;
+}
+.sfa-right-container .x-title {
+    font-size: 33px;
+    color: #ed1818;
+}
+
+
+
+/* Всплывающие алерты */
+
+.x-msgbox .x-button {
+    border: none;
 }
