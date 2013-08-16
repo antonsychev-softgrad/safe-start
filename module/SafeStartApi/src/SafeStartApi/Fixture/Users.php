@@ -1,4 +1,5 @@
 <?php
+
 namespace SafeStartApi\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -10,15 +11,31 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // GUEST
+        // USER 1
         $user = new User();
-        $user->setEmail('test@test.test');
+        $user->setEmail('test1@test.test');
         $user->setUsername('username');
         $user->setLastName('Test User');
         $user->setFirstName('Test User');
         $user->setPlainPassword('12345');
         $manager->persist($user);
         $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('user-1', $user);
+
+        // USER 2
+        $user = new User();
+        $user->setEmail('test2@test.test');
+        $user->setUsername('username');
+        $user->setLastName('Test User');
+        $user->setFirstName('Test User');
+        $user->setPlainPassword('12345');
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('user-2', $user);
 
         // SUPER ADMIN
         $user = new User();
@@ -30,6 +47,37 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setPlainPassword('12345');
         $manager->persist($user);
         $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('super-admin-user', $user);
+
+        // RESPONSIBLE USER
+        $user = new User();
+        $user->setEmail('responsible@test.test');
+        $user->setUsername('responsible');
+        $user->setLastName('Responsible');
+        $user->setFirstName('User');
+        $user->setRole('user');
+        $user->setPlainPassword('12345');
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('responsible-user', $user);
+
+        // COMPANY ADMIN
+        $user = new User();
+        $user->setEmail('company@test.test');
+        $user->setUsername('company');
+        $user->setLastName('Company');
+        $user->setFirstName('User');
+        $user->setRole('companyAdmin');
+        $user->setPlainPassword('12345');
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('company-admin-user', $user);
     }
 
     /**

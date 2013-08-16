@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="inspection_fields")
  *
  */
-class GroupField extends BaseEntity
+class Field extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -28,10 +28,9 @@ class GroupField extends BaseEntity
     protected $group;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GroupFieldType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
-     **/
-    protected $type;
+     * @ORM\Column(type="integer")
+     */
+    protected $typeId;
 
     /**
      * @ORM\Column(type="string")
@@ -44,12 +43,12 @@ class GroupField extends BaseEntity
     protected $order;
 
     /**
-     * @ORM\OneToMany(targetEntity="GroupFieldVariant", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="FieldVariant", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      **/
     protected $variants;
 
     /**
-     * @ORM\OneToMany(targetEntity="GroupFieldAnswer", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="FieldAnswer", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      **/
     protected $answers;
 
@@ -117,7 +116,7 @@ class GroupField extends BaseEntity
      * Set label
      *
      * @param string $label
-     * @return GroupField
+     * @return Field
      */
     public function setLabel($label)
     {
@@ -140,7 +139,7 @@ class GroupField extends BaseEntity
      * Set order
      *
      * @param integer $order
-     * @return GroupField
+     * @return Field
      */
     public function setOrder($order)
     {
@@ -163,7 +162,7 @@ class GroupField extends BaseEntity
      * Set group
      *
      * @param \SafeStartApi\Entity\Group $group
-     * @return GroupField
+     * @return Field
      */
     public function setGroup(\SafeStartApi\Entity\Group $group = null)
     {
@@ -185,10 +184,10 @@ class GroupField extends BaseEntity
     /**
      * Set type
      *
-     * @param \SafeStartApi\Entity\GroupFieldType $type
-     * @return GroupField
+     * @param \SafeStartApi\Entity\FieldType $type
+     * @return Field
      */
-    public function setType(\SafeStartApi\Entity\GroupFieldType $type = null)
+    public function setType(\SafeStartApi\Entity\FieldType $type = null)
     {
         $this->type = $type;
     
@@ -198,7 +197,7 @@ class GroupField extends BaseEntity
     /**
      * Get type
      *
-     * @return \SafeStartApi\Entity\GroupFieldType 
+     * @return \SafeStartApi\Entity\FieldType
      */
     public function getType()
     {
@@ -208,10 +207,10 @@ class GroupField extends BaseEntity
     /**
      * Add variants
      *
-     * @param \SafeStartApi\Entity\GroupFieldVariant $variants
-     * @return GroupField
+     * @param \SafeStartApi\Entity\FieldVariant $variants
+     * @return Field
      */
-    public function addVariant(\SafeStartApi\Entity\GroupFieldVariant $variants)
+    public function addVariant(\SafeStartApi\Entity\FieldVariant $variants)
     {
         $this->variants[] = $variants;
     
@@ -221,9 +220,9 @@ class GroupField extends BaseEntity
     /**
      * Remove variants
      *
-     * @param \SafeStartApi\Entity\GroupFieldVariant $variants
+     * @param \SafeStartApi\Entity\FieldVariant $variants
      */
-    public function removeVariant(\SafeStartApi\Entity\GroupFieldVariant $variants)
+    public function removeVariant(\SafeStartApi\Entity\FieldVariant $variants)
     {
         $this->variants->removeElement($variants);
     }
@@ -241,10 +240,10 @@ class GroupField extends BaseEntity
     /**
      * Add answers
      *
-     * @param \SafeStartApi\Entity\GroupFieldAnswer $answers
-     * @return GroupField
+     * @param \SafeStartApi\Entity\FieldAnswer $answers
+     * @return Field
      */
-    public function addAnswer(\SafeStartApi\Entity\GroupFieldAnswer $answers)
+    public function addAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
     {
         $this->answers[] = $answers;
     
@@ -254,9 +253,9 @@ class GroupField extends BaseEntity
     /**
      * Remove answers
      *
-     * @param \SafeStartApi\Entity\GroupFieldAnswer $answers
+     * @param \SafeStartApi\Entity\FieldAnswer $answers
      */
-    public function removeAnswer(\SafeStartApi\Entity\GroupFieldAnswer $answers)
+    public function removeAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
     {
         $this->answers->removeElement($answers);
     }

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="inspection_answers")
  *
  */
-class GroupFieldAnswer extends BaseEntity
+class FieldAnswer extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -22,7 +22,7 @@ class GroupFieldAnswer extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GroupField", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="answers")
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
     protected $field;
@@ -98,7 +98,7 @@ class GroupFieldAnswer extends BaseEntity
      * Set value
      *
      * @param string $value
-     * @return GroupFieldAnswer
+     * @return FieldAnswer
      */
     public function setValue($value)
     {
@@ -121,7 +121,7 @@ class GroupFieldAnswer extends BaseEntity
      * Set creationDate
      *
      * @param \DateTime $creationDate
-     * @return GroupFieldAnswer
+     * @return FieldAnswer
      */
     public function setCreationDate($creationDate)
     {
@@ -143,10 +143,10 @@ class GroupFieldAnswer extends BaseEntity
     /**
      * Set field
      *
-     * @param \SafeStartApi\Entity\GroupField $field
-     * @return GroupFieldAnswer
+     * @param \SafeStartApi\Entity\Field $field
+     * @return FieldAnswer
      */
-    public function setField(\SafeStartApi\Entity\GroupField $field = null)
+    public function setField(\SafeStartApi\Entity\Field $field = null)
     {
         $this->field = $field;
     
@@ -156,7 +156,7 @@ class GroupFieldAnswer extends BaseEntity
     /**
      * Get field
      *
-     * @return \SafeStartApi\Entity\GroupField 
+     * @return \SafeStartApi\Entity\Field
      */
     public function getField()
     {
@@ -167,7 +167,7 @@ class GroupFieldAnswer extends BaseEntity
      * Set user
      *
      * @param \SafeStartApi\Entity\User $user
-     * @return GroupFieldAnswer
+     * @return FieldAnswer
      */
     public function setUser(\SafeStartApi\Entity\User $user = null)
     {
