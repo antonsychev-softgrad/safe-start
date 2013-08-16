@@ -7311,6 +7311,9 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     -o-border-radius: 10px;
     border-radius: 10px;
 }
+.sfa-modal-form .x-field-focused .x-component-outer {
+    border: 3px solid #2E7FB7;
+}
 .sfa-modal-form  .x-form-fieldset .x-field, .sfa-modal-form .x-form-fieldset .x-form-fieldset-inner {
     border: none;
 }
@@ -7320,7 +7323,10 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     width: 90%;
 }
 .sfa-modal-form .x-container.x-field.x-field-labeled {
-    margin-bottom: 5px;
+    margin-bottom: 7px;
+}
+.sfa-modal-form .x-field-focused {
+    margin-bottom: 6px !important;
 }
 .sfa-modal-form .x-form-fieldset-title.x-docked-top {
     margin: 0 0 0.4em;
