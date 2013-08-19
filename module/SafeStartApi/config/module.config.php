@@ -275,17 +275,29 @@ return array(
         'radio' => array(
             'id' => 1,
             'options' => array(
-                array(
-                    'value' => 'Yes',
-                    'label' => 'Yes'
+                'two' => array(
+                    array(
+                        'value' => 'Yes',
+                        'label' => 'Yes'
+                    ),
+                    array(
+                        'value' => 'No',
+                        'label' => 'No'
+                    ),
                 ),
-                array(
-                    'value' => 'No',
-                    'label' => 'No'
-                ),
-                array(
-                    'value' => 'N/A',
-                    'label' => 'N/A'
+                'three' => array(
+                    array(
+                        'value' => 'Yes',
+                        'label' => 'Yes'
+                    ),
+                    array(
+                        'value' => 'No',
+                        'label' => 'No'
+                    ),
+                    array(
+                        'value' => 'N/A',
+                        'label' => 'N/A'
+                    ),
                 ),
             ),
             'default' => ''
