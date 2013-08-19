@@ -330,29 +330,6 @@ class Vehicle extends BaseEntity
     }
 
     /**
-     * Set company
-     *
-     * @param \SafeStartApi\Entity\Company $company
-     * @return Vehicle
-     */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return \SafeStartApi\Entity\Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
      * Set responsibleUser
      *
      * @param \SafeStartApi\Entity\User $responsibleUser
@@ -429,5 +406,28 @@ class Vehicle extends BaseEntity
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \SafeStartApi\Entity\Company $company
+     * @return Vehicle
+     */
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \SafeStartApi\Entity\Company 
+     */
+    public function getCompany()
+    {
+        return $this->company;
     }
 }

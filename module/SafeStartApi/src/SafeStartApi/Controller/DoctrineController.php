@@ -53,6 +53,7 @@ class DoctrineController extends AbstractActionController
         $classes = array(
             $this->em->getClassMetadata('\SafeStartApi\Entity\User'),
             $this->em->getClassMetadata('\SafeStartApi\Entity\Company'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Vehicle'),
         );
 
         if ($verbose) $this->console->write("Drooping DB \r\n", 3);
@@ -63,6 +64,7 @@ class DoctrineController extends AbstractActionController
 
         if ($verbose) $this->console->write("Loading Fixtures \r\n", 3);
         $this->addFixture(new \SafeStartApi\Fixture\Users());
+        $this->addFixture(new \SafeStartApi\Fixture\Vehicles());
         $this->addFixture(new \SafeStartApi\Fixture\Companies());
         $this->loadFixtures();
     }

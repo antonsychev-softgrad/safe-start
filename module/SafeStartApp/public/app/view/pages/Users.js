@@ -98,7 +98,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
     getInfoPanel: function() {
         return {
-            cls: 'card',
+            cls: 'sfa-info-container',
             xtype: 'panel',
             name: 'user-info',
             layout: 'card',

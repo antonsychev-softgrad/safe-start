@@ -98,7 +98,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     getInfoPanel: function() {
         return {
-            cls: 'card',
+            cls: 'sfa-info-container',
             xtype: 'panel',
             name: 'vehicle-info',
             layout: 'card',

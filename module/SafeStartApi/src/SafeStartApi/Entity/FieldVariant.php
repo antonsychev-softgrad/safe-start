@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="inspection_field_variants")
  *
  */
-class Variant extends BaseEntity
+class FieldVariant extends BaseEntity
 {
     /**
      * @ORM\Id
