@@ -44,6 +44,11 @@ class Vehicle extends BaseEntity
     protected $type;
 
     /**
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $fields;
+
+    /**
      * @ORM\Column(type="string", name="plant_id", unique=true, nullable=false)
      **/
     protected $plantId;
@@ -429,5 +434,38 @@ class Vehicle extends BaseEntity
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Add fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     * @return Vehicle
+     */
+    public function addField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields[] = $fields;
+    
+        return $this;
+    }
+
+    /**
+     * Remove fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     */
+    public function removeField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields->removeElement($fields);
+    }
+
+    /**
+     * Get fields
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 }

@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="inspection_fields")
  *
  */
-class Field extends BaseEntity
+class Alert extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -22,26 +22,10 @@ class Field extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Group", inversedBy="fields")
-     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
-    protected $group;
-
-    /**
-     * @OneToMany(targetEntity="Field", mappedBy="parent")
-     */
-    protected $additionalFields;
-
-    /**
-     * @ManyToOne(targetEntity="Field", inversedBy="additionalFields")
-     * @JoinColumn(name="parent_id", referencedColumnName="id")
-     */
-    protected $parent;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $type;
+    protected $field;
 
     /**
      * @ORM\Column(type="string")
@@ -57,17 +41,6 @@ class Field extends BaseEntity
      * @ORM\Column(type="string")
      */
     protected $triggerValue;
-
-    /**
-     * @ORM\Column(type="integer", name="sort_order")
-     */
-    protected $order;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Vehicle")
-     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
-     **/
-    protected $vehicle;
 
     /**
     * Magic getter to expose protected properties.

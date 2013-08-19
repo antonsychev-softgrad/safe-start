@@ -35,6 +35,10 @@ class Group extends BaseEntity
      */
     protected $order;
 
+    /**
+     * @ORM\Column(type="boolean", name="additional")
+     */
+    protected $additional;
 
 
     /**
@@ -173,5 +177,51 @@ class Group extends BaseEntity
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * Set additional
+     *
+     * @param boolean $additional
+     * @return Group
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+    
+        return $this;
+    }
+
+    /**
+     * Get additional
+     *
+     * @return boolean 
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
+    }
+
+    /**
+     * Set checklist
+     *
+     * @param \SafeStartApi\Entity\Checklist $checklist
+     * @return Group
+     */
+    public function setChecklist(\SafeStartApi\Entity\Checklist $checklist = null)
+    {
+        $this->checklist = $checklist;
+    
+        return $this;
+    }
+
+    /**
+     * Get checklist
+     *
+     * @return \SafeStartApi\Entity\Checklist 
+     */
+    public function getChecklist()
+    {
+        return $this->checklist;
     }
 }

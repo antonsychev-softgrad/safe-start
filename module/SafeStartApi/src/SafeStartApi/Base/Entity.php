@@ -36,5 +36,4 @@ abstract class Entity
         return get_object_vars($this);
     }
 
-
 }
