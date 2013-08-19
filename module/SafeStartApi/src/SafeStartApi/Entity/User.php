@@ -30,7 +30,7 @@ class User extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      */
     protected $username;
 
@@ -41,7 +41,7 @@ class User extends BaseEntity
     protected $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
      */
     protected $email;
 
@@ -66,7 +66,7 @@ class User extends BaseEntity
     protected $secondName;
 
     /**
-     * @ORM\OneToOne(targetEntity="Company", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
      * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
      **/
     protected $company;
@@ -112,7 +112,7 @@ class User extends BaseEntity
     protected $deleted = 0;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, unique=true, name="last_login")
+     * @ORM\Column(type="datetime", nullable=true, name="last_login")
      */
     protected $lastLogin;
 
@@ -427,29 +427,6 @@ class User extends BaseEntity
     }
 
     /**
-     * Set company
-     *
-     * @param \SafeStartApi\Entity\Company $company
-     * @return User
-     */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return \SafeStartApi\Entity\Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
      * Add vehiclesAsigned
      *
      * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
@@ -582,5 +559,28 @@ class User extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set company
+     *
+     * @param \SafeStartApi\Entity\Company $company
+     * @return User
+     */
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \SafeStartApi\Entity\Company 
+     */
+    public function getCompany()
+    {
+        return $this->company;
     }
 }

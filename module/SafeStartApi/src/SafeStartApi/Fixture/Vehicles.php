@@ -20,13 +20,16 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setKmsUntilNext(100);
         $vehicle->setHoursUntilNext(100);
         $vehicle->setExpiryDate(new \DateTime());
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('user-1'));
         $manager->persist($vehicle);
+        $manager->flush();
+
+        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addEndUser($this->getReference('usual-user1'));
         $manager->flush();
 
         //Associate a reference for other fixtures
         $this->addReference('vehicle-1', $vehicle);
+
 
 
         $vehicle = new Vehicle();
@@ -38,9 +41,12 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setKmsUntilNext(100);
         $vehicle->setHoursUntilNext(100);
         $vehicle->setExpiryDate(new \DateTime());
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('user-2'));
         $manager->persist($vehicle);
+        $manager->flush();
+
+        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addEndUser($this->getReference('usual-user2'));
+
         $manager->flush();
 
         //Associate a reference for other fixtures

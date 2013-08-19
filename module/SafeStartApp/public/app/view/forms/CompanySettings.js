@@ -18,35 +18,35 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     },
                     {
                         xtype: 'textfield',
-                        label: 'Title',
+                        label: 'Company Name',
                         required: true,
                         name: 'title'
                     },
                     {
+                        xtype: 'textfield',
+                        label: 'Responsible Name',
+                        required: true,
+                        name: 'firstName'
+                    },
+                    {
                         xtype: 'emailfield',
-                        label: 'Responsible person email',
+                        label: 'Responsible Email',
                         required: true,
                         name: 'email'
                     },
                     {
                         xtype: 'textfield',
-                        label: 'Responsible person name',
-                        required: true,
-                        name: 'firstName'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Adress',
+                        label: 'Company Address',
                         name: 'address'
                     },
                     {
                         xtype: 'textfield',
-                        label: 'Phone',
+                        label: 'Company Phone',
                         name: 'phone'
                     },
                     {
                         xtype: 'textareafield',
-                        label: 'Info',
+                        label: 'Company Info',
                         name: 'description'
                     },
                     {

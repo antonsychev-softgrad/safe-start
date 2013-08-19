@@ -28,7 +28,7 @@ class Company extends BaseEntity
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -58,7 +58,7 @@ class Company extends BaseEntity
     protected $vehicles;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string")
      */
     protected $title;
 

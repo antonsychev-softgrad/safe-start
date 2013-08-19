@@ -468,4 +468,27 @@ class Vehicle extends BaseEntity
     {
         return $this->fields;
     }
+    /**
+     * Set company
+     *
+     * @param \SafeStartApi\Entity\Company $company
+     * @return Vehicle
+     */
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    {
+        $this->company = $company;
+    
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return \SafeStartApi\Entity\Company 
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
 }

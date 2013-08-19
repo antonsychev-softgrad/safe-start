@@ -13,11 +13,6 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
     {
         // COMPANY 1
         $company = new Company();
-        $company->setAdmin($this->getReference('company-admin-user'));
-        $company->addResponsiblePerson($this->getReference('responsible-user'));
-        $company->addUser($this->getReference('user'));
-        $company->addVehicle($this->getReference('vehicle-1'));
-        $company->addVehicle($this->getReference('vehicle-2'));
         $company->setTitle('New Company');
         $company->setAddress('Company Address 1');
         $company->setPhone('Company Phone 1');
@@ -29,6 +24,17 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
         $expiryDate->setTimestamp(time() + 60*60*366);
         $company->setExpiryDate($expiryDate);
         $manager->persist($company);
+        $manager->flush();
+
+        $company->setAdmin($this->getReference('company-admin-user'));
+        $company->addResponsiblePerson($this->getReference('responsible-user'));
+
+        $this->getReference('usual-user1')->setCompany($company);
+        $this->getReference('usual-user2')->setCompany($company);
+        $this->getReference('responsible-user')->setCompany($company);
+        $this->getReference('vehicle-1')->setCompany($company);
+        $this->getReference('vehicle-2')->setCompany($company);
+
         $manager->flush();
     }
 
