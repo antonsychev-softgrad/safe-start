@@ -409,21 +409,21 @@
  */
 /**
  * Background noise recipe
- * 
+ *
  * This recipe use a sass function to generate a .png file
- * 
+ *
  * Inspired by a jQuery plugin "Noisy" by Daniel Rapp @DanielRapp
  * @link https://github.com/DanielRapp/Noisy
- * 
+ *
  * Converted using Sass by Aaron Russell @aaronrussell & Philipp Bosch @philippbosch
  * @link https://gist.github.com/1021332
- * 
+ *
  * Ported to a sass gem by Antti Salonen @antsa
  * @link https://github.com/antsa/sassy_noise
- * 
+ *
  * Mixin:        background-noise
  * Function:     background_noise
- * 
+ *
  * @author Daniel Rapp @DanielRapp
  * @author Aaron Russell @aaronrussell
  * @author Philipp Bosch @philippbosch
@@ -462,7 +462,7 @@
  */
 /**
  * Blueprint grid background pattern
- * 
+ *
  * @link http://lea.verou.me/css3patterns/#blueprint-grid
  *
  * @author Lea Verou http://lea.verou.me/ for the original pattern
@@ -470,12 +470,12 @@
  */
 /**
  * Background overlay inspired by Google Chrome modal overlay
- * 
+ *
  * @author Maxime Thirouin @MoOx maxime.thirouin@gmail.com
  */
 /**
  * Striped background pattern
- * 
+ *
  * @link http://lea.verou.me/css3patterns/
  *
  * @author Lea Verou http://lea.verou.me/ for the original pattern
@@ -2186,13 +2186,6 @@ audio {
   position: relative;
 }
 
-/* line 12, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/_Panel.scss */
-.x-panel.x-floating,
-.x-msgbox,
-.x-form.x-floating {
-  padding: 3px;
-  background-color: #ccc;
-}
 /* line 17, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/base/src/_Panel.scss */
 .x-panel.x-floating .x-panel-inner,
 .x-panel.x-floating > .x-body,
@@ -3732,8 +3725,8 @@ body.x-desktop {
 }
 
 @font-face {
-    font-family: HelveticaNeueLTStd; /* Имя шрифта */
-    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.otf); /* Путь к файлу со шрифтом */
+    font-family: HelveticaNeueLTStd; /* ??? ?????? */
+    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.otf); /* ???? ? ????? ?? ??????? */
 }
 /* line 1, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Class.scss */
 html, body {
@@ -3880,7 +3873,7 @@ body.x-desktop {
 }
 /* line 70, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Button.scss */
 .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
-  font-size: .7em;
+  font-size: 1.5em;
 }
 /* line 74, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Button.scss */
 .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge, .x-toolbar .x-button .x-hasbadge .x-badge {
@@ -4501,8 +4494,15 @@ body.x-desktop {
 .x-button.x-button-action-small, .x-toolbar
 .x-button.x-button-action-small.x-button-back:after, .x-toolbar
 .x-button.x-button-action-small.x-button-forward:after {
-    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 -16px;
     border: none;
+    background: #6bbde3; /* Old browsers */
+    background: -moz-linear-gradient(top, #6bbde3 0%, #2c7cb1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6bbde3), color-stop(100%,#2c7cb1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #6bbde3 0%,#2c7cb1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6bbde3', endColorstr='#2c7cb1',GradientType=0 ); /* IE6-9 */
 }
 /* line 31, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
 .x-button.x-button-action.x-button-pressing, .x-button.x-button-action.x-button-pressing:after, .x-button.x-button-action.x-button-pressed, .x-button.x-button-action.x-button-pressed:after, .x-button.x-button-action.x-button-active, .x-button.x-button-action.x-button-active:after, .x-toolbar .x-button.x-button-action.x-button-pressing, .x-toolbar .x-button.x-button-action.x-button-pressing:after, .x-toolbar .x-button.x-button-action.x-button-pressed, .x-toolbar .x-button.x-button-action.x-button-pressed:after, .x-toolbar .x-button.x-button-action.x-button-active, .x-toolbar .x-button.x-button-action.x-button-active:after,
@@ -4530,7 +4530,14 @@ body.x-desktop {
 .x-button.x-button-action-small.x-button-pressed:after, .x-toolbar
 .x-button.x-button-action-small.x-button-active, .x-toolbar
 .x-button.x-button-action-small.x-button-active:after {
-    background: #2e7fb6 url(/resources/img/log-form-btn_bg.png) repeat-x 0 100%;
+    background: #84ceec; /* Old browsers */
+    background: -moz-linear-gradient(top, #84ceec 0%, #3994c5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#84ceec), color-stop(100%,#3994c5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #84ceec 0%,#3994c5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #84ceec 0%,#3994c5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #84ceec 0%,#3994c5 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #84ceec 0%,#3994c5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#84ceec', endColorstr='#3994c5',GradientType=0 ); /* IE6-9 */
 }
 
 /* line 13, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -4697,7 +4704,6 @@ body.x-desktop {
   -moz-box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   background-image: none;
-  background-color: #fff;
 }
 /* line 19, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/_Panel.scss */
 .x-panel.x-floating.x-floating-light,
@@ -6965,14 +6971,13 @@ div.logo {
     max-width: 100% !important;
     position: relative;
 }
-
+.sfa-auth-form {
+    border: 3px solid #fff;
+}
 .sfa-auth-form .x-form-fieldset-instructions {
     margin-top: 0;
+    font-size: 18px;
 }
-
-
-
-
 .x-form.sfa-auth-form.x-floating.x-sized, .x-form.sfa-auth-form .x-scroll-container {
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
@@ -7051,6 +7056,17 @@ margin-bottom: 20px;
     padding-right: 10%;
 }
 
+/* message for Auth page */
+.x-msgbox {
+    background: #fff;
+}
+.x-msgbox .x-button.x-button-action {
+    font-size: 14px;
+}
+.x-msgbox .x-dock.x-dock-vertical {
+    padding: 10px;
+}
+
 
 
 /* Inside */
@@ -7082,47 +7098,7 @@ margin-bottom: 20px;
 }
 
 
-
-
-/*
-.x-docked-left .x-dock-vertical  .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
-    background: none;
-    box-shadow: none;
-}
-.x-docked-left .contact {
-   color: #558FAC;
-    font-size: 22px;
-}
-.x-docked-left .x-innerhtml {
-padding: 18px 15px !important;
-}
-
-
-.card .x-container.x-toolbar-dark.x-toolbar.x-paint-monitored.x-size-monitored.x-dock-item.x-docked-top .x-button span {
-   font-size: 24px;
-}
-form.comp-settings  .x-button {
-   background-position: 0 0 !important;
-}
-form.comp-settings .x-toolbar {
-   background: none;
-}
-.card .x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl {
-    background: none;
-    color: red;
-}
-.card .x-list-normal .x-list-item.x-item-selected.x-list-item-tpl, .x-list-normal .x-list-item.x-item-selected .x-dock-horizontal {
-    border-top-color: #DEDEDE;
-}
-
-*/
-
-
-
-
-
-
-/* левая колонка на внутренней странице */
+/* left column */
 .sfa-left-container, .sfa-left-container .x-toolbar {
     background: none;
 }
@@ -7154,7 +7130,7 @@ form.comp-settings .x-toolbar {
 }
 
 
-/* контент внутренней страницы */
+/* content */
 
 .sfa-info-container .x-form-fieldset .x-form-fieldset-inner, .sfa-info-container .x-form-label,
 .sfa-info-container .x-form .x-scroll-container {
@@ -7163,15 +7139,6 @@ form.comp-settings .x-toolbar {
 .sfa-info-container .x-form-fieldset .x-field {
     border: none;
 }
-
-
-
-
-
-
-
-
-
 .sfa-info-container  .x-button {
     display: inline-block;
     padding: 0 20px 5px;
@@ -7197,11 +7164,11 @@ background-size: 85% auto;
 }
 
 .sfa-info-container    .x-unsized.x-form-fieldset-title .x-innerhtml {
-   padding: 12px 0 0 30%;
+   padding: 4px 0 0 30%;
     font-size: 28px;
 }
 
-.sfa-info-container  input, .sfa-info-container   textarea {
+.sfa-info-container  input, .sfa-info-container textarea {
     font-size: 22px;
     padding: 6px 30px 9px 7px;
     color: #565555;
@@ -7222,8 +7189,9 @@ background-size: 85% auto;
 .sfa-info-container  .x-form-fieldset .x-form-fieldset-inner, .card .x-form-fieldset .x-field{
     border: none;
 }
-.sfa-info-container  form {
-margin-left: 20px;
+.sfa-info-container  {
+margin: 10px 10px 10px 20px;
+    overflow: hidden;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 -khtml-border-radius: 10px;
@@ -7234,6 +7202,18 @@ background: #eaedef;
 -moz-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 }
+.sfa-info-container form {
+    background: #eaedef !important;
+    margin: 10px;
+}
+.sfa-info-container h2 {
+    margin: 0.5em 0 0.75em;
+}
+
+.sfa-info-container .x-layout-card-item {
+    background: none;
+}
+
 .sfa-info-container .x-form-fieldset {
     margin-bottom: 0;
 }
@@ -7241,7 +7221,17 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     padding-left: 0;
 }
 .sfa-info-container .x-container.x-form-fieldset {
-    margin: 0 20px;
+    margin: 0 10px;
+}
+.sfa-info-container .sfa-company-setting-subscription {
+    margin: 0 !important;
+    padding: 10px;
+    border: 1px solid #cacaca;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
 }
 .sfa-info-container .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top {
     margin: 0 0 10px;
@@ -7251,7 +7241,6 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 }
 .sfa-info-container .x-toolbar {
     top: -20px;
-    padding: 0 20px;
     background: none;
 }
 
@@ -7260,7 +7249,7 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     z-index: 999;
 }
 
-/* Правая колонка */
+/* right column */
 
 .sfa-right-container, .sfa-right-container .x-toolbar {
     background: none;
@@ -7275,8 +7264,7 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 }
 
 
-
-/* Всплывающие алерты */
+/* modal window message */
 
 .sfa-modal-form .x-toolbar .x-button .x-button-label {
     font-size: 1.3em;
@@ -7287,6 +7275,9 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 }
 .sfa-modal-form .x-button.x-button-action {
     background-position: 0 -1px;
+}
+.sfa-modal-form {
+    background: #fff;
 }
 .sfa-modal-form .x-toolbar, .sfa-modal-form .x-form .x-scroll-container {
     background: none;
@@ -7311,6 +7302,9 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     -o-border-radius: 10px;
     border-radius: 10px;
 }
+.sfa-modal-form .x-field-focused .x-component-outer {
+    border: 3px solid #2E7FB7;
+}
 .sfa-modal-form  .x-form-fieldset .x-field, .sfa-modal-form .x-form-fieldset .x-form-fieldset-inner {
     border: none;
 }
@@ -7320,10 +7314,52 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     width: 90%;
 }
 .sfa-modal-form .x-container.x-field.x-field-labeled {
-    margin-bottom: 5px;
+    margin-bottom: 7px;
+}
+.sfa-modal-form .x-field-focused {
+    margin-bottom: 6px !important;
 }
 .sfa-modal-form .x-form-fieldset-title.x-docked-top {
     margin: 0 0 0.4em;
     text-align: center;
     font-size: 28px;
 }
+
+
+
+
+
+/* icons classes */
+
+.sfa-icon-home {
+    width: 33px;
+    height: 31px;
+    background: url(/resources/img/icons.png) no-repeat 50% 0;
+}
+.sfa-icon-docs {
+    width: 27px;
+    height: 32px;
+    background: url(/resources/img/icons.png) no-repeat 50% -71px;
+}
+.sfa-icon-alert {
+    width: 37px;
+    height: 35px;
+    background: url(/resources/img/icons.png) no-repeat 50% -145px;
+}
+.sfa-icon-safe {
+    width: 26px;
+    height: 35px;
+    background: url(/resources/img/icons.png) no-repeat 50% -227px;
+}
+.sfa-icon-preferenses {
+    width: 35px;
+    height: 35px;
+    background: url(/resources/img/icons.png) no-repeat 50% -308px;
+}
+
+
+
+
+
+
+
