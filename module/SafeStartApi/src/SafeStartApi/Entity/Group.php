@@ -21,7 +21,7 @@ class Group extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="GroupField", mappedBy="group", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="group", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      **/
     protected $fields;
 
@@ -145,10 +145,10 @@ class Group extends BaseEntity
     /**
      * Add fields
      *
-     * @param \SafeStartApi\Entity\GroupField $fields
+     * @param \SafeStartApi\Entity\Field $fields
      * @return Group
      */
-    public function addField(\SafeStartApi\Entity\GroupField $fields)
+    public function addField(\SafeStartApi\Entity\Field $fields)
     {
         $this->fields[] = $fields;
 
@@ -158,9 +158,9 @@ class Group extends BaseEntity
     /**
      * Remove fields
      *
-     * @param \SafeStartApi\Entity\GroupField $fields
+     * @param \SafeStartApi\Entity\Field $fields
      */
-    public function removeField(\SafeStartApi\Entity\GroupField $fields)
+    public function removeField(\SafeStartApi\Entity\Field $fields)
     {
         $this->fields->removeElement($fields);
     }

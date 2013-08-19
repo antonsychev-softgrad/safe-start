@@ -100,7 +100,7 @@ class AdminController extends AdminAccessRestController
         }
 
         $user = $company->getAdmin();
-        $password = md5($user->getId() . time() . rand());
+        $password = substr(md5($user->getId() . time() . rand()), 0, 6);
         $user->setPlainPassword($password);
         $this->em->flush();
 

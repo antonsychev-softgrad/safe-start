@@ -25,6 +25,8 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($company);
 
         $company->setAdmin($this->getReference('company_admin'));
+		$company->addVehicle($this->getReference('vehicle-1'));
+        $company->addVehicle($this->getReference('vehicle-2'));
         $manager->flush();
     }
 
@@ -35,6 +37,6 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 }

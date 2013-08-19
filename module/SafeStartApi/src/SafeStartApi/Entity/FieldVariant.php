@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="inspection_field_variants")
  *
  */
-class GroupFieldVariant extends BaseEntity
+class Variant extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -22,7 +22,7 @@ class GroupFieldVariant extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GroupField", inversedBy="variants")
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="variants")
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
     protected $field;
@@ -93,7 +93,7 @@ class GroupFieldVariant extends BaseEntity
      * Set label
      *
      * @param string $label
-     * @return GroupFieldVariant
+     * @return FieldVariant
      */
     public function setLabel($label)
     {
@@ -116,7 +116,7 @@ class GroupFieldVariant extends BaseEntity
      * Set order
      *
      * @param integer $order
-     * @return GroupFieldVariant
+     * @return FieldVariant
      */
     public function setOrder($order)
     {
@@ -138,10 +138,10 @@ class GroupFieldVariant extends BaseEntity
     /**
      * Set field
      *
-     * @param \SafeStartApi\Entity\GroupField $field
-     * @return GroupFieldVariant
+     * @param \SafeStartApi\Entity\Field $field
+     * @return FieldVariant
      */
-    public function setField(\SafeStartApi\Entity\GroupField $field = null)
+    public function setField(\SafeStartApi\Entity\Field $field = null)
     {
         $this->field = $field;
     
@@ -151,7 +151,7 @@ class GroupFieldVariant extends BaseEntity
     /**
      * Get field
      *
-     * @return \SafeStartApi\Entity\GroupField 
+     * @return \SafeStartApi\Entity\Field
      */
     public function getField()
     {
