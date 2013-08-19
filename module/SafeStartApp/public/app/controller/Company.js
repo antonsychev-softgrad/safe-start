@@ -16,7 +16,9 @@ Ext.define('SafeStartApp.controller.Company', {
         },
 
         refs: {
-
+            navMain: 'SafeStartCompanyPage > list[name=vehicles]',
+            vehicleInfoPanel: 'SafeStartCompanyPage > panel[name=vehicle-info]',
+            addVehicleButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]'
         }
     }
 

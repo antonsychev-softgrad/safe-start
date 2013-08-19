@@ -3,9 +3,10 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartCompanySettingsForm',
     config: {
-        height: 640,
+        minHeight: 400,
         maxWidth: 600,
-        scrollable: false,
+        scrollable: true,
+        cls: 'comp-settings',
         items: [
             {
                 xtype: 'fieldset',
@@ -71,7 +72,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
-                                increment: 1,
+                                stepValue: 1,
                                 name: 'max_users',
                                 required: true,
                                 label: 'Number of users'
@@ -80,7 +81,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
-                                increment: 1,
+                                stepValue: 1,
                                 name: 'max_vehicles',
                                 required: true,
                                 label: 'Number of vehicles'
@@ -91,6 +92,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 required: true,
                                 label: 'Expiry Date',
                                 value: new Date(),
+                                cls: 'sfa-datepicker',
                                 picker: {
                                     yearFrom: new Date().getFullYear(),
                                     yearTo: new Date().getFullYear() + 10

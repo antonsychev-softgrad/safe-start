@@ -16,8 +16,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
         iconCls: 'user',
 
         styleHtmlContent: true,
-        scrollable: true,
-
+        scrollable: false,
         layout: 'hbox',
 
         items: [
@@ -46,6 +45,8 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
         this.add(this.getUsersList());
 
+        this.add(this.getInfoPanel());
+
         this.disable();
     },
 
@@ -56,6 +57,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
             itemTpl: '<div class="contact">{title}</div>',
             maxWidth: 300,
             minWidth: 150,
+            cls: 'sfa-left-container',
             store: this.usersStore,
             items: [
                 {
@@ -83,6 +85,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             name: 'reload',
                             ui: 'action',
                             iconCls: 'refresh',
+                            cls:'sfa-search-reload',
                             handler: function() {
                                 this.up('list[name=users]').getStore().loadData();
                             }
@@ -97,12 +100,11 @@ Ext.define('SafeStartApp.view.pages.Users', {
         return {
             cls: 'card',
             xtype: 'panel',
-            name: 'company-info',
+            name: 'user-info',
             layout: 'card',
             minWidth: 150,
             flex: 2,
-            scrollable: true,
-            html: '<div><h2></h2></div>'
+            scrollable: true
         };
     },
 

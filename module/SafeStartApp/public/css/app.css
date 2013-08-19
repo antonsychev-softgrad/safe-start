@@ -1,3 +1,5 @@
+/* loader */
+
 html, body {
     height: 100%;
     background-color: #1985D0
@@ -36,17 +38,4 @@ html, body {
     100% {
         opacity: 0.8
     }
-}
-
-
-.sfa-auth-form {
-    background-color: #EEEEEE !important;
-}
-
-.sfa-auth-form .logo {
-    text-align: center;
-}
-
-.sfa-auth-form .logo img {
-    padding: 10px;
 }

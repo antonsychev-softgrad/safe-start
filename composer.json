@@ -17,6 +17,7 @@
         "doctrine/data-fixtures": "dev-master",
         "doctrine/common": "2.3.*",
         "doctrine/annotations": ">=1.0",
-        "doctrine/dbal": ">=2.2.2"
+        "doctrine/dbal": ">=2.2.2",
+        "imagine/Imagine": "dev-develop"
     }
 }

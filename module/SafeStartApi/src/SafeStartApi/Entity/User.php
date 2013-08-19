@@ -92,9 +92,24 @@ class User extends BaseEntity
     protected $timezone;
 
     /**
+     * @ORM\Column(type="string", name="position", nullable=true)
+     */
+    protected $position;
+
+    /**
+     * @ORM\Column(type="string", name="department", nullable=true)
+     */
+    protected $department;
+
+    /**
      * @ORM\Column(type="boolean")
      */
-    protected $enabled;
+    protected $enabled = 1;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $deleted = 0;
 
     /**
      * @ORM\Column(type="datetime", nullable=true, unique=true, name="last_login")
@@ -112,6 +127,8 @@ class User extends BaseEntity
           'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
           'role'        => $this->getRole(),
           'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+          'position'   => (!is_null($this->position)) ? $this->position: '',
+          'department'   => (!is_null($this->company)) ? $this->department: '',
         );
     }
 
@@ -496,5 +513,74 @@ class User extends BaseEntity
     public function getVehicles()
     {
         return $this->vehicles;
+    }
+
+    /**
+     * Set position
+     *
+     * @param string $position
+     * @return User
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string 
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set department
+     *
+     * @param string $department
+     * @return User
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+    
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return string 
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return User
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }

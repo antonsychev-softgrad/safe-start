@@ -11,9 +11,9 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // USER 1
+        // GUEST
         $user = new User();
-        $user->setEmail('test1@test.test');
+        $user->setEmail('test@test.test');
         $user->setUsername('username');
         $user->setLastName('Test User');
         $user->setFirstName('Test User');
@@ -21,8 +21,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($user);
         $manager->flush();
 
-        //Associate a reference for other fixtures
-        $this->addReference('user-1', $user);
+        $this->addReference('guest', $user);
 
         // USER 2
         $user = new User();

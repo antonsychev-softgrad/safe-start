@@ -25,7 +25,9 @@ class AclPlugin extends AbstractPlugin
     {
         $this->acl->addRole(new Role('guest'));
         $this->acl->addRole(new Role('user'), 'guest');
-        $this->acl->addRole(new Role('companyAdmin'), 'user');
+        $this->acl->addRole(new Role('companyUser'), 'user');
+        $this->acl->addRole(new Role('companyManager'), 'companyUser');
+        $this->acl->addRole(new Role('companyAdmin'), 'companyManager');
         $this->acl->addRole(new Role('superAdmin'), 'companyAdmin');
     }
 

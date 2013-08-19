@@ -6,15 +6,15 @@ Ext.define('SafeStartApp.view.forms.Contact', {
         floating: false,
         centered: true,
         cls: 'sfa-auth-form',
-        height: 385,
-        width: 480,
+        height: 580,
+        width: 450,
         scrollable: false,
 
         items: [
             {
                 xtype: 'fieldset',
                 title: 'Contact Us',
-                instructions: 'Email address is optional',
+                //instructions: 'Email address is optional',
 
                 items: [
                     {
@@ -30,8 +30,8 @@ Ext.define('SafeStartApp.view.forms.Contact', {
                     {
                         xtype: 'textareafield',
                         label: 'Message',
-                        name: 'message',
-                        height: 90
+                        name: 'message'
+                        //height: 90
                     }
                 ]
             },
