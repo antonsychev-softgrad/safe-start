@@ -11,6 +11,7 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        // COMPANY 1
         $company = new Company();
         $company->setAdmin($this->getReference('company-admin-user'));
         $company->addResponsiblePerson($this->getReference('responsible-user'));
