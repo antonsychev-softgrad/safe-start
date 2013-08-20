@@ -47,10 +47,27 @@ class CompanyController extends RestrictedAccessRestController
 
     public function getUsersAction()
     {
-        $this->answer = array(
-            'done' => true
-        );
+        $companyId = (int)$this->getRequest()->getQuery('companyId');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+        }
+
+        $this->answer = array();
+
+        $query = $this->em->createQuery('SELECT u FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = ?1');
+        $query->setParameter(1, $company);
+        $items = $query->getResult();
+
+        foreach ($items as $item) {
+            $this->answer[] = $item->toArray();
+        }
 
         return $this->AnswerPlugin()->format($this->answer);
+
     }
 }

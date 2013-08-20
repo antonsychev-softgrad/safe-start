@@ -15,6 +15,8 @@ class UserController extends RestController
     {
         if (!$this->_requestIsValid('user/login')) return $this->_showBadRequest();
 
+        //todo: check if user enabled; checkcompany epiry date
+
         if ($this->authService->hasIdentity()) {
             $userInfo = $this->authService->getStorage()->read();
             $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
@@ -121,11 +123,11 @@ class UserController extends RestController
             $user = new \SafeStartApi\Entity\User();
         }
 
-        // todo: check if unique email and username
+        // todo: check if unique email if user deleted = 1 and username
 
         $user->setEmail($this->data->email);
         $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
-
+        $user->setDeleted(0);
         $user->setFirstName($this->data->firstName);
         $user->setLastName($this->data->lastName);
         $user->setPosition($this->data->position);
@@ -165,5 +167,68 @@ class UserController extends RestController
 
         return $this->AnswerPlugin()->format($this->answer);
 
+    }
+
+    public function deleteAction()
+    {
+        if (!$this->authService->hasIdentity()) throw new Rest401('Access denied');
+
+        // todo: check access to user deleting
+
+        $userId = (int)$this->params('id');
+
+        $user = $this->em->find('SafeStartApi\Entity\User', $userId);
+        if (!$user) {
+            $this->answer = array(
+                "errorMessage" => "User not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+        }
+
+        $user->setDeleted(1);
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function sendCredentialsAction()
+    {
+        //   if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
+
+        $userId = (int)$this->params('id');
+
+        $user = $this->em->find('SafeStartApi\Entity\User', $userId);
+        if (!$user) {
+            $this->answer = array(
+                "errorMessage" => "User not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+        }
+
+        $password = substr(md5($user->getId() . time() . rand()), 0, 6);
+        $user->setPlainPassword($password);
+        $this->em->flush();
+
+        $this->MailPlugin()->send(
+            'Credentials',
+            $user->getEmail(),
+            'creds.phtml',
+            array(
+                'username' => $user->getUsername(),
+                'firstName' => $user->getFirstName(),
+                'password' => $password,
+                'siteUrl' => $config['safe-start-app']['siteUrl']
+            )
+        );
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }

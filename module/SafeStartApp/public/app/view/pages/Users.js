@@ -54,9 +54,10 @@ Ext.define('SafeStartApp.view.pages.Users', {
         return {
             xtype: 'list',
             name: 'users',
-            itemTpl: '<div class="contact">{title}</div>',
-            maxWidth: 300,
+            itemTpl: '<div class="contact">{firstName} {lastName}</div>',
             minWidth: 150,
+            maxWidth: 300,
+            flex: 1,
             cls: 'sfa-left-container',
             store: this.usersStore,
             items: [
@@ -75,7 +76,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                                     self.usersStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.usersStore, field, 'title');
+                                    return self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
                                 }
                             }
                         },
@@ -88,6 +89,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             cls:'sfa-search-reload',
                             handler: function() {
                                 this.up('list[name=users]').getStore().loadData();
+                                console.log(this.up('list[name=users]').getStore());
                             }
                         }
                     ]
