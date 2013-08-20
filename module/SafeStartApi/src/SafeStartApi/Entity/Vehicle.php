@@ -78,12 +78,12 @@ class Vehicle extends BaseEntity
 
     /**
      * @ORM\Column(type="float", name="service_due_km")
-    */
+     */
     protected $serviceDueHours;
 
     /**
      * @ORM\Column(type="float", name="service_due_hours")
-    */
+     */
     protected $serviceDueKm;
 
     /**
@@ -97,30 +97,39 @@ class Vehicle extends BaseEntity
     protected $deleted = 0;
 
     /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
+     * Convert the object to an array.
+     *
+     * @return array
+     */
     public function toArray()
     {
+        return array_merge($this->toInfoArray(), array(
+            "users" => array_map(function ($user) {
+                return $user->toArray();
+            }, (array)$this->users->toArray()),
+            "responsible" => array_map(function ($user) {
+                return $user->toArray();
+            }, (array)$this->responsibleUsers->toArray()),
+        ));
+    }
 
+    public function toInfoArray()
+    {
         return array(
-            'vehicleId'    => (!is_null($this->id)) ? $this->id : '',
-            'type'  => (!is_null($this->type)) ? $this->getType() : '',
+            'vehicleId' => (!is_null($this->id)) ? $this->id : '',
+            'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
-            "users" => array_map(function($user) {return $user->toArray();}, $this->users->toArray()),
-            "responsible" =>  array_map(function($user) { return $user->toArray(); }, $this->responsibleUsers->toArray()),
         );
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -136,14 +145,14 @@ class Vehicle extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -159,14 +168,14 @@ class Vehicle extends BaseEntity
     public function setPlantId($plantId)
     {
         $this->plantId = $plantId;
-    
+
         return $this;
     }
 
     /**
      * Get plantId
      *
-     * @return string 
+     * @return string
      */
     public function getPlantId()
     {
@@ -182,14 +191,14 @@ class Vehicle extends BaseEntity
     public function setRegistrationNumber($registrationNumber)
     {
         $this->registrationNumber = $registrationNumber;
-    
+
         return $this;
     }
 
     /**
      * Get registrationNumber
      *
-     * @return string 
+     * @return string
      */
     public function getRegistrationNumber()
     {
@@ -205,14 +214,14 @@ class Vehicle extends BaseEntity
     public function setTitle($vehicleName)
     {
         $this->title = $vehicleName;
-    
+
         return $this;
     }
 
     /**
      * Get vehicleName
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -228,14 +237,14 @@ class Vehicle extends BaseEntity
     public function setProjectName($projectName)
     {
         $this->projectName = $projectName;
-    
+
         return $this;
     }
 
     /**
      * Get projectName
      *
-     * @return string 
+     * @return string
      */
     public function getProjectName()
     {
@@ -251,14 +260,14 @@ class Vehicle extends BaseEntity
     public function setProjectNumber($projectNumber)
     {
         $this->projectNumber = $projectNumber;
-    
+
         return $this;
     }
 
     /**
      * Get projectNumber
      *
-     * @return string 
+     * @return string
      */
     public function getProjectNumber()
     {
@@ -274,14 +283,14 @@ class Vehicle extends BaseEntity
     public function setServiceDueHours($serviceDueHours)
     {
         $this->serviceDueHours = $serviceDueHours;
-    
+
         return $this;
     }
 
     /**
      * Get serviceDueHours
      *
-     * @return float 
+     * @return float
      */
     public function getServiceDueHours()
     {
@@ -297,14 +306,14 @@ class Vehicle extends BaseEntity
     public function setServiceDueKm($serviceDueKm)
     {
         $this->serviceDueKm = $serviceDueKm;
-    
+
         return $this;
     }
 
     /**
      * Get serviceDueKm
      *
-     * @return float 
+     * @return float
      */
     public function getServiceDueKm()
     {
@@ -320,14 +329,14 @@ class Vehicle extends BaseEntity
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
-    
+
         return $this;
     }
 
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -343,14 +352,14 @@ class Vehicle extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
@@ -366,14 +375,14 @@ class Vehicle extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-    
+
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company 
+     * @return \SafeStartApi\Entity\Company
      */
     public function getCompany()
     {
@@ -389,7 +398,7 @@ class Vehicle extends BaseEntity
     public function addResponsibleUser(\SafeStartApi\Entity\User $responsible)
     {
         $this->responsibleUsers[] = $responsible;
-    
+
         return $this;
     }
 
@@ -406,7 +415,7 @@ class Vehicle extends BaseEntity
     /**
      * Get responsible
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getResponsibleUsers()
     {
@@ -422,7 +431,7 @@ class Vehicle extends BaseEntity
     public function addUser(\SafeStartApi\Entity\User $users)
     {
         $this->users[] = $users;
-    
+
         return $this;
     }
 
@@ -439,7 +448,7 @@ class Vehicle extends BaseEntity
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {

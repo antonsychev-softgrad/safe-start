@@ -84,12 +84,12 @@ class User extends BaseEntity
 
     /**
      * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
-    */
+     */
     protected $responsibleForVehicles;
 
     /**
      * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="users")
-    */
+     */
     protected $vehicles;
 
     /**
@@ -130,16 +130,22 @@ class User extends BaseEntity
     public function toArray()
     {
         return array(
-          'id'          => $this->getId(),
-          'email'       => (!is_null($this->email)) ? $this->email : '',
-          'username'    => (!is_null($this->username)) ? $this->username : '',
-          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
-          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
-          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
-          'role'        => $this->getRole(),
-          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
-          'position'   => (!is_null($this->position)) ? $this->position: '',
-          'department'   => (!is_null($this->company)) ? $this->department: '',
+            'id' => $this->getId(),
+            'email' => (!is_null($this->email)) ? $this->email : '',
+            'username' => (!is_null($this->username)) ? $this->username : '',
+            'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
+            'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
+            'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
+            'role' => $this->getRole(),
+            'companyId' => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+            'position' => (!is_null($this->position)) ? $this->position : '',
+            'department' => (!is_null($this->company)) ? $this->department : '',
+            'vehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->vehicles->toArray()),
+         /*   'responsibleForVehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->responsibleForVehicles->toArray()),*/
         );
     }
 
@@ -168,7 +174,7 @@ class User extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -184,14 +190,14 @@ class User extends BaseEntity
     public function setUsername($username)
     {
         $this->username = $username;
-    
+
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string 
+     * @return string
      */
     public function getUsername()
     {
@@ -207,14 +213,14 @@ class User extends BaseEntity
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -230,14 +236,14 @@ class User extends BaseEntity
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -253,14 +259,14 @@ class User extends BaseEntity
     public function setRole($role)
     {
         $this->role = $role;
-    
+
         return $this;
     }
 
     /**
      * Get role
      *
-     * @return string 
+     * @return string
      */
     public function getRole()
     {
@@ -276,14 +282,14 @@ class User extends BaseEntity
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-    
+
         return $this;
     }
 
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -299,14 +305,14 @@ class User extends BaseEntity
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-    
+
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -322,14 +328,14 @@ class User extends BaseEntity
     public function setSecondName($secondName)
     {
         $this->secondName = $secondName;
-    
+
         return $this;
     }
 
     /**
      * Get secondName
      *
-     * @return string 
+     * @return string
      */
     public function getSecondName()
     {
@@ -345,14 +351,14 @@ class User extends BaseEntity
     public function setLocale($locale)
     {
         $this->locale = $locale;
-    
+
         return $this;
     }
 
     /**
      * Get locale
      *
-     * @return string 
+     * @return string
      */
     public function getLocale()
     {
@@ -368,14 +374,14 @@ class User extends BaseEntity
     public function setTimezone($timezone)
     {
         $this->timezone = $timezone;
-    
+
         return $this;
     }
 
     /**
      * Get timezone
      *
-     * @return string 
+     * @return string
      */
     public function getTimezone()
     {
@@ -391,14 +397,14 @@ class User extends BaseEntity
     public function setPosition($position)
     {
         $this->position = $position;
-    
+
         return $this;
     }
 
     /**
      * Get position
      *
-     * @return string 
+     * @return string
      */
     public function getPosition()
     {
@@ -414,14 +420,14 @@ class User extends BaseEntity
     public function setDepartment($department)
     {
         $this->department = $department;
-    
+
         return $this;
     }
 
     /**
      * Get department
      *
-     * @return string 
+     * @return string
      */
     public function getDepartment()
     {
@@ -437,14 +443,14 @@ class User extends BaseEntity
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
-    
+
         return $this;
     }
 
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
@@ -460,14 +466,14 @@ class User extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
@@ -483,14 +489,14 @@ class User extends BaseEntity
     public function setLastLogin($lastLogin)
     {
         $this->lastLogin = $lastLogin;
-    
+
         return $this;
     }
 
     /**
      * Get lastLogin
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastLogin()
     {
@@ -506,14 +512,14 @@ class User extends BaseEntity
     public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
         $this->company = $company;
-    
+
         return $this;
     }
 
     /**
      * Get company
      *
-     * @return \SafeStartApi\Entity\Company 
+     * @return \SafeStartApi\Entity\Company
      */
     public function getCompany()
     {
@@ -529,7 +535,7 @@ class User extends BaseEntity
     public function addResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
     {
         $this->responsibleForVehicles[] = $responsibleForVehicles;
-    
+
         return $this;
     }
 
@@ -546,7 +552,7 @@ class User extends BaseEntity
     /**
      * Get responsibleForVehicles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getResponsibleForVehicles()
     {
@@ -562,7 +568,7 @@ class User extends BaseEntity
     public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
     {
         $this->vehicles[] = $vehicles;
-    
+
         return $this;
     }
 
@@ -579,7 +585,7 @@ class User extends BaseEntity
     /**
      * Get vehicles
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getVehicles()
     {
