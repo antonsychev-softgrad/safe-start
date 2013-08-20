@@ -96,6 +96,32 @@ return array(
                             ),
                         ),
                     ),
+                    'delete-user' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'delete',
+                            ),
+                        ),
+                    ),
+                    'user-sent-credentials' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/send-credentials',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'sendCredentials',
+                            ),
+                        ),
+                    ),
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(
