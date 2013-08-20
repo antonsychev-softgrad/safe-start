@@ -1,6 +1,6 @@
 
 Ext.define('SafeStartApp.store.Vehicles', {
-    extend: 'SafeStartApp.store.AbstractStore',
+    extend: 'SafeStartApp.store.AbstractTreeStore',
 
     requires: [
         'SafeStartApp.model.Vehicle'
@@ -8,7 +8,7 @@ Ext.define('SafeStartApp.store.Vehicles', {
 
     config: {
         model: 'SafeStartApp.model.Vehicle',
-
+        defaultRootProperty: 'items',
         proxy: {
             type: "ajax",
             url : "api/company/getvehicles",

@@ -316,10 +316,6 @@ return array(
             ),
             'default' => 'N/A'
         ),
-        'text' =>  array(
-            'id' => 2,
-            'default' => ''
-        ),
         'checkbox' => array(
             'id' => 3,
             'options' => array(
@@ -334,21 +330,25 @@ return array(
             ),
             'default' => ''
         ),
+        'text' => array(
+            'id' => 2,
+            'default' => ''
+        ),
         'photo' => array(
             'id' => 4,
             'default' => ''
         ),
-        'coordinates' =>array(
+        'coordinates' => array(
             'id' => 5,
+            'default' => ''
+        ),
+        'datePicker' => array(
+            'id' => 7,
             'default' => ''
         ),
         'group' => array(
             'id' => 6,
         ),
-        'datePicker' => array(
-            'id' => 7,
-            'default' => ''
-        )
     ),
     'mail' => array(
         'from' => 'admin@safe-start.dev',

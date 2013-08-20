@@ -52,6 +52,12 @@ class Group extends BaseEntity
     protected $parent;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="subgroups")
+     * @ORM\JoinColumn(name="parentfield_id", referencedColumnName="id")
+     */
+    protected $parentField;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="groups")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      */
@@ -439,5 +445,28 @@ class Group extends BaseEntity
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Set parentField
+     *
+     * @param \SafeStartApi\Entity\Field $parentField
+     * @return Group
+     */
+    public function setParentField(\SafeStartApi\Entity\Field $parentField = null)
+    {
+        $this->parentField = $parentField;
+    
+        return $this;
+    }
+
+    /**
+     * Get parentField
+     *
+     * @return \SafeStartApi\Entity\Field 
+     */
+    public function getParentField()
+    {
+        return $this->parentField;
     }
 }

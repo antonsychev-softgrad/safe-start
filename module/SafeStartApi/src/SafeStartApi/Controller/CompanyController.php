@@ -13,14 +13,27 @@ class CompanyController extends RestrictedAccessRestController
             todo: add json schema
             if (!$this->_requestIsValid('admin/getcompanies')) return $this->_showBadRequest();
         */
-        $this->answer = array();
+        $companyId = (int)$this->getRequest()->getQuery('companyId');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
 
-        /*  $query = $this->em->createQuery('SELECT c FROM SafeStartApi\Entity\Company c WHERE c.deleted = 0');
-          $items = $query->getResult();
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+        }
 
-          foreach ($items as $item) {
-              $this->answer[] = $item->toArray();
-          }*/
+        $this->answer = array(
+            'items' => array(),
+        );
+
+        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+        $query->setParameter(1, $company);
+        $items = $query->getResult();
+
+        foreach ($items as $item) {
+            $this->answer['items'][] = $item->toArray();
+        }
 
         return $this->AnswerPlugin()->format($this->answer);
     }

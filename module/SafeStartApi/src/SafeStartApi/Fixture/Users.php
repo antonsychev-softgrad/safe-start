@@ -18,6 +18,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setFirstName('User 1');
         $user->setPlainPassword('12345');
         $user->setRole('companyUser');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 
@@ -32,6 +33,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setFirstName('User 2');
         $user->setPlainPassword('12345');
         $user->setRole('companyUser');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 
@@ -46,6 +48,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setFirstName('User');
         $user->setRole('companyManager');
         $user->setPlainPassword('12345');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 
@@ -61,6 +64,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setRole('companyAdmin');
         $user->setPlainPassword('12345');
         $manager->persist($user);
+        $user->setEnabled(1);
         $manager->flush();
 
         //Associate a reference for other fixtures
@@ -74,6 +78,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setFirstName('User');
         $user->setRole('superAdmin');
         $user->setPlainPassword('12345');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 

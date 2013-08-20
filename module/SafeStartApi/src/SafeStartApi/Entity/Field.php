@@ -28,6 +28,11 @@ class Field extends BaseEntity
     protected $group;
 
     /**
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="parentfield", cascade={"persist", "remove", "merge"})
+     */
+    protected $subgroups;
+
+    /**
      * @ORM\OneToMany(targetEntity="Field", mappedBy="parent", cascade={"persist", "remove", "merge"})
      */
     protected $additionalFields;
@@ -615,5 +620,38 @@ class Field extends BaseEntity
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Add subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     * @return Field
+     */
+    public function addSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups[] = $subgroups;
+    
+        return $this;
+    }
+
+    /**
+     * Remove subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     */
+    public function removeSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups->removeElement($subgroups);
+    }
+
+    /**
+     * Get subgroups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubgroups()
+    {
+        return $this->subgroups;
     }
 }

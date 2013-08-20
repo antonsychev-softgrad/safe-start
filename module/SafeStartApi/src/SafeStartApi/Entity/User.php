@@ -23,6 +23,17 @@ use Doctrine\ORM\Mapping\JoinColumn;
 class User extends BaseEntity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = true;
+        $this->deleted = false;
+        $this->responsibleForVehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -72,13 +83,13 @@ class User extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUser")
-    */
-    protected $vehiclesAsigned;
+     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
+     */
+    protected $responsibleForVehicles;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="endUsers")
-    */
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="users")
+     */
     protected $vehicles;
 
     /**
@@ -124,16 +135,22 @@ class User extends BaseEntity
     public function toArray()
     {
         return array(
-          'id'          => $this->getId(),
-          'email'       => (!is_null($this->email)) ? $this->email : '',
-          'username'    => (!is_null($this->username)) ? $this->username : '',
-          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
-          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
-          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
-          'role'        => $this->getRole(),
-          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
-          'position'   => (!is_null($this->position)) ? $this->position: '',
-          'department'   => (!is_null($this->company)) ? $this->department: '',
+            'id' => $this->getId(),
+            'email' => (!is_null($this->email)) ? $this->email : '',
+            'username' => (!is_null($this->username)) ? $this->username : '',
+            'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
+            'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
+            'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
+            'role' => $this->getRole(),
+            'companyId' => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+            'position' => (!is_null($this->position)) ? $this->position : '',
+            'department' => (!is_null($this->company)) ? $this->department : '',
+            'vehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->vehicles->toArray()),
+         /*   'responsibleForVehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->responsibleForVehicles->toArray()),*/
         );
     }
 
@@ -158,15 +175,6 @@ class User extends BaseEntity
         return $this;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->enabled = false;
-        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -386,6 +394,52 @@ class User extends BaseEntity
     }
 
     /**
+     * Set position
+     *
+     * @param string $position
+     * @return User
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set department
+     *
+     * @param string $department
+     * @return User
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return string
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
      * Set enabled
      *
      * @param boolean $enabled
@@ -406,6 +460,29 @@ class User extends BaseEntity
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return User
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -432,36 +509,59 @@ class User extends BaseEntity
     }
 
     /**
-     * Add vehiclesAsigned
+     * Set company
      *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     * @param \SafeStartApi\Entity\Company $company
      * @return User
      */
-    public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    public function setCompany(\SafeStartApi\Entity\Company $company = null)
     {
-        $this->vehiclesAsigned[] = $vehiclesAsigned;
+        $this->company = $company;
 
         return $this;
     }
 
     /**
-     * Remove vehiclesAsigned
+     * Get company
      *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     * @return \SafeStartApi\Entity\Company
      */
-    public function removeVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    public function getCompany()
     {
-        $this->vehiclesAsigned->removeElement($vehiclesAsigned);
+        return $this->company;
     }
 
     /**
-     * Get vehiclesAsigned
+     * Add responsibleForVehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
+     * @return User
+     */
+    public function addResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
+    {
+        $this->responsibleForVehicles[] = $responsibleForVehicles;
+
+        return $this;
+    }
+
+    /**
+     * Remove responsibleForVehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
+     */
+    public function removeResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
+    {
+        $this->responsibleForVehicles->removeElement($responsibleForVehicles);
+    }
+
+    /**
+     * Get responsibleForVehicles
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVehiclesAsigned()
+    public function getResponsibleForVehicles()
     {
-        return $this->vehiclesAsigned;
+        return $this->responsibleForVehicles;
     }
 
     /**
@@ -495,97 +595,5 @@ class User extends BaseEntity
     public function getVehicles()
     {
         return $this->vehicles;
-    }
-
-    /**
-     * Set position
-     *
-     * @param string $position
-     * @return User
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-    
-        return $this;
-    }
-
-    /**
-     * Get position
-     *
-     * @return string 
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * Set department
-     *
-     * @param string $department
-     * @return User
-     */
-    public function setDepartment($department)
-    {
-        $this->department = $department;
-    
-        return $this;
-    }
-
-    /**
-     * Get department
-     *
-     * @return string 
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param boolean $deleted
-     * @return User
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-    
-        return $this;
-    }
-
-    /**
-     * Get deleted
-     *
-     * @return boolean 
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
-    /**
-     * Set company
-     *
-     * @param \SafeStartApi\Entity\Company $company
-     * @return User
-     */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
-    {
-        $this->company = $company;
-    
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return \SafeStartApi\Entity\Company 
-     */
-    public function getCompany()
-    {
-        return $this->company;
     }
 }

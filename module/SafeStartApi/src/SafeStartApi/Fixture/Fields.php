@@ -51,7 +51,7 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($field);
         $manager->flush();
         //Associate a reference for other fixtures
-        $this->addReference('additional-field-1', $field);
+        $this->addReference('field-4', $field);
 
         $field = new Field();
         $field->setType('radio');
@@ -61,7 +61,27 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($field);
         $manager->flush();
         //Associate a reference for other fixtures
-        $this->addReference('field-4', $field);
+        $this->addReference('field-5', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(1);
+        $field->setTitle('Have you isolated the vechicle?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-6', $field);
+
+        $field = new Field();
+        $field->setType('group');
+        $field->setOrder(1);
+        $field->setTitle('Are the fluid levels acceptable?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-7', $field);
 
     }
 
