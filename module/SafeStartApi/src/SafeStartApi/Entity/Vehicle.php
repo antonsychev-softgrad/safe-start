@@ -35,10 +35,10 @@ class Vehicle extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="responsibleForVehicles")
-     * @ORM\JoinTable(name="vehicles_responsible_users")
-     */
-    protected $responsibleUsers;
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="vehiclesAsigned")
+     * @ORM\JoinColumn(name="responsible_user_id", referencedColumnName="id")
+     **/
+    protected $responsibleUser;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="vehicles")
@@ -95,6 +95,16 @@ class Vehicle extends BaseEntity
      * @ORM\Column(type="boolean")
      */
     protected $deleted = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="vehicle")
+     */
+    protected $groups;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $fields;
 
     /**
      * Convert the object to an array.
@@ -453,5 +463,72 @@ class Vehicle extends BaseEntity
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     * @return Vehicle
+     */
+    public function addField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields[] = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Remove fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     */
+    public function removeField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields->removeElement($fields);
+    }
+
+    /**
+     * Get fields
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+
+    /**
+     * Add groups
+     *
+     * @param \SafeStartApi\Entity\Group $groups
+     * @return Vehicle
+     */
+    public function addGroup(\SafeStartApi\Entity\Group $groups)
+    {
+        $this->groups[] = $groups;
+
+        return $this;
+    }
+
+    /**
+     * Remove groups
+     *
+     * @param \SafeStartApi\Entity\Group $groups
+     */
+    public function removeGroup(\SafeStartApi\Entity\Group $groups)
+    {
+        $this->groups->removeElement($groups);
+    }
+
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 }

@@ -59,12 +59,12 @@ class Field extends BaseEntity
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $value;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $triggerValue;
 
@@ -87,18 +87,35 @@ class Field extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="enabled")
      */
-    protected $enabled = 1;
+    protected $enabled;
 
     /**
      * @ORM\Column(type="boolean", name="deleted")
      */
-    protected $deleted = 0;
+    protected $deleted;
+
+    /**
+     * @ORM\Column(type="boolean", name="additional")
+     */
+    protected $additional;
 
     /**
      * @ORM\OneToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     protected $author;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = false;
+        $this->deleted = false;
+        $this->additional = false;
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @ORM\PrePersist
@@ -147,15 +164,6 @@ class Field extends BaseEntity
     public function doStuffOnPrePersist()
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -235,95 +243,6 @@ class Field extends BaseEntity
     public function getGroup()
     {
         return $this->group;
-    }
-
-    /**
-     * Add variants
-     *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
-     * @return Field
-     */
-    public function addVariant(\SafeStartApi\Entity\FieldVariant $variants)
-    {
-        $this->variants[] = $variants;
-    
-        return $this;
-    }
-
-    /**
-     * Remove variants
-     *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
-     */
-    public function removeVariant(\SafeStartApi\Entity\FieldVariant $variants)
-    {
-        $this->variants->removeElement($variants);
-    }
-
-    /**
-     * Get variants
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getVariants()
-    {
-        return $this->variants;
-    }
-
-    /**
-     * Add answers
-     *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
-     * @return Field
-     */
-    public function addAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
-    {
-        $this->answers[] = $answers;
-    
-        return $this;
-    }
-
-    /**
-     * Remove answers
-     *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
-     */
-    public function removeAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
-    {
-        $this->answers->removeElement($answers);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
-     * Set typeId
-     *
-     * @param integer $typeId
-     * @return Field
-     */
-    public function setTypeId($typeId)
-    {
-        $this->typeId = $typeId;
-    
-        return $this;
-    }
-
-    /**
-     * Get typeId
-     *
-     * @return integer 
-     */
-    public function getTypeId()
-    {
-        return $this->typeId;
     }
 
     /**
@@ -473,18 +392,41 @@ class Field extends BaseEntity
     public function setEnabled($enabled)
     {
         $this->enabled = $enabled;
-    
+
         return $this;
     }
 
     /**
      * Get enabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set additional
+     *
+     * @param boolean $additional
+     * @return Field
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Get additional
+     *
+     * @return boolean
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
     }
 
     /**

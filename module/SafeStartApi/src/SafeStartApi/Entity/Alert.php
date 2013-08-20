@@ -70,15 +70,6 @@ class Alert extends BaseEntity
     }
 
     /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
-     */
-    public function doStuffOnPrePersist()
-    {
-        $this->order = (!is_null($this->order)) ? $this->order : 0;
-    }
-
-    /**
      * Constructor
      */
     public function __construct()

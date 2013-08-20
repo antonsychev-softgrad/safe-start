@@ -54,6 +54,10 @@ class DoctrineController extends AbstractActionController
             $this->em->getClassMetadata('\SafeStartApi\Entity\User'),
             $this->em->getClassMetadata('\SafeStartApi\Entity\Company'),
             $this->em->getClassMetadata('\SafeStartApi\Entity\Vehicle'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Company'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Field'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Group'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Alert'),
         );
 
         if ($verbose) $this->console->write("Drooping DB \r\n", 3);
@@ -66,6 +70,9 @@ class DoctrineController extends AbstractActionController
         $this->addFixture(new \SafeStartApi\Fixture\Users());
         $this->addFixture(new \SafeStartApi\Fixture\Vehicles());
         $this->addFixture(new \SafeStartApi\Fixture\Companies());
+        $this->addFixture(new \SafeStartApi\Fixture\Fields());
+        $this->addFixture(new \SafeStartApi\Fixture\Groups());
+        $this->addFixture(new \SafeStartApi\Fixture\Alerts());
         $this->loadFixtures();
     }
 

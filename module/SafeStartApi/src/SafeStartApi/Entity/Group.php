@@ -13,17 +13,25 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Group extends BaseEntity
 {
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = false;
+        $this->deleted = false;
+        $this->subgroup = false;
+        $this->additional = false;
+        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="group", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     **/
-    protected $fields;
 
     /**
      * @ORM\Column(type="string", name="title", unique=true)
@@ -39,6 +47,11 @@ class Group extends BaseEntity
      * @ORM\Column(type="boolean", name="additional")
      */
     protected $additional;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="group", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     **/
+    protected $fields;
 
     /**
      * @ORM\OneToMany(targetEntity="Group", mappedBy="parent")
@@ -77,12 +90,17 @@ class Group extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="enabled")
      */
-    protected $enabled = 1;
+    protected $enabled;
 
     /**
      * @ORM\Column(type="boolean", name="deleted")
      */
-    protected $deleted = 0;
+    protected $deleted;
+
+    /**
+     * @ORM\Column(type="boolean", name="subgroup")
+     */
+    protected $subgroup;
 
     /**
      * @ORM\PrePersist
@@ -131,14 +149,6 @@ class Group extends BaseEntity
     public function doStuffOnPrePersist()
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->fields = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -331,18 +341,41 @@ class Group extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set subgroup
+     *
+     * @param boolean $subgroup
+     * @return Group
+     */
+    public function setSubgroup($subgroup)
+    {
+        $this->subgroup = $subgroup;
+
+        return $this;
+    }
+
+    /**
+     * Get subgroup
+     *
+     * @return boolean
+     */
+    public function getSubgroup()
+    {
+        return $this->subgroup;
     }
 
     /**

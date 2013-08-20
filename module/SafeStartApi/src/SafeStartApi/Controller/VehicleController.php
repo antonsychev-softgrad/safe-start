@@ -235,7 +235,7 @@ class VehicleController extends RestController
                     'groupName' => 'Crane',
                     'groupId' => 3,
                     'groupOrder' => 3,
-                    'additional' => false,
+                    'additional' => true,
                     'fields' => array(
                         array(
                             'fieldId' => 14,
