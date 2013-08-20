@@ -113,7 +113,7 @@ class VehicleController extends RestController
                             'fieldName' => 'Are all safety guards in place?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
                             'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['subtypes']['twoOpt']['options'],
+                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
                         ),
                         array(
                             'fieldId' => 3,

@@ -301,34 +301,22 @@ return array(
         'radio' => array(
             'id' => 1,
             'options' => array(
-                'two' => array(
-                    array(
-                        'value' => 'Yes',
-                        'label' => 'Yes'
-                    ),
-                    array(
-                        'value' => 'No',
-                        'label' => 'No'
-                    ),
+                array(
+                    'value' => 'Yes',
+                    'label' => 'Yes'
                 ),
-                'three' => array(
-                    array(
-                        'value' => 'Yes',
-                        'label' => 'Yes'
-                    ),
-                    array(
-                        'value' => 'No',
-                        'label' => 'No'
-                    ),
-                    array(
-                        'value' => 'N/A',
-                        'label' => 'N/A'
-                    ),
+                array(
+                    'value' => 'No',
+                    'label' => 'No'
+                ),
+                array(
+                    'value' => 'N/A',
+                    'label' => 'N/A'
                 ),
             ),
             'default' => ''
         ),
-        'text' =>  array(
+        'text' => array(
             'id' => 2,
             'default' => ''
         ),
@@ -350,7 +338,7 @@ return array(
             'id' => 4,
             'default' => ''
         ),
-        'coordinates' =>array(
+        'coordinates' => array(
             'id' => 5,
             'default' => ''
         ),
