@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Vehicle extends BaseEntity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,20 +35,19 @@ class Vehicle extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="vehiclesAsigned")
-     * @ORM\JoinColumn(name="responsible_user_id", referencedColumnName="id")
-     **/
-    protected $responsibleUser;
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="responsibleForVehicles")
+     * @ORM\JoinTable(name="vehicles_responsible_users")
+     */
+    protected $responsibleUsers;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="vehicles")
      * @ORM\JoinTable(name="vehicles_users")
      */
-    protected $endUsers;
+    protected $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity="VehicleType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @ORM\Column(type="string", name="type", nullable=true)
      **/
     protected $type;
 
@@ -54,9 +62,9 @@ class Vehicle extends BaseEntity
     protected $registrationNumber;
 
     /**
-     * @ORM\Column(type="string", length=255, name="vehicle_name")
+     * @ORM\Column(type="string", length=255, name="title")
      */
-    protected $vehicleName;
+    protected $title;
 
     /**
      * @ORM\Column(type="string", length=255, name="project_name")
@@ -69,41 +77,24 @@ class Vehicle extends BaseEntity
     protected $projectNumber;
 
     /**
-     * @ORM\Column(type="date", name="expiry_date")
+     * @ORM\Column(type="float", name="service_due_km")
+    */
+    protected $serviceDueHours;
+
+    /**
+     * @ORM\Column(type="float", name="service_due_hours")
+    */
+    protected $serviceDueKm;
+
+    /**
+     * @ORM\Column(type="boolean")
      */
-    protected $expiryDate;
+    protected $enabled = 1;
 
     /**
-     * @ORM\Column(type="float", name="kms_until_next")
-    */
-    protected $kmsUntilNext;
-
-    /**
-     * @ORM\Column(type="float", name="hours_until_next")
-    */
-    protected $hoursUntilNext;
-
-    /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
+     * @ORM\Column(type="boolean")
+     */
+    protected $deleted = 0;
 
     /**
     * Convert the object to an array.
@@ -112,37 +103,48 @@ class Vehicle extends BaseEntity
     */
     public function toArray()
     {
-
-        //return get_object_vars($this);
-
         return array(
             'vehicleId'    => (!is_null($this->id)) ? $this->id : '',
-            'type'  => (!is_null($this->type)) ? $this->getType()->getTitle() : '',
-            'vehicleName' => (!is_null($this->getVehicleName())) ? $this->getVehicleName() : '',
+            'type'  => (!is_null($this->type)) ? $this->getType() : '',
+            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getExpiryDate() : '',
-            "expiryDate"  => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : '',
-            "kmsUntilNext" => (!is_null($this->getKmsUntilNext())) ? $this->getKmsUntilNext() : 0,
-            "hoursUntilNext" => (!is_null($this->getHoursUntilNext())) ? $this->getHoursUntilNext() : 0,
+            "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
+            "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
         );
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->endUsers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Vehicle
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -154,14 +156,14 @@ class Vehicle extends BaseEntity
     public function setPlantId($plantId)
     {
         $this->plantId = $plantId;
-
+    
         return $this;
     }
 
     /**
      * Get plantId
      *
-     * @return string
+     * @return string 
      */
     public function getPlantId()
     {
@@ -177,14 +179,14 @@ class Vehicle extends BaseEntity
     public function setRegistrationNumber($registrationNumber)
     {
         $this->registrationNumber = $registrationNumber;
-
+    
         return $this;
     }
 
     /**
      * Get registrationNumber
      *
-     * @return string
+     * @return string 
      */
     public function getRegistrationNumber()
     {
@@ -197,21 +199,21 @@ class Vehicle extends BaseEntity
      * @param string $vehicleName
      * @return Vehicle
      */
-    public function setVehicleName($vehicleName)
+    public function setTitle($vehicleName)
     {
-        $this->vehicleName = $vehicleName;
-
+        $this->title = $vehicleName;
+    
         return $this;
     }
 
     /**
      * Get vehicleName
      *
-     * @return string
+     * @return string 
      */
-    public function getVehicleName()
+    public function getTitle()
     {
-        return $this->vehicleName;
+        return $this->title;
     }
 
     /**
@@ -223,14 +225,14 @@ class Vehicle extends BaseEntity
     public function setProjectName($projectName)
     {
         $this->projectName = $projectName;
-
+    
         return $this;
     }
 
     /**
      * Get projectName
      *
-     * @return string
+     * @return string 
      */
     public function getProjectName()
     {
@@ -246,14 +248,14 @@ class Vehicle extends BaseEntity
     public function setProjectNumber($projectNumber)
     {
         $this->projectNumber = $projectNumber;
-
+    
         return $this;
     }
 
     /**
      * Get projectNumber
      *
-     * @return string
+     * @return string 
      */
     public function getProjectNumber()
     {
@@ -261,151 +263,95 @@ class Vehicle extends BaseEntity
     }
 
     /**
-     * Set expiryDate
+     * Set serviceDueHours
      *
-     * @param \DateTime $expiryDate
+     * @param float $serviceDueHours
      * @return Vehicle
      */
-    public function setExpiryDate($expiryDate)
+    public function setServiceDueHours($serviceDueHours)
     {
-        $this->expiryDate = $expiryDate;
-
+        $this->serviceDueHours = $serviceDueHours;
+    
         return $this;
     }
 
     /**
-     * Get expiryDate
+     * Get serviceDueHours
      *
-     * @return \DateTime
+     * @return float 
      */
-    public function getExpiryDate()
+    public function getServiceDueHours()
     {
-        return $this->expiryDate;
+        return $this->serviceDueHours;
     }
 
     /**
-     * Set kmsUntilNext
+     * Set serviceDueKm
      *
-     * @param float $kmsUntilNext
+     * @param float $serviceDueKm
      * @return Vehicle
      */
-    public function setKmsUntilNext($kmsUntilNext)
+    public function setServiceDueKm($serviceDueKm)
     {
-        $this->kmsUntilNext = $kmsUntilNext;
-
+        $this->serviceDueKm = $serviceDueKm;
+    
         return $this;
     }
 
     /**
-     * Get kmsUntilNext
+     * Get serviceDueKm
      *
-     * @return float
+     * @return float 
      */
-    public function getKmsUntilNext()
+    public function getServiceDueKm()
     {
-        return $this->kmsUntilNext;
+        return $this->serviceDueKm;
     }
 
     /**
-     * Set hoursUntilNext
+     * Set enabled
      *
-     * @param float $hoursUntilNext
+     * @param boolean $enabled
      * @return Vehicle
      */
-    public function setHoursUntilNext($hoursUntilNext)
+    public function setEnabled($enabled)
     {
-        $this->hoursUntilNext = $hoursUntilNext;
-
+        $this->enabled = $enabled;
+    
         return $this;
     }
 
     /**
-     * Get hoursUntilNext
+     * Get enabled
      *
-     * @return float
+     * @return boolean 
      */
-    public function getHoursUntilNext()
+    public function getEnabled()
     {
-        return $this->hoursUntilNext;
+        return $this->enabled;
     }
 
     /**
-     * Set responsibleUser
+     * Set deleted
      *
-     * @param \SafeStartApi\Entity\User $responsibleUser
+     * @param boolean $deleted
      * @return Vehicle
      */
-    public function setResponsibleUser(\SafeStartApi\Entity\User $responsibleUser = null)
+    public function setDeleted($deleted)
     {
-        $this->responsibleUser = $responsibleUser;
-
+        $this->deleted = $deleted;
+    
         return $this;
     }
 
     /**
-     * Get responsibleUser
+     * Get deleted
      *
-     * @return \SafeStartApi\Entity\User
+     * @return boolean 
      */
-    public function getResponsibleUser()
+    public function getDeleted()
     {
-        return $this->responsibleUser;
-    }
-
-    /**
-     * Add endUsers
-     *
-     * @param \SafeStartApi\Entity\User $endUsers
-     * @return Vehicle
-     */
-    public function addEndUser(\SafeStartApi\Entity\User $endUsers)
-    {
-        $this->endUsers[] = $endUsers;
-
-        return $this;
-    }
-
-    /**
-     * Remove endUsers
-     *
-     * @param \SafeStartApi\Entity\User $endUsers
-     */
-    public function removeEndUser(\SafeStartApi\Entity\User $endUsers)
-    {
-        $this->endUsers->removeElement($endUsers);
-    }
-
-    /**
-     * Get endUsers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEndUsers()
-    {
-        return $this->endUsers;
-    }
-
-    /**
-     * Set type
-     *
-     * @param \SafeStartApi\Entity\VehicleType $type
-     * @return Vehicle
-     */
-    public function setType(\SafeStartApi\Entity\VehicleType $type = null)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \SafeStartApi\Entity\VehicleType
-     */
-    public function getType()
-    {
-        return $this->type;
+        return $this->deleted;
     }
 
     /**
@@ -429,5 +375,71 @@ class Vehicle extends BaseEntity
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * Add responsible
+     *
+     * @param \SafeStartApi\Entity\User $responsible
+     * @return Vehicle
+     */
+    public function addResponsibleUser(\SafeStartApi\Entity\User $responsible)
+    {
+        $this->responsibleUsers[] = $responsible;
+    
+        return $this;
+    }
+
+    /**
+     * Remove responsible
+     *
+     * @param \SafeStartApi\Entity\User $responsible
+     */
+    public function removeResponsibleUser(\SafeStartApi\Entity\User $responsible)
+    {
+        $this->responsibleUsers->removeElement($responsible);
+    }
+
+    /**
+     * Get responsible
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResponsibleUsers()
+    {
+        return $this->responsibleUsers;
+    }
+
+    /**
+     * Add users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     * @return Vehicle
+     */
+    public function addUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users[] = $users;
+    
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \SafeStartApi\Entity\User $users
+     */
+    public function removeUser(\SafeStartApi\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

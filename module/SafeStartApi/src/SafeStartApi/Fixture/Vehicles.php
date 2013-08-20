@@ -14,17 +14,17 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle = new Vehicle();
         $vehicle->setPlantId('ACHJ-DJ34-A234');
         $vehicle->setRegistrationNumber('REGNUMBER1');
-        $vehicle->setVehicleName('Mitsubishi');
+        $vehicle->setTitle('Mitsubishi');
+        $vehicle->setType('Crossover');
         $vehicle->setProjectName('Project name');
         $vehicle->setProjectNumber(123);
-        $vehicle->setKmsUntilNext(100);
-        $vehicle->setHoursUntilNext(100);
-        $vehicle->setExpiryDate(new \DateTime());
+        $vehicle->setServiceDueKm(100);
+        $vehicle->setServiceDueHours(100);
         $manager->persist($vehicle);
         $manager->flush();
 
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('usual-user1'));
+        $vehicle->addResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addUser($this->getReference('usual-user1'));
         $manager->flush();
 
         //Associate a reference for other fixtures
@@ -35,17 +35,17 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle = new Vehicle();
         $vehicle->setPlantId('BBDS-CHJDJ-1234');
         $vehicle->setRegistrationNumber('REGNUMBER2');
-        $vehicle->setVehicleName('Ford');
+        $vehicle->setTitle('Ford');
+        $vehicle->setType('Utility truck');
         $vehicle->setProjectName('Project name');
         $vehicle->setProjectNumber(123);
-        $vehicle->setKmsUntilNext(100);
-        $vehicle->setHoursUntilNext(100);
-        $vehicle->setExpiryDate(new \DateTime());
+        $vehicle->setServiceDueKm(100);
+        $vehicle->setServiceDueHours(100);
         $manager->persist($vehicle);
         $manager->flush();
 
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('usual-user2'));
+        $vehicle->addResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addUser($this->getReference('usual-user2'));
 
         $manager->flush();
 

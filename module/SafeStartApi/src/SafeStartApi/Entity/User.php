@@ -23,6 +23,17 @@ use Doctrine\ORM\Mapping\JoinColumn;
 class User extends BaseEntity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = true;
+        $this->deleted = false;
+        $this->responsibleForVehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -72,12 +83,12 @@ class User extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUser")
+     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
     */
-    protected $vehiclesAsigned;
+    protected $responsibleForVehicles;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="endUsers")
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="users")
     */
     protected $vehicles;
 
@@ -153,20 +164,11 @@ class User extends BaseEntity
         return $this;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->enabled = false;
-        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -182,14 +184,14 @@ class User extends BaseEntity
     public function setUsername($username)
     {
         $this->username = $username;
-
+    
         return $this;
     }
 
     /**
      * Get username
      *
-     * @return string
+     * @return string 
      */
     public function getUsername()
     {
@@ -205,14 +207,14 @@ class User extends BaseEntity
     public function setPassword($password)
     {
         $this->password = $password;
-
+    
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string
+     * @return string 
      */
     public function getPassword()
     {
@@ -228,14 +230,14 @@ class User extends BaseEntity
     public function setEmail($email)
     {
         $this->email = $email;
-
+    
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string
+     * @return string 
      */
     public function getEmail()
     {
@@ -251,14 +253,14 @@ class User extends BaseEntity
     public function setRole($role)
     {
         $this->role = $role;
-
+    
         return $this;
     }
 
     /**
      * Get role
      *
-     * @return string
+     * @return string 
      */
     public function getRole()
     {
@@ -274,14 +276,14 @@ class User extends BaseEntity
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-
+    
         return $this;
     }
 
     /**
      * Get firstName
      *
-     * @return string
+     * @return string 
      */
     public function getFirstName()
     {
@@ -297,14 +299,14 @@ class User extends BaseEntity
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-
+    
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string
+     * @return string 
      */
     public function getLastName()
     {
@@ -320,14 +322,14 @@ class User extends BaseEntity
     public function setSecondName($secondName)
     {
         $this->secondName = $secondName;
-
+    
         return $this;
     }
 
     /**
      * Get secondName
      *
-     * @return string
+     * @return string 
      */
     public function getSecondName()
     {
@@ -343,14 +345,14 @@ class User extends BaseEntity
     public function setLocale($locale)
     {
         $this->locale = $locale;
-
+    
         return $this;
     }
 
     /**
      * Get locale
      *
-     * @return string
+     * @return string 
      */
     public function getLocale()
     {
@@ -366,130 +368,18 @@ class User extends BaseEntity
     public function setTimezone($timezone)
     {
         $this->timezone = $timezone;
-
+    
         return $this;
     }
 
     /**
      * Get timezone
      *
-     * @return string
+     * @return string 
      */
     public function getTimezone()
     {
         return $this->timezone;
-    }
-
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return User
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Set lastLogin
-     *
-     * @param \DateTime $lastLogin
-     * @return User
-     */
-    public function setLastLogin($lastLogin)
-    {
-        $this->lastLogin = $lastLogin;
-
-        return $this;
-    }
-
-    /**
-     * Get lastLogin
-     *
-     * @return \DateTime
-     */
-    public function getLastLogin()
-    {
-        return $this->lastLogin;
-    }
-
-    /**
-     * Add vehiclesAsigned
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
-     * @return User
-     */
-    public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
-    {
-        $this->vehiclesAsigned[] = $vehiclesAsigned;
-
-        return $this;
-    }
-
-    /**
-     * Remove vehiclesAsigned
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
-     */
-    public function removeVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
-    {
-        $this->vehiclesAsigned->removeElement($vehiclesAsigned);
-    }
-
-    /**
-     * Get vehiclesAsigned
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVehiclesAsigned()
-    {
-        return $this->vehiclesAsigned;
-    }
-
-    /**
-     * Add vehicles
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehicles
-     * @return User
-     */
-    public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
-    {
-        $this->vehicles[] = $vehicles;
-
-        return $this;
-    }
-
-    /**
-     * Remove vehicles
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehicles
-     */
-    public function removeVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
-    {
-        $this->vehicles->removeElement($vehicles);
-    }
-
-    /**
-     * Get vehicles
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getVehicles()
-    {
-        return $this->vehicles;
     }
 
     /**
@@ -539,6 +429,29 @@ class User extends BaseEntity
     }
 
     /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return User
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
      * Set deleted
      *
      * @param boolean $deleted
@@ -562,6 +475,29 @@ class User extends BaseEntity
     }
 
     /**
+     * Set lastLogin
+     *
+     * @param \DateTime $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+    
+        return $this;
+    }
+
+    /**
+     * Get lastLogin
+     *
+     * @return \DateTime 
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
      * Set company
      *
      * @param \SafeStartApi\Entity\Company $company
@@ -582,5 +518,71 @@ class User extends BaseEntity
     public function getCompany()
     {
         return $this->company;
+    }
+
+    /**
+     * Add responsibleForVehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
+     * @return User
+     */
+    public function addResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
+    {
+        $this->responsibleForVehicles[] = $responsibleForVehicles;
+    
+        return $this;
+    }
+
+    /**
+     * Remove responsibleForVehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
+     */
+    public function removeResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
+    {
+        $this->responsibleForVehicles->removeElement($responsibleForVehicles);
+    }
+
+    /**
+     * Get responsibleForVehicles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getResponsibleForVehicles()
+    {
+        return $this->responsibleForVehicles;
+    }
+
+    /**
+     * Add vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     * @return User
+     */
+    public function addVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles[] = $vehicles;
+    
+        return $this;
+    }
+
+    /**
+     * Remove vehicles
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicles
+     */
+    public function removeVehicle(\SafeStartApi\Entity\Vehicle $vehicles)
+    {
+        $this->vehicles->removeElement($vehicles);
+    }
+
+    /**
+     * Get vehicles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVehicles()
+    {
+        return $this->vehicles;
     }
 }

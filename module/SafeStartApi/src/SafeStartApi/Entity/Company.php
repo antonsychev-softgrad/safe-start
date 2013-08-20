@@ -19,7 +19,7 @@ class Company extends BaseEntity
      */
     public function __construct()
     {
-        $this->responsiblePersons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->restricted = false;
@@ -40,12 +40,12 @@ class Company extends BaseEntity
 
     /**
      * @ORM\ManyToMany(targetEntity="User")
-     * @ORM\JoinTable(name="companies_responsible_persons",
+     * @ORM\JoinTable(name="companies_responsible_users",
      *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
      *      )
      */
-    protected $responsiblePersons;
+    protected $responsibleUsers;
 
     /**
      * @ORM\OneToMany(targetEntity="User", mappedBy="company")
@@ -207,36 +207,36 @@ class Company extends BaseEntity
     }
 
     /**
-     * Add responsiblePersons
+     * Add responsibleUsers
      *
-     * @param \SafeStartApi\Entity\User $responsiblePersons
+     * @param \SafeStartApi\Entity\User $responsibleUsers
      * @return Company
      */
-    public function addResponsiblePerson(\SafeStartApi\Entity\User $responsiblePersons)
+    public function addResponsibleUser(\SafeStartApi\Entity\User $responsibleUsers)
     {
-        $this->responsiblePersons[] = $responsiblePersons;
+        $this->responsibleUsers[] = $responsibleUsers;
     
         return $this;
     }
 
     /**
-     * Remove responsiblePersons
+     * Remove responsibleUsers
      *
-     * @param \SafeStartApi\Entity\User $responsiblePersons
+     * @param \SafeStartApi\Entity\User $responsibleUsers
      */
-    public function removeResponsiblePerson(\SafeStartApi\Entity\User $responsiblePersons)
+    public function removeResponsibleUser(\SafeStartApi\Entity\User $responsibleUsers)
     {
-        $this->responsiblePersons->removeElement($responsiblePersons);
+        $this->responsibleUsers->removeElement($responsibleUsers);
     }
 
     /**
-     * Get responsiblePersons
+     * Get responsibleUsers
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getResponsiblePersons()
+    public function getResponsibleUsers()
     {
-        return $this->responsiblePersons;
+        return $this->responsibleUsers;
     }
 
     /**

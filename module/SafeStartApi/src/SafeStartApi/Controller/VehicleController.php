@@ -102,7 +102,7 @@ class VehicleController extends RestController
                         array(
                             'fieldId' => 1,
                             'fieldOrder' => 1,
-                            'fieldName' => 'Is the vechicle free of damage?',
+                            'fieldName' => 'Is the vehicle free of damage?',
                             'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
                             'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
                             'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
