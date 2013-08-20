@@ -103,14 +103,17 @@ class Vehicle extends BaseEntity
     */
     public function toArray()
     {
+
         return array(
             'vehicleId'    => (!is_null($this->id)) ? $this->id : '',
             'type'  => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getExpiryDate() : '',
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "users" => array_map(function($user) {return $user->toArray();}, $this->users->toArray()),
+            "responsible" =>  array_map(function($user) { return $user->toArray(); }, $this->responsibleUsers->toArray()),
         );
     }
 

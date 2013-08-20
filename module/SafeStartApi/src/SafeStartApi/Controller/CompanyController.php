@@ -27,7 +27,7 @@ class CompanyController extends RestrictedAccessRestController
             'items' => array(),
         );
 
-        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND u.company = ?1');
+        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
         $query->setParameter(1, $company);
         $items = $query->getResult();
 
