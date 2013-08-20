@@ -14,7 +14,7 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
         $field = new Field();
         $field->setType('radio');
         $field->setOrder(1);
-        $field->setLabel('Is the vechicle free of damage?');
+        $field->setTitle('Is the vechicle free of damage?');
         $field->setVehicle($this->getReference('vehicle-1'));
         $manager->persist($field);
         $manager->flush();
@@ -24,12 +24,44 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
         $field = new Field();
         $field->setType('radio');
         $field->setOrder(2);
-        $field->setLabel('Are all safety guards in place?');
+        $field->setTitle('Are all safety guards in place?');
         $field->setVehicle($this->getReference('vehicle-1'));
         $manager->persist($field);
         $manager->flush();
         //Associate a reference for other fixtures
         $this->addReference('field-2', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(3);
+        $field->setTitle('Are the tyres correctly inflated, with good tread and wheel nuts tight?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-3', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(4);
+        $field->setTitle('Are you authorised to inflate or change tyres?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setParent($this->getReference('field-3'));
+        $field->setTriggerValue('No');
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('additional-field-1', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(5);
+        $field->setTitle('Is the windscreen and mirrors clean and free of damage?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-4', $field);
 
     }
 
@@ -40,6 +72,6 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 4;
+        return 5;
     }
 }

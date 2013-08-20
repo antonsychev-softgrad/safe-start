@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="inspection_fields")
+ * @ORM\Table(name="inspection_alerts")
  *
  */
 class Alert extends BaseEntity
@@ -30,12 +30,7 @@ class Alert extends BaseEntity
     /**
      * @ORM\Column(type="string")
      */
-    protected $label;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $value;
+    protected $title;
 
     /**
      * @ORM\Column(type="string")
@@ -103,229 +98,71 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Set label
+     * Set title
      *
-     * @param string $label
-     * @return Field
+     * @param string $title
+     * @return Alert
      */
-    public function setLabel($label)
+    public function setTitle($title)
     {
-        $this->label = $label;
+        $this->title = $title;
     
         return $this;
     }
 
     /**
-     * Get label
+     * Get title
      *
      * @return string 
      */
-    public function getLabel()
+    public function getTitle()
     {
-        return $this->label;
+        return $this->title;
     }
 
     /**
-     * Set order
+     * Set triggerValue
      *
-     * @param integer $order
-     * @return Field
+     * @param string $triggerValue
+     * @return Alert
      */
-    public function setOrder($order)
+    public function setTriggerValue($triggerValue)
     {
-        $this->order = $order;
+        $this->triggerValue = $triggerValue;
     
         return $this;
     }
 
     /**
-     * Get order
-     *
-     * @return integer 
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * Set group
-     *
-     * @param \SafeStartApi\Entity\Group $group
-     * @return Field
-     */
-    public function setGroup(\SafeStartApi\Entity\Group $group = null)
-    {
-        $this->group = $group;
-    
-        return $this;
-    }
-
-    /**
-     * Get group
-     *
-     * @return \SafeStartApi\Entity\Group 
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * Add variants
-     *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
-     * @return Field
-     */
-    public function addVariant(\SafeStartApi\Entity\FieldVariant $variants)
-    {
-        $this->variants[] = $variants;
-    
-        return $this;
-    }
-
-    /**
-     * Remove variants
-     *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
-     */
-    public function removeVariant(\SafeStartApi\Entity\FieldVariant $variants)
-    {
-        $this->variants->removeElement($variants);
-    }
-
-    /**
-     * Get variants
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getVariants()
-    {
-        return $this->variants;
-    }
-
-    /**
-     * Add answers
-     *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
-     * @return Field
-     */
-    public function addAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
-    {
-        $this->answers[] = $answers;
-    
-        return $this;
-    }
-
-    /**
-     * Remove answers
-     *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
-     */
-    public function removeAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
-    {
-        $this->answers->removeElement($answers);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
-     * Set typeId
-     *
-     * @param integer $typeId
-     * @return Field
-     */
-    public function setTypeId($typeId)
-    {
-        $this->typeId = $typeId;
-    
-        return $this;
-    }
-
-    /**
-     * Get typeId
-     *
-     * @return integer 
-     */
-    public function getTypeId()
-    {
-        return $this->typeId;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return Field
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    
-        return $this;
-    }
-
-    /**
-     * Get type
+     * Get triggerValue
      *
      * @return string 
      */
-    public function getType()
+    public function getTriggerValue()
     {
-        return $this->type;
+        return $this->triggerValue;
     }
 
     /**
-     * Set vehicle
+     * Set field
      *
-     * @param \SafeStartApi\Entity\Vehicle $vehicle
-     * @return Field
+     * @param \SafeStartApi\Entity\Field $field
+     * @return Alert
      */
-    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
+    public function setField(\SafeStartApi\Entity\Field $field = null)
     {
-        $this->vehicle = $vehicle;
+        $this->field = $field;
     
         return $this;
     }
 
     /**
-     * Get vehicle
+     * Get field
      *
-     * @return \SafeStartApi\Entity\Vehicle 
+     * @return \SafeStartApi\Entity\Field 
      */
-    public function getVehicle()
+    public function getField()
     {
-        return $this->vehicle;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     * @return Field
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-    
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string 
-     */
-    public function getValue()
-    {
-        return $this->value;
+        return $this->field;
     }
 }

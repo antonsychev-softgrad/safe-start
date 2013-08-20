@@ -116,6 +116,11 @@ class User extends BaseEntity
      */
     protected $lastLogin;
 
+    public function prePersist()
+    {
+
+    }
+
     public function toArray()
     {
         return array(

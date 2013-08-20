@@ -20,6 +20,7 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setKmsUntilNext(100);
         $vehicle->setHoursUntilNext(100);
         $vehicle->setExpiryDate(new \DateTime());
+        $vehicle->setType($this->getReference('truck-type-1'));
         $manager->persist($vehicle);
         $manager->flush();
 
@@ -41,6 +42,7 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setKmsUntilNext(100);
         $vehicle->setHoursUntilNext(100);
         $vehicle->setExpiryDate(new \DateTime());
+        $vehicle->setType($this->getReference('truck-type-1'));
         $manager->persist($vehicle);
         $manager->flush();
 
@@ -61,6 +63,6 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 }

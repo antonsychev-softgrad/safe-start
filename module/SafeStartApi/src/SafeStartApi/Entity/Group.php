@@ -40,6 +40,51 @@ class Group extends BaseEntity
      */
     protected $additional;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="parent")
+     */
+    protected $subgroups;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Group", inversedBy="subgroups")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="groups")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
+     */
+    protected $vehicle;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    protected $author;
+
+    /**
+     * @ORM\Column(type="date", name="creation_date")
+     */
+    protected $creation_date;
+
+    /**
+     * @ORM\Column(type="boolean", name="enabled")
+     */
+    protected $enabled = 1;
+
+    /**
+     * @ORM\Column(type="boolean", name="deleted")
+     */
+    protected $deleted = 0;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreationDate(new \DateTime());
+    }
 
     /**
     * Magic getter to expose protected properties.
@@ -223,5 +268,176 @@ class Group extends BaseEntity
     public function getChecklist()
     {
         return $this->checklist;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Group
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime 
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Group
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+    
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean 
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Group
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Add subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     * @return Group
+     */
+    public function addSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups[] = $subgroups;
+    
+        return $this;
+    }
+
+    /**
+     * Remove subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     */
+    public function removeSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups->removeElement($subgroups);
+    }
+
+    /**
+     * Get subgroups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubgroups()
+    {
+        return $this->subgroups;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \SafeStartApi\Entity\Group $parent
+     * @return Group
+     */
+    public function setParent(\SafeStartApi\Entity\Group $parent = null)
+    {
+        $this->parent = $parent;
+    
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \SafeStartApi\Entity\Group 
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Set vehicle
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicle
+     * @return Group
+     */
+    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
+    {
+        $this->vehicle = $vehicle;
+    
+        return $this;
+    }
+
+    /**
+     * Get vehicle
+     *
+     * @return \SafeStartApi\Entity\Vehicle 
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \SafeStartApi\Entity\User $author
+     * @return Group
+     */
+    public function setAuthor(\SafeStartApi\Entity\User $author = null)
+    {
+        $this->author = $author;
+    
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

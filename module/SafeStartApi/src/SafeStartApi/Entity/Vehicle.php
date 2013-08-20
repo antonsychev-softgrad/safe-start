@@ -89,6 +89,11 @@ class Vehicle extends BaseEntity
     protected $hoursUntilNext;
 
     /**
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="vehicle")
+     */
+    protected $groups;
+
+    /**
     * Magic getter to expose protected properties.
     *
     * @param string $property
@@ -468,27 +473,38 @@ class Vehicle extends BaseEntity
     {
         return $this->fields;
     }
+
+
     /**
-     * Set company
+     * Add groups
      *
-     * @param \SafeStartApi\Entity\Company $company
+     * @param \SafeStartApi\Entity\Group $groups
      * @return Vehicle
      */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
+    public function addGroup(\SafeStartApi\Entity\Group $groups)
     {
-        $this->company = $company;
+        $this->groups[] = $groups;
     
         return $this;
     }
 
     /**
-     * Get company
+     * Remove groups
      *
-     * @return \SafeStartApi\Entity\Company 
+     * @param \SafeStartApi\Entity\Group $groups
      */
-    public function getCompany()
+    public function removeGroup(\SafeStartApi\Entity\Group $groups)
     {
-        return $this->company;
+        $this->groups->removeElement($groups);
     }
 
+    /**
+     * Get groups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
 }
