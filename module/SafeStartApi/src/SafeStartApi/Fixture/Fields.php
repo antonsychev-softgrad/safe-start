@@ -5,46 +5,179 @@ namespace SafeStartApi\Fixture;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Entity\Field;
 
-class Vehicles extends AbstractFixture implements OrderedFixtureInterface
+class Fields extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $vehicle = new Vehicle();
-        $vehicle->setPlantId('ACHJ-DJ34-A234');
-        $vehicle->setRegistrationNumber('REGNUMBER1');
-        $vehicle->setVehicleName('Mitsubishi');
-        $vehicle->setProjectName('Project name');
-        $vehicle->setProjectNumber(123);
-        $vehicle->setKmsUntilNext(100);
-        $vehicle->setHoursUntilNext(100);
-        $vehicle->setExpiryDate(new \DateTime());
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('user-1'));
-        $manager->persist($vehicle);
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(1);
+        $field->setTitle('Is the vehicle free of damage?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
         $manager->flush();
-
         //Associate a reference for other fixtures
-        $this->addReference('vehicle-1', $vehicle);
+        $this->addReference('field-1', $field);
 
-
-        $vehicle = new Vehicle();
-        $vehicle->setPlantId('BBDS-CHJDJ-1234');
-        $vehicle->setRegistrationNumber('REGNUMBER2');
-        $vehicle->setVehicleName('Ford');
-        $vehicle->setProjectName('Project name');
-        $vehicle->setProjectNumber(123);
-        $vehicle->setKmsUntilNext(100);
-        $vehicle->setHoursUntilNext(100);
-        $vehicle->setExpiryDate(new \DateTime());
-        $vehicle->setResponsibleUser($this->getReference('responsible-user'));
-        $vehicle->addEndUser($this->getReference('user-2'));
-        $manager->persist($vehicle);
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(2);
+        $field->setTitle('Are all safety guards in place?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
         $manager->flush();
-
         //Associate a reference for other fixtures
-        $this->addReference('vehicle-2', $vehicle);
+        $this->addReference('field-2', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(3);
+        $field->setTitle('Are the tyres correctly inflated, with good tread and wheel nuts tight?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-3', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(4);
+        $field->setTitle('Are you authorised to inflate or change tyres?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setParent($this->getReference('field-3'));
+        $field->setTriggerValue('No');
+        $field->setEnabled(true);
+        $field->setAdditional(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-4', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(5);
+        $field->setTitle('Is the windscreen and mirrors clean and free of damage?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-5', $field);
+
+        $field = new Field();
+        $field->setType('radio');
+        $field->setOrder(1);
+        $field->setTitle('Have you isolated the vechicle?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-6', $field);
+
+        $field = new Field();
+        $field->setType('group');
+        $field->setOrder(2);
+        $field->setTitle('Are the fluid levels acceptable?');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-7', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(3);
+        $field->setTitle('Water');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-8', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(4);
+        $field->setTitle('Hydraulic');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-9', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(5);
+        $field->setTitle('Brake');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-10', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(6);
+        $field->setTitle('Coolant');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-11', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(7);
+        $field->setTitle('Transmission');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-12', $field);
+
+        $field = new Field();
+        $field->setType('checkbox');
+        $field->setOrder(8);
+        $field->setTitle('Battery');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-13', $field);
+
+        $field = new Field();
+        $field->setType('coordinates');
+        $field->setOrder(1);
+        $field->setTitle('Add vechicle CPS coordinates');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-14', $field);
+
+        $field = new Field();
+        $field->setType('datePicker');
+        $field->setOrder(2);
+        $field->setTitle('Add date');
+        $field->setVehicle($this->getReference('vehicle-1'));
+        $field->setEnabled(true);
+        $manager->persist($field);
+        $manager->flush();
+        //Associate a reference for other fixtures
+        $this->addReference('field-15', $field);
 
     }
 
@@ -55,6 +188,6 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 4;
     }
 }

@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="inspection_answers")
+ * @ORM\Table(name="inspection_alerts")
  *
  */
-class FieldAnswer extends BaseEntity
+class Alert extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -22,25 +22,20 @@ class FieldAnswer extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="answers")
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
     protected $field;
 
     /**
-     * @ORM\Column(type="text")
-     **/
-    protected $value;
+     * @ORM\Column(type="string")
+     */
+    protected $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     **/
-    protected $user;
-
-    /**
-     * @ORM\Column(type="datetime", name="creation_date")
-     **/
-    protected $creationDate;
+     * @ORM\Column(type="string")
+     */
+    protected $triggerValue;
 
     /**
     * Magic getter to expose protected properties.
@@ -75,15 +70,14 @@ class FieldAnswer extends BaseEntity
     }
 
     /**
-     * @ORM\PreUpdate
-     * @ORM\PrePersist
+     * Constructor
      */
-    public function doStuffOnPrePersist()
+    public function __construct()
     {
-        $this->creationDate = (new \DateTime());
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-
+    
     /**
      * Get id
      *
@@ -95,56 +89,56 @@ class FieldAnswer extends BaseEntity
     }
 
     /**
-     * Set value
+     * Set title
      *
-     * @param string $value
-     * @return FieldAnswer
+     * @param string $title
+     * @return Alert
      */
-    public function setValue($value)
+    public function setTitle($title)
     {
-        $this->value = $value;
+        $this->title = $title;
     
         return $this;
     }
 
     /**
-     * Get value
+     * Get title
      *
      * @return string 
      */
-    public function getValue()
+    public function getTitle()
     {
-        return $this->value;
+        return $this->title;
     }
 
     /**
-     * Set creationDate
+     * Set triggerValue
      *
-     * @param \DateTime $creationDate
-     * @return FieldAnswer
+     * @param string $triggerValue
+     * @return Alert
      */
-    public function setCreationDate($creationDate)
+    public function setTriggerValue($triggerValue)
     {
-        $this->creationDate = $creationDate;
+        $this->triggerValue = $triggerValue;
     
         return $this;
     }
 
     /**
-     * Get creationDate
+     * Get triggerValue
      *
-     * @return \DateTime 
+     * @return string 
      */
-    public function getCreationDate()
+    public function getTriggerValue()
     {
-        return $this->creationDate;
+        return $this->triggerValue;
     }
 
     /**
      * Set field
      *
      * @param \SafeStartApi\Entity\Field $field
-     * @return FieldAnswer
+     * @return Alert
      */
     public function setField(\SafeStartApi\Entity\Field $field = null)
     {
@@ -156,33 +150,10 @@ class FieldAnswer extends BaseEntity
     /**
      * Get field
      *
-     * @return \SafeStartApi\Entity\Field
+     * @return \SafeStartApi\Entity\Field 
      */
     public function getField()
     {
         return $this->field;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \SafeStartApi\Entity\User $user
-     * @return FieldAnswer
-     */
-    public function setUser(\SafeStartApi\Entity\User $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \SafeStartApi\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }

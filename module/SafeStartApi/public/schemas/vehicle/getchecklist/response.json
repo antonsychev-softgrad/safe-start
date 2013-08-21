@@ -43,6 +43,11 @@
                                 "type": "integer",
                                 "required": true
                             },
+                            "additional": {
+                                "description": "If Group is additional then true",
+                                "type": "boolean",
+                                "required": true
+                            },
                             "fields": {
                                 "description": "Group fields",
                                 "type": "array",

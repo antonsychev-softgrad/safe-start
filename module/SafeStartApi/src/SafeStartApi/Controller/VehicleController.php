@@ -31,6 +31,9 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
+        $user = $this->authService->getIdentity();
+        $vehicles = $user->getVehicles();
+
         $vehiclesList = array(
             array(
                 'vehicleId' => 1,
@@ -98,6 +101,7 @@ class VehicleController extends RestController
                     'groupName' => 'Daily inspection checklist structural',
                     'groupId' => 1,
                     'groupOrder' => 1,
+                    'additional' => false,
                     'fields' => array(
                         array(
                             'fieldId' => 1,
@@ -156,6 +160,7 @@ class VehicleController extends RestController
                     'groupName' => 'Daily inspection checklist mechanical',
                     'groupId' => 2,
                     'groupOrder' => 2,
+                    'additional' => false,
                     'fields' => array(
                         array(
                             'fieldId' => 6,
@@ -233,6 +238,7 @@ class VehicleController extends RestController
                     'groupName' => 'Crane',
                     'groupId' => 3,
                     'groupOrder' => 3,
+                    'additional' => true,
                     'fields' => array(
                         array(
                             'fieldId' => 14,

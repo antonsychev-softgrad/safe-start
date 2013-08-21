@@ -314,7 +314,7 @@ return array(
                     'label' => 'N/A'
                 ),
             ),
-            'default' => ''
+            'default' => 'N/A'
         ),
         'checkbox' => array(
             'id' => 3,

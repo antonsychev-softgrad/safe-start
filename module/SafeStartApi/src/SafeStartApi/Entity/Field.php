@@ -28,14 +28,45 @@ class Field extends BaseEntity
     protected $group;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="parentfield", cascade={"persist", "remove", "merge"})
      */
-    protected $typeId;
+    protected $subgroups;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent")
+     */
+    protected $additionalFields;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="additionalFields")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Alert", mappedBy="field_id", cascade={"persist", "remove", "merge"})
+     */
+    protected $alerts;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $label;
+    protected $type;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $value;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $triggerValue;
 
     /**
      * @ORM\Column(type="integer", name="sort_order")
@@ -43,14 +74,56 @@ class Field extends BaseEntity
     protected $order;
 
     /**
-     * @ORM\OneToMany(targetEntity="FieldVariant", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\ManyToOne(targetEntity="Vehicle")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      **/
-    protected $variants;
+    protected $vehicle;
 
     /**
-     * @ORM\OneToMany(targetEntity="FieldAnswer", mappedBy="field", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
-     **/
-    protected $answers;
+     * @ORM\Column(type="date", name="creation_date")
+     */
+    protected $creation_date;
+
+    /**
+     * @ORM\Column(type="boolean", name="enabled")
+     */
+    protected $enabled;
+
+    /**
+     * @ORM\Column(type="boolean", name="deleted")
+     */
+    protected $deleted;
+
+    /**
+     * @ORM\Column(type="boolean", name="additional")
+     */
+    protected $additional;
+
+    /**
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    protected $author;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = false;
+        $this->deleted = false;
+        $this->additional = false;
+        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreationDate(new \DateTime());
+    }
 
     /**
     * Magic getter to expose protected properties.
@@ -91,15 +164,6 @@ class Field extends BaseEntity
     public function doStuffOnPrePersist()
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
-    }
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -184,10 +248,10 @@ class Field extends BaseEntity
     /**
      * Set type
      *
-     * @param \SafeStartApi\Entity\FieldType $type
+     * @param string $type
      * @return Field
      */
-    public function setType(\SafeStartApi\Entity\FieldType $type = null)
+    public function setType($type)
     {
         $this->type = $type;
     
@@ -197,7 +261,7 @@ class Field extends BaseEntity
     /**
      * Get type
      *
-     * @return \SafeStartApi\Entity\FieldType
+     * @return string 
      */
     public function getType()
     {
@@ -205,68 +269,331 @@ class Field extends BaseEntity
     }
 
     /**
-     * Add variants
+     * Set vehicle
      *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
+     * @param \SafeStartApi\Entity\Vehicle $vehicle
      * @return Field
      */
-    public function addVariant(\SafeStartApi\Entity\FieldVariant $variants)
+    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
     {
-        $this->variants[] = $variants;
+        $this->vehicle = $vehicle;
     
         return $this;
     }
 
     /**
-     * Remove variants
+     * Get vehicle
      *
-     * @param \SafeStartApi\Entity\FieldVariant $variants
+     * @return \SafeStartApi\Entity\Vehicle 
      */
-    public function removeVariant(\SafeStartApi\Entity\FieldVariant $variants)
+    public function getVehicle()
     {
-        $this->variants->removeElement($variants);
+        return $this->vehicle;
     }
 
     /**
-     * Get variants
+     * Set value
      *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getVariants()
-    {
-        return $this->variants;
-    }
-
-    /**
-     * Add answers
-     *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
+     * @param string $value
      * @return Field
      */
-    public function addAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
+    public function setValue($value)
     {
-        $this->answers[] = $answers;
+        $this->value = $value;
     
         return $this;
     }
 
     /**
-     * Remove answers
+     * Get value
      *
-     * @param \SafeStartApi\Entity\FieldAnswer $answers
+     * @return string 
      */
-    public function removeAnswer(\SafeStartApi\Entity\FieldAnswer $answers)
+    public function getValue()
     {
-        $this->answers->removeElement($answers);
+        return $this->value;
     }
 
     /**
-     * Get answers
+     * Set title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string 
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set triggerValue
+     *
+     * @param string $triggerValue
+     * @return Field
+     */
+    public function setTriggerValue($triggerValue)
+    {
+        $this->triggerValue = $triggerValue;
+    
+        return $this;
+    }
+
+    /**
+     * Get triggerValue
+     *
+     * @return string 
+     */
+    public function getTriggerValue()
+    {
+        return $this->triggerValue;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Field
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime 
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Field
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set additional
+     *
+     * @param boolean $additional
+     * @return Field
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Get additional
+     *
+     * @return boolean
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Field
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean 
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Add additionalFields
+     *
+     * @param \SafeStartApi\Entity\Field $additionalFields
+     * @return Field
+     */
+    public function addAdditionalField(\SafeStartApi\Entity\Field $additionalFields)
+    {
+        $this->additionalFields[] = $additionalFields;
+    
+        return $this;
+    }
+
+    /**
+     * Remove additionalFields
+     *
+     * @param \SafeStartApi\Entity\Field $additionalFields
+     */
+    public function removeAdditionalField(\SafeStartApi\Entity\Field $additionalFields)
+    {
+        $this->additionalFields->removeElement($additionalFields);
+    }
+
+    /**
+     * Get additionalFields
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAnswers()
+    public function getAdditionalFields()
     {
-        return $this->answers;
+        return $this->additionalFields;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \SafeStartApi\Entity\Field $parent
+     * @return Field
+     */
+    public function setParent(\SafeStartApi\Entity\Field $parent = null)
+    {
+        $this->parent = $parent;
+    
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \SafeStartApi\Entity\Field 
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     * @return Field
+     */
+    public function addAlert(\SafeStartApi\Entity\Alert $alerts)
+    {
+        $this->alerts[] = $alerts;
+    
+        return $this;
+    }
+
+    /**
+     * Remove alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     */
+    public function removeAlert(\SafeStartApi\Entity\Alert $alerts)
+    {
+        $this->alerts->removeElement($alerts);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAlerts()
+    {
+        return $this->alerts;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \SafeStartApi\Entity\User $author
+     * @return Field
+     */
+    public function setAuthor(\SafeStartApi\Entity\User $author = null)
+    {
+        $this->author = $author;
+    
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \SafeStartApi\Entity\User 
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Add subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     * @return Field
+     */
+    public function addSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups[] = $subgroups;
+    
+        return $this;
+    }
+
+    /**
+     * Remove subgroups
+     *
+     * @param \SafeStartApi\Entity\Group $subgroups
+     */
+    public function removeSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    {
+        $this->subgroups->removeElement($subgroups);
+    }
+
+    /**
+     * Get subgroups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getSubgroups()
+    {
+        return $this->subgroups;
     }
 }
