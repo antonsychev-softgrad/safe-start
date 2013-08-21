@@ -52,12 +52,14 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     getVehiclesList: function() {
+        var self = this;
         return {
-            xtype: 'list',
+            xtype: 'nestedlist',
             name: 'vehicles',
-            itemTpl: '<div class="contact">{title}</div>',
             minWidth: 150,
             maxWidth: 300,
+            title: 'Vehicles',
+            displayField: 'text',
             cls: 'sfa-left-container',
             flex:1,
             store: this.vehiclesStore,
@@ -70,12 +72,13 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             xtype: 'searchfield',
                             placeHolder: 'Search...',
                             listeners: {
-                                scope: this,
+                               // scope: this,
                                 clearicontap: function () {
                                     self.vehiclesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
+                                    self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'text');
+                                    this.up('nestedlist[name=vehicles]').setData( this.up('nestedlist[name=vehicles]').getStore().getData());
                                 }
                             }
                         },
@@ -87,7 +90,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             iconCls: 'refresh',
                             cls:'sfa-search-reload',
                             handler: function() {
-                                this.up('list[name=vehicles]').getStore().loadData();
+                                this.up('nestedlist[name=vehicles]').getStore().loadData();
                             }
                         }
                     ]

@@ -51,6 +51,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
     },
 
     getUsersList: function() {
+        var self = this;
         return {
             xtype: 'list',
             name: 'users',
@@ -76,7 +77,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                                     self.usersStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
+                                    self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
                                 }
                             }
                         },
@@ -89,7 +90,6 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             cls:'sfa-search-reload',
                             handler: function() {
                                 this.up('list[name=users]').getStore().loadData();
-                                console.log(this.up('list[name=users]').getStore());
                             }
                         }
                     ]

@@ -43,6 +43,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     },
 
     getCompanyList: function() {
+        var self = this;
         return {
             xtype: 'list',
                 name: 'companies',
@@ -67,7 +68,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                                     self.companiesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
+                                    self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
                                 }
                             }
                         },

@@ -105,10 +105,10 @@ class Vehicle extends BaseEntity
     {
         return array_merge($this->toInfoArray(), array(
             "users" => array_map(function ($user) {
-                return $user->toArray();
+                return $user->toInfoArray();
             }, (array)$this->users->toArray()),
-            "responsible" => array_map(function ($user) {
-                return $user->toArray();
+            "responsibleUsers" => array_map(function ($user) {
+                return $user->toInfoArray();
             }, (array)$this->responsibleUsers->toArray()),
         ));
     }
@@ -116,7 +116,7 @@ class Vehicle extends BaseEntity
     public function toInfoArray()
     {
         return array(
-            'vehicleId' => (!is_null($this->id)) ? $this->id : '',
+            'id' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
@@ -124,6 +124,16 @@ class Vehicle extends BaseEntity
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
         );
+    }
+
+    public function toMenuArray() {
+        $vehicleData = $this->toArray();
+        $vehicleData['text'] = $vehicleData['title'];
+        $menuItems = array();
+        $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
+        if (empty($menuItems)) $vehicleData['leaf'] = true;
+        else $vehicleData['items'] = $menuItems;
+        return $vehicleData;
     }
 
     /**

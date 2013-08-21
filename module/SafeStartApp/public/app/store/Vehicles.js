@@ -8,10 +8,10 @@ Ext.define('SafeStartApp.store.Vehicles', {
 
     config: {
         model: 'SafeStartApp.model.Vehicle',
-        defaultRootProperty: 'items',
+       // defaultRootProperty: 'items',
         proxy: {
             type: "ajax",
-            url : "api/company/getvehicles",
+            url : 'api/company/getvehicles',
             reader: {
                 type: "json",
                 rootProperty: "data"

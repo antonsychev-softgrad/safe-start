@@ -1,7 +1,11 @@
 
 Ext.define('SafeStartApp.store.AbstractTreeStore', {
-    extend: 'Ext.data.Store',
+    extend: 'Ext.data.TreeStore',
     mixins: ['Ext.mixin.Observable'],
+
+    config: {
+        autoLoad: false
+    },
 
     loadData: function() {
         this.load({
