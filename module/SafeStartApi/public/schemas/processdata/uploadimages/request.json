@@ -16,15 +16,15 @@
         "files": {
             "description": "Request files",
             "type": "array",
-            "required": false,
+            "required": true,
             "items": {
                 "description": "Request field name of files (If one file only return items of 'File info' else 'File info' list)",
                 "type": "array",
-                "required": false,
+                "required": true,
                 "items": {
                     "description": "File info",
                     "type": "array",
-                    "required": false,
+                    "required": true,
                     "items": {
                         "name": {
                             "description": "File name",
@@ -50,7 +50,7 @@
                             "description": "File name",
                             "type": "integer",
                             "required": false
-                        },
+                        }
                     }
                 }
             }
