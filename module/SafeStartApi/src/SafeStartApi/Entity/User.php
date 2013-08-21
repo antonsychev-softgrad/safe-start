@@ -78,7 +78,7 @@ class User extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="SET NULL")
      **/
     protected $company;
 

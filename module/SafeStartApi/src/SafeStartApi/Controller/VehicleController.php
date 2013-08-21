@@ -31,6 +31,9 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
+        $user = $this->authService->getIdentity();
+        $vehicles = $user->getVehicles();
+
         $vehiclesList = array(
             array(
                 'vehicleId' => 1,

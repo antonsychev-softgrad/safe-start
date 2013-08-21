@@ -10,7 +10,12 @@ use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
-use SafeStartApiTest\Fixtures\LoadUsersData;
+use SafeStartApi\Fixture\Users;
+use SafeStartApi\Fixture\Alerts;
+use SafeStartApi\Fixture\Companies;
+use SafeStartApi\Fixture\Fields;
+use SafeStartApi\Fixture\Groups;
+use SafeStartApi\Fixture\Vehicles;
 use Zend\Stdlib\Parameters;
 
 class UserControllerTest extends HttpControllerTestCase
@@ -23,7 +28,7 @@ class UserControllerTest extends HttpControllerTestCase
 
     protected function setUp()
     {
-        $this->addFixtures(new LoadUsersData());
+        $this->addFixtures(new Users());
         parent::setUp();
     }
 

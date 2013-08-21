@@ -33,13 +33,13 @@ class Field extends BaseEntity
     protected $subgroups;
 
     /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent", cascade={"persist", "remove", "merge"})
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent")
      */
     protected $additionalFields;
 
     /**
      * @ORM\ManyToOne(targetEntity="Field", inversedBy="additionalFields")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
 
