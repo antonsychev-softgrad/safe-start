@@ -279,6 +279,7 @@ return array(
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
+            'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
         )
     ),
     'session' => array(

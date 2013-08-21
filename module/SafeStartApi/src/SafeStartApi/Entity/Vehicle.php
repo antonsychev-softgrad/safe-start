@@ -35,10 +35,10 @@ class Vehicle extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="vehiclesAsigned")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="vehiclesAsigned")
      * @ORM\JoinColumn(name="responsible_user_id", referencedColumnName="id")
      **/
-    protected $responsibleUser;
+    protected $responsibleUsers;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="vehicles")
@@ -72,7 +72,7 @@ class Vehicle extends BaseEntity
     protected $projectName;
 
     /**
-     * @ORM\Column(type="string", length=255, name="project_number")
+     * @ORM\Column(type="integer", name="project_number")
      */
     protected $projectNumber;
 
@@ -102,9 +102,9 @@ class Vehicle extends BaseEntity
     protected $groups;
 
     /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\Column(type="datetime", nullable=true, name="expiry_date")
      */
-    protected $fields;
+    protected $expiryDate;
 
     /**
      * Convert the object to an array.
@@ -130,9 +130,12 @@ class Vehicle extends BaseEntity
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
-            "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
-            "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
+            "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
+            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
+            "expiryDate" => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : 0,
         );
     }
 
@@ -466,44 +469,33 @@ class Vehicle extends BaseEntity
     }
 
     /**
-     * Add fields
+     * Set expiryDate
      *
-     * @param \SafeStartApi\Entity\Field $fields
-     * @return Vehicle
+     * @param \DateTime $expiryDate
+     * @return Company
      */
-    public function addField(\SafeStartApi\Entity\Field $fields)
+    public function setExpiryDate($expiryDate)
     {
-        $this->fields[] = $fields;
+        $this->expiryDate = $expiryDate;
 
         return $this;
     }
 
     /**
-     * Remove fields
+     * Get expiryDate
      *
-     * @param \SafeStartApi\Entity\Field $fields
+     * @return \DateTime
      */
-    public function removeField(\SafeStartApi\Entity\Field $fields)
+    public function getExpiryDate()
     {
-        $this->fields->removeElement($fields);
+        return $this->expiryDate ? $this->expiryDate->getTimestamp() : null;
     }
-
-    /**
-     * Get fields
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
 
     /**
      * Add groups
      *
      * @param \SafeStartApi\Entity\Group $groups
-     * @return Vehicle
+     * @return Field
      */
     public function addGroup(\SafeStartApi\Entity\Group $groups)
     {
@@ -519,7 +511,7 @@ class Vehicle extends BaseEntity
      */
     public function removeGroup(\SafeStartApi\Entity\Group $groups)
     {
-        $this->groups->removeElement($groups);
+        $this->subgroups->removeElement($groups);
     }
 
     /**

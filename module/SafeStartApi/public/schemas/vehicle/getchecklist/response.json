@@ -133,7 +133,7 @@
                                                         "description": "If option Value = triggerValue then popup Alert message",
                                                         "type": "string",
                                                         "required": true
-                                                    },
+                                                    }
                                                 }
                                             }
                                         },

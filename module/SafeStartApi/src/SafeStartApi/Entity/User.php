@@ -83,7 +83,7 @@ class User extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
      */
     protected $responsibleForVehicles;
 

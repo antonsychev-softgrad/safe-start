@@ -65,7 +65,7 @@ class Group extends BaseEntity
     protected $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="subgroups")
+     * @ORM\OneToOne(targetEntity="Field", inversedBy="subgroup")
      * @ORM\JoinColumn(name="parentfield_id", referencedColumnName="id")
      */
     protected $parentField;

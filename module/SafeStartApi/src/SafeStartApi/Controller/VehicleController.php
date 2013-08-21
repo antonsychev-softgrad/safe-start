@@ -34,23 +34,14 @@ class VehicleController extends RestController
         $user = $this->authService->getIdentity();
         $vehicles = $user->getVehicles();
 
-        $vehiclesList = array(
-            array(
-                'vehicleId' => 1,
-                'typeId' => 1,
-                'vehicleName' => 'Vehicle name 1',
-            ),
-            array(
-                'vehicleId' => 2,
-                'typeId' => 2,
-                'vehicleName' => 'Vehicle name 2',
-            ),
-            array(
-                'vehicleId' => 3,
-                'typeId' => 3,
-                'vehicleName' => 'Vehicle name 3',
-            ),
-        );
+        $vehiclesList = array();
+        foreach($vehicles as $vehicle) {
+            $vehiclesList[] = array(
+                'vehicleId' => $vehicle->getId(),
+                'type' => $vehicle->getType(),
+                'vehicleName' => $vehicle->getTitle(),
+            );
+        }
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -65,22 +56,11 @@ class VehicleController extends RestController
         if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
         $id = (int)$this->params('id');
+        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $veh = $vehRep->findOneById($id);
+        if(empty($veh)) return $this->_showNotFound();
 
-        $objDateTime = new \DateTime('NOW');
-        $expiryDate = $objDateTime->getTimestamp();
-
-        $vehicleData = array(
-            'vehicleId' => $id,
-            'plantId' => 'PLANTIDTEST',
-            'registration' => 'REGISTRATION',
-            'vehicleName' => 'Name',
-            'type' => 'Test vehicle type',
-            'projectName' => 'Test project name',
-            'projectNumber' => 1123,
-            'expiryDate' => $expiryDate,
-            'kmsUntilNext' => 150,
-            'hoursUntilNext' => 200,
-        );
+        $vehicleData = $veh->toInfoArray();
 
         $this->answer = array(
             'vehicleData' => $vehicleData,
@@ -95,7 +75,25 @@ class VehicleController extends RestController
         if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
 
         $id = $this->params('id');
+        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $veh = $vehRep->findOneById($id);
+        if(empty($veh)) return $this->_showNotFound();
 
+        $groups = $veh->getGroups();
+
+        $checklist = array();
+        foreach($groups as $group) {
+
+            $checklist[] = array(
+                'groupName' => $group->getTitle(),
+                'groupId' => $group->getId(),
+                'groupOrder' => $group->getOrder(),
+                'additional' => $group->getAdditional(),
+                'fields' => $this->GetDataPlugin()->getGroupFields($group),
+            );
+        }
+
+        /*
         $checklist = array(
                 array(
                     'groupName' => 'Daily inspection checklist structural',
@@ -257,6 +255,7 @@ class VehicleController extends RestController
                     )
                 )
         );
+        */
 
         $this->answer = array(
             'checklist' => $checklist,

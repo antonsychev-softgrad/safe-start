@@ -28,9 +28,9 @@ class Field extends BaseEntity
     protected $group;
 
     /**
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="parentfield", cascade={"persist", "remove", "merge"})
+     * @ORM\OneToOne(targetEntity="Group", mappedBy="parentField", cascade={"persist", "remove", "merge"})
      */
-    protected $subgroups;
+    protected $subgroup;
 
     /**
      * @ORM\OneToMany(targetEntity="Field", mappedBy="parent")
@@ -565,35 +565,25 @@ class Field extends BaseEntity
     }
 
     /**
-     * Add subgroups
+     * Add subgroup
      *
-     * @param \SafeStartApi\Entity\Group $subgroups
+     * @param \SafeStartApi\Entity\Group $subgroup
      * @return Field
      */
-    public function addSubgroup(\SafeStartApi\Entity\Group $subgroups)
+    public function setSubgroup(\SafeStartApi\Entity\Group $subgroup)
     {
-        $this->subgroups[] = $subgroups;
+        $this->subgroup = $subgroup;
     
         return $this;
     }
 
     /**
-     * Remove subgroups
-     *
-     * @param \SafeStartApi\Entity\Group $subgroups
-     */
-    public function removeSubgroup(\SafeStartApi\Entity\Group $subgroups)
-    {
-        $this->subgroups->removeElement($subgroups);
-    }
-
-    /**
-     * Get subgroups
+     * Get subgroup
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getSubgroups()
+    public function getSubgroup()
     {
-        return $this->subgroups;
+        return $this->subgroup;
     }
 }
