@@ -18,7 +18,7 @@ class RestController extends AbstractActionController
     const EMAIL_INVALID_ERROR = 40004;
     const NOT_FOUND_ERROR = 4004;
 
-    protected $moduleConfig;
+    public $moduleConfig;
 
     protected $answer;
     protected $meta;

@@ -13,7 +13,7 @@ class GetDataPlugin extends AbstractPlugin
     {
 
         $fieldsArray = array();
-        $fields = $group->getFields()->toArray();
+        $fields = $group->getFields();
         foreach($fields as $field) {
 
             $fieldsArray[] = $this->getField($field);
@@ -26,11 +26,11 @@ class GetDataPlugin extends AbstractPlugin
     {
 
         $fieldsArray = array();
-        $fields = $field->getAdditionalFields()->toArray();
+        $fields = $field->getAdditionalFields();
         foreach($fields as $field) {
 
             $fieldsArray[] = array(
-                'field' => $this->getFields($field),
+                'field' => $this->getField($field),
                 'triggerValue' => $field->getTriggerValue(),
             );
         }
@@ -41,7 +41,7 @@ class GetDataPlugin extends AbstractPlugin
     public function getAlerts(Field $field)
     {
         $alertsArray = array();
-        $alerts = $field->getAlerts()->toArray();
+        $alerts = $field->getAlerts();
         foreach($alerts as $alert) {
             $alertsArray[] = array(
                 'alertMessage' => $alert->getTitle(),
@@ -56,25 +56,34 @@ class GetDataPlugin extends AbstractPlugin
         $subgroup = $field->getSubgroup();
 
         $fieldsArray = array();
-        $fields = $subgroup->getFields()->toArray();
-        foreach($fields as $field) {
-            $fields[] = $this->getField($field);
+        if(!empty($subgroup)) {
+            $fields = $subgroup->getFields();
+            foreach($fields as $field) {
+                $fieldsArray[] = $this->getField($field);
+            }
         }
-        return $fields;
+        return $fieldsArray;
     }
 
     public function getField(Field $field)
     {
-        return array(
+        $fieldArray = array(
             'fieldId' => $field->getId(),
             'fieldOrder' => $field->getOrder(),
             'fieldName' => $field->getTitle(),
-            'fieldType' => $this->moduleConfig['fieldTypes'][$field->getType()]['id'],
-            'fieldValue' =>  $this->moduleConfig['fieldTypes'][$field->getType()]['default'],
-            'options' => $this->moduleConfig['fieldTypes'][$field->getType()]['options'],
+            'fieldType' => $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['id'],
             'additionalFields' => $this->getAdditionalFields($field),
             'alerts' => $this->getAlerts($field),
             'items' => $this->getSubgroupFields($field),
         );
+
+        if(array_key_exists('default', $this->getController()->moduleConfig['fieldTypes'][$field->getType()])) {
+            $fieldArray['fieldValue'] = $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['default'];
+        }
+        if(array_key_exists('options', $this->getController()->moduleConfig['fieldTypes'][$field->getType()])) {
+            $fieldArray['options'] = $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['options'];
+        }
+
+        return $fieldArray;
     }
 }

@@ -81,7 +81,7 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getinfo');
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
@@ -92,13 +92,18 @@ class VehicleControllerTest extends HttpControllerTestCase
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
 
+        $this->getRequest()->setMethod('POST');
+        $this->dispatch('/api/vehicle/getlist');
+        $data = json_decode($this->getResponse()->getContent());
+        $vehicleId = $data->data->vehicles[0]->vehicleId;
+
         $data = array();
 
         $this->getRequest()
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/1/getchecklist');
+        $this->dispatch('/api/vehicle/'.$vehicleId.'/getchecklist');
 
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');

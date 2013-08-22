@@ -54,7 +54,7 @@ class Group extends BaseEntity
     protected $fields;
 
     /**
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="parent")
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $subgroups;
 
@@ -208,14 +208,14 @@ class Group extends BaseEntity
     }
 
     /**
-     * Add fields
+     * Add field
      *
-     * @param \SafeStartApi\Entity\Field $fields
+     * @param \SafeStartApi\Entity\Field $field
      * @return Group
      */
-    public function addField(\SafeStartApi\Entity\Field $fields)
+    public function addField(\SafeStartApi\Entity\Field $field)
     {
-        $this->fields[] = $fields;
+        $this->fields[] = $field;
 
         return $this;
     }

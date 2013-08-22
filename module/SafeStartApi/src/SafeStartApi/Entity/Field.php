@@ -5,7 +5,6 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
@@ -23,7 +22,7 @@ class Field extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Group", inversedBy="fields")
-     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="SET NULL")
      **/
     protected $group;
 
@@ -44,7 +43,7 @@ class Field extends BaseEntity
     protected $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Alert", mappedBy="field_id", cascade={"persist", "remove", "merge"})
+     * @ORM\OneToMany(targetEntity="Alert", mappedBy="field", cascade={"persist", "remove", "merge"})
      */
     protected $alerts;
 

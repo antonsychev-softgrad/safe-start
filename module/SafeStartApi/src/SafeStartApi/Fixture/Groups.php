@@ -15,12 +15,12 @@ class Groups extends AbstractFixture implements OrderedFixtureInterface
         $group
             ->setTitle('Daily inspection checklist structural')
             ->setOrder(1)
-            ->setVehicle($this->getReference('vehicle-1'))
-            ->addField($this->getReference('field-1'))
-            ->addField($this->getReference('field-2'))
-            ->addField($this->getReference('field-3'))
-            ->addField($this->getReference('field-4'))
-            ->addField($this->getReference('field-5'));
+            ->setVehicle($this->getReference('vehicle-1'));
+        $this->getReference('field-1')->setGroup($group);
+        $this->getReference('field-2')->setGroup($group);
+        $this->getReference('field-3')->setGroup($group);
+        $this->getReference('field-4')->setGroup($group);
+        $this->getReference('field-5')->setGroup($group);
         $manager->persist($group);
         $manager->flush();
         //Associate a reference for other fixtures
@@ -30,9 +30,9 @@ class Groups extends AbstractFixture implements OrderedFixtureInterface
         $group
             ->setTitle('Daily inspection checklist mechanical')
             ->setOrder(2)
-            ->setVehicle($this->getReference('vehicle-1'))
-            ->addField($this->getReference('field-6'))
-            ->addField($this->getReference('field-7'));
+            ->setVehicle($this->getReference('vehicle-1'));
+        $this->getReference('field-6')->setGroup($group);
+        $this->getReference('field-7')->setGroup($group);
         $manager->persist($group);
         $manager->flush();
         //Associate a reference for other fixtures
@@ -43,9 +43,9 @@ class Groups extends AbstractFixture implements OrderedFixtureInterface
             ->setTitle('Crane')
             ->setAdditional(true)
             ->setOrder(3)
-            ->setVehicle($this->getReference('vehicle-1'))
-            ->addField($this->getReference('field-14'))
-            ->addField($this->getReference('field-15'));
+            ->setVehicle($this->getReference('vehicle-1'));
+        $this->getReference('field-14')->setGroup($group);
+        $this->getReference('field-15')->setGroup($group);
         $manager->persist($group);
         $manager->flush();
         //Associate a reference for other fixtures
@@ -57,13 +57,13 @@ class Groups extends AbstractFixture implements OrderedFixtureInterface
             ->setSubgroup(true)
             ->setParentField($this->getReference('field-7'))
             ->setOrder(1)
-            ->setVehicle($this->getReference('vehicle-1'))
-            ->addField($this->getReference('field-8'))
-            ->addField($this->getReference('field-9'))
-            ->addField($this->getReference('field-10'))
-            ->addField($this->getReference('field-11'))
-            ->addField($this->getReference('field-12'))
-            ->addField($this->getReference('field-13'));
+            ->setVehicle($this->getReference('vehicle-1'));
+        $this->getReference('field-8')->setGroup($group);
+        $this->getReference('field-9')->setGroup($group);
+        $this->getReference('field-10')->setGroup($group);
+        $this->getReference('field-11')->setGroup($group);
+        $this->getReference('field-12')->setGroup($group);
+        $this->getReference('field-13')->setGroup($group);
         $manager->persist($group);
         $manager->flush();
         //Associate a reference for other fixtures
