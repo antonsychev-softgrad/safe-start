@@ -131,7 +131,8 @@ Ext.application({
         'Auth',
         'Companies',
         'Users',
-        'Company'
+        'Company',
+        'Vehicles'
     ],
 
     icon: {

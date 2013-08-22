@@ -140,9 +140,35 @@ class Vehicle extends BaseEntity
         $vehicleData = $this->toArray();
         $vehicleData['text'] = $vehicleData['title'];
         $menuItems = array();
-        $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
+        $user = \SafeStartApi\Application::getCurrentUser();
+        if ($user) {
+            $menuItems[] = array(
+                'id' => $this->getId() . '-info',
+                'action' => 'info',
+                'text' => 'Current Information',
+                'leaf' => true,
+            );
+            $menuItems[] = array(
+                'id' => $this->getId() . '-fill-checklist',
+                'action' => 'fill-checklist',
+                'text' => 'Daily Inspection',
+                'leaf' => true,
+            );
+            switch ($user->getRole()) {
+                case 'superAdmin':
+                case 'companyAdmin':
+                case 'companyManager':
+                        $menuItems[] = array(
+                            'id' => $this->getId() . '-update-checklist',
+                            'action' => 'update-checklist',
+                            'text' => 'Manage Checklist',
+                            'leaf' => true,
+                        );
+                    break;
+            }
+        }
         if (empty($menuItems)) $vehicleData['leaf'] = true;
-        else $vehicleData['items'] = $menuItems;
+        else $vehicleData['data'] = $menuItems;
         return $vehicleData;
     }
 
