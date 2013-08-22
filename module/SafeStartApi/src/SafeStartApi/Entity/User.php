@@ -134,6 +134,17 @@ class User extends BaseEntity
 
     public function toArray()
     {
+        return array_merge($this->toInfoArray() ,array(
+            'vehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->vehicles->toArray()),
+            'responsibleForVehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->responsibleForVehicles->toArray()),
+        ));
+    }
+
+    public function toInfoArray() {
         return array(
             'id' => $this->getId(),
             'email' => (!is_null($this->email)) ? $this->email : '',
@@ -145,12 +156,6 @@ class User extends BaseEntity
             'companyId' => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
             'position' => (!is_null($this->position)) ? $this->position : '',
             'department' => (!is_null($this->company)) ? $this->department : '',
-            'vehicles' => array_map(function ($vehicle) {
-                return $vehicle->toInfoArray();
-            }, (array)$this->vehicles->toArray()),
-         /*   'responsibleForVehicles' => array_map(function ($vehicle) {
-                return $vehicle->toInfoArray();
-            }, (array)$this->responsibleForVehicles->toArray()),*/
         );
     }
 

@@ -35,8 +35,8 @@ class Vehicle extends BaseEntity
     protected $company;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="vehiclesAsigned")
-     * @ORM\JoinColumn(name="responsible_user_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="responsibleForVehicles")
+     * @ORM\JoinTable(name="vehicles_responsible_users")
      **/
     protected $responsibleUsers;
 
@@ -102,6 +102,11 @@ class Vehicle extends BaseEntity
     protected $groups;
 
     /**
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $fields;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true, name="expiry_date")
      */
     protected $expiryDate;
@@ -115,10 +120,10 @@ class Vehicle extends BaseEntity
     {
         return array_merge($this->toInfoArray(), array(
             "users" => array_map(function ($user) {
-                return $user->toArray();
+                return $user->toInfoArray();
             }, (array)$this->users->toArray()),
-            "responsible" => array_map(function ($user) {
-                return $user->toArray();
+            "responsibleUsers" => array_map(function ($user) {
+                return $user->toInfoArray();
             }, (array)$this->responsibleUsers->toArray()),
         ));
     }
@@ -137,6 +142,16 @@ class Vehicle extends BaseEntity
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : 0,
         );
+    }
+
+    public function toMenuArray() {
+        $vehicleData = $this->toArray();
+        $vehicleData['text'] = $vehicleData['title'];
+        $menuItems = array();
+        $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
+        if (empty($menuItems)) $vehicleData['leaf'] = true;
+        else $vehicleData['items'] = $menuItems;
+        return $vehicleData;
     }
 
     /**
@@ -469,6 +484,19 @@ class Vehicle extends BaseEntity
     }
 
     /**
+     * Add fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     * @return Vehicle
+     */
+    public function addField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields[] = $fields;
+
+        return $this;
+    }
+
+    /**
      * Set expiryDate
      *
      * @param \DateTime $expiryDate
@@ -492,10 +520,31 @@ class Vehicle extends BaseEntity
     }
 
     /**
+     * Remove fields
+     *
+     * @param \SafeStartApi\Entity\Field $fields
+     */
+    public function removeField(\SafeStartApi\Entity\Field $fields)
+    {
+        $this->fields->removeElement($fields);
+    }
+
+    /**
+     * Get fields
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+
+    /**
      * Add groups
      *
      * @param \SafeStartApi\Entity\Group $groups
-     * @return Field
+     * @return Vehicle
      */
     public function addGroup(\SafeStartApi\Entity\Group $groups)
     {
@@ -511,7 +560,7 @@ class Vehicle extends BaseEntity
      */
     public function removeGroup(\SafeStartApi\Entity\Group $groups)
     {
-        $this->subgroups->removeElement($groups);
+        $this->groups->removeElement($groups);
     }
 
     /**

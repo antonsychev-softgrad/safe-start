@@ -27,61 +27,61 @@
                     "type": "object",
                     "required": true,
                     "properties": {
-                        name: {
+                        "name": {
                             "description": "File name with extension",
                             "type": "string",
                             "required": true
                         },
-                        nameOnly: {
+                        "nameOnly": {
                             "description": "File name without extension",
                             "type": "string",
                             "required": true
                         },
-                        ext: {
+                        "ext": {
                             "description": "File name extension",
                             "type": "string",
                             "required": true
                         },
-                        type: {
+                        "type": {
                             "description": "File name mimeType",
                             "type": "string",
                             "required": true
                         },
-                        size: {
+                        "size": {
                             "description": "Size of file in bytes",
                             "type": "string",
                             "required": true
                         },
-                        thumbNames: {
+                        "thumbNames": {
                             "description": "List of file thumb names",
                             "type": "array",
                             "required": false,
                             "items": {
                                 "description": "Thumb name",
                                 "type": "string",
-                                "required": false,
+                                "required": false
                             }
                         },
-                        useThumbFolder: {
+                        "useThumbFolder": {
                             "description": "File thumbnail is stored in folder by 'Thumbname' without 'Thumbname' prefix. (e.g. if is true - /thumbname/fname.ftype, else - /fname_thumbname.ftype)",
                             "type": "boolean",
                             "required": true
                         },
-                        url: {
+                        "url": {
                             "description": "Full url for image",
                             "type": "string",
                             "required": true
                         },
-                        ThumbnameUrl: {
+                        "ThumbnameUrl": {
                             "description": "Full url for image thumb (Many parameters, return for every Thumbname. e.g. 220x20Url, fullUrl, etc.)",
                             "type": "string",
                             "required": true
                         },
-                        error: {
+                        "error": {
                             "description": "Error message",
                             "type": "string",
                             "required": false
-                        },
+                        }
                     }
                 }
             }

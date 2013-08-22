@@ -48,7 +48,7 @@ class RestController extends AbstractActionController
     {
         $this->_parseRequestFormat();
         $this->_checkAuthToken();
-
+        \SafeStartApi\Application::setCurrentControllerServiceLocator($this->getServiceLocator());
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
         $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
     }

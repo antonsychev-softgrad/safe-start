@@ -24,7 +24,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $this->answer = array(
-            'items' => array(),
+
         );
 
         $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
@@ -32,7 +32,7 @@ class CompanyController extends RestrictedAccessRestController
         $items = $query->getResult();
 
         foreach ($items as $item) {
-            $this->answer['items'][] = $item->toArray();
+            $this->answer[] = $item->toMenuArray();
         }
 
         return $this->AnswerPlugin()->format($this->answer);

@@ -145,6 +145,22 @@
                     }
                 }
             }
+        },
+        "/api/uploadImages": {
+            "description": "Upload Images",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/response.json"
+                    }
+                }
+            }
         }
     }
 }
