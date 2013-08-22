@@ -38,7 +38,7 @@ class Vehicle extends BaseEntity
      * @ORM\ManyToMany(targetEntity="User", inversedBy="responsibleForVehicles")
      * @ORM\JoinTable(name="vehicles_responsible_users")
      **/
-    protected $responsibleUser;
+    protected $responsibleUsers;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="vehicles")
