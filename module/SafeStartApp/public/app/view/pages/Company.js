@@ -78,7 +78,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
                                 },
                                 keyup: function (field) {
                                     self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'text');
-                                    this.up('nestedlist[name=vehicles]').setData( this.up('nestedlist[name=vehicles]').getStore().getData());
+                                    //todo: fix searching
+                                    //this.up('nestedlist[name=vehicles]').setData( this.up('nestedlist[name=vehicles]').getStore().getData());
                                 }
                             }
                         },
