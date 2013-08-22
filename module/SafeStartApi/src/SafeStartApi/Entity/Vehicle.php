@@ -572,5 +572,4 @@ class Vehicle extends BaseEntity
     {
         return $this->groups;
     }
-
 }
