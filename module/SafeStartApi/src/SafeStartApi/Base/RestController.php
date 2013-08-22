@@ -16,8 +16,9 @@ class RestController extends AbstractActionController
     const USER_ALREADY_LOGGED_IN_ERROR = 4002;
     const EMAIL_ALREADY_EXISTS_ERROR = 4003;
     const EMAIL_INVALID_ERROR = 40004;
+    const NOT_FOUND_ERROR = 4004;
 
-    protected $moduleConfig;
+    public $moduleConfig;
 
     protected $answer;
     protected $meta;
@@ -47,6 +48,7 @@ class RestController extends AbstractActionController
     {
         $this->_parseRequestFormat();
         $this->_checkAuthToken();
+        // todo: find better way for global access
         \SafeStartApi\Application::setCurrentControllerServiceLocator($this->getServiceLocator());
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
         $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
@@ -107,6 +109,13 @@ class RestController extends AbstractActionController
             'errorMessage' => 'Access denied',
         );
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
+    }
+
+    protected function _showNotFound() {
+        $this->answer = array(
+            'errorMessage' => 'Not found',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::NOT_FOUND_ERROR, 404);
     }
 
     protected function _showEmailExists() {

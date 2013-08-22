@@ -20,6 +20,9 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setProjectNumber(123);
         $vehicle->setServiceDueKm(100);
         $vehicle->setServiceDueHours(100);
+        $expiryDate = new \DateTime();
+        $expiryDate->setTimestamp(time() + 60*60*366);
+        $vehicle->setExpiryDate($expiryDate);
         $manager->persist($vehicle);
         $manager->flush();
 
@@ -41,6 +44,9 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $vehicle->setProjectNumber(123);
         $vehicle->setServiceDueKm(100);
         $vehicle->setServiceDueHours(100);
+        $expiryDate = new \DateTime();
+        $expiryDate->setTimestamp(time() + 60*60*366);
+        $vehicle->setExpiryDate($expiryDate);
         $manager->persist($vehicle);
         $manager->flush();
 

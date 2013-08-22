@@ -293,6 +293,7 @@ return array(
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
             'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
+            'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
         )
     ),
     'session' => array(
