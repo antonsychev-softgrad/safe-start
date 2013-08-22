@@ -25,7 +25,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         //Associate a reference for other fixtures
         $this->addReference('usual-user1', $user);
 
-        // USER 1
+        // USER 2
         $user = new User();
         $user->setEmail('usual-user2@test.test');
         $user->setUsername('username2');
@@ -63,8 +63,8 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setFirstName('User');
         $user->setRole('companyAdmin');
         $user->setPlainPassword('12345');
-        $manager->persist($user);
         $user->setEnabled(1);
+        $manager->persist($user);
         $manager->flush();
 
         //Associate a reference for other fixtures

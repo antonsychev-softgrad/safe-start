@@ -33,9 +33,9 @@
                                 "type": "integer",
                                 "required": true
                             },
-                            "typeId": {
-                                "description": "Vehicle type ID",
-                                "type": "integer",
+                            "type": {
+                                "description": "Vehicle type",
+                                "type": "string",
                                 "required": true
                             },
                             "vehicleName": {
