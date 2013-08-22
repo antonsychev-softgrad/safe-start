@@ -1,0 +1,29 @@
+{
+    "description": "Generate PDF",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "checklistId": {
+                    "description": "Checklist Id for PDF data in Database",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}
