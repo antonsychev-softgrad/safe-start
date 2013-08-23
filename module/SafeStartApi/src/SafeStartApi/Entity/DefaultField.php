@@ -19,7 +19,10 @@ class DefaultField extends BaseEntity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-
+    
+    /**
+     * @ORM\OneToMany(targetEntity="DefaultField", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
     protected $children;
 
     /**
