@@ -11,7 +11,7 @@ class Groups extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $group = new Group();
+        $group = new DefaultField();
         $group
             ->setTitle('Daily inspection checklist structural')
             ->setOrder(1)

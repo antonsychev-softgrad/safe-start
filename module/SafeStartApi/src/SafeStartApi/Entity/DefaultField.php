@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="inspection_fields")
+ * @ORM\Table(name="default_inspection_fields")
  *
  */
-class Field extends BaseEntity
+class DefaultField extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -21,12 +21,12 @@ class Field extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="DefaultField", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -42,9 +42,14 @@ class Field extends BaseEntity
     protected $type;
 
     /**
-     * @ORM\Column(type="string")
-     */
+ * @ORM\Column(type="string")
+ */
     protected $title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $alert_title;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -55,12 +60,6 @@ class Field extends BaseEntity
      * @ORM\Column(type="integer", name="sort_order")
      */
     protected $order;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Vehicle")
-     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
-     **/
-    protected $vehicle;
 
     /**
      * @ORM\Column(type="date", name="creation_date")
@@ -83,8 +82,8 @@ class Field extends BaseEntity
     protected $additional;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false)
      */
     protected $author;
 
@@ -206,29 +205,6 @@ class Field extends BaseEntity
     }
 
     /**
-     * Set vehicle
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehicle
-     * @return Field
-     */
-    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
-    {
-        $this->vehicle = $vehicle;
-    
-        return $this;
-    }
-
-    /**
-     * Get vehicle
-     *
-     * @return \SafeStartApi\Entity\Vehicle 
-     */
-    public function getVehicle()
-    {
-        return $this->vehicle;
-    }
-
-    /**
      * Set title
      *
      * @param string $title
@@ -237,14 +213,14 @@ class Field extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -252,26 +228,49 @@ class Field extends BaseEntity
     }
 
     /**
-     * Set triggerValue
+     * Set alert_title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setAlertTitle($title)
+    {
+        $this->alert_title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_title
+     *
+     * @return string
+     */
+    public function getAlertTitle()
+    {
+        return $this->alert_title;
+    }
+
+    /**
+     * Set trigger_value
      *
      * @param string $triggerValue
      * @return Field
      */
     public function setTriggerValue($triggerValue)
     {
-        $this->triggerValue = $triggerValue;
+        $this->trigger_value = $triggerValue;
     
         return $this;
     }
 
     /**
-     * Get triggerValue
+     * Get trigger_value
      *
      * @return string 
      */
     public function getTriggerValue()
     {
-        return $this->triggerValue;
+        return $this->trigger_value;
     }
 
     /**
@@ -369,10 +368,10 @@ class Field extends BaseEntity
     /**
      * Add children
      *
-     * @param \SafeStartApi\Entity\Field $children
+     * @param \SafeStartApi\Entity\DefaultField $children
      * @return Field
      */
-    public function addChildred(\SafeStartApi\Entity\Field $child)
+    public function addChildred(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children[] = $child;
     
@@ -382,9 +381,9 @@ class Field extends BaseEntity
     /**
      * Remove children
      *
-     * @param \SafeStartApi\Entity\Field $children
+     * @param \SafeStartApi\Entity\DefaultField $children
      */
-    public function removeChildred(\SafeStartApi\Entity\Field $child)
+    public function removeChildred(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children->removeElement($child);
     }
@@ -402,10 +401,10 @@ class Field extends BaseEntity
     /**
      * Set parent
      *
-     * @param \SafeStartApi\Entity\Field $parent
+     * @param \SafeStartApi\Entity\DefaultField $parent
      * @return Field
      */
-    public function setParent(\SafeStartApi\Entity\Field $parent = null)
+    public function setParent(\SafeStartApi\Entity\DefaultField $parent = null)
     {
         $this->parent = $parent;
     
@@ -415,7 +414,7 @@ class Field extends BaseEntity
     /**
      * Get parent
      *
-     * @return \SafeStartApi\Entity\Field 
+     * @return \SafeStartApi\Entity\DefaultField
      */
     public function getParent()
     {
