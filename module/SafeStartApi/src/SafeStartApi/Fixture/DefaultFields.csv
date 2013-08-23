@@ -1,9 +1,58 @@
-id;parent_id;author_id;type;title;trigger_value;sort_order;creation_date;enabled;deleted;additional;alert_title
-1;0;1;root;structural;;1;0000-00-00;1;0;0;
-2;1;1;radio;Is the vehicle free of damage?;no;1;0000-00-00;1;0;0;Isolate vehicle before continuing
-3;1;1;radio;Are all safety guards in place?;no;2;0000-00-00;1;0;0;Isolate vehicle before continuing
-4;1;1;group;Are the fluid levels acceptable?;;3;0000-00-00;1;0;0;
-5;4;1;checkbox;Water;no;1;0000-00-00;1;0;0;Isolate vehicle before continuing
-6;4;1;checkbox;Hydraulic;no;2;0000-00-00;1;0;0;Isolate vehicle before continuing
-7;1;1;radio;Are the tires correctly inflated, in good working order and with wheel nuts tightened?;no;4;0000-00-00;1;0;1;
-8;7;1;radio;Are you authorised to inflate or change tyres?;no;0;0000-00-00;1;0;0;Do not work on tyres unless authorised
+id;parent_id;author_id;type;title;alert_title;trigger_value;sort_order;creation_date;enabled;deleted;additional
+1;;;root;Daily inspection checklist safety;;;1;2013-08-23;1;0;0
+10;;;root;Daily inspection checklist cabin;;;2;2013-08-23;1;0;0
+19;;;root;Daily inspection checklist structural;;;3;2013-08-23;1;0;0
+25;;;root;Daily inspection checklist mechanical;;;4;2013-08-23;1;0;0
+39;;;root;Trailer;;;5;2013-08-23;1;0;1
+51;;;root;Auxiliary motor;;;6;2013-08-23;1;0;1
+2;1;;radio;Is the vehicle stable?;Danger. Please secure the vehicle before continuing;no;1;2013-08-23;1;0;0
+3;1;;radio;Is the operators manual in the vehicle?;;;2;2013-08-23;1;0;0
+4;1;;radio;Are you authorised in the use of this vehicle?;Danger. Do not inspect any vehicle unless you are authorised;no;3;2013-08-23;1;0;0
+5;1;;radio;Is the first aid kit present and fully stocked?;;;4;2013-08-23;1;0;0
+6;1;;radio;Is the fire extinguisher present?;;;5;2013-08-23;1;0;0
+7;1;;datePicker;Date of next inspection- fire extinguisher;;;6;2013-08-23;1;0;0
+8;1;;radio;Is the vehicle clean and all items secure?;;;7;2013-08-23;1;0;0
+9;1;;radio;Are the safety tools present? (Jack, Wheel brace, glass breaker);;;8;2013-08-23;1;0;0
+11;10;;group;Are the following items operating as designed?;;;1;2013-08-23;1;0;0
+12;11;;checkbox;Lights and indicators;;;1;2013-08-23;1;0;0
+13;11;;checkbox;Warning alarms and horn;;;2;2013-08-23;1;0;0
+14;11;;checkbox;Gauges;;;3;2013-08-23;1;0;0
+15;11;;checkbox;Windscreen wipers;;;4;2013-08-23;1;0;0
+16;11;;checkbox;Two-way radio;;;5;2013-08-23;1;0;0
+17;11;;checkbox;Seatbelt;;;6;2013-08-23;1;0;0
+18;11;;checkbox;Air conditioning;;;7;2013-08-23;1;0;0
+20;19;;radio;Is the vehicle free of damage?;;;1;2013-08-23;1;0;0
+21;19;;radio;Are all safety guards in place?;;;2;2013-08-23;1;0;0
+22;19;;radio;Are the tyres correctly inflated with good tread and wheel nuts tight?;;no;3;2013-08-23;1;0;1
+23;22;;radio;Are you authorised to inflate or change tyres?;Do not work on tyres unless authorised;no;4;2013-08-23;1;0;0
+24;19;;radio;Is the windscreen and mirrors clean and free of damage?;;;5;2013-08-23;1;0;0
+26;25;;radio;Have you isolated the vehicle?;Isolate vehicle before continuing;no;1;2013-08-23;1;0;0
+27;25;;group;Are the fluid levels acceptabel?;;;2;2013-08-23;1;0;0
+28;27;;checkbox;Water;;;1;2013-08-23;1;0;0
+29;27;;checkbox;Hydraulic;;;2;2013-08-23;1;0;0
+30;27;;checkbox;Brake;;;3;2013-08-23;1;0;0
+31;27;;checkbox;Coolant;;;4;2013-08-23;1;0;0
+32;27;;checkbox;Transmission;;;5;2013-08-23;1;0;0
+33;27;;checkbox;Battery;;;6;2013-08-23;1;0;0
+34;25;;radio;Are the fan and drive belts in good working order?;;;3;2013-08-23;1;0;0
+35;25;;radio;Has the daily greasing been carried out?;;;4;2013-08-23;1;0;0
+36;25;;radio;Does the vehicle start?;;;5;2013-08-23;1;0;0
+37;25;;radio;Is the steering functioning properly?;;;6;2013-08-23;1;0;0
+38;25;;radio;Do the foot and hand brakes work properly?;;;7;2013-08-23;1;0;0
+40;39;;text;Plant ID;;;1;2013-08-23;1;0;0
+41;39;;text;Type of trailer;;;2;2013-08-23;1;0;0
+42;39;;datePicker;Registration expiry;;;3;2013-08-23;1;0;0
+43;39;;radio;Is the trailer stable?;Please secure the vehicle before continuing;no;4;2013-08-23;1;0;0
+44;39;;radio;Is the trailer free of damage?;;;5;2013-08-23;1;0;0
+45;39;;radio;Are all guards in place?;;;6;2013-08-23;1;0;0
+46;39;;radio;Are the tyres correctly inflated, in good working order with wheel nuts tightened?;;no;7;2013-08-23;1;0;1
+47;39;;radio;Is the tow hitch free of damage and greased if necessary?;;;9;2013-08-23;1;0;0
+48;39;;radio;Are all lights and indicators functioning?;;;10;2013-08-23;1;0;0
+49;39;;radio;Are electrical cables or hydraulic hoses free of damage?;;;11;2013-08-23;1;0;0
+50;46;;radio;Are you authorised to inflate/change tyres?;Do not work on tyres unless authorised;no;8;2013-08-23;1;0;0
+52;51;;test;Hours;;;1;2013-08-23;1;0;0
+53;51;;radio;Is the motor housed correctly and free of damage?;;;2;2013-08-23;1;0;0
+54;51;;radio;Are all guards fuel levels acceptable?;;;3;2013-08-23;1;0;0
+55;51;;radio;Are all hoses fitted correctly and free from leaks? (Pump motors);;;4;2013-08-23;1;0;0
+56;51;;radio;Test the Residual Current Device. Does it function as designed? (Electrical generators);Do not operate electrical equipment;no;5;2013-08-23;1;0;0
+57;51;;radio;Does the motor start?;;;6;2013-08-23;1;0;0
