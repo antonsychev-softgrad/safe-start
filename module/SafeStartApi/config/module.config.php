@@ -197,6 +197,19 @@ return array(
                             ),
                         ),
                     ),
+                    'generate-pdf' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                          'route' => '/checklist/:id/generate-pdf',
+                          'constraints' => array(
+                             'id' => '[0-9]+',
+                          ),
+                          'defaults' => array(
+                             'controller' => 'ProcessData',
+                             'action' => 'generatePdf',
+                          ),
+                       ),
+                    ),
                 ),
             ),
         ),
@@ -305,6 +318,7 @@ return array(
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
+            'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
         )
     ),

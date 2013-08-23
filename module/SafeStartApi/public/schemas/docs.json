@@ -161,6 +161,22 @@
                     }
                 }
             }
+        },
+        "/api/checklist/[id]/generate-pdf": {
+            "description": "Generate PDF",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/response.json"
+                    }
+                }
+            }
         }
     }
 }
