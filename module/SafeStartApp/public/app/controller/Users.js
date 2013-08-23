@@ -39,7 +39,7 @@ Ext.define('SafeStartApp.controller.Users', {
     addAction: function () {
         if (!this.currentForm) this._createForm();
         if (this.userModel) {
-            //todo: check if form bot empty
+            //todo: check if form not empty
             this.userModel.destroy();
         }
         this.userModel = Ext.create('SafeStartApp.model.User');

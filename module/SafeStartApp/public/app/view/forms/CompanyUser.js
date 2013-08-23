@@ -9,7 +9,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
         items: [
             {
                 xtype: 'fieldset',
-                title: 'Company Settings',
+                title: 'User Info',
                 items: [
                     {
                         xtype: 'hiddenfield',

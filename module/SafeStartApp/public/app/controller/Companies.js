@@ -47,7 +47,7 @@ Ext.define('SafeStartApp.controller.Companies', {
     addAction: function () {
         if (!this.currentCompanyForm) this._createForm();
         if (this.companyModel) {
-            //todo: check if form bot empty
+            //todo: check if form not empty
             this.companyModel.destroy();
         }
         this.companyModel = Ext.create('SafeStartApp.model.Company');

@@ -13,7 +13,7 @@ Ext.define('SafeStartApp.controller.Vehicles', {
     config: {
         control: {
             navMain: {
-                itemtap: 'onSelectAction'
+                leafitemtap: 'onSelectAction'
             },
             addButton: {
                 tap: 'addAction'
@@ -22,37 +22,46 @@ Ext.define('SafeStartApp.controller.Vehicles', {
 
         refs: {
             navMain: 'SafeStartCompanyPage > nestedlist[name=vehicles]',
-            infoPanel: 'SafeStartCompanyPage > panel[name=vehicle-info]',
-            addButton: 'SafeStartCompanyPage > button[action=add-vehicle]'
+            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
+            addButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]'
         }
     },
 
+    selectedNodeId: 0,
+    selectedRecord: 0,
+    onSelectAction: function () {
+        if (this.selectedNodeId == arguments[4].get('id')) return;
+        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
+        this.selectedNodeId = arguments[4].get('id');
+        switch(arguments[4].get('action')) {
+            case 'info':
+                this.getInfoPanel().setActiveItem(0);
+                this.showUpdateForm();
+                break;
+        }
+    },
 
-    onSelectAction: function (list, index, node, record) {
-        console.log(node.get('action'));
-       /* if (!this.currentForm) this._createForm();
-        this.currentForm.setRecord(record);
+    showUpdateForm: function() {
+        if (!this.currentForm) this._createForm();
+        this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.down('button[name=delete-data]').show();
-        this.currentForm.down('button[name=send-credentials]').show();
-        this.currentForm.down('button[name=reset-data]').hide();*/
+        this.currentForm.down('button[name=reset-data]').hide();
     },
 
     addAction: function () {
+        this.getInfoPanel().setActiveItem(0);
+        this.selectedNodeId = 0;
         if (!this.currentForm) this._createForm();
-        if (this.userModel) {
-            //todo: check if form bot empty
-            this.userModel.destroy();
-        }
-        this.userModel = Ext.create('SafeStartApp.model.User');
-        this.currentForm.setRecord(this.userModel);
+        if (this.vehicleModel) this.vehicleModel.destroy();
+        this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        this.currentForm.setRecord(this.vehicleModel);
         this.currentForm.down('button[name=delete-data]').hide();
-        this.currentForm.down('button[name=send-credentials]').hide();
         this.currentForm.down('button[name=reset-data]').show();
     },
 
     saveAction: function () {
-        if (!this.userModel) this.userModel = Ext.create('SafeStartApp.model.User');
-        if (this.validateFormByModel(this.userModel, this.currentForm)) {
+        if (!this.vehicleModel) this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
             formValues.companyId = SafeStartApp.companyModel.get('id');
@@ -85,9 +94,7 @@ Ext.define('SafeStartApp.controller.Vehicles', {
     _createForm: function () {
         if (!this.currentForm) {
             this.currentForm = Ext.create('SafeStartApp.view.forms.Vehicle');
-            this.getInfoPanel().removeAll(true);
-            this.getInfoPanel().setHtml('');
-            this.getInfoPanel().add(this.currentForm);
+            this.getInfoPanel().getActiveItem().add(this.currentForm);
             this.currentForm.addListener('save-data', this.saveAction, this);
             this.currentForm.addListener('reset-data', this.resetAction, this);
             this.currentForm.addListener('delete-data', this.deleteAction, this);

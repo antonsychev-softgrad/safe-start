@@ -34,7 +34,7 @@ class Group extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", name="title", unique=true)
+     * @ORM\Column(type="string", name="title")
      */
     protected $title;
 
