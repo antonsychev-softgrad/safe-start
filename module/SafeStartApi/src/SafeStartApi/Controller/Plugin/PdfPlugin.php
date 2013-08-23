@@ -71,7 +71,7 @@ class PdfPlugin extends AbstractPlugin {
 
         $alertsDetails = array(
             array(
-                'subheader' => 'Cras dapibus',
+                'subheader' => 'Are the tires correctly inflated, in good working order and with wheel nuts tightened?',
                 'details' => array('Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.'),
                 ),
             array(
@@ -299,24 +299,29 @@ class PdfPlugin extends AbstractPlugin {
 
             $subHeader = $alertDeatails['subheader'];
             $subHeader = strip_tags($subHeader);
-            $subHeader = wordwrap($subHeader, 70, '\n');
+            $subHeader = wordwrap($subHeader, 85, '\n');
 
             $headlineArray = explode('\n', $subHeader);
+            $lineCounter = count($headlineArray);
             foreach ($headlineArray as $line) {
                 // draw subheader >
                 $text = trim($line);
                 $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#ff0000', $topPosInPage);
-                $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
+                if ((--$lineCounter) > 0) {
+                    $topPosInPage -= (self::BLOCK_SUBHEADER_SIZE + self::BLOCK_TEXT_LINE_SPACING);
+                } else {
+                    $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
+                }
+
                 // > end draw subheader.
             }
 
-            $topPosInPage += 10;
             foreach ($alertDeatails['details'] as $detailMsg) {
                 $detailMsg = strip_tags($detailMsg);
                 $detailMsg = wordwrap($detailMsg, 110, '\n');
 
                 $headlineArray = explode('\n', $detailMsg);
-                $lineCounter = count($detailMsg);
+                $lineCounter = count($headlineArray);
                 foreach ($headlineArray as $line) {
                     // draw subheader >
                     $text = trim($line);
@@ -411,7 +416,7 @@ class PdfPlugin extends AbstractPlugin {
             throw new Zend\Exception('Invalid ZendPdf Font size');
         }
 
-        $pageContentWidth = $this->getPageWidth() - self::PAGE_PADDING_LEFT - self::PAGE_PADDING_RIGHT;
+        $pageContentWidth = $this->pageContentWidth();
         $strWidth = $this->widthForStringUsingFontSize($string, $font, $fontSize);
 
         switch ($position) {
@@ -426,6 +431,14 @@ class PdfPlugin extends AbstractPlugin {
                 return self::PAGE_PADDING_LEFT;
                 break;
         }
+    }
+
+    protected function pageContentWidth() {
+        return $this->getPageWidth() - self::PAGE_PADDING_LEFT - self::PAGE_PADDING_RIGHT;
+    }
+
+    protected function pageContentHeight() {
+        return $this->getPageHeight() - self::PAGE_PADDING_TOP - self::PAGE_PADDING_BOTTOM;
     }
 
     /**
