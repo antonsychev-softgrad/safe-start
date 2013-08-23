@@ -13,10 +13,10 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
     {
         // COMPANY 1
         $company = new Company();
-        $company->setTitle('New Company');
-        $company->setAddress('Company Address 1');
-        $company->setPhone('Company Phone 1');
-        $company->setDescription('Company Description 1');
+        $company->setTitle('Company 1');
+        $company->setAddress('Company 1 Address');
+        $company->setPhone('Company 1 Phone');
+        $company->setDescription('Company 1 Description');
         $company->setRestricted(true);
         $company->setMaxUsers(5);
         $company->setMaxVehicles(10);
