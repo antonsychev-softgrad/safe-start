@@ -51,6 +51,42 @@ class CompanyController extends RestrictedAccessRestController
             }
         } else {
             $vehicle = new \SafeStartApi\Entity\Vehicle();
+
+           /** /
+           $repGroupField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
+           $defFields = $repGroupField->findAll();
+           foreach($defFields as $defField) {
+
+           $newField = new \SafeStartApi\Entity\Field();
+           $defFieldVars = array_keys($defField->toArray());
+           foreach($defFieldVars as $defFieldVar) {
+
+           if(strtolower($defFieldVar) == 'id') {
+           continue;
+           }
+
+           $setFuncName = 'set';
+           $setFuncName .= ucfirst($defFieldVar);
+
+           $getDefFuncName = 'get';
+           $getDefFuncName .= ucfirst($defFieldVar);
+
+           if(!method_exists($newField, $setFuncName)) {
+           continue;
+           }
+
+           $fieldVal = $defField->$getDefFuncName();
+
+           if($fieldVal instanceof \Doctrine\Common\Collections\ArrayCollection) {
+           continue;
+           }
+
+           $newField->$setFuncName($fieldVal);
+           }
+           $this->em->persist($newField);
+           $vehicle->addField($newField);
+           }
+           /**/
         }
 
         //todo: check access to company
