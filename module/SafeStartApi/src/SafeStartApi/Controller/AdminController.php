@@ -35,7 +35,7 @@ class AdminController extends AdminAccessRestController
                 $this->answer = array(
                     "errorMessage" => "Company not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
             $company = new \SafeStartApi\Entity\Company();
@@ -93,7 +93,7 @@ class AdminController extends AdminAccessRestController
                 $this->answer = array(
                     "errorMessage" => "Company not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
             $this->_showBadRequest();
@@ -135,7 +135,7 @@ class AdminController extends AdminAccessRestController
             $this->answer = array(
                 "errorMessage" => "Company not found."
             );
-            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
         $company->setDeleted(1);

@@ -7,52 +7,82 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
         maxWidth: 600,
         scrollable: false,
         items: [
+
+
+            {
+                xtype: 'hiddenfield',
+                name: 'id'
+            },
+            {
+                xtype: 'hiddenfield',
+                name: 'companyId'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Title',
+                required: true,
+                name: 'title'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Type',
+                name: 'type'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Plant ID',
+                required: true,
+                name: 'plantId'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Registration',
+                required: true,
+                name: 'registration'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Project Name',
+                name: 'projectName'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Project Number',
+                name: 'projectNumber'
+            },
             {
                 xtype: 'fieldset',
-                title: 'Company Settings',
+                title: 'Until next service due:',
                 items: [
                     {
-                        xtype: 'hiddenfield',
-                        name: 'id'
-                    },
-                    {
-                        xtype: 'hiddenfield',
-                        name: 'companyId'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Title',
+                        xtype: 'spinnerfield',
+                        maxValue: 1000000,
+                        minValue: 24,
+                        stepValue: 24,
+                        name: 'serviceDueHours',
                         required: true,
-                        name: 'title'
+                        label: 'Hours'
                     },
                     {
-                        xtype: 'textfield',
-                        label: 'Type',
+                        xtype: 'spinnerfield',
+                        maxValue: 1000000,
+                        minValue: 1000,
+                        stepValue: 1000,
+                        name: 'serviceDueKm',
                         required: true,
-                        name: 'type'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Project Name',
-                        name: 'projectName'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Project Number',
-                        name: 'projectNumber'
-                    },
-                    {
-                        xtype: 'togglefield',
-                        name: 'enabled',
-                        label: 'Enabled',
-                        listeners: {
-                            change: function(field, slider, thumb, newValue, oldValue) {
-
-                            }
-                        }
+                        label: 'Kilometres'
                     }
-
                 ]
+            },
+            {
+                xtype: 'togglefield',
+                name: 'enabled',
+                label: 'Enabled',
+                listeners: {
+                    change: function (field, slider, thumb, newValue, oldValue) {
+
+                    }
+                }
             },
             {
                 xtype: 'toolbar',
@@ -64,7 +94,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         text: 'Delete',
                         ui: 'decline',
                         iconCls: 'delete',
-                        handler: function() {
+                        handler: function () {
                             this.up('SafeStartVehicleForm').fireEvent('delete-data', this.up('SafeStartVehicleForm'));
                         }
                     },
@@ -73,7 +103,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         xtype: 'button',
                         text: 'Reset',
                         name: 'reset-data',
-                        handler: function() {
+                        handler: function () {
                             this.up('SafeStartVehicleForm').fireEvent('reset-data', this.up('SafeStartVehicleForm'));
                         }
                     },
@@ -82,7 +112,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         text: 'Save',
                         name: 'save-data',
                         ui: 'confirm',
-                        handler: function() {
+                        handler: function () {
                             this.up('SafeStartVehicleForm').fireEvent('save-data', this.up('SafeStartVehicleForm'));
                         }
                     }

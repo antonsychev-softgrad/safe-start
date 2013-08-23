@@ -102,11 +102,6 @@ class Vehicle extends BaseEntity
     protected $fields;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, name="expiry_date")
-     */
-    protected $expiryDate;
-
-    /**
      * Convert the object to an array.
      *
      * @return array
@@ -126,16 +121,15 @@ class Vehicle extends BaseEntity
     public function toInfoArray()
     {
         return array(
-            'vehicleId' => (!is_null($this->id)) ? $this->id : '',
+            'id' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
-            "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
-            "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
+            "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
-            "expiryDate" => (!is_null($this->getExpiryDate())) ? $this->getExpiryDate() : 0,
+            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : ''
         );
     }
 
@@ -153,6 +147,7 @@ class Vehicle extends BaseEntity
             );
             $menuItems[] = array(
                 'id' => $this->getId() . '-fill-checklist',
+             /*   'parent_id' => $this->getId(),*/
                 'action' => 'fill-checklist',
                 'text' => 'Daily Inspection',
                 'leaf' => true,
@@ -515,29 +510,6 @@ class Vehicle extends BaseEntity
         $this->fields[] = $fields;
 
         return $this;
-    }
-
-    /**
-     * Set expiryDate
-     *
-     * @param \DateTime $expiryDate
-     * @return Company
-     */
-    public function setExpiryDate($expiryDate)
-    {
-        $this->expiryDate = $expiryDate;
-
-        return $this;
-    }
-
-    /**
-     * Get expiryDate
-     *
-     * @return \DateTime
-     */
-    public function getExpiryDate()
-    {
-        return $this->expiryDate ? $this->expiryDate->getTimestamp() : null;
     }
 
     /**
