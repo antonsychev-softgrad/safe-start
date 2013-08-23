@@ -5,225 +5,63 @@ namespace SafeStartApi\Fixture;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use SafeStartApi\Entity\DefaultField;
+use SafeStartApi\Entity\Field;
 
 class Fields extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(1);
-        $field->setTitle('Is the vehicle free of damage?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-1', $field);
+        $csvFile = __DIR__ . "/DefaultFields.csv";
+        $csvContent = file_get_contents($csvFile);
+        $csvLines = explode("\r\n", $csvContent);
 
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(2);
-        $field->setTitle('Are all safety guards in place?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-2', $field);
+        $delimiter = ';';
+        $csv = array();
+        $csvTitles = str_getcsv($csvLines[0], $delimiter);
+        foreach($csvLines as $line) {
+            $params = array();
+            foreach(str_getcsv($line, $delimiter) as $key => $value) {
+                $params[$csvTitles[$key]] = $value;
+            }
+            $csv[] = $params;
+        }
+        unset($csv[0]);
 
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(3);
-        $field->setTitle('Are the tyres correctly inflated, with good tread and wheel nuts tight?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-3', $field);
-
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(4);
-        $field->setTitle('Are you authorised to inflate or change tyres?');
-        $field->setParent($this->getReference('field-3'));
-        $field->setTriggerValue('No');
-        $field->setEnabled(true);
-        $field->setAdditional(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-4', $field);
-
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(5);
-        $field->setTitle('Is the windscreen and mirrors clean and free of damage?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-5', $field);
-
-        $field = new DefaultField();
-        $field->setType('radio');
-        $field->setOrder(1);
-        $field->setTitle('Have you isolated the vechicle?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-6', $field);
-
-        $field = new DefaultField();
-        $field->setType('group');
-        $field->setOrder(2);
-        $field->setTitle('Are the fluid levels acceptable?');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-7', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(3);
-        $field->setTitle('Water');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-8', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(4);
-        $field->setTitle('Hydraulic');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-9', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(5);
-        $field->setTitle('Brake');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-10', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(6);
-        $field->setTitle('Coolant');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-11', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(7);
-        $field->setTitle('Transmission');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-12', $field);
-
-        $field = new DefaultField();
-        $field->setType('checkbox');
-        $field->setOrder(8);
-        $field->setTitle('Battery');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-13', $field);
-
-        $field = new DefaultField();
-        $field->setType('coordinates');
-        $field->setOrder(1);
-        $field->setTitle('Add vechicle CPS coordinates');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-14', $field);
-
-        $field = new DefaultField();
-        $field->setType('datePicker');
-        $field->setOrder(2);
-        $field->setTitle('Add date');
-        $field->setEnabled(true);
-        $manager->persist($field);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('field-15', $field);
-
-
-        $group = new DefaultField();
-        $group
-            ->setTitle('Daily inspection checklist structural')
-            ->setOrder(1);
-        $grop
-        $this->getReference('field-1')->setGroup($group);
-        $this->getReference('field-2')->setGroup($group);
-        $this->getReference('field-3')->setGroup($group);
-        $this->getReference('field-4')->setGroup($group);
-        $this->getReference('field-5')->setGroup($group);
-        $manager->persist($group);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('group-1', $group);
-
-        $group = new Group();
-        $group
-            ->setTitle('Daily inspection checklist mechanical')
-            ->setOrder(2)
-            ->setVehicle($this->getReference('vehicle-1'));
-        $this->getReference('field-6')->setGroup($group);
-        $this->getReference('field-7')->setGroup($group);
-        $manager->persist($group);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('group-2', $group);
-
-        $group = new Group();
-        $group
-            ->setTitle('Crane')
-            ->setAdditional(true)
-            ->setOrder(3)
-            ->setVehicle($this->getReference('vehicle-1'));
-        $this->getReference('field-14')->setGroup($group);
-        $this->getReference('field-15')->setGroup($group);
-        $manager->persist($group);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('group-3', $group);
-
-        $group = new Group();
-        $group
-            ->setTitle('Are the fluid levels acceptable?')
-            ->setSubgroup(true)
-            ->setParentField($this->getReference('field-7'))
-            ->setOrder(1)
-            ->setVehicle($this->getReference('vehicle-1'));
-        $this->getReference('field-8')->setGroup($group);
-        $this->getReference('field-9')->setGroup($group);
-        $this->getReference('field-10')->setGroup($group);
-        $this->getReference('field-11')->setGroup($group);
-        $this->getReference('field-12')->setGroup($group);
-        $this->getReference('field-13')->setGroup($group);
-        $manager->persist($group);
-        $manager->flush();
-        //Associate a reference for other fixtures
-        $this->addReference('subgroup-1', $group);
-
+        foreach ($csv as $key => $row) {
+            $field = new Field();
+            $field2 = new Field();
+            $field->setVehicle($this->getReference('vehicle-1'));
+            $field2->setVehicle($this->getReference('vehicle-1'));
+            $field->setType($row['type']);
+            $field2->setType($row['type']);
+            $field->setOrder($row['sort_order']);
+            $field2->setOrder($row['sort_order']);
+            $field->setTitle($row['title']);
+            $field2->setTitle($row['title']);
+            $field->setEnabled($row['enabled']);
+            $field2->setEnabled($row['enabled']);
+            $field->setAdditional($row['additional']);
+            $field2->setAdditional($row['additional']);
+            $field->setTriggerValue($row['trigger_value']);
+            $field2->setTriggerValue($row['trigger_value']);
+            $field->setAlertTitle($row['alert_title']);
+            $field2->setAlertTitle($row['alert_title']);
+            if (!empty($row['parent_id'])) {
+                $field->setParent($this->getReference('field-' . $row['parent_id']));
+                $field2->setParent($this->getReference('field2-' . $row['parent_id']));
+            }
+            /*
+            if (!empty($row['author_id'])) {
+                $field->setParent($this->getReference('user-' . $row['author_id']));
+            }
+            */
+            $manager->persist($field);
+            $manager->persist($field2);
+            $manager->flush();
+            //Associate a reference for other fixtures
+            $this->addReference('field-' . $row['id'], $field);
+            $this->addReference('field2-' . $row['id'], $field2);
+        }
     }
 
     /**
