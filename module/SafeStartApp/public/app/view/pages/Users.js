@@ -111,6 +111,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
     },
 
     loadData: function() {
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
         this.down('SafeStartUsersToolbar').setTitle(SafeStartApp.companyModel.get('title')+': '+'users');
         this.usersStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
         this.usersStore.loadData();

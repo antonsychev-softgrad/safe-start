@@ -31,7 +31,7 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
             $field = new Field();
             $field2 = new Field();
             $field->setVehicle($this->getReference('vehicle-1'));
-            $field2->setVehicle($this->getReference('vehicle-1'));
+            $field2->setVehicle($this->getReference('vehicle-2'));
             $field->setType($row['type']);
             $field2->setType($row['type']);
             $field->setOrder($row['sort_order']);
