@@ -20,7 +20,7 @@ class CompanyController extends RestrictedAccessRestController
             $this->answer = array(
                 "errorMessage" => "Company not found."
             );
-            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
         $this->answer = array(
@@ -40,9 +40,49 @@ class CompanyController extends RestrictedAccessRestController
 
     public function updateVehicleAction()
     {
+        $vehicleId = (int)$this->params('id');
+        if ($vehicleId) {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) {
+                $this->answer = array(
+                    "errorMessage" => "Vehicle not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            $vehicle = new \SafeStartApi\Entity\Vehicle();
+        }
+
+        //todo: check access to company
+
+        if (isset($this->data->companyId)) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+
+            $vehicle->setCompany($company);
+        }
+
+        $vehicle->setPlantId($this->data->plantId);
+        $vehicle->setTitle($this->data->title);
+        $vehicle->setType($this->data->type);
+        $vehicle->setEnabled((int)$this->data->enabled);
+        $vehicle->setRegistrationNumber($this->data->registration);
+        $vehicle->setProjectName($this->data->projectName);
+        $vehicle->setProjectNumber($this->data->projectNumber);
+        $vehicle->setServiceDueKm($this->data->serviceDueKm);
+        $vehicle->setServiceDueHours($this->data->serviceDueHours);
+        $this->em->persist($vehicle);
+
+        $this->em->flush();
 
         $this->answer = array(
             'done' => true,
+            'vehicleId' => $vehicle->getId(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -51,6 +91,20 @@ class CompanyController extends RestrictedAccessRestController
 
     public function deleteVehicleAction()
     {
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $vehicle->setDeleted(1);
+
+        $this->em->flush();
+
         $this->answer = array(
             'done' => true
         );
@@ -67,7 +121,7 @@ class CompanyController extends RestrictedAccessRestController
             $this->answer = array(
                 "errorMessage" => "Company not found."
             );
-            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
         $this->answer = array();

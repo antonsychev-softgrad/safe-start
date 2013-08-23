@@ -14,7 +14,7 @@ class UserProfileController extends RestrictedAccessRestController
     {
         $userId = (int)$this->params('id');
         $userInfo = $this->authService->getStorage()->read()->toArray();
-        if ((int)$userId != $userInfo['id']) return $this->AnswerPlugin()->format(array('errorMessage' => 'Acess denied'), 403, 403);
+        if ((int)$userId != $userInfo['id']) return $this->AnswerPlugin()->format(array('errorMessage' => 'Acess denied'), 403, 200);
         if (!$this->_requestIsValid('userprofile/update')) return $this->_showBadRequest();
         if($this->ValidationPlugin()->isEmailExists($this->data->email)) return $this->_showEmailExists();
         if(!$this->ValidationPlugin()->isValidEmail($this->data->email)) return $this->_showEmailInvalid();

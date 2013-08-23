@@ -10,8 +10,8 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'plantId', type: 'string', defaultValue: ''},
             {name: 'projectName', type: 'string', defaultValue: ''},
             {name: 'projectNumber', type: 'string', defaultValue: ''},
-            {name: 'serviceDueKm', type: 'int', defaultValue: 1},
-            {name: 'serviceDueHours', type: 'int', defaultValue: 1},
+            {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
+            {name: 'serviceDueHours', type: 'int', defaultValue: 24},
             {name: 'action', type: 'string', defaultValue: ''}
         ],
         associations: [
@@ -19,7 +19,9 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {type: 'hasMany', model: 'User', name: 'responsibleUsers'}
         ],
         validations: [
-            {type: 'presence', name: 'title', message: "Vehicle title is required"}
+            {type: 'presence', name: 'title', message: "Vehicle title is required"},
+            {type: 'presence', name: 'plantId', message: "Vehicle plantId is required"},
+            {type: 'presence', name: 'registration', message: "Vehicle registration number is required"}
         ]
     }
 });

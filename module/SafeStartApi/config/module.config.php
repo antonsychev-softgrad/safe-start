@@ -161,6 +161,32 @@ return array(
                             ),
                         ),
                     ),
+                    'update-company-vehicle' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'updateVehicle',
+                            ),
+                        ),
+                    ),
+                    'delete-company-vehicle' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'deleteVehicle',
+                            ),
+                        ),
+                    ),
                     'upload-images' => array(
                         'type' => 'Segment',
                         'options' => array(

@@ -117,7 +117,7 @@ class UserController extends RestController
                 $this->answer = array(
                     "errorMessage" => "User not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
             $user = new \SafeStartApi\Entity\User();
@@ -138,7 +138,7 @@ class UserController extends RestController
                 $this->answer = array(
                     "errorMessage" => "Wrong user role"
                 );
-                return $this->AnswerPlugin()->format($this->answer, 401, 401);
+                return $this->AnswerPlugin()->format($this->answer, 401);
             }
             $user->setRole($this->data->role);
         }
@@ -152,7 +152,7 @@ class UserController extends RestController
                 $this->answer = array(
                     "errorMessage" => "Company not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
 
             $user->setCompany($company);
@@ -182,7 +182,7 @@ class UserController extends RestController
             $this->answer = array(
                 "errorMessage" => "User not found."
             );
-            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
         $user->setDeleted(1);
@@ -206,7 +206,7 @@ class UserController extends RestController
             $this->answer = array(
                 "errorMessage" => "User not found."
             );
-            return $this->AnswerPlugin()->format($this->answer, 404, 404);
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
         $password = substr(md5($user->getId() . time() . rand()), 0, 6);

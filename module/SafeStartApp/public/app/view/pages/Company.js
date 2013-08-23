@@ -3,8 +3,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
-        'SafeStartApp.model.Vehicle',
-        'SafeStartApp.store.Vehicles'
+        'SafeStartApp.model.Vehicle'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -116,23 +115,24 @@ Ext.define('SafeStartApp.view.pages.Company', {
             layout: 'card',
             minWidth: 150,
             flex: 2,
-            scrollable: true,
+            scrollable: false,
 
             items: [
                 {
                     xtype: 'panel',
                     name: 'vehicle-info',
-                    html: "Current Information"
-                },
-                {
-                    xtype: 'panel',
-                    name: 'vehicle-manage',
-                    html: "Manage Checklist"
+                    scrollable: true,
+                    layout: 'card'
                 },
                 {
                     xtype: 'panel',
                     name: 'vehicle-inspection',
                     html: "Daily Inspection"
+                },
+                {
+                    xtype: 'panel',
+                    name: 'vehicle-manage',
+                    html: "Manage Checklist"
                 }
             ]
         };
@@ -162,9 +162,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     loadData: function() {
+        if (!SafeStartApp.companyModel.get('id')) return;
         this.vehiclesStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
         this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
         this.vehiclesStore.loadData();
+        if (this.vehiclesStore.getRoot()) this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
     }
 
 
