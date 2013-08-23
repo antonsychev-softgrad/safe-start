@@ -9,7 +9,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
         items: [
             {
                 xtype: 'fieldset',
-                title: 'Company Settings',
+                title: 'Vehicle Info',
                 items: [
                     {
                         xtype: 'hiddenfield',
@@ -33,6 +33,18 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     },
                     {
                         xtype: 'textfield',
+                        label: 'Plant ID',
+                        required: true,
+                        name: 'plantId'
+                    },
+                    {
+                        xtype: 'textfield',
+                        label: 'Registration',
+                        required: true,
+                        name: 'registration'
+                    },
+                    {
+                        xtype: 'textfield',
                         label: 'Project Name',
                         name: 'projectName'
                     },
@@ -40,6 +52,30 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         xtype: 'textfield',
                         label: 'Project Number',
                         name: 'projectNumber'
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: 'Until next service due:',
+                        items: [
+                            {
+                                xtype: 'spinnerfield',
+                                maxValue: 1000000,
+                                minValue: 1,
+                                stepValue: 1,
+                                name: 'serviceDueHours',
+                                required: true,
+                                label: 'Hours'
+                            },
+                            {
+                                xtype: 'spinnerfield',
+                                maxValue: 1000000,
+                                minValue: 1,
+                                stepValue: 1,
+                                name: 'serviceDueKm',
+                                required: true,
+                                label: 'Kilometres'
+                            }
+                       ]
                     },
                     {
                         xtype: 'togglefield',
