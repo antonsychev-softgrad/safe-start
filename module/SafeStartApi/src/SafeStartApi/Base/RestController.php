@@ -111,25 +111,25 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
     }
 
-    protected function _showNotFound() {
+    protected function _showNotFound($msg = '') {
         $this->answer = array(
-            'errorMessage' => 'Not found',
+            'errorMessage' => $msg ? $msg : 'Not found',
         );
-        return $this->AnswerPlugin()->format($this->answer, self::NOT_FOUND_ERROR, 404);
+        return $this->AnswerPlugin()->format($this->answer, self::NOT_FOUND_ERROR);
     }
 
     protected function _showEmailExists() {
         $this->answer = array(
             'errorMessage' => 'Email already in use',
         );
-        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR, 400);
+        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR);
     }
 
     protected function _showEmailInvalid() {
         $this->answer = array(
             'errorMessage' => 'Email invalid',
         );
-        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_INVALID_ERROR, 400);
+        return $this->AnswerPlugin()->format($this->answer, self::EMAIL_INVALID_ERROR);
     }
 
 }

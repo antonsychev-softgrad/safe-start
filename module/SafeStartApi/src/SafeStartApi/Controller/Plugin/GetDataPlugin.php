@@ -3,87 +3,62 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use SafeStartApi\Entity\Group;
 use SafeStartApi\Entity\Field;
 
 class GetDataPlugin extends AbstractPlugin
 {
 
-    public function getGroupFields(Group $group)
+    public function buildChecklist($fields)
     {
-
-        $fieldsArray = array();
-        $fields = $group->getFields();
-        foreach($fields as $field) {
-
-            $fieldsArray[] = $this->getField($field);
-        }
-
-        return $fieldsArray;
-    }
-
-    public function getAdditionalFields(Field $field)
-    {
-
-        $fieldsArray = array();
-        $fields = $field->getAdditionalFields();
-        foreach($fields as $field) {
-
-            $fieldsArray[] = array(
-                'field' => $this->getField($field),
-                'triggerValue' => $field->getTriggerValue(),
+        $checklist = array();
+        foreach ($fields as $field) {
+            if ($field->getParent()) continue;
+            $checklist[] = array(
+                'groupName' => $field->getTitle(),
+                'groupId' => $field->getId(),
+                'id' => $field->getId(),
+                'groupOrder' => $field->getOrder(),
+                'additional' => $field->getAdditional(),
+                'fields' => $this->_buildChecklist($fields, $field->getId()),
             );
         }
-
-        return $fieldsArray;
+        return $checklist;
     }
 
-    public function getAlerts(Field $field)
+    private function _buildChecklist($fields, $parentId = null)
     {
-        $alertsArray = array();
-        $alerts = $field->getAlerts();
-        foreach($alerts as $alert) {
-            $alertsArray[] = array(
-                'alertMessage' => $alert->getTitle(),
-                'triggerValue' => $alert->getTriggerValue(),
-            );
-        }
-        return $alertsArray;
-    }
+        $checklist = array();
+        $fieldsConfig = $this->getController()->moduleConfig['fieldTypes'];
+        foreach ($fields as $field) {
+            if (!$field->getParent()) continue;
+            if ($parentId == $field->getParent()->getId()) {
+                $listField = array(
+                    'fieldId' => $field->getId(),
+                    'id' => $field->getId(),
+                    'fieldOrder' => $field->getOrder(),
+                    'fieldName' => $field->getTitle(),
+                    'fieldType' => $fieldsConfig[$field->getType()]['id'],
+                    'type' => $field->getType(),
+                    'additional' => $field->getAdditional(),
+                    'triggerValue' => $field->getTriggerValue(),
+                );
+                if ($field->getAdditional() || $field->getType() == 'group') $listField['items'] = $this->_buildChecklist($fields, $field->getId());
+                if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
+                if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
+                if ($field->getTriggerValue() && !$field->getAdditional()) {
+                    $listField['alerts'] = array(
+                        array(
+                            'alertMessage' => $field->getAlertTitle(),
+                            'triggerValue' => $field->getTriggerValue(),
+                        )
+                    );
+                }
 
-    public function getSubgroupFields(Field $field)
-    {
-        $subgroup = $field->getSubgroup();
-
-        $fieldsArray = array();
-        if(!empty($subgroup)) {
-            $fields = $subgroup->getFields();
-            foreach($fields as $field) {
-                $fieldsArray[] = $this->getField($field);
+                $checklist[] = $listField;
             }
         }
-        return $fieldsArray;
+
+        return $checklist;
     }
 
-    public function getField(Field $field)
-    {
-        $fieldArray = array(
-            'fieldId' => $field->getId(),
-            'fieldOrder' => $field->getOrder(),
-            'fieldName' => $field->getTitle(),
-            'fieldType' => $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['id'],
-            'additionalFields' => $this->getAdditionalFields($field),
-            'alerts' => $this->getAlerts($field),
-            'items' => $this->getSubgroupFields($field),
-        );
-
-        if(array_key_exists('default', $this->getController()->moduleConfig['fieldTypes'][$field->getType()])) {
-            $fieldArray['fieldValue'] = $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['default'];
-        }
-        if(array_key_exists('options', $this->getController()->moduleConfig['fieldTypes'][$field->getType()])) {
-            $fieldArray['options'] = $this->getController()->moduleConfig['fieldTypes'][$field->getType()]['options'];
-        }
-
-        return $fieldArray;
-    }
 }
