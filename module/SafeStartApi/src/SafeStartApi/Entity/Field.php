@@ -21,12 +21,12 @@ class Field extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="DefaultField", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -49,6 +49,11 @@ class Field extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $alert_title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $trigger_value;
 
     /**
@@ -57,7 +62,7 @@ class Field extends BaseEntity
     protected $order;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vehicle")
+     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="fields")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      **/
     protected $vehicle;
@@ -83,8 +88,8 @@ class Field extends BaseEntity
     protected $additional;
 
     /**
-     * @ORM\OneToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false)
      */
     protected $author;
 
@@ -109,32 +114,32 @@ class Field extends BaseEntity
     }
 
     /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
+     * Magic getter to expose protected properties.
+     *
+     * @param string $property
+     * @return mixed
+     */
     public function __get($property)
     {
         return $this->$property;
     }
 
     /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
+     * Magic setter to save protected properties.
+     *
+     * @param string $property
+     * @param mixed $value
+     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
     /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
+     * Convert the object to an array.
+     *
+     * @return array
+     */
     public function toArray()
     {
         return get_object_vars($this);
@@ -148,11 +153,11 @@ class Field extends BaseEntity
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -168,14 +173,14 @@ class Field extends BaseEntity
     public function setOrder($order)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrder()
     {
@@ -191,14 +196,14 @@ class Field extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -214,14 +219,14 @@ class Field extends BaseEntity
     public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
     {
         $this->vehicle = $vehicle;
-    
+
         return $this;
     }
 
     /**
      * Get vehicle
      *
-     * @return \SafeStartApi\Entity\Vehicle 
+     * @return \SafeStartApi\Entity\Vehicle
      */
     public function getVehicle()
     {
@@ -237,14 +242,14 @@ class Field extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -252,26 +257,49 @@ class Field extends BaseEntity
     }
 
     /**
-     * Set triggerValue
+     * Set alert_title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setAlertTitle($title)
+    {
+        $this->alert_title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_title
+     *
+     * @return string
+     */
+    public function getAlertTitle()
+    {
+        return $this->alert_title;
+    }
+
+    /**
+     * Set trigger_value
      *
      * @param string $triggerValue
      * @return Field
      */
     public function setTriggerValue($triggerValue)
     {
-        $this->triggerValue = $triggerValue;
-    
+        $this->trigger_value = $triggerValue;
+
         return $this;
     }
 
     /**
-     * Get triggerValue
+     * Get trigger_value
      *
-     * @return string 
+     * @return string
      */
     public function getTriggerValue()
     {
-        return $this->triggerValue;
+        return $this->trigger_value;
     }
 
     /**
@@ -283,14 +311,14 @@ class Field extends BaseEntity
     public function setCreationDate($creationDate)
     {
         $this->creation_date = $creationDate;
-    
+
         return $this;
     }
 
     /**
      * Get creation_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreationDate()
     {
@@ -352,14 +380,14 @@ class Field extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
@@ -369,22 +397,22 @@ class Field extends BaseEntity
     /**
      * Add children
      *
-     * @param \SafeStartApi\Entity\Field $children
+     * @param \SafeStartApi\Entity\DefaultField $children
      * @return Field
      */
-    public function addChildred(\SafeStartApi\Entity\Field $child)
+    public function addChildred(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children[] = $child;
-    
+
         return $this;
     }
 
     /**
      * Remove children
      *
-     * @param \SafeStartApi\Entity\Field $children
+     * @param \SafeStartApi\Entity\DefaultField $children
      */
-    public function removeChildred(\SafeStartApi\Entity\Field $child)
+    public function removeChildred(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children->removeElement($child);
     }
@@ -392,7 +420,7 @@ class Field extends BaseEntity
     /**
      * Get children
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
     {
@@ -402,20 +430,20 @@ class Field extends BaseEntity
     /**
      * Set parent
      *
-     * @param \SafeStartApi\Entity\Field $parent
+     * @param \SafeStartApi\Entity\DefaultField $parent
      * @return Field
      */
-    public function setParent(\SafeStartApi\Entity\Field $parent = null)
+    public function setParent(\SafeStartApi\Entity\DefaultField $parent = null)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
     /**
      * Get parent
      *
-     * @return \SafeStartApi\Entity\Field 
+     * @return \SafeStartApi\Entity\DefaultField
      */
     public function getParent()
     {
@@ -431,7 +459,7 @@ class Field extends BaseEntity
     public function addAlert(\SafeStartApi\Entity\Alert $alerts)
     {
         $this->alerts[] = $alerts;
-    
+
         return $this;
     }
 
@@ -448,7 +476,7 @@ class Field extends BaseEntity
     /**
      * Get alerts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAlerts()
     {
@@ -464,14 +492,14 @@ class Field extends BaseEntity
     public function setAuthor(\SafeStartApi\Entity\User $author = null)
     {
         $this->author = $author;
-    
+
         return $this;
     }
 
     /**
      * Get author
      *
-     * @return \SafeStartApi\Entity\User 
+     * @return \SafeStartApi\Entity\User
      */
     public function getAuthor()
     {
