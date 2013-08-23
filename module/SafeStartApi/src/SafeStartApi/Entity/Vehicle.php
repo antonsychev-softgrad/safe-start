@@ -97,11 +97,6 @@ class Vehicle extends BaseEntity
     protected $deleted = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="Group", mappedBy="vehicle")
-     */
-    protected $groups;
-
-    /**
      * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $fields;
@@ -536,39 +531,4 @@ class Vehicle extends BaseEntity
     {
         return $this->fields;
     }
-
-
-    /**
-     * Add groups
-     *
-     * @param \SafeStartApi\Entity\Group $groups
-     * @return Vehicle
-     */
-    public function addGroup(\SafeStartApi\Entity\Group $groups)
-    {
-        $this->groups[] = $groups;
-
-        return $this;
-    }
-
-    /**
-     * Remove groups
-     *
-     * @param \SafeStartApi\Entity\Group $groups
-     */
-    public function removeGroup(\SafeStartApi\Entity\Group $groups)
-    {
-        $this->groups->removeElement($groups);
-    }
-
-    /**
-     * Get groups
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGroups()
-    {
-        return $this->groups;
-    }
-
 }

@@ -10,6 +10,22 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+
+        // SUPER USER
+        $user = new User();
+        $user->setEmail('super-user@test.test');
+        $user->setUsername('super');
+        $user->setLastName('Super Admin');
+        $user->setFirstName('User');
+        $user->setRole('superAdmin');
+        $user->setPlainPassword('12345');
+        $user->setEnabled(1);
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('super-user', $user);
+
         // USER 1
         $user = new User();
         $user->setEmail('usual-user1@test.test');
@@ -69,21 +85,6 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 
         //Associate a reference for other fixtures
         $this->addReference('company-admin-user', $user);
-
-        // SUPER USER
-        $user = new User();
-        $user->setEmail('super-user@test.test');
-        $user->setUsername('super');
-        $user->setLastName('Super Admin');
-        $user->setFirstName('User');
-        $user->setRole('superAdmin');
-        $user->setPlainPassword('12345');
-        $user->setEnabled(1);
-        $manager->persist($user);
-        $manager->flush();
-
-        //Associate a reference for other fixtures
-        $this->addReference('super-user', $user);
     }
 
     /**

@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="inspection_fields")
+ * @ORM\Table(name="default_inspection_fields")
  *
  */
-class Field extends BaseEntity
+class DefaultField extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -42,8 +42,8 @@ class Field extends BaseEntity
     protected $type;
 
     /**
-     * @ORM\Column(type="string")
-     */
+ * @ORM\Column(type="string")
+ */
     protected $title;
 
     /**
@@ -60,12 +60,6 @@ class Field extends BaseEntity
      * @ORM\Column(type="integer", name="sort_order")
      */
     protected $order;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="fields")
-     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
-     **/
-    protected $vehicle;
 
     /**
      * @ORM\Column(type="date", name="creation_date")
@@ -114,32 +108,32 @@ class Field extends BaseEntity
     }
 
     /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
+    * Magic getter to expose protected properties.
+    *
+    * @param string $property
+    * @return mixed
+    */
     public function __get($property)
     {
         return $this->$property;
     }
 
     /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
+    * Magic setter to save protected properties.
+    *
+    * @param string $property
+    * @param mixed $value
+    */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
     /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
+    * Convert the object to an array.
+    *
+    * @return array
+    */
     public function toArray()
     {
         return get_object_vars($this);
@@ -153,11 +147,11 @@ class Field extends BaseEntity
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -173,14 +167,14 @@ class Field extends BaseEntity
     public function setOrder($order)
     {
         $this->order = $order;
-
+    
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer
+     * @return integer 
      */
     public function getOrder()
     {
@@ -196,41 +190,18 @@ class Field extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string
+     * @return string 
      */
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * Set vehicle
-     *
-     * @param \SafeStartApi\Entity\Vehicle $vehicle
-     * @return Field
-     */
-    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
-    {
-        $this->vehicle = $vehicle;
-
-        return $this;
-    }
-
-    /**
-     * Get vehicle
-     *
-     * @return \SafeStartApi\Entity\Vehicle
-     */
-    public function getVehicle()
-    {
-        return $this->vehicle;
     }
 
     /**
@@ -288,14 +259,14 @@ class Field extends BaseEntity
     public function setTriggerValue($triggerValue)
     {
         $this->trigger_value = $triggerValue;
-
+    
         return $this;
     }
 
     /**
      * Get trigger_value
      *
-     * @return string
+     * @return string 
      */
     public function getTriggerValue()
     {
@@ -311,14 +282,14 @@ class Field extends BaseEntity
     public function setCreationDate($creationDate)
     {
         $this->creation_date = $creationDate;
-
+    
         return $this;
     }
 
     /**
      * Get creation_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getCreationDate()
     {
@@ -380,14 +351,14 @@ class Field extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-
+    
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getDeleted()
     {
@@ -403,7 +374,7 @@ class Field extends BaseEntity
     public function addChildred(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children[] = $child;
-
+    
         return $this;
     }
 
@@ -420,7 +391,7 @@ class Field extends BaseEntity
     /**
      * Get children
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getChildren()
     {
@@ -436,7 +407,7 @@ class Field extends BaseEntity
     public function setParent(\SafeStartApi\Entity\DefaultField $parent = null)
     {
         $this->parent = $parent;
-
+    
         return $this;
     }
 
@@ -459,7 +430,7 @@ class Field extends BaseEntity
     public function addAlert(\SafeStartApi\Entity\Alert $alerts)
     {
         $this->alerts[] = $alerts;
-
+    
         return $this;
     }
 
@@ -476,7 +447,7 @@ class Field extends BaseEntity
     /**
      * Get alerts
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getAlerts()
     {
@@ -492,14 +463,14 @@ class Field extends BaseEntity
     public function setAuthor(\SafeStartApi\Entity\User $author = null)
     {
         $this->author = $author;
-
+    
         return $this;
     }
 
     /**
      * Get author
      *
-     * @return \SafeStartApi\Entity\User
+     * @return \SafeStartApi\Entity\User 
      */
     public function getAuthor()
     {

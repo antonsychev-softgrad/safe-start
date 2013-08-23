@@ -1,0 +1,9 @@
+id;parent_id;author_id;type;title;trigger_value;sort_order;creation_date;enabled;deleted;additional;alert_title
+1;0;1;root;structural;;1;0000-00-00;1;0;0;
+2;1;1;radio;Is the vehicle free of damage?;no;1;0000-00-00;1;0;0;Isolate vehicle before continuing
+3;1;1;radio;Are all safety guards in place?;no;2;0000-00-00;1;0;0;Isolate vehicle before continuing
+4;1;1;group;Are the fluid levels acceptable?;;3;0000-00-00;1;0;0;
+5;4;1;checkbox;Water;no;1;0000-00-00;1;0;0;Isolate vehicle before continuing
+6;4;1;checkbox;Hydraulic;no;2;0000-00-00;1;0;0;Isolate vehicle before continuing
+7;1;1;radio;Are the tires correctly inflated, in good working order and with wheel nuts tightened?;no;4;0000-00-00;1;0;1;
+8;7;1;radio;Are you authorised to inflate or change tyres?;no;0;0000-00-00;1;0;0;Do not work on tyres unless authorised
