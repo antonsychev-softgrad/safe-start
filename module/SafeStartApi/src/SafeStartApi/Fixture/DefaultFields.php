@@ -37,7 +37,7 @@ class DefaultFields extends AbstractFixture implements OrderedFixtureInterface
             $field->setTriggerValue($row['trigger_value']);
             $field->setAlertTitle($row['alert_title']);
             if (!empty($row['parent_id'])) {
-                $field->setParent($this->getReference('field-' . $row['parent_id']));
+                $field->setParent($this->getReference('default-field-' . $row['parent_id']));
             }
             /*
             if (!empty($row['author_id'])) {
@@ -47,9 +47,8 @@ class DefaultFields extends AbstractFixture implements OrderedFixtureInterface
             $manager->persist($field);
             $manager->flush();
             //Associate a reference for other fixtures
-            $this->addReference('field-' . $row['id'], $field);
+            $this->addReference('default-field-' . $row['id'], $field);
         }
-
 
     }
 

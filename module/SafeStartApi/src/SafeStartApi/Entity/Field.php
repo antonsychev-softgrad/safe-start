@@ -21,12 +21,12 @@ class Field extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="DefaultField", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Field", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $children;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="children")
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="children")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
@@ -397,10 +397,10 @@ class Field extends BaseEntity
     /**
      * Add children
      *
-     * @param \SafeStartApi\Entity\DefaultField $children
+     * @param \SafeStartApi\Entity\Field $children
      * @return Field
      */
-    public function addChildred(\SafeStartApi\Entity\DefaultField $child)
+    public function addChildred(\SafeStartApi\Entity\Field $child)
     {
         $this->children[] = $child;
 
@@ -410,9 +410,9 @@ class Field extends BaseEntity
     /**
      * Remove children
      *
-     * @param \SafeStartApi\Entity\DefaultField $children
+     * @param \SafeStartApi\Entity\Field $children
      */
-    public function removeChildred(\SafeStartApi\Entity\DefaultField $child)
+    public function removeChildred(\SafeStartApi\Entity\Field $child)
     {
         $this->children->removeElement($child);
     }
@@ -430,10 +430,10 @@ class Field extends BaseEntity
     /**
      * Set parent
      *
-     * @param \SafeStartApi\Entity\DefaultField $parent
+     * @param \SafeStartApi\Entity\Field $parent
      * @return Field
      */
-    public function setParent(\SafeStartApi\Entity\DefaultField $parent = null)
+    public function setParent(\SafeStartApi\Entity\Field $parent = null)
     {
         $this->parent = $parent;
 
@@ -443,7 +443,7 @@ class Field extends BaseEntity
     /**
      * Get parent
      *
-     * @return \SafeStartApi\Entity\DefaultField
+     * @return \SafeStartApi\Entity\Field
      */
     public function getParent()
     {

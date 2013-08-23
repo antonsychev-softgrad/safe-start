@@ -55,6 +55,7 @@ class DoctrineController extends AbstractActionController
             $this->em->getClassMetadata('\SafeStartApi\Entity\Company'),
             $this->em->getClassMetadata('\SafeStartApi\Entity\Vehicle'),
             $this->em->getClassMetadata('\SafeStartApi\Entity\DefaultField'),
+            $this->em->getClassMetadata('\SafeStartApi\Entity\Field'),
            // $this->em->getClassMetadata('\SafeStartApi\Entity\Group'),
           //  $this->em->getClassMetadata('\SafeStartApi\Entity\Alert'),
         );
@@ -70,7 +71,7 @@ class DoctrineController extends AbstractActionController
         $this->addFixture(new \SafeStartApi\Fixture\Vehicles());
         $this->addFixture(new \SafeStartApi\Fixture\Companies());
         $this->addFixture(new \SafeStartApi\Fixture\DefaultFields());
-      //  $this->addFixture(new \SafeStartApi\Fixture\Groups());
+        $this->addFixture(new \SafeStartApi\Fixture\Fields());
       //  $this->addFixture(new \SafeStartApi\Fixture\Alerts());
         $this->loadFixtures();
     }
