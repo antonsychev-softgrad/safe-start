@@ -80,7 +80,7 @@ class VehicleController extends RestController
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
 
         $checklist = $this->GetDataPlugin()->buildChecklist($vehicle->getFields());
-        
+
 
         $this->answer = array(
             'checklist' => $checklist,
