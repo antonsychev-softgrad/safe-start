@@ -42,31 +42,85 @@ class PdfPlugin extends AbstractPlugin {
     public function create($params = null) {
 
         $vehicleDetails = array(
-            'Safety' => array(
+            array(
                 'title' => 'Safety',
                 'status' => 'ok',
                 ),
-            'Cabin' => array(
+            array(
                 'title' => 'Cabin',
                 'status' => 'alert',
                 ),
-            'Structural' => array(
+            array(
                 'title' => 'Structural',
                 'status' => 'ok',
                 ),
-            'Mechanical' => array(
+            array(
                 'title' => 'Mechanical',
                 'status' => 'ok',
                 ),
-            'Trailer' => array(
-                'title' => 'Safety',
+            array(
+                'title' => 'Trailer',
                 'status' => 'ok',
                 ),
-            'Auxiliary Motor' => array(
+            array(
                 'title' => 'Auxiliary Motor',
                 'status' => 'ok',
                 ),
-            );
+
+
+
+            array(
+                'title' => 'Safety',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Cabin',
+                'status' => 'alert',
+                ),
+            array(
+                'title' => 'Structural',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Mechanical',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Trailer',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Auxiliary Motor',
+                'status' => 'ok',
+                ),
+
+
+
+            array(
+                'title' => 'Safety',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Cabin',
+                'status' => 'alert',
+                ),
+            array(
+                'title' => 'Structural',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Mechanical',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Trailer',
+                'status' => 'ok',
+                ),
+            array(
+                'title' => 'Auxiliary Motor',
+                'status' => 'ok',
+                ),
+        );
 
 
         $alertsDetails = array(
@@ -243,6 +297,8 @@ class PdfPlugin extends AbstractPlugin {
             $title = wordwrap($title, 70, '\n');
 
             $headlineArray = explode('\n', $title);
+
+            $subLineCounter = 0;
             foreach ($headlineArray as $line) {
 
                 if ($drawLine) {
@@ -251,7 +307,10 @@ class PdfPlugin extends AbstractPlugin {
                 else {
                     // second color
                     $lineStartYPos = $topPosInPage - self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM;
-                    $lineStartYPos = $this->detectNewPage($lineStartYPos, self::BLOCK_SUBHEADER_COLOR_LINE_SIZE);
+                    $topPosInPage = $lineStartYPos = $this->detectNewPage($lineStartYPos, self::BLOCK_SUBHEADER_COLOR_LINE_SIZE);
+                    $topPosInPage += self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM;
+
+
                     $lineColor = ZendPdf\Color\Html::color('#EBEBEB');
                     $lineStyle = new ZendPdf\Style();
                     $lineStyle->setLineColor($lineColor);
@@ -262,6 +321,11 @@ class PdfPlugin extends AbstractPlugin {
                 // draw subheader title >
                 $text = trim($line);
                 $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage);
+
+                if(!$subLineCounter++) {
+                    $fLinePos = $topPosInPage;
+                }
+
                 $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
                 // > end draw subheader title.
             }
@@ -294,7 +358,7 @@ class PdfPlugin extends AbstractPlugin {
         // > end draw alert title.
 
         foreach ($params as $alertDeatails) {
-            $topPosInPage += 8;
+            //$topPosInPage += 8;
             $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_SIZE + self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
 
             $subHeader = $alertDeatails['subheader'];
@@ -358,25 +422,6 @@ class PdfPlugin extends AbstractPlugin {
     }
 
 
-    protected function getPageWidth() {
-
-        if (isset($this->currentPage)) {
-            return $this->currentPage->getWidth();
-        }
-
-        return 0;
-    }
-
-    protected function getPageHeight() {
-
-        if (isset($this->currentPage)) {
-            return $this->currentPage->getHeight();
-        }
-
-        return 0;
-    }
-
-
     protected function detectNewPage($startYPosition, $yOffset = 0) {
 
         if ($startYPosition <= self::PAGE_PADDING_BOTTOM) {
@@ -396,11 +441,13 @@ class PdfPlugin extends AbstractPlugin {
         $this->currentPage = new ZendPdf\Page(ZendPdf\Page::SIZE_A4);
 
         if ($drawHeader = false) {
-            $pageYPosition = $this->drawHeader() - self::BLOCK_PADDING_TOP - self::BLOCK_HEADER_SIZE;
+            $pageYPosition = $this->drawHeader();
         }
         else {
-            $pageYPosition = $this->getPageHeight() - self::PAGE_PADDING_TOP - $yOffset;
+            $pageYPosition = $this->getPageHeight();
         }
+
+        $pageYPosition -= (self::PAGE_PADDING_TOP + $yOffset);
 
         return $pageYPosition;
     }
@@ -431,6 +478,24 @@ class PdfPlugin extends AbstractPlugin {
                 return self::PAGE_PADDING_LEFT;
                 break;
         }
+    }
+
+    protected function getPageWidth() {
+
+        if (isset($this->currentPage)) {
+            return $this->currentPage->getWidth();
+        }
+
+        return 0;
+    }
+
+    protected function getPageHeight() {
+
+        if (isset($this->currentPage)) {
+            return $this->currentPage->getHeight();
+        }
+
+        return 0;
     }
 
     protected function pageContentWidth() {
