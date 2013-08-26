@@ -27,7 +27,7 @@ id;parent_id;author_id;type;title;alert_title;trigger_value;sort_order;creation_
 23;22;;radio;Are you authorised to inflate or change tyres?;Do not work on tyres unless authorised;no;4;2013-08-23;1;0;0
 24;19;;radio;Is the windscreen and mirrors clean and free of damage?;;;5;2013-08-23;1;0;0
 26;25;;radio;Have you isolated the vehicle?;Isolate vehicle before continuing;no;1;2013-08-23;1;0;0
-27;25;;group;Are the fluid levels acceptabel?;;;2;2013-08-23;1;0;0
+27;25;;group;Are the fluid levels acceptable?;;;2;2013-08-23;1;0;0
 28;27;;checkbox;Water;;;1;2013-08-23;1;0;0
 29;27;;checkbox;Hydraulic;;;2;2013-08-23;1;0;0
 30;27;;checkbox;Brake;;;3;2013-08-23;1;0;0
@@ -50,7 +50,7 @@ id;parent_id;author_id;type;title;alert_title;trigger_value;sort_order;creation_
 48;39;;radio;Are all lights and indicators functioning?;;;10;2013-08-23;1;0;0
 49;39;;radio;Are electrical cables or hydraulic hoses free of damage?;;;11;2013-08-23;1;0;0
 50;46;;radio;Are you authorised to inflate/change tyres?;Do not work on tyres unless authorised;no;8;2013-08-23;1;0;0
-52;51;;test;Hours;;;1;2013-08-23;1;0;0
+52;51;;text;Hours;;;1;2013-08-23;1;0;0
 53;51;;radio;Is the motor housed correctly and free of damage?;;;2;2013-08-23;1;0;0
 54;51;;radio;Are all guards fuel levels acceptable?;;;3;2013-08-23;1;0;0
 55;51;;radio;Are all hoses fitted correctly and free from leaks? (Pump motors);;;4;2013-08-23;1;0;0
