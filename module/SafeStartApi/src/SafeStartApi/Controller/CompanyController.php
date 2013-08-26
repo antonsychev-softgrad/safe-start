@@ -38,6 +38,49 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    protected function copyVehicleDefFields($vehicle, $defParent = null, $parent = null) {
+        $repField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
+
+        $defFields = new \Doctrine\Common\Collections\ArrayCollection();
+        $newFields = new \Doctrine\Common\Collections\ArrayCollection();
+        if ($defParent === null) {
+            $defFields = $repField->findBy(array('parent' => null));
+        } else {
+            $defFields = $repField->findBy(array('parent' => $defParent->getId()));
+        }
+
+        foreach ($defFields as $defField) {
+            $newFild = new \SafeStartApi\Entity\Field();
+
+            $newFild->setParent($parent);
+            $newFild->setVehicle($vehicle);
+            $newFild->setTitle($defField->getTitle());
+            $newFild->setType($defField->getType());
+            $newFild->setAdditional($defField->getAdditional());
+            $newFild->setTriggerValue($defField->getTriggerValue());
+            $newFild->setAlertTitle($defField->getAlertTitle());
+            $alertsList = $defField->getAlerts();
+            foreach ($alertsList as $alert) {
+                $newFild->addAlert($alert);
+            }
+            $newFild->setOrder($defField->getOrder());
+            $newFild->setEnabled($defField->getEnabled());
+            $newFild->setDeleted($defField->getDeleted());
+            $newFild->setAuthor($defField->getAuthor());
+
+            // $newFild->setCreation_date(date_create());
+            if ($parent !== null) {
+                $parent->addChildren($newFild);
+                $this->em->persist($parent);
+            }
+
+            $this->copyVehicleDefFields($vehicle, $defField, $newFild);
+            $this->em->persist($newFild);
+            $vehicle->addField($newFild);
+            $this->em->persist($vehicle);
+        }
+    }
+
     public function updateVehicleAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -51,42 +94,7 @@ class CompanyController extends RestrictedAccessRestController
             }
         } else {
             $vehicle = new \SafeStartApi\Entity\Vehicle();
-
-           /** /
-           $repGroupField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
-           $defFields = $repGroupField->findAll();
-           foreach($defFields as $defField) {
-
-           $newField = new \SafeStartApi\Entity\Field();
-           $defFieldVars = array_keys($defField->toArray());
-           foreach($defFieldVars as $defFieldVar) {
-
-           if(strtolower($defFieldVar) == 'id') {
-           continue;
-           }
-
-           $setFuncName = 'set';
-           $setFuncName .= ucfirst($defFieldVar);
-
-           $getDefFuncName = 'get';
-           $getDefFuncName .= ucfirst($defFieldVar);
-
-           if(!method_exists($newField, $setFuncName)) {
-           continue;
-           }
-
-           $fieldVal = $defField->$getDefFuncName();
-
-           if($fieldVal instanceof \Doctrine\Common\Collections\ArrayCollection) {
-           continue;
-           }
-
-           $newField->$setFuncName($fieldVal);
-           }
-           $this->em->persist($newField);
-           $vehicle->addField($newField);
-           }
-           /**/
+            $this->copyVehicleDefFields($vehicle);
         }
 
         //todo: check access to company

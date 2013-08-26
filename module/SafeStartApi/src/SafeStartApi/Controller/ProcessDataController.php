@@ -15,6 +15,6 @@ class ProcessDataController extends RestrictedAccessRestController
     }
 
     public function generatePdfAction() {
-
+        $this->PdfPlugin()->create();
     }
 }
