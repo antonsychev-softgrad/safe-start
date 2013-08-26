@@ -70,7 +70,7 @@ class CompanyController extends RestrictedAccessRestController
 
             // $newFild->setCreation_date(date_create());
             if ($parent !== null) {
-                $parent->addChildren($newFild);
+                $parent->addChildred($newFild);
                 $this->em->persist($parent);
             }
 
