@@ -2,11 +2,7 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Role\GenericRole as Role;
-use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 use Zend\Validator;
-use SafeStartApi\Base\Entity;
 use SafeStartApi\Model\ImageProcessor;
 
 class UploadPlugin extends AbstractPlugin
@@ -74,6 +70,16 @@ class UploadPlugin extends AbstractPlugin
 
         $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
+        /*try{
+            if(isset($this->getController()->authService)) {
+                if($this->getController()->authService->hasIdentity()) {
+                    $user = $this->getController()->authService->getStorage()->read();
+                    $options['user_dirs'] = "".$user->getId() . "/";
+                }
+            }
+        } catch(\Exception $e) {
+
+        }*/
 
         $this->setOptions($options);
         return $this;
@@ -265,16 +271,12 @@ class UploadPlugin extends AbstractPlugin
             $user_folder = ($userDirs > 0) ? "{$userDirs}/" : '';
         } elseif (is_string($userDirs)) {
             $user_folder = (strlen($userDirs) > 0) ? "{$userDirs}/" : '';
-        } elseif (is_array($userDirs)) {
-            $user_folder = isset($user['id']) ? "{$userDirs[id]}/" : '';
-        } elseif($userDirs instanceof SafeStartApi\Entity\User) {
-            $user_folder = isset($userDirs->id) ? "".$userDirs->getId() . "/" : '';
         } else {
             try{
                 if(isset($this->getController()->authService)) {
                     if($this->getController()->authService->hasIdentity()) {
                         $user = $this->getController()->authService->getStorage()->read();
-                        $user_folder = isset($user->id) ? "".$user->getId() . "/" : '';
+                        $user_folder = "".$user->getId() . "/";
                     }
                 }
             } catch(\Exception $e) {
