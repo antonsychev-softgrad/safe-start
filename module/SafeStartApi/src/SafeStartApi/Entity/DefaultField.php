@@ -108,36 +108,26 @@ class DefaultField extends BaseEntity
     }
 
     /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
-
-    /**
     * Convert the object to an array.
     *
     * @return array
     */
     public function toArray()
     {
-        return get_object_vars($this);
+        return array(
+            'id' => (!is_null($this->id)) ? $this->id : '',
+            'type' => (!is_null($this->type)) ? $this->getType() : '',
+            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'text' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
+            'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
+            'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
+            'enabled' => (int) $this->enabled,
+            'additional' => (int) $this->additional,
+            'parentId' => $this->getParent() ? $this->getParent()->getId() : null
+        );
     }
+
 
     /**
      * @ORM\PreUpdate
@@ -371,7 +361,7 @@ class DefaultField extends BaseEntity
      * @param \SafeStartApi\Entity\DefaultField $children
      * @return Field
      */
-    public function addChildred(\SafeStartApi\Entity\DefaultField $child)
+    public function addChildren(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children[] = $child;
     
@@ -383,7 +373,7 @@ class DefaultField extends BaseEntity
      *
      * @param \SafeStartApi\Entity\DefaultField $children
      */
-    public function removeChildred(\SafeStartApi\Entity\DefaultField $child)
+    public function removeChildren(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children->removeElement($child);
     }

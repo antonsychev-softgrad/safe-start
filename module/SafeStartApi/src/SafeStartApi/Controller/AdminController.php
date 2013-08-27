@@ -147,4 +147,12 @@ class AdminController extends AdminAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function getDefaultChecklistAction()
+    {
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0');
+        $items = $query->getResult();
+        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+        return $this->AnswerPlugin()->format($this->answer);
+    }
 }

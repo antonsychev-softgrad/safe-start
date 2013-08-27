@@ -25,6 +25,24 @@ class GetDataPlugin extends AbstractPlugin
         return $checklist;
     }
 
+    public function buildChecklistTree($items, $parentId = null)
+    {
+        $tree = array();
+        foreach ($items as $item) {
+            $itemParentId = $item->getParent() ? $item->getParent()->getId() : 0;
+            if ($parentId == $itemParentId) {
+                $treeItem = $item->toArray();
+                $treeItem['data'] = $this->buildChecklistTree($items, $item->getId());
+                if (empty($treeItem['data'])) {
+                    $treeItem['leaf'] = true;
+                    unset($treeItem['data']);
+                }
+                $tree[] = $treeItem;
+            }
+        }
+        return $tree;
+    }
+
     private function _buildChecklist($fields, $parentId = null)
     {
         $checklist = array();
