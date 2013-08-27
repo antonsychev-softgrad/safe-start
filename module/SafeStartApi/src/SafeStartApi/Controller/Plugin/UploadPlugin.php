@@ -9,13 +9,11 @@ use Zend\Validator;
 use SafeStartApi\Base\Entity;
 use SafeStartApi\Model\ImageProcessor;
 
-class UploadPlugin extends AbstractPlugin implements ServiceLocatorAwareInterface
+class UploadPlugin extends AbstractPlugin
 {
     const THUMBNAIL_FULL = '1024x768';
     const THUMBNAIL_MEDIUM = '320x220';
     const THUMBNAIL_SMALL = '70x70';
-
-    protected $serviceLocator;
 
     protected $options;
 
