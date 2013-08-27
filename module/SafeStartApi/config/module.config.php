@@ -405,4 +405,5 @@ return array(
             ),
         ),
     ),
+    'defUsersPath' => '/data/users/',
 );
