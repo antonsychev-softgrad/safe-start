@@ -5,15 +5,17 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
 use Zend\Permissions\Acl\Resource\GenericResource as Resource;
-use SafeStartApi\Model\ImageProcessor;
-use SafeStartApi\Base\Entity;
 use Zend\Validator;
+use SafeStartApi\Base\Entity;
+use SafeStartApi\Model\ImageProcessor;
 
-class UploadPlugin extends AbstractPlugin
+class UploadPlugin extends AbstractPlugin implements ServiceLocatorAwareInterface
 {
     const THUMBNAIL_FULL = '1024x768';
     const THUMBNAIL_MEDIUM = '320x220';
     const THUMBNAIL_SMALL = '70x70';
+
+    protected $serviceLocator;
 
     protected $options;
 
@@ -48,6 +50,7 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function __construct($options = null, $initialize = false, $error_messages = null) {
+
         $this->setOptions($options);
 
         if ($error_messages) {
@@ -66,6 +69,14 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function __invoke($options = null) {
+
+        $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+        $defUsersPath = $moduleConfig['defUsersPath'];
+        $defUsersPath = $this->get_filter_path($defUsersPath);
+
+        $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
+        $options['upload_url'] = $this->get_full_url() . $defUsersPath;
+
         $this->setOptions($options);
         return $this;
     }
@@ -77,10 +88,11 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function setOptions($options = null) {
+        $defUsersPath = '/data/users/';
         $this->options = array(
-            'script_url' => $this->get_full_url().'/',
-            'upload_dir' => $this->get_filter_path('/data/users/'),
-            'upload_url' => $this->get_full_url().'/data/users/',
+            'script_url' => $this->get_full_url() . '/',
+            'upload_dir' => $this->get_full_path() . $defUsersPath,
+            'upload_url' => $this->get_full_url() . $defUsersPath,
             'user_dirs' => true,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
@@ -159,7 +171,9 @@ class UploadPlugin extends AbstractPlugin
 
         if ($options) {
             if(isset($options['upload_dir']))
-                $options['upload_dir'] = $this->get_filter_path($options['upload_dir']);
+                $options['upload_dir'] = $this->get_full_path() . $this->get_filter_path($options['upload_dir']);
+            if(isset($options['upload_url']))
+                $options['upload_url'] = $this->get_full_url() . $this->get_filter_path($options['upload_url']);
             $this->options = array_merge($this->options, $options);
         }
     }
@@ -209,6 +223,12 @@ class UploadPlugin extends AbstractPlugin
     }
 
 
+    protected function get_full_path() {
+        $root = $this->get_server_var('DOCUMENT_ROOT');
+        return $root;
+    }
+
+
     /**
      * UploadPlugin::get_filter_path()
      *
@@ -226,7 +246,7 @@ class UploadPlugin extends AbstractPlugin
             $fEndPath = preg_replace('/^(.*)$/isU', "$1", $fEndPath);
         }
 
-        $returnFolder = $root . '/' . $fEndPath;
+        $returnFolder = '/' . $fEndPath;
         if(!preg_match('/.*(\/)$/isU', $returnFolder, $match)) {
             $returnFolder .= '/';
         }

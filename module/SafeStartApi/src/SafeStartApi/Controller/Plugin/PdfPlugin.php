@@ -28,7 +28,7 @@ class PdfPlugin extends AbstractPlugin {
     protected $document;
     protected $currentPage;
     protected $font;
-    protected $uploadPath = '/data/users/'; // automatic add '/userId/pdf/'
+    protected $uploadPath; // automatic add '/userId/pdf/'
     protected $dateGeneration;
 
 
@@ -158,13 +158,14 @@ class PdfPlugin extends AbstractPlugin {
                 ),
             );
 
-
+        $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
         $fontPath = dirname(__file__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
 
         $this->document = new ZendPdf\PdfDocument();
         $this->currentPage = new ZendPdf\Page(ZendPdf\Page::SIZE_A4);
         //$this->font = ZendPdf\Font::fontWithName(ZendPdf\Font::FONT_HELVETICA);
         $this->font = ZendPdf\Font::fontWithPath($fontPath);
+        $this->uploadPath = $moduleConfig['defUsersPath'];
         $this->dateGeneration = date_create();
 
         // header >
