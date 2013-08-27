@@ -9,27 +9,6 @@ use SafeStartApi\Model\ImageProcessor;
 use SafeStartApi\Base\Entity;
 use Zend\Validator;
 
-
-
-
-/*
-
-
-id,
-hash,
-ext,
-sizes: [
-{thumb: 200x200},
-{medium: 340x340}
-{full: 700x700}
-]
-
-
-
-*/
-
-
-
 class UploadPlugin extends AbstractPlugin
 {
     const THUMBNAIL_FULL = '1024x768';
@@ -1091,17 +1070,6 @@ class UploadPlugin extends AbstractPlugin
             }
             $this->set_additional_file_properties($file);
         }
-
-/*
-id,
-hash,
-ext,
-sizes: [
-{thumb: 200x200},
-{medium: 340x340}
-{full: 700x700}
-]
-*/
 
         $newFileInfo = new \stdClass();
         $newFileInfo->hash = $file->nameOnly;
