@@ -6,53 +6,7 @@
             "description": "Request meta",
             "type": "object",
             "properties": {
-                "requestId": {
-                    "description": "Unique ID of request",
-                    "type": "string",
-                    "required": false
-                }
-            }
-        },
-        "files": {
-            "description": "Request files",
-            "type": "array",
-            "required": true,
-            "items": {
-                "description": "Request field name of files (If one file only return items of 'File info' else 'File info' list)",
-                "type": "array",
-                "required": true,
-                "items": {
-                    "description": "File info",
-                    "type": "array",
-                    "required": true,
-                    "items": {
-                        "name": {
-                            "description": "File name",
-                            "type": "string",
-                            "required": true
-                        },
-                        "type": {
-                            "description": "Type of file",
-                            "type": "string",
-                            "required": false
-                        },
-                        "tmp_name": {
-                            "description": "Tmp file name",
-                            "type": "string",
-                            "required": true
-                        },
-                        "error": {
-                            "description": "Error code",
-                            "type": "integer",
-                            "required": false
-                        },
-                        "size": {
-                            "description": "File name",
-                            "type": "integer",
-                            "required": false
-                        }
-                    }
-                }
+
             }
         }
     }
