@@ -146,7 +146,7 @@
                 }
             }
         },
-        "/api/uploadImages": {
+        "/api/upload-images": {
             "description": "Upload Images",
             "type": "object",
             "properties": {
