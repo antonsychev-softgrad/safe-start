@@ -45,7 +45,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         this.add(this.getInfoPanel());
 
         this.alertsStore = Ext.create('SafeStartApp.store.AllAlerts');
-        this.add(this.getAlertsList());
+      //  this.add(this.getAlertsList());
 
         this.disable();
     },

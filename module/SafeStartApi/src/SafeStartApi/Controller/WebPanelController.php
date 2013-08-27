@@ -22,6 +22,7 @@ class WebPanelController extends RestController
             $mainMenu[] = 'Companies';
             $mainMenu[] = 'Company';
             $mainMenu[] = 'Users';
+            $mainMenu[] = 'SystemSettings';
         }
 
         $mainMenu[] = 'Contact';
