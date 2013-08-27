@@ -545,7 +545,7 @@ class PdfPlugin extends AbstractPlugin {
             if (isset($this->getController()->authService)) {
                 if ($this->getController()->authService->hasIdentity()) {
                     $user = $this->getController()->authService->getStorage()->read();
-                    $user_folder = isset($user->id) ? "" . $user->getId() . "/" : '';
+                    $user_folder = "" . $user->getId() . "/";
                 }
             }
         }

@@ -70,16 +70,6 @@ class UploadPlugin extends AbstractPlugin
 
         $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
-        /*try{
-            if(isset($this->getController()->authService)) {
-                if($this->getController()->authService->hasIdentity()) {
-                    $user = $this->getController()->authService->getStorage()->read();
-                    $options['user_dirs'] = "".$user->getId() . "/";
-                }
-            }
-        } catch(\Exception $e) {
-
-        }*/
 
         $this->setOptions($options);
         return $this;
