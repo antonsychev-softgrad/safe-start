@@ -22,18 +22,14 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     selectedNodeId: 0,
     selectedRecord: 0,
     onSelectAction: function () {
-        console.log('onSelectAction');
         if (this.selectedNodeId == arguments[4].get('id')) return;
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = arguments[4].get('id');
-        this.showUpdateForm();
-
-    },
-
-    showUpdateForm: function() {
         if (!this.currentForm) this._createForm();
-        this.currentForm.setRecord(this.selectedRecord);
+        this.currentForm.setRecord(arguments[4]);
+        this.currentForm.fireEvent('change', this.currentForm, arguments[4]);
         this.currentForm.down('button[name=delete-data]').show();
+
     },
 
     addAction: function () {
