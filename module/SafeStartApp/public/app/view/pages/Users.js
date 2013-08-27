@@ -51,12 +51,14 @@ Ext.define('SafeStartApp.view.pages.Users', {
     },
 
     getUsersList: function() {
+        var self = this;
         return {
             xtype: 'list',
             name: 'users',
-            itemTpl: '<div class="contact">{title}</div>',
-            maxWidth: 300,
+            itemTpl: '<div class="contact">{firstName} {lastName}</div>',
             minWidth: 150,
+            maxWidth: 300,
+            flex: 1,
             cls: 'sfa-left-container',
             store: this.usersStore,
             items: [
@@ -75,7 +77,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                                     self.usersStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.usersStore, field, 'title');
+                                    self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
                                 }
                             }
                         },
@@ -98,7 +100,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
     getInfoPanel: function() {
         return {
-            cls: 'card',
+            cls: 'sfa-info-container',
             xtype: 'panel',
             name: 'user-info',
             layout: 'card',
@@ -109,6 +111,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
     },
 
     loadData: function() {
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
         this.down('SafeStartUsersToolbar').setTitle(SafeStartApp.companyModel.get('title')+': '+'users');
         this.usersStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
         this.usersStore.loadData();

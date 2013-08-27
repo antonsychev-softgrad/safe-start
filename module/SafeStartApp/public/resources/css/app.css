@@ -7191,7 +7191,7 @@ background-size: 85% auto;
 }
 .sfa-info-container  {
 margin: 10px 10px 10px 20px;
-    overflow: hidden;
+    padding-right: 18px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 -khtml-border-radius: 10px;
@@ -7221,7 +7221,7 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     padding-left: 0;
 }
 .sfa-info-container .x-container.x-form-fieldset {
-    margin: 0 10px;
+    margin: 0 7px;
 }
 .sfa-info-container .sfa-company-setting-subscription {
     margin: 0 !important;
@@ -7362,4 +7362,53 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 
 
 
+/* test */
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-field-textarea.x-field {
+    margin-bottom: 20px;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-body.x-scroll-view {
+    position: static;
+    width: 100%;
+    height: 100%;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-scroll-container {
+    position: static;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-scroll-scroller {
+    position: static;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-dock.x-dock-vertical.x-sized {
+    position: static;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-dock.x-sized > .x-dock-body > .x-inner.x-form-inner.x-scroll-scroller {
+    position: static;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-form {
+    position: static !important;
+    width: 100%;
+    height: 100%;
+}
+.x-inner.x-form-fieldset-inner
 
+
+
+
+
+
+
+
+
+
+
+/* Companies в верхнем toolbar сместим левее */
+@media screen and (max-width: 800px) {
+    .x-container.x-toolbar-dark.x-toolbar.sfa-main-toolbar .x-body.x-scroll-view .x-center {padding-right: 105px}
+}
+
+/* Элементы в верхнем toolbar сделаем мельче */
+@media screen and (max-width: 640px) {
+    .sfa-main-toolbar .x-button, .sfa-main-toolbar .x-button .x-button-label {font-size: 20px !important;}
+    .sfa-main-toolbar .x-title {font-size: 30px}
+    .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-left: 0.16em}
+    .sfa-main-toolbar .x-toolbar .x-button {margin: 0 0.2em 1px}
+}

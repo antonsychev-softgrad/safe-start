@@ -23,44 +23,39 @@
                     "type": "integer",
                     "required": true
                 },
-                "vehicleId": {
-                    "description": "Vehicle ID",
-                    "type": "integer",
-                    "reuired": true
-                },
-                "groups": {
-                    "description": "Checklist groups",
+                "fields": {
+                    "description": "Fields with data",
                     "type": "array",
                     "required": true,
                     "items": {
-                        "description": "Checklist Group",
+                        "description": "Field",
                         "type": "object",
                         "required": false,
                         "properties": {
                             "id": {
-                                "description": "Group id",
+                                "description": "Field id",
                                 "type": "integer",
                                 "required": true
                             },
-                            "fields": {
-                                "description": "Fields with data",
-                                "type": "array",
-                                "required": true,
-                                "items": {
-                                    "description": "Field",
-                                    "type": "object",
-                                    "required": false,
-                                    "properties": {
-                                        "id": {
-                                            "description": "Field id",
-                                            "type": "integer",
-                                            "required": true
-                                        },
-                                        "value": {
-                                            "description": "Field value",
-                                            "type": "string",
-                                            "required": false
-                                        }
+                            "value": {
+                                "description": "Field value",
+                                "type": "string",
+                                "required": false
+                            },
+                            "alert": {
+                                "description": "Field alert",
+                                "type": "object",
+                                "required": false,
+                                "properties": {
+                                    "comment": {
+                                        "description": "Comment",
+                                        "type": "string",
+                                        "required": false
+                                    },
+                                    "photo": {
+                                        "description": "Photo's URL",
+                                        "type": "string",
+                                        "required": false
                                     }
                                 }
                             }

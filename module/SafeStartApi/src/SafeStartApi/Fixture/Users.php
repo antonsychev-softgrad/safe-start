@@ -10,43 +10,81 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        // GUEST
-        $user = new User();
-        $user->setEmail('test@test.test');
-        $user->setUsername('username');
-        $user->setLastName('Test User');
-        $user->setFirstName('Test User');
-        $user->setPlainPassword('12345');
-        $manager->persist($user);
-        $manager->flush();
 
-        $this->addReference('guest', $user);
-
-        // SUPER ADMIN
+        // SUPER USER
         $user = new User();
-        $user->setEmail('super@test.test');
+        $user->setEmail('super-user@test.test');
         $user->setUsername('super');
-        $user->setLastName('Super');
+        $user->setLastName('Super Admin');
         $user->setFirstName('User');
         $user->setRole('superAdmin');
         $user->setPlainPassword('12345');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 
-        $this->addReference('super_admin', $user);
+        //Associate a reference for other fixtures
+        $this->addReference('super-user', $user);
 
-        // COMPANY ADMIN
+        // USER 1
         $user = new User();
-        $user->setEmail('company1@test.test');
-        $user->setUsername('company1');
-        $user->setLastName('Admin');
-        $user->setFirstName('Company1');
+        $user->setEmail('usual-user1@test.test');
+        $user->setUsername('username');
+        $user->setLastName('Company');
+        $user->setFirstName('User 1');
+        $user->setPlainPassword('12345');
+        $user->setRole('companyUser');
+        $user->setEnabled(1);
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('usual-user1', $user);
+
+        // USER 2
+        $user = new User();
+        $user->setEmail('usual-user2@test.test');
+        $user->setUsername('username2');
+        $user->setLastName('Company');
+        $user->setFirstName('User 2');
+        $user->setPlainPassword('12345');
+        $user->setRole('companyUser');
+        $user->setEnabled(1);
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('usual-user2', $user);
+
+        // COMPANY MANAGER
+        $user = new User();
+        $user->setEmail('responsible-user@test.test');
+        $user->setUsername('responsible');
+        $user->setLastName('Responsible');
+        $user->setFirstName('User');
+        $user->setRole('companyManager');
+        $user->setPlainPassword('12345');
+        $user->setEnabled(1);
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('responsible-user', $user);
+
+        // COMPANY OWNER
+        $user = new User();
+        $user->setEmail('company-admin-user@test.test');
+        $user->setUsername('company-admin');
+        $user->setLastName('Company Admin');
+        $user->setFirstName('User');
         $user->setRole('companyAdmin');
         $user->setPlainPassword('12345');
+        $user->setEnabled(1);
         $manager->persist($user);
         $manager->flush();
 
-        $this->addReference('company_admin', $user);
+        //Associate a reference for other fixtures
+        $this->addReference('company-admin-user', $user);
     }
 
     /**

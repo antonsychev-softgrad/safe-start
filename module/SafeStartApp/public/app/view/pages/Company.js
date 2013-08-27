@@ -3,8 +3,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
-        'SafeStartApp.model.Vehicle',
-        'SafeStartApp.store.Vehicles'
+        'SafeStartApp.model.Vehicle'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -15,7 +14,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         title: 'Company',
         iconCls: 'more',
         styleHtmlContent: true,
-        scrollable: true,
+        scrollable: false,
         layout: 'hbox',
 
         items: [
@@ -52,14 +51,24 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     getVehiclesList: function() {
+        var self = this;
         return {
-            xtype: 'list',
+            xtype: 'nestedlist',
+            id: 'companyVehicles',
             name: 'vehicles',
-            itemTpl: '<div class="contact">{title}</div>',
             minWidth: 150,
             maxWidth: 300,
+            title: 'Vehicles',
+            displayField: 'text',
             cls: 'sfa-left-container',
             flex:1,
+            getTitleTextTpl: function() {
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
+            },
+            getItemTextTpl: function() {
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
+            },
+            detailCard: new Ext.Panel(),
             store: this.vehiclesStore,
             items: [
                 {
@@ -70,12 +79,14 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             xtype: 'searchfield',
                             placeHolder: 'Search...',
                             listeners: {
-                                scope: this,
+                               // scope: this,
                                 clearicontap: function () {
                                     self.vehiclesStore.clearFilter();
                                 },
                                 keyup: function (field) {
-                                    return self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'title');
+                                    self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'text');
+                                    //todo: fix searching
+                                    //this.up('nestedlist[name=vehicles]').setData( this.up('nestedlist[name=vehicles]').getStore().getData());
                                 }
                             }
                         },
@@ -87,7 +98,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             iconCls: 'refresh',
                             cls:'sfa-search-reload',
                             handler: function() {
-                                this.up('list[name=vehicles]').getStore().loadData();
+                                this.up('nestedlist[name=vehicles]').getStore().loadData();
                             }
                         }
                     ]
@@ -98,15 +109,31 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     getInfoPanel: function() {
         return {
-            cls: 'card',
+            cls: 'sfa-info-container',
             xtype: 'panel',
-            name: 'vehicle-info',
+            name: 'info-container',
             layout: 'card',
             minWidth: 150,
             flex: 2,
-            scrollable: true,
-            items: [
+            scrollable: false,
 
+            items: [
+                {
+                    xtype: 'panel',
+                    name: 'vehicle-info',
+                    scrollable: true,
+                    layout: 'card'
+                },
+                {
+                    xtype: 'panel',
+                    name: 'vehicle-inspection',
+                    html: "Daily Inspection"
+                },
+                {
+                    xtype: 'panel',
+                    name: 'vehicle-manage',
+                    html: "Manage Checklist"
+                }
             ]
         };
     },
@@ -135,9 +162,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     loadData: function() {
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
         this.vehiclesStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
         this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
         this.vehiclesStore.loadData();
+        if (this.vehiclesStore.getRoot()) this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
     }
 
 

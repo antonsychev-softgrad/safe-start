@@ -18,11 +18,11 @@ Ext.define('SafeStartApp.store.Users', {
             }
         },
 
-        sorters: 'title',
+        sorters: 'firstName',
 
         grouper: {
             groupFn: function(record) {
-                return record.get('title')[0];
+                return record.get('firstName')[0];
             }
         }
     }

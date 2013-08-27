@@ -23,6 +23,17 @@ use Doctrine\ORM\Mapping\JoinColumn;
 class User extends BaseEntity
 {
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enabled = true;
+        $this->deleted = false;
+        $this->responsibleForVehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -30,7 +41,7 @@ class User extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      */
     protected $username;
 
@@ -41,7 +52,7 @@ class User extends BaseEntity
     protected $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
      */
     protected $email;
 
@@ -66,19 +77,19 @@ class User extends BaseEntity
     protected $secondName;
 
     /**
-     * @ORM\OneToOne(targetEntity="Company", inversedBy="users")
-     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="users")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id", onDelete="SET NULL")
      **/
     protected $company;
 
     /**
-     * @ORM\OneToMany(targetEntity="Vehicle", mappedBy="responsibleUser")
-    */
-    protected $vehiclesAsigned;
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="responsibleUsers")
+     */
+    protected $responsibleForVehicles;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="endUsers")
-    */
+     * @ORM\ManyToMany(targetEntity="Vehicle", mappedBy="users")
+     */
     protected $vehicles;
 
     /**
@@ -112,23 +123,39 @@ class User extends BaseEntity
     protected $deleted = 0;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true, unique=true, name="last_login")
+     * @ORM\Column(type="datetime", nullable=true, name="last_login")
      */
     protected $lastLogin;
 
+    public function prePersist()
+    {
+
+    }
+
     public function toArray()
     {
+        return array_merge($this->toInfoArray() ,array(
+            'vehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->vehicles->toArray()),
+            'responsibleForVehicles' => array_map(function ($vehicle) {
+                return $vehicle->toInfoArray();
+            }, (array)$this->responsibleForVehicles->toArray()),
+        ));
+    }
+
+    public function toInfoArray() {
         return array(
-          'id'          => $this->getId(),
-          'email'       => (!is_null($this->email)) ? $this->email : '',
-          'username'    => (!is_null($this->username)) ? $this->username : '',
-          'firstName'   => (!is_null($this->firstName)) ? $this->firstName : '',
-          'lastName'    => (!is_null($this->lastName)) ? $this->lastName : '',
-          'secondName'  => (!is_null($this->secondName)) ? $this->secondName : '',
-          'role'        => $this->getRole(),
-          'companyId'   => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
-          'position'   => (!is_null($this->position)) ? $this->position: '',
-          'department'   => (!is_null($this->company)) ? $this->department: '',
+            'id' => $this->getId(),
+            'email' => (!is_null($this->email)) ? $this->email : '',
+            'username' => (!is_null($this->username)) ? $this->username : '',
+            'firstName' => (!is_null($this->firstName)) ? $this->firstName : '',
+            'lastName' => (!is_null($this->lastName)) ? $this->lastName : '',
+            'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
+            'role' => $this->getRole(),
+            'companyId' => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+            'position' => (!is_null($this->position)) ? $this->position : '',
+            'department' => (!is_null($this->company)) ? $this->department : '',
         );
     }
 
@@ -153,15 +180,6 @@ class User extends BaseEntity
         return $this;
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->enabled = false;
-        $this->vehiclesAsigned = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Get id
@@ -381,6 +399,52 @@ class User extends BaseEntity
     }
 
     /**
+     * Set position
+     *
+     * @param string $position
+     * @return User
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position
+     *
+     * @return string
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Set department
+     *
+     * @param string $department
+     * @return User
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return string
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
      * Set enabled
      *
      * @param boolean $enabled
@@ -401,6 +465,29 @@ class User extends BaseEntity
     public function getEnabled()
     {
         return $this->enabled;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return User
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 
     /**
@@ -450,36 +537,36 @@ class User extends BaseEntity
     }
 
     /**
-     * Add vehiclesAsigned
+     * Add responsibleForVehicles
      *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
      * @return User
      */
-    public function addVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    public function addResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
     {
-        $this->vehiclesAsigned[] = $vehiclesAsigned;
+        $this->responsibleForVehicles[] = $responsibleForVehicles;
 
         return $this;
     }
 
     /**
-     * Remove vehiclesAsigned
+     * Remove responsibleForVehicles
      *
-     * @param \SafeStartApi\Entity\Vehicle $vehiclesAsigned
+     * @param \SafeStartApi\Entity\Vehicle $responsibleForVehicles
      */
-    public function removeVehiclesAsigned(\SafeStartApi\Entity\Vehicle $vehiclesAsigned)
+    public function removeResponsibleForVehicle(\SafeStartApi\Entity\Vehicle $responsibleForVehicles)
     {
-        $this->vehiclesAsigned->removeElement($vehiclesAsigned);
+        $this->responsibleForVehicles->removeElement($responsibleForVehicles);
     }
 
     /**
-     * Get vehiclesAsigned
+     * Get responsibleForVehicles
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVehiclesAsigned()
+    public function getResponsibleForVehicles()
     {
-        return $this->vehiclesAsigned;
+        return $this->responsibleForVehicles;
     }
 
     /**
@@ -513,74 +600,5 @@ class User extends BaseEntity
     public function getVehicles()
     {
         return $this->vehicles;
-    }
-
-    /**
-     * Set position
-     *
-     * @param string $position
-     * @return User
-     */
-    public function setPosition($position)
-    {
-        $this->position = $position;
-    
-        return $this;
-    }
-
-    /**
-     * Get position
-     *
-     * @return string 
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * Set department
-     *
-     * @param string $department
-     * @return User
-     */
-    public function setDepartment($department)
-    {
-        $this->department = $department;
-    
-        return $this;
-    }
-
-    /**
-     * Get department
-     *
-     * @return string 
-     */
-    public function getDepartment()
-    {
-        return $this->department;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param boolean $deleted
-     * @return User
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-    
-        return $this;
-    }
-
-    /**
-     * Get deleted
-     *
-     * @return boolean 
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
     }
 }

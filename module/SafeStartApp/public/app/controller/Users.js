@@ -39,7 +39,7 @@ Ext.define('SafeStartApp.controller.Users', {
     addAction: function () {
         if (!this.currentForm) this._createForm();
         if (this.userModel) {
-            //todo: check if form bot empty
+            //todo: check if form not empty
             this.userModel.destroy();
         }
         this.userModel = Ext.create('SafeStartApp.model.User');
@@ -74,7 +74,7 @@ Ext.define('SafeStartApp.controller.Users', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function(){
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this user account?", function(){
             SafeStartApp.AJAX('user/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();

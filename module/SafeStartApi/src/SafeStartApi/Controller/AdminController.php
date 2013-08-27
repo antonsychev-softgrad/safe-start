@@ -26,7 +26,7 @@ class AdminController extends AdminAccessRestController
 
     public function updateCompanyAction()
     {
-      //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
+        //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
 
         $companyId = (int)$this->params('id');
         if ($companyId) {
@@ -35,7 +35,7 @@ class AdminController extends AdminAccessRestController
                 $this->answer = array(
                     "errorMessage" => "Company not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
             $company = new \SafeStartApi\Entity\Company();
@@ -83,7 +83,7 @@ class AdminController extends AdminAccessRestController
 
     public function sendCredentialsAction()
     {
-     //   if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
+        //   if (!$this->_requestIsValid('admin/sendcredentials')) return $this->_showBadRequest();
 
         $companyId = (int)$this->params('id');
 
@@ -93,16 +93,18 @@ class AdminController extends AdminAccessRestController
                 $this->answer = array(
                     "errorMessage" => "Company not found."
                 );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
+                return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
             $this->_showBadRequest();
         }
 
         $user = $company->getAdmin();
-        $password = md5($user->getId() . time() . rand());
+        $password = substr(md5($user->getId() . time() . rand()), 0, 6);
         $user->setPlainPassword($password);
         $this->em->flush();
+
+        $config = $this->getServiceLocator()->get('Config');
 
         $this->MailPlugin()->send(
             'Credentials',
@@ -110,7 +112,9 @@ class AdminController extends AdminAccessRestController
             'creds.phtml',
             array(
                 'username' => $user->getUsername(),
+                'firstName' => $user->getFirstName(),
                 'password' => $password,
+                'siteUrl' => $config['safe-start-app']['siteUrl']
             )
         );
 
@@ -125,15 +129,15 @@ class AdminController extends AdminAccessRestController
     public function deleteCompanyAction()
     {
         $companyId = (int)$this->params('id');
-        if ($companyId) {
-            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
-            if (!$company) {
-                $this->answer = array(
-                    "errorMessage" => "Company not found."
-                );
-                return $this->AnswerPlugin()->format($this->answer, 404, 404);
-            }
+
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
         }
+
         $company->setDeleted(1);
         $this->em->flush();
 

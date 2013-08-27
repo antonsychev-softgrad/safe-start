@@ -26,3 +26,6 @@
 
      b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
+
+     c) own console command
+        php ./public/index.php doctrine set-def-data

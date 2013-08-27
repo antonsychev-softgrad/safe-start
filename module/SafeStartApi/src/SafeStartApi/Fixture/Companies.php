@@ -1,4 +1,5 @@
 <?php
+
 namespace SafeStartApi\Fixture;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -12,10 +13,10 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
     {
         // COMPANY 1
         $company = new Company();
-        $company->setTitle('Company Title 1');
-        $company->setAddress('Company Address 1');
-        $company->setPhone('Company Phone 1');
-        $company->setDescription('Company Description 1');
+        $company->setTitle('Company 1');
+        $company->setAddress('Company 1 Address');
+        $company->setPhone('Company 1 Phone');
+        $company->setDescription('Company 1 Description');
         $company->setRestricted(true);
         $company->setMaxUsers(5);
         $company->setMaxVehicles(10);
@@ -23,8 +24,17 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
         $expiryDate->setTimestamp(time() + 60*60*366);
         $company->setExpiryDate($expiryDate);
         $manager->persist($company);
+        $manager->flush();
 
-        $company->setAdmin($this->getReference('company_admin'));
+        $company->setAdmin($this->getReference('company-admin-user'));
+        $company->addResponsibleUser($this->getReference('responsible-user'));
+
+        $this->getReference('usual-user1')->setCompany($company);
+        $this->getReference('usual-user2')->setCompany($company);
+        $this->getReference('responsible-user')->setCompany($company);
+        $this->getReference('vehicle-1')->setCompany($company);
+        $this->getReference('vehicle-2')->setCompany($company);
+
         $manager->flush();
     }
 
@@ -35,6 +45,6 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
      */
     public function getOrder()
     {
-        return 2;
+        return 3;
     }
 }

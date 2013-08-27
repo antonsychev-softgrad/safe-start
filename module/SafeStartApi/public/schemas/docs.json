@@ -145,6 +145,38 @@
                     }
                 }
             }
+        },
+        "/api/uploadImages": {
+            "description": "Upload Images",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/response.json"
+                    }
+                }
+            }
+        },
+        "/api/checklist/[id]/generate-pdf": {
+            "description": "Generate PDF",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/response.json"
+                    }
+                }
+            }
         }
     }
 }

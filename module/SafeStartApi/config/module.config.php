@@ -96,6 +96,32 @@ return array(
                             ),
                         ),
                     ),
+                    'delete-user' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'delete',
+                            ),
+                        ),
+                    ),
+                    'user-sent-credentials' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/user/:id/send-credentials',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'User',
+                                'action' => 'sendCredentials',
+                            ),
+                        ),
+                    ),
                     'update-company-subscription' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -135,6 +161,32 @@ return array(
                             ),
                         ),
                     ),
+                    'update-company-vehicle' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'updateVehicle',
+                            ),
+                        ),
+                    ),
+                    'delete-company-vehicle' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'deleteVehicle',
+                            ),
+                        ),
+                    ),
                     'upload-images' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -144,6 +196,19 @@ return array(
                                 'action' => 'uploadImages',
                             ),
                         ),
+                    ),
+                    'generate-pdf' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                          'route' => '/checklist/:id/generate-pdf',
+                          'constraints' => array(
+                             'id' => '[0-9]+',
+                          ),
+                          'defaults' => array(
+                             'controller' => 'ProcessData',
+                             'action' => 'generatePdf',
+                          ),
+                       ),
                     ),
                 ),
             ),
@@ -253,6 +318,8 @@ return array(
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
+            'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
+            'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
         )
     ),
     'session' => array(
@@ -288,11 +355,7 @@ return array(
                     'label' => 'N/A'
                 ),
             ),
-            'default' => ''
-        ),
-        'text' =>  array(
-            'id' => 2,
-            'default' => ''
+            'default' => 'N/A'
         ),
         'checkbox' => array(
             'id' => 3,
@@ -308,21 +371,25 @@ return array(
             ),
             'default' => ''
         ),
+        'text' => array(
+            'id' => 2,
+            'default' => ''
+        ),
         'photo' => array(
             'id' => 4,
             'default' => ''
         ),
-        'coordinates' =>array(
+        'coordinates' => array(
             'id' => 5,
+            'default' => ''
+        ),
+        'datePicker' => array(
+            'id' => 7,
             'default' => ''
         ),
         'group' => array(
             'id' => 6,
         ),
-        'datePicker' => array(
-            'id' => 7,
-            'default' => ''
-        )
     ),
     'mail' => array(
         'from' => 'admin@safe-start.dev',

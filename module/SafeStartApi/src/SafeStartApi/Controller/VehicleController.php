@@ -31,23 +31,17 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
-        $vehiclesList = array(
-            array(
-                'vehicleId' => 1,
-                'typeId' => 1,
-                'vehicleName' => 'Vehicle name 1',
-            ),
-            array(
-                'vehicleId' => 2,
-                'typeId' => 2,
-                'vehicleName' => 'Vehicle name 2',
-            ),
-            array(
-                'vehicleId' => 3,
-                'typeId' => 3,
-                'vehicleName' => 'Vehicle name 3',
-            ),
-        );
+        $user = $this->authService->getIdentity();
+        $vehicles = $user->getVehicles();
+
+        $vehiclesList = array();
+        foreach($vehicles as $vehicle) {
+            $vehiclesList[] = array(
+                'vehicleId' => $vehicle->getId(),
+                'type' => $vehicle->getType(),
+                'vehicleName' => $vehicle->getTitle(),
+            );
+        }
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -62,22 +56,11 @@ class VehicleController extends RestController
         if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
         $id = (int)$this->params('id');
+        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $veh = $vehRep->findOneById($id);
+        if(empty($veh)) return $this->_showNotFound();
 
-        $objDateTime = new \DateTime('NOW');
-        $expiryDate = $objDateTime->getTimestamp();
-
-        $vehicleData = array(
-            'vehicleId' => $id,
-            'plantId' => 'PLANTIDTEST',
-            'registration' => 'REGISTRATION',
-            'vehicleName' => 'Name',
-            'type' => 'Test vehicle type',
-            'projectName' => 'Test project name',
-            'projectNumber' => 1123,
-            'expiryDate' => $expiryDate,
-            'kmsUntilNext' => 150,
-            'hoursUntilNext' => 200,
-        );
+        $vehicleData = $veh->toInfoArray();
 
         $this->answer = array(
             'vehicleData' => $vehicleData,
@@ -91,166 +74,13 @@ class VehicleController extends RestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
 
-        $id = $this->params('id');
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
-        $checklist = array(
-                array(
-                    'groupName' => 'Daily inspection checklist structural',
-                    'groupId' => 1,
-                    'groupOrder' => 1,
-                    'fields' => array(
-                        array(
-                            'fieldId' => 1,
-                            'fieldOrder' => 1,
-                            'fieldName' => 'Is the vechicle free of damage?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                        ),
-                        array(
-                            'fieldId' => 2,
-                            'fieldOrder' => 2,
-                            'fieldName' => 'Are all safety guards in place?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                        ),
-                        array(
-                            'fieldId' => 3,
-                            'fieldOrder' => 3,
-                            'fieldName' => 'Are the tyres correctly inflated, with good tread and wheel nuts tight?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                            'additionalFields' => array(
-                                array(
-                                    'field' => array(
-                                        'fieldId' => 4,
-                                        'fieldOrder' => 4,
-                                        'fieldName' => 'Are you authorised to inflate or change tyres?',
-                                        'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                                        'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                                        'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                                        'alerts' => array(
-                                            array(
-                                                'alertMessage' => 'Do not work on tyres unless authorised',
-                                                'triggerValue' => 'No',
-                                            )
-                                        ),
-                                    ),
-                                    'triggerValue' => 'No'
-                                ),
-                            ),
-                        ),
-                        array(
-                            'fieldId' => 5,
-                            'fieldOrder' => 5,
-                            'fieldName' => 'Is the windscreen and mirrors clean and free of damage?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                        ),
-                    )
-                ),
-                array(
-                    'groupName' => 'Daily inspection checklist mechanical',
-                    'groupId' => 2,
-                    'groupOrder' => 2,
-                    'fields' => array(
-                        array(
-                            'fieldId' => 6,
-                            'fieldOrder' => 1,
-                            'fieldName' => 'Have you isolated the vechicle?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['radio']['id'],
-                            'fieldValue' =>  $this->moduleConfig['fieldTypes']['radio']['default'],
-                            'options' => $this->moduleConfig['fieldTypes']['radio']['options'],
-                            'alerts' => array(
-                                array(
-                                    'alertMessage' => 'Isolate vehicle before continuing',
-                                    'triggerValue' => 'No',
-                                )
-                            ),
-                        ),
-                        array(
-                            'fieldId' => 7,
-                            'fieldOrder' => 2,
-                            'fieldName' => 'Are the fluid levels acceptable?',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['group']['id'],
-                            'items' => array(
-                                array(
-                                    'fieldId' => 8,
-                                    'fieldOrder' => 3,
-                                    'fieldName' => 'Water',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                                array(
-                                    'fieldId' => 9,
-                                    'fieldOrder' => 4,
-                                    'fieldName' => 'Hydraulic',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                                array(
-                                    'fieldId' => 10,
-                                    'fieldOrder' => 5,
-                                    'fieldName' => 'Brake',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                                array(
-                                    'fieldId' => 11,
-                                    'fieldOrder' => 6,
-                                    'fieldName' => 'Coolant',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                                array(
-                                    'fieldId' => 12,
-                                    'fieldOrder' => 7,
-                                    'fieldName' => 'Transmission',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                                array(
-                                    'fieldId' => 13,
-                                    'fieldOrder' => 8,
-                                    'fieldName' => 'Battery',
-                                    'fieldType' => $this->moduleConfig['fieldTypes']['checkbox']['id'],
-                                    'fieldValue' => $this->moduleConfig['fieldTypes']['checkbox']['default'],
-                                    'options' => $this->moduleConfig['fieldTypes']['checkbox']['options'],
-                                ),
-                            )
-                        ),
-                    )
-                ),
-                array(
-                    'groupName' => 'Crane',
-                    'groupId' => 3,
-                    'groupOrder' => 3,
-                    'fields' => array(
-                        array(
-                            'fieldId' => 14,
-                            'fieldOrder' => 1,
-                            'fieldName' => 'Add vechicle CPS coordinates.',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['coordinates']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['coordinates']['default'],
-                        ),
-                        array(
-                            'fieldId' => 15,
-                            'fieldOrder' => 2,
-                            'fieldName' => 'Add date.',
-                            'fieldType' => $this->moduleConfig['fieldTypes']['datePicker']['id'],
-                            'fieldValue' => $this->moduleConfig['fieldTypes']['datePicker']['default'],
-                        ),
-                    )
-                )
-        );
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+
+        $checklist = $this->GetDataPlugin()->buildChecklist($vehicle->getFields());
+
 
         $this->answer = array(
             'checklist' => $checklist,
