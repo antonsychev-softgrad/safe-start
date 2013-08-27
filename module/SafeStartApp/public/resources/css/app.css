@@ -7154,10 +7154,6 @@ margin-bottom: 20px;
 .x-toolbar.x-docked-bottom {
     border: none;
 }
-.sfa-info-container .x-inner.x-panel-inner.x-size-monitored.x-paint-monitored {
-background: url(/resources/img/logo-trans.png) no-repeat 50% 20%;
-background-size: 85% auto;
-}
 
 .sfa-info-container   .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
     font-size: 22px;
@@ -7191,19 +7187,18 @@ background-size: 85% auto;
 }
 .sfa-info-container  {
 margin: 10px 10px 10px 20px;
-    padding-right: 18px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 -khtml-border-radius: 10px;
 -o-border-radius: 10px;
 border-radius: 10px;
-background: #eaedef;
+background: #eaedef url(/resources/img/logotype-trans.png) no-repeat 50% 20%;
+background-size: 65% auto;
 -webkit-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 -moz-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 }
 .sfa-info-container form {
-    background: #eaedef !important;
     margin: 10px;
 }
 .sfa-info-container h2 {
@@ -7219,9 +7214,6 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 }
 .sfa-info-container .x-form-label {
     padding-left: 0;
-}
-.sfa-info-container .x-container.x-form-fieldset {
-    margin: 0 7px;
 }
 .sfa-info-container .sfa-company-setting-subscription {
     margin: 0 !important;
@@ -7240,7 +7232,7 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     border: 3px solid #2E7FB7;
 }
 .sfa-info-container .x-toolbar {
-    top: -20px;
+    margin-top: 20px;
     background: none;
 }
 
@@ -7360,16 +7352,24 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 
 
 
-
-
 /* test */
+
+.companies .x-inner.x-paint-monitored.x-scroll-scroller {
+width: 100% !important;
+}
+
+
+
+
+
+
+
 .x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-field-textarea.x-field {
     margin-bottom: 20px;
 }
 .x-container.x-panel.sfa-info-container.x-layout-box-item .x-body.x-scroll-view {
     position: static;
-    width: 100%;
-    height: 100%;
+    margin: 0 auto;
 }
 .x-container.x-panel.sfa-info-container.x-layout-box-item .x-scroll-container {
     position: static;
@@ -7385,30 +7385,45 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
 }
 .x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-form {
     position: static !important;
-    width: 100%;
+    width: 96%;
     height: 100%;
 }
-.x-inner.x-form-fieldset-inner
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-inner.x-form-fieldset-inner > .x-container.x-field-text {
+    padding-right: 2px;
+}
+.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-field-textarea > .x-component-outer {
+    padding-right: 2px;
+}
+.subscription-fieldset {
+    margin: 0 !important;
 
+}
 
-
-
-
-
-
-
-
+.sfa-datepicker .x-component-outer:before {background-image: none}
+/*
+.sfa-info-container .x-body.x-scroll-view > .x-scroll-container {
+    height: auto;
+}
+*/
 
 
 /* Companies в верхнем toolbar сместим левее */
-@media screen and (max-width: 800px) {
-    .x-container.x-toolbar-dark.x-toolbar.sfa-main-toolbar .x-body.x-scroll-view .x-center {padding-right: 105px}
+@media screen and (max-width: 1024px) {
+    .x-container.x-toolbar-dark.x-toolbar.sfa-main-toolbar .x-body.x-scroll-view .x-center {padding-right: 180px}
+    .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-left: 0.16em}
 }
 
 /* Элементы в верхнем toolbar сделаем мельче */
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 700px) {
+    .sfa-info-container  {background-size: 85% auto;}
     .sfa-main-toolbar .x-button, .sfa-main-toolbar .x-button .x-button-label {font-size: 20px !important;}
-    .sfa-main-toolbar .x-title {font-size: 30px}
-    .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-left: 0.16em}
-    .sfa-main-toolbar .x-toolbar .x-button {margin: 0 0.2em 1px}
+    .sfa-main-toolbar .x-title {font-size: 30px;}
+    .sfa-main-toolbar .x-toolbar .x-button {margin: 0 0.2em 1px;}
+    .sfa-info-container .x-button {padding: 0 6px 5px !important; margin: 0 3px !important;}
+    .sfa-info-container .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
+        font-size: 18px;
+    }
 }
+
+
+
