@@ -60,16 +60,21 @@ class GetDataPlugin extends AbstractPlugin
                     'additional' => $field->getAdditional(),
                     'triggerValue' => $field->getTriggerValue(),
                 );
-                if ($field->getAdditional() || $field->getType() == 'group') $listField['items'] = $this->_buildChecklist($fields, $field->getId());
+                $listField['items'] = $this->_buildChecklist($fields, $field->getId());
                 if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
-                if ($field->getTriggerValue() && !$field->getAdditional()) {
+                $alertMassage = $field->getAlertTitle();
+                if (!empty($alertMassage) && empty($listField['items'])) {
                     $listField['alerts'] = array(
                         array(
                             'alertMessage' => $field->getAlertTitle(),
-                            'triggerValue' => $field->getTriggerValue(),
+                            'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
                         )
                     );
+                } else if (!empty($listField['items']) && $field->getType() != 'group') {
+                    $listField['additional']  = true;
+                } else {
+                    $listField['additional']  = false;
                 }
 
                 $checklist[] = $listField;

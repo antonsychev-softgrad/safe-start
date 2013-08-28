@@ -36,12 +36,17 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                         { rank: 'datePicker', title: 'Date Picker'},
                         { rank: 'photo', title: 'Photo'}
                     ]
+                },
+                listeners: {
+                    change: function (field, slider, thumb, newValue, oldValue) {
+                        this.up('SafeStartChecklistFieldForm').showCreateFieldCategory();
+                    }
                 }
             },
             {
                 xtype: 'togglefield',
                 name: 'additional',
-                label: 'Hide sub questions',
+                label: 'Additional',
                 listeners: {
                     change: function (field, slider, thumb, newValue, oldValue) {
 
@@ -51,7 +56,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Alert or additional <br/> questions trigger value',
+                label: 'Alert(Subquestions) <br/>trigger value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
@@ -79,12 +84,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'togglefield',
                 name: 'enabled',
-                label: 'Enabled',
-                listeners: {
-                    change: function (field, slider, thumb, newValue, oldValue) {
-
-                    }
-                }
+                label: 'Enabled'
             },
             {
                 xtype: 'toolbar',
@@ -115,8 +115,8 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         ],
 
         listeners: {
-            change: function(form, record, xz, eOpts) {
-                if(!record.get('parentId')) {
+            change: function (form, record, xz, eOpts) {
+                if (!record.get('parentId') || record.get('type') == 'root') {
                     form.showCreateRootCategory();
                 } else {
                     form.showCreateFieldCategory();
@@ -125,16 +125,32 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         }
     },
 
-    showCreateRootCategory: function() {
+    showCreateRootCategory: function () {
+        this.getFields()['additional'].show();
         this.getFields()['type'].setValue('root');
         this.getFields()['type'].hide();
         this.getFields()['alert_title'].hide();
-        this.getFields()['additional'].setLabel('Additional');
         this.getFields()['trigger_value'].hide();
         this.getFields()['trigger_value'].setValue('yes');
     },
 
-    showCreateFieldCategory: function() {
-
+    showCreateFieldCategory: function () {
+        this.getFields()['type'].show();
+        this.getFields()['additional'].hide();
+        switch (this.getFields()['type'].getValue()) {
+            case 'group':
+                this.getFields()['alert_title'].hide();
+                this.getFields()['trigger_value'].hide();
+            break;
+            case 'radio':
+            case 'checkbox':
+                this.getFields()['alert_title'].show();
+                this.getFields()['trigger_value'].show();
+                break;
+            default:
+                this.getFields()['alert_title'].hide();
+                this.getFields()['trigger_value'].hide();
+                break;
+        }
     }
 });

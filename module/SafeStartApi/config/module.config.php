@@ -224,6 +224,32 @@ return array(
                           ),
                        ),
                     ),
+                    'default-checklist-update' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/checklist/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'updateDefaultChecklistFiled',
+                            ),
+                        ),
+                    ),
+                    'default-checklist-delete' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/admin/checklist/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Admin',
+                                'action' => 'deleteDefaultChecklistFiled',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

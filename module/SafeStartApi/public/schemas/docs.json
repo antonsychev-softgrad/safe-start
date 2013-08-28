@@ -177,6 +177,22 @@
                     }
                 }
             }
+        },
+        "/api/image/[uid]/[image]": {
+            "description": "Get image by UserId and FileName",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/getimage/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/getimage/response.json"
+                    }
+                }
+            }
         }
     }
 }

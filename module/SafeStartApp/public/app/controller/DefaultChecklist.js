@@ -5,7 +5,8 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     config: {
         control: {
             navMain: {
-                itemtap: 'onSelectAction'
+                leafitemtap: 'onSelectAction',
+                selectionchange: 'onSelectChangeAction'
             },
             addButton: {
                 tap: 'addAction'
@@ -21,32 +22,50 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
 
     selectedNodeId: 0,
     selectedRecord: 0,
-    onSelectAction: function () {
-        if (this.selectedNodeId == arguments[4].get('id')) return;
-        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
-        this.selectedNodeId = arguments[4].get('id');
-        if (!this.currentForm) this._createForm();
-        this.currentForm.setRecord(arguments[4]);
-        this.currentForm.fireEvent('change', this.currentForm, arguments[4]);
-        this.currentForm.down('button[name=delete-data]').show();
 
+    onSelectChangeAction: function (obj, list, selections, eOpts) {
+        if (!this.getNavMain().getActiveItem().getStore) return;
+        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
+        if (!parseInt(this.selectedRecord.get('id')))  this.selectedNodeId = 0;
+        else  this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+        if (!this.currentForm) this._createForm();
+        this.currentForm.setRecord(this.selectedRecord);
+        this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
+        this.currentForm.down('button[name=delete-data]').show();
+    },
+
+    onSelectAction: function () {
+        this.selectedRecord = arguments[4];
+        this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+        if (!this.currentForm) this._createForm();
+        this.currentForm.setRecord(this.selectedRecord);
+        this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
+        this.currentForm.down('button[name=delete-data]').show();
     },
 
     addAction: function () {
-        console.log('addAction');
         if (!this.currentForm) this._createForm();
-        if (this.vehicleModel) this.vehicleModel.destroy();
-        this.vehicleModel = Ext.create('SafeStartApp.model.ChecklistField');
-        this.currentForm.setRecord(this.vehicleModel);
+        this.currentForm.down('button[name=delete-data]').hide();
+        if (this.checklistFieldModel) this.checklistFieldModel.destroy();
+        this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
+        this.checklistFieldModel.set('parentId', this.selectedNodeId);
+        if (this.selectedNodeId == 0) {
+            this.checklistFieldModel.set('type', 'root');
+            this.currentForm.showCreateRootCategory();
+        } else {
+            this.checklistFieldModel.set('type', 'text');
+            this.currentForm.showCreateFieldCategory();
+        }
+        this.currentForm.setRecord(this.checklistFieldModel);
+        this.currentForm.fireEvent('change', this.currentForm, this.checklistFieldModel);
     },
 
     saveAction: function () {
-        if (!this.vehicleModel) this.vehicleModel = Ext.create('SafeStartApp.model.ChecklistField');
-        if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
+        if (!this.checklistFieldModel) this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
+        if (this.validateFormByModel(this.checklistFieldModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
-            formValues.companyId = SafeStartApp.companyModel.get('id');
-            SafeStartApp.AJAX('vehicle/' + this.currentForm.getValues().id + '/update', formValues, function (result) {
+            SafeStartApp.AJAX('admin/checklist/' + this.currentForm.getValues().id + '/update', formValues, function (result) {
                 if (result.fieldId) {
                     self._reloadStore(result.fieldId);
                     self.currentForm.down('button[name=delete-data]').show();
@@ -57,17 +76,24 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function(){
-            SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
+            SafeStartApp.AJAX('admin/checklist/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                var parentId = self.selectedRecord.get('parentId');
                 self.getNavMain().getStore().loadData();
-                self.currentForm.reset();
-                self.currentForm.down('button[name=delete-data]').hide();
-                self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
+                self.getNavMain().getStore().addListener('data-load-success', function () {
+                    self.currentForm.reset();
+                    self.currentForm.down('button[name=delete-data]').hide();
+                    try {
+                        self.getNavMain().goToNode(self.getNavMain().getStore().getNodeById(parentId));
+                    } catch (e) {
+                        self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
+                    }
+                });
             });
         });
     },
 
-    resetAction: function() {
+    resetAction: function () {
         this.currentForm.reset();
     },
 
@@ -83,7 +109,15 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     _reloadStore: function (fieldId) {
         this.getNavMain().getStore().loadData();
         this.getNavMain().getStore().addListener('data-load-success', function () {
-            if (!fieldId) return;
+            if (!this.selectedNodeId) {
+                this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
+            } else {
+                try {
+                    this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(fieldId));
+                } catch (e) {
+                    this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(fieldId));
+                }
+            }
             this.currentForm.setRecord(this.getNavMain().getStore().getById(fieldId));
         }, this);
 

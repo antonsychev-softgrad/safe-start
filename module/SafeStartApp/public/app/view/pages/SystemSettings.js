@@ -54,7 +54,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                     name: 'checklist',
                     title: 'Default Checklist',
                     layout: 'hbox',
-                    scrollable: false,
+                    scrollable: true,
                     items: [
                         {
                             xtype: 'nestedlist',
