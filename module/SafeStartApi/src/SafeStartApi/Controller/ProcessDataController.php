@@ -7,10 +7,8 @@ use SafeStartApi\Base\RestrictedAccessRestController;
 class ProcessDataController extends RestrictedAccessRestController
 {
     public function uploadImagesAction() {
-
-        $return = $this->UploadPlugin(array('param_name'=>'image'))->post();
         $this->answer = array(
-            'uploadInfo' => $return,
+            'uploadInfo' => $this->UploadPlugin(array('param_name'=>'image'))->post(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
