@@ -45,6 +45,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
 
     addAction: function () {
         if (!this.currentForm) this._createForm();
+        this.currentForm.down('button[name=delete-data]').hide();
         if (this.checklistFieldModel) this.checklistFieldModel.destroy();
         this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
         this.checklistFieldModel.set('parentId', this.selectedNodeId);
@@ -78,8 +79,8 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('admin/checklist/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
                 var parentId = self.selectedRecord.get('parentId');
-                this.getNavMain().getStore().loadData();
-                this.getNavMain().getStore().addListener('data-load-success', function () {
+                self.getNavMain().getStore().loadData();
+                self.getNavMain().getStore().addListener('data-load-success', function () {
                     self.currentForm.reset();
                     self.currentForm.down('button[name=delete-data]').hide();
                     try {
@@ -112,9 +113,9 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
                 this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
             } else {
                 try {
-                    this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(this.selectedNodeId));
+                    this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(fieldId));
                 } catch (e) {
-                    this.getNavMain().goToNode(this.getNavMain().getStore().goToLeaf(this.fieldId));
+                    this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(fieldId));
                 }
             }
             this.currentForm.setRecord(this.getNavMain().getStore().getById(fieldId));
