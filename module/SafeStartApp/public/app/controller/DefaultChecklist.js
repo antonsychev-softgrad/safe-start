@@ -123,12 +123,12 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
 
     },
 
-    _getUpdateUrl: function() {
-
+    _getDeleteUrl: function() {
+        return 'admin/checklist/' + self.currentForm.getValues().id + '/delete';
     },
 
-    _getEditUrl: function() {
-
+    _getUpdateUrl: function() {
+        return 'admin/checklist/' + self.currentForm.getValues().id + '/update';
     }
 
 
