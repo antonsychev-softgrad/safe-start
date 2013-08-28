@@ -26,6 +26,10 @@ class InfoController extends AbstractActionController
 
     protected function get_full_path($fEndPath = '/') {
         $root = $_SERVER['DOCUMENT_ROOT'];
+        if(!file_exists($root . "/init_autoloader.php")) {
+           $root = dirname($root);
+        }
+
         $fEndPath = str_replace("{$root}", '', $fEndPath);
         $fEndPath = str_replace('\\', '/', $fEndPath);
 
