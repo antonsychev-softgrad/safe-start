@@ -4,7 +4,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     xtype: 'SafeStartCompanySettingsForm',
     config: {
         minHeight: 400,
-        maxWidth: 600,
+        //maxWidth: 600,
         scrollable: true,
         cls: 'comp-settings',
         items: [
@@ -67,6 +67,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         xtype: 'fieldset',
                         title: 'Subscription:',
                         id: 'subscription',
+                        cls: 'subscription-fieldset',
                         items: [
                             {
                                 xtype: 'spinnerfield',
