@@ -134,7 +134,8 @@ Ext.application({
         'Users',
         'Company',
         'Vehicles',
-        'DefaultChecklist'
+        'DefaultChecklist',
+        'VehicleChecklist'
     ],
 
     icon: {

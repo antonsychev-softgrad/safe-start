@@ -4,8 +4,6 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     xtype: 'SafeStartChecklistFieldForm',
     config: {
         minHeight: 400,
-        maxWidth: 600,
-        scrollable: false,
         items: [
             {
                 xtype: 'hiddenfield',
@@ -14,6 +12,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'hiddenfield',
                 name: 'parentId'
+            },
+            {
+                xtype: 'hiddenfield',
+                name: 'vehicleId'
             },
             {
                 xtype: 'textfield',

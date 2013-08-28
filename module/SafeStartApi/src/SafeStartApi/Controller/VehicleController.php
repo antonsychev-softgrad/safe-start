@@ -2,9 +2,9 @@
 
 namespace SafeStartApi\Controller;
 
-use SafeStartApi\Base\RestController;
+use SafeStartApi\Base\RestrictedAccessRestController;
 
-class VehicleController extends RestController
+class VehicleController extends RestrictedAccessRestController
 {
 
     public function checkPlantIdAction()
@@ -79,7 +79,11 @@ class VehicleController extends RestController
 
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
 
-        $checklist = $this->GetDataPlugin()->buildChecklist($vehicle->getFields());
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+        $query->setParameter(1, $vehicle);
+        $items = $query->getResult();
+
+        $checklist = $this->GetDataPlugin()->buildChecklist($items);
 
 
         $this->answer = array(

@@ -250,6 +250,32 @@ return array(
                             ),
                         ),
                     ),
+                    'checklist-field-update' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/checklist/:id/update',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'updateVehicleChecklistFiled',
+                            ),
+                        ),
+                    ),
+                    'checklist-field-delete' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/checklist/:id/delete',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'deleteVehicleChecklistFiled',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

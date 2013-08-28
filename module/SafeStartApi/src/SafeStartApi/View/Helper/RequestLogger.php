@@ -90,7 +90,7 @@ class RequestLogger extends AbstractHelper
         // log response
         if (function_exists('yaml_emit')) {
             $writer = new YamlWriter();
-            $logger->debug("Response:\n" . $writer->toString($value));
+            $logger->debug("Response:\n" . $writer->toString((array)$value));
         } else {
             $logger->debug("Response:\n" . json_encode($value));
         }

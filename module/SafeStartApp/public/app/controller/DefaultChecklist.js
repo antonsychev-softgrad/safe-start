@@ -65,7 +65,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         if (this.validateFormByModel(this.checklistFieldModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
-            SafeStartApp.AJAX('admin/checklist/' + this.currentForm.getValues().id + '/update', formValues, function (result) {
+            SafeStartApp.AJAX(this._getUpdateUrl(), formValues, function (result) {
                 if (result.fieldId) {
                     self._reloadStore(result.fieldId);
                     self.currentForm.down('button[name=delete-data]').show();
@@ -77,7 +77,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     deleteAction: function () {
         var self = this;
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
-            SafeStartApp.AJAX('admin/checklist/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+            SafeStartApp.AJAX(self._getDeleteUrl(), {}, function (result) {
                 var parentId = self.selectedRecord.get('parentId');
                 self.getNavMain().getStore().loadData();
                 self.getNavMain().getStore().addListener('data-load-success', function () {
@@ -124,11 +124,11 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     },
 
     _getDeleteUrl: function() {
-        return 'admin/checklist/' + self.currentForm.getValues().id + '/delete';
+        return 'admin/checklist/' + this.currentForm.getValues().id + '/delete';
     },
 
     _getUpdateUrl: function() {
-        return 'admin/checklist/' + self.currentForm.getValues().id + '/update';
+        return 'admin/checklist/' + this.currentForm.getValues().id + '/update';
     }
 
 
