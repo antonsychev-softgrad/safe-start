@@ -4989,9 +4989,7 @@ color: #577990;
 .x-toolbar-dark .x-field-select .x-component-outer,
 .x-toolbar-dark .x-field-select .x-component-outer:before, .x-toolbar
 .x-toolbar-dark .x-field-select .x-component-outer:before {
-  border: 1px solid #061f31;
-  border-top-color: #092e47;
-  background-color: #11598c;
+  border: 1px solid #fff;
   color: white;
 }
 /* line 20, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -5108,9 +5106,10 @@ color: #577990;
 .x-toolbar-light .x-field-select .x-component-outer,
 .x-toolbar-light .x-field-select .x-component-outer:before, .x-toolbar
 .x-toolbar-light .x-field-select .x-component-outer:before {
-  border: 1px solid #0b3c5e;
+  /*border: 1px solid #0b3c5e;
   border-top-color: #0e4b75;
-  background-color: #1676b9;
+  background-color: #1676b9;*/
+    border: 1px solid #fff;
   color: white;
 }
 /* line 20, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/mixins/_Class.scss */
@@ -6175,7 +6174,7 @@ color: #577990;
   background-image: -moz-linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
   background-image: -o-linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
   background-image: linear-gradient(top, #0398ff, #007ad0 3%, #005c9d);
-  color: white;
+  color: #959595;
 }
 /* line 59, /Users/jamieavins/git/SDK/touch/resources/themes/stylesheets/sencha-touch/default/src/dataview/_List.scss */
 .x-list .x-list-item .x-list-item-body, .x-list .x-list-item.x-list-item-tpl .x-innerhtml {
@@ -7096,9 +7095,14 @@ margin-bottom: 20px;
     font-size: 24px !important;
     background: none !important;
 }
-
+.sfa-main-toolbar .x-button, .sfa-main-toolbar .x-button .x-button-label:hover {
+    color: #75AFCC !important;
+}
 
 /* left column */
+.sfa-left-container {
+    margin-right: 20px;
+}
 .sfa-left-container, .sfa-left-container .x-toolbar {
     background: none;
 }
@@ -7107,9 +7111,12 @@ margin-bottom: 20px;
     border: none;
 }
 
-.sfa-left-container .contact {
+.sfa-left-container .x-list-item {
     font-size: 22px;
     color: #558FAC;
+}
+.sfa-left-container .x-list-item:hover {
+    color: #75afcc;
 }
 .sfa-left-container .x-list-item-first {
     border: none !important;
@@ -7120,7 +7127,7 @@ margin-bottom: 20px;
     border-top-color: #dedede !important;
 }
 .sfa-left-container .x-item-selected .contact {
-    color: #83BDDA;
+    color: #75afcc;
 }
 .sfa-left-container .x-input-search {
     font-size: 20px;
@@ -7159,7 +7166,7 @@ margin-bottom: 20px;
     font-size: 22px;
 }
 
-.sfa-info-container    .x-unsized.x-form-fieldset-title .x-innerhtml {
+.sfa-info-container .x-form-fieldset-title .x-innerhtml {
    padding: 4px 0 0 30%;
     font-size: 28px;
 }
@@ -7186,7 +7193,7 @@ margin-bottom: 20px;
     border: none;
 }
 .sfa-info-container  {
-margin: 10px 10px 10px 20px;
+margin: 0 10px 10px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 -khtml-border-radius: 10px;
@@ -7199,7 +7206,7 @@ background-size: 65% auto;
 box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 }
 .sfa-info-container form {
-    margin: 10px;
+    margin: 10px 20px 18px;
 }
 .sfa-info-container h2 {
     margin: 0.5em 0 0.75em;
@@ -7348,64 +7355,53 @@ box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(10
     height: 35px;
     background: url(/resources/img/icons.png) no-repeat 50% -308px;
 }
-
-
-
-
-/* test */
-
-.companies .x-inner.x-paint-monitored.x-scroll-scroller {
-width: 100% !important;
+.sfa-datepicker .x-component-outer:before, .sfa-info-container form .x-field-select .x-component-outer:before {
+background-image: none;
 }
+.sfa-left-container .x-title {
+    font-size: 26px;
+    color: #558FAC;
+    text-shadow: none;
+}
+.sfa-left-container .x-body .x-center {
+    background: url(/resources/img/log-form_bg.jpg) repeat;
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.sfa-left-container .x-toolbar .x-button.x-button-back {
+   padding: 14px 12px;
+}
+.sfa-info-container .x-form-fieldset {
+    margin: 0;
+}
+.sfa-info-container .sfa-form-no-title {
+    margin-top: 20px;
+}
+.sfa-info-container form .x-form-inner .x-field {
+   background: none;
+}
+.sfa-info-container .x-tabbar-dark {
+    background: #0088cc;
+    -moz-border-radius: 10px 10px 0 0;
+    -webkit-border-radius: 10px 10px 0 0;
+    -khtml-border-radius: 10px 10px 0 0;
+    -o-border-radius: 10px 10px 0 0;
+    border-radius: 10px 10px 0 0;
 
+    -webkit-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset,
+    -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset,
+    0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 
+    -moz-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset,
+    -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset,
+    0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 
-
-
-
-
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-field-textarea.x-field {
-    margin-bottom: 20px;
+    box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset,
+    -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset,
+    0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
 }
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-body.x-scroll-view {
-    position: static;
-    margin: 0 auto;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-scroll-container {
-    position: static;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-scroll-scroller {
-    position: static;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-dock.x-dock-vertical.x-sized {
-    position: static;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-dock.x-sized > .x-dock-body > .x-inner.x-form-inner.x-scroll-scroller {
-    position: static;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-form {
-    position: static !important;
-    width: 96%;
-    height: 100%;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-inner.x-form-fieldset-inner > .x-container.x-field-text {
-    padding-right: 2px;
-}
-.x-container.x-panel.sfa-info-container.x-layout-box-item .x-container.x-field-textarea > .x-component-outer {
-    padding-right: 2px;
-}
-.subscription-fieldset {
-    margin: 0 !important;
-
-}
-
-.sfa-datepicker .x-component-outer:before {background-image: none}
-/*
-.sfa-info-container .x-body.x-scroll-view > .x-scroll-container {
-    height: auto;
-}
-*/
-
 
 /* Companies в верхнем toolbar сместим левее */
 @media screen and (max-width: 1024px) {

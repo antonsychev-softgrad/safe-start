@@ -127,12 +127,14 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 {
                     xtype: 'panel',
                     name: 'vehicle-inspection',
-                    html: "Daily Inspection"
+                    html: "Daily Inspection",
+                    cls: 'x-form-fieldset-title'
                 },
                 {
                     xtype: 'panel',
                     name: 'vehicle-manage',
-                    html: "Manage Checklist"
+                    html: "Manage Checklist",
+                    cls: 'x-form-fieldset-title'
                 }
             ]
         };
