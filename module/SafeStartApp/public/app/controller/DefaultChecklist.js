@@ -121,8 +121,15 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
             this.currentForm.setRecord(this.getNavMain().getStore().getById(fieldId));
         }, this);
 
-    }
+    },
 
+    _getUpdateUrl: function() {
+
+    },
+
+    _getEditUrl: function() {
+
+    }
 
 
 });
