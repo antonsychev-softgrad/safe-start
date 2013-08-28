@@ -210,6 +210,20 @@ return array(
                           ),
                        ),
                     ),
+                    'get-public-image' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                          'route' => '/image/:uid/:image',
+                          'constraints' => array(
+                             'uid' => '[0-9]+',
+                             'image' => '.+',
+                          ),
+                          'defaults' => array(
+                             'controller' => 'Info',
+                             'action' => 'getImage',
+                          ),
+                       ),
+                    ),
                 ),
             ),
         ),
@@ -246,6 +260,7 @@ return array(
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
             'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
             'SafeStartApi\Controller\ProcessData' => 'SafeStartApi\Controller\ProcessDataController',
+            'SafeStartApi\Controller\Info' => 'SafeStartApi\Controller\InfoController',
         ),
     ),
     'view_manager' => array(
@@ -405,4 +420,5 @@ return array(
             ),
         ),
     ),
+    'defUsersPath' => '/data/users/',
 );
