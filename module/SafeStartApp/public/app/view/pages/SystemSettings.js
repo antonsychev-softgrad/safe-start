@@ -48,7 +48,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         });
         this.checkListTree.checkListStore = this.checklistDefaultStoreStore;
         return {
-            cls: 'sfa-info-container',
+            cls: 'sfa-info-container sfa-system-settings',
             xtype: 'tabpanel',
             layout: 'card',
             minWidth: 150,
