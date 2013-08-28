@@ -42,7 +42,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
     getInfoPanel: function () {
         return {
-            cls: 'sfa-info-container',
+            cls: 'sfa-info-container sfa-system-settings',
             xtype: 'tabpanel',
             layout: 'card',
             minWidth: 150,
@@ -61,6 +61,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                             name: 'checklist-tree',
                             flex: 1,
                             title: 'Checklist',
+                            cls: 'sfa-left-container',
                             displayField: 'text',
                             getTitleTextTpl: function () {
                                 return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
@@ -81,6 +82,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                                             name: 'add-field',
                                             action: 'add-field',
                                             ui: 'action',
+                                            cls: 'sfa-add',
                                             iconCls: 'add'
                                         }
                                     ]

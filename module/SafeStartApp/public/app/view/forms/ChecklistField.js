@@ -4,7 +4,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     xtype: 'SafeStartChecklistFieldForm',
     config: {
         minHeight: 400,
-        maxWidth: 600,
+        //maxWidth: 600,
         scrollable: false,
         items: [
             {
