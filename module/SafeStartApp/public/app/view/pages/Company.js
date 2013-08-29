@@ -63,10 +63,10 @@ Ext.define('SafeStartApp.view.pages.Company', {
             cls: 'sfa-left-container',
             flex:1,
             getTitleTextTpl: function() {
-                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
             },
             getItemTextTpl: function() {
-                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
             },
             detailCard: new Ext.Panel(),
             store: this.vehiclesStore,
@@ -133,8 +133,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 {
                     xtype: 'panel',
                     name: 'vehicle-manage',
-                    html: "Manage Checklist",
-                    cls: 'x-form-fieldset-title'
+                    scrollable: true,
+                    layout: 'card'
                 }
             ]
         };

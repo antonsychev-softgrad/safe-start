@@ -44,7 +44,6 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function __construct($options = null, $initialize = false, $error_messages = null) {
-
         $this->setOptions($options);
 
         if ($error_messages) {
@@ -70,7 +69,6 @@ class UploadPlugin extends AbstractPlugin
 
         $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
-
         $this->setOptions($options);
         return $this;
     }
@@ -219,6 +217,11 @@ class UploadPlugin extends AbstractPlugin
 
     protected function get_full_path() {
         $root = $this->get_server_var('DOCUMENT_ROOT');
+
+        if(!file_exists($root . "/init_autoloader.php")) {
+           $root = dirname($root);
+        }
+
         return $root;
     }
 
@@ -230,7 +233,7 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function get_filter_path($fEndPath = '/') {
-        $root       = $this->get_server_var('DOCUMENT_ROOT');
+        $root       = $this->get_full_path();
         $fEndPath   = str_replace("{$root}", '', $fEndPath);
         $fEndPath   = str_replace('\\', '/', $fEndPath);
 
@@ -654,13 +657,6 @@ class UploadPlugin extends AbstractPlugin
                 $this->count_file_objects() >= $this->options['max_number_of_files'])
             ) {
             $file->error = $this->get_error_message('max_number_of_files');
-            return false;
-        }
-
-        $extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array('jpg', 'jpeg', 'png');
-        $info = @getimagesize($uploaded_file);
-        if (!preg_match('/image\/('. implode('|', $extensions) .')/is', $info['mime'], $p)) {
-            $file->error = 'File has an incorrect mimetype or extension';
             return false;
         }
 
@@ -1407,11 +1403,17 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function post($print_response = true) {
+
         if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
             return $this->delete($print_response);
         }
         $upload = isset($_FILES[$this->options['param_name']]) ?
             $_FILES[$this->options['param_name']] : null;
+
+        if($upload === null) {
+            throw new \Exception('\'' .$this->options['param_name'] . '\' field is empty');
+        }
+
         // Parse the Content-Disposition header, if available:
         $file_name = $this->get_server_var('HTTP_CONTENT_DISPOSITION') ?
             rawurldecode(preg_replace(
@@ -1481,6 +1483,10 @@ class UploadPlugin extends AbstractPlugin
                     null,
                     $content_range
                 );
+            } else {
+                if($upload === null) {
+                    throw new \Exception('Information about downloadable file is not found.');
+                }
             }
         }
 

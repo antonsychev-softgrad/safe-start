@@ -2,7 +2,8 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.SystemSettings'
+        'SafeStartApp.view.pages.toolbar.SystemSettings',
+        'SafeStartApp.view.components.UpdateChecklist'
     ],
 
     xtype: 'SafeStartSystemSettingsPage',
@@ -13,6 +14,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         styleHtmlContent: true,
         scrollable: false,
         layout: 'card',
+        checkListStore: null,
         items: [
 
         ],
@@ -41,65 +43,19 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
 
     getInfoPanel: function () {
+        this.checkListTree = Ext.create('SafeStartApp.view.components.UpdateChecklist', {
+            checkListStore: this.checklistDefaultStoreStore //todo: why does not work?
+        });
+        this.checkListTree.checkListStore = this.checklistDefaultStoreStore;
         return {
-            cls: 'sfa-info-container sfa-system-settings',
+            cls: 'sfa-info-container',
             xtype: 'tabpanel',
             layout: 'card',
             minWidth: 150,
             scrollable: false,
 
             items: [
-                {
-                    xtype: 'panel',
-                    name: 'checklist',
-                    title: 'Default Checklist',
-                    layout: 'hbox',
-                    scrollable: true,
-                    items: [
-                        {
-                            xtype: 'nestedlist',
-                            name: 'checklist-tree',
-                            flex: 1,
-                            title: 'Checklist',
-                            cls: 'sfa-left-container',
-                            displayField: 'text',
-                            getTitleTextTpl: function () {
-                                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-                            },
-                            getItemTextTpl: function () {
-                                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-                            },
-                            detailCard: new Ext.Panel(),
-                            store: this.checklistDefaultStoreStore,
-                            items: [
-                                {
-                                    xtype: 'toolbar',
-                                    docked: 'top',
-
-                                    items: [
-                                        {
-                                            xtype: 'button',
-                                            name: 'add-field',
-                                            action: 'add-field',
-                                            ui: 'action',
-                                            cls: 'sfa-add',
-                                            iconCls: 'add'
-                                        }
-                                    ]
-                                }
-                            ]
-
-                        },
-                        {
-                            xtype: 'panel',
-                            layout: 'card',
-                            flex: 2,
-                            minWidth: 150,
-                            name: 'field-info',
-                            scrollable: false
-                        }
-                    ]
-                },
+                this.checkListTree,
                 {
                     xtype: 'panel',
                     title: 'System',
