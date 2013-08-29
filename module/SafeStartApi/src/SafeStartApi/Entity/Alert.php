@@ -28,14 +28,21 @@ class Alert extends BaseEntity
     protected $field;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text", nullable=true)
      */
-    protected $triggerValue;
+    protected $comments;
+
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     *
+     * PHP array using json_encode() and json_decode()
+     */
+    protected $images;
 
     /**
     * Magic getter to expose protected properties.
@@ -70,15 +77,6 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
      * Get id
      *
      * @return integer 
@@ -112,26 +110,49 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Set triggerValue
+     * Set comments
      *
-     * @param string $triggerValue
+     * @param string $comments
      * @return Alert
      */
-    public function setTriggerValue($triggerValue)
+    public function setComments($comments)
     {
-        $this->triggerValue = $triggerValue;
+        $this->comments = $comments;
     
         return $this;
     }
 
     /**
-     * Get triggerValue
+     * Get comments
      *
      * @return string 
      */
-    public function getTriggerValue()
+    public function getComments()
     {
-        return $this->triggerValue;
+        return $this->comments;
+    }
+
+    /**
+     * Set images
+     *
+     * @param array $images
+     * @return Alert
+     */
+    public function setImages($images)
+    {
+        $this->images = $images;
+    
+        return $this;
+    }
+
+    /**
+     * Get images
+     *
+     * @return array 
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 
     /**
