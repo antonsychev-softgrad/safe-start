@@ -98,10 +98,61 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
-        $id = $this->params('id');
+        // save checklist
+        $vehicleId = $this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+
+        if ($this->authService->hasIdentity()) {
+            $user = $this->authService->getStorage()->read();
+        }
+
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+        $query->setParameter(1, $vehicle);
+        $items = $query->getResult();
+
+        $fieldsStructure = $this->GetDataPlugin()->buildChecklist($items);
+        $fieldsStructure = json_encode($fieldsStructure);
+        $fieldsData = json_encode($this->data->fields);
+
+        $checkList = new \SafeStartApi\Entity\CheckList();
+        $checkList->setVehicle($vehicle);
+        $checkList->setUser($user);
+        $checkList->setFieldsStructure($fieldsStructure);
+        $checkList->setFieldsData($fieldsData);
+        $checkList->setGpsCoords(isset($this->data->gps) ? $this->data->gps : null);
+
+        $this->em->persist($checkList);
+        $this->em->flush();
+
+        $md5 = md5($checkList->getId());
+        $uniqId = hash('adler32', $md5);
+        $uniqId .= hash('crc32', $md5);
+
+        $checkList->setHash($uniqId);
+        $this->em->persist($checkList);
+        $this->em->flush();
+
+        // save alerts
+        $alerts = $this->data->alerts;
+        foreach($alerts as $alert) {
+
+            $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
+            if($field === null) {
+                continue;
+            }
+
+            $newAlert = new \SafeStartApi\Entity\Alert();
+            $newAlert->setField($field);
+            $newAlert->setComment(isset($alert->comment) ? $alert->comment : null);
+            $newAlert->setImages(isset($alert->images) ? json_encode($alert->images) : null);
+            $this->em->persist($newAlert);
+        }
+        $this->em->flush();
+
 
         $this->answer = array(
-            'checklist' => '',
+            'checklist' => $checkList->getHash(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
