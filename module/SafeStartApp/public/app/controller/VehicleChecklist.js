@@ -27,5 +27,4 @@ Ext.define('SafeStartApp.controller.VehicleChecklist', {
         return 'checklist/' + this.currentForm.getValues().id + '/update';
     }
 
-
 });

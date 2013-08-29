@@ -132,10 +132,7 @@ Ext.define('SafeStartApp.controller.Vehicles', {
             this.vehicleChecklistStore.loadData();
         }
         if (!this.checkListTree) {
-            this.checkListTree = Ext.create('SafeStartApp.view.components.UpdateChecklist', {
-                checkListStore: this.vehicleChecklistStore //todo: why does not work?
-            });
-            this.checkListTree.checkListStore = this.vehicleChecklistStore;
+            this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.vehicleChecklistStore});
             this.getInfoPanel().getActiveItem().add(this.checkListTree);
         }
         this.vehicleChecklistStore.addListener('data-load-success', function () {

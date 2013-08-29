@@ -1,28 +1,16 @@
 Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     extend: 'Ext.Panel',
-
+    mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartUpdateChecklistComponent',
+
+    checkListStore: null,
 
     config: {
         xtype: 'panel',
         name: 'checklist',
         title: 'Default Checklist',
         layout: 'hbox',
-        scrollable: true,
         items: [
-
-        ],
-        listeners: {
-            scope: this,
-            show: function (page) {
-                page.loadData();
-            }
-        }
-    },
-
-    loadData: function() {
-        var self = this;
-        this.add(
             {
                 xtype: 'nestedlist',
                 name: 'checklist-tree',
@@ -37,7 +25,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
                     return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
                 },
                 detailCard: new Ext.Panel(),
-                store: self.checkListStore,
+                store: this.checkListStore,
                 items: [
                     {
                         xtype: 'toolbar',
@@ -53,22 +41,29 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
                         ]
                     }
                 ]
-            }
-        );
-
-        this.add(
+            },
             {
                 xtype: 'panel',
                 layout: 'card',
                 flex: 2,
                 minWidth: 150,
-                name: 'field-info',
-                scrollable: false
+                name: 'field-info'
             }
-        );
+        ]
+    },
+
+    constructor: function (config) {
+        this.callParent(arguments);
+        Ext.apply(this, config);
+        this.getTreeList().setStore(this.getChecklistStore());
+    },
+
+    getChecklistStore: function() {
+        return this.checkListStore;
     },
 
     getTreeList: function() {
         return this.down('nestedlist[name=checklist-tree]');
     }
+
 });

@@ -27,7 +27,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         if (!this.getNavMain().getActiveItem().getStore) return;
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         if (!parseInt(this.selectedRecord.get('id')))  this.selectedNodeId = 0;
-        else  this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+        else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
@@ -76,7 +76,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this field from checklist?", function () {
             SafeStartApp.AJAX(self._getDeleteUrl(), {}, function (result) {
                 var parentId = self.selectedRecord.get('parentId');
                 self.getNavMain().getStore().loadData();
@@ -106,19 +106,19 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         }
     },
 
+    reloadEventSet: false,
     _reloadStore: function (fieldId) {
+        this.fieldId = fieldId;
         this.getNavMain().getStore().loadData();
-        this.getNavMain().getStore().addListener('data-load-success', function () {
-            if (!this.selectedNodeId) {
-                this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
-            } else {
-                try {
-                    this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(fieldId));
-                } catch (e) {
-                    this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(fieldId));
-                }
-            }
-            this.currentForm.setRecord(this.getNavMain().getStore().getById(fieldId));
+        if (this.reloadEventSet) return;
+        this.reloadEventSet = true;
+        this.getNavMain().getStore().addListener('load', function () {
+            var record = this.getNavMain().getStore().getById(this.fieldId);
+            console.log(record);
+            this.currentForm.setRecord(record);
+            var node = this.getNavMain().getStore().getNodeById(this.fieldId);
+            if (node.isLeaf()) this.getNavMain().goToLeaf(node);
+            else this.getNavMain().goToNode(node);
         }, this);
 
     },

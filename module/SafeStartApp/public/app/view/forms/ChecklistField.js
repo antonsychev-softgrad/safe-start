@@ -58,11 +58,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Alert(Subquestions) <br/>trigger value',
+                label: 'Trigger filed value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
                     data: [
+                        { rank: '', title: ''},
                         { rank: 'yes', title: 'Yes'},
                         { rank: 'no', title: 'No'}
                     ]
