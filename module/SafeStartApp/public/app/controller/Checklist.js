@@ -3,18 +3,13 @@ Ext.define('SafeStartApp.controller.Checklist', {
 
     config: {
         control: {
-            navMain: {
-                leafitemtap: 'onSelectAction'
-            },
-            checklistPanel: {
-            },
-            'panel[name=user-checklist] formpanel button[action=prev]': {
+            'SafeStartVehicleInspection formpanel button[action=prev]': {
                 tap: 'onPrevBtnTap'
             },
-            'panel[name=user-checklist] formpanel button[action=next]': {
+            'SafeStartVehicleInspection formpanel button[action=next]': {
                 tap: 'onNextBtnTap'
             },
-            'panel[name=user-checklist] formpanel[name=checklist-card-choise-additional] checkboxfield': {
+            'SafeStartVehicleInspection formpanel[name=checklist-card-choise-additional] checkboxfield': {
                 change: 'onSelectAdditional'
             },
             reviewCard: {
@@ -25,28 +20,9 @@ Ext.define('SafeStartApp.controller.Checklist', {
         refs: {
             navMain: 'SafeStartChecklistPage SafeStartNestedListVehicles',
             checklistPage: 'SafeStartChecklistPage',
-            checklistPanel: 'SafeStartChecklistPage panel[name=user-checklist]',
+            checklistPanel: 'SafeStartVehicleInspection',
             reviewCard: 'SafeStartChecklistPage panel[name=user-checklist] formpanel[name=checklist-card-review]'
         }
-    },
-
-    onSelectAction: function (nestedView, list, index, target, record) {
-        if (this.selectedNodeId === record.get('id')) {
-            return;
-        }
-        this.selectedNodeId = record.get('id');
-        switch(record.get('action')) {
-            case 'fill-checklist':
-                this.loadChecklist(record.parentNode.get('id'));
-                break;
-        }
-    },
-
-    loadChecklist: function (id) {
-        var self = this;
-        SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
-            self.getChecklistPage().loadChecklist(result.checklist || {});
-        });
     },
 
     onNextBtnTap: function (btn) {
@@ -100,6 +76,9 @@ Ext.define('SafeStartApp.controller.Checklist', {
 
     onActivateReviewCard: function () {
         console.log('REVIEW');
+    },
+
+    onActivateChecklistPanel: function () {
     }
 
 });

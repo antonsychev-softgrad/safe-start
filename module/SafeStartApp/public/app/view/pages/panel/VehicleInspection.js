@@ -1,67 +1,27 @@
-Ext.define('SafeStartApp.view.pages.Checklist', {
-    extend: 'Ext.Container',
-    requires: [
-        'SafeStartApp.view.pages.toolbar.Checklist',
-        'SafeStartApp.view.pages.nestedlist.Vehicles',
-        'SafeStartApp.store.Vehicles'
-    ],
-    alias: 'widget.SafeStartChecklistPage',
+Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
+    extend: 'Ext.Panel',
+
+    alias: 'widget.SafeStartVehicleInspection',
 
     config: {
-        title: 'Checklist',
-        styleHtmlContent: true,
-        scrollable: false,
-        layout: 'hbox',
+        name: 'vehicle-inspection',
+        layout: {
+            type: 'card'
+        }
     },
 
     initialize: function () {
-        this.setItems([{
-            xtype: 'SafeStartChecklistToolbar',
-            docked: 'top'
-        }, {
-            xtype: 'SafeStartNestedListVehicles',
-            store: this.createVehicleStore() 
-        }, {
-            xtype: 'panel',
-            cls: 'sfa-info-container',
-            layout: 'card',
-            flex: 2,
-            minWidth: 150,
-            scrollable: false,
-            items: [{
-                xtype: 'panel',
-                html: 'Current Information'
-            }, {
-                xtype: 'panel',
-                cls: 'sfa-checklist-container',
-                name: 'user-checklist',
-                layout: {
-                    type: 'card'
-                }
-            }]
-        }]);
-
-        this.callParent();
-    },
-
-    createVehicleStore: function () {
-        var vehiclesStore = Ext.create('SafeStartApp.store.Vehicles'),
-            companyId = SafeStartApp.userModel.get('companyId');
-
-        vehiclesStore.getProxy().setExtraParam('companyId', companyId);
-        return vehiclesStore;
+        console.log(this);
     },
 
     loadChecklist: function (checklists) {
-        var checklistPanel = this.down('panel[cls~=sfa-checklist-container]'),
-            checklistForms = [],
+        var checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
-        Ext.each(checklistPanel.query('formpanel'), function (panel) {
-            checklistPanel.remove(panel);
-        });
-        this.down('panel[cls=sfa-info-container]').setActiveItem(checklistPanel);
+        Ext.each(this.query('formpanel'), function (panel) {
+            this.remove(panel);
+        }, this);
 
         Ext.each(checklists, function (checklist, index) {
             var checklistForm = this.createForm(checklist);
@@ -79,17 +39,12 @@ Ext.define('SafeStartApp.view.pages.Checklist', {
             }
         }, this);
 
-        checklistPanel.add(checklistForms);
+        this.add(checklistForms);
 
         if (choiseAdditionalFields.length) {
-            checklistPanel.add({
+            this.add({
                 xtype: 'formpanel',
                 name: 'checklist-card-choise-additional',
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
-                    pack: 'bottom'
-                },
                 items: [{
                     xtype: 'fieldset',
                     items: choiseAdditionalFields
@@ -98,10 +53,8 @@ Ext.define('SafeStartApp.view.pages.Checklist', {
                     docked: 'top',
                     title: 'Daily inspection checklist additional'
                 }, {
-                    xtype: 'spacer',
-                    flex: 1
-                }, {
                     xtype: 'toolbar',
+                    docked: 'bottom',
                     margin: '40 0 0 0',
                     layout: {
                         type: 'hbox',
@@ -118,26 +71,19 @@ Ext.define('SafeStartApp.view.pages.Checklist', {
                 }]
             });
         }
-        checklistPanel.add(checklistAdditionalForms);
+        this.add(checklistAdditionalForms);
 
-        checklistPanel.add({
+        this.add({
             xtype: 'formpanel',
             name: 'checklist-card-review',
-            layout: {
-                type: 'vbox',
-                align: 'stretch',
-                pack: 'bottom'
-            },
             items: [{
                 xtype: 'titlebar',
                 docked: 'top',
                 title: 'Review'
             }, {
-                xtype: 'spacer',
-                flex: 1
-            }, {
                 xtype: 'toolbar',
                 margin: '40 0 0 0',
+                docked: 'bottom',
                 layout: {
                     type: 'hbox',
                     align: 'stretch',
@@ -162,10 +108,8 @@ Ext.define('SafeStartApp.view.pages.Checklist', {
             docked: 'top',
             title: checklist.groupName
         }, {
-            xtype: 'spacer',
-            flex: 1
-        }, {
             xtype: 'toolbar',
+            docked: 'bottom',
             margin: '40 0 0 0',
             layout: {
                 type: 'hbox',
@@ -284,5 +228,4 @@ Ext.define('SafeStartApp.view.pages.Checklist', {
             items: this.createFields(fieldData.items)
         };
     }
-
 });

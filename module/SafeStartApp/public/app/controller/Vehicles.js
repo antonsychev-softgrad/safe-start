@@ -21,8 +21,9 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         },
 
         refs: {
-            navMain: 'SafeStartCompanyPage > nestedlist[name=vehicles]',
-            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
+            navMain: 'SafeStartNestedListVehicles',
+            infoPanel: 'panel[name=info-container]',
+            vehicleInspectionPanel: 'SafeStartVehicleInspection',
             addButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]'
         }
     },
@@ -39,13 +40,21 @@ Ext.define('SafeStartApp.controller.Vehicles', {
                 this.showUpdateForm();
                 break;
             case 'fill-checklist':
-                this.getInfoPanel().setActiveItem(1);
+                this.loadChecklist(arguments[4].parentNode.get('id'));
+                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
                 break;
             case 'update-checklist':
                 this.getInfoPanel().setActiveItem(2);
                 break;
         }
 
+    },
+
+    loadChecklist: function (id) {
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist || {});
+        });
     },
 
     showUpdateForm: function() {

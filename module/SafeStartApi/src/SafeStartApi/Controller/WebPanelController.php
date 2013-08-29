@@ -25,7 +25,7 @@ class WebPanelController extends RestController
         }
 
         if($this->AclPlugin()->isAllowed('userPanel', 'view')) {
-            $mainMenu[] = 'Checklist';
+            $mainMenu[] = 'Vehicles';
         }
 
         $mainMenu[] = 'Contact';

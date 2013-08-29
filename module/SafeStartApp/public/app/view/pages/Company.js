@@ -3,6 +3,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
+        'SafeStartApp.view.pages.nestedlist.Vehicles',
+        'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.model.Vehicle'
     ],
 
@@ -39,7 +41,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             docked: 'top'
         });
 
-        this.vehiclesStore = Ext.create('SafeStartApp.store.Vehicles');
+        this.vehiclesStore = Ext.create('SafeStartApp.store.Vehicles')
         this.add(this.getVehiclesList());
 
         this.add(this.getInfoPanel());
@@ -51,59 +53,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     getVehiclesList: function() {
-        var self = this;
         return {
-            xtype: 'nestedlist',
-            id: 'companyVehicles',
-            name: 'vehicles',
-            minWidth: 150,
-            maxWidth: 300,
-            title: 'Vehicles',
-            displayField: 'text',
-            cls: 'sfa-left-container',
-            flex:1,
-            getTitleTextTpl: function() {
-                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-            },
-            getItemTextTpl: function() {
-                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-            },
-            detailCard: new Ext.Panel(),
-            store: this.vehiclesStore,
-            items: [
-                {
-                    xtype: 'toolbar',
-                    docked: 'top',
-                    items: [
-                        {
-                            xtype: 'searchfield',
-                            placeHolder: 'Search...',
-                            listeners: {
-                               // scope: this,
-                                clearicontap: function () {
-                                    self.vehiclesStore.clearFilter();
-                                },
-                                keyup: function (field) {
-                                    self.filterStoreDataBySearchFiled(self.vehiclesStore, field, 'text');
-                                    //todo: fix searching
-                                    //this.up('nestedlist[name=vehicles]').setData( this.up('nestedlist[name=vehicles]').getStore().getData());
-                                }
-                            }
-                        },
-                        { xtype: 'spacer' },
-                        {
-                            xtype: 'button',
-                            name: 'reload',
-                            ui: 'action',
-                            iconCls: 'refresh',
-                            cls:'sfa-search-reload',
-                            handler: function() {
-                                this.up('nestedlist[name=vehicles]').getStore().loadData();
-                            }
-                        }
-                    ]
-                }
-            ]
+            xtype: 'SafeStartNestedListVehicles',
+            store: this.vehiclesStore
         };
     },
 
@@ -130,9 +82,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     html: "Daily Inspection"
                 },
                 {
-                    xtype: 'panel',
-                    name: 'vehicle-manage',
-                    html: "Manage Checklist"
+                    xtype: 'SafeStartVehicleInspection'
                 }
             ]
         };

@@ -1,6 +1,6 @@
-Ext.define('SafeStartApp.view.pages.toolbar.Checklist', {
+Ext.define('SafeStartApp.view.pages.toolbar.Vehicles', {
     extend: 'SafeStartApp.view.pages.toolbar.Main',
-    alias: 'widget.SafeStartChecklistToolbar',
+    alias: 'widget.SafeStartToolbarVehicles',
 
     getToolbarItems: function () {
         this.toolbarButtons = [{
