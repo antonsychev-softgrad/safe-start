@@ -98,6 +98,7 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
+
         // save checklist
         $vehicleId = $this->params('id');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
@@ -112,6 +113,20 @@ class VehicleController extends RestrictedAccessRestController
         $items = $query->getResult();
 
         $fieldsStructure = $this->GetDataPlugin()->buildChecklist($items);
+        foreach($fieldsStructure as $structKey => $struct) {
+            if(isset($struct['fields']) && is_array($struct['fields'])) {
+                foreach($struct['fields'] as $fieldKey => $field) {
+                    $id = (int) $field['id'];
+                    $query = $this->em->createQuery('SELECT f.alert_title FROM SafeStartApi\Entity\Field f WHERE f.id = ?1');
+                    $query->setParameter(1, $id);
+                    $alertTitle = $query->getSingleScalarResult();
+                    if(!empty($alertTitle)) {
+                        $fieldsStructure[$structKey]['fields'][$fieldKey]['alertTitle'] = $alertTitle;
+                    }
+                }
+            }
+        }
+
         $fieldsStructure = json_encode($fieldsStructure);
         $fieldsData = json_encode($this->data->fields);
 
