@@ -78,8 +78,8 @@ Ext.apply(SafeStartApp,  {
 
     loadMainMenu: function() {
         this.AJAX('web-panel/getMainMenu', {}, function(result) {
-            SafeStartApp.setViewPort(result.mainMenu || null);
             SafeStartApp.userModel.setData(result.userInfo || {});
+            SafeStartApp.setViewPort(result.mainMenu || null);
         });
     },
 
@@ -132,7 +132,8 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        'Vehicles'
+        'Vehicles',
+        'Checklist'
     ],
 
     icon: {
