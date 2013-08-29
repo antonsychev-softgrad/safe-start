@@ -123,7 +123,8 @@ Ext.application({
         'pages.Contact',
         'pages.Companies',
         'pages.Company',
-        'pages.Users'
+        'pages.Users',
+        'pages.SystemSettings'
     ],
 
     controllers: [
@@ -133,7 +134,9 @@ Ext.application({
         'Users',
         'Company',
         'Vehicles',
-        'Checklist'
+        'Checklist',
+        'DefaultChecklist',
+        'VehicleChecklist'
     ],
 
     icon: {

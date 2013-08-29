@@ -2,12 +2,8 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Role\GenericRole as Role;
-use Zend\Permissions\Acl\Resource\GenericResource as Resource;
-use SafeStartApi\Model\ImageProcessor;
-use SafeStartApi\Base\Entity;
 use Zend\Validator;
+use SafeStartApi\Model\ImageProcessor;
 
 class UploadPlugin extends AbstractPlugin
 {
@@ -66,6 +62,13 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function __invoke($options = null) {
+
+        $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+        $defUsersPath = $moduleConfig['defUsersPath'];
+        $defUsersPath = $this->get_filter_path($defUsersPath);
+
+        $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
+        $options['upload_url'] = $this->get_full_url() . $defUsersPath;
         $this->setOptions($options);
         return $this;
     }
@@ -77,18 +80,17 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function setOptions($options = null) {
+        $defUsersPath = '/data/users/';
         $this->options = array(
-            'script_url' => $this->get_full_url().'/',
-            'upload_dir' => $this->get_filter_path('/data/users/'),
-            'upload_url' => $this->get_full_url().'/data/users/',
+            'script_url' => $this->get_full_url() . '/',
+            'upload_dir' => $this->get_full_path() . $defUsersPath,
+            'upload_url' => $this->get_full_url() . $defUsersPath,
             'user_dirs' => true,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
             'rename_file' => true,
             'overwrite_file' => true,
             // Set the following option to 'POST', if your server does not support
-            // DELETE requests. This is a parameter sent to the client:
-            'delete_type' => 'DELETE',
             'access_control_allow_origin' => '*',
             'access_control_allow_credentials' => false,
             'access_control_allow_methods' => array(
@@ -132,10 +134,10 @@ class UploadPlugin extends AbstractPlugin
             'min_height' => 70,
             // Set the following option to false to enable resumable uploads:
             'discard_aborted_uploads' => true,
+            'use_versions_path' => false,
+            'versions_delimiter' => '',
             // Set to false to disable rotating images based on EXIF meta data:
             'orient_image' => true,
-            'use_versions_path' => false,
-            'versions_delimiter' => '_',
             'image_versions' => array(
                 'full' => array(
                     'max_width' => 1024,
@@ -161,7 +163,9 @@ class UploadPlugin extends AbstractPlugin
 
         if ($options) {
             if(isset($options['upload_dir']))
-                $options['upload_dir'] = $this->get_filter_path($options['upload_dir']);
+                $options['upload_dir'] = $this->get_full_path() . $this->get_filter_path($options['upload_dir']);
+            if(isset($options['upload_url']))
+                $options['upload_url'] = $this->get_full_url() . $this->get_filter_path($options['upload_url']);
             $this->options = array_merge($this->options, $options);
         }
     }
@@ -211,6 +215,17 @@ class UploadPlugin extends AbstractPlugin
     }
 
 
+    protected function get_full_path() {
+        $root = $this->get_server_var('DOCUMENT_ROOT');
+
+        if(!file_exists($root . "/init_autoloader.php")) {
+           $root = dirname($root);
+        }
+
+        return $root;
+    }
+
+
     /**
      * UploadPlugin::get_filter_path()
      *
@@ -218,7 +233,7 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function get_filter_path($fEndPath = '/') {
-        $root       = $this->get_server_var('DOCUMENT_ROOT');
+        $root       = $this->get_full_path();
         $fEndPath   = str_replace("{$root}", '', $fEndPath);
         $fEndPath   = str_replace('\\', '/', $fEndPath);
 
@@ -228,7 +243,7 @@ class UploadPlugin extends AbstractPlugin
             $fEndPath = preg_replace('/^(.*)$/isU', "$1", $fEndPath);
         }
 
-        $returnFolder = $root . '/' . $fEndPath;
+        $returnFolder = '/' . $fEndPath;
         if(!preg_match('/.*(\/)$/isU', $returnFolder, $match)) {
             $returnFolder .= '/';
         }
@@ -249,16 +264,12 @@ class UploadPlugin extends AbstractPlugin
             $user_folder = ($userDirs > 0) ? "{$userDirs}/" : '';
         } elseif (is_string($userDirs)) {
             $user_folder = (strlen($userDirs) > 0) ? "{$userDirs}/" : '';
-        } elseif (is_array($userDirs)) {
-            $user_folder = isset($user['id']) ? "{$userDirs[id]}/" : '';
-        } elseif($userDirs instanceof SafeStartApi\Entity\User) {
-            $user_folder = isset($userDirs->id) ? "".$userDirs->getId() . "/" : '';
         } else {
             try{
                 if(isset($this->getController()->authService)) {
                     if($this->getController()->authService->hasIdentity()) {
                         $user = $this->getController()->authService->getStorage()->read();
-                        $user_folder = isset($user->id) ? "".$user->getId() . "/" : '';
+                        $user_folder = "".$user->getId() . "/";
                     }
                 }
             } catch(\Exception $e) {
@@ -545,7 +556,7 @@ class UploadPlugin extends AbstractPlugin
                 $src_img = imagecreatefromjpeg($file_path);
                 $write_image = 'imagejpeg';
                 $image_quality = isset($options['jpeg_quality']) ?
-                    $options['jpeg_quality'] : 75;
+                    $options['jpeg_quality'] : 95;
                 break;
             case 'gif':
                 imagecolortransparent($new_img, imagecolorallocate($new_img, 0, 0, 0));
@@ -646,13 +657,6 @@ class UploadPlugin extends AbstractPlugin
                 $this->count_file_objects() >= $this->options['max_number_of_files'])
             ) {
             $file->error = $this->get_error_message('max_number_of_files');
-            return false;
-        }
-
-        $extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array('jpg', 'jpeg', 'png');
-        $info = @getimagesize($uploaded_file);
-        if (!preg_match('/image\/('. implode('|', $extensions) .')/is', $info['mime'], $p)) {
-            $file->error = 'File has an incorrect mimetype or extension';
             return false;
         }
 
@@ -822,7 +826,12 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function get_version_file_name($file_name, $version) {
-        return preg_replace('/(\..*)$/isU', $this->options['versions_delimiter'] . "{$version}$1", $file_name);
+
+        $versions = $this->options['image_versions'];
+        $opts = $versions[$version];
+        $version = $opts['max_width'] . 'x' . $opts['max_height'];
+
+        return preg_replace('/(\.[^\.]*)$/isU', $this->options['versions_delimiter'] . "{$version}$1", $file_name);
     }
 
     /**
@@ -1014,12 +1023,13 @@ class UploadPlugin extends AbstractPlugin
 
         $file = new \stdClass();
         $file->name = $this->get_file_name($name, $type, $index, $content_range);
-        $file->nameOnly  = preg_replace('/(.*)\..*$/is','$1',$file->name);
-        $file->ext  = preg_replace('/.*\.(.*)$/is','$1',$file->name);
-        $file->type = $type;
+        $file->nameOnly  = preg_replace('/(.*)\.[^\.]*$/is','$1',$file->name);
+        $file->ext  = preg_replace('/.*\.([^\.]*)$/is','$1',$file->name);
         $file->size = $this->fix_integer_overflow(intval($size));
+        $file->type = $type;
         $file->thumbNames = array_keys($this->options['image_versions']);
         $file->useThumbFolder = $this->options['use_versions_path'];
+        $file->thumbDelimiter = $this->options['versions_delimiter'];
 
         if ($this->validate($uploaded_file, $file, $error, $index)) {
             $this->handle_form_data($file, $index);
@@ -1066,7 +1076,21 @@ class UploadPlugin extends AbstractPlugin
             }
             $this->set_additional_file_properties($file);
         }
-        return $file;
+
+        $newFileInfo = new \stdClass();
+        $newFileInfo->hash = $file->nameOnly;
+        $newFileInfo->ext = $file->ext;
+        $newFileInfo->sizes = array();
+        foreach($this->options['image_versions'] as $version => $opts) {
+            $f = new \stdClass();
+            $f->$version = $opts['max_width'] . 'x' . $opts['max_height'];
+            $newFileInfo->sizes[] = $f;
+        }
+        if(isset($file->error)) {
+            $newFileInfo->error = $file->error;
+        }
+
+        return $newFileInfo;
     }
 
     /**
@@ -1379,11 +1403,17 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function post($print_response = true) {
+
         if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
             return $this->delete($print_response);
         }
         $upload = isset($_FILES[$this->options['param_name']]) ?
             $_FILES[$this->options['param_name']] : null;
+
+        if($upload === null) {
+            throw new \Exception('\'' .$this->options['param_name'] . '\' field is empty');
+        }
+
         // Parse the Content-Disposition header, if available:
         $file_name = $this->get_server_var('HTTP_CONTENT_DISPOSITION') ?
             rawurldecode(preg_replace(
@@ -1396,8 +1426,9 @@ class UploadPlugin extends AbstractPlugin
         $content_range = $this->get_server_var('HTTP_CONTENT_RANGE') ?
             preg_split('/[^0-9]+/', $this->get_server_var('HTTP_CONTENT_RANGE')) : null;
         $size =  $content_range ? $content_range[3] : null;
-        $files = array();
+        $files = null;
         if ($upload && is_array($upload['tmp_name'])) {
+            $files = array();
             // param_name is an array identifier like "files[]",
             // $_FILES is a multi-dimensional array:
             foreach ($upload['tmp_name'] as $index => $value) {
@@ -1424,41 +1455,48 @@ class UploadPlugin extends AbstractPlugin
                 );
             }
         } else {
+            if(isset($upload['name']) && !empty($upload['name'])) {
+                $pathinfo   = pathinfo($upload['name']);
+                $ext        = $pathinfo['extension'];
+                $hash       = md5_file($upload['tmp_name']);
 
-            $pathinfo   = pathinfo($upload['name']);
-            $ext        = $pathinfo['extension'];
-            $hash       = md5_file($upload['tmp_name']);
+                // param_name is a single object identifier like "file",
+                // $_FILES is a one-dimensional array:
+                //$files[] = $this->handle_file_upload(
+                $files = $this->handle_file_upload(
+                    isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
 
-            // param_name is a single object identifier like "file",
-            // $_FILES is a one-dimensional array:
-            $files[] = $this->handle_file_upload(
-                isset($upload['tmp_name']) ? $upload['tmp_name'] : null,
+                    $this->options['rename_file']
+                        ? "{$hash}.{$ext}"
+                        : ($file_name
+                            ? $file_name
+                            : (isset($upload['name'])
+                                ? $upload['name']
+                                : null))
+                    ,
 
-                $this->options['rename_file']
-                    ? "{$hash}.{$ext}"
-                    : ($file_name
-                        ? $file_name
-                        : (isset($upload['name'])
-                            ? $upload['name']
-                            : null))
-                ,
-
-                $size ? $size : (isset($upload['size']) ?
-                        $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
-                isset($upload['type']) ?
-                        $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
-                isset($upload['error']) ? $upload['error'] : null,
-                null,
-                $content_range
-            );
+                    $size ? $size : (isset($upload['size']) ?
+                            $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
+                    isset($upload['type']) ?
+                            $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
+                    isset($upload['error']) ? $upload['error'] : null,
+                    null,
+                    $content_range
+                );
+            } else {
+                if($upload === null) {
+                    throw new \Exception('Information about downloadable file is not found.');
+                }
+            }
         }
 
         return $print_response
             ? $this->generate_response(
-                array($this->options['param_name'] => $files),
+                //array($this->options['param_name'] => $files),
+                $files,
                 $print_response
             )
-            : $this->generate_result_array($files);
+            : $this->generate_result_array(!is_array($files) ? array($this->options['param_name'] => $files) : $files);
     }
 
     /**

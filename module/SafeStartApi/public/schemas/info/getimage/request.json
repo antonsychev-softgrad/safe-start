@@ -1,0 +1,34 @@
+{
+    "description": "Get image by UserId and FileName request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "uid": {
+                    "description": "User ID (For scanning user folder. If set to '0', it will be scanned by all users folder. Return the first matching file)",
+                    "type": "string",
+                    "required": true
+                },
+                "image": {
+                    "description": "Image name (e.g. file_name, file_name320x220, file_name320x220.png, ...). 320x220 - thumb size.",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

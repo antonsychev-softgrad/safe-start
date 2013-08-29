@@ -15,74 +15,44 @@
             }
         },
         "data": {
-            "description": "Response data",
-            "type": "array",
+            "description": "File info",
+            "type": "object",
             "required": true,
-            "items": {
-                "description": "name of files field",
-                "type": "array",
-                "required": true,
-                "items": {
-                    "description": "File info",
-                    "type": "object",
+            "properties": {
+                "hash": {
+                    "description": "File name without extension (hash)",
+                    "type": "string",
+                    "required": true
+                },
+                "ext": {
+                    "description": "File name extension",
+                    "type": "string",
+                    "required": true
+                },
+                "type": {
+                    "description": "File name mimeType",
+                    "type": "string",
+                    "required": true
+                },
+                "sizes": {
+                    "description": "List of file thumb names",
+                    "type": "array",
                     "required": true,
-                    "properties": {
-                        "name": {
-                            "description": "File name with extension",
+                    "items": {
+                        "description": "Thumb params (thumbName - name for thumb params (e.g. full, medium, small, ...))",
+                        "type": "object",
+                        "required": true,
+                        "properties": {
+                            "thumbName": "Thumb params (e.g. 1024x768, 200x200, ...)",
                             "type": "string",
                             "required": true
-                        },
-                        "nameOnly": {
-                            "description": "File name without extension",
-                            "type": "string",
-                            "required": true
-                        },
-                        "ext": {
-                            "description": "File name extension",
-                            "type": "string",
-                            "required": true
-                        },
-                        "type": {
-                            "description": "File name mimeType",
-                            "type": "string",
-                            "required": true
-                        },
-                        "size": {
-                            "description": "Size of file in bytes",
-                            "type": "string",
-                            "required": true
-                        },
-                        "thumbNames": {
-                            "description": "List of file thumb names",
-                            "type": "array",
-                            "required": false,
-                            "items": {
-                                "description": "Thumb name",
-                                "type": "string",
-                                "required": false
-                            }
-                        },
-                        "useThumbFolder": {
-                            "description": "File thumbnail is stored in folder by 'Thumbname' without 'Thumbname' prefix. (e.g. if is true - /thumbname/fname.ftype, else - /fname_thumbname.ftype)",
-                            "type": "boolean",
-                            "required": true
-                        },
-                        "url": {
-                            "description": "Full url for image",
-                            "type": "string",
-                            "required": true
-                        },
-                        "ThumbnameUrl": {
-                            "description": "Full url for image thumb (Many parameters, return for every Thumbname. e.g. 220x20Url, fullUrl, etc.)",
-                            "type": "string",
-                            "required": true
-                        },
-                        "error": {
-                            "description": "Error message",
-                            "type": "string",
-                            "required": false
                         }
                     }
+                },
+                "error": {
+                    "description": "Error message",
+                    "type": "string",
+                    "required": false
                 }
             }
         }

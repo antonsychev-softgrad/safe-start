@@ -147,4 +147,94 @@ class AdminController extends AdminAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function getDefaultChecklistAction()
+    {
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0');
+        $items = $query->getResult();
+        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function updateDefaultChecklistFiledAction()
+    {
+        //  todo: check request format;
+
+        $fieldId = (int)$this->params('id');
+        if ($fieldId) {
+            $field = $this->em->find('SafeStartApi\Entity\DefaultField', $fieldId);
+            if (!$field) {
+                $this->answer = array(
+                    "errorMessage" => "Checklist Filed not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            $field = new \SafeStartApi\Entity\DefaultField();
+        }
+
+        $field->setTitle($this->data->title);
+
+        if (!empty($this->data->parentId) && $this->data->parentId != "NaN") {
+            $parentField = $this->em->find('SafeStartApi\Entity\DefaultField', (int) $this->data->parentId);
+            if (!$parentField) {
+                $this->answer = array(
+                    "errorMessage" => "Wrong parent filed."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 401);
+            }
+            $field->setParent($parentField);
+        }
+
+        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker'))) {
+            $this->answer = array(
+                "errorMessage" => "Wrong field type."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 401);
+        }
+
+        $field->setType($this->data->type);
+        $field->setOrder((int)$this->data->sort_order);
+        $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
+        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_title : '');
+        $field->setTriggerValue($this->data->trigger_value);
+        $field->setEnabled((int)$this->data->enabled);
+
+        $this->em->persist($field);
+        $field->setAuthor($this->authService->getStorage()->read());
+
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'fieldId' => $field->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
+    public function deleteDefaultChecklistFiledAction()
+    {
+        $fieldId = (int)$this->params('id');
+
+        $field = $this->em->find('SafeStartApi\Entity\DefaultField', $fieldId);
+        if (!$field) {
+            $this->answer = array(
+                "errorMessage" => "Checklist Filed not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $field->setDeleted(1);
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
 }

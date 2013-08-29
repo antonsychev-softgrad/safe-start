@@ -38,6 +38,49 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    protected function copyVehicleDefFields($vehicle, $defParent = null, $parent = null) {
+        $repField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
+
+        $defFields = new \Doctrine\Common\Collections\ArrayCollection();
+        $newFields = new \Doctrine\Common\Collections\ArrayCollection();
+        if ($defParent === null) {
+            $defFields = $repField->findBy(array('parent' => null));
+        } else {
+            $defFields = $repField->findBy(array('parent' => $defParent->getId()));
+        }
+
+        foreach ($defFields as $defField) {
+            $newFild = new \SafeStartApi\Entity\Field();
+
+            $newFild->setParent($parent);
+            $newFild->setVehicle($vehicle);
+            $newFild->setTitle($defField->getTitle());
+            $newFild->setType($defField->getType());
+            $newFild->setAdditional($defField->getAdditional());
+            $newFild->setTriggerValue($defField->getTriggerValue());
+            $newFild->setAlertTitle($defField->getAlertTitle());
+            $alertsList = $defField->getAlerts();
+            foreach ($alertsList as $alert) {
+                $newFild->addAlert($alert);
+            }
+            $newFild->setOrder($defField->getOrder());
+            $newFild->setEnabled($defField->getEnabled());
+            $newFild->setDeleted($defField->getDeleted());
+            $newFild->setAuthor($defField->getAuthor());
+
+            // $newFild->setCreation_date(date_create());
+            if ($parent !== null) {
+                $parent->addChildred($newFild);
+                $this->em->persist($parent);
+            }
+
+            $this->copyVehicleDefFields($vehicle, $defField, $newFild);
+            $this->em->persist($newFild);
+            $vehicle->addField($newFild);
+            $this->em->persist($vehicle);
+        }
+    }
+
     public function updateVehicleAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -51,42 +94,7 @@ class CompanyController extends RestrictedAccessRestController
             }
         } else {
             $vehicle = new \SafeStartApi\Entity\Vehicle();
-
-           /** /
-           $repGroupField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
-           $defFields = $repGroupField->findAll();
-           foreach($defFields as $defField) {
-
-           $newField = new \SafeStartApi\Entity\Field();
-           $defFieldVars = array_keys($defField->toArray());
-           foreach($defFieldVars as $defFieldVar) {
-
-           if(strtolower($defFieldVar) == 'id') {
-           continue;
-           }
-
-           $setFuncName = 'set';
-           $setFuncName .= ucfirst($defFieldVar);
-
-           $getDefFuncName = 'get';
-           $getDefFuncName .= ucfirst($defFieldVar);
-
-           if(!method_exists($newField, $setFuncName)) {
-           continue;
-           }
-
-           $fieldVal = $defField->$getDefFuncName();
-
-           if($fieldVal instanceof \Doctrine\Common\Collections\ArrayCollection) {
-           continue;
-           }
-
-           $newField->$setFuncName($fieldVal);
-           }
-           $this->em->persist($newField);
-           $vehicle->addField($newField);
-           }
-           /**/
+            $this->copyVehicleDefFields($vehicle);
         }
 
         //todo: check access to company
@@ -172,5 +180,117 @@ class CompanyController extends RestrictedAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
 
+    }
+
+    public function getVehicleChecklistAction()
+    {
+        // todo: check access
+
+        $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
+        $query->setParameter(1, $vehicle);
+        $items = $query->getResult();
+        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function updateVehicleChecklistFiledAction()
+    {
+        //  todo: check request format;
+        $vehicleId = (int) $this->data->vehicleId;
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $fieldId = (int)$this->params('id');
+        if ($fieldId) {
+            $field = $this->em->find('SafeStartApi\Entity\Field', $fieldId);
+            if (!$field) {
+                $this->answer = array(
+                    "errorMessage" => "Checklist Filed not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            $field = new \SafeStartApi\Entity\DefaultField();
+        }
+
+        $field->setTitle($this->data->title);
+
+        if (!empty($this->data->parentId) && $this->data->parentId != "NaN") {
+            $parentField = $this->em->find('SafeStartApi\Entity\Field', (int) $this->data->parentId);
+            if (!$parentField) {
+                $this->answer = array(
+                    "errorMessage" => "Wrong parent filed."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 401);
+            }
+            $field->setParent($parentField);
+        }
+
+        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker'))) {
+            $this->answer = array(
+                "errorMessage" => "Wrong field type."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 401);
+        }
+
+        $field->setType($this->data->type);
+        $field->setOrder((int)$this->data->sort_order);
+        $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
+        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_title : '');
+        $field->setTriggerValue($this->data->trigger_value);
+        $field->setEnabled((int)$this->data->enabled);
+        $field->setVehicle($vehicle);
+
+        $this->em->persist($field);
+        $field->setAuthor($this->authService->getStorage()->read());
+
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'fieldId' => $field->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
+    public function deleteVehicleChecklistFiledAction()
+    {
+        // todo: check access
+
+        $fieldId = (int)$this->params('id');
+
+        $field = $this->em->find('SafeStartApi\Entity\Field', $fieldId);
+        if (!$field) {
+            $this->answer = array(
+                "errorMessage" => "Checklist Filed not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $field->setDeleted(1);
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }

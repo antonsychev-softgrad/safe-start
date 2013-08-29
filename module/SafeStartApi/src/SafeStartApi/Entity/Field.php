@@ -142,7 +142,19 @@ class Field extends BaseEntity
      */
     public function toArray()
     {
-        return get_object_vars($this);
+        return array(
+            'id' => (!is_null($this->id)) ? $this->id : '',
+            'type' => (!is_null($this->type)) ? $this->getType() : '',
+            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'text' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
+            'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
+            'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
+            'enabled' => (int) $this->enabled,
+            'additional' => (int) $this->additional,
+            'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
+            'vehicleId' => $this->getVehicle() ? $this->getVehicle()->getId() : null
+        );
     }
 
     /**

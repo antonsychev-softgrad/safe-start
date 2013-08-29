@@ -82,10 +82,15 @@ class RequestLogger extends AbstractHelper
                 $logger->debug("POST data:\n" . $this->requestJson);
             }
         }
+
+        if (isset($_FILES) && !empty($_FILES)) {
+            $logger->debug("FILES data:\n" .  json_encode($_FILES));
+        }
+
         // log response
         if (function_exists('yaml_emit')) {
             $writer = new YamlWriter();
-            $logger->debug("Response:\n" . $writer->toString($value));
+            $logger->debug("Response:\n" . $writer->toString((array)$value));
         } else {
             $logger->debug("Response:\n" . json_encode($value));
         }

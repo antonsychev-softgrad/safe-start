@@ -5,6 +5,7 @@ use ZendPdf;
 use SafeStartApi\Model\ImageProcessor;
 
 class PdfPlugin extends AbstractPlugin {
+
     const PAGE_PADDING_LEFT = 58;
     const PAGE_PADDING_TOP = 24;
     const PAGE_PADDING_RIGHT = 58;
@@ -19,16 +20,20 @@ class PdfPlugin extends AbstractPlugin {
     const BLOCK_SUBHEADER_COLOR_LINE_SIZE = 36;
     const BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM = 13;
     const BLOCK_TEXT_SIZE = 12;
-    const BLOCK_TEXT_LINE_SPACING = 2;
+    const BLOCK_TEXT_LINE_SPACING_BEFORE = 5;
+    const BLOCK_TEXT_LINE_SPACING_AFTER = 5;
+    const BLOCK_TEXT_LINE_SPACING_AT = 2;
 
     const TEXT_ALIGN_LEFT = 'left';
     const TEXT_ALIGN_RIGHT = 'right';
     const TEXT_ALIGN_CENTER = 'center';
 
+
     protected $document;
     protected $currentPage;
     protected $font;
-    protected $uploadPath = '/data/users/'; // automatic add '/userId/pdf/'
+    protected $uploadPath; // automatic add '/userId/pdf/'
+    protected $name = 'checklist_review';
     protected $dateGeneration;
 
 
@@ -38,6 +43,7 @@ class PdfPlugin extends AbstractPlugin {
         }
         return $this->create($params);
     }
+
 
     public function create($params = null) {
 
@@ -68,7 +74,6 @@ class PdfPlugin extends AbstractPlugin {
                 ),
 
 
-
             array(
                 'title' => 'Safety',
                 'status' => 'ok',
@@ -95,7 +100,6 @@ class PdfPlugin extends AbstractPlugin {
                 ),
 
 
-
             array(
                 'title' => 'Safety',
                 'status' => 'ok',
@@ -120,13 +124,17 @@ class PdfPlugin extends AbstractPlugin {
                 'title' => 'Auxiliary Motor',
                 'status' => 'ok',
                 ),
-        );
+            );
 
 
         $alertsDetails = array(
             array(
                 'subheader' => 'Are the tires correctly inflated, in good working order and with wheel nuts tightened?',
                 'details' => array('Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.'),
+                'comment' => 'It`s very very big G',
+                'fotos' => array(
+
+                    ),
                 ),
             array(
                 'subheader' => 'Maecena nec',
@@ -158,27 +166,29 @@ class PdfPlugin extends AbstractPlugin {
                 ),
             );
 
-
+        $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
         $fontPath = dirname(__file__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
 
         $this->document = new ZendPdf\PdfDocument();
         $this->currentPage = new ZendPdf\Page(ZendPdf\Page::SIZE_A4);
         //$this->font = ZendPdf\Font::fontWithName(ZendPdf\Font::FONT_HELVETICA);
         $this->font = ZendPdf\Font::fontWithPath($fontPath);
+        $this->uploadPath = $moduleConfig['defUsersPath'];
         $this->dateGeneration = date_create();
 
         // header >
         $topPosInPage = $this->drawHeader('checklist review');
         // draw vehicle details block >
         $topPosInPage = $this->drawTextBlock('vehicle', 'vehicle details', $vehicleDetails, $topPosInPage);
+
         // draw alerts block >
         $topPosInPage = $this->drawTextBlock('alerts', 'alerts', $alertsDetails, $topPosInPage);
 
         $this->document->pages[] = $this->currentPage;
 
-        $name = 'checklist_review';
-        $file_name = $this->get_name($name);
-        $full_name = $this->get_full_name($name);
+
+        $file_name = $this->get_name();
+        $full_name = $this->get_full_name();
         $this->document->save($full_name);
 
         /**/
@@ -190,13 +200,14 @@ class PdfPlugin extends AbstractPlugin {
         return $full_name;
     }
 
+
     protected function drawHeader($headerTitle) {
 
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();
 
         // draw logo image >
-        $root = $this->get_server_var('DOCUMENT_ROOT');
+        $root = $this->get_root_path();
 
         $logoMaxWidth = 199;
         $logoMaxHeight = 53;
@@ -322,7 +333,7 @@ class PdfPlugin extends AbstractPlugin {
                 $text = trim($line);
                 $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage);
 
-                if(!$subLineCounter++) {
+                if (!$subLineCounter++) {
                     $fLinePos = $topPosInPage;
                 }
 
@@ -372,8 +383,9 @@ class PdfPlugin extends AbstractPlugin {
                 $text = trim($line);
                 $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#ff0000', $topPosInPage);
                 if ((--$lineCounter) > 0) {
-                    $topPosInPage -= (self::BLOCK_SUBHEADER_SIZE + self::BLOCK_TEXT_LINE_SPACING);
-                } else {
+                    $topPosInPage -= (self::BLOCK_SUBHEADER_SIZE + self::BLOCK_TEXT_LINE_SPACING_AT);
+                }
+                else {
                     $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
                 }
 
@@ -393,7 +405,7 @@ class PdfPlugin extends AbstractPlugin {
                     $topPosInPage -= self::BLOCK_TEXT_SIZE;
                     // > end draw subheader.
                     if ((--$lineCounter) > 0) {
-                        $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING;
+                        $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
                     }
                 }
             }
@@ -419,6 +431,86 @@ class PdfPlugin extends AbstractPlugin {
         $this->currentPage->setStyle($style)->drawText($text, $leftPosInStr, $topYPosition);
 
         return $topYPosition;
+    }
+
+
+    protected function drawImage($logoPath, $topPosInPage, $position = self::TEXT_ALIGN_CENTER) {
+
+        $thumbLogoPath = null;
+
+        $pageContentWidth = $this->getPageContentWidth();
+        $pageContentHeight = $this->getPageContentHeight();
+
+        $logo = ZendPdf\Image::imageWithPath($logoPath);
+        $logoWidth = $logo->getPixelWidth();
+        $logoHeight = $logo->getPixelHeight();
+
+        if ($logoWidth > $pageContentWidth || $logoHeight > $pageContentHeight) {
+            $scale = min($pageContentWidth / $logoWidth, $pageContentHeight / $logoHeight);
+            $logoNewWidth = (int)($logoWidth * $scale);
+            $logoNewHeight = (int)($logoHeight * $scale);
+
+            // create tmp folder for image
+            $tmpFolderPath = $this->get_full_path() . 'tmp';
+            if (!file_exists($tmpFolderPath)) {
+                mkdir($tmpFolderPath, 0755, true);
+            }
+
+            $thumbLogoPath = str_replace(dirname($logoPath), $tmpFolderPath, $logoPath);
+            $thumbLogoPath = preg_replace('/(\.[^\.]*)$/isU', "_{$logoNewWidth}x{$logoNewHeight}$1", $thumbLogoPath);
+            if (!file_exists($thumbLogoPath)) {
+                $imProc = new ImageProcessor($logoPath);
+                $imProc->contain(array('width' => $logoNewWidth, 'height' => $logoNewHeight));
+                $imProc->save($thumbLogoPath);
+            }
+
+            $logo = ZendPdf\Image::imageWithPath($thumbLogoPath);
+            $logoWidth = $logo->getPixelWidth();
+            $logoHeight = $logo->getPixelHeight();
+        }
+
+        $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
+        $topPosInPage -= $logoHeight;
+        $topPosInPage = $this->detectNewPage($topPosInPage, $logoHeight);
+        switch ($position) {
+            case self::TEXT_ALIGN_RIGHT:
+                $leftPos = self::PAGE_PADDING_LEFT + $pageContentWidth - $logoWidth;
+                break;
+            case self::TEXT_ALIGN_CENTER:
+                $leftPos = self::PAGE_PADDING_LEFT + (($pageContentWidth - $logoWidth) / 2);
+                break;
+            case self::TEXT_ALIGN_LEFT:
+            default:
+                $leftPos = self::PAGE_PADDING_LEFT;
+                break;
+        }
+
+        $this->currentPage->drawImage($logo, $leftPos, $topPosInPage, $leftPos + $logoWidth, $topPosInPage + $logoHeight);
+        $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
+
+        if ($thumbLogoPath !== null && is_string($thumbLogoPath)) {
+            if (file_exists($thumbLogoPath)) {
+                unlink($thumbLogoPath);
+                if (is_dir($dir_name = dirname($thumbLogoPath))) {
+                    // scan folder
+                    $flags = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS;
+                    $iterator = new \RecursiveDirectoryIterator($dir_name, $flags);
+                    $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST, \RecursiveIteratorIterator::CATCH_GET_CHILD);
+                    if (iterator_count($iterator) == 0) {
+                        rmdir($dir_name);
+                    }
+                    else {
+                        // clean and remove tmp dir
+                        // foreach($iterator as $path) {
+                        //     $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
+                        // }
+                        // rmdir($dir_name);
+                    }
+                }
+            }
+        }
+
+        return $topPosInPage;
     }
 
 
@@ -463,7 +555,7 @@ class PdfPlugin extends AbstractPlugin {
             throw new Zend\Exception('Invalid ZendPdf Font size');
         }
 
-        $pageContentWidth = $this->pageContentWidth();
+        $pageContentWidth = $this->getPageContentWidth();
         $strWidth = $this->widthForStringUsingFontSize($string, $font, $fontSize);
 
         switch ($position) {
@@ -480,6 +572,7 @@ class PdfPlugin extends AbstractPlugin {
         }
     }
 
+
     protected function getPageWidth() {
 
         if (isset($this->currentPage)) {
@@ -488,6 +581,7 @@ class PdfPlugin extends AbstractPlugin {
 
         return 0;
     }
+
 
     protected function getPageHeight() {
 
@@ -498,13 +592,16 @@ class PdfPlugin extends AbstractPlugin {
         return 0;
     }
 
-    protected function pageContentWidth() {
+
+    protected function getPageContentWidth() {
         return $this->getPageWidth() - self::PAGE_PADDING_LEFT - self::PAGE_PADDING_RIGHT;
     }
 
-    protected function pageContentHeight() {
+
+    protected function getPageContentHeight() {
         return $this->getPageHeight() - self::PAGE_PADDING_TOP - self::PAGE_PADDING_BOTTOM;
     }
+
 
     /**
      * Returns the total width in points of the string using the specified font and
@@ -533,9 +630,20 @@ class PdfPlugin extends AbstractPlugin {
         return $stringWidth;
     }
 
+    protected function get_root_path() {
+        $root = $this->get_server_var('DOCUMENT_ROOT');
+
+        if(!file_exists($root . "/init_autoloader.php")) {
+           $root = dirname($root);
+        }
+
+        return $root;
+    }
+
     protected function get_server_var($id) {
         return isset($_SERVER[$id]) ? $_SERVER[$id] : '';
     }
+
 
     protected function get_user_id() {
         $user_folder = '';
@@ -544,7 +652,7 @@ class PdfPlugin extends AbstractPlugin {
             if (isset($this->getController()->authService)) {
                 if ($this->getController()->authService->hasIdentity()) {
                     $user = $this->getController()->authService->getStorage()->read();
-                    $user_folder = isset($user->id) ? "" . $user->getId() . "/" : '';
+                    $user_folder = "" . $user->getId() . "/";
                 }
             }
         }
@@ -555,8 +663,13 @@ class PdfPlugin extends AbstractPlugin {
         return $user_folder;
     }
 
-    protected function get_full_path($fEndPath = '/') {
-        $root = $this->get_server_var('DOCUMENT_ROOT');
+
+    protected function get_full_path($fEndPath = null) {
+        if ($fEndPath === null || !is_string($fEndPath)) {
+            $fEndPath = $this->uploadPath;
+        }
+
+        $root = $this->get_root_path();
         $fEndPath = str_replace("{$root}", '', $fEndPath);
         $fEndPath = str_replace('\\', '/', $fEndPath);
 
@@ -581,6 +694,7 @@ class PdfPlugin extends AbstractPlugin {
         return $returnFolder;
     }
 
+
     protected function get_full_url() {
         $https = !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'on') === 0;
         return ($https ? 'https://' : 'http://') . (!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] . '@' : '') . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] :
@@ -589,11 +703,13 @@ class PdfPlugin extends AbstractPlugin {
             ;
     }
 
-    protected function get_name($name) {
-        return $name . '_' . $this->dateGeneration->format('Y-m-d') . '.pdf';
+
+    protected function get_name() {
+        return $this->name . '_' . $this->dateGeneration->format('Y-m-d') . '.pdf';
     }
 
-    protected function get_full_name($name) {
-        return $this->get_full_path($this->uploadPath) . $this->get_name($name);
+
+    protected function get_full_name() {
+        return $this->get_full_path() . $this->get_name();
     }
 }

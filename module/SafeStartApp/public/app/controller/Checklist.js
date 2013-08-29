@@ -61,7 +61,6 @@ Ext.define('SafeStartApp.controller.Checklist', {
         this.getChecklistPanel()
             .down('formpanel{config.groupId === ' + checkbox.config.checklistGroupId + '}')
             .isIncluded = state ? true : false;
-        console.log('included');
     },
 
     getIncludedChecklistCards: function () {
@@ -75,10 +74,6 @@ Ext.define('SafeStartApp.controller.Checklist', {
     },
 
     onActivateReviewCard: function () {
-        console.log('REVIEW');
-    },
-
-    onActivateChecklistPanel: function () {
     }
 
 });
