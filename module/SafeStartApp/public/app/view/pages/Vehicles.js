@@ -32,7 +32,9 @@ Ext.define('SafeStartApp.view.pages.Vehicles', {
             scrollable: false,
             items: [{
                 xtype: 'panel',
-                html: 'Current Information'
+                name: 'vehicle-info',
+                scrollable: true,
+                layout: 'card'
             }, {
                 xtype: 'SafeStartVehicleInspection',
             }]

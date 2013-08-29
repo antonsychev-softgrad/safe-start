@@ -133,8 +133,9 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        'Vehicles',
-        'Checklist',
+        'DefaultVehicles',
+        'CompanyVehicles',
+        'UserVehicles',
         'DefaultChecklist',
         'VehicleChecklist'
     ],
