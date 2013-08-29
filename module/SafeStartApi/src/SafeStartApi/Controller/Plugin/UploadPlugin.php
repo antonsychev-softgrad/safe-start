@@ -1455,7 +1455,7 @@ class UploadPlugin extends AbstractPlugin
                 );
             }
         } else {
-            if(isset($upload['name']) && !empty($upload['name'])) {
+            if(isset($upload['tmp_name']) && !empty($upload['tmp_name'])) {
                 $pathinfo   = pathinfo($upload['name']);
                 $ext        = $pathinfo['extension'];
                 $hash       = md5_file($upload['tmp_name']);
@@ -1485,7 +1485,7 @@ class UploadPlugin extends AbstractPlugin
                 );
             } else {
                 if($upload === null) {
-                    throw new \Exception('Information about downloadable file is not found.');
+                    throw new \Exception('Information about downloadable file(s) is not found.');
                 }
             }
         }
