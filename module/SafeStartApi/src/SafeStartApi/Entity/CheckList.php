@@ -23,11 +23,6 @@ class CheckList extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string", name="hash", nullable=true)
-     */
-    protected $hash;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
@@ -38,6 +33,16 @@ class CheckList extends BaseEntity
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      **/
     protected $vehicle;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $hash;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $gps_coords;
 
     /**
      * @ORM\Column(type="json_array")
@@ -97,7 +102,7 @@ class CheckList extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -113,14 +118,14 @@ class CheckList extends BaseEntity
     public function setHash($hash)
     {
         $this->hash = $hash;
-    
+
         return $this;
     }
 
     /**
      * Get hash
      *
-     * @return string 
+     * @return string
      */
     public function getHash()
     {
@@ -136,14 +141,14 @@ class CheckList extends BaseEntity
     public function setFieldsStructure($fieldsStructure)
     {
         $this->fields_structure = $fieldsStructure;
-    
+
         return $this;
     }
 
     /**
      * Get fields_structure
      *
-     * @return array 
+     * @return array
      */
     public function getFieldsStructure()
     {
@@ -159,14 +164,14 @@ class CheckList extends BaseEntity
     public function setFieldsData($fieldsData)
     {
         $this->fields_data = $fieldsData;
-    
+
         return $this;
     }
 
     /**
      * Get fields_data
      *
-     * @return array 
+     * @return array
      */
     public function getFieldsData()
     {
@@ -182,14 +187,14 @@ class CheckList extends BaseEntity
     public function setCreationDate($creationDate)
     {
         $this->creation_date = $creationDate;
-    
+
         return $this;
     }
 
     /**
      * Get creation_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreationDate()
     {
@@ -205,14 +210,14 @@ class CheckList extends BaseEntity
     public function setUser(\SafeStartApi\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \SafeStartApi\Entity\User 
+     * @return \SafeStartApi\Entity\User
      */
     public function getUser()
     {
@@ -228,17 +233,40 @@ class CheckList extends BaseEntity
     public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
     {
         $this->vehicle = $vehicle;
-    
+
         return $this;
     }
 
     /**
      * Get vehicle
      *
-     * @return \SafeStartApi\Entity\Vehicle 
+     * @return \SafeStartApi\Entity\Vehicle
      */
     public function getVehicle()
     {
         return $this->vehicle;
+    }
+
+    /**
+     * Set gps_coords
+     *
+     * @param string $gpsCoords
+     * @return CheckList
+     */
+    public function setGpsCoords($gpsCoords)
+    {
+        $this->gps_coords = $gpsCoords;
+    
+        return $this;
+    }
+
+    /**
+     * Get gps_coords
+     *
+     * @return string 
+     */
+    public function getGpsCoords()
+    {
+        return $this->gps_coords;
     }
 }

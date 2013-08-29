@@ -35,7 +35,7 @@ class Alert extends BaseEntity
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $comments;
+    protected $comment;
 
     /**
      * @ORM\Column(type="json_array", nullable=true)
@@ -110,26 +110,26 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Set comments
+     * Set comment
      *
-     * @param string $comments
+     * @param string $comment
      * @return Alert
      */
-    public function setComments($comments)
+    public function setComment($comment)
     {
-        $this->comments = $comments;
+        $this->comment = $comment;
     
         return $this;
     }
 
     /**
-     * Get comments
+     * Get comment
      *
      * @return string 
      */
-    public function getComments()
+    public function getComment()
     {
-        return $this->comments;
+        return $this->comment;
     }
 
     /**

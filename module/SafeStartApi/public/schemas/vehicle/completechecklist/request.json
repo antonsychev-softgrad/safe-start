@@ -18,11 +18,6 @@
             "type": "object",
             "required": true,
             "properties": {
-                "date": {
-                    "description": "Date of filling",
-                    "type": "integer",
-                    "required": true
-                },
                 "fields": {
                     "description": "Fields with data",
                     "type": "array",
@@ -41,26 +36,41 @@
                                 "description": "Field value",
                                 "type": "string",
                                 "required": false
-                            },
-                            "alert": {
-                                "description": "Field alert",
-                                "type": "object",
-                                "required": false,
-                                "properties": {
-                                    "comment": {
-                                        "description": "Comment",
-                                        "type": "string",
-                                        "required": false
-                                    },
-                                    "photo": {
-                                        "description": "Photo's URL",
-                                        "type": "string",
-                                        "required": false
-                                    }
-                                }
                             }
                         }
                     }
+                },
+                "alerts": {
+                    "description": "Field alert",
+                    "type": "object",
+                    "required": false,
+                    "properties": {
+                        "fieldId": {
+                            "description": "Field ID",
+                            "type": "string",
+                            "required": true
+                        },
+                        "comment": {
+                            "description": "Comment",
+                            "type": "string",
+                            "required": false
+                        },
+                        "images": {
+                            "description": "Photo's",
+                            "type": "array",
+                            "required": false,
+                            "items": {
+                                "description": "Photo path",
+                                "type": "string",
+                                "required": false
+                            }
+                        }
+                    }
+                },
+                "gps": {
+                    "description": "GPS coords",
+                    "type": "string",
+                    "required": false
                 }
             }
         }
