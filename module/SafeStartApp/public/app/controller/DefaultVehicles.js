@@ -15,7 +15,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     onSelectAction: function () {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = arguments[4].get('id');
-        switch(arguments[4].get('action')) {
+        switch (arguments[4].get('action')) {
             case 'info':
                 this.getInfoPanel().setActiveItem(0);
                 this.showUpdateForm();
@@ -31,7 +31,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         }
     },
 
-    showUpdateForm: function() {
+    showUpdateForm: function () {
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.down('button[name=delete-data]').show();
@@ -44,7 +44,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         this.selectedNodeId = 0;
         if (!this.currentForm) this._createForm();
         if (this.vehicleModel) this.vehicleModel.destroy();
-        this.vehicleModel =new SafeStartApp.model.Vehicle();
+        this.vehicleModel = new SafeStartApp.model.Vehicle();
         this.currentForm.setRecord(this.vehicleModel);
         this.currentForm.down('button[name=delete-data]').hide();
         this.currentForm.down('button[name=reset-data]').show();
@@ -68,7 +68,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function(){
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();
@@ -79,7 +79,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         });
     },
 
-    resetAction: function() {
+    resetAction: function () {
         this.currentForm.reset();
     },
 
@@ -102,13 +102,12 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
 
     },
 
-    showUpdateCheckList: function() {
+    showUpdateCheckList: function () {
         var self = this;
-        if(!this.vehicleChecklistStore) {
-            //todo: autoLoad: false does not work
-            this.vehicleChecklistStore = Ext.create('SafeStartApp.store.VehicleChecklist', {autoLoad: false});
+        if (!this.vehicleChecklistStore) {
+            this.vehicleChecklistStore = new SafeStartApp.store.VehicleChecklist();
             this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
-        }  else {
+        } else {
             this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
             this.vehicleChecklistStore.loadData();
         }

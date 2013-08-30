@@ -33,6 +33,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
             this.selectedNodeId = 0;
         }
         else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+        this.getNavMain().selectedNodeId = this.selectedNodeId;
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
@@ -42,6 +43,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     onSelectAction: function () {
         this.selectedRecord = arguments[4];
         this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+        this.getNavMain().selectedNodeId = this.selectedNodeId;
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);

@@ -6,7 +6,6 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     checkListStore: null,
 
     config: {
-        xtype: 'panel',
         name: 'checklist',
         title: 'Default Checklist',
         layout: 'hbox',

@@ -2,7 +2,6 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     extend: 'Ext.dataview.NestedList',
     alias: 'widget.SafeStartNestedListVehicles',
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
-    // id: 'companyVehicles',
     name: 'vehicles',
     config: {
         minWidth: 150,
@@ -32,7 +31,6 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                     },
                     keyup: function(field) {
                         this.filterStoreDataBySearchFiled(this.getStore(), field, 'text');
-                        console.log(this.getStore().getCount());
                         //todo: fix searching
                         // this.setData(this.getStore().getData());
                     },

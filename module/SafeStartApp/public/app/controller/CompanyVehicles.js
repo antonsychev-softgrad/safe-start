@@ -30,6 +30,25 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             addButton: 'SafeStartCompanyPage SafeStartCompanyToolbar > button[action=add-vehicle]',
             manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]',
             reviewCard: 'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-review]'
+        },
+
+        showUpdateCheckList: function () {
+            var self = this;
+            if (!this.vehicleChecklistStore) {
+                this.vehicleChecklistStore = Ext.create('SafeStartApp.store.VehicleChecklist');
+                this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
+            } else {
+                this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
+                this.vehicleChecklistStore.loadData();
+            }
+            if (!this.checkListTree) {
+                this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.vehicleChecklistStore});
+                this.getInfoPanel().getActiveItem().add(this.checkListTree);
+            }
+            this.vehicleChecklistStore.addListener('data-load-success', function () {
+                if (self.vehicleChecklistStore.getRoot()) self.checkListTree.getTreeList().goToNode(self.vehicleChecklistStore.getRoot());
+            }, this);
         }
+
     }
 });

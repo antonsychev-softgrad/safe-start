@@ -36,7 +36,7 @@ Ext.define('SafeStartApp.view.pages.Vehicles', {
                 scrollable: true,
                 layout: 'card'
             }, {
-                xtype: 'SafeStartVehicleInspection',
+                xtype: 'SafeStartVehicleInspection'
             }]
         }]);
 

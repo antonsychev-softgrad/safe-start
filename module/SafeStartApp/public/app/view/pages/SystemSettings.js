@@ -13,7 +13,6 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         title: 'Settings',
         iconCls: 'settings',
         styleHtmlContent: true,
-        scrollable: false,
         layout: 'card',
         items: [
 
@@ -26,6 +25,8 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
             }
         }
     },
+
+    isShown: false,
 
     initialize: function () {
         var self = this;
@@ -43,6 +44,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
 
     getInfoPanel: function () {
+        var self = this;
         this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.checklistDefaultStoreStore});
         return {
             cls: 'sfa-info-container sfa-system-settings',
@@ -59,12 +61,31 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                     html: "System",
                     layout: 'card'
                 }
-            ]
+            ],
+            listeners: {
+               /* activeitemchange: function(tabpanel, value, oldValue, eOpts ) {
+                    self.checkListTree.getTreeList().getStore().loadData();
+                    self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
+                        var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
+                        if (!node) node = this.checklistDefaultStoreStore.getRoot();
+                        if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
+                        else this.checkListTree.getTreeList().goToNode(node);
+                    }, self);
+                }*/
+            }
         };
     },
 
     loadData: function () {
-        if (this.checklistDefaultStoreStore.getRoot()) this.down('nestedlist[name=checklist-tree]').goToNode(this.checklistDefaultStoreStore.getRoot());
+        var self = this;
+        if (this.isShown) self.checkListTree.getTreeList().getStore().loadData();
+        this.isShown = true;
+        self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
+            var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
+            if (!node) node = this.checklistDefaultStoreStore.getRoot();
+            if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
+            else this.checkListTree.getTreeList().goToNode(node);
+        }, self);
     }
 
 });
