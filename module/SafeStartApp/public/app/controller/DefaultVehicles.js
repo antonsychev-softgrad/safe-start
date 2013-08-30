@@ -1,4 +1,4 @@
-Ext.define('SafeStartApp.controller.Vehicles', {
+Ext.define('SafeStartApp.controller.DefaultVehicles', {
     extend: 'Ext.app.Controller',
     mixins: ['SafeStartApp.controller.mixins.Form'],
 
@@ -9,30 +9,9 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         'SafeStartApp.view.forms.Vehicle'
     ],
 
-    init: function () {
-
-    },
-
-    config: {
-        control: {
-            navMain: {
-                leafitemtap: 'onSelectAction'
-            },
-            addButton: {
-                tap: 'addAction'
-            }
-        },
-
-        refs: {
-            navMain: 'SafeStartCompanyPage > nestedlist[name=vehicles]',
-            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
-            addButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]',
-            manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]'
-        }
-    },
-
     selectedNodeId: 0,
     selectedRecord: 0,
+
     onSelectAction: function () {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = arguments[4].get('id');
@@ -42,14 +21,14 @@ Ext.define('SafeStartApp.controller.Vehicles', {
                 this.showUpdateForm();
                 break;
             case 'fill-checklist':
-                this.getInfoPanel().setActiveItem(1);
+                this.loadChecklist(arguments[4].parentNode.get('id'));
+                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
                 break;
             case 'update-checklist':
                 this.getInfoPanel().setActiveItem(2);
                 this.showUpdateCheckList();
                 break;
         }
-
     },
 
     showUpdateForm: function() {
@@ -140,6 +119,64 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         this.vehicleChecklistStore.addListener('data-load-success', function () {
             if (self.vehicleChecklistStore.getRoot()) self.checkListTree.getTreeList().goToNode(self.vehicleChecklistStore.getRoot());
         }, this);
-    }
+    },
 
+    loadChecklist: function (id) {
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist || {});
+        });
+    },
+
+    onNextBtnTap: function (btn) {
+        var checklistPanel = this.getVehicleInspectionPanel(),
+            activeCard = btn.up('formpanel'),
+            includedCards = this.getIncludedChecklistCards(),
+            nextIndex = 0,
+            index = includedCards.indexOf(activeCard);
+
+        if (index !== -1) {
+            nextIndex = index + 1;
+        }
+        if (includedCards[nextIndex]) {
+            checklistPanel.setActiveItem(includedCards[nextIndex]);
+        } else {
+            console.log('submitAction');
+        }
+    },
+
+    onPrevBtnTap: function (btn) {
+        var vehicleInspectionPanel = this.getVehicleInspectionPanel(),
+            activeCard = btn.up('formpanel'),
+            includedCards = this.getIncludedChecklistCards(),
+            prevIndex = 0,
+            index = includedCards.indexOf(activeCard);
+
+        if (index !== -1) {
+            prevIndex = index - 1;
+        }
+        if (includedCards[prevIndex]) {
+            vehicleInspectionPanel.setActiveItem(includedCards[prevIndex]);
+        }
+    },
+
+    onSelectAdditional: function (checkbox, state) {
+        this.getVehicleInspectionPanel()
+            .down('formpanel{config.groupId === ' + checkbox.config.checklistGroupId + '}')
+            .isIncluded = state ? true : false;
+    },
+
+    getIncludedChecklistCards: function () {
+        var query = [
+            'formpanel[name=checklist-card]',
+            'formpanel[name=checklist-card-choise-additional]',
+            'formpanel[name=checklist-card-additional][isIncluded]',
+            'formpanel[name=checklist-card-review]'
+        ].join(', ');
+        return this.getVehicleInspectionPanel().query(query);
+    },
+
+    onActivateReviewCard: function () {
+        console.log('review');
+    }
 });
