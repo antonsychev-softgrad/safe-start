@@ -12,7 +12,7 @@ Ext.define('SafeStartApp.view.pages.Vehicles', {
         title: 'Vehicles',
         styleHtmlContent: true,
         scrollable: false,
-        layout: 'hbox',
+        layout: 'hbox'
     },
 
     initialize: function () {

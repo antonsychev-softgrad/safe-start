@@ -48,5 +48,5 @@ Ext.define('SafeStartApp.controller.UserVehicles', {
                 }
             });
         }
-    },
+    }
 });

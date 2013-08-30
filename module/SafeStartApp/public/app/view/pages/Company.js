@@ -106,7 +106,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
     },
 
     loadData: function () {
-        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
         this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);

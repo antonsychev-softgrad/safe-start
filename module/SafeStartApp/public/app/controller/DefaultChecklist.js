@@ -64,6 +64,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         if (this.checklistFieldModel) this.checklistFieldModel.destroy();
         this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
         this.checklistFieldModel.set('parentId', this.selectedNodeId);
+        if(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']) this.checklistFieldModel.set('vehicleId', parseInt(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']));
         if (this.selectedNodeId == 0) {
             this.checklistFieldModel.set('type', 'root');
             this.currentForm.showCreateRootCategory();
