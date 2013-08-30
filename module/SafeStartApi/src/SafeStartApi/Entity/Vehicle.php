@@ -147,7 +147,6 @@ class Vehicle extends BaseEntity
             );
             $menuItems[] = array(
                 'id' => $this->getId() . '-fill-checklist',
-             /*   'parent_id' => $this->getId(),*/
                 'action' => 'fill-checklist',
                 'text' => 'Daily Inspection',
                 'leaf' => true,

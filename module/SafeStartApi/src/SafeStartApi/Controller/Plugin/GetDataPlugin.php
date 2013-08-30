@@ -33,10 +33,6 @@ class GetDataPlugin extends AbstractPlugin
             if ($parentId == $itemParentId) {
                 $treeItem = $item->toArray();
                 $treeItem['data'] = $this->buildChecklistTree($items, $item->getId());
-                if (empty($treeItem['data'])) {
-                    $treeItem['leaf'] = true;
-                    unset($treeItem['data']);
-                }
                 $tree[] = $treeItem;
             }
         }

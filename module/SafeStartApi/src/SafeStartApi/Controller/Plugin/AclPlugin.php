@@ -34,6 +34,7 @@ class AclPlugin extends AbstractPlugin
     private function setResource()
     {
         $this->acl->addResource(new Resource('adminPanel'));
+        $this->acl->addResource(new Resource('userPanel'));
         $this->acl->addResource(new Resource('someResource'));
     }
 
@@ -58,12 +59,22 @@ class AclPlugin extends AbstractPlugin
                     'action' => 'view',
                     'access' => 'allow'
                 ),
+                array(
+                    'resource' => 'userPanel',
+                    'action' => 'view',
+                    'access' => 'allow'
+                ),
             ),
             'superAdmin' => array(
                 array(
                     'resource' => 'adminPanel',
                     'action' => 'viewCompaniesPage',
                     'access' => 'allow'
+                ),
+                array(
+                    'resource' => 'userPanel',
+                    'action' => 'view',
+                    'access' => 'deny'
                 ),
             )
         ));

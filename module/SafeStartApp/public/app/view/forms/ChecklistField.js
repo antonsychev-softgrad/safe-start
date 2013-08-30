@@ -4,8 +4,6 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     xtype: 'SafeStartChecklistFieldForm',
     config: {
         minHeight: 400,
-        //maxWidth: 600,
-        scrollable: false,
         items: [
             {
                 xtype: 'hiddenfield',
@@ -60,11 +58,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Alert(Subquestions) <br/>trigger value',
+                label: 'Trigger filed value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
                     data: [
+                        { rank: '', title: ''},
                         { rank: 'yes', title: 'Yes'},
                         { rank: 'no', title: 'No'}
                     ]
@@ -120,7 +119,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
         listeners: {
             change: function (form, record, xz, eOpts) {
-                if (!record.get('parentId') || record.get('type') == 'root') {
+                if (!record || !record.get('parentId') || record.get('type') == 'root') {
                     form.showCreateRootCategory();
                 } else {
                     form.showCreateFieldCategory();

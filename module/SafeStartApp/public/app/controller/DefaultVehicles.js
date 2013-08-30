@@ -1,56 +1,37 @@
-Ext.define('SafeStartApp.controller.Vehicles', {
+Ext.define('SafeStartApp.controller.DefaultVehicles', {
     extend: 'Ext.app.Controller',
     mixins: ['SafeStartApp.controller.mixins.Form'],
 
     requires: [
-        'SafeStartApp.view.components.UpdateChecklist'
+        'SafeStartApp.view.components.UpdateChecklist',
+        'SafeStartApp.store.VehicleChecklist',
+        'SafeStartApp.model.Vehicle',
+        'SafeStartApp.view.forms.Vehicle'
     ],
-
-    init: function () {
-
-    },
-
-    config: {
-        control: {
-            navMain: {
-                leafitemtap: 'onSelectAction'
-            },
-            addButton: {
-                tap: 'addAction'
-            }
-        },
-
-        refs: {
-            navMain: 'SafeStartCompanyPage > nestedlist[name=vehicles]',
-            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
-            addButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]',
-            manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]'
-        }
-    },
 
     selectedNodeId: 0,
     selectedRecord: 0,
+
     onSelectAction: function () {
-        if (this.selectedNodeId == arguments[4].get('id')) return;
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = arguments[4].get('id');
-        switch(arguments[4].get('action')) {
+        switch (arguments[4].get('action')) {
             case 'info':
                 this.getInfoPanel().setActiveItem(0);
                 this.showUpdateForm();
                 break;
             case 'fill-checklist':
-                this.getInfoPanel().setActiveItem(1);
+                this.loadChecklist(arguments[4].parentNode.get('id'));
+                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
                 break;
             case 'update-checklist':
                 this.getInfoPanel().setActiveItem(2);
                 this.showUpdateCheckList();
                 break;
         }
-
     },
 
-    showUpdateForm: function() {
+    showUpdateForm: function () {
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
         this.currentForm.down('button[name=delete-data]').show();
@@ -63,14 +44,14 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         this.selectedNodeId = 0;
         if (!this.currentForm) this._createForm();
         if (this.vehicleModel) this.vehicleModel.destroy();
-        this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        this.vehicleModel = new SafeStartApp.model.Vehicle();
         this.currentForm.setRecord(this.vehicleModel);
         this.currentForm.down('button[name=delete-data]').hide();
         this.currentForm.down('button[name=reset-data]').show();
     },
 
     saveAction: function () {
-        if (!this.vehicleModel) this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        if (!this.vehicleModel) this.vehicleModel = new SafeStartApp.model.Vehicle();
         if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
@@ -87,7 +68,7 @@ Ext.define('SafeStartApp.controller.Vehicles', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function(){
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();
@@ -98,7 +79,7 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         });
     },
 
-    resetAction: function() {
+    resetAction: function () {
         this.currentForm.reset();
     },
 
@@ -121,26 +102,80 @@ Ext.define('SafeStartApp.controller.Vehicles', {
 
     },
 
-    showUpdateCheckList: function() {
+    showUpdateCheckList: function () {
         var self = this;
-        if(!this.vehicleChecklistStore) {
-            //todo: autoLoad: false does not work
-            this.vehicleChecklistStore = Ext.create('SafeStartApp.store.VehicleChecklist', {autoLoad: false});
+        if (!this.vehicleChecklistStore) {
+            this.vehicleChecklistStore = new SafeStartApp.store.VehicleChecklist();
             this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
-        }  else {
+        } else {
             this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
             this.vehicleChecklistStore.loadData();
         }
         if (!this.checkListTree) {
-            this.checkListTree = Ext.create('SafeStartApp.view.components.UpdateChecklist', {
-                checkListStore: this.vehicleChecklistStore //todo: why does not work?
-            });
-            this.checkListTree.checkListStore = this.vehicleChecklistStore;
+            this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.vehicleChecklistStore});
             this.getInfoPanel().getActiveItem().add(this.checkListTree);
         }
         this.vehicleChecklistStore.addListener('data-load-success', function () {
             if (self.vehicleChecklistStore.getRoot()) self.checkListTree.getTreeList().goToNode(self.vehicleChecklistStore.getRoot());
         }, this);
-    }
+    },
 
+    loadChecklist: function (id) {
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist || {});
+        });
+    },
+
+    onNextBtnTap: function (btn) {
+        var checklistPanel = this.getVehicleInspectionPanel(),
+            activeCard = btn.up('formpanel'),
+            includedCards = this.getIncludedChecklistCards(),
+            nextIndex = 0,
+            index = includedCards.indexOf(activeCard);
+
+        if (index !== -1) {
+            nextIndex = index + 1;
+        }
+        if (includedCards[nextIndex]) {
+            checklistPanel.setActiveItem(includedCards[nextIndex]);
+        } else {
+            console.log('submitAction');
+        }
+    },
+
+    onPrevBtnTap: function (btn) {
+        var vehicleInspectionPanel = this.getVehicleInspectionPanel(),
+            activeCard = btn.up('formpanel'),
+            includedCards = this.getIncludedChecklistCards(),
+            prevIndex = 0,
+            index = includedCards.indexOf(activeCard);
+
+        if (index !== -1) {
+            prevIndex = index - 1;
+        }
+        if (includedCards[prevIndex]) {
+            vehicleInspectionPanel.setActiveItem(includedCards[prevIndex]);
+        }
+    },
+
+    onSelectAdditional: function (checkbox, state) {
+        this.getVehicleInspectionPanel()
+            .down('formpanel{config.groupId === ' + checkbox.config.checklistGroupId + '}')
+            .isIncluded = state ? true : false;
+    },
+
+    getIncludedChecklistCards: function () {
+        var query = [
+            'formpanel[name=checklist-card]',
+            'formpanel[name=checklist-card-choise-additional]',
+            'formpanel[name=checklist-card-additional][isIncluded]',
+            'formpanel[name=checklist-card-review]'
+        ].join(', ');
+        return this.getVehicleInspectionPanel().query(query);
+    },
+
+    onActivateReviewCard: function () {
+        console.log('review');
+    }
 });
