@@ -5,8 +5,9 @@ namespace SafeStartApi\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\View\Model\ViewModel;
+use SafeStartApi\Base\RestController;
 
-class InfoController extends AbstractActionController
+class InfoController extends RestController
 {
     protected static function getFileByDirAndName($dir, $tosearch) {
         if(file_exists($dir) && is_dir($dir)) {
@@ -24,10 +25,31 @@ class InfoController extends AbstractActionController
         return null;
     }
 
-    protected function get_full_path($fEndPath = '/') {
+    protected function get_user_id() {
+        $user_folder = '';
+        try {
+            if (isset($this->authService)) {
+                if ($this->authService->hasIdentity()) {
+                    $user = $this->authService->getStorage()->read();
+                    $user_folder = "".$user->getId()."/";
+                }
+            }
+        }
+        catch (\Exception $e) {
+
+        }
+        return $user_folder;
+    }
+
+    protected function get_full_path($fEndPath = null) {
         $root = $_SERVER['DOCUMENT_ROOT'];
         if(!file_exists($root . "/init_autoloader.php")) {
            $root = dirname($root);
+        }
+
+        if ($fEndPath === null || !is_string($fEndPath)) {
+            $moduleConfig = $this->getServiceLocator()->get('Config');
+            $fEndPath = isset($moduleConfig['defUsersPath']) ? $moduleConfig['defUsersPath'] : '/';
         }
 
         $fEndPath = str_replace("{$root}", '', $fEndPath);
@@ -45,25 +67,20 @@ class InfoController extends AbstractActionController
             $returnFolder .= '/';
         }
 
+        $returnFolder .= $this->get_user_id();
+
         return $returnFolder;
     }
 
     public function getImageAction() {
 
-        $moduleConfig = $this->getServiceLocator()->get('Config');
-
-        $request      = $this->getRequest();
-        $userId = (int) $request->getQuery('uid');
-        $image  = $request->getQuery('image');
-
-        $userId = (int) $this->params('uid');
-        $image  = $this->params('image');
+        if(($image = $this->params('image')) === null) {
+            $request      = $this->getRequest();
+            $image  = $request->getQuery('image');
+        }
 
         if(($image !== null)) {
-            $filePath = $this->get_full_path($moduleConfig['defUsersPath']);
-            if($userId > 0) {
-                $filePath .= "{$userId}/";
-            }
+            $filePath = $this->get_full_path();
             $fileName = "{$image}";
             if(($file = self::getFileByDirAndName($filePath, $fileName)) !== null) {
                 $fileSizeInfo = @getimagesize($file);
