@@ -12,7 +12,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
 
     xtype: 'SafeStartCompanyPage',
-
+    companyId: 0,
     config: {
         title: 'Company',
         iconCls: 'more',
@@ -107,11 +107,12 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     loadData: function () {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
-        this.vehiclesStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
+        if (SafeStartApp.companyModel.get('id') == this.companyId) return;
+        this.companyId = SafeStartApp.companyModel.get('id');
+        this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);
         this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
+        this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
         this.vehiclesStore.loadData();
-        if (this.vehiclesStore.getRoot()) this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
     }
-
 
 });
