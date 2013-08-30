@@ -10,11 +10,20 @@ return array(
                 'params' => array(
                     'host'     => 'localhost',
                     'port'     => '3306',
-                    'user'     => 'safe-start',
-                    'password' => 'Newpassw0rd',
+                    'user'     => 'root',
+                    'password' => 'Pass!@',
                     'dbname'   => 'safe_start',
                 )
             )
+        )
+    ),
+    'safe-start-app' => array(
+        'version' => '1.0',
+        'baseHref' => isset($_SERVER['HTTP_HOST']) ? 'http://'.$_SERVER['HTTP_HOST'].'/api/' : './',
+        'siteUrl' => isset($_SERVER['HTTP_HOST']) ? 'http://'.$_SERVER['HTTP_HOST'] : './',
+        'defMenu' => array(
+            'Auth',
+            'Contact'
         )
     )
 );
