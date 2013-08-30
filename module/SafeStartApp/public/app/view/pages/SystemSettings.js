@@ -26,8 +26,6 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         }
     },
 
-    isShown: false,
-
     initialize: function () {
         var self = this;
         this.callParent();
@@ -78,8 +76,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
     loadData: function () {
         var self = this;
-        if (this.isShown) self.checkListTree.getTreeList().getStore().loadData();
-        this.isShown = true;
+        self.checkListTree.getTreeList().getStore().loadData();
         self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
             var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
             if (!node) node = this.checklistDefaultStoreStore.getRoot();

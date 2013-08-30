@@ -10,7 +10,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
 
     xtype: 'SafeStartUsersPage',
-
+    companyId: 0,
     config: {
         title: 'Users',
         iconCls: 'user',
@@ -109,9 +109,11 @@ Ext.define('SafeStartApp.view.pages.Users', {
     },
 
     loadData: function() {
-        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get('id')) return;
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
+        if (SafeStartApp.companyModel.get('id') == this.companyId) return;
+        this.companyId = SafeStartApp.companyModel.get('id');
         this.down('SafeStartUsersToolbar').setTitle(SafeStartApp.companyModel.get('title')+': '+'users');
-        this.usersStore.getProxy().setExtraParam('companyId', SafeStartApp.companyModel.get('id') || 0);
+        this.usersStore.getProxy().setExtraParam('companyId', this.companyId);
         this.usersStore.loadData();
     }
 });

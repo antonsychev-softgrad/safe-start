@@ -5,7 +5,6 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
     config: {
         minHeight: 400,
         //maxWidth: 600,
-        scrollable: true,
         cls: 'comp-settings',
         items: [
             {

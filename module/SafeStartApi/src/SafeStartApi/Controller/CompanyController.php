@@ -224,7 +224,7 @@ class CompanyController extends RestrictedAccessRestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
         } else {
-            $field = new \SafeStartApi\Entity\DefaultField();
+            $field = new \SafeStartApi\Entity\Field();
         }
 
         $field->setTitle($this->data->title);

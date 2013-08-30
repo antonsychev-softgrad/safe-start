@@ -3,7 +3,6 @@ Ext.define('SafeStartApp.view.forms.UserProfile', {
     xtype: 'SafeStartUserProfileForm',
     config: {
         height: 300,
-        scrollable: false,
         items: [
             {
                 xtype: 'fieldset',
