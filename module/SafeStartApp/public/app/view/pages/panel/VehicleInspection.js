@@ -45,6 +45,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             this.add({
                 xtype: 'formpanel',
                 name: 'checklist-card-choise-additional',
+                cls: 'sfa-checklist-form',
                 items: [{
                     xtype: 'fieldset',
                     items: choiseAdditionalFields
@@ -76,6 +77,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add({
             xtype: 'formpanel',
             name: 'checklist-card-review',
+            cls: 'sfa-checklist-form',
             items: [{
                 xtype: 'titlebar',
                 docked: 'top',

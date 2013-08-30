@@ -7021,6 +7021,7 @@ body.x-desktop {
 
 
 /* main */
+
 /* for All */
 @font-face {
     font-family: HelveticaNeueLTStd;
@@ -7087,7 +7088,10 @@ html, body {
     background: linear-gradient(to bottom, #bbbbbb 0%,#c6c6c6 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bbbbbb', endColorstr='#c6c6c6',GradientType=0 ); /* IE6-9 */
 }
-
+.x-list-normal .x-list-item.x-item-pressed.x-list-item-tpl, .x-list-normal .x-list-item.x-item-pressed .x-dock-horizontal {
+    border-top-color: #ccc;
+    background-color: #ddd;
+}
 
 
 .x-button {
@@ -7159,6 +7163,11 @@ html, body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.x-toolbar .x-button .x-button-icon:before {
+    line-height: 1.1em;
+}
+
+
 
 
 /* Auth Form  */
@@ -7331,8 +7340,6 @@ div.logo {
     line-height: 1.1em;
 }
 
-
-
 .sfa-left-container .x-toolbar {
     margin-bottom: 20px;
     border: none;
@@ -7390,8 +7397,6 @@ div.logo {
 
 
 
-
-
 /* content */
 
 .sfa-info-container .x-form-fieldset .x-form-fieldset-inner, .sfa-info-container .x-form-label,
@@ -7403,7 +7408,7 @@ div.logo {
 }
 .sfa-info-container  .x-button {
     display: inline-block;
-    padding: 0 20px 5px;
+    padding: 0 20px 2px;
     margin: 0 5px;
     border: none !important;
     font-size: 22px;
@@ -7501,7 +7506,9 @@ div.logo {
     position: relative;
     z-index: 999;
 }
-
+.sfa-info-container .x-tab .x-button-icon.add:before, .sfa-info-container .x-button .x-button-icon.add:before {
+    top: 2px;
+}
 
 /* right column */
 
@@ -7726,6 +7733,10 @@ div.logo {
     height: 32px;
     padding: 0 14px;
 }
+
+.sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button span {
+    top: -3px;
+
 .sfa-info-container.sfa-system-settings form .x-dock.x-dock-vertical .x-button {
     height: 38px;
 }
@@ -7771,6 +7782,7 @@ div.logo {
 
 .page-company .sfa-info-container .x-container.x-toolbar.x-navigation-bar.x-dock-item.x-docked-top {
     margin: 22px 0 12px;
+    height: 42px;
     background: url(/resources/img/log-form_bg.jpg) repeat;
     -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -7798,8 +7810,7 @@ div.logo {
     border: none;
     background: none;
 }
-.page-company .sfa-info-container .x-list .x-list-item.x-item-selected .x-dock-horizontal,
-.sfa-system-settings .x-list .x-list-item.x-item-selected.x-list-item-tpl {
+.page-company .sfa-info-container .x-list-item.x-item-selected {
     background: rgb(238,238,238); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(238,238,238,1) 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(238,238,238,1))); /* Chrome,Safari4+ */
@@ -7810,6 +7821,30 @@ div.logo {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
     color: #959595;
     border: none;
+}
+.page-company .sfa-info-container  .x-button.x-button-back {
+    padding: 0 12px 2px;
+}
+.page-company .sfa-info-container .x-inner.x-form-inner.x-translatable.x-size-monitored.x-paint-monitored.x-scroll-scroller {
+    width: 100% !important;
+}
+.page-company .sfa-info-container .x-form-fieldset-title .x-innerhtml {
+    padding-left: 0;
+    text-align: center;
+}
+.page-company .sfa-info-container .sfa-checklist-form .x-button-normal.x-button {
+    background-color: #6c9804;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a2e306), color-stop(3%, #7eb105), color-stop(100%, #5b7f03));
+    background-image: -webkit-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
+    background-image: -moz-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
+    background-image: -o-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
+    background-image: linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
+}
+.sfa-checklist-form .x-input-radio:checked + .x-field-mask:after {
+    background: #558FAC;
+}
+.sfa-checklist-form .x-container.x-field-select.x-field.x-field-labeled {
+    margin-top: 10px;
 }
 
 
@@ -7831,6 +7866,9 @@ div.logo {
     }
     .page-company .sfa-info-container .x-container.x-nested-list.x-layout-box-item.x-flexed.x-sized .x-button-back {
         top: 3px;
+    }
+    .page-company .sfa-info-container .x-toolbar .x-button .x-button-label {
+        line-height: 1.45em;
     }
 
 }
