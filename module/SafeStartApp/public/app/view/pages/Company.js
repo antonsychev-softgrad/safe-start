@@ -15,6 +15,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         iconCls: 'more',
         styleHtmlContent: true,
         scrollable: false,
+        cls: 'page-company',
         layout: 'hbox',
 
         items: [
