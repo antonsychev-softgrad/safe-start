@@ -3,7 +3,10 @@ Ext.define('SafeStartApp.controller.Vehicles', {
     mixins: ['SafeStartApp.controller.mixins.Form'],
 
     requires: [
-        'SafeStartApp.view.components.UpdateChecklist'
+        'SafeStartApp.view.components.UpdateChecklist',
+        'SafeStartApp.store.VehicleChecklist',
+        'SafeStartApp.model.Vehicle',
+        'SafeStartApp.view.forms.Vehicle'
     ],
 
     init: function () {
@@ -31,7 +34,6 @@ Ext.define('SafeStartApp.controller.Vehicles', {
     selectedNodeId: 0,
     selectedRecord: 0,
     onSelectAction: function () {
-        if (this.selectedNodeId == arguments[4].get('id')) return;
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = arguments[4].get('id');
         switch(arguments[4].get('action')) {
@@ -63,14 +65,14 @@ Ext.define('SafeStartApp.controller.Vehicles', {
         this.selectedNodeId = 0;
         if (!this.currentForm) this._createForm();
         if (this.vehicleModel) this.vehicleModel.destroy();
-        this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        this.vehicleModel =new SafeStartApp.model.Vehicle();
         this.currentForm.setRecord(this.vehicleModel);
         this.currentForm.down('button[name=delete-data]').hide();
         this.currentForm.down('button[name=reset-data]').show();
     },
 
     saveAction: function () {
-        if (!this.vehicleModel) this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+        if (!this.vehicleModel) this.vehicleModel = new SafeStartApp.model.Vehicle();
         if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();

@@ -24,7 +24,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
                 getItemTextTpl: function () {
                     return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
                 },
-                detailCard: new Ext.Panel(),
+                detailCard: false,
                 store: this.checkListStore,
                 items: [
                     {
@@ -58,11 +58,11 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         this.getTreeList().setStore(this.getChecklistStore());
     },
 
-    getChecklistStore: function() {
+    getChecklistStore: function () {
         return this.checkListStore;
     },
 
-    getTreeList: function() {
+    getTreeList: function () {
         return this.down('nestedlist[name=checklist-tree]');
     }
 

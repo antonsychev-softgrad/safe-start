@@ -3,7 +3,8 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.SystemSettings',
-        'SafeStartApp.view.components.UpdateChecklist'
+        'SafeStartApp.view.components.UpdateChecklist',
+        'SafeStartApp.store.ChecklistDefault'
     ],
 
     xtype: 'SafeStartSystemSettingsPage',
@@ -36,7 +37,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
             docked: 'top'
         });
 
-        this.checklistDefaultStoreStore = Ext.create('SafeStartApp.store.ChecklistDefault');
+        this.checklistDefaultStoreStore = new  SafeStartApp.store.ChecklistDefault();
         this.add(this.getInfoPanel());
     },
 

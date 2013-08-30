@@ -1,12 +1,15 @@
 Ext.define('SafeStartApp.controller.DefaultChecklist', {
     extend: 'Ext.app.Controller',
     mixins: ['SafeStartApp.controller.mixins.Form'],
-
+    requires: [
+        'SafeStartApp.model.ChecklistField',
+        'SafeStartApp.view.forms.ChecklistField'
+    ],
     config: {
         control: {
             navMain: {
-                leafitemtap: 'onSelectAction',
-                selectionchange: 'onSelectChangeAction'
+                itemtap: 'onSelectAction',
+                back: 'onSelectChangeAction'
             },
             addButton: {
                 tap: 'addAction'
@@ -23,10 +26,12 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     selectedNodeId: 0,
     selectedRecord: 0,
 
-    onSelectChangeAction: function (obj, list, selections, eOpts) {
-        if (!this.getNavMain().getActiveItem().getStore) return;
-        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
-        if (!parseInt(this.selectedRecord.get('id')))  this.selectedNodeId = 0;
+    onSelectChangeAction: function (obj, node, selections, eOpts) {
+        this.selectedRecord =  this.getNavMain().getStore().getById(node.get('parentId'));
+        if (!this.selectedRecord)  {
+            this.selectedRecord = new SafeStartApp.model.ChecklistField();
+            this.selectedNodeId = 0;
+        }
         else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
@@ -47,7 +52,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         if (!this.currentForm) this._createForm();
         this.currentForm.down('button[name=delete-data]').hide();
         if (this.checklistFieldModel) this.checklistFieldModel.destroy();
-        this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
+        this.checklistFieldModel = new SafeStartApp.model.ChecklistField();
         this.checklistFieldModel.set('parentId', this.selectedNodeId);
         if (this.selectedNodeId == 0) {
             this.checklistFieldModel.set('type', 'root');
@@ -61,7 +66,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     },
 
     saveAction: function () {
-        if (!this.checklistFieldModel) this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
+        if (!this.checklistFieldModel) this.checklistFieldModel = new SafeStartApp.model.ChecklistField();
         if (this.validateFormByModel(this.checklistFieldModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
@@ -112,10 +117,9 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
         this.getNavMain().getStore().loadData();
         if (this.reloadEventSet) return;
         this.reloadEventSet = true;
-        this.getNavMain().getStore().addListener('load', function () {
-            var record = this.getNavMain().getStore().getById(this.fieldId);
-            console.log(record);
-            this.currentForm.setRecord(record);
+        this.getNavMain().getStore().addListener('data-load-success', function () {
+           // var record = this.getNavMain().getStore().getById(this.fieldId);
+         //   this.currentForm.setRecord(record);
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);
             if (node.isLeaf()) this.getNavMain().goToLeaf(node);
             else this.getNavMain().goToNode(node);

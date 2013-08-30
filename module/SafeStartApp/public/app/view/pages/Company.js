@@ -3,6 +3,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
+        'SafeStartApp.store.Vehicles',
         'SafeStartApp.model.Vehicle'
     ],
 
@@ -44,7 +45,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         this.add(this.getInfoPanel());
 
-        this.alertsStore = Ext.create('SafeStartApp.store.AllAlerts');
+     //   this.alertsStore = Ext.create('SafeStartApp.store.AllAlerts');
       //  this.add(this.getAlertsList());
 
         this.disable();
@@ -61,6 +62,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             title: 'Vehicles',
             displayField: 'text',
             cls: 'sfa-left-container',
+            detailCard: false,
             flex:1,
             getTitleTextTpl: function() {
                 return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';

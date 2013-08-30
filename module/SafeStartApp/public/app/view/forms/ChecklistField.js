@@ -119,7 +119,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
         listeners: {
             change: function (form, record, xz, eOpts) {
-                if (!record.get('parentId') || record.get('type') == 'root') {
+                if (!record || !record.get('parentId') || record.get('type') == 'root') {
                     form.showCreateRootCategory();
                 } else {
                     form.showCreateFieldCategory();
