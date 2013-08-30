@@ -12,6 +12,12 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-choise-additional] checkboxfield': {
                 change: 'onSelectAdditional'
             },
+            'SafeStartCompanyPage SafeStartVehicleInspection formpanel button[action=submit]': {
+                tap: 'onReviewSubmitBtnTap'
+            },
+            'SafeStartCompanyPage SafeStartVehicleInspection sheet[cls=sfa-messagebox-confirm] button[action=confirm]': {
+                tap: 'onReviewConfirmBtnTap'
+            },
             reviewCard: {
                 activate: 'onActivateReviewCard'
             },

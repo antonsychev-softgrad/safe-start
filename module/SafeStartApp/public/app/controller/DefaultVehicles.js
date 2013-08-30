@@ -123,7 +123,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     loadChecklist: function (id) {
         var self = this;
         SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
-            self.getVehicleInspectionPanel().loadChecklist(result.checklist || {});
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist, id);
         });
     },
 
@@ -191,7 +191,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             var triggerableFields = checklist.query('[triggerable]');
             passedCards.push({
                 groupName: checklist.config.groupName,
-                additional: checklist.name.config.additional
+                additional: checklist.config.additional
             });
             Ext.each(triggerableFields, function (field) {
                 var fieldAlerts = vehicleInspectionPanel.getAlerts(field.config.fieldId);
@@ -203,7 +203,68 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
                 }
             });
         });
-        console.log(triggeredAlerts);
-        console.log(passedCards);
+        vehicleInspectionPanel.updateReview(passedCards, triggeredAlerts);
+    },
+
+    onReviewSubmitBtnTap: function (button) {
+        this.getVehicleInspectionPanel().down('sheet[cls=sfa-messagebox-confirm]').show();
+    },
+
+    onReviewConfirmBtnTap: function (button) {
+        var vehicleInspectionPanel = this.getVehicleInspectionPanel();
+        var checklists = this.getChecklistForms();
+        var fieldValues = [];
+        Ext.each(checklists, function (checklist) {
+            var fields = checklist.query('field'); 
+            Ext.each(fields, function (field) {
+                switch(field.xtype) {
+                    case 'checkboxfield':
+                        if (field.isChecked()) {
+                            value = 'Yes';
+                        } else {
+                            value = 'No';
+                        }
+                        fieldValues.push({
+                            id: field.config.fieldId,
+                            value: value,
+                            alerts: []
+                        });
+                        break;
+                    case 'radiofield':
+                        if (field.isChecked()) {
+                            fieldValues.push({
+                                id: field.config.fieldId,
+                                value: field.getValue(),
+                                alerts: []
+                            });
+                        }
+                        break;
+                    case 'textfield':
+                        fieldValues.push({
+                            id: field.config.fieldId,
+                            value: field.getValue(),
+                            alerts: []
+                        });
+                        break;
+                    case 'datepickerfield':
+                        fieldValues.push({
+                            id: field.config.fieldId,
+                            value: field.getValue(),
+                            alerts: []
+                        });
+                        break;
+                }
+            });
+        });
+
+        var data = {
+            date: Date.now(),
+            fields: fieldValues,
+            alerts: []
+        };
+        
+        SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
+            this.getVehicleInspectionPanel().down('sheet[cls=sfa-messagebox-confirm]').hide();
+        });
     }
 });
