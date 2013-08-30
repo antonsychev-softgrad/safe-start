@@ -8,8 +8,6 @@ Ext.define('SafeStartApp.view.forms.Contact', {
         cls: 'sfa-auth-form',
         height: 570,
         width: 450,
-        scrollable: false,
-
         items: [
             {
                 xtype: 'fieldset',

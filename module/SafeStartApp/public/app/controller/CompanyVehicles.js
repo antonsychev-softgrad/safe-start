@@ -16,7 +16,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 activate: 'onActivateReviewCard'
             },
             navMain: {
-                leafitemtap: 'onSelectAction'
+                itemtap: 'onSelectAction'
             },
             addButton: {
                 tap: 'addAction'

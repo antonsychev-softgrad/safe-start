@@ -27,35 +27,44 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     selectedRecord: 0,
 
     onSelectChangeAction: function (obj, node, selections, eOpts) {
-        this.selectedRecord =  this.getNavMain().getStore().getById(node.get('parentId'));
-        if (!this.selectedRecord)  {
-            this.selectedRecord = new SafeStartApp.model.ChecklistField();
-            this.selectedNodeId = 0;
+        try{
+            this.selectedRecord =  this.getNavMain().getStore().getById(node.get('parentId'));
+            if (!this.selectedRecord)  {
+                this.selectedRecord = Ext.create('SafeStartApp.model.ChecklistField');
+                this.selectedNodeId = 0;
+            }
+            else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+            this.getNavMain().selectedNodeId = this.selectedNodeId;
+            if (!this.currentForm) this._createForm();
+            this.currentForm.setRecord(this.selectedRecord);
+            this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
+            this.currentForm.down('button[name=delete-data]').show();
+        } catch(e) {
+
         }
-        else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
-        this.getNavMain().selectedNodeId = this.selectedNodeId;
-        if (!this.currentForm) this._createForm();
-        this.currentForm.setRecord(this.selectedRecord);
-        this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
-        this.currentForm.down('button[name=delete-data]').show();
     },
 
     onSelectAction: function () {
-        this.selectedRecord = arguments[4];
-        this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
-        this.getNavMain().selectedNodeId = this.selectedNodeId;
-        if (!this.currentForm) this._createForm();
-        this.currentForm.setRecord(this.selectedRecord);
-        this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
-        this.currentForm.down('button[name=delete-data]').show();
+        try{
+            this.selectedRecord = arguments[4];
+            this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
+            this.getNavMain().selectedNodeId = this.selectedNodeId;
+            if (!this.currentForm) this._createForm();
+            this.currentForm.setRecord(this.selectedRecord);
+            this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
+            this.currentForm.down('button[name=delete-data]').show();
+        } catch(e) {
+
+        }
     },
 
     addAction: function () {
         if (!this.currentForm) this._createForm();
         this.currentForm.down('button[name=delete-data]').hide();
         if (this.checklistFieldModel) this.checklistFieldModel.destroy();
-        this.checklistFieldModel = new SafeStartApp.model.ChecklistField();
+        this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
         this.checklistFieldModel.set('parentId', this.selectedNodeId);
+        if(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']) this.checklistFieldModel.set('vehicleId', parseInt(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']));
         if (this.selectedNodeId == 0) {
             this.checklistFieldModel.set('type', 'root');
             this.currentForm.showCreateRootCategory();
@@ -68,7 +77,7 @@ Ext.define('SafeStartApp.controller.DefaultChecklist', {
     },
 
     saveAction: function () {
-        if (!this.checklistFieldModel) this.checklistFieldModel = new SafeStartApp.model.ChecklistField();
+        if (!this.checklistFieldModel) this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
         if (this.validateFormByModel(this.checklistFieldModel, this.currentForm)) {
             var self = this;
             var formValues = this.currentForm.getValues();
