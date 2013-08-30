@@ -7,6 +7,7 @@ Ext.define('SafeStartApp.store.VehicleChecklist', {
     ],
 
     config: {
+        autoLoad: false,
         model: 'SafeStartApp.model.ChecklistField',
         proxy: {
             type: "ajax",

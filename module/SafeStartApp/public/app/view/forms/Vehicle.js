@@ -4,9 +4,8 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
     xtype: 'SafeStartVehicleForm',
     config: {
         minHeight: 400,
-        maxWidth: 600,
+        //maxWidth: 600,
         cls: 'sfa-form-no-title',
-        scrollable: false,
         items: [
 
 

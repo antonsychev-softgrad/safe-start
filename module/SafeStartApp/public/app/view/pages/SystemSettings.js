@@ -3,7 +3,8 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.SystemSettings',
-        'SafeStartApp.view.components.UpdateChecklist'
+        'SafeStartApp.view.components.UpdateChecklist',
+        'SafeStartApp.store.ChecklistDefault'
     ],
 
     xtype: 'SafeStartSystemSettingsPage',
@@ -12,9 +13,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         title: 'Settings',
         iconCls: 'settings',
         styleHtmlContent: true,
-        scrollable: false,
         layout: 'card',
-        checkListStore: null,
         items: [
 
         ],
@@ -37,23 +36,20 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
             docked: 'top'
         });
 
-        this.checklistDefaultStoreStore = Ext.create('SafeStartApp.store.ChecklistDefault');
+        this.checklistDefaultStoreStore = new  SafeStartApp.store.ChecklistDefault();
         this.add(this.getInfoPanel());
     },
 
 
     getInfoPanel: function () {
-        this.checkListTree = Ext.create('SafeStartApp.view.components.UpdateChecklist', {
-            checkListStore: this.checklistDefaultStoreStore //todo: why does not work?
-        });
-        this.checkListTree.checkListStore = this.checklistDefaultStoreStore;
+        var self = this;
+        this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.checklistDefaultStoreStore});
         return {
-            cls: 'sfa-info-container',
+            cls: 'sfa-info-container sfa-system-settings',
             xtype: 'tabpanel',
             layout: 'card',
             minWidth: 150,
             scrollable: false,
-
             items: [
                 this.checkListTree,
                 {
@@ -61,16 +57,32 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                     title: 'System',
                     name: 'system',
                     html: "System",
-                    scrollable: true,
                     layout: 'card'
                 }
-            ]
+            ],
+            listeners: {
+               /* activeitemchange: function(tabpanel, value, oldValue, eOpts ) {
+                    self.checkListTree.getTreeList().getStore().loadData();
+                    self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
+                        var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
+                        if (!node) node = this.checklistDefaultStoreStore.getRoot();
+                        if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
+                        else this.checkListTree.getTreeList().goToNode(node);
+                    }, self);
+                }*/
+            }
         };
     },
 
     loadData: function () {
-     //   this.checklistDefaultStoreStore.loadData();
-        if (this.checklistDefaultStoreStore.getRoot()) this.down('nestedlist[name=checklist-tree]').goToNode(this.checklistDefaultStoreStore.getRoot());
+        var self = this;
+        self.checkListTree.getTreeList().getStore().loadData();
+        self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
+            var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
+            if (!node) node = this.checklistDefaultStoreStore.getRoot();
+            if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
+            else this.checkListTree.getTreeList().goToNode(node);
+        }, self);
     }
 
 });

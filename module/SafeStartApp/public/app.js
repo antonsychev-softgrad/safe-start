@@ -78,8 +78,8 @@ Ext.apply(SafeStartApp,  {
 
     loadMainMenu: function() {
         this.AJAX('web-panel/getMainMenu', {}, function(result) {
-            SafeStartApp.setViewPort(result.mainMenu || null);
             SafeStartApp.userModel.setData(result.userInfo || {});
+            SafeStartApp.setViewPort(result.mainMenu || null);
         });
     },
 
@@ -107,6 +107,16 @@ Ext.apply(SafeStartApp,  {
         });
 
         Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
+
+        Ext.viewport.Default.prototype.doBlurInput = function(e) {
+            var target = e.target,
+                focusedElement = this.focusedElement;
+            //In IE9/10 browser window loses focus and becomes inactive if focused element is <body>. So we shouldn't call blur for <body>
+            if (focusedElement && focusedElement.nodeName.toUpperCase() != 'BODY' && !this.isInputRegex.test(target.tagName)) {
+                delete this.focusedElement;
+                if (typeof focusedElement == 'object' && typeof focusedElement.blur == 'function')  focusedElement.blur();
+            }
+        };
     }
 });
 
@@ -133,7 +143,9 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        'Vehicles',
+        'DefaultVehicles',
+        'CompanyVehicles',
+        'UserVehicles',
         'DefaultChecklist',
         'VehicleChecklist'
     ],
