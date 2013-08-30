@@ -175,7 +175,35 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         return this.getVehicleInspectionPanel().query(query);
     },
 
-    onActivateReviewCard: function () {
-        console.log('review');
+    getChecklistForms: function () {
+        var query = [
+            'formpanel[name=checklist-card]',
+            'formpanel[name=checklist-card-additional][isIncluded]'
+        ].join(', ');
+        return this.getVehicleInspectionPanel().query(query);
+    },
+
+    onActivateReviewCard: function (reviewCard, vehicleInspectionPanel) {
+        var checklists = this.getChecklistForms();
+        var triggeredAlerts = [];
+        var passedCards = [];
+        Ext.each(checklists, function (checklist) {
+            var triggerableFields = checklist.query('[triggerable]');
+            passedCards.push({
+                groupName: checklist.config.groupName,
+                additional: checklist.name.config.additional
+            });
+            Ext.each(triggerableFields, function (field) {
+                var fieldAlerts = vehicleInspectionPanel.getAlerts(field.config.fieldId);
+                if (fieldAlerts && fieldAlerts.length) {
+                    triggeredAlerts.push({
+                        alerts: fieldAlerts,
+                        fieldId: field.config.fieldId
+                    });
+                }
+            });
+        });
+        console.log(triggeredAlerts);
+        console.log(passedCards);
     }
 });

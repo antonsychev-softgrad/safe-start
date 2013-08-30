@@ -10,6 +10,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }
     },
 
+    alerts: [],
+    setAlerts: function (fieldId, value) {
+        this.alerts[fieldId] = value;
+        console.log(fieldId);
+        console.log(this.alerts);
+    },
+
+    getAlerts: function (fieldId) {
+        return this.alerts[fieldId];
+    },
+
     initialize: function () {
         console.log(this);
     },
@@ -130,6 +141,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             cls: 'sfa-checklist-form',
             minHeight: 400,
             groupId: checklist.groupId,
+            additional: checklist.additional,
+            groupName: checklist.groupName,
             items: fields
         };
     },
@@ -171,21 +184,36 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createRadioField: function (fieldData) {
-        var optionFields = [],
-            name = 'radioGroup-' + fieldData.fieldId;
+        var me = this,
+            name = 'checklist-radio-' + fieldData.fieldId,
+            optionFields = [];
 
         Ext.each(fieldData.options, function (option) {
             optionFields.push({
                 xtype: 'radiofield',
                 value: option.value,
                 label: option.label,
-                labelWrap: true,
                 name: name,
-                checked: fieldData.fieldValue === option.value
+                checked: fieldData.fieldValue === option.value,
+                listeners: {
+                    check: function (radio) {
+                        var fieldSet = radio.up('fieldset'),
+                            alerts;
+                        Ext.each(fieldSet.config.alerts, function (alert) {
+                            alerts = [];
+                            if (alert.triggerValue.match(new RegExp(radio.getValue(), 'i'))) {
+                                Ext.Msg.alert('CHECKLIST', alert.alertMessage);
+                                alerts.push(alert);
+                            }
+                        });
+                        me.setAlerts(fieldSet.config.fieldId, alerts);
+                    }
+                }
             });
         });
         return {
             xtype: 'fieldset',
+            alerts: fieldData.alerts,
             layout: {
                 type: 'hbox',
                 pack: 'center'
@@ -194,6 +222,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 labelAlign: 'right'
             },
             fieldId: fieldData.fieldId,
+            triggerable: true,
             title: fieldData.fieldName,
             items: optionFields 
         };
