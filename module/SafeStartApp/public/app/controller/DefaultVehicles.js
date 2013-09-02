@@ -185,8 +185,10 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
 
     onActivateReviewCard: function (reviewCard, vehicleInspectionPanel) {
         var checklists = this.getChecklistForms();
-        var triggeredAlerts = [];
         var passedCards = [];
+        var vehicleInspectionPanel = this.getVehicleInspectionPanel();
+        var alertsStore = vehicleInspectionPanel.getAlertsStore();
+        var alerts = [];
         Ext.each(checklists, function (checklist) {
             var triggerableFields = checklist.query('[triggerable]');
             passedCards.push({
@@ -194,16 +196,16 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
                 additional: checklist.config.additional
             });
             Ext.each(triggerableFields, function (field) {
-                var fieldAlerts = vehicleInspectionPanel.getAlerts(field.config.fieldId);
-                if (fieldAlerts && fieldAlerts.length) {
-                    triggeredAlerts.push({
-                        alerts: fieldAlerts,
-                        fieldId: field.config.fieldId
+                if (field.config.fieldId) {
+                    alertsStore.each(function (record) {
+                        if (record.get('fieldId') === field.config.fieldId && record.get('active') === true) {
+                            Ext.Array.include(alerts, record);
+                        }
                     });
                 }
             });
         });
-        vehicleInspectionPanel.updateReview(passedCards, triggeredAlerts);
+        vehicleInspectionPanel.updateReview(passedCards, alerts);
     },
 
     onReviewSubmitBtnTap: function (button) {
@@ -211,9 +213,19 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     },
 
     onReviewConfirmBtnTap: function (button) {
+        var alerts = [];
         var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var checklists = this.getChecklistForms();
         var fieldValues = [];
+        Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
+            var alert = alertContaienr.config.alertModel;
+            alerts.push({
+                fieldId: '' + alert.get('fieldId'),
+                comment: alert.get('comment'),
+                images: alert.get('images')
+            });
+        });
+        console.log(alerts);
         Ext.each(checklists, function (checklist) {
             var fields = checklist.query('field'); 
             Ext.each(fields, function (field) {
@@ -226,31 +238,27 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
                         }
                         fieldValues.push({
                             id: field.config.fieldId,
-                            value: value,
-                            alerts: []
+                            value: value
                         });
                         break;
                     case 'radiofield':
                         if (field.isChecked()) {
                             fieldValues.push({
                                 id: field.config.fieldId,
-                                value: field.getValue(),
-                                alerts: []
+                                value: field.getValue()
                             });
                         }
                         break;
                     case 'textfield':
                         fieldValues.push({
                             id: field.config.fieldId,
-                            value: field.getValue(),
-                            alerts: []
+                            value: field.getValue()
                         });
                         break;
                     case 'datepickerfield':
                         fieldValues.push({
                             id: field.config.fieldId,
-                            value: field.getValue(),
-                            alerts: []
+                            value: field.getValue()
                         });
                         break;
                 }
@@ -260,11 +268,11 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var data = {
             date: Date.now(),
             fields: fieldValues,
-            alerts: []
+            alerts: alerts
         };
-        
+
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
-            this.getVehicleInspectionPanel().down('sheet[cls=sfa-messagebox-confirm]').hide();
+            vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').hide();
         });
     }
 });

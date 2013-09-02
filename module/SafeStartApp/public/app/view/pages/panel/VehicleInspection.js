@@ -2,6 +2,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     extend: 'Ext.Panel',
 
     alias: 'widget.SafeStartVehicleInspection',
+    requires: [
+        'SafeStartApp.store.ChecklistAlerts'
+    ],
 
     config: {
         name: 'vehicle-inspection',
@@ -12,6 +15,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     initialize: function () {
         this.callParent();
+
+        this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
 
         var submitMsgBox = Ext.create('Ext.MessageBox', {
             cls: 'sfa-messagebox-confirm',
@@ -32,6 +37,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add(submitMsgBox);
     },
 
+    setAlertsStore: function (store) {
+        this._alertsStore = store;
+    },
+
+    getAlertsStore: function () {
+        return this._alertsStore;
+    },
+
     alerts: [],
     setAlerts: function (fieldId, value) {
         this.alerts[fieldId] = value;
@@ -48,6 +61,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
+        this.getAlertsStore().removeAll();
         this.vehicleId = id || 0;
         checklists = checklists || [];
 
@@ -170,8 +184,19 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     createFields: function (fieldsData) {
         var fields = [];
+        var alertsStore = this.getAlertsStore();
+
 
         Ext.each(fieldsData, function (fieldData) {
+            if (Ext.isArray(fieldData.alerts) && fieldData.alerts[0]) {
+                var alert = fieldData.alerts[0];
+                var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
+                    alertMessage: alert.alertMessage,
+                    triggerValue: alert.triggerValue,
+                    fieldId: fieldData.fieldId
+                });
+                alertsStore.add(alertRecord);
+            }
             switch(fieldData.type) {
                 case 'text':
                     fields.push(this.createTextField(fieldData));
@@ -220,15 +245,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 listeners: {
                     check: function (radio) {
                         var fieldSet = radio.up('fieldset'),
-                            alerts;
-                        Ext.each(fieldSet.config.alerts, function (alert) {
-                            alerts = [];
-                            if (alert.triggerValue.match(new RegExp(radio.getValue(), 'i'))) {
-                                Ext.Msg.alert('CHECKLIST', alert.alertMessage);
-                                alerts.push(alert);
+                            alert = me.getAlertsStore().findRecord('fieldId', fieldSet.config.fieldId);
+
+                        if (alert !== null) {
+                            if (alert.get('triggerValue').match(new RegExp(radio.getValue(), 'i'))) {
+                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                alert.set('active', true);
+                            } else {
+                                alert.set('active', false);
                             }
-                        });
-                        me.setAlerts(fieldSet.config.fieldId, alerts);
+                        }
                     }
                 }
             });
@@ -285,34 +311,65 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createVehicleDetailsView: function (passedCards) {
+        var items = [{
+            xtype: 'titlebar',
+            title: 'Vehicle details'
+        }];
+        Ext.each(passedCards, function (card) {
+            items.push({
+                xtype: 'checkboxfield',
+                labelWidth: '90%',
+                label: card.groupName,
+                checked: true,
+                listeners: {
+                    uncheck: function (checkbox) {
+                        checkbox.setChecked(true);
+                    }
+                }
+            });
+        });
         return {
-            xtype: 'dataview',
-            // TODO: fix height
-            height: 200,
-            store: {
-                fields: ['groupName'],
-                data: passedCards
-            },
-            itemTpl: '<div class="sfa-dataview-item">{groupName}</div>',
-            items: [{
-                xtype: 'titlebar',
-                title: 'Vehicle details'
-            }]
+            xtype: 'panel',
+            items: items
         };
     },
 
-    createAlertsView: function (triggeredAlerts) {
+    createAlertsView: function (alerts) {
         var items = [{
             xtype: 'titlebar',
             title: 'Alerts'            
         }];
-        Ext.each(triggeredAlerts, function (triggeredAlert) {
-            Ext.each(triggeredAlert.alerts, function (alert) {
-                items.push({
-                    xtype: 'panel',
-                    fieldId: triggeredAlert.fieldId,
-                    html: alert.alertMessage
-                });
+        Ext.each(alerts, function (alert) {
+            items.push({
+                xtype: 'container',
+                name: 'alert-container',
+                fieldId: alert.get('fieldId'),
+                alertModel: alert,
+                items: [{
+                    label: alert.get('alertMessage'),
+                    xtype: 'checkboxfield',
+                    checked: true,
+                    labelWidth: '90%',
+                    listeners: {
+                        uncheck: function (checkbox) {
+                            checkbox.setChecked(true);
+                        }
+                    }
+                }, {
+                    xtype: 'textfield',
+                    label: 'Additional comments',
+                    value: alert.get('comment'),
+                    labelAlign: 'top',
+                    listeners: {
+                        change: function (textfield, value) {
+                            alert.set('comment', value);
+                        }
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Add photo',
+                    action: 'add-photo'
+                }]
             });
         });
         return {
