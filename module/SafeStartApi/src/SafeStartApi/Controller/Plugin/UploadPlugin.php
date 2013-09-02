@@ -687,6 +687,62 @@ class UploadPlugin extends AbstractPlugin
             }
         }
 
+        /** /
+        $validatorChain = new Validator\ValidatorChain();
+
+        //$validatorChain->attach(new Validator\File\IsImage());
+        //$validatorChain->attach(new Validator\File\MimeType(array('image/png', 'image/jpg', 'image/jpeg', 'enableHeaderCheck' => true)));
+        //$extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array();
+        //if(!empty($extensions)) {
+        //    $validatorChain->attach(new Validator\File\Extension($extensions, true));
+        //}
+
+        $fileSizeArr = array();
+        $minFSize = $this->options['min_file_size'];
+        $maxFSize = $this->options['max_file_size'];
+        $chunkSize = $this->options['readfile_chunk_size'];
+        if(isset($minFSize) && is_int($minFSize) && $minFSize > 1)
+        $fileSizeArr['min'] = $minFSize;
+        if(isset($maxFSize) && is_int($maxFSize) && $maxFSize > 1)
+        $fileSizeArr['max'] = $maxFSize;
+        if(isset($chunkSize) && is_int($chunkSize) && $chunkSize > 1)
+        $fileSizeArr['max'] = $chunkSize;
+
+        if(!empty($fileSizeArr)) {
+        $validatorChain->attach(new Validator\File\Size($fileSizeArr));
+        }
+
+        $imSizeArr = array();
+        $minWidth = $this->options['min_width'];
+        $minHeight = $this->options['min_height'];
+        $maxWidth = $this->options['max_width'];
+        $maxHeight = $this->options['max_height'];
+        if(isset($minWidth) && is_int($minWidth) && $minWidth > 0)
+        $imSizeArr['minWidth'] = $minWidth;
+        if(isset($minHeight) && is_int($minHeight) && $minHeight > 0)
+        $imSizeArr['minHeight'] = $minHeight;
+        if(isset($maxWidth) && is_int($maxWidth) && $maxWidth > 0)
+        $imSizeArr['maxWidth'] = $maxWidth;
+        if(isset($maxHeight) && is_int($maxHeight) && $maxHeight > 0)
+        $imSizeArr['maxHeight'] = $maxHeight;
+
+        if(!empty($imSizeArr)) {
+        $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
+        }
+
+        if ($validatorChain->isValid($uploaded_file)) {
+        return true;
+        } else {
+        // username failed validation; print reasons
+        foreach ($validatorChain->getMessages() as $message) {
+        $file->error .= "$message\n";
+        }
+
+        return false;
+        }
+        /**/
+
+
         return true;
     }
 
@@ -1440,17 +1496,17 @@ class UploadPlugin extends AbstractPlugin
                     $this->options['rename_file']
                         ? "{$hash}.{$ext}"
                         : ($file_name
-                            ? $file_name
-                            : (isset($upload['name'])
-                                ? $upload['name']
-                                : null))
+                        ? $file_name
+                        : (isset($upload['name'])
+                            ? $upload['name']
+                            : null))
                     ,
 
                     $size
                         ? $size
                         : (isset($upload['size'])
-                            ? $upload['size']
-                            : $this->get_server_var('CONTENT_LENGTH')),
+                        ? $upload['size']
+                        : $this->get_server_var('CONTENT_LENGTH')),
                     isset($upload['type'])
                         ? $upload['type']
                         : $this->get_server_var('CONTENT_TYPE'),
