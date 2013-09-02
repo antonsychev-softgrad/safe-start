@@ -41,28 +41,33 @@
                     }
                 },
                 "alerts": {
-                    "description": "Field alert",
-                    "type": "object",
+                    "description": "Alerts",
+                    "type": "array",
                     "required": false,
-                    "properties": {
-                        "fieldId": {
-                            "description": "Field ID",
-                            "type": "string",
-                            "required": true
-                        },
-                        "comment": {
-                            "description": "Comment",
-                            "type": "string",
-                            "required": false
-                        },
-                        "images": {
-                            "description": "Photo's",
-                            "type": "array",
-                            "required": false,
-                            "items": {
-                                "description": "Photo path",
+                    "items": {
+                        "description": "Field alert",
+                        "type": "object",
+                        "required": true,
+                        "properties": {
+                            "fieldId": {
+                                "description": "Field ID",
+                                "type": "string",
+                                "required": true
+                            },
+                            "comment": {
+                                "description": "Comment",
                                 "type": "string",
                                 "required": false
+                            },
+                            "images": {
+                                "description": "Photo's",
+                                "type": "array",
+                                "required": false,
+                                "items": {
+                                    "description": "Photo path",
+                                    "type": "string",
+                                    "required": false
+                                }
                             }
                         }
                     }

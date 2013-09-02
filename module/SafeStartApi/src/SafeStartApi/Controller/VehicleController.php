@@ -98,15 +98,12 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
-
         // save checklist
         $vehicleId = $this->params('id');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
 
-        if ($this->authService->hasIdentity()) {
-            $user = $this->authService->getStorage()->read();
-        }
+        $user = $this->authService->getStorage()->read();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
         $query->setParameter(1, $vehicle);
@@ -135,7 +132,8 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setUser($user);
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
-        $checkList->setGpsCoords(isset($this->data->gps) ? $this->data->gps : null);
+        $checkList->setHash(null);
+        $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
         $this->em->persist($checkList);
         $this->em->flush();
@@ -149,22 +147,23 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->flush();
 
         // save alerts
-        $alerts = $this->data->alerts;
-        foreach($alerts as $alert) {
+        if(isset($this->data->alerts) && !empty($this->data->alerts)) {
+            $alerts = $this->data->alerts;
+            foreach($alerts as $alert) {
 
-            $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
-            if($field === null) {
-                continue;
+                $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
+                if($field === null) {
+                    continue;
+                }
+
+                $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert->setField($field);
+                $newAlert->setComment(isset($alert->comment) ? $alert->comment : null);
+                $newAlert->setImages(isset($alert->images) ? json_encode($alert->images) : null);
+                $this->em->persist($newAlert);
             }
-
-            $newAlert = new \SafeStartApi\Entity\Alert();
-            $newAlert->setField($field);
-            $newAlert->setComment(isset($alert->comment) ? $alert->comment : null);
-            $newAlert->setImages(isset($alert->images) ? json_encode($alert->images) : null);
-            $this->em->persist($newAlert);
+            $this->em->flush();
         }
-        $this->em->flush();
-
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),

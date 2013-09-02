@@ -7,10 +7,6 @@ use SafeStartApi\Model\ImageProcessor;
 
 class UploadPlugin extends AbstractPlugin
 {
-    const THUMBNAIL_FULL = '1024x768';
-    const THUMBNAIL_MEDIUM = '320x220';
-    const THUMBNAIL_SMALL = '70x70';
-
     protected $options;
 
     // PHP File Upload error message codes:
@@ -34,8 +30,9 @@ class UploadPlugin extends AbstractPlugin
         'min_height' => 'Image requires a minimum height'
     );
 
+
     /**
-     * UploadPlugin::__construct()
+     * UploadPlugin::__invoke()
      *
      * @param mixed $options
      * @param integer|string|array|SaveStartApi/Entity/User $options[user_dirs] (if is set!)
@@ -43,25 +40,7 @@ class UploadPlugin extends AbstractPlugin
      * @param mixed $error_messages
      * @return
      */
-    public function __construct($options = null, $initialize = false, $error_messages = null) {
-        $this->setOptions($options);
-
-        if ($error_messages) {
-            $this->error_messages = array_merge($this->error_messages, $error_messages);
-        }
-
-        if ($initialize) {
-            $this->initialize();
-        }
-    }
-
-    /**
-     * UploadPlugin::__invoke()
-     *
-     * @param mixed $options
-     * @return
-     */
-    public function __invoke($options = null) {
+    public function __invoke($options = null, $initialize = false, $error_messages = null) {
 
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
         $defUsersPath = $moduleConfig['defUsersPath'];
@@ -70,7 +49,16 @@ class UploadPlugin extends AbstractPlugin
         $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
         $this->setOptions($options);
-        return $this;
+
+        if ($error_messages) {
+            $this->error_messages = array_merge($this->error_messages, $error_messages);
+        }
+
+        if ($initialize) {
+            $this->initialize();
+        } else {
+            return $this;
+        }
     }
 
     /**
@@ -100,7 +88,6 @@ class UploadPlugin extends AbstractPlugin
                 'POST',
                 'PUT',
                 'PATCH',
-                'DELETE'
             ),
             'access_control_allow_headers' => array(
                 'Content-Type',
@@ -189,9 +176,6 @@ class UploadPlugin extends AbstractPlugin
             case 'POST':
                 $this->post();
                 break;
-            case 'DELETE':
-                $this->delete();
-                break;
             default:
                 $this->header('HTTP/1.1 405 Method Not Allowed');
         }
@@ -208,8 +192,8 @@ class UploadPlugin extends AbstractPlugin
             ($https ? 'https://' : 'http://').
             (!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'].'@' : '').
             (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'].
-            ($https && $_SERVER['SERVER_PORT'] === 443 ||
-            $_SERVER['SERVER_PORT'] === 80 ? '' : ':'.$_SERVER['SERVER_PORT'])))
+                ($https && $_SERVER['SERVER_PORT'] === 443 ||
+                $_SERVER['SERVER_PORT'] === 80 ? '' : ':'.$_SERVER['SERVER_PORT'])))
             //.substr($_SERVER['SCRIPT_FILENAME'],0, strrpos($_SERVER['SCRIPT_FILENAME'], '/'))
             ;
     }
@@ -219,7 +203,7 @@ class UploadPlugin extends AbstractPlugin
         $root = $this->get_server_var('DOCUMENT_ROOT');
 
         if(!file_exists($root . "/init_autoloader.php")) {
-           $root = dirname($root);
+            $root = dirname($root);
         }
 
         return $root;
@@ -318,7 +302,7 @@ class UploadPlugin extends AbstractPlugin
             }
         }
         return $this->options['upload_dir'].$this->get_user_path()
-            .$version_path.$file_name;
+        .$version_path.$file_name;
     }
 
     /**
@@ -364,7 +348,7 @@ class UploadPlugin extends AbstractPlugin
             }
         }
         return $this->options['upload_url'].$this->get_user_path()
-            .$version_path.rawurlencode($file_name);
+        .$version_path.rawurlencode($file_name);
     }
 
     /**
@@ -578,17 +562,17 @@ class UploadPlugin extends AbstractPlugin
                 return false;
         }
         $success = imagecopyresampled(
-            $new_img,
-            $src_img,
-            $dst_x,
-            $dst_y,
-            0,
-            0,
-            $new_width,
-            $new_height,
-            $img_width,
-            $img_height
-        ) && $write_image($new_img, $new_file_path, $image_quality);
+                $new_img,
+                $src_img,
+                $dst_x,
+                $dst_y,
+                0,
+                0,
+                $new_width,
+                $new_height,
+                $img_width,
+                $img_height
+            ) && $write_image($new_img, $new_file_path, $image_quality);
         // Free up memory (imagedestroy does not delete files):
         imagedestroy($src_img);
         imagedestroy($new_img);
@@ -642,51 +626,91 @@ class UploadPlugin extends AbstractPlugin
             $file->error = $this->get_error_message($error);
             return false;
         }
-
         $content_length = $this->fix_integer_overflow(intval(
             $this->get_server_var('CONTENT_LENGTH')
         ));
-
         $post_max_size = $this->get_config_bytes(ini_get('post_max_size'));
         if ($post_max_size && ($content_length > $post_max_size)) {
             $file->error = $this->get_error_message('post_max_size');
             return false;
         }
 
+        if (!preg_match($this->options['accept_file_types'], $file->name)) {
+            $file->error = $this->get_error_message('accept_file_types');
+            return false;
+        }
+
+        if ($uploaded_file && is_uploaded_file($uploaded_file)) {
+            $file_size = $this->get_file_size($uploaded_file);
+        } else {
+            $file_size = $content_length;
+        }
+
+        if ($this->options['max_file_size'] && (
+                $file_size > $this->options['max_file_size'] ||
+                $file->size > $this->options['max_file_size'])
+        ) {
+            $file->error = $this->get_error_message('max_file_size');
+            return false;
+        }
+
+        if ($this->options['min_file_size'] &&
+            $file_size < $this->options['min_file_size']) {
+            $file->error = $this->get_error_message('min_file_size');
+            return false;
+        }
+
         if (is_int($this->options['max_number_of_files']) && (
                 $this->count_file_objects() >= $this->options['max_number_of_files'])
-            ) {
+        ) {
             $file->error = $this->get_error_message('max_number_of_files');
             return false;
         }
 
+        list($img_width, $img_height) = @getimagesize($uploaded_file);
+        if (is_int($img_width)) {
+            if ($this->options['max_width'] && $img_width > $this->options['max_width']) {
+                $file->error = $this->get_error_message('max_width');
+                return false;
+            }
+            if ($this->options['max_height'] && $img_height > $this->options['max_height']) {
+                $file->error = $this->get_error_message('max_height');
+                return false;
+            }
+            if ($this->options['min_width'] && $img_width < $this->options['min_width']) {
+                $file->error = $this->get_error_message('min_width');
+                return false;
+            }
+            if ($this->options['min_height'] && $img_height < $this->options['min_height']) {
+                $file->error = $this->get_error_message('min_height');
+                return false;
+            }
+        }
+
+        /** /
         $validatorChain = new Validator\ValidatorChain();
 
-        /* not working! > * /
-        $validatorChain->attach(new Validator\File\IsImage());
-        $validatorChain->attach(new Validator\File\MimeType(array('image/png', 'image/jpg', 'image/jpeg', 'enableHeaderCheck' => true)));
-        $extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array();
-        if(!empty($extensions)) {
-            $validatorChain->attach(new Validator\File\Extension($extensions, true));
-        }
-        /* > end. */
-
+        //$validatorChain->attach(new Validator\File\IsImage());
+        //$validatorChain->attach(new Validator\File\MimeType(array('image/png', 'image/jpg', 'image/jpeg', 'enableHeaderCheck' => true)));
+        //$extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array();
+        //if(!empty($extensions)) {
+        //    $validatorChain->attach(new Validator\File\Extension($extensions, true));
+        //}
 
         $fileSizeArr = array();
         $minFSize = $this->options['min_file_size'];
         $maxFSize = $this->options['max_file_size'];
         $chunkSize = $this->options['readfile_chunk_size'];
         if(isset($minFSize) && is_int($minFSize) && $minFSize > 1)
-            $imSizeArr['min'] = $minFSize;
+        $fileSizeArr['min'] = $minFSize;
         if(isset($maxFSize) && is_int($maxFSize) && $maxFSize > 1)
-            $imSizeArr['max'] = $maxFSize;
+        $fileSizeArr['max'] = $maxFSize;
         if(isset($chunkSize) && is_int($chunkSize) && $chunkSize > 1)
-            $imSizeArr['max'] = $chunkSize;
+        $fileSizeArr['max'] = $chunkSize;
 
-        if(!empty($imSizeArr)) {
-            $validatorChain->attach(new Validator\File\Size($fileSizeArr));
+        if(!empty($fileSizeArr)) {
+        $validatorChain->attach(new Validator\File\Size($fileSizeArr));
         }
-
 
         $imSizeArr = array();
         $minWidth = $this->options['min_width'];
@@ -694,29 +718,32 @@ class UploadPlugin extends AbstractPlugin
         $maxWidth = $this->options['max_width'];
         $maxHeight = $this->options['max_height'];
         if(isset($minWidth) && is_int($minWidth) && $minWidth > 0)
-            $imSizeArr['minWidth'] = $minWidth;
+        $imSizeArr['minWidth'] = $minWidth;
         if(isset($minHeight) && is_int($minHeight) && $minHeight > 0)
-            $imSizeArr['minHeight'] = $minHeight;
+        $imSizeArr['minHeight'] = $minHeight;
         if(isset($maxWidth) && is_int($maxWidth) && $maxWidth > 0)
-            $imSizeArr['maxWidth'] = $maxWidth;
+        $imSizeArr['maxWidth'] = $maxWidth;
         if(isset($maxHeight) && is_int($maxHeight) && $maxHeight > 0)
-            $imSizeArr['maxHeight'] = $maxHeight;
+        $imSizeArr['maxHeight'] = $maxHeight;
 
         if(!empty($imSizeArr)) {
-            $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
+        $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
         }
-
 
         if ($validatorChain->isValid($uploaded_file)) {
-            return true;
+        return true;
         } else {
-            // username failed validation; print reasons
-            foreach ($validatorChain->getMessages() as $message) {
-                $file->error .= "$message\n";
-            }
-
-            return false;
+        // username failed validation; print reasons
+        foreach ($validatorChain->getMessages() as $message) {
+        $file->error .= "$message\n";
         }
+
+        return false;
+        }
+        /**/
+
+
+        return true;
     }
 
     /**
@@ -756,7 +783,7 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function get_unique_filename($name,
-            $type = null, $index = null, $content_range = null) {
+                                           $type = null, $index = null, $content_range = null) {
         while(is_dir($this->get_upload_path($name))) {
             $name = $this->upcount_name($name);
         }
@@ -782,7 +809,7 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function trim_file_name($name,
-            $type = null, $index = null, $content_range = null) {
+                                      $type = null, $index = null, $content_range = null) {
         // Remove path information and dots around the filename, to prevent uploading
         // into different directories or replacing hidden system files.
         // Also remove control characters and spaces (\x00..\x20) around the filename:
@@ -809,7 +836,7 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function get_file_name($name,
-            $type = null, $index = null, $content_range = null) {
+                                     $type = null, $index = null, $content_range = null) {
         return $this->get_unique_filename(
             $this->trim_file_name($name, $type, $index, $content_range),
             $type,
@@ -1012,7 +1039,7 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function handle_file_upload($uploaded_file, $name, $size, $type, $error,
-            $index = null, $content_range = null) {
+                                          $index = null, $content_range = null) {
 
         $name = $this->trim_file_name($name, $type, $index, $content_range);
         if($this->options['overwrite_file']) {
@@ -1064,7 +1091,7 @@ class UploadPlugin extends AbstractPlugin
                 $file->url = $this->get_download_url($file->name);
                 list($img_width, $img_height) = @getimagesize($file_path);
                 if (is_int($img_width) &&
-                        preg_match($this->getPregIinlineFileTypes(), $file->name)) {
+                    preg_match($this->getPregIinlineFileTypes(), $file->name)) {
                     $this->handle_image_file($file_path, $file);
                 }
             } else {
@@ -1086,7 +1113,7 @@ class UploadPlugin extends AbstractPlugin
             $f->$version = $opts['max_width'] . 'x' . $opts['max_height'];
             $newFileInfo->sizes[] = $f;
         }
-        if(isset($file->error)) {
+        if(isset($file->error) && !empty($file->error)) {
             $newFileInfo->error = $file->error;
         }
 
@@ -1349,11 +1376,11 @@ class UploadPlugin extends AbstractPlugin
     protected function send_access_control_headers() {
         $this->header('Access-Control-Allow-Origin: '.$this->options['access_control_allow_origin']);
         $this->header('Access-Control-Allow-Credentials: '
-            .($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
+        .($this->options['access_control_allow_credentials'] ? 'true' : 'false'));
         $this->header('Access-Control-Allow-Methods: '
-            .implode(', ', $this->options['access_control_allow_methods']));
+        .implode(', ', $this->options['access_control_allow_methods']));
         $this->header('Access-Control-Allow-Headers: '
-            .implode(', ', $this->options['access_control_allow_headers']));
+        .implode(', ', $this->options['access_control_allow_headers']));
     }
 
     /**
@@ -1403,10 +1430,6 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     public function post($print_response = true) {
-
-        if (isset($_REQUEST['_method']) && $_REQUEST['_method'] === 'DELETE') {
-            return $this->delete($print_response);
-        }
         $upload = isset($_FILES[$this->options['param_name']]) ?
             $_FILES[$this->options['param_name']] : null;
 
@@ -1434,7 +1457,9 @@ class UploadPlugin extends AbstractPlugin
             foreach ($upload['tmp_name'] as $index => $value) {
 
                 $pathinfo   = pathinfo($upload['name'][$index]);
-                $ext        = $pathinfo['extension'];
+                $ext        = isset($pathinfo['extension'])
+                    ? $pathinfo['extension']
+                    : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name'][$index]);
                 $hash       = md5_file($upload['tmp_name'][$index]);
 
                 $files[] = $this->handle_file_upload(
@@ -1443,8 +1468,8 @@ class UploadPlugin extends AbstractPlugin
                     $this->options['rename_file']
                         ? "{$hash}.{$ext}"
                         : ($file_name
-                            ? $file_name
-                            : $upload['name'][$index])
+                        ? $file_name
+                        : $upload['name'][$index])
                     ,
 
                     $size ? $size : $upload['size'][$index],
@@ -1457,7 +1482,9 @@ class UploadPlugin extends AbstractPlugin
         } else {
             if(isset($upload['tmp_name']) && !empty($upload['tmp_name'])) {
                 $pathinfo   = pathinfo($upload['name']);
-                $ext        = $pathinfo['extension'];
+                $ext        = isset($pathinfo['extension'])
+                    ? $pathinfo['extension']
+                    : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name']);
                 $hash       = md5_file($upload['tmp_name']);
 
                 // param_name is a single object identifier like "file",
@@ -1469,17 +1496,23 @@ class UploadPlugin extends AbstractPlugin
                     $this->options['rename_file']
                         ? "{$hash}.{$ext}"
                         : ($file_name
-                            ? $file_name
-                            : (isset($upload['name'])
-                                ? $upload['name']
-                                : null))
+                        ? $file_name
+                        : (isset($upload['name'])
+                            ? $upload['name']
+                            : null))
                     ,
 
-                    $size ? $size : (isset($upload['size']) ?
-                            $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
-                    isset($upload['type']) ?
-                            $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
-                    isset($upload['error']) ? $upload['error'] : null,
+                    $size
+                        ? $size
+                        : (isset($upload['size'])
+                        ? $upload['size']
+                        : $this->get_server_var('CONTENT_LENGTH')),
+                    isset($upload['type'])
+                        ? $upload['type']
+                        : $this->get_server_var('CONTENT_TYPE'),
+                    isset($upload['error'])
+                        ? $upload['error']
+                        : null,
                     null,
                     $content_range
                 );
@@ -1490,42 +1523,10 @@ class UploadPlugin extends AbstractPlugin
             }
         }
 
-        return $print_response
-            ? $this->generate_response(
-                //array($this->options['param_name'] => $files),
-                $files,
-                $print_response
-            )
-            : $this->generate_result_array(!is_array($files) ? array($this->options['param_name'] => $files) : $files);
-    }
-
-    /**
-     * UploadPlugin::delete()
-     *
-     * @param bool $print_response
-     * @return
-     */
-    public function delete($print_response = true) {
-        $file_names = $this->get_file_names_params();
-        if (empty($file_names)) {
-            $file_names = array($this->get_file_name_param());
-        }
-        $response = array();
-        foreach($file_names as $file_name) {
-            $file_path = $this->get_upload_path($file_name);
-            $success = is_file($file_path) && $file_name[0] !== '.' && unlink($file_path);
-            if ($success) {
-                foreach($this->options['image_versions'] as $version => $options) {
-                    if (!empty($version)) {
-                        $file = $this->get_upload_path($file_name, $version);
-                        if (is_file($file)) {
-                            unlink($file);
-                        }
-                    }
-                }
-            }
-            $response[$file_name] = $success;
-        }
-        return $this->generate_response($response, $print_response);
+        return $this->generate_response(
+        //array($this->options['param_name'] => $files),
+            $files,
+            $print_response
+        );
     }
 }

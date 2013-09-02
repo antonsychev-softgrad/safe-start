@@ -178,8 +178,8 @@
                 }
             }
         },
-        "/api/image/[uid]/[image]": {
-            "description": "Get image by UserId and FileName",
+        "/api/image/[image]": {
+            "description": "Get image by FileName",
             "type": "object",
             "properties": {
                 "request": {
