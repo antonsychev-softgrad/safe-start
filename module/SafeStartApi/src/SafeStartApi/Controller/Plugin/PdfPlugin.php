@@ -133,45 +133,44 @@ class PdfPlugin extends AbstractPlugin {
 
         $alertsDetails = array(
             array(
-                'alertTitle' => 'Are the tires correctly inflated, in good working order and with wheel nuts tightened?',
+                'title' => 'Are the tires correctly inflated, in good working order and with wheel nuts tightened?',
                 'comment' => 'Vivamus elementum semper nisi.\nAenean vulputate eleifend tellus.\nAenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(
-                    $this->getImagePathByName('93431c284ee6a2bb1bcf4041bc439999'),
-                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
                 ),
             ),
             array(
-                'alertTitle' => 'Maecena nec',
+                'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
             array(
-                'alertTitle' => 'Cras dapibus',
+                'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
             array(
-                'alertTitle' => 'Maecena nec',
+                'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
             array(
-                'alertTitle' => 'Cras dapibus',
+                'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
             array(
-                'alertTitle' => 'Maecena nec',
+                'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
+                'images' => array(
+                ),
             ),
             array(
-                'alertTitle' => 'Cras dapibus',
+                'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
             array(
-                'alertTitle' => 'Maecena nec',
+                'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
             ),
@@ -389,12 +388,21 @@ class PdfPlugin extends AbstractPlugin {
         $lineCounter = 0;
         $topPosInPage += 8;
         $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_SIZE + self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
-        foreach ($params as $vehicleDetail) {
+        foreach ($params as $group) {
 
             $drawLine = (bool)(++$lineCounter % 2);
             $fLinePos = $topPosInPage;
 
-            $title = $vehicleDetail['name'];
+            if(is_array($group) && !empty($group)) {
+                $title = $group['name'];
+                $status = strtoupper($group['status']);
+            } elseif($group instanceof \stdClass) {
+                $title = $group->name;
+                $status = strtoupper($group->status);
+            } else {
+                continue;
+            }
+
             $title = strip_tags($title);
             $title = wordwrap($title, 70, '\n');
             $headlineArray = explode('\n', $title);
@@ -427,8 +435,7 @@ class PdfPlugin extends AbstractPlugin {
             }
 
             // draw status >
-            $text = strtoupper($vehicleDetail['status']);
-            switch (strtolower($text)) {
+            switch (strtolower($status)) {
                 case 'alert':
                     $color = "#ff0000";
                     break;
@@ -437,7 +444,7 @@ class PdfPlugin extends AbstractPlugin {
                     $color = "#0f5b8d";
                     break;
             }
-            $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, $color, $fLinePos, self::TEXT_ALIGN_RIGHT);
+            $this->drawText($status, self::BLOCK_SUBHEADER_SIZE, $color, $fLinePos, self::TEXT_ALIGN_RIGHT);
             // > end draw status.
 
         }
@@ -452,13 +459,25 @@ class PdfPlugin extends AbstractPlugin {
         $text = ucfirst($headerTitle);
         $topPosInPage = $this->drawText($text, self::BLOCK_HEADER_SIZE, '#ff0000', $topPosInPage);
 
-        foreach ($params as $alertDeatails) {
+        foreach ($params as $alertInfo) {
+
+            if(is_array($alertInfo) && !empty($alertInfo)) {
+                $title = $alertInfo['name'];
+                $comment = strip_tags($alertInfo['comment']);
+                $images = $alertInfo['images'];
+            } elseif($alertInfo instanceof \stdClass) {
+                $title = $alertInfo['name'];
+                $comment = strip_tags($alertInfo['comment']);
+                $images = $alertInfo['images'];
+            } else {
+                continue;
+            }
+
             $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_SIZE + self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
 
-            $subHeader = $alertDeatails['alertTitle'];
-            $subHeader = strip_tags($subHeader);
-            $subHeader = wordwrap($subHeader, 85, '\n');
-            $headlineArray = explode('\n', $subHeader);
+            $title = strip_tags($title);
+            $title = wordwrap($title, 85, '\n');
+            $headlineArray = explode('\n', $title);
             $lineCounter = count($headlineArray);
             foreach ($headlineArray as $line) {
                 $text = trim($line);
@@ -471,9 +490,8 @@ class PdfPlugin extends AbstractPlugin {
                 }
             }
 
-            $commentMsg = strip_tags($alertDeatails['comment']);
-            $commentMsg = wordwrap($commentMsg, 110, '\n');
-            $headlineArray = explode('\n', $commentMsg);
+            $comment = wordwrap($comment, 110, '\n');
+            $headlineArray = explode('\n', $comment);
             $lineCounter = count($headlineArray);
             foreach ($headlineArray as $line) {
                 $text = trim($line);
@@ -484,10 +502,10 @@ class PdfPlugin extends AbstractPlugin {
                 }
             }
 
-            if(isset($alertDeatails['images'])) {
-                if(is_array($alertDeatails['images']) && !empty($alertDeatails['images'])) {
-                    foreach($alertDeatails['images'] as $image) {
-                        $topPosInPage -= $this->drawImage($image, $topPosInPage);
+            if(isset($images)) {
+                if(is_array($images) && !empty($images)) {
+                    foreach($images as $image) {
+                        $topPosInPage = $this->drawImage($image, $topPosInPage);
                     }
                 }
             }
@@ -549,8 +567,7 @@ class PdfPlugin extends AbstractPlugin {
         }
 
         $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
-        $topPosInPage -= $logoHeight;
-        $topPosInPage = $this->detectNewPage($topPosInPage, $logoHeight);
+        $topPosInPage = $this->detectNewPage($topPosInPage -= $logoHeight, $logoHeight);
         switch ($position) {
             case self::TEXT_ALIGN_RIGHT:
                 $leftPos = self::PAGE_PADDING_LEFT + $pageContentWidth - $logoWidth;

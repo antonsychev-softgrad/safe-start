@@ -626,14 +626,37 @@ class UploadPlugin extends AbstractPlugin
             $file->error = $this->get_error_message($error);
             return false;
         }
-
         $content_length = $this->fix_integer_overflow(intval(
             $this->get_server_var('CONTENT_LENGTH')
         ));
-
         $post_max_size = $this->get_config_bytes(ini_get('post_max_size'));
         if ($post_max_size && ($content_length > $post_max_size)) {
             $file->error = $this->get_error_message('post_max_size');
+            return false;
+        }
+
+        if (!preg_match($this->options['accept_file_types'], $file->name)) {
+            $file->error = $this->get_error_message('accept_file_types');
+            return false;
+        }
+
+        if ($uploaded_file && is_uploaded_file($uploaded_file)) {
+            $file_size = $this->get_file_size($uploaded_file);
+        } else {
+            $file_size = $content_length;
+        }
+
+        if ($this->options['max_file_size'] && (
+                $file_size > $this->options['max_file_size'] ||
+                $file->size > $this->options['max_file_size'])
+        ) {
+            $file->error = $this->get_error_message('max_file_size');
+            return false;
+        }
+
+        if ($this->options['min_file_size'] &&
+            $file_size < $this->options['min_file_size']) {
+            $file->error = $this->get_error_message('min_file_size');
             return false;
         }
 
@@ -644,63 +667,27 @@ class UploadPlugin extends AbstractPlugin
             return false;
         }
 
-        $validatorChain = new Validator\ValidatorChain();
-
-        /* not working! > * /
-        $validatorChain->attach(new Validator\File\IsImage());
-        $validatorChain->attach(new Validator\File\MimeType(array('image/png', 'image/jpg', 'image/jpeg', 'enableHeaderCheck' => true)));
-        $extensions = is_array($this->options['inline_file_types']) ? $this->options['inline_file_types'] : array();
-        if(!empty($extensions)) {
-            $validatorChain->attach(new Validator\File\Extension($extensions, true));
-        }
-        /* > end. */
-
-
-        $fileSizeArr = array();
-        $minFSize = $this->options['min_file_size'];
-        $maxFSize = $this->options['max_file_size'];
-        $chunkSize = $this->options['readfile_chunk_size'];
-        if(isset($minFSize) && is_int($minFSize) && $minFSize > 1)
-            $imSizeArr['min'] = $minFSize;
-        if(isset($maxFSize) && is_int($maxFSize) && $maxFSize > 1)
-            $imSizeArr['max'] = $maxFSize;
-        if(isset($chunkSize) && is_int($chunkSize) && $chunkSize > 1)
-            $imSizeArr['max'] = $chunkSize;
-
-        if(!empty($imSizeArr)) {
-            $validatorChain->attach(new Validator\File\Size($fileSizeArr));
-        }
-
-
-        $imSizeArr = array();
-        $minWidth = $this->options['min_width'];
-        $minHeight = $this->options['min_height'];
-        $maxWidth = $this->options['max_width'];
-        $maxHeight = $this->options['max_height'];
-        if(isset($minWidth) && is_int($minWidth) && $minWidth > 0)
-            $imSizeArr['minWidth'] = $minWidth;
-        if(isset($minHeight) && is_int($minHeight) && $minHeight > 0)
-            $imSizeArr['minHeight'] = $minHeight;
-        if(isset($maxWidth) && is_int($maxWidth) && $maxWidth > 0)
-            $imSizeArr['maxWidth'] = $maxWidth;
-        if(isset($maxHeight) && is_int($maxHeight) && $maxHeight > 0)
-            $imSizeArr['maxHeight'] = $maxHeight;
-
-        if(!empty($imSizeArr)) {
-            $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
-        }
-
-
-        if ($validatorChain->isValid($uploaded_file)) {
-            return true;
-        } else {
-            // username failed validation; print reasons
-            foreach ($validatorChain->getMessages() as $message) {
-                $file->error .= "$message\n";
+        list($img_width, $img_height) = @getimagesize($uploaded_file);
+        if (is_int($img_width)) {
+            if ($this->options['max_width'] && $img_width > $this->options['max_width']) {
+                $file->error = $this->get_error_message('max_width');
+                return false;
             }
-
-            return false;
+            if ($this->options['max_height'] && $img_height > $this->options['max_height']) {
+                $file->error = $this->get_error_message('max_height');
+                return false;
+            }
+            if ($this->options['min_width'] && $img_width < $this->options['min_width']) {
+                $file->error = $this->get_error_message('min_width');
+                return false;
+            }
+            if ($this->options['min_height'] && $img_height < $this->options['min_height']) {
+                $file->error = $this->get_error_message('min_height');
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**
@@ -1070,7 +1057,7 @@ class UploadPlugin extends AbstractPlugin
             $f->$version = $opts['max_width'] . 'x' . $opts['max_height'];
             $newFileInfo->sizes[] = $f;
         }
-        if(isset($file->error)) {
+        if(isset($file->error) && !empty($file->error)) {
             $newFileInfo->error = $file->error;
         }
 
@@ -1414,7 +1401,9 @@ class UploadPlugin extends AbstractPlugin
             foreach ($upload['tmp_name'] as $index => $value) {
 
                 $pathinfo   = pathinfo($upload['name'][$index]);
-                $ext        = $pathinfo['extension'];
+                $ext        = isset($pathinfo['extension'])
+                    ? $pathinfo['extension']
+                    : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name'][$index]);
                 $hash       = md5_file($upload['tmp_name'][$index]);
 
                 $files[] = $this->handle_file_upload(
@@ -1437,7 +1426,9 @@ class UploadPlugin extends AbstractPlugin
         } else {
             if(isset($upload['tmp_name']) && !empty($upload['tmp_name'])) {
                 $pathinfo   = pathinfo($upload['name']);
-                $ext        = $pathinfo['extension'];
+                $ext        = isset($pathinfo['extension'])
+                    ? $pathinfo['extension']
+                    : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name']);
                 $hash       = md5_file($upload['tmp_name']);
 
                 // param_name is a single object identifier like "file",
@@ -1449,17 +1440,23 @@ class UploadPlugin extends AbstractPlugin
                     $this->options['rename_file']
                         ? "{$hash}.{$ext}"
                         : ($file_name
-                        ? $file_name
-                        : (isset($upload['name'])
-                            ? $upload['name']
-                            : null))
+                            ? $file_name
+                            : (isset($upload['name'])
+                                ? $upload['name']
+                                : null))
                     ,
 
-                    $size ? $size : (isset($upload['size']) ?
-                        $upload['size'] : $this->get_server_var('CONTENT_LENGTH')),
-                    isset($upload['type']) ?
-                        $upload['type'] : $this->get_server_var('CONTENT_TYPE'),
-                    isset($upload['error']) ? $upload['error'] : null,
+                    $size
+                        ? $size
+                        : (isset($upload['size'])
+                            ? $upload['size']
+                            : $this->get_server_var('CONTENT_LENGTH')),
+                    isset($upload['type'])
+                        ? $upload['type']
+                        : $this->get_server_var('CONTENT_TYPE'),
+                    isset($upload['error'])
+                        ? $upload['error']
+                        : null,
                     null,
                     $content_range
                 );
