@@ -47,7 +47,7 @@
                     "items": {
                         "description": "Field alert",
                         "type": "object",
-                        "required": true,
+                        "required": false,
                         "properties": {
                             "fieldId": {
                                 "description": "Field ID",
