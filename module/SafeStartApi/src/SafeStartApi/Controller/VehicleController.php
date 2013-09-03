@@ -148,7 +148,7 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->flush();
 
         // save alerts
-        if(isset($this->data->alerts) && !empty($this->data->alerts)) {
+        if(!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach($alerts as $alert) {
 

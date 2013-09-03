@@ -27,6 +27,7 @@ class PdfPlugin extends AbstractPlugin {
     const TEXT_ALIGN_LEFT = 'left';
     const TEXT_ALIGN_RIGHT = 'right';
     const TEXT_ALIGN_CENTER = 'center';
+    const TEXT_ALIGN_JUSTIFY = 'justify';
 
 
     protected $document;
@@ -57,80 +58,80 @@ class PdfPlugin extends AbstractPlugin {
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
+                ),
 
 
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
+                ),
 
 
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
-        );
+                ),
+            );
 
 
         $alertsDetails = array(
@@ -138,49 +139,46 @@ class PdfPlugin extends AbstractPlugin {
                 'title' => 'Are the tires correctly inflated, in good working order and with wheel nuts tigh t e ned ?',
                 'comment' => '',
                 'images' => array(
-
+                    ),
                 ),
-            ),
+            array(
+                'title' => 'Maecena nec',
+                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. adhjsf aisdgdhask ghkjdashkjgh kaghk fskdgj kdfjhsgkdf hskdgfkhs kgdfksghkg hdfkshgkj dhsgfkhkjdshgk dfskghdfkjs kghdfks ghkdhfskg hdlskhg kdsgkh ksdf hgdfks gkhdfk gkhdfs gfkd hsl gsdghlk sdaglksdfhg kjdfsgkdshfgk jdfskgl kdfsgkj dhfskhglkjdfshlgkh dfksgkh dfkjshgkjdf hgkhkjdf kjgk dhfkjgkjdfjkg kdfhgk kdfhkgjfhghgh gh hg hg gkhdfk kd kd k gkhdfkgh kdhgkh dfkg dfkgdfk hgkdfhgkdfgh dfgkdfh kgdhfkg dkg',
+                'images' => array(
+                    ),
+                ),
+            array(
+                'title' => 'Cras dapibus',
+                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
+                'images' => array(),
+                ),
+            array(
+                'title' => 'Maecena nec',
+                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
+                'images' => array(),
+                ),
+            array(
+                'title' => 'Cras dapibus',
+                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
+                'images' => array(),
+                ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(
-                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
+                    ),
                 ),
-            ),
             array(
                 'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-            ),
-            array(
-                'title' => 'Cras dapibus',
-                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-            ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(
-
                 ),
-            ),
-            array(
-                'title' => 'Cras dapibus',
-                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-            ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
-        );
+                ),
+            );
         /* > end test data. */
 
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
@@ -196,7 +194,7 @@ class PdfPlugin extends AbstractPlugin {
         /** /
         $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', $checkListId);
         if($this->checkList === null) {
-        throw new \Exception('CheckList not found.');
+            throw new \Exception('CheckList not found.');
         }
         $this->dateGeneration = new \DateTime($this->checkList->getCreationDate());
 
@@ -205,49 +203,49 @@ class PdfPlugin extends AbstractPlugin {
         $fieldsStruct = json_decode($this->checkList->getFieldsStructure());
         foreach ($fieldsStruct as $groupBlock) {
 
-        $group = new \stdClass();
-        $group->name = $groupBlock['name'];
-        $group->alerts = array();
+            $group = new \stdClass();
+            $group->name = $groupBlock['name'];
+            $group->alerts = array();
 
-        // get field id`s
-        $filds = $groupBlock['fields'];
-        $fieldIds = array();
-        foreach ($filds as $fild) {
-        $fieldIds[] = $fild['id'];
-        }
+            // get field id`s
+            $filds = $groupBlock['fields'];
+            $fieldIds = array();
+            foreach ($filds as $fild) {
+                $fieldIds[] = $fild['id'];
+            }
 
-        // get alerts
-        if (!empty($fieldIds)) {
-        $query = $this->getController()->em->createQuery('SELECT u FROM SafeStartApi\Entity\Alert u WHERE u.id IN (:ids)');
-        $query->setParameters(array('ids' => implode(',', $fieldIds), ));
-        $group->alerts = $query->getResult();
-        if (is_array($group->alerts) && !empty($group->alerts)) {
-        foreach ($group->alerts as $alert) {
-        $alertInfo = new \stdClass();
-        $alertInfo->title = $alert->getField()->getAlertTitle();
-        $alertInfo->comment = $alert->getComment();
+            // get alerts
+            if (!empty($fieldIds)) {
+                $query = $this->getController()->em->createQuery('SELECT u FROM SafeStartApi\Entity\Alert u WHERE u.id IN (:ids)');
+                $query->setParameters(array('ids' => implode(',', $fieldIds), ));
+                $group->alerts = $query->getResult();
+                if (is_array($group->alerts) && !empty($group->alerts)) {
+                    foreach ($group->alerts as $alert) {
+                        $alertInfo = new \stdClass();
+                        $alertInfo->title = $alert->getField()->getAlertTitle();
+                        $alertInfo->comment = $alert->getComment();
 
-        $images = array();
-        $imagesInfo = $alert->getImages();
-        if($imagesInfo !== null) {
-        $imagesInfo = json_decode($imagesInfo);
-        if(is_array($imagesInfo) && !empty($imagesInfo)) {
-        foreach($imagesInfo as $imageName) {
-        if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
-        $images[] = $imagePath;
-        }
-        }
-        }
-        }
-        $alertInfo->images = $images;
-        $alertsDetails[] = $alertInfo;
-        }
-        }
-        }
+                        $images = array();
+                        $imagesInfo = $alert->getImages();
+                        if($imagesInfo !== null) {
+                            $imagesInfo = json_decode($imagesInfo);
+                            if(is_array($imagesInfo) && !empty($imagesInfo)) {
+                                foreach($imagesInfo as $imageName) {
+                                    if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
+                                        $images[] = $imagePath;
+                                    }
+                                }
+                            }
+                        }
+                        $alertInfo->images = $images;
+                        $alertsDetails[] = $alertInfo;
+                    }
+                }
+            }
 
-        // set status
-        $group->status = empty($group->alerts) ? 'ok' : 'alert';
-        $vehicleDetails[] = $group;
+            // set status
+            $group->status = empty($group->alerts) ? 'ok' : 'alert';
+            $vehicleDetails[] = $group;
         }
         /**/
 
@@ -530,13 +528,21 @@ class PdfPlugin extends AbstractPlugin {
         return $topPosInPage;
     }
 
-    protected function getTextLines($text, $size, $font = null) {
+    protected function getTextLines($text, $size, $font = null, $maxStrWidth = null) {
 
         if ($font === null) {
             $font = $this->font;
         }
 
         $pageContentWidth = $this->getPageContentWidth();
+        if($maxStrWidth === null || !is_int($maxStrWidth)) {
+            $maxStrWidth = $pageContentWidth;
+        } elseif(is_int($maxStrWidth)) {
+            if($maxStrWidth > $pageContentWidth) {
+                $maxStrWidth = $pageContentWidth;
+            }
+        }
+
         $returnLines = array();
         $textLines = explode("\n", $text);
         foreach($textLines as $line) {
@@ -549,7 +555,7 @@ class PdfPlugin extends AbstractPlugin {
                 $tmpLine .= " " . $word;
                 $tmpLine = trim($tmpLine);
                 $strWidth = $this->widthForStringUsingFontSize($tmpLine, $font, $size);
-                if($strWidth > $pageContentWidth) {
+                if($strWidth > $maxStrWidth) {
                     $returnLines[] = $newLine;
                     $newLine = $tmpLine = $word;
                 } else {
@@ -574,9 +580,28 @@ class PdfPlugin extends AbstractPlugin {
         $style->setFont($font, $size);
 
         $topYPosition = $this->detectNewPage($topYPosition, $size);
-        $leftPosInStr = $this->getLeftStartPos($text, $font, $size, $align);
+        if($align !== self::TEXT_ALIGN_JUSTIFY) {
+            $leftPosInStr = $this->getLeftStartPos($text, $font, $size, $align);
+            $this->currentPage->setStyle($style)->drawText($text, $leftPosInStr, $topYPosition);
+        } else {
 
-        $this->currentPage->setStyle($style)->drawText($text, $leftPosInStr, $topYPosition);
+            $startPosInLine = $this->getLeftStartPos($text, $font, $size, self::TEXT_ALIGN_LEFT);
+            $pageContentWidth = $this->getPageContentWidth();
+
+            $wordsArr = explode(" ", $text);
+            $wordsAmount = count($wordsArr);
+            $wordsTotalLengh = 0;
+
+            foreach($wordsArr as $word) {
+                $wordsTotalLengh += $this->widthForStringUsingFontSize($word, $font, $size);
+            }
+
+            $space = ($pageContentWidth - $wordsTotalLengh) / (($wordsAmount > 1 ? $wordsAmount : 2) - 1);
+            foreach($wordsArr as $word) {
+                $this->currentPage->setStyle($style)->drawText($word, $startPosInLine, $topYPosition);
+                $startPosInLine += ($this->widthForStringUsingFontSize($word, $font, $size) + $space);
+            }
+        }
 
         return $topYPosition;
     }
