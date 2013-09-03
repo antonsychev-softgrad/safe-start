@@ -687,7 +687,7 @@ class UploadPlugin extends AbstractPlugin
             }
         }
 
-        /** /
+        /**/
         $validatorChain = new Validator\ValidatorChain();
 
         //$validatorChain->attach(new Validator\File\IsImage());
@@ -702,14 +702,14 @@ class UploadPlugin extends AbstractPlugin
         $maxFSize = $this->options['max_file_size'];
         $chunkSize = $this->options['readfile_chunk_size'];
         if(isset($minFSize) && is_int($minFSize) && $minFSize > 1)
-        $fileSizeArr['min'] = $minFSize;
+            $fileSizeArr['min'] = $minFSize;
         if(isset($maxFSize) && is_int($maxFSize) && $maxFSize > 1)
-        $fileSizeArr['max'] = $maxFSize;
+            $fileSizeArr['max'] = $maxFSize;
         if(isset($chunkSize) && is_int($chunkSize) && $chunkSize > 1)
-        $fileSizeArr['max'] = $chunkSize;
+            $fileSizeArr['max'] = $chunkSize;
 
         if(!empty($fileSizeArr)) {
-        $validatorChain->attach(new Validator\File\Size($fileSizeArr));
+            $validatorChain->attach(new Validator\File\Size($fileSizeArr));
         }
 
         $imSizeArr = array();
@@ -718,27 +718,27 @@ class UploadPlugin extends AbstractPlugin
         $maxWidth = $this->options['max_width'];
         $maxHeight = $this->options['max_height'];
         if(isset($minWidth) && is_int($minWidth) && $minWidth > 0)
-        $imSizeArr['minWidth'] = $minWidth;
+            $imSizeArr['minWidth'] = $minWidth;
         if(isset($minHeight) && is_int($minHeight) && $minHeight > 0)
-        $imSizeArr['minHeight'] = $minHeight;
+            $imSizeArr['minHeight'] = $minHeight;
         if(isset($maxWidth) && is_int($maxWidth) && $maxWidth > 0)
-        $imSizeArr['maxWidth'] = $maxWidth;
+            $imSizeArr['maxWidth'] = $maxWidth;
         if(isset($maxHeight) && is_int($maxHeight) && $maxHeight > 0)
-        $imSizeArr['maxHeight'] = $maxHeight;
+            $imSizeArr['maxHeight'] = $maxHeight;
 
         if(!empty($imSizeArr)) {
-        $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
+            $validatorChain->attach(new Validator\File\ImageSize($imSizeArr));
         }
 
         if ($validatorChain->isValid($uploaded_file)) {
-        return true;
+            return true;
         } else {
-        // username failed validation; print reasons
-        foreach ($validatorChain->getMessages() as $message) {
-        $file->error .= "$message\n";
-        }
+            // username failed validation; print reasons
+            foreach ($validatorChain->getMessages() as $message) {
+                $file->error .= "$message\n";
+            }
 
-        return false;
+            return false;
         }
         /**/
 

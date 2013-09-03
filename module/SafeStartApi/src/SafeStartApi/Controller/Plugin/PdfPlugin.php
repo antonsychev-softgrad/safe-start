@@ -51,6 +51,8 @@ class PdfPlugin extends AbstractPlugin {
 
     public function create($checkListId = null) {
 
+
+        /* test data > */
         $vehicleDetails = array(
             array(
                 'name' => 'Safety',
@@ -133,15 +135,18 @@ class PdfPlugin extends AbstractPlugin {
 
         $alertsDetails = array(
             array(
-                'title' => 'Are the tires correctly inflated, in good working order and with wheel nuts tightened?',
-                'comment' => 'Vivamus elementum semper nisi.\nAenean vulputate eleifend tellus.\nAenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
+                'title' => 'Are the tires correctly inflated, in good working order and with wheel nuts tigh t e ned ?',
+                'comment' => '',
                 'images' => array(
+
                 ),
             ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
+                'images' => array(
+                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
+                ),
             ),
             array(
                 'title' => 'Cras dapibus',
@@ -162,6 +167,7 @@ class PdfPlugin extends AbstractPlugin {
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(
+
                 ),
             ),
             array(
@@ -175,6 +181,7 @@ class PdfPlugin extends AbstractPlugin {
                 'images' => array(),
             ),
         );
+        /* > end test data. */
 
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
         $fontPath = dirname(__file__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
@@ -188,6 +195,10 @@ class PdfPlugin extends AbstractPlugin {
 
         /** /
         $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', $checkListId);
+        if($this->checkList === null) {
+        throw new \Exception('CheckList not found.');
+        }
+        $this->dateGeneration = new \DateTime($this->checkList->getCreationDate());
 
         $vehicleDetails = array();
         $alertsDetails = array();
@@ -217,11 +228,14 @@ class PdfPlugin extends AbstractPlugin {
         $alertInfo->comment = $alert->getComment();
 
         $images = array();
-        $imagesInfo = json_decode($alert->getImages());
+        $imagesInfo = $alert->getImages();
+        if($imagesInfo !== null) {
+        $imagesInfo = json_decode($imagesInfo);
         if(is_array($imagesInfo) && !empty($imagesInfo)) {
         foreach($imagesInfo as $imageName) {
         if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
         $images[] = $imagePath;
+        }
         }
         }
         }
@@ -301,7 +315,7 @@ class PdfPlugin extends AbstractPlugin {
 
         $logoMaxWidth = 199;
         $logoMaxHeight = 53;
-        $logoPath = "{$root}/public/logo.png";
+        $logoPath = "{$root}/module/SafeStartApp/public/resources/img/logo.png";
 
         $thumbNewWidth = $logoMaxWidth * 2;
         $thumbNewHeight = $logoMaxHeight * 2;
@@ -395,17 +409,17 @@ class PdfPlugin extends AbstractPlugin {
 
             if(is_array($group) && !empty($group)) {
                 $title = $group['name'];
-                $status = strtoupper($group['status']);
+                $status = $group['status'];
             } elseif($group instanceof \stdClass) {
                 $title = $group->name;
-                $status = strtoupper($group->status);
+                $status = $group->status;
             } else {
                 continue;
             }
 
             $title = strip_tags($title);
-            $title = wordwrap($title, 70, '\n');
-            $headlineArray = explode('\n', $title);
+            $title = ucwords($title);
+            $headlineArray = $this->getTextLines($title, self::BLOCK_SUBHEADER_SIZE);
             $subLineCounter = 0;
             foreach ($headlineArray as $line) {
                 if ($drawLine) {
@@ -435,6 +449,7 @@ class PdfPlugin extends AbstractPlugin {
             }
 
             // draw status >
+            $status = strtoupper($status);
             switch (strtolower($status)) {
                 case 'alert':
                     $color = "#ff0000";
@@ -462,13 +477,13 @@ class PdfPlugin extends AbstractPlugin {
         foreach ($params as $alertInfo) {
 
             if(is_array($alertInfo) && !empty($alertInfo)) {
-                $title = $alertInfo['name'];
-                $comment = strip_tags($alertInfo['comment']);
+                $title = $alertInfo['title'];
+                $comment = $alertInfo['comment'];
                 $images = $alertInfo['images'];
             } elseif($alertInfo instanceof \stdClass) {
-                $title = $alertInfo['name'];
-                $comment = strip_tags($alertInfo['comment']);
-                $images = $alertInfo['images'];
+                $title = $alertInfo->title;
+                $comment = $alertInfo->comment;
+                $images = $alertInfo->images;
             } else {
                 continue;
             }
@@ -476,8 +491,7 @@ class PdfPlugin extends AbstractPlugin {
             $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_SIZE + self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
 
             $title = strip_tags($title);
-            $title = wordwrap($title, 85, '\n');
-            $headlineArray = explode('\n', $title);
+            $headlineArray = $this->getTextLines($title, self::BLOCK_SUBHEADER_SIZE);
             $lineCounter = count($headlineArray);
             foreach ($headlineArray as $line) {
                 $text = trim($line);
@@ -490,15 +504,17 @@ class PdfPlugin extends AbstractPlugin {
                 }
             }
 
-            $comment = wordwrap($comment, 110, '\n');
-            $headlineArray = explode('\n', $comment);
-            $lineCounter = count($headlineArray);
-            foreach ($headlineArray as $line) {
-                $text = trim($line);
-                $topPosInPage = $this->drawText($text, self::BLOCK_TEXT_SIZE, '#333333', $topPosInPage);
-                $topPosInPage -= self::BLOCK_TEXT_SIZE;
-                if ((--$lineCounter) > 0) {
-                    $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
+            if(!empty($comment) && is_string($comment)) {
+                $comment = strip_tags($comment);
+                $headlineArray = $this->getTextLines($comment, self::BLOCK_TEXT_SIZE);
+                $lineCounter = count($headlineArray);
+                foreach ($headlineArray as $line) {
+                    $text = trim($line);
+                    $topPosInPage = $this->drawText($text, self::BLOCK_TEXT_SIZE, '#333333', $topPosInPage);
+                    $topPosInPage -= self::BLOCK_TEXT_SIZE;
+                    if ((--$lineCounter) > 0) {
+                        $topPosInPage -= self::BLOCK_TEXT_LINE_SPACING_AT;
+                    }
                 }
             }
 
@@ -514,6 +530,37 @@ class PdfPlugin extends AbstractPlugin {
         return $topPosInPage;
     }
 
+    protected function getTextLines($text, $size, $font = null) {
+
+        if ($font === null) {
+            $font = $this->font;
+        }
+
+        $pageContentWidth = $this->getPageContentWidth();
+        $returnLines = array();
+        $textLines = explode("\n", $text);
+        foreach($textLines as $line) {
+            $newLine = "";
+            $tmpLine = "";
+            $tLine = trim(preg_replace("/\s+/is", " ", $line));
+            $tLineWordsArr = wordwrap($tLine, 1, "\n");
+            $tLineWordsArr = explode("\n", $tLineWordsArr);
+            foreach($tLineWordsArr as $word) {
+                $tmpLine .= " " . $word;
+                $tmpLine = trim($tmpLine);
+                $strWidth = $this->widthForStringUsingFontSize($tmpLine, $font, $size);
+                if($strWidth > $pageContentWidth) {
+                    $returnLines[] = $newLine;
+                    $newLine = $tmpLine = $word;
+                } else {
+                    $newLine = $tmpLine;
+                }
+            }
+            $returnLines[] = $newLine;
+        }
+
+        return $returnLines;
+    }
 
     protected function drawText($text, $size, $color, $topYPosition, $align = self::TEXT_ALIGN_LEFT, $font = null) {
 
