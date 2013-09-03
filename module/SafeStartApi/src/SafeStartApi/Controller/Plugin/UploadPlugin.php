@@ -1113,7 +1113,7 @@ class UploadPlugin extends AbstractPlugin
             $f->$version = $opts['max_width'] . 'x' . $opts['max_height'];
             $newFileInfo->sizes[] = $f;
         }
-        if(isset($file->error) && !empty($file->error)) {
+        if(!empty($file->error)) {
             $newFileInfo->error = $file->error;
         }
 

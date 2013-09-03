@@ -51,7 +51,7 @@
                         "properties": {
                             "fieldId": {
                                 "description": "Field ID",
-                                "type": "string",
+                                "type": "integer",
                                 "required": true
                             },
                             "comment": {
