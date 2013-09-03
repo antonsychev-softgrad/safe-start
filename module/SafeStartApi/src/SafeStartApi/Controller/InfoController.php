@@ -44,7 +44,7 @@ class InfoController extends RestController
     protected function get_full_path($fEndPath = null) {
         $root = $_SERVER['DOCUMENT_ROOT'];
         if(!file_exists($root . "/init_autoloader.php")) {
-           $root = dirname($root);
+            $root = dirname($root);
         }
 
         if ($fEndPath === null || !is_string($fEndPath)) {

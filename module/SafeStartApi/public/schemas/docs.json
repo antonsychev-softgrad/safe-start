@@ -163,7 +163,7 @@
             }
         },
         "/api/checklist/[id]/generate-pdf": {
-            "description": "Generate PDF",
+            "description": "Generate PDF with CheckList ID",
             "type": "object",
             "properties": {
                 "request": {

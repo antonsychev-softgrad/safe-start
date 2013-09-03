@@ -45,32 +45,32 @@ class Alert extends BaseEntity
     protected $images;
 
     /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
+     * Magic getter to expose protected properties.
+     *
+     * @param string $property
+     * @return mixed
+     */
     public function __get($property)
     {
         return $this->$property;
     }
 
     /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
+     * Magic setter to save protected properties.
+     *
+     * @param string $property
+     * @param mixed $value
+     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
     /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
+     * Convert the object to an array.
+     *
+     * @return array
+     */
     public function toArray()
     {
         return get_object_vars($this);
@@ -79,7 +79,7 @@ class Alert extends BaseEntity
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -95,14 +95,14 @@ class Alert extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -118,14 +118,14 @@ class Alert extends BaseEntity
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
+
         return $this;
     }
 
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -141,14 +141,14 @@ class Alert extends BaseEntity
     public function setImages($images)
     {
         $this->images = $images;
-    
+
         return $this;
     }
 
     /**
      * Get images
      *
-     * @return array 
+     * @return array
      */
     public function getImages()
     {
@@ -164,14 +164,14 @@ class Alert extends BaseEntity
     public function setField(\SafeStartApi\Entity\Field $field = null)
     {
         $this->field = $field;
-    
+
         return $this;
     }
 
     /**
      * Get field
      *
-     * @return \SafeStartApi\Entity\Field 
+     * @return \SafeStartApi\Entity\Field
      */
     public function getField()
     {
