@@ -220,17 +220,17 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
             var alert = alertContaienr.config.alertModel;
             alerts.push({
-                fieldId: '' + alert.get('fieldId'),
+                fieldId: '' + alert.get('fieldId'), // TODO: integer value
                 comment: alert.get('comment'),
-                images: alert.get('images')
+                images: alert.get('photos')
             });
         });
-        console.log(alerts);
         Ext.each(checklists, function (checklist) {
             var fields = checklist.query('field'); 
             Ext.each(fields, function (field) {
                 switch(field.xtype) {
                     case 'checkboxfield':
+                        //TODO: unhardcode field value
                         if (field.isChecked()) {
                             value = 'Yes';
                         } else {

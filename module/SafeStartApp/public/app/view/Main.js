@@ -3,13 +3,6 @@ Ext.define('SafeStartApp.view.Main', {
     xtype: 'SafeStartMainView',
     requires: [
         'SafeStartApp.model.User',
-        'SafeStartApp.view.pages.Auth',
-        'SafeStartApp.view.pages.Contact',
-        'SafeStartApp.view.pages.Companies',
-        'SafeStartApp.view.pages.Company',
-        'SafeStartApp.view.pages.SystemSettings',
-        'SafeStartApp.view.pages.Vehicles',
-        'SafeStartApp.view.pages.Users',
         'SafeStartApp.view.abstract.dialog'
     ],
     items: [],
