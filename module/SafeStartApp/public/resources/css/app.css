@@ -7093,7 +7093,6 @@ html, body {
     background-color: #ddd;
 }
 
-
 .x-button {
     cursor: pointer;
 }
@@ -7166,6 +7165,14 @@ html, body {
 .x-toolbar .x-button .x-button-icon:before {
     line-height: 1.1em;
 }
+
+.x-panel.x-floating, .x-msgbox, .x-form.x-floating {
+    background: #fff;
+}
+.x-form-fieldset-instructions {
+    margin: 0.3em 0.7em 0.3em;
+}
+
 
 
 
@@ -7586,7 +7593,9 @@ div.logo {
     text-align: center;
     font-size: 28px;
 }
-
+.sfa-modal-form form .x-dock-body .x-container.x-field-text.x-field.x-field-labeled.x-form-label-nowrap {
+    padding-right: 1px;
+}
 
 
 /* icons classes */
@@ -7737,6 +7746,11 @@ div.logo {
 .sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button span {
     top: -3px;
 }
+.sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button.x-button-back span {
+    top: -1px;
+    position: relative;
+}
+
 .sfa-info-container.sfa-system-settings form .x-dock.x-dock-vertical .x-button {
     height: 38px;
 }
