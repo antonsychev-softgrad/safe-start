@@ -13,13 +13,13 @@ class ProcessDataController extends RestrictedAccessRestController
             if(!empty($return)) {
                 foreach($return as $fileInfo) {
                     if(!empty($fileInfo->error)) {
-                        $errors[] = $fileInfo->error;
+                        $errors[] = trim($fileInfo->error);
                     }
                 }
             }
         } else {
             if(!empty($return->error)) {
-                $errors = explode("\n", $return->error);
+                $errors[] = trim($return->error);
             }
         }
         if(!empty($errors)) {
