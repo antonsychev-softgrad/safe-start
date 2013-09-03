@@ -213,9 +213,8 @@ return array(
                     'get-public-image' => array(
                        'type' => 'Segment',
                        'options' => array(
-                          'route' => '/image/:uid/:image',
+                          'route' => '/image/:image',
                           'constraints' => array(
-                             'uid' => '[0-9]+',
                              'image' => '.+',
                           ),
                           'defaults' => array(

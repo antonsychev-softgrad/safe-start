@@ -60,32 +60,32 @@ class CheckList extends BaseEntity
     protected $creation_date;
 
     /**
-    * Magic getter to expose protected properties.
-    *
-    * @param string $property
-    * @return mixed
-    */
+     * Magic getter to expose protected properties.
+     *
+     * @param string $property
+     * @return mixed
+     */
     public function __get($property)
     {
         return $this->$property;
     }
 
     /**
-    * Magic setter to save protected properties.
-    *
-    * @param string $property
-    * @param mixed $value
-    */
+     * Magic setter to save protected properties.
+     *
+     * @param string $property
+     * @param mixed $value
+     */
     public function __set($property, $value)
     {
         $this->$property = $value;
     }
 
     /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
+     * Convert the object to an array.
+     *
+     * @return array
+     */
     public function toArray()
     {
         return get_object_vars($this);
@@ -256,14 +256,14 @@ class CheckList extends BaseEntity
     public function setGpsCoords($gpsCoords)
     {
         $this->gps_coords = $gpsCoords;
-    
+
         return $this;
     }
 
     /**
      * Get gps_coords
      *
-     * @return string 
+     * @return string
      */
     public function getGpsCoords()
     {
