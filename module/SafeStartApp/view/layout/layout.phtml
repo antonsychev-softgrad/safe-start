@@ -10,27 +10,26 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon_16.ico'))
                 ->prependStylesheet($this->basePath() . '/css/app.css'); ?>
 
-        <?php
-            switch($env) {
-                case 'dev':
-                    $microLoaderScript = 'development.js';
-                    break;
-                case 'prod':
-                    $microLoaderScript = 'production.js';
-                    break;
-                case 'testing':
-                    $microLoaderScript = 'testing.js';
-                    break;
-            }
-            //TODO: set prod mode
-            $microLoaderScript = 'development.js';
-        ?>
-
         <script>
             var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
         </script>
 
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript); ?>
+        <?php
+            switch($env) {
+                case 'dev':
+                    $microLoaderScript = 'development.js';
+                    echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    break;
+                case 'prod':
+                    echo '<link href="/resources/css/app.css" media="screen" rel="stylesheet" type="text/css">';
+                    echo '<script type="text/javascript" src="/build/SafeStartApp/production/app.js"></script>';
+                    break;
+                case 'testing':
+                    $microLoaderScript = 'testing.js';
+                    echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    break;
+            }
+        ?>
 
     </head>
     <body>

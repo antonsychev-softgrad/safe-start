@@ -2,6 +2,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     extend: 'Ext.Panel',
 
     alias: 'widget.SafeStartVehicleInspection',
+    requires: [
+        'SafeStartApp.store.ChecklistAlerts'
+    ],
 
     config: {
         name: 'vehicle-inspection',
@@ -11,13 +14,56 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     initialize: function () {
-        console.log(this);
+        this.callParent();
+
+        this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
+
+        var submitMsgBox = Ext.create('Ext.MessageBox', {
+            cls: 'sfa-messagebox-confirm',
+            message: 'Please confirm your submission',
+            hidden: true,
+            buttons: [{
+                ui: 'confirm',
+                action: 'confirm',
+                text: 'Confirm'
+            }, {
+                ui: 'action',
+                text: 'Cancel',
+                handler: function (btn) {
+                    btn.up('sheet[cls=sfa-messagebox-confirm]').hide();
+                }
+            }]
+        });
+        this.add(submitMsgBox);
     },
 
-    loadChecklist: function (checklists) {
+    setAlertsStore: function (store) {
+        this._alertsStore = store;
+    },
+
+    getAlertsStore: function () {
+        return this._alertsStore;
+    },
+
+    alerts: [],
+    setAlerts: function (fieldId, value) {
+        this.alerts[fieldId] = value;
+        console.log(fieldId);
+        console.log(this.alerts);
+    },
+
+    getAlerts: function (fieldId) {
+        return this.alerts[fieldId];
+    },
+
+    loadChecklist: function (checklists, id) {
         var checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
+
+        this.getAlertsStore().removeAll();
+        this.vehicleId = id || 0;
+        checklists = checklists || [];
 
         Ext.each(this.query('formpanel'), function (panel) {
             this.remove(panel);
@@ -45,6 +91,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             this.add({
                 xtype: 'formpanel',
                 name: 'checklist-card-choise-additional',
+                cls: 'sfa-checklist-form',
                 items: [{
                     xtype: 'fieldset',
                     items: choiseAdditionalFields
@@ -76,6 +123,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add({
             xtype: 'formpanel',
             name: 'checklist-card-review',
+            cls: 'sfa-checklist-form',
             items: [{
                 xtype: 'titlebar',
                 docked: 'top',
@@ -130,14 +178,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             cls: 'sfa-checklist-form',
             minHeight: 400,
             groupId: checklist.groupId,
+            additional: checklist.additional,
+            groupName: checklist.groupName,
             items: fields
         };
     },
 
     createFields: function (fieldsData) {
         var fields = [];
+        var alertsStore = this.getAlertsStore();
+
 
         Ext.each(fieldsData, function (fieldData) {
+            if (Ext.isArray(fieldData.alerts) && fieldData.alerts[0]) {
+                var alert = fieldData.alerts[0];
+                var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
+                    alertMessage: alert.alertMessage,
+                    triggerValue: alert.triggerValue,
+                    fieldId: fieldData.fieldId
+                });
+                alertsStore.add(alertRecord);
+            }
             switch(fieldData.type) {
                 case 'text':
                     fields.push(this.createTextField(fieldData));
@@ -171,21 +232,38 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createRadioField: function (fieldData) {
-        var optionFields = [],
-            name = 'radioGroup-' + fieldData.fieldId;
+        var me = this,
+            name = 'checklist-radio-' + fieldData.fieldId,
+            optionFields = [];
 
         Ext.each(fieldData.options, function (option) {
             optionFields.push({
                 xtype: 'radiofield',
                 value: option.value,
                 label: option.label,
-                labelWrap: true,
+                fieldId: fieldData.fieldId,
                 name: name,
-                checked: fieldData.fieldValue === option.value
+                checked: fieldData.fieldValue === option.value,
+                listeners: {
+                    check: function (radio) {
+                        var fieldSet = radio.up('fieldset'),
+                            alert = me.getAlertsStore().findRecord('fieldId', fieldSet.config.fieldId);
+
+                        if (alert !== null) {
+                            if (alert.get('triggerValue').match(new RegExp(radio.getValue(), 'i'))) {
+                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                alert.set('active', true);
+                            } else {
+                                alert.set('active', false);
+                            }
+                        }
+                    }
+                }
             });
         });
         return {
             xtype: 'fieldset',
+            alerts: fieldData.alerts,
             layout: {
                 type: 'hbox',
                 pack: 'center'
@@ -194,6 +272,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 labelAlign: 'right'
             },
             fieldId: fieldData.fieldId,
+            triggerable: true,
             title: fieldData.fieldName,
             items: optionFields 
         };
@@ -212,11 +291,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'checkboxfield',
             label: fieldData.fieldName,
-            fieldId: fieldData.fieldId,
-            getSubmitData: function () {
-                // TODO: unhardcode return value
-                return this.getChecked() ? 'Yes' : 'No';
-            }
+            fieldId: fieldData.fieldId
         };
     },
 
@@ -226,6 +301,82 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             fieldId: fieldData.fieldId,
             title: fieldData.fieldName,
             items: this.createFields(fieldData.items)
+        };
+    },
+
+    updateReview: function (passedCards, alerts) {
+        var reviewCard = this.down('formpanel[name=checklist-card-review]');
+        reviewCard.removeAll();
+        console.log(passedCards);
+        reviewCard.add(this.createVehicleDetailsView(passedCards));
+        reviewCard.add(this.createAlertsView(alerts));
+    },
+
+    createVehicleDetailsView: function (passedCards) {
+        var items = [{
+            xtype: 'titlebar',
+            title: 'Vehicle details'
+        }];
+        Ext.each(passedCards, function (card) {
+            items.push({
+                xtype: 'checkboxfield',
+                labelWidth: '90%',
+                label: card.groupName,
+                checked: true,
+                listeners: {
+                    uncheck: function (checkbox) {
+                        checkbox.setChecked(true);
+                    }
+                }
+            });
+        });
+        return {
+            xtype: 'panel',
+            items: items
+        };
+    },
+
+    createAlertsView: function (alerts) {
+        var items = [{
+            xtype: 'titlebar',
+            title: 'Alerts'            
+        }];
+        Ext.each(alerts, function (alert) {
+            items.push({
+                xtype: 'container',
+                name: 'alert-container',
+                fieldId: alert.get('fieldId'),
+                alertModel: alert,
+                items: [{
+                    label: alert.get('alertMessage'),
+                    xtype: 'checkboxfield',
+                    checked: true,
+                    labelWidth: '90%',
+                    listeners: {
+                        uncheck: function (checkbox) {
+                            checkbox.setChecked(true);
+                        }
+                    }
+                }, {
+                    xtype: 'textfield',
+                    label: 'Additional comments',
+                    value: alert.get('comment'),
+                    labelAlign: 'top',
+                    listeners: {
+                        change: function (textfield, value) {
+                            alert.set('comment', value);
+                        }
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Add photo',
+                    action: 'add-photo'
+                }]
+            });
+        });
+        return {
+            xtype: 'panel',
+            items: items 
         };
     }
 });
