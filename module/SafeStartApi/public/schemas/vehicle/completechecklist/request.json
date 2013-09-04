@@ -64,7 +64,7 @@
                                 "type": "array",
                                 "required": false,
                                 "items": {
-                                    "description": "Photo path",
+                                    "description": "Image name (e.g. file_name or file_name.ext)",
                                     "type": "string",
                                     "required": true
                                 }
