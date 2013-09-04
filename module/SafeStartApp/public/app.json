@@ -74,6 +74,10 @@
         {
             "path": "resources/css/app.css",
             "update": "delta"
+        },
+        {
+            "path": "resources/css/safe-start.css",
+            "update": "delta"
         }
     ],
 
@@ -103,7 +107,7 @@
      * Extra resources to be copied along when build
      */
     "resources": [
-        "resources/images",
+        "resources/img",
         "resources/icons",
         "resources/startup"
     ],

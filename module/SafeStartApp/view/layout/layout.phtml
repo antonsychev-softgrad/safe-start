@@ -21,7 +21,8 @@
                     echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
                     break;
                 case 'prod':
-                    echo '<link href="/resources/css/app.css" media="screen" rel="stylesheet" type="text/css">';
+                    echo '<link href="/build/SafeStartApp/production/resources/css/app.css" media="screen" rel="stylesheet" type="text/css">';
+                    echo '<link href="/build/SafeStartApp/production/resources/css/safe-start.css" media="screen" rel="stylesheet" type="text/css">';
                     echo '<script type="text/javascript" src="/build/SafeStartApp/production/app.js"></script>';
                     break;
                 case 'testing':

@@ -20,7 +20,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
         listeners: {
             scope: this,
-            show: function (page) {
+            activate: function (page) {
                 page.loadData();
             }
         }
@@ -61,15 +61,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                 }
             ],
             listeners: {
-               /* activeitemchange: function(tabpanel, value, oldValue, eOpts ) {
-                    self.checkListTree.getTreeList().getStore().loadData();
-                    self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
-                        var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
-                        if (!node) node = this.checklistDefaultStoreStore.getRoot();
-                        if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
-                        else this.checkListTree.getTreeList().goToNode(node);
-                    }, self);
-                }*/
+
             }
         };
     },

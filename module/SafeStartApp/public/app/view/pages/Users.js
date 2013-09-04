@@ -23,7 +23,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
         listeners: {
             scope: this,
-            show: function(page) {
+            activate: function(page) {
                 page.loadData();
             }
         }

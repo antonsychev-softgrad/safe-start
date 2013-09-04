@@ -4,6 +4,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
+        'SafeStartApp.view.components.UpdateVehicleChecklist',
         'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.view.pages.panel.VehicleAlerts',
         'SafeStartApp.view.pages.panel.VehicleUsers',
@@ -28,7 +29,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         listeners: {
             scope: this,
-            show: function (page) {
+            activate: function (page) {
                 page.loadData();
             }
         }
