@@ -16,19 +16,19 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         layout: 'card',
         items: [
 
-        ],
+        ]
+    },
 
-        listeners: {
-            scope: this,
-            show: function (page) {
-                page.loadData();
-            }
-        }
+    onShow: function (page) {
+        console.log('show');
+        page.loadData();
     },
 
     initialize: function () {
         var self = this;
         this.callParent();
+
+        this.on('show', this.onShow);
 
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.SystemSettings');
         this.add({

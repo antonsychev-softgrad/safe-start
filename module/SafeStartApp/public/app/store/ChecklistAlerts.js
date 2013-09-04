@@ -9,7 +9,7 @@ Ext.define('SafeStartApp.store.ChecklistAlerts', {
         model: 'SafeStartApp.model.ChecklistAlert',
 
         proxy: {
-            type: "memory",
+            type: "memory"
         }
     }
 });

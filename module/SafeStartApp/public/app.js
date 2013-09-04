@@ -1,6 +1,7 @@
 //<debug>
 Ext.Loader.setPath({
-    'Ext': 'touch/src'
+    'Ext': 'touch/src',
+    'Ext.ux': 'app/ux'
 });
 //</debug>
 SafeStartApp = SafeStartApp || {
@@ -84,6 +85,14 @@ Ext.apply(SafeStartApp,  {
     },
 
     setViewPort: function(menu) {
+        var viewPort = Ext.Viewport.down('SafeStartViewPort');
+        if (viewPort) {
+            Ext.each(viewPort.getInnerItems(), function (item) {
+                if (item.onShow) {
+                    item.removeListener('show', item.onShow);
+                }
+            });
+        }
 
         Ext.Viewport.removeAll(true);
 
@@ -168,6 +177,16 @@ Ext.application({
         '1496x2048': 'resources/startup/1496x2048.png'
     },
 
+    eventPublishers: {
+        touchGesture: {
+            recognizers: {
+                mousewheeldrag: {
+                    xclass: 'Ext.ux.event.recognizer.MouseWheelDrag'
+                }
+            }
+        }
+    },
+
     launch: function() {
         var self = this;
 
@@ -177,6 +196,27 @@ Ext.application({
         // Load current user menu and update view port
         SafeStartApp.userModel = Ext.create('SafeStartApp.model.User');
         SafeStartApp.loadMainMenu();
+        Ext.getBody().on('mousewheel', function(event, el) {
+            console.log('mousewheel');
+            var offset, scroller, _results;
+            offset = Ext.util.Offset();
+            _results = [];
+            while (el !== document.body) {
+                if (el.className.indexOf("x-scroller-parent") > 0) {
+                    scroller = Ext.ScrollManager.get(el.firstChild.id);
+                    if (scroller) {
+                        scroller.fireEvent('scrollstart', scroller, event);
+                        offset.y = event.browserEvent.wheelDelta;
+                        scroller.scrollBy(offset, true);
+                        scroller.snapToBoundary(true);
+                        scroller.fireEvent('scrollend', scroller, offset);
+                        break;
+                    }
+                }
+                _results.push(el = el.parentNode);
+            }
+            return _results;
+        });
     },
 
     onUpdated: function() {
