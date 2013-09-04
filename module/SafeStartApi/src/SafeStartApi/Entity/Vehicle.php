@@ -151,6 +151,18 @@ class Vehicle extends BaseEntity
                 'text' => 'Daily Inspection',
                 'leaf' => true,
             );
+            $menuItems[] = array(
+                'id' => $this->getId() . '-inspections',
+                'action' => 'inspections',
+                'text' => 'Inspections',
+                'data' => $this->getInspectionsArray()
+            );
+            $menuItems[] = array(
+                'id' => $this->getId() . '-alerts',
+                'action' => 'alerts',
+                'text' => 'Alerts',
+                'leaf' => true,
+            );
             switch ($user->getRole()) {
                 case 'superAdmin':
                 case 'companyAdmin':
@@ -161,12 +173,33 @@ class Vehicle extends BaseEntity
                             'text' => 'Manage Checklist',
                             'leaf' => true,
                         );
+                        $menuItems[] = array(
+                            'id' => $this->getId() . '-users',
+                            'action' => 'users',
+                            'text' => 'Manage Users',
+                            'leaf' => true,
+                        );
                     break;
             }
         }
         if (empty($menuItems)) $vehicleData['leaf'] = true;
         else $vehicleData['data'] = $menuItems;
         return $vehicleData;
+    }
+
+    public function getInspectionsArray() {
+        return array(
+            array(
+                'id' => 'checklist-5',
+                'text' => '2013-05-05',
+                'leaf' => true,
+            ),
+            array(
+                'id' => 'checklist-6',
+                'text' => '2013-06-05',
+                'leaf' => true,
+            )
+        );
     }
 
     /**
