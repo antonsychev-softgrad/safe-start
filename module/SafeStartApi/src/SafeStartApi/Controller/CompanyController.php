@@ -3,6 +3,8 @@
 namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestrictedAccessRestController;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 class CompanyController extends RestrictedAccessRestController
 {
@@ -23,9 +25,7 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
-        $this->answer = array(
-
-        );
+        $this->answer = array();
 
         $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
         $query->setParameter(1, $company);
@@ -38,7 +38,8 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    protected function copyVehicleDefFields($vehicle, $defParent = null, $parent = null) {
+    protected function copyVehicleDefFields($vehicle, $defParent = null, $parent = null)
+    {
         $repField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
 
         $defFields = new \Doctrine\Common\Collections\ArrayCollection();
@@ -182,6 +183,75 @@ class CompanyController extends RestrictedAccessRestController
 
     }
 
+    public function getVehicleUsersAction()
+    {
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $this->answer = array();
+        $query = $this->em->createQuery('SELECT u FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = ?1');
+        $query->setParameter(1, $vehicle->getCompany());
+
+        $companyUsers = $query->getResult();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
+        $vehicleUsers = $vehicle->getUsers();
+
+        foreach ($companyUsers as $companyUser) {
+            $user = $companyUser->toInfoArray();
+            $user['assigned'] = 'no';
+            if ($responsibleUsers->contains($companyUser)) $user['assigned'] = 'responsible';
+            if ($vehicleUsers->contains($companyUser)) $user['assigned'] = 'user';
+            $this->answer[] = $user;
+        }
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
+    public function updateVehicleUsersAction()
+    {
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $vehicle->removeResponsibleUsers();
+        $vehicle->removeUsers();
+
+        foreach ((array)$this->data->value as $value) {
+            $value = (array)$value;
+            $user = $this->em->find('SafeStartApi\Entity\User', (int)$value['userId']);
+            if ($user) {
+                switch ($value['assigned']) {
+                    case 'responsible':
+                        $vehicle->addResponsibleUser($user);
+                        break;
+                    case 'user':
+                        $vehicle->addUser($user);
+                        break;
+                }
+            }
+        }
+
+        $this->em->persist($vehicle);
+        $this->em->flush();
+
+        $this->answer = array('done' => true);
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function getVehicleChecklistAction()
     {
         // todo: check access
@@ -205,7 +275,7 @@ class CompanyController extends RestrictedAccessRestController
     public function updateVehicleChecklistFiledAction()
     {
         //  todo: check request format;
-        $vehicleId = (int) $this->data->vehicleId;
+        $vehicleId = (int)$this->data->vehicleId;
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) {
             $this->answer = array(
@@ -230,7 +300,7 @@ class CompanyController extends RestrictedAccessRestController
         $field->setTitle($this->data->title);
 
         if (!empty($this->data->parentId) && $this->data->parentId != "NaN") {
-            $parentField = $this->em->find('SafeStartApi\Entity\Field', (int) $this->data->parentId);
+            $parentField = $this->em->find('SafeStartApi\Entity\Field', (int)$this->data->parentId);
             if (!$parentField) {
                 $this->answer = array(
                     "errorMessage" => "Wrong parent filed."
