@@ -3,11 +3,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     alias: 'widget.SafeStartVehicleInspection',
     requires: [
-        'SafeStartApp.store.ChecklistAlerts'
+        'SafeStartApp.store.ChecklistAlerts',
+        'SafeStartApp.view.components.FileUpload'
     ],
 
     config: {
         name: 'vehicle-inspection',
+        cls: 'sfa-vehicle-inspection',
         layout: {
             type: 'card'
         }
@@ -266,7 +268,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             alerts: fieldData.alerts,
             layout: {
                 type: 'hbox',
-                pack: 'center'
+                pack: 'left'
             },
             defaults: {
                 labelAlign: 'right'
@@ -290,7 +292,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createCheckboxField: function (fieldData) {
         return {
             xtype: 'checkboxfield',
+            maxWidth: 500,
             label: fieldData.fieldName,
+            labelWidth: '90%',
             fieldId: fieldData.fieldId
         };
     },
@@ -367,16 +371,56 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                             alert.set('comment', value);
                         }
                     }
-                }, {
-                    xtype: 'button',
-                    text: 'Add photo',
-                    action: 'add-photo'
-                }]
+                }, this.createImageUploadPanel()
+                ]
             });
-        });
+        }, this);
         return {
             xtype: 'panel',
             items: items 
+        };
+    },
+
+    createImageUploadPanel: function() {
+        return {
+            xtype: 'panel',
+            name: 'image-container',
+            layout: 'box',
+            items: [{
+                xtype: 'toolbar',
+                docked: 'bottom',
+                items: [{
+                    xtype: 'fileupload',
+                    autoUpload: true,
+                    url: 'api/upload-images',
+                    name: 'image',
+                    states: {
+                        browse: {
+                            text: 'Add photo'
+                        },
+
+                        uploading: {
+                            loading: true
+                        }
+                    },
+                    listeners: {
+                        success: function (btn, data) {
+                            var alert = btn.up('container[name=alert-container]').config.alertModel,
+                                panel = btn.up('panel[name=image-container]');
+
+                            panel.add({
+                                xtype: 'image', 
+                                height: 70,
+                                margin: 10,
+                                width: 70,
+                                src: 'api/image/' + data.hash + '70x70'
+                            });
+                            var images = alert.get('photos');
+                            images.push(data.hash);
+                        }
+                    }
+                }]
+            }]
         };
     }
 });
