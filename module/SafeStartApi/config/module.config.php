@@ -498,4 +498,12 @@ return array(
         ),
     ),
     'defUsersPath' => '/data/users/',
+    'pdf' => array(
+        'name' => 'checklist_review',
+        'ext' => '.pdf', // automatic add to name
+        'template_for_name' => array(
+            'format' => "{%s}", // only
+            'template' => "{name}_{user}_{vehicle}_at_{date}", // available: {name}, {user}, {vehicle}, {date}
+        ),
+    ),
 );

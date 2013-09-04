@@ -734,6 +734,7 @@ class UploadPlugin extends AbstractPlugin
             return true;
         } else {
             // username failed validation; print reasons
+            $file->error = "";
             foreach ($validatorChain->getMessages() as $message) {
                 $file->error .= "$message\n";
             }
