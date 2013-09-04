@@ -53,85 +53,85 @@ class PdfPlugin extends AbstractPlugin {
     public function create($checkListId = null) {
 
 
-        /* test data > */
+        /* test data > * /
         $vehicleDetails = array(
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
+                ),
 
 
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
+                ),
 
 
             array(
                 'name' => 'Safety',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Cabin',
                 'status' => 'alert',
-            ),
+                ),
             array(
                 'name' => 'Structural',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Mechanical',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Trailer',
                 'status' => 'ok',
-            ),
+                ),
             array(
                 'name' => 'Auxiliary Motor',
                 'status' => 'ok',
-            ),
-        );
+                ),
+            );
 
 
         $alertsDetails = array(
@@ -141,49 +141,49 @@ class PdfPlugin extends AbstractPlugin {
                 'images' => array(
                     $this->getImagePathByName('93431c284ee6a2bb1bcf4041bc439999'),
                     $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
+                    ),
                 ),
-            ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. adhjsf aisdgdhask ghkjdashkjgh kaghk fskdgj kdfjhsgkdf hskdgfkhs kgdfksghkg hdfkshgkj dhsgfkhkjdshgk dfskghdfkjs kghdfks ghkdhfskg hdlskhg kdsgkh ksdf hgdfks gkhdfk gkhdfs gfkd hsl gsdghlk sdaglksdfhg kjdfsgkdshfgk jdfskgl kdfsgkj dhfskhglkjdfshlgkh dfksgkh dfkjshgkjdf hgkhkjdf kjgk dhfkjgkjdfjkg kdfhgk kdfhkgjfhghgh gh hg hg gkhdfk kd kd k gkhdfkgh kdhgkh dfkg dfkgdfk hgkdfhgkdfgh dfgkdfh kgdhfkg dkg',
                 'images' => array(
                     $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
+                    ),
                 ),
-            ),
             array(
                 'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
+                ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
+                ),
             array(
                 'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
+                ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(
                     $this->getImagePathByName('93431c284ee6a2bb1bcf4041bc439999'),
                     $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
+                    ),
                 ),
-            ),
             array(
                 'title' => 'Cras dapibus',
                 'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
+                ),
             array(
                 'title' => 'Maecena nec',
                 'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
                 'images' => array(),
-            ),
-        );
+                ),
+            );
         /* > end test data. */
 
         $this->document = new ZendPdf\PdfDocument();
@@ -201,10 +201,10 @@ class PdfPlugin extends AbstractPlugin {
         $this->opts = $moduleConfig['pdf'];
         $this->uploadPath = $moduleConfig['defUsersPath'];
 
-        /** /
-        $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', $checkListId);
+        /**/
+        $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', 30);
         if($this->checkList === null) {
-        throw new \Exception('CheckList not found.');
+            throw new \Exception('CheckList not found.');
         }
         $this->dateGeneration = $this->checkList->getCreationDate();
 
@@ -213,49 +213,49 @@ class PdfPlugin extends AbstractPlugin {
         $fieldsStruct = json_decode($this->checkList->getFieldsStructure());
         foreach ($fieldsStruct as $groupBlock) {
 
-        $group = new \stdClass();
-        $group->name = $groupBlock['name'];
-        $group->alerts = array();
+            $group = new \stdClass();
+            $group->name = $groupBlock->name;
+            $group->alerts = array();
 
-        // get field id`s
-        $filds = $groupBlock['fields'];
-        $fieldIds = array();
-        foreach ($filds as $fild) {
-        $fieldIds[] = $fild['id'];
-        }
+            // get field id`s
+            $filds = $groupBlock->fields;
+            $fieldIds = array();
+            foreach ($filds as $fild) {
+                $fieldIds[] = $fild->id;
+            }
 
-        // get alerts
-        if (!empty($fieldIds)) {
-        $query = $this->getController()->em->createQuery('SELECT u FROM SafeStartApi\Entity\Alert u WHERE u.id IN (:ids)');
-        $query->setParameters(array('ids' => implode(',', $fieldIds), ));
-        $group->alerts = $query->getResult();
-        if (is_array($group->alerts) && !empty($group->alerts)) {
-        foreach ($group->alerts as $alert) {
-        $alertInfo = new \stdClass();
-        $alertInfo->title = $alert->getField()->getAlertTitle();
-        $alertInfo->comment = $alert->getComment();
+            // get alerts
+            if (!empty($fieldIds)) {
+                $query = $this->getController()->em->createQuery('SELECT u FROM SafeStartApi\Entity\Alert u WHERE u.id IN (:ids)');
+                $query->setParameters(array('ids' => implode(',', $fieldIds), ));
+                $group->alerts = $query->getResult();
+                if (is_array($group->alerts) && !empty($group->alerts)) {
+                    foreach ($group->alerts as $alert) {
+                        $alertInfo = new \stdClass();
+                        $alertInfo->title = $alert->getField()->getAlertTitle();
+                        $alertInfo->comment = $alert->getComment();
 
-        $images = array();
-        $imagesInfo = $alert->getImages();
-        if($imagesInfo !== null) {
-        $imagesInfo = json_decode($imagesInfo);
-        if(is_array($imagesInfo) && !empty($imagesInfo)) {
-        foreach($imagesInfo as $imageName) {
-        if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
-        $images[] = $imagePath;
-        }
-        }
-        }
-        }
-        $alertInfo->images = $images;
-        $alertsDetails[] = $alertInfo;
-        }
-        }
-        }
+                        $images = array();
+                        $imagesInfo = $alert->getImages();
+                        if($imagesInfo !== null) {
+                            $imagesInfo = json_decode($imagesInfo);
+                            if(is_array($imagesInfo) && !empty($imagesInfo)) {
+                                foreach($imagesInfo as $imageName) {
+                                    if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
+                                        $images[] = $imagePath;
+                                    }
+                                }
+                            }
+                        }
+                        $alertInfo->images = $images;
+                        $alertsDetails[] = $alertInfo;
+                    }
+                }
+            }
 
-        // set status
-        $group->status = empty($group->alerts) ? 'ok' : 'alert';
-        $vehicleDetails[] = $group;
+            // set status
+            $group->status = empty($group->alerts) ? 'ok' : 'alert';
+            $vehicleDetails[] = $group;
         }
         /**/
 
