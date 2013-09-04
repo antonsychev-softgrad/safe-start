@@ -196,27 +196,6 @@ Ext.application({
         // Load current user menu and update view port
         SafeStartApp.userModel = Ext.create('SafeStartApp.model.User');
         SafeStartApp.loadMainMenu();
-        Ext.getBody().on('mousewheel', function(event, el) {
-            console.log('mousewheel');
-            var offset, scroller, _results;
-            offset = Ext.util.Offset();
-            _results = [];
-            while (el !== document.body) {
-                if (el.className.indexOf("x-scroller-parent") > 0) {
-                    scroller = Ext.ScrollManager.get(el.firstChild.id);
-                    if (scroller) {
-                        scroller.fireEvent('scrollstart', scroller, event);
-                        offset.y = event.browserEvent.wheelDelta;
-                        scroller.scrollBy(offset, true);
-                        scroller.snapToBoundary(true);
-                        scroller.fireEvent('scrollend', scroller, offset);
-                        break;
-                    }
-                }
-                _results.push(el = el.parentNode);
-            }
-            return _results;
-        });
     },
 
     onUpdated: function() {
