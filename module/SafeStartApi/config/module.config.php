@@ -174,6 +174,32 @@ return array(
                             ),
                         ),
                     ),
+                    'get-company-vehicle-users' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/users',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'getVehicleUsers',
+                            ),
+                        ),
+                    ),
+                    'update-company-vehicle-users' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/update-users',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Company',
+                                'action' => 'updateVehicleUsers',
+                            ),
+                        ),
+                    ),
                     'delete-company-vehicle' => array(
                         'type' => 'Segment',
                         'options' => array(

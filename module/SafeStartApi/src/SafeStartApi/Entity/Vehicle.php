@@ -488,6 +488,11 @@ class Vehicle extends BaseEntity
         $this->responsibleUsers->removeElement($responsible);
     }
 
+    public function removeResponsibleUsers()
+    {
+        $this->responsibleUsers->clear();
+    }
+
     /**
      * Get responsible
      *
@@ -519,6 +524,11 @@ class Vehicle extends BaseEntity
     public function removeUser(\SafeStartApi\Entity\User $users)
     {
         $this->users->removeElement($users);
+    }
+
+    public function removeUsers()
+    {
+        $this->users->clear();
     }
 
     /**

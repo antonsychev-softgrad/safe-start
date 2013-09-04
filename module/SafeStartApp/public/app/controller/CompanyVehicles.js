@@ -56,19 +56,19 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 break;
             case 'inspections':
                 this.getInfoPanel().setActiveItem(this.getVehicleInspectionsPanel());
-                this.showAlerts();
+               // this.showAlerts();
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
-                this.showAlerts();
+             //   this.showAlerts();
                 break;
             case 'update-checklist':
                 this.getInfoPanel().setActiveItem(3);
                 this.showUpdateCheckList();
                 break;
             case 'users':
+                this.loadUsers(arguments[4].parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
-                this.showUsers();
                 break;
         }
     },
@@ -91,8 +91,17 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         }, this);
     },
 
-    showUsers: function () {
+    loadUsers: function (id) {
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + id + '/users', {}, function (result) {
+            self.getVehicleUsersPanel().buildList(result, id);
+        });
+    },
 
+    updateUsersAction: function(value, id, obj) {
+        SafeStartApp.AJAX('vehicle/' + id + '/update-users', {value: value}, function (result) {
+
+        });
     }
 
 });
