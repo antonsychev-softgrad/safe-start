@@ -5,6 +5,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.toolbar.Company',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
         'SafeStartApp.view.pages.panel.VehicleInspection',
+        'SafeStartApp.view.pages.panel.VehicleAlerts',
+        'SafeStartApp.view.pages.panel.VehicleUsers',
+        'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.store.Vehicles',
         'SafeStartApp.model.Vehicle'
     ],
@@ -74,9 +77,18 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     xtype: 'SafeStartVehicleInspection'
                 },
                 {
+                    xtype: 'SafeStartVehicleInspectionsPanel'
+                },
+                {
+                    xtype: 'SafeStartVehicleAlertsPanel'
+                },
+                {
                     xtype: 'panel',
                     name: 'vehicle-manage',
                     layout: 'card'
+                },
+                {
+                    xtype: 'SafeStartVehicleUsersPanel'
                 }
             ]
         };

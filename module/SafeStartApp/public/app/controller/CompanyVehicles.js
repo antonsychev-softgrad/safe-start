@@ -33,28 +33,66 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             navMain: 'SafeStartCompanyPage SafeStartNestedListVehicles',
             infoPanel: 'SafeStartCompanyPage panel[name=info-container]',
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
+            vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
+            vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
+            vehicleInspectionsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionsPanel',
             addButton: 'SafeStartCompanyPage SafeStartCompanyToolbar > button[action=add-vehicle]',
             manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]',
             reviewCard: 'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-review]'
-        },
-
-        showUpdateCheckList: function () {
-            var self = this;
-            if (!this.vehicleChecklistStore) {
-                this.vehicleChecklistStore = Ext.create('SafeStartApp.store.VehicleChecklist');
-                this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
-            } else {
-                this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
-                this.vehicleChecklistStore.loadData();
-            }
-            if (!this.checkListTree) {
-                this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.vehicleChecklistStore});
-                this.getInfoPanel().getActiveItem().add(this.checkListTree);
-            }
-            this.vehicleChecklistStore.addListener('data-load-success', function () {
-                if (self.vehicleChecklistStore.getRoot()) self.checkListTree.getTreeList().goToNode(self.vehicleChecklistStore.getRoot());
-            }, this);
         }
+    },
+
+    onSelectAction: function () {
+        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
+        this.selectedNodeId = arguments[4].get('id');
+        switch (arguments[4].get('action')) {
+            case 'info':
+                this.getInfoPanel().setActiveItem(0);
+                this.showUpdateForm();
+                break;
+            case 'fill-checklist':
+                this.loadChecklist(arguments[4].parentNode.get('id'));
+                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
+                break;
+            case 'inspections':
+                this.getInfoPanel().setActiveItem(this.getVehicleInspectionsPanel());
+                this.showAlerts();
+                break;
+            case 'alerts':
+                this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
+                this.showAlerts();
+                break;
+            case 'update-checklist':
+                this.getInfoPanel().setActiveItem(3);
+                this.showUpdateCheckList();
+                break;
+            case 'users':
+                this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
+                this.showUsers();
+                break;
+        }
+    },
+
+    showUpdateCheckList: function () {
+        var self = this;
+        if (!this.vehicleChecklistStore) {
+            this.vehicleChecklistStore = Ext.create('SafeStartApp.store.VehicleChecklist');
+            this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
+        } else {
+            this.vehicleChecklistStore.getProxy().setExtraParam('vehicleId', this.selectedNodeId);
+            this.vehicleChecklistStore.loadData();
+        }
+        if (!this.checkListTree) {
+            this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.vehicleChecklistStore});
+            this.getInfoPanel().getActiveItem().add(this.checkListTree);
+        }
+        this.vehicleChecklistStore.addListener('data-load-success', function () {
+            if (self.vehicleChecklistStore.getRoot()) self.checkListTree.getTreeList().goToNode(self.vehicleChecklistStore.getRoot());
+        }, this);
+    },
+
+    showUsers: function () {
 
     }
+
 });

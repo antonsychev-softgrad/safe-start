@@ -24,9 +24,9 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
                 this.loadChecklist(arguments[4].parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
                 break;
-            case 'update-checklist':
+            case 'alerts':
                 this.getInfoPanel().setActiveItem(2);
-                this.showUpdateCheckList();
+                this.showAlerts();
                 break;
         }
     },
@@ -274,5 +274,10 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').hide();
         });
+    },
+
+    showAlerts: function() {
+
     }
+
 });
