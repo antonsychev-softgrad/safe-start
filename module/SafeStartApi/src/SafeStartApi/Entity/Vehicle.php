@@ -188,18 +188,30 @@ class Vehicle extends BaseEntity
     }
 
     public function getInspectionsArray() {
-        return array(
-            array(
-                'id' => 'checklist-5',
-                'text' => '2013-05-05',
-                'leaf' => true,
-            ),
-            array(
-                'id' => 'checklist-6',
-                'text' => '2013-06-05',
-                'leaf' => true,
-            )
-        );
+
+        $inspections = array();
+
+        $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
+        $em = $sl->get('Doctrine\ORM\EntityManager');
+
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1');
+        $query->setParameter(1, $this);
+        $items = $query->getResult();
+
+        if(is_array($items) && !empty($items)) {
+            foreach($items as $checkList) {
+                $checkListData = array();
+
+                $checkListData['id'] = "checklist-" . $checkList->getId();
+                $checkListData['checkListId'] = $checkList->getId();
+                $checkListData['text'] = $checkList->getCreationDate()->format("g:i A d/m/y");
+                $checkListData['leaf'] = true;
+
+                $inspections[] = $checkListData;
+            }
+        }
+
+        return $inspections;
     }
 
     /**
