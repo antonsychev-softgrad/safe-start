@@ -94,8 +94,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'formpanel',
                 name: 'checklist-card-choise-additional',
                 cls: 'sfa-checklist-form',
+                layout: {
+                    type: 'vbox',
+                    align: 'center'
+                },
                 items: [{
                     xtype: 'fieldset',
+                    maxWidth: 900,
+                    width: '100%',
                     items: choiseAdditionalFields
                 },{
                     xtype: 'titlebar',
@@ -126,6 +132,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'formpanel',
             name: 'checklist-card-review',
             cls: 'sfa-checklist-form',
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
             items: [{
                 xtype: 'titlebar',
                 docked: 'top',
@@ -178,7 +188,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'formpanel',
             cls: 'sfa-checklist-form',
-            minHeight: 400,
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
             groupId: checklist.groupId,
             additional: checklist.additional,
             groupName: checklist.groupName,
@@ -229,6 +242,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'textfield',
             label: fieldData.fieldName,
+            maxWidth: 900,
+            width: '100%',
             fieldId: fieldData.fieldId
         };
     },
@@ -243,6 +258,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'radiofield',
                 value: option.value,
                 label: option.label,
+                labelWidth: 50,
                 fieldId: fieldData.fieldId,
                 name: name,
                 checked: fieldData.fieldValue === option.value,
@@ -268,11 +284,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             alerts: fieldData.alerts,
             layout: {
                 type: 'hbox',
-                pack: 'left'
+                pack: 'center'
             },
             defaults: {
                 labelAlign: 'right'
             },
+            maxWidth: 900,
+            width: '100%',
             fieldId: fieldData.fieldId,
             triggerable: true,
             title: fieldData.fieldName,
@@ -283,6 +301,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createDatePickerFiled: function (fieldData) {
         return {
             xtype: 'datepickerfield',
+            maxWidth: 900,
+            width: '100%',
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
             value: new Date()
@@ -292,7 +312,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createCheckboxField: function (fieldData) {
         return {
             xtype: 'checkboxfield',
-            maxWidth: 500,
+            maxWidth: 900,
+            width: '100%',
             label: fieldData.fieldName,
             labelWidth: '90%',
             fieldId: fieldData.fieldId
@@ -302,6 +323,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createGroupField: function (fieldData) {
         return {
             xtype: 'fieldset',
+            maxWidth: 900,
+            width: '100%',
             fieldId: fieldData.fieldId,
             title: fieldData.fieldName,
             items: this.createFields(fieldData.items)
@@ -311,7 +334,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     updateReview: function (passedCards, alerts) {
         var reviewCard = this.down('formpanel[name=checklist-card-review]');
         reviewCard.removeAll();
-        console.log(passedCards);
         reviewCard.add(this.createVehicleDetailsView(passedCards));
         reviewCard.add(this.createAlertsView(alerts));
     },
@@ -335,7 +357,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             });
         });
         return {
-            xtype: 'panel',
+            xtype: 'fieldset',
+            width: '100%',
+            maxWidth: 900,
             items: items
         };
     },
@@ -347,7 +371,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }];
         Ext.each(alerts, function (alert) {
             items.push({
-                xtype: 'container',
+                xtype: 'panel',
+                width: '100%',
+                maxWidth: 900,
                 name: 'alert-container',
                 fieldId: alert.get('fieldId'),
                 alertModel: alert,
@@ -365,32 +391,40 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     xtype: 'textfield',
                     label: 'Additional comments',
                     value: alert.get('comment'),
-                    labelAlign: 'top',
                     listeners: {
                         change: function (textfield, value) {
                             alert.set('comment', value);
                         }
                     }
-                }, this.createImageUploadPanel()
+                }, this.createImageUploadPanel(alert)
                 ]
             });
         }, this);
-        return {
-            xtype: 'panel',
-            items: items 
-        };
+        return items;
     },
 
-    createImageUploadPanel: function() {
+    createImageUploadPanel: function(alert) {
+        var images = [];
+        Ext.each(alert.get('photos'), function (photo) {
+            images.push({
+                xtype: 'image', 
+                height: 70,
+                margin: 10,
+                width: 70,
+                src: 'api/image/' + photo + '70x70'
+            });
+        });
         return {
             xtype: 'panel',
             name: 'image-container',
+            width: '100%',
+            maxWidth: 900,
             layout: 'box',
             items: [{
                 xtype: 'toolbar',
                 docked: 'bottom',
                 items: [{
-                    xtype: 'fileupload',
+                    xtype: 'imageupload',
                     autoUpload: true,
                     url: 'api/upload-images',
                     name: 'image',
@@ -405,8 +439,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     },
                     listeners: {
                         success: function (btn, data) {
-                            var alert = btn.up('container[name=alert-container]').config.alertModel,
-                                panel = btn.up('panel[name=image-container]');
+                            var panel = btn.up('panel[name=image-container]');
 
                             panel.add({
                                 xtype: 'image', 
@@ -415,12 +448,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                                 width: 70,
                                 src: 'api/image/' + data.hash + '70x70'
                             });
-                            var images = alert.get('photos');
-                            images.push(data.hash);
+                            var photos = alert.get('photos');
+                            photos.push(data.hash);
                         }
                     }
                 }]
-            }]
+            }].concat(images)
         };
     }
 });

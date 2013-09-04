@@ -1,6 +1,7 @@
 //<debug>
 Ext.Loader.setPath({
-    'Ext': 'touch/src'
+    'Ext': 'touch/src',
+    'Ext.ux': 'app/ux'
 });
 //</debug>
 SafeStartApp = SafeStartApp || {
@@ -84,6 +85,14 @@ Ext.apply(SafeStartApp,  {
     },
 
     setViewPort: function(menu) {
+        var viewPort = Ext.Viewport.down('SafeStartViewPort');
+        if (viewPort) {
+            Ext.each(viewPort.getInnerItems(), function (item) {
+                if (item.onShow) {
+                    item.removeListener('show', item.onShow);
+                }
+            });
+        }
 
         Ext.Viewport.removeAll(true);
 
@@ -164,6 +173,16 @@ Ext.application({
         '748x1024': 'resources/startup/748x1024.png',
         '1536x2008': 'resources/startup/1536x2008.png',
         '1496x2048': 'resources/startup/1496x2048.png'
+    },
+
+    eventPublishers: {
+        touchGesture: {
+            recognizers: {
+                mousewheeldrag: {
+                    xclass: 'Ext.ux.event.recognizer.MouseWheelDrag'
+                }
+            }
+        }
     },
 
     launch: function() {
