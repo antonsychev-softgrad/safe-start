@@ -50,8 +50,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     alerts: [],
     setAlerts: function (fieldId, value) {
         this.alerts[fieldId] = value;
-        console.log(fieldId);
-        console.log(this.alerts);
     },
 
     getAlerts: function (fieldId) {
@@ -344,6 +342,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             title: 'Vehicle details'
         }];
         Ext.each(passedCards, function (card) {
+            //todo: if has alert indicate with red color
             items.push({
                 xtype: 'checkboxfield',
                 labelWidth: '90%',
@@ -369,37 +368,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'titlebar',
             title: 'Alerts'            
         }];
-        Ext.each(alerts, function (alert) {
+        if (alerts.length > 0) {
             items.push({
                 xtype: 'panel',
                 width: '100%',
                 maxWidth: 900,
                 name: 'alert-container',
-                fieldId: alert.get('fieldId'),
-                alertModel: alert,
+                fieldId: alerts[0].get('fieldId'),
+                alertModel: alerts[0],
                 items: [{
-                    label: alert.get('alertMessage'),
-                    xtype: 'checkboxfield',
-                    checked: true,
-                    labelWidth: '90%',
-                    listeners: {
-                        uncheck: function (checkbox) {
-                            checkbox.setChecked(true);
-                        }
-                    }
-                }, {
                     xtype: 'textfield',
                     label: 'Additional comments',
-                    value: alert.get('comment'),
+                    value: alerts[0].get('comment'),
                     listeners: {
                         change: function (textfield, value) {
-                            alert.set('comment', value);
+                            alerts[0].set('comment', value);
                         }
                     }
-                }, this.createImageUploadPanel(alert)
+                }, this.createImageUploadPanel(alerts[0])
                 ]
             });
-        }, this);
+        }
         return items;
     },
 
@@ -411,7 +400,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 height: 70,
                 margin: 10,
                 width: 70,
-                src: 'api/image/' + photo + '70x70'
+                src: 'api/image/' + photo + '/70x70'
             });
         });
         return {
@@ -446,7 +435,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                                 height: 70,
                                 margin: 10,
                                 width: 70,
-                                src: 'api/image/' + data.hash + '70x70'
+                                src: 'api/image/' + data.hash + '/70x70'
                             });
                             var photos = alert.get('photos');
                             photos.push(data.hash);

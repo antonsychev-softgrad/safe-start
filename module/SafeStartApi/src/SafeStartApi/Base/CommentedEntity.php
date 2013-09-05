@@ -15,7 +15,7 @@ abstract class CommentedEntity extends Entity
     public function getComments()
     {
         $rows = array();
-        $em = \Application::getEntityManager();
+        $em = \SafeStartApi\Application::getEntityManager();
         $items = $em->getRepository('SafeStartApi\Entity\Comment')->findBy(
             array(
                 'entity_id' => $this->getId(),

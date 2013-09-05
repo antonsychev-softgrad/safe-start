@@ -198,14 +198,14 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var checklists = this.getChecklistForms();
         var fieldValues = [];
-        Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
-            var alert = alertContaienr.config.alertModel;
+        if(vehicleInspectionPanel.query('container[name=alert-container]').length > 0) {
+            var alert = vehicleInspectionPanel.query('container[name=alert-container]')[0].config.alertModel;
             alerts.push({
                 fieldId: '' + alert.get('fieldId'), // TODO: integer value
                 comment: alert.get('comment'),
                 images: alert.get('photos')
             });
-        });
+        }
         Ext.each(checklists, function (checklist) {
             var fields = checklist.query('field'); 
             Ext.each(fields, function (field) {

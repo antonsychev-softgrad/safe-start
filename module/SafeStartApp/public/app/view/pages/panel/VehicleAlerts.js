@@ -4,7 +4,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
     alias: 'widget.SafeStartVehicleAlertsPanel',
 
     requires: [
-        'SafeStartApp.store.ChecklistAlerts'
+        'SafeStartApp.store.Alerts'
     ],
 
     config: {
@@ -17,7 +17,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
 
     initialize: function () {
         this.callParent();
-        this.alertsStore = Ext.create('SafeStartApp.store.ChecklistAlerts');
+        this.alertsStore = Ext.create('SafeStartApp.store.Alerts');
         this.add(this.getListPanel());
     },
 
@@ -29,8 +29,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             emptyText: 'No new Alerts',
             itemTpl: [
                 '<div class="headshot" style="background-image:url({thumbnail});"></div>',
-                '{comment}',
-                '<span>{title}</span>'
+                '{description}',
+                '<span>{user.firstName} {user.lastName} at {title}</span>'
             ].join(''),
             cls: 'x-contacts',
             store: this.alertsStore

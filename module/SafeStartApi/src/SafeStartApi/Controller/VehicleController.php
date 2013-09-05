@@ -159,8 +159,7 @@ class VehicleController extends RestrictedAccessRestController
 
                 $newAlert = new \SafeStartApi\Entity\Alert();
                 $newAlert->setCheckList($checkList);
-                $newAlert->setField($field);
-                $newAlert->setComment(!empty($alert->comment) ? $alert->comment : null);
+                $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
                 $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());
                 $this->em->persist($newAlert);
             }

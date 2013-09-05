@@ -33,20 +33,9 @@ class Alert extends BaseEntity
     protected $check_list;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
-     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
-     **/
-    protected $field;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $title;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
-    protected $comment;
+    protected $description;
 
     /**
      * @ORM\Column(type="json_array", nullable=true)
@@ -61,21 +50,9 @@ class Alert extends BaseEntity
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
 
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
-    }
+    /** @ORM\Column(type="string", columnDefinition="ENUM('new', 'closed')") */
+    protected $status = 'new';
 
     /**
      * Get id
@@ -87,38 +64,16 @@ class Alert extends BaseEntity
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Alert
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
 
     /**
      * Set comment
      *
-     * @param string $comment
+     * @param $description
      * @return Alert
      */
-    public function setComment($comment)
+    public function setDescription($description)
     {
-        $this->comment = $comment;
+        $this->description = $description;
 
         return $this;
     }
@@ -128,9 +83,9 @@ class Alert extends BaseEntity
      *
      * @return string
      */
-    public function getComment()
+    public function getDescription()
     {
-        return $this->comment;
+        return $this->description;
     }
 
     /**
@@ -182,12 +137,11 @@ class Alert extends BaseEntity
     /**
      * Set field
      *
-     * @param \SafeStartApi\Entity\Field $field
      * @return Alert
      */
-    public function setField(\SafeStartApi\Entity\Field $field = null)
+    public function setStatus($status)
     {
-        $this->field = $field;
+        $this->status = $status;
 
         return $this;
     }
@@ -197,9 +151,9 @@ class Alert extends BaseEntity
      *
      * @return \SafeStartApi\Entity\Field
      */
-    public function getField()
+    public function getStatus()
     {
-        return $this->field;
+        return $this->status;
     }
 
     /**
@@ -211,10 +165,13 @@ class Alert extends BaseEntity
     {
         $data = array(
             'id' => $this->getId(),
+            'status' => $this->getStatus(),
             'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
-            'comment' => $this->getComment(),
+            'user' => $this->check_list->getUser()->toInfoArray(),
+            'description' => $this->getDescription(),
             'images' => $this->getImages(),
-            'thumbnail' => $this->getThumbnail()
+            'thumbnail' => $this->getThumbnail(),
+            'comments' => $this->getComments()
         );
         return $data;
     }
