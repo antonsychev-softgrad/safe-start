@@ -4,6 +4,8 @@ Ext.define('SafeStartApp.model.ChecklistAlert', {
         fields: [
             {name: 'id', type: 'int', defaultValue: 0},
             {name: 'title', type: 'string'},
+            {name: 'comment', type: 'string'},
+            {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},
             {name: 'status', type: 'string', defaultValue: 'new'}
         ]

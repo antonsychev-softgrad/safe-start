@@ -2,7 +2,7 @@
 
 namespace SafeStartApi\Entity;
 
-use SafeStartApi\Base\Entity as BaseEntity;
+use SafeStartApi\Base\CommentedEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 
@@ -14,6 +14,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Alert extends BaseEntity
 {
+    /**
+     * @var string
+     */
+    protected $comment_entity = 'alert';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -206,7 +211,7 @@ class Alert extends BaseEntity
     {
         $data = array(
             'id' => $this->getId(),
-            'title' => $this->getComment(),
+            'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
             'comment' => $this->getComment(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail()
