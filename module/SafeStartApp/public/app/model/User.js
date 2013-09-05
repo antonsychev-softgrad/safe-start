@@ -13,6 +13,9 @@ Ext.define('SafeStartApp.model.User', {
             {name: 'position', type: 'string'},
             {name: 'department', type: 'string'}
         ],
+        associations: [
+            {type: 'hasOne', model: 'SafeStartApp.model.Company', name: 'company'}
+        ],
         validations: [
             {type: 'format', field: 'email', matcher: /\S+@\S+\.\S+/, message: "Wrong email format"},
             {type: 'presence', name: 'firstName', message: "Name is required"}

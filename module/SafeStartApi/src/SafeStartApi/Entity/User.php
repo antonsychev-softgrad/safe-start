@@ -154,6 +154,7 @@ class User extends BaseEntity
             'secondName' => (!is_null($this->secondName)) ? $this->secondName : '',
             'role' => $this->getRole(),
             'companyId' => (!is_null($this->company)) ? $this->getCompany()->getId() : 0,
+            'company' => (!is_null($this->company)) ? $this->company->toArray() : null,
             'position' => (!is_null($this->position)) ? $this->position : '',
             'department' => (!is_null($this->company)) ? $this->department : '',
         );

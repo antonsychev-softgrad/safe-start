@@ -18,16 +18,14 @@ class WebPanelController extends RestController
             if ($user) $userInfo = $user->toArray();
         }
 
-        if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompaniesPage')) {
-            $mainMenu[] = 'Companies';
-            $mainMenu[] = 'Company';
-            $mainMenu[] = 'Users';
-            $mainMenu[] = 'SystemSettings';
-        }
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompaniesPage')) $mainMenu[] = 'Companies';
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewVehiclesPage')) $mainMenu[] = 'Company';
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewUsersPage')) $mainMenu[] = 'Users';
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewSystemSettingsPage')) $mainMenu[] = 'SystemSettings';
 
-        if($this->AclPlugin()->isAllowed('userPanel', 'view')) {
+       /* if($this->AclPlugin()->isAllowed('userPanel', 'view')) {
             $mainMenu[] = 'Vehicles';
-        }
+        }*/
 
         $mainMenu[] = 'Contact';
 

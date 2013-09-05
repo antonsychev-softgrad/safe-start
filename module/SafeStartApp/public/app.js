@@ -80,6 +80,7 @@ Ext.apply(SafeStartApp,  {
     loadMainMenu: function() {
         this.AJAX('web-panel/getMainMenu', {}, function(result) {
             SafeStartApp.userModel.setData(result.userInfo || {});
+            if(SafeStartApp.userModel.getAssociatedData().company)  SafeStartApp.companyModel.setData(SafeStartApp.userModel.getAssociatedData().company);
             SafeStartApp.setViewPort(result.mainMenu || null);
         });
     },
@@ -193,6 +194,7 @@ Ext.application({
 
         // Load current user menu and update view port
         SafeStartApp.userModel = Ext.create('SafeStartApp.model.User');
+        SafeStartApp.companyModel = Ext.create('SafeStartApp.model.Company');
         SafeStartApp.loadMainMenu();
     },
 

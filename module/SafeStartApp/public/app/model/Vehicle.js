@@ -15,8 +15,8 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'action', type: 'string', defaultValue: ''}
         ],
         associations: [
-            {type: 'hasMany', model: 'User', name: 'users'},
-            {type: 'hasMany', model: 'User', name: 'responsibleUsers'}
+            {type: 'hasMany', model: 'SafeStartApp.model.User', name: 'users'},
+            {type: 'hasMany', model: 'SafeStartApp.model.User', name: 'responsibleUsers'}
         ],
         validations: [
             {type: 'presence', name: 'title', message: "Vehicle title is required"},
