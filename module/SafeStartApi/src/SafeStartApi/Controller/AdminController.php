@@ -70,6 +70,8 @@ class AdminController extends AdminAccessRestController
 
         $company->setAdmin($user);
 
+        $user->setCompany($company);
+
         $this->em->flush();
 
         $this->answer = array(

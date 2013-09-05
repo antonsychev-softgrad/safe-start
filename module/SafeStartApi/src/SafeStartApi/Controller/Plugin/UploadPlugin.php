@@ -7,6 +7,10 @@ use SafeStartApi\Model\ImageProcessor;
 
 class UploadPlugin extends AbstractPlugin
 {
+    const THUMBNAIL_FULL = '1024x768';
+    const THUMBNAIL_MEDIUM = '320x220';
+    const THUMBNAIL_SMALL = '70x70';
+
     protected $options;
 
     // PHP File Upload error message codes:
@@ -73,7 +77,7 @@ class UploadPlugin extends AbstractPlugin
             'script_url' => $this->get_full_url() . '/',
             'upload_dir' => $this->get_full_path() . $defUsersPath,
             'upload_url' => $this->get_full_url() . $defUsersPath,
-            'user_dirs' => true,
+            'user_dirs' => false,
             'mkdir_mode' => 0755,
             'param_name' => 'files',
             'rename_file' => true,

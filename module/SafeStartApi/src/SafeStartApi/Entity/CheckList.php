@@ -315,4 +315,16 @@ class CheckList extends BaseEntity
     {
         return $this->alerts;
     }
+
+    public function getAlertsArray()
+    {
+        $alerts = array();
+        if (!empty($this->alerts)) {
+            foreach($this->alerts as $alert) {
+                $alerts[] = $alert->toArray();
+            }
+        }
+
+        return $alerts;
+    }
 }

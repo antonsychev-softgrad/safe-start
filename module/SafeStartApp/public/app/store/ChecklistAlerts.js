@@ -9,7 +9,20 @@ Ext.define('SafeStartApp.store.ChecklistAlerts', {
         model: 'SafeStartApp.model.ChecklistAlert',
 
         proxy: {
-            type: "memory"
+            type: "ajax",
+            url : "api/company/getvehiclealerts",
+            reader: {
+                type: "json",
+                rootProperty: "data"
+            }
+        },
+
+     //   sorters: 'title',
+
+        grouper: {
+            groupFn: function(record) {
+                //return record.get('title')[0];
+            }
         }
     }
 });

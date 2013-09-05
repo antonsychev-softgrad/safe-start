@@ -239,9 +239,10 @@ return array(
                     'get-public-image' => array(
                        'type' => 'Segment',
                        'options' => array(
-                          'route' => '/image/:image',
+                          'route' => '/image/:hash/[:size]',
                           'constraints' => array(
-                             'image' => '.+',
+                             'hash' => '.+',
+                             'size' => '.+',  //todo: regexp for 200x200
                           ),
                           'defaults' => array(
                              'controller' => 'Info',

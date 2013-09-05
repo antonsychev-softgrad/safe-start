@@ -12,25 +12,6 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     selectedNodeId: 0,
     selectedRecord: 0,
 
-    onSelectAction: function () {
-        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
-        this.selectedNodeId = arguments[4].get('id');
-        switch (arguments[4].get('action')) {
-            case 'info':
-                this.getInfoPanel().setActiveItem(0);
-                this.showUpdateForm();
-                break;
-            case 'fill-checklist':
-                this.loadChecklist(arguments[4].parentNode.get('id'));
-                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
-                break;
-            case 'alerts':
-                this.getInfoPanel().setActiveItem(2);
-                this.showAlerts();
-                break;
-        }
-    },
-
     showUpdateForm: function () {
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);

@@ -4,7 +4,10 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         'SafeStartApp.model.ChecklistField',
         'SafeStartApp.view.forms.ChecklistField'
     ],
-    mixins: ['Ext.mixin.Observable'],
+    mixins: [
+        'Ext.mixin.Observable',
+        'SafeStartApp.controller.mixins.Form'
+    ],
 
     xtype: 'SafeStartUpdateChecklistComponent',
 

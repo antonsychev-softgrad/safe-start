@@ -73,16 +73,6 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -146,7 +136,7 @@ class Alert extends BaseEntity
      */
     public function setImages($images)
     {
-        $this->images = $images;
+        $this->images = json_encode($images);
 
         return $this;
     }
@@ -158,7 +148,7 @@ class Alert extends BaseEntity
      */
     public function getImages()
     {
-        return $this->images;
+        return json_decode($this->images);
     }
 
     /**
@@ -205,5 +195,29 @@ class Alert extends BaseEntity
     public function getField()
     {
         return $this->field;
+    }
+
+    /**
+     * Convert the object to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $data = array(
+            'id' => $this->getId(),
+            'title' => $this->getComment(),
+            'comment' => $this->getComment(),
+            'images' => $this->getImages(),
+            'thumbnail' => $this->getThumbnail()
+        );
+        return $data;
+    }
+
+    public function getThumbnail()
+    {
+        $src = '';
+        if (!empty($this->images)) $src = '/api/image/' . $this->getImages()[0] . '/' . \SafeStartApi\Controller\Plugin\UploadPlugin::THUMBNAIL_SMALL;
+        return $src;
     }
 }

@@ -19,6 +19,7 @@ class Vehicle extends BaseEntity
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->checkLists = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -100,6 +101,11 @@ class Vehicle extends BaseEntity
      * @ORM\OneToMany(targetEntity="Field", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $fields;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CheckList", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $checkLists;
 
     /**
      * Convert the object to an array.
@@ -585,4 +591,48 @@ class Vehicle extends BaseEntity
     {
         return $this->fields;
     }
+
+    /**
+     * Add checklists
+     *
+     * @param \SafeStartApi\Entity\CheckList $users
+     * @return Company
+     */
+    public function addCheckList(\SafeStartApi\Entity\CheckList $users)
+    {
+        $this->checkLists[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove checklists
+     *
+     * @param \SafeStartApi\Entity\CheckList $users
+     */
+    public function removeCheckList(\SafeStartApi\Entity\CheckList $users)
+    {
+        $this->checkLists->removeElement($users);
+    }
+
+    /**
+     * Get checklists
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCheckLists()
+    {
+        return $this->checkLists;
+    }
+
+    /**
+     * Remove checklists
+     */
+    public function removeCheckLists()
+    {
+        $this->checkLists->clear();
+    }
+
+
+
 }

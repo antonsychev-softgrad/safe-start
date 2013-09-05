@@ -96,7 +96,8 @@ class VehicleController extends RestrictedAccessRestController
     public function completeChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        //todo: check why bad request with alerts
+       // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
         // save checklist
         $vehicleId = $this->params('id');
@@ -160,7 +161,7 @@ class VehicleController extends RestrictedAccessRestController
                 $newAlert->setCheckList($checkList);
                 $newAlert->setField($field);
                 $newAlert->setComment(!empty($alert->comment) ? $alert->comment : null);
-                $newAlert->setImages(!empty($alert->images) ? json_encode($alert->images) : null);
+                $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());
                 $this->em->persist($newAlert);
             }
             $this->em->flush();

@@ -363,4 +363,29 @@ class CompanyController extends RestrictedAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function getVehicleAlertsAction()
+    {
+        $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) {
+            $this->answer = array(
+                "errorMessage" => "Vehicle not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $this->answer = array();
+
+        $checkLists = $vehicle->getCheckLists();
+
+        if (!empty($checkLists)) {
+            foreach($checkLists as $checkList) {
+                $this->answer = array_merge($this->answer, $checkList->getAlertsArray());
+            }
+        }
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
 }
