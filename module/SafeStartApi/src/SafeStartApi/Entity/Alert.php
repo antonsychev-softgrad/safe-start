@@ -22,6 +22,12 @@ class Alert extends BaseEntity
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="CheckList", inversedBy="alerts")
+     * @ORM\JoinColumn(name="check_list_id", referencedColumnName="id")
+     **/
+    protected $check_list;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      **/
@@ -153,6 +159,29 @@ class Alert extends BaseEntity
     public function getImages()
     {
         return $this->images;
+    }
+
+    /**
+     * Set check_list
+     *
+     * @param \SafeStartApi\Entity\CheckList $checkList
+     * @return Alert
+     */
+    public function setCheckList(\SafeStartApi\Entity\CheckList $checkList = null)
+    {
+        $this->check_list = $checkList;
+
+        return $this;
+    }
+
+    /**
+     * Get check_list
+     *
+     * @return \SafeStartApi\Entity\CheckList
+     */
+    public function getCheckList()
+    {
+        return $this->check_list;
     }
 
     /**

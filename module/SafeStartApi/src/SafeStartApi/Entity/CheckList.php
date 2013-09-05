@@ -55,6 +55,11 @@ class CheckList extends BaseEntity
     protected $fields_data;
 
     /**
+     * @ORM\OneToMany(targetEntity="Alert", mappedBy="check_list", cascade={"persist", "remove", "merge"})
+     */
+    protected $alerts;
+
+    /**
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
@@ -79,6 +84,14 @@ class CheckList extends BaseEntity
     public function __set($property, $value)
     {
         $this->$property = $value;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -268,5 +281,38 @@ class CheckList extends BaseEntity
     public function getGpsCoords()
     {
         return $this->gps_coords;
+    }
+
+    /**
+     * Add alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     * @return CheckList
+     */
+    public function addAlert(\SafeStartApi\Entity\Alert $alerts)
+    {
+        $this->alerts[] = $alerts;
+
+        return $this;
+    }
+
+    /**
+     * Remove alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     */
+    public function removeAlert(\SafeStartApi\Entity\Alert $alerts)
+    {
+        $this->alerts->removeElement($alerts);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlerts()
+    {
+        return $this->alerts;
     }
 }
