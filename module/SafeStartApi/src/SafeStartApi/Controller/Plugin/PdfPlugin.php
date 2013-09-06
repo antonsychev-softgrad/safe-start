@@ -222,19 +222,9 @@ class PdfPlugin extends AbstractPlugin {
 
         $logoMaxWidth = 199;
         $logoMaxHeight = 53;
-        $logoPath = "{$root}/module/SafeStartApp/public/resources/img/logo.png";
+        $logoPath = "{$root}/public/logo-pdf.png";
 
-        $thumbNewWidth = $logoMaxWidth * 2;
-        $thumbNewHeight = $logoMaxHeight * 2;
-
-        $thumbLogoPath = preg_replace('/(\.[^\.]*)$/isU', "_{$thumbNewWidth}x{$thumbNewHeight}$1", $logoPath);
-        if (!file_exists($thumbLogoPath)) {
-            $imProc = new ImageProcessor($logoPath);
-            $imProc->contain(array('width' => $thumbNewWidth, 'height' => $thumbNewHeight));
-            $imProc->save($thumbLogoPath);
-        }
-
-        $logo = ZendPdf\Image::imageWithPath($thumbLogoPath);
+        $logo = ZendPdf\Image::imageWithPath($logoPath);
         $logoWidth = $logo->getPixelWidth();
         $logoHeight = $logo->getPixelHeight();
 
