@@ -110,20 +110,7 @@ class VehicleController extends RestrictedAccessRestController
         $query->setParameter(1, $vehicle);
         $items = $query->getResult();
 
-        $fieldsStructure = $this->GetDataPlugin()->buildChecklist($items);
-        foreach($fieldsStructure as $structKey => $struct) {
-            if(isset($struct['fields']) && is_array($struct['fields'])) {
-                foreach($struct['fields'] as $fieldKey => $field) {
-                    $id = (int) $field['id'];
-                    $query = $this->em->createQuery('SELECT f.alert_title FROM SafeStartApi\Entity\Field f WHERE f.id = ?1');
-                    $query->setParameter(1, $id);
-                    $alertTitle = $query->getSingleScalarResult();
-                    if(!empty($alertTitle)) {
-                        $fieldsStructure[$structKey]['fields'][$fieldKey]['alertTitle'] = $alertTitle;
-                    }
-                }
-            }
-        }
+        $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
 
         $fieldsStructure = json_encode($fieldsStructure);
         $fieldsData = json_encode($this->data->fields);
@@ -158,6 +145,7 @@ class VehicleController extends RestrictedAccessRestController
                 }
 
                 $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert->setField($field);
                 $newAlert->setCheckList($checkList);
                 $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
                 $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());

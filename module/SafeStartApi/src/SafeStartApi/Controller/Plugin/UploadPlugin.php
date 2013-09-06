@@ -13,6 +13,7 @@ class UploadPlugin extends AbstractPlugin
 
     protected $options;
 
+
     // PHP File Upload error message codes:
     // http://php.net/manual/en/features.file-upload.errors.php
     protected $error_messages = array(
@@ -50,7 +51,7 @@ class UploadPlugin extends AbstractPlugin
         $defUsersPath = $moduleConfig['defUsersPath'];
         $defUsersPath = $this->get_filter_path($defUsersPath);
 
-        $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
+        $options['upload_dir'] = $this->get_root_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
         $this->setOptions($options);
 
@@ -75,7 +76,7 @@ class UploadPlugin extends AbstractPlugin
         $defUsersPath = '/data/users/';
         $this->options = array(
             'script_url' => $this->get_full_url() . '/',
-            'upload_dir' => $this->get_full_path() . $defUsersPath,
+            'upload_dir' => $this->get_root_path() . $defUsersPath,
             'upload_url' => $this->get_full_url() . $defUsersPath,
             'user_dirs' => false,
             'mkdir_mode' => 0755,
@@ -129,6 +130,7 @@ class UploadPlugin extends AbstractPlugin
             'versions_delimiter' => '',
             // Set to false to disable rotating images based on EXIF meta data:
             'orient_image' => true,
+            // default params
             'image_versions' => array(
                 'full' => array(
                     'max_width' => 1024,
@@ -152,9 +154,35 @@ class UploadPlugin extends AbstractPlugin
             )
         );
 
+
+        // initialization thumbnails by constants
+        $thumbnails = array(
+            'full' => self::THUMBNAIL_FULL,
+            'medium' => self::THUMBNAIL_MEDIUM,
+            'small' =>self::THUMBNAIL_SMALL,
+        );
+
+        // override image versions
+        if(!empty($thumbnails) && is_array($thumbnails) && !isset($options['image_versions'])) {
+            $this->options['image_versions'] = array();
+            foreach($thumbnails as $key => $thumb) {
+                list($max_width,$max_height) = explode("x", $thumb);
+                $params = array(
+                    'max_width' => intval($max_width),
+                    'max_height' => intval($max_height),
+                    'jpeg_quality' => 95,
+                    'png_quality' => 9
+                );
+                if($max_width == $max_height) {
+                    $params['crop'] = true;
+                }
+                $this->options['image_versions'][$key] = $params;
+            }
+        }
+
         if ($options) {
             if(isset($options['upload_dir']))
-                $options['upload_dir'] = $this->get_full_path() . $this->get_filter_path($options['upload_dir']);
+                $options['upload_dir'] = $this->get_root_path() . $this->get_filter_path($options['upload_dir']);
             if(isset($options['upload_url']))
                 $options['upload_url'] = $this->get_full_url() . $this->get_filter_path($options['upload_url']);
             $this->options = array_merge($this->options, $options);
@@ -203,7 +231,7 @@ class UploadPlugin extends AbstractPlugin
     }
 
 
-    protected function get_full_path() {
+    protected function get_root_path() {
         $root = $this->get_server_var('DOCUMENT_ROOT');
 
         if(!file_exists($root . "/init_autoloader.php")) {
@@ -221,7 +249,7 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function get_filter_path($fEndPath = '/') {
-        $root       = $this->get_full_path();
+        $root       = $this->get_root_path();
         $fEndPath   = str_replace("{$root}", '', $fEndPath);
         $fEndPath   = str_replace('\\', '/', $fEndPath);
 
@@ -252,17 +280,6 @@ class UploadPlugin extends AbstractPlugin
             $user_folder = ($userDirs > 0) ? "{$userDirs}/" : '';
         } elseif (is_string($userDirs)) {
             $user_folder = (strlen($userDirs) > 0) ? "{$userDirs}/" : '';
-        } else {
-            try{
-                if(isset($this->getController()->authService)) {
-                    if($this->getController()->authService->hasIdentity()) {
-                        $user = $this->getController()->authService->getStorage()->read();
-                        $user_folder = "".$user->getId() . "/";
-                    }
-                }
-            } catch(\Exception $e) {
-
-            }
         }
 
         return $user_folder;
