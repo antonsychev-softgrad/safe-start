@@ -106,8 +106,7 @@ class Field extends BaseEntity
         $this->enabled = false;
         $this->deleted = false;
         $this->additional = false;
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -116,28 +115,6 @@ class Field extends BaseEntity
     public function prePersist()
     {
         $this->setCreationDate(new \DateTime());
-    }
-
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
     }
 
     /**

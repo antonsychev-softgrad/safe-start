@@ -32,11 +32,6 @@ class DefaultField extends BaseEntity
     protected $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Alert", mappedBy="field", cascade={"persist", "remove", "merge"})
-     */
-    protected $alerts;
-
-    /**
      * @ORM\Column(type="string")
      */
     protected $type;
@@ -54,7 +49,7 @@ class DefaultField extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $alert_description;
+    protected $alert_description = 'Description of vehicle fault should be here';
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -100,8 +95,6 @@ class DefaultField extends BaseEntity
         $this->enabled = false;
         $this->deleted = false;
         $this->additional = false;
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -438,39 +431,6 @@ class DefaultField extends BaseEntity
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Add alerts
-     *
-     * @param \SafeStartApi\Entity\Alert $alerts
-     * @return Field
-     */
-    public function addAlert(\SafeStartApi\Entity\Alert $alerts)
-    {
-        $this->alerts[] = $alerts;
-    
-        return $this;
-    }
-
-    /**
-     * Remove alerts
-     *
-     * @param \SafeStartApi\Entity\Alert $alerts
-     */
-    public function removeAlert(\SafeStartApi\Entity\Alert $alerts)
-    {
-        $this->alerts->removeElement($alerts);
-    }
-
-    /**
-     * Get alerts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAlerts()
-    {
-        return $this->alerts;
     }
 
     /**
