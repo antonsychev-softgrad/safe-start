@@ -79,7 +79,8 @@ class UploadPlugin extends AbstractPlugin
             'upload_dir' => $this->get_root_path() . $defUsersPath,
             'upload_url' => $this->get_full_url() . $defUsersPath,
             'user_dirs' => false,
-            'mkdir_mode' => 0755,
+            'mkdir_mode' => 0777,
+            'file_chmod' => 0777,
             'param_name' => 'files',
             'rename_file' => true,
             'overwrite_file' => true,
@@ -322,8 +323,9 @@ class UploadPlugin extends AbstractPlugin
                 $version_path = '';
             }
         }
-        return $this->options['upload_dir'].$this->get_user_path()
-        .$version_path.$file_name;
+
+        $return = $this->options['upload_dir'].$this->get_user_path().$version_path.$file_name;
+        return $return;
     }
 
     /**
@@ -493,9 +495,14 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function create_scaled_image($file_name, $version, $options) {
-        $file_path = $this->get_upload_path($file_name);
+
+        $file_path = realpath($this->get_upload_path($file_name));
+        if(!$file_path) {
+            throw new \Exception("Invalid image path");
+        }
+
         if (!empty($version)) {
-            if(!$this->options['use_versions_path']) {
+            if($this->options['use_versions_path'] === false) {
                 $file_name = $this->get_version_file_name($file_name, $version);
             }
             $version_dir = $this->get_upload_path(null, $version);
@@ -594,6 +601,10 @@ class UploadPlugin extends AbstractPlugin
                 $img_width,
                 $img_height
             ) && $write_image($new_img, $new_file_path, $image_quality);
+
+        // change access
+        chmod($new_file_path, $this->options['file_chmod']);
+
         // Free up memory (imagedestroy does not delete files):
         imagedestroy($src_img);
         imagedestroy($new_img);
@@ -1108,6 +1119,10 @@ class UploadPlugin extends AbstractPlugin
                     $append_file ? FILE_APPEND : 0
                 );
             }
+
+            // change access
+            chmod($file_path, $this->options['file_chmod']);
+
             $file_size = $this->get_file_size($file_path, $append_file);
             if ($file_size === $file->size) {
                 $file->url = $this->get_download_url($file->name);
@@ -1482,7 +1497,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name'][$index]);
-                $hash       = md5_file($upload['tmp_name'][$index]);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid() . mktime()); // md5_file($upload['tmp_name'][$index]);
 
                 $files[] = $this->handle_file_upload(
                     $upload['tmp_name'][$index],
@@ -1507,7 +1522,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name']);
-                $hash       = md5_file($upload['tmp_name']);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid() . mktime()); // md5_file($upload['tmp_name']);
 
                 // param_name is a single object identifier like "file",
                 // $_FILES is a one-dimensional array:
