@@ -12,25 +12,6 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     selectedNodeId: 0,
     selectedRecord: 0,
 
-    onSelectAction: function () {
-        this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
-        this.selectedNodeId = arguments[4].get('id');
-        switch (arguments[4].get('action')) {
-            case 'info':
-                this.getInfoPanel().setActiveItem(0);
-                this.showUpdateForm();
-                break;
-            case 'fill-checklist':
-                this.loadChecklist(arguments[4].parentNode.get('id'));
-                this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
-                break;
-            case 'alerts':
-                this.getInfoPanel().setActiveItem(2);
-                this.showAlerts();
-                break;
-        }
-    },
-
     showUpdateForm: function () {
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(this.selectedRecord);
@@ -217,14 +198,14 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var checklists = this.getChecklistForms();
         var fieldValues = [];
-        Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
-            var alert = alertContaienr.config.alertModel;
+        if(vehicleInspectionPanel.query('container[name=alert-container]').length > 0) {
+            var alert = vehicleInspectionPanel.query('container[name=alert-container]')[0].config.alertModel;
             alerts.push({
                 fieldId: '' + alert.get('fieldId'), // TODO: integer value
                 comment: alert.get('comment'),
                 images: alert.get('photos')
             });
-        });
+        }
         Ext.each(checklists, function (checklist) {
             var fields = checklist.query('field'); 
             Ext.each(fields, function (field) {

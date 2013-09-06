@@ -19,7 +19,7 @@
             "required": true,
             "properties": {
                 "checklistId": {
-                    "description": "Checklist Id for PDF data in Database",
+                    "description": "Checklist Id or hash for PDF data in Database",
                     "type": "string",
                     "required": true
                 }

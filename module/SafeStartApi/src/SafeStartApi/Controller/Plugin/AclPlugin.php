@@ -41,49 +41,47 @@ class AclPlugin extends AbstractPlugin
     private function setAccessList()
     {
         $this->setAccess(array(
-            'guest' => array(
+            'guest' => array(),
+            'user' => array(),
+            'companyUser' => array(
                 array(
                     'resource' => 'adminPanel',
-                    'action' => 'view',
+                    'action' => 'viewVehiclesPage',
                     'access' => 'allow'
-                ),
-                array(
-                    'resource' => 'someResource',
-                    'action' => 'view',
-                    'access' => 'deny'
                 ),
             ),
-            'user' => array(
+            'companyManager' => array(
                 array(
                     'resource' => 'adminPanel',
-                    'action' => 'view',
-                    'access' => 'allow'
-                ),
-                array(
-                    'resource' => 'userPanel',
-                    'action' => 'view',
+                    'action' => 'viewUsersPage',
                     'access' => 'allow'
                 ),
             ),
             'superAdmin' => array(
                 array(
                     'resource' => 'adminPanel',
+                    'action' => 'superAccess',
+                    'access' => 'allow'
+                ),
+                array(
+                    'resource' => 'adminPanel',
                     'action' => 'viewCompaniesPage',
                     'access' => 'allow'
                 ),
                 array(
-                    'resource' => 'userPanel',
-                    'action' => 'view',
-                    'access' => 'deny'
+                    'resource' => 'adminPanel',
+                    'action' => 'viewSystemSettingsPage',
+                    'access' => 'allow'
                 ),
+
             )
         ));
     }
 
     private function setAccess($rolesList = array())
     {
-        foreach($rolesList as $role => $paramsArray) {
-            foreach($paramsArray as $params) {
+        foreach ($rolesList as $role => $paramsArray) {
+            foreach ($paramsArray as $params) {
                 $this->acl->{$params['access']}($role, $params['resource'], $params['action']);
             }
         }
@@ -91,7 +89,7 @@ class AclPlugin extends AbstractPlugin
 
     public function isAllowed($resource = null, $privilege = null)
     {
-        if($this->getController()->authService->hasIdentity()) {
+        if ($this->getController()->authService->hasIdentity()) {
             $user = $this->getController()->authService->getStorage()->read();
             $role = $user->getRole();
         } else {

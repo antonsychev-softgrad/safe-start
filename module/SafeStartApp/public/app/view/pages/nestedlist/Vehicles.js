@@ -45,7 +45,9 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 iconCls: 'refresh',
                 cls: 'sfa-search-reload',
                 handler: function() {
+                    this.up('nestedlist[name=vehicles]').goToNode(this.up('nestedlist[name=vehicles]').getStore().getRoot());
                     this.up('nestedlist[name=vehicles]').getStore().loadData();
+
                 }
             }]
         }]);

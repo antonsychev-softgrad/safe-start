@@ -7,6 +7,7 @@ class Application
 {
 
     private static $serviceLocator = null;
+    private static $em = null;
 
     public static function setCurrentControllerServiceLocator(\Zend\ServiceManager\ServiceManager $sl)
     {
@@ -31,6 +32,13 @@ class Application
     public static function getCurrentUser()
     {
         return self::getAuthService()->hasIdentity() ? self::getAuthService()->getStorage()->read() : null;
+    }
+
+
+
+    public static function getEntityManager() {
+        if(!self::$em) self::$em = self::$serviceLocator->get('Doctrine\ORM\EntityManager');
+        return self::$em;
     }
 
     private function __construct()

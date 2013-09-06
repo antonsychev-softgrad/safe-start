@@ -9,15 +9,16 @@ use SafeStartApi\Base\RestController;
 
 class InfoController extends RestController
 {
-    protected static function getFileByDirAndName($dir, $tosearch) {
-        if(file_exists($dir) && is_dir($dir)) {
+    protected static function getFileByDirAndName($dir, $tosearch)
+    {
+        if (file_exists($dir) && is_dir($dir)) {
             $flags = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS;
             $iterator = new \RecursiveDirectoryIterator($dir, $flags);
             $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST, \RecursiveIteratorIterator::CATCH_GET_CHILD);
             foreach ($iterator as $file) {
                 $tosearch = urldecode($tosearch);
                 $fileInfo = pathinfo($file);
-                if(($fileInfo['filename'] == $tosearch) || ($fileInfo['basename'] == $tosearch)) {
+                if (($fileInfo['filename'] == $tosearch) || ($fileInfo['basename'] == $tosearch)) {
                     return $file;
                 }
             }
@@ -25,25 +26,26 @@ class InfoController extends RestController
         return null;
     }
 
-    protected function get_user_id() {
+    protected function get_user_id()
+    {
         $user_folder = '';
         try {
             if (isset($this->authService)) {
                 if ($this->authService->hasIdentity()) {
                     $user = $this->authService->getStorage()->read();
-                    $user_folder = "".$user->getId()."/";
+                    $user_folder = "" . $user->getId() . "/";
                 }
             }
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
 
         }
         return $user_folder;
     }
 
-    protected function get_full_path($fEndPath = null) {
+    protected function get_full_path($fEndPath = null)
+    {
         $root = $_SERVER['DOCUMENT_ROOT'];
-        if(!file_exists($root . "/init_autoloader.php")) {
+        if (!file_exists($root . "/init_autoloader.php")) {
             $root = dirname($root);
         }
 
@@ -57,8 +59,7 @@ class InfoController extends RestController
 
         if (preg_match('/^(\/|.\/).*/isU', $fEndPath, $match)) {
             $fEndPath = preg_replace('/^(\/|.\/).*/isU', "", $fEndPath);
-        }
-        else {
+        } else {
             $fEndPath = preg_replace('/^(.*)$/isU', "$1", $fEndPath);
         }
 
@@ -67,31 +68,23 @@ class InfoController extends RestController
             $returnFolder .= '/';
         }
 
-        $returnFolder .= $this->get_user_id();
-
         return $returnFolder;
     }
 
-    public function getImageAction() {
-
-        if(($image = $this->params('image')) === null) {
-            $request      = $this->getRequest();
-            $image  = $request->getQuery('image');
-        }
-
-        if(($image !== null)) {
-            $filePath = $this->get_full_path();
-            $fileName = "{$image}";
-            if(($file = self::getFileByDirAndName($filePath, $fileName)) !== null) {
-                $fileSizeInfo = @getimagesize($file);
-                if($fileSizeInfo) { // it`s image
-                    header('Content-Type: ' . $fileSizeInfo['mime']);
-                    header('Content-Length: ' . filesize($file));
-                    echo file_get_contents($file);
-                }
+    public function getImageAction()
+    {
+        $hash = $this->params('hash');
+        $size = $this->params('size');
+        if (empty($hash)) return false;
+        //todo: почекать все расширения изображений (jpg, png); есои полный размер есть а $size нету нужно его создать
+        if (file_exists($this->get_full_path('data/users/') . $hash . $size . '.jpg')) {
+            $fileSizeInfo = @getimagesize($this->get_full_path('data/users/') . $hash . $size . '.jpg');
+            if ($fileSizeInfo) { // it`s image
+                header('Content-Type: ' . $fileSizeInfo['mime']);
+                header('Content-Length: ' . filesize($this->get_full_path('data/users/') . $hash . $size . '.jpg'));
+                echo file_get_contents($this->get_full_path('data/users/') . $hash . $size . '.jpg');
             }
         }
-
         return false;
     }
 }

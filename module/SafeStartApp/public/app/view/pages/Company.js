@@ -50,7 +50,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         this.add(this.getInfoPanel());
 
-        this.disable();
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) this.disable();
     },
 
     getVehiclesList: function () {

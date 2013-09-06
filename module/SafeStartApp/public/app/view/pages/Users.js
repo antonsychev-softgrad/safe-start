@@ -45,7 +45,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
 
         this.add(this.getInfoPanel());
 
-        this.disable();
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) this.disable();
     },
 
     getUsersList: function() {

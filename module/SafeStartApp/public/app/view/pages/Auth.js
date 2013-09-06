@@ -1,6 +1,8 @@
 Ext.define('SafeStartApp.view.pages.Auth', {
     extend: 'Ext.Container',
-
+    requires: [
+        'SafeStartApp.view.forms.Auth'
+    ],
     xtype: 'SafeStartAuthPage',
 
     config: {
@@ -9,7 +11,6 @@ Ext.define('SafeStartApp.view.pages.Auth', {
 
         layout: 'fit',
         styleHtmlContent: false,
-        scrollable: false,
 
         html: [
             '<div class="logo"><img height=100 width="381" src="/resources/img/logo-small.png" /><div>'

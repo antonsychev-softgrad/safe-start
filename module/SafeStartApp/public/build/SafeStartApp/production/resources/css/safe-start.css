@@ -786,7 +786,7 @@ div.logo {
     border-top: none;
 }
 .page-company .sfa-info-container form .x-dock.x-dock-vertical {
-    padding: 15px 20px 20px;
+    padding: 5px 20px 10px;
     margin-top: 10px;
     border: 1px solid #ccc;
     background: #f7f8f9;
@@ -838,7 +838,9 @@ div.logo {
 .sfa-checklist-form .x-container.x-field-select.x-field.x-field-labeled {
     margin-top: 10px;
 }
-
+.sfa-checklist-form .x-container.x-form-fieldset .x-dock.x-dock-vertical .x-dock-body {
+    height: auto;
+}
 
 
 

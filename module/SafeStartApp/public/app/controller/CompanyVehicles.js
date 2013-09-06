@@ -60,9 +60,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
+                this.getVehicleAlertsPanel().loadList(arguments[4].parentNode.get('id'));
                 break;
             case 'update-checklist':
-                this.getInfoPanel().setActiveItem(3);
+                this.getInfoPanel().setActiveItem(4);
                 this.showUpdateCheckList();
                 break;
             case 'users':

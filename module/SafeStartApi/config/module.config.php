@@ -228,7 +228,7 @@ return array(
                        'options' => array(
                           'route' => '/checklist/:id/generate-pdf',
                           'constraints' => array(
-                             'id' => '[0-9]+',
+                              'id' => '[A-Za-z0-9]+',
                           ),
                           'defaults' => array(
                              'controller' => 'ProcessData',
@@ -239,9 +239,10 @@ return array(
                     'get-public-image' => array(
                        'type' => 'Segment',
                        'options' => array(
-                          'route' => '/image/:image',
+                          'route' => '/image/:hash/[:size]',
                           'constraints' => array(
-                             'image' => '.+',
+                             'hash' => '.+',
+                             'size' => '.+',  //todo: regexp for 200x200
                           ),
                           'defaults' => array(
                              'controller' => 'Info',
@@ -503,7 +504,7 @@ return array(
         'ext' => '.pdf', // automatic add to name
         'template_for_name' => array(
             'format' => "{%s}", // only
-            'template' => "{name}_{user}_{vehicle}_at_{date}", // available: {name}, {user}, {vehicle}, {date}
+            'template' => "{name}_{user}_{vehicle}_{checkList}_at_{date}", // available: {name}, {user}, {vehicle}, {checkList}, {date}
         ),
     ),
 );

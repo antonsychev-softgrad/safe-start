@@ -202,7 +202,7 @@ class PdfPlugin extends AbstractPlugin {
         $this->uploadPath = $moduleConfig['defUsersPath'];
 
         /**/
-        $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', 30);
+        $this->checkList = $this->getController()->em->find('SafeStartApi\Entity\CheckList', $checkListId);
         if($this->checkList === null) {
             throw new \Exception('CheckList not found.');
         }
@@ -214,7 +214,7 @@ class PdfPlugin extends AbstractPlugin {
         foreach ($fieldsStruct as $groupBlock) {
 
             $group = new \stdClass();
-            $group->name = $groupBlock->name;
+            $group->name = $groupBlock->groupName;
             $group->alerts = array();
 
             // get field id`s
@@ -226,19 +226,28 @@ class PdfPlugin extends AbstractPlugin {
 
             // get alerts
             if (!empty($fieldIds)) {
-                $query = $this->getController()->em->createQuery('SELECT u FROM SafeStartApi\Entity\Alert u WHERE u.id IN (:ids)');
-                $query->setParameters(array('ids' => implode(',', $fieldIds), ));
+
+                $query = $this->getController()->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.check_list = :cl AND a.field IN ('.implode(',', $fieldIds).')');
+                $query->setParameters(array('cl' => $this->checkList));
                 $group->alerts = $query->getResult();
                 if (is_array($group->alerts) && !empty($group->alerts)) {
                     foreach ($group->alerts as $alert) {
+
                         $alertInfo = new \stdClass();
                         $alertInfo->title = $alert->getField()->getAlertTitle();
                         $alertInfo->comment = $alert->getComment();
 
                         $images = array();
                         $imagesInfo = $alert->getImages();
+
                         if($imagesInfo !== null) {
-                            $imagesInfo = json_decode($imagesInfo);
+                            // fix type
+                            if(is_string($imagesInfo)) {
+                                $imagesInfo = json_decode($imagesInfo);
+                            } elseif(is_array($imagesInfo)) {
+
+                            }
+
                             if(is_array($imagesInfo) && !empty($imagesInfo)) {
                                 foreach($imagesInfo as $imageName) {
                                     if(($imagePath = $this->getImagePathByName($imageName)) !== null) {
@@ -248,7 +257,7 @@ class PdfPlugin extends AbstractPlugin {
                             }
                         }
                         $alertInfo->images = $images;
-                        $alertsDetails[] = $alertInfo;
+                        $alertsDetails[$alert->getField()->getId()] = $alertInfo;
                     }
                 }
             }
@@ -510,7 +519,9 @@ class PdfPlugin extends AbstractPlugin {
                     $topPosInPage -= (self::BLOCK_SUBHEADER_SIZE + self::BLOCK_TEXT_LINE_SPACING_AT);
                 }
                 else {
-                    $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
+                    if(!empty($comment) && is_string($comment)) {
+                        $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
+                    }
                 }
             }
 
@@ -726,11 +737,11 @@ class PdfPlugin extends AbstractPlugin {
     protected function getLeftStartPos($string, $font, $fontSize, $position = self::TEXT_ALIGN_LEFT) {
 
         if (!is_string($string) || empty($string)) {
-            throw new Zend\Exception('Invalid string type or empty');
+            throw new \Exception('Invalid string type or empty');
         }
 
         if (ceil((float)$fontSize) <= 0) {
-            throw new Zend\Exception('Invalid ZendPdf Font size');
+            throw new \Exception('Invalid ZendPdf Font size');
         }
 
         $pageContentWidth = $this->getPageContentWidth();
@@ -883,16 +894,18 @@ class PdfPlugin extends AbstractPlugin {
         $name = $this->opts['name'];
         $ext = !empty($this->opts['ext']) ? $this->opts['ext'] : '.pdf';
 
+        $checkList = "";
         $user = "";
         $vehicle = "";
         $date = $this->dateGeneration->format('Y-m-d');
 
         if(!empty($this->checkList)) {
-            if(($user = $this->checkList->getUser()) !== null) {
-                $user .= $user->getId();
+            $checkList .= $this->checkList->getId();
+            if(($clUser = $this->checkList->getUser()) !== null) {
+                $user .= $clUser->getId();
             }
-            if(($vehicle = $this->checkList->getVehicle()) !== null) {
-                $vehicle .= $vehicle->getId();
+            if(($clVehicle = $this->checkList->getVehicle()) !== null) {
+                $vehicle .= $clVehicle->getId();
             }
         }
 

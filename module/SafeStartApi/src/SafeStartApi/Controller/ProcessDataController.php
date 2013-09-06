@@ -34,7 +34,18 @@ class ProcessDataController extends RestrictedAccessRestController
 
     public function generatePdfAction() {
         if (($checkListId = (int)$this->params('id')) !== null) {
-            $checkList = $this->em->find('SafeStartApi\Entity\CheckList', $checkListId);
+
+            $checkList = null;
+
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
+            $query->setParameters(array('id' => $checkListId, 'hash' => $checkListId));
+            $queryResult = $query->getResult();
+            if(is_array($queryResult) && !empty($queryResult)) {
+                if(isset($queryResult[0])) {
+                    $checkList = $queryResult[0];
+                }
+            }
+
             if ($checkList !== null) {
                 $this->PdfPlugin($checkList->getId());
             } else {
