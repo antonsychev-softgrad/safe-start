@@ -209,6 +209,10 @@ class AdminController extends AdminAccessRestController
 
         $this->em->flush();
 
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getDefaultChecklist";
+        $cache->removeItem($cashKey);
+
         $this->answer = array(
             'done' => true,
             'fieldId' => $field->getId(),
