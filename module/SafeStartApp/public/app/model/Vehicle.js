@@ -12,7 +12,8 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'projectNumber', type: 'string', defaultValue: ''},
             {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
             {name: 'serviceDueHours', type: 'int', defaultValue: 24},
-            {name: 'action', type: 'string', defaultValue: ''}
+            {name: 'action', type: 'string', defaultValue: ''},
+            {name: 'checkListId', type: 'int', defaultValue: 0}
         ],
         associations: [
             {type: 'hasMany', model: 'SafeStartApp.model.User', name: 'users'},
