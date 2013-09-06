@@ -368,27 +368,37 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'titlebar',
             title: 'Alerts'            
         }];
-        if (alerts.length > 0) {
+        Ext.each(alerts, function (alert) {
             items.push({
                 xtype: 'panel',
                 width: '100%',
                 maxWidth: 900,
                 name: 'alert-container',
-                fieldId: alerts[0].get('fieldId'),
-                alertModel: alerts[0],
+                fieldId: alert.get('fieldId'),
+                alertModel: alert,
                 items: [{
-                    xtype: 'textfield',
-                    label: 'Additional comments',
-                    value: alerts[0].get('comment'),
+                    label: alert.get('alertMessage'),
+                    xtype: 'checkboxfield',
+                    checked: true,
+                    labelWidth: '90%',
                     listeners: {
-                        change: function (textfield, value) {
-                            alerts[0].set('comment', value);
+                        uncheck: function (checkbox) {
+                            checkbox.setChecked(true);
                         }
                     }
-                }, this.createImageUploadPanel(alerts[0])
+                }, {
+                    xtype: 'textfield',
+                    label: 'Additional comments',
+                    value: alert.get('comment'),
+                    listeners: {
+                        change: function (textfield, value) {
+                            alert.set('comment', value);
+                        }
+                    }
+                }, this.createImageUploadPanel(alert)
                 ]
             });
-        }
+        }, this);
         return items;
     },
 
