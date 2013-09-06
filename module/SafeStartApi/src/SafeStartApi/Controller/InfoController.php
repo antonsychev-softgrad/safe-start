@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\View\Model\ViewModel;
 use SafeStartApi\Base\RestController;
+use SafeStartApi\Model\ImageProcessor;
 
 class InfoController extends RestController
 {
