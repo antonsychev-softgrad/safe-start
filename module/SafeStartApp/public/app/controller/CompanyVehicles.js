@@ -70,6 +70,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 this.loadUsers(arguments[4].parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
                 break;
+            case 'check-list':
+                window.open('/api/checklist/'+ arguments[4].get('checkListId') +'/generate-pdf', '_blank');
+                break;
         }
     },
 
