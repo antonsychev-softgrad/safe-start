@@ -48,6 +48,7 @@ class ProcessDataController extends RestrictedAccessRestController
 
             if ($checkList !== null) {
                 $this->PdfPlugin($checkList->getId());
+                return;
             } else {
                 $this->answer = array(
                     "errorMessage" => "CheckList not found."
