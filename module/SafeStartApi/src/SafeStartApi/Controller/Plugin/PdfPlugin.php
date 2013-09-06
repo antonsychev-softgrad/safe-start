@@ -149,7 +149,9 @@ class PdfPlugin extends AbstractPlugin {
         $full_name = $this->get_full_name();
         $this->document->save($full_name);
 
-        /** /
+        chmod($full_name, 0777);
+
+        /**/
         header("Content-Disposition: inline; filename={$file_name}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($full_name);
@@ -731,7 +733,7 @@ class PdfPlugin extends AbstractPlugin {
 
     protected function check_dir($dir) {
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir($dir, 0777, true);
         }
 
         return $dir;
