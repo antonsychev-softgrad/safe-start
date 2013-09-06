@@ -115,6 +115,7 @@ class GetDataPlugin extends AbstractPlugin
                     'additional' => $field->getAdditional(),
                     'triggerValue' => $field->getTriggerValue(),
                     'alertTitle' => $field->getAlertDescription(),
+                    'alertMessage' => $field->getAlertTitle(),
                 );
                 $listField['items'] = $this->_buildChecklistStructure($fields, $field->getId());
                 if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];

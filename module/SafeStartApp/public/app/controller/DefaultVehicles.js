@@ -201,7 +201,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
             var alert = alertContaienr.config.alertModel;
             alerts.push({
-                fieldId: '' + alert.get('fieldId'), // TODO: integer value
+                fieldId: parseInt(alert.get('fieldId')),
                 comment: alert.get('comment'),
                 images: alert.get('photos')
             });
