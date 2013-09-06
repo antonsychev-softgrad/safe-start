@@ -1497,7 +1497,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name'][$index]);
-                $hash       = preg_replace('/\./isU', '', "" .  uniqid() . mktime()); // md5_file($upload['tmp_name'][$index]);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid()); // md5_file($upload['tmp_name'][$index]);
 
                 $files[] = $this->handle_file_upload(
                     $upload['tmp_name'][$index],
@@ -1522,7 +1522,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name']);
-                $hash       = preg_replace('/\./isU', '', "" .  uniqid() . mktime()); // md5_file($upload['tmp_name']);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid()); // md5_file($upload['tmp_name']);
 
                 // param_name is a single object identifier like "file",
                 // $_FILES is a one-dimensional array:
