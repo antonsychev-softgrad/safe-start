@@ -377,7 +377,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 fieldId: alert.get('fieldId'),
                 alertModel: alert,
                 items: [{
-                    label: alert.get('alertMessage'),
+                    label: alert.get('alertDescription'),
                     xtype: 'checkboxfield',
                     checked: true,
                     labelWidth: '90%',

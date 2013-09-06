@@ -46,6 +46,8 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
             $field2->setTriggerValue($row['trigger_value']);
             $field->setAlertTitle($row['alert_title']);
             $field2->setAlertTitle($row['alert_title']);
+            $field->setAlertTitle($row['alert_description']);
+            $field2->setAlertTitle($row['alert_description']);
             if (!empty($row['parent_id'])) {
                 $field->setParent($this->getReference('field-' . $row['parent_id']));
                 $field2->setParent($this->getReference('field2-' . $row['parent_id']));

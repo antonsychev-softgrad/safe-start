@@ -115,7 +115,7 @@ class VehicleController extends RestrictedAccessRestController
             if(isset($struct['fields']) && is_array($struct['fields'])) {
                 foreach($struct['fields'] as $fieldKey => $field) {
                     $id = (int) $field['id'];
-                    $query = $this->em->createQuery('SELECT f.alert_title FROM SafeStartApi\Entity\Field f WHERE f.id = ?1');
+                    $query = $this->em->createQuery('SELECT f.alert_description FROM SafeStartApi\Entity\Field f WHERE f.id = ?1');
                     $query->setParameter(1, $id);
                     $alertTitle = $query->getSingleScalarResult();
                     if(!empty($alertTitle)) {

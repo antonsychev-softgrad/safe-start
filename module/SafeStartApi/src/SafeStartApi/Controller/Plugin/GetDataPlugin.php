@@ -64,6 +64,7 @@ class GetDataPlugin extends AbstractPlugin
                     $listField['alerts'] = array(
                         array(
                             'alertMessage' => $field->getAlertTitle(),
+                            'alertDescription' => $field->getAlertDescription(),
                             'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
                         )
                     );

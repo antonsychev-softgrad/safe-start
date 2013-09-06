@@ -54,6 +54,11 @@ class DefaultField extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $alert_description;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $trigger_value;
 
     /**
@@ -122,6 +127,7 @@ class DefaultField extends BaseEntity
             'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
             'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
+            'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
             'enabled' => (int) $this->enabled,
             'additional' => (int) $this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null
@@ -238,6 +244,29 @@ class DefaultField extends BaseEntity
     public function getAlertTitle()
     {
         return $this->alert_title;
+    }
+
+    /**
+     * Set alert_title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setAlertDescription($title)
+    {
+        $this->alert_description = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_title
+     *
+     * @return string
+     */
+    public function getAlertDescription()
+    {
+        return $this->alert_description;
     }
 
     /**
