@@ -9,20 +9,80 @@ use SafeStartApi\Base\RestController;
 
 class InfoController extends RestController
 {
+    protected function getFileByDirAndName($dir, $tosearch) {
+        if(file_exists($dir) && is_dir($dir)) {
+
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+                return (realpath($path));
+            } else {
+                foreach($validFileExts as $validExt) {
+                    $filename = $path . "." . $validExt;
+                    if(file_exists($filename) && !is_dir($filename)) {
+                        return (realpath($filename));
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
     public function getImageAction()
     {
         $hash = $this->params('hash');
-        $size = $this->params('size');
+        $size = $this->params('size', '');
+
         if (empty($hash)) return false;
-        //todo: почекать все расширения изображений (jpg, png); есои полный размер есть а $size нету нужно его создать
-        if (file_exists(\SafeStartApi\Application::getFileSystemPath('data/users/') . $hash . $size . '.jpg')) {
-            $fileSizeInfo = @getimagesize(\SafeStartApi\Application::getFileSystemPath('data/users/') . $hash . $size . '.jpg');
-            if ($fileSizeInfo) { // it`s image
-                header('Content-Type: ' . $fileSizeInfo['mime']);
-                header('Content-Length: ' . filesize(\SafeStartApi\Application::getFileSystemPath('data/users/') . $hash . $size . '.jpg'));
-                echo file_get_contents(\SafeStartApi\Application::getFileSystemPath('data/users/') . $hash . $size . '.jpg');
+
+        $moduleConfig = $this->getServiceLocator()->get('Config');
+        $defUsersPath = $moduleConfig['defUsersPath'];
+        $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
+        $tosearch = $hash.$size;
+        $filePath = $this->getFileByDirAndName($searchDir, $tosearch);
+        if(!$filePath && !empty($size)) {
+
+            $size = preg_replace("/x/is", "x", $size);
+
+            list($max_width,$max_height) = explode("x", $size);
+            $max_width = intval($max_width);
+            $max_height = intval($max_height);
+
+            if($max_width > 0 && $max_height > 0) {
+                $origFilePath = $this->getFileByDirAndName($searchDir, $hash);
+                if(!$origFilePath) {
+                    return false;
+                } else {
+                    $version = $max_width . 'x' . $max_height;
+                    $newVersionPath = preg_replace('/(\.[^\.]*)$/isU', "{$version}$1", $origFilePath);
+
+                    $imProc = new ImageProcessor($origFilePath);
+                    $imProc->contain(array('width' => $max_width, 'height' => $max_height));
+                    $imProc->save($newVersionPath);
+
+                    if(file_exists($filePath)) {
+                        chmod($filePath,0777);
+                    }
+
+                    $filePath = $newVersionPath;
+                }
             }
         }
+
+        if(file_exists($filePath)) {
+            $fileSizeInfo = @getimagesize($filePath);
+            if ($fileSizeInfo) { // it`s image
+                header('Content-Type: ' . $fileSizeInfo['mime']);
+                header('Content-Length: ' . filesize($filePath));
+                echo file_get_contents($filePath);
+            }
+        }
+
         return false;
     }
 
