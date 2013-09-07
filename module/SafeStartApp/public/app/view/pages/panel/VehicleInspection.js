@@ -208,7 +208,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
                     triggerValue: alert.triggerValue,
-                    fieldId: fieldData.fieldId
+                    fieldId: fieldData.fieldId,
+                    photos: []
                 });
                 alertsStore.add(alertRecord);
             }
