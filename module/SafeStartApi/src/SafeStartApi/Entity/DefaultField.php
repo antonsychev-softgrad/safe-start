@@ -32,11 +32,6 @@ class DefaultField extends BaseEntity
     protected $parent;
 
     /**
-     * @ORM\OneToMany(targetEntity="Alert", mappedBy="field", cascade={"persist", "remove", "merge"})
-     */
-    protected $alerts;
-
-    /**
      * @ORM\Column(type="string")
      */
     protected $type;
@@ -50,6 +45,11 @@ class DefaultField extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $alert_title;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $alert_description = 'Description of vehicle fault should be here';
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -95,8 +95,6 @@ class DefaultField extends BaseEntity
         $this->enabled = false;
         $this->deleted = false;
         $this->additional = false;
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -122,6 +120,7 @@ class DefaultField extends BaseEntity
             'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
             'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
+            'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
             'enabled' => (int) $this->enabled,
             'additional' => (int) $this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null
@@ -238,6 +237,29 @@ class DefaultField extends BaseEntity
     public function getAlertTitle()
     {
         return $this->alert_title;
+    }
+
+    /**
+     * Set alert_title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setAlertDescription($title)
+    {
+        $this->alert_description = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_title
+     *
+     * @return string
+     */
+    public function getAlertDescription()
+    {
+        return $this->alert_description;
     }
 
     /**
@@ -409,39 +431,6 @@ class DefaultField extends BaseEntity
     public function getParent()
     {
         return $this->parent;
-    }
-
-    /**
-     * Add alerts
-     *
-     * @param \SafeStartApi\Entity\Alert $alerts
-     * @return Field
-     */
-    public function addAlert(\SafeStartApi\Entity\Alert $alerts)
-    {
-        $this->alerts[] = $alerts;
-    
-        return $this;
-    }
-
-    /**
-     * Remove alerts
-     *
-     * @param \SafeStartApi\Entity\Alert $alerts
-     */
-    public function removeAlert(\SafeStartApi\Entity\Alert $alerts)
-    {
-        $this->alerts->removeElement($alerts);
-    }
-
-    /**
-     * Get alerts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getAlerts()
-    {
-        return $this->alerts;
     }
 
     /**

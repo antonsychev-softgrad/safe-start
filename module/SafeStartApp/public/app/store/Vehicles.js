@@ -7,6 +7,7 @@ Ext.define('SafeStartApp.store.Vehicles', {
     ],
 
     config: {
+        autoLoad: false,
         model: 'SafeStartApp.model.Vehicle',
         proxy: {
             type: "ajax",

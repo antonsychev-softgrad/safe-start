@@ -33,6 +33,12 @@ class Alert extends BaseEntity
     protected $check_list;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
+     **/
+    protected $field;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
@@ -51,7 +57,9 @@ class Alert extends BaseEntity
      * @return mixed
      */
 
-    /** @ORM\Column(type="string", columnDefinition="ENUM('new', 'closed')") */
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $status = 'new';
 
     /**
@@ -132,6 +140,29 @@ class Alert extends BaseEntity
     public function getCheckList()
     {
         return $this->check_list;
+    }
+
+    /**
+     * Set field
+     *
+     * @param \SafeStartApi\Entity\Field $field
+     * @return Alert
+     */
+    public function setField(\SafeStartApi\Entity\Field $field = null)
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * Get field
+     *
+     * @return \SafeStartApi\Entity\Field
+     */
+    public function getField()
+    {
+        return $this->field;
     }
 
     /**

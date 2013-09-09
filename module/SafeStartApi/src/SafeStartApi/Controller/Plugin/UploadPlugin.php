@@ -13,6 +13,7 @@ class UploadPlugin extends AbstractPlugin
 
     protected $options;
 
+
     // PHP File Upload error message codes:
     // http://php.net/manual/en/features.file-upload.errors.php
     protected $error_messages = array(
@@ -50,7 +51,7 @@ class UploadPlugin extends AbstractPlugin
         $defUsersPath = $moduleConfig['defUsersPath'];
         $defUsersPath = $this->get_filter_path($defUsersPath);
 
-        $options['upload_dir'] = $this->get_full_path() . $defUsersPath;
+        $options['upload_dir'] = $this->get_root_path() . $defUsersPath;
         $options['upload_url'] = $this->get_full_url() . $defUsersPath;
         $this->setOptions($options);
 
@@ -75,10 +76,11 @@ class UploadPlugin extends AbstractPlugin
         $defUsersPath = '/data/users/';
         $this->options = array(
             'script_url' => $this->get_full_url() . '/',
-            'upload_dir' => $this->get_full_path() . $defUsersPath,
+            'upload_dir' => $this->get_root_path() . $defUsersPath,
             'upload_url' => $this->get_full_url() . $defUsersPath,
             'user_dirs' => false,
-            'mkdir_mode' => 0755,
+            'mkdir_mode' => 0777,
+            'file_chmod' => 0777,
             'param_name' => 'files',
             'rename_file' => true,
             'overwrite_file' => true,
@@ -129,6 +131,7 @@ class UploadPlugin extends AbstractPlugin
             'versions_delimiter' => '',
             // Set to false to disable rotating images based on EXIF meta data:
             'orient_image' => true,
+            // default params
             'image_versions' => array(
                 'full' => array(
                     'max_width' => 1024,
@@ -152,9 +155,35 @@ class UploadPlugin extends AbstractPlugin
             )
         );
 
+
+        // initialization thumbnails by constants
+        $thumbnails = array(
+            'full' => self::THUMBNAIL_FULL,
+            'medium' => self::THUMBNAIL_MEDIUM,
+            'small' =>self::THUMBNAIL_SMALL,
+        );
+
+        // override image versions
+        if(!empty($thumbnails) && is_array($thumbnails) && !isset($options['image_versions'])) {
+            $this->options['image_versions'] = array();
+            foreach($thumbnails as $key => $thumb) {
+                list($max_width,$max_height) = explode("x", $thumb);
+                $params = array(
+                    'max_width' => intval($max_width),
+                    'max_height' => intval($max_height),
+                    'jpeg_quality' => 95,
+                    'png_quality' => 9
+                );
+                if($max_width == $max_height) {
+                    $params['crop'] = true;
+                }
+                $this->options['image_versions'][$key] = $params;
+            }
+        }
+
         if ($options) {
             if(isset($options['upload_dir']))
-                $options['upload_dir'] = $this->get_full_path() . $this->get_filter_path($options['upload_dir']);
+                $options['upload_dir'] = $this->get_root_path() . $this->get_filter_path($options['upload_dir']);
             if(isset($options['upload_url']))
                 $options['upload_url'] = $this->get_full_url() . $this->get_filter_path($options['upload_url']);
             $this->options = array_merge($this->options, $options);
@@ -203,7 +232,7 @@ class UploadPlugin extends AbstractPlugin
     }
 
 
-    protected function get_full_path() {
+    protected function get_root_path() {
         $root = $this->get_server_var('DOCUMENT_ROOT');
 
         if(!file_exists($root . "/init_autoloader.php")) {
@@ -221,7 +250,7 @@ class UploadPlugin extends AbstractPlugin
      * @return void
      */
     protected function get_filter_path($fEndPath = '/') {
-        $root       = $this->get_full_path();
+        $root       = $this->get_root_path();
         $fEndPath   = str_replace("{$root}", '', $fEndPath);
         $fEndPath   = str_replace('\\', '/', $fEndPath);
 
@@ -252,17 +281,6 @@ class UploadPlugin extends AbstractPlugin
             $user_folder = ($userDirs > 0) ? "{$userDirs}/" : '';
         } elseif (is_string($userDirs)) {
             $user_folder = (strlen($userDirs) > 0) ? "{$userDirs}/" : '';
-        } else {
-            try{
-                if(isset($this->getController()->authService)) {
-                    if($this->getController()->authService->hasIdentity()) {
-                        $user = $this->getController()->authService->getStorage()->read();
-                        $user_folder = "".$user->getId() . "/";
-                    }
-                }
-            } catch(\Exception $e) {
-
-            }
         }
 
         return $user_folder;
@@ -305,8 +323,9 @@ class UploadPlugin extends AbstractPlugin
                 $version_path = '';
             }
         }
-        return $this->options['upload_dir'].$this->get_user_path()
-        .$version_path.$file_name;
+
+        $return = $this->options['upload_dir'].$this->get_user_path().$version_path.$file_name;
+        return $return;
     }
 
     /**
@@ -476,9 +495,14 @@ class UploadPlugin extends AbstractPlugin
      * @return
      */
     protected function create_scaled_image($file_name, $version, $options) {
-        $file_path = $this->get_upload_path($file_name);
+
+        $file_path = realpath($this->get_upload_path($file_name));
+        if(!$file_path) {
+            throw new \Exception("Invalid image path");
+        }
+
         if (!empty($version)) {
-            if(!$this->options['use_versions_path']) {
+            if($this->options['use_versions_path'] === false) {
                 $file_name = $this->get_version_file_name($file_name, $version);
             }
             $version_dir = $this->get_upload_path(null, $version);
@@ -577,6 +601,10 @@ class UploadPlugin extends AbstractPlugin
                 $img_width,
                 $img_height
             ) && $write_image($new_img, $new_file_path, $image_quality);
+
+        // change access
+        chmod($new_file_path, $this->options['file_chmod']);
+
         // Free up memory (imagedestroy does not delete files):
         imagedestroy($src_img);
         imagedestroy($new_img);
@@ -1091,6 +1119,10 @@ class UploadPlugin extends AbstractPlugin
                     $append_file ? FILE_APPEND : 0
                 );
             }
+
+            // change access
+            chmod($file_path, $this->options['file_chmod']);
+
             $file_size = $this->get_file_size($file_path, $append_file);
             if ($file_size === $file->size) {
                 $file->url = $this->get_download_url($file->name);
@@ -1465,7 +1497,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name'][$index]);
-                $hash       = md5_file($upload['tmp_name'][$index]);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid()); // md5_file($upload['tmp_name'][$index]);
 
                 $files[] = $this->handle_file_upload(
                     $upload['tmp_name'][$index],
@@ -1490,7 +1522,7 @@ class UploadPlugin extends AbstractPlugin
                 $ext        = isset($pathinfo['extension'])
                     ? $pathinfo['extension']
                     : preg_replace('/.*\.([^\.]*)$/is','$1',$upload['name']);
-                $hash       = md5_file($upload['tmp_name']);
+                $hash       = preg_replace('/\./isU', '', "" .  uniqid()); // md5_file($upload['tmp_name']);
 
                 // param_name is a single object identifier like "file",
                 // $_FILES is a one-dimensional array:

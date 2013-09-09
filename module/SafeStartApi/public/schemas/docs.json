@@ -178,7 +178,7 @@
                 }
             }
         },
-        "/api/image/[image]": {
+        "/api/image/[image]/[size]": {
             "description": "Get image by FileName",
             "type": "object",
             "properties": {
@@ -190,6 +190,22 @@
                 "response": {
                     "properties": {
                         "$ref": "info/getimage/response.json"
+                    }
+                }
+            }
+        },
+        "info/getdefaultchecklist": {
+            "description": "Get default checklist",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/getdefaultchecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/getdefaultchecklist/response.json"
                     }
                 }
             }

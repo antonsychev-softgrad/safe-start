@@ -81,6 +81,8 @@ class RestController extends AbstractActionController
             $this->sessionManager->start();
             $userInfo = $this->authService->getStorage()->read();
         }
+
+        //$this->_checkExpiryDate();
     }
 
     protected function _getJsonSchemaRequest($method = "index/ping") {
@@ -132,4 +134,50 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_INVALID_ERROR);
     }
 
+    protected function _checkExpiryDate($userId = null) {
+
+        $user = null;
+
+        if($userId === null) {
+            if ($this->authService->hasIdentity()) {
+                $user = $this->authService->getStorage()->read();
+            }
+        } else {
+            if(is_integer($userId) && $userId > 0) {
+                $user = $this->em->find('SafeStartApi\Entity\User', $userId);
+            } else {
+
+            }
+        }
+
+        if($user !== null) {
+            if(($company = $user->getCompany()) !== null) {
+                $now = new \DateTime();
+                $expiretyDate = $company->getExpiryDate();
+                if($expiretyDate !== null) {
+                    if(is_integer($expiretyDate)) {
+                        $now = $now->getTimestamp();
+                    } elseif($expiretyDate instanceof \DateTime) {
+                        $now = $now->getTimestamp();
+                        $expiretyDate = $expiretyDate->getTimestamp();
+                    } elseif(is_string($expiretyDate)) {
+                        $now = $now->getTimestamp();
+                        $expiretyDate = strtotime($expiretyDate);
+                        if(!$expiretyDate) {
+                            $expiretyDate = $now;
+                        }
+                    } else {
+                        $expiretyDate = $now;
+                    }
+
+                    if($now >= $expiretyDate) {
+                        $this->answer = array(
+                            'errorMessage' => 'Date is Expired.',
+                        );
+                        return $this->AnswerPlugin()->format($this->answer, 400, 400);
+                    }
+                }
+            }
+        }
+    }
 }

@@ -52,140 +52,6 @@ class PdfPlugin extends AbstractPlugin {
 
     public function create($checkListId = null) {
 
-
-        /* test data > * /
-        $vehicleDetails = array(
-            array(
-                'name' => 'Safety',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Cabin',
-                'status' => 'alert',
-                ),
-            array(
-                'name' => 'Structural',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Mechanical',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Trailer',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Auxiliary Motor',
-                'status' => 'ok',
-                ),
-
-
-            array(
-                'name' => 'Safety',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Cabin',
-                'status' => 'alert',
-                ),
-            array(
-                'name' => 'Structural',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Mechanical',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Trailer',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Auxiliary Motor',
-                'status' => 'ok',
-                ),
-
-
-            array(
-                'name' => 'Safety',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Cabin',
-                'status' => 'alert',
-                ),
-            array(
-                'name' => 'Structural',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Mechanical',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Trailer',
-                'status' => 'ok',
-                ),
-            array(
-                'name' => 'Auxiliary Motor',
-                'status' => 'ok',
-                ),
-            );
-
-
-        $alertsDetails = array(
-            array(
-                'title' => 'Are the tires correctly inflated, in good working order and with wheel nuts tigh t e ned ?',
-                'comment' => '',
-                'images' => array(
-                    $this->getImagePathByName('93431c284ee6a2bb1bcf4041bc439999'),
-                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
-                    ),
-                ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. adhjsf aisdgdhask ghkjdashkjgh kaghk fskdgj kdfjhsgkdf hskdgfkhs kgdfksghkg hdfkshgkj dhsgfkhkjdshgk dfskghdfkjs kghdfks ghkdhfskg hdlskhg kdsgkh ksdf hgdfks gkhdfk gkhdfs gfkd hsl gsdghlk sdaglksdfhg kjdfsgkdshfgk jdfskgl kdfsgkj dhfskhglkjdfshlgkh dfksgkh dfkjshgkjdf hgkhkjdf kjgk dhfkjgkjdfjkg kdfhgk kdfhkgjfhghgh gh hg hg gkhdfk kd kd k gkhdfkgh kdhgkh dfkg dfkgdfk hgkdfhgkdfgh dfgkdfh kgdhfkg dkg',
-                'images' => array(
-                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
-                    ),
-                ),
-            array(
-                'title' => 'Cras dapibus',
-                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-                ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-                ),
-            array(
-                'title' => 'Cras dapibus',
-                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-                ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(
-                    $this->getImagePathByName('93431c284ee6a2bb1bcf4041bc439999'),
-                    $this->getImagePathByName('e509c8e80da8628528664936b083cc42'),
-                    ),
-                ),
-            array(
-                'title' => 'Cras dapibus',
-                'comment' => 'Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-                ),
-            array(
-                'title' => 'Maecena nec',
-                'comment' => 'Elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet.',
-                'images' => array(),
-                ),
-            );
-        /* > end test data. */
-
         $this->document = new ZendPdf\PdfDocument();
         $this->currentPage = new ZendPdf\Page(ZendPdf\Page::SIZE_A4);
         $this->dateGeneration = date_create();
@@ -235,7 +101,7 @@ class PdfPlugin extends AbstractPlugin {
 
                         $alertInfo = new \stdClass();
                         $alertInfo->title = $alert->getField()->getAlertTitle();
-                        $alertInfo->comment = $alert->getComment();
+                        $alertInfo->comment = $alert->getDescription();
 
                         $images = array();
                         $imagesInfo = $alert->getImages();
@@ -283,6 +149,8 @@ class PdfPlugin extends AbstractPlugin {
         $full_name = $this->get_full_name();
         $this->document->save($full_name);
 
+        chmod($full_name, 0777);
+
         /**/
         header("Content-Disposition: inline; filename={$file_name}");
         header("Content-type: application/x-pdf");
@@ -294,6 +162,25 @@ class PdfPlugin extends AbstractPlugin {
 
     protected function getFileByDirAndName($dir, $tosearch) {
         if(file_exists($dir) && is_dir($dir)) {
+
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+                return (realpath($path));
+            } else {
+                foreach($validFileExts as $validExt) {
+                    $filename = $path . "." . $validExt;
+                    if(file_exists($filename) && !is_dir($filename)) {
+                        return (realpath($filename));
+                    }
+                }
+            }
+
+            /* banned > * /
             $flags = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS;
             $iterator = new \RecursiveDirectoryIterator($dir, $flags);
             $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST, \RecursiveIteratorIterator::CATCH_GET_CHILD);
@@ -304,12 +191,13 @@ class PdfPlugin extends AbstractPlugin {
                     return $file;
                 }
             }
+            /* > end. */
         }
         return null;
     }
 
     protected function getImagePathByName($fileName) {
-        $filePath = $this->get_user_path();
+        $filePath = $this->get_upload_path();
         if($fileName !== null && is_string($fileName)) {
             $fileName = "{$fileName}";
             if(($file = self::getFileByDirAndName($filePath, $fileName)) !== null) {
@@ -334,19 +222,9 @@ class PdfPlugin extends AbstractPlugin {
 
         $logoMaxWidth = 199;
         $logoMaxHeight = 53;
-        $logoPath = "{$root}/module/SafeStartApp/public/resources/img/logo.png";
+        $logoPath = "{$root}/public/logo-pdf.png";
 
-        $thumbNewWidth = $logoMaxWidth * 2;
-        $thumbNewHeight = $logoMaxHeight * 2;
-
-        $thumbLogoPath = preg_replace('/(\.[^\.]*)$/isU', "_{$thumbNewWidth}x{$thumbNewHeight}$1", $logoPath);
-        if (!file_exists($thumbLogoPath)) {
-            $imProc = new ImageProcessor($logoPath);
-            $imProc->contain(array('width' => $thumbNewWidth, 'height' => $thumbNewHeight));
-            $imProc->save($thumbLogoPath);
-        }
-
-        $logo = ZendPdf\Image::imageWithPath($thumbLogoPath);
+        $logo = ZendPdf\Image::imageWithPath($logoPath);
         $logoWidth = $logo->getPixelWidth();
         $logoHeight = $logo->getPixelHeight();
 
@@ -845,7 +723,7 @@ class PdfPlugin extends AbstractPlugin {
 
     protected function check_dir($dir) {
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir($dir, 0777, true);
         }
 
         return $dir;
@@ -869,6 +747,7 @@ class PdfPlugin extends AbstractPlugin {
         return $this->check_dir($this->get_root_path() . $this->get_filter_path());
     }
 
+    /* not actual > * /
     protected function get_user_path() {
         $userPath = "";
         if(!empty($this->checkList)) {
@@ -880,9 +759,10 @@ class PdfPlugin extends AbstractPlugin {
 
         return $this->check_dir($this->get_upload_path() . $userPath);
     }
+    /* > end. */
 
     protected function get_pdf_path() {
-        return $this->check_dir($this->get_user_path() . 'pdf/');
+        return $this->check_dir($this->get_upload_path() . 'pdf/');
     }
 
     protected function get_pdf_tmp_path() {

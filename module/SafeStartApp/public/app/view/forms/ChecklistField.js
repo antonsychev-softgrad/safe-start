@@ -76,6 +76,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 name: 'alert_title'
             },
             {
+                xtype: 'textfield',
+                label: 'Alert description',
+                required: false,
+                name: 'alert_description'
+            },
+            {
                 xtype: 'spinnerfield',
                 maxValue: 1000,
                 minValue: 0,
@@ -133,6 +139,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         this.getFields()['type'].setValue('root');
         this.getFields()['type'].hide();
         this.getFields()['alert_title'].hide();
+        this.getFields()['alert_description'].hide();
         this.getFields()['trigger_value'].hide();
         this.getFields()['trigger_value'].setValue('yes');
     },
@@ -143,15 +150,18 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         switch (this.getFields()['type'].getValue()) {
             case 'group':
                 this.getFields()['alert_title'].hide();
+                this.getFields()['alert_description'].hide();
                 this.getFields()['trigger_value'].hide();
             break;
             case 'radio':
             case 'checkbox':
                 this.getFields()['alert_title'].show();
+                this.getFields()['alert_description'].show();
                 this.getFields()['trigger_value'].show();
                 break;
             default:
                 this.getFields()['alert_title'].hide();
+                this.getFields()['alert_description'].hide();
                 this.getFields()['trigger_value'].hide();
                 break;
         }

@@ -239,10 +239,10 @@ return array(
                     'get-public-image' => array(
                        'type' => 'Segment',
                        'options' => array(
-                          'route' => '/image/:hash/[:size]',
+                          'route' => '/image/:hash[/:size][/]',
                           'constraints' => array(
-                             'hash' => '.+',
-                             'size' => '.+',  //todo: regexp for 200x200
+                              'hash' => '[a-zA-Z0-9]+',
+                              'size' => '[0-9]+(x|X)[0-9]+',  //todo: regexp for 200x200
                           ),
                           'defaults' => array(
                              'controller' => 'Info',

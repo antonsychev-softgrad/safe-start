@@ -54,6 +54,11 @@ class Field extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $alert_description;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $trigger_value;
 
     /**
@@ -101,8 +106,7 @@ class Field extends BaseEntity
         $this->enabled = false;
         $this->deleted = false;
         $this->additional = false;
-        $this->variants = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -111,28 +115,6 @@ class Field extends BaseEntity
     public function prePersist()
     {
         $this->setCreationDate(new \DateTime());
-    }
-
-    /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        return $this->$property;
-    }
-
-    /**
-     * Magic setter to save protected properties.
-     *
-     * @param string $property
-     * @param mixed $value
-     */
-    public function __set($property, $value)
-    {
-        $this->$property = $value;
     }
 
     /**
@@ -150,6 +132,7 @@ class Field extends BaseEntity
             'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
             'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
+            'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
             'enabled' => (int) $this->enabled,
             'additional' => (int) $this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
@@ -290,6 +273,30 @@ class Field extends BaseEntity
     {
         return $this->alert_title;
     }
+
+    /**
+     * Set alert_title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setAlertDescription($title)
+    {
+        $this->alert_description = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get alert_title
+     *
+     * @return string
+     */
+    public function getAlertDescription()
+    {
+        return $this->alert_description;
+    }
+
 
     /**
      * Set trigger_value

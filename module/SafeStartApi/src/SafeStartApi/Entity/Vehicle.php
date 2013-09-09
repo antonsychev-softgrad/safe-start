@@ -210,6 +210,7 @@ class Vehicle extends BaseEntity
 
                 $checkListData['id'] = "checklist-" . $checkList->getId();
                 $checkListData['checkListId'] = $checkList->getId();
+                $checkListData['action'] = 'check-list';
                 $checkListData['text'] = $checkList->getCreationDate()->format("g:i A d/m/y");
                 $checkListData['leaf'] = true;
 
