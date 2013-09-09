@@ -507,4 +507,12 @@ return array(
             'template' => "{name}_{user}_{vehicle}_{checkList}_at_{date}", // available: {name}, {user}, {vehicle}, {checkList}, {date}
         ),
     ),
+    'developerApi' => array(
+        'google' => array(
+            'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
+        ),
+        'apple' => array(
+
+        )
+    ),
 );
