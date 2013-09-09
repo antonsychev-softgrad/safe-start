@@ -18,6 +18,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection sheet[cls=sfa-messagebox-confirm] button[action=confirm]': {
                 tap: 'onReviewConfirmBtnTap'
             },
+            'SafeStartCompanyPage SafeStartVehicleInspectionDetails button[action=print]': {
+                tap: 'downloadVehicleInspectionDetailsPdf'
+            },
             reviewCard: {
                 activate: 'onActivateReviewCard'
             },
@@ -36,6 +39,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
             vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
             vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
+            vehicleInspectionDetailsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionDetails',
             vehicleInspectionsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionsPanel',
             addButton: 'SafeStartCompanyPage SafeStartCompanyToolbar > button[action=add-vehicle]',
             manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]',
@@ -71,7 +75,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
                 break;
             case 'check-list':
-                window.open('/api/checklist/'+ arguments[4].get('checkListId') +'/generate-pdf', '_blank');
+                var panel = this.getVehicleInspectionDetailsPanel();
+                this.getInfoPanel().setActiveItem(panel);
+                panel.loadChecklist(arguments[4].parentNode.parentNode, arguments[4].get('checkListId'));
                 break;
         }
     },
@@ -109,6 +115,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         SafeStartApp.AJAX('vehicle/' + id + '/update-users', {value: value}, function (result) {
 
         });
+    },
+
+    downloadVehicleInspectionDetailsPdf: function (btn) {
+        window.open('/api/checklist/' + btn.config.checkListId + '/generate-pdf', '_blank');
     }
 
 });

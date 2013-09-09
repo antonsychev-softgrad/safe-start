@@ -93,6 +93,44 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getChecklistDataAction()
+    {
+        if (($checklistId = (int)$this->params('id')) !== null) {
+            $checklist = null;
+
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id");
+            $query->setParameters(array('id' => $checklistId));
+            $queryResult = $query->getResult();
+            if(is_array($queryResult) && !empty($queryResult)) {
+                if(isset($queryResult[0])) {
+                    $checklist = array(
+                        'id' => $queryResult[0]->getid(),
+                        'gpsCoords' => $queryResult[0]->getGpsCoords(),
+                        'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
+                        'fieldsData' => json_decode($queryResult[0]->getFieldsData()),
+                        'alerts' => $queryResult[0]->getAlerts(),
+                        'creationDate' => $queryResult[0]->getCreationDate(),
+                    );
+                }
+            }
+
+            if ($checklist !== null) {
+                $this->answer = array(
+                    'checklist' => $checklist,
+                );
+                return $this->AnswerPlugin()->format($this->answer);
+            } else {
+                $this->answer = array(
+                    "errorMessage" => "CheckList not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            $this->_showBadRequest();
+        }
+    }
+
+
     public function completeChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
