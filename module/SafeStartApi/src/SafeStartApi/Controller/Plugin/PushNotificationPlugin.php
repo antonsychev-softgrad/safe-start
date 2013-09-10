@@ -36,7 +36,6 @@ class PushNotificationPlugin extends AbstractPlugin
             return false;
         }
 
-
         $message = new GoogleGcmMessage();
         $message->setRegistrationIds((array)$ids);
         $message->setData($data);
@@ -59,7 +58,7 @@ class PushNotificationPlugin extends AbstractPlugin
 
     private function getGoogleGcmClient()
     {
-        if ($this->googleClient) {
+        if (!$this->googleClient) {
             $this->googleClient = new GoogleGcmClient();
             $config = $this->getController()->getServiceLocator()->get('Config');
             $this->googleClient->setApiKey($config['developerApi']['google']['key']);
