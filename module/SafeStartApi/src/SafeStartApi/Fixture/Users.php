@@ -65,11 +65,31 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setRole('companyManager');
         $user->setPlainPassword('12345');
         $user->setEnabled(1);
+        $user->setDevice('android');
+        $user->setDeviceId('APA91bE6LvMXz3Nnb3YuuTmx34aPp1Gj7U4BpAO_Q4vHtXRVPiVYNplzmOLwe5Y-rc68w6ZZre_I4dkHYnf5kf23IYarNDGvlT7Zvf56VZQ7I4c9uXAxkPkzBM2NhtIV77M4gr8hyBtlO-QPi3xXHNWL7OGZcvevXw');
         $manager->persist($user);
         $manager->flush();
 
         //Associate a reference for other fixtures
         $this->addReference('responsible-user', $user);
+
+
+        // COMPANY MANAGER
+        $user = new User();
+        $user->setEmail('responsible-user2@test.test');
+        $user->setUsername('responsible2');
+        $user->setLastName('Responsible');
+        $user->setFirstName('User 2');
+        $user->setRole('companyManager');
+        $user->setPlainPassword('12345');
+        $user->setEnabled(1);
+        $user->setDevice('ios');
+        $user->setDeviceId('edc4cf242e4a2d55736866968eda7bce2328a713e2ba0d55edd8724514c1e911');
+        $manager->persist($user);
+        $manager->flush();
+
+        //Associate a reference for other fixtures
+        $this->addReference('responsible-user2', $user);
 
         // COMPANY OWNER
         $user = new User();

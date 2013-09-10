@@ -251,7 +251,7 @@ class VehicleController extends RestrictedAccessRestController
         }
 
         if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data);
-        if (!empty($iosDevices)) $this->PushNotificationPlugin()->android($iosDevices, $data);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $data);
 
     }
 }

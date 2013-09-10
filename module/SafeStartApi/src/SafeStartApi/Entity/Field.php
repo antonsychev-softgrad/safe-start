@@ -37,7 +37,7 @@ class Field extends BaseEntity
     protected $alerts;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $type;
 
