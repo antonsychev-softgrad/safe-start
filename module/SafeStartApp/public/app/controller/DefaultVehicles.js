@@ -172,18 +172,21 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var alerts = [];
         Ext.each(checklists, function (checklist) {
             var triggerableFields = checklist.query('[triggerable]');
-            passedCards.push({
-                groupName: checklist.config.groupName,
-                additional: checklist.config.additional
-            });
+            var alert = false;
             Ext.each(triggerableFields, function (field) {
                 if (field.config.fieldId) {
                     alertsStore.each(function (record) {
                         if (record.get('fieldId') === field.config.fieldId && record.get('active') === true) {
                             Ext.Array.include(alerts, record);
+                            alert = true;
                         }
                     });
                 }
+            });
+            passedCards.push({
+                groupName: checklist.config.groupName,
+                additional: checklist.config.additional,
+                alert: alert
             });
         });
         vehicleInspectionPanel.updateReview(passedCards, alerts);

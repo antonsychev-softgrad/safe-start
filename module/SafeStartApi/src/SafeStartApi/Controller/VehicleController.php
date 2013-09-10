@@ -32,6 +32,7 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
         $user = $this->authService->getIdentity();
+
         $vehicles = $user->getVehicles();
 
         $vehiclesList = array();
@@ -40,6 +41,17 @@ class VehicleController extends RestrictedAccessRestController
                 'vehicleId' => $vehicle->getId(),
                 'type' => $vehicle->getType(),
                 'vehicleName' => $vehicle->getTitle(),
+                'role' => 'user'
+            );
+        }
+
+        $responsibleVehicles = $user->getResponsibleForVehicles();
+        foreach($responsibleVehicles as $vehicle) {
+            $vehiclesList[] = array(
+                'vehicleId' => $vehicle->getId(),
+                'type' => $vehicle->getType(),
+                'vehicleName' => $vehicle->getTitle(),
+                'role' => 'responsible'
             );
         }
 
@@ -96,6 +108,44 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getChecklistDataAction()
+    {
+        if (($checklistId = (int)$this->params('id')) !== null) {
+            $checklist = null;
+
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id");
+            $query->setParameters(array('id' => $checklistId));
+            $queryResult = $query->getResult();
+            if(is_array($queryResult) && !empty($queryResult)) {
+                if(isset($queryResult[0])) {
+                    $checklist = array(
+                        'id' => $queryResult[0]->getid(),
+                        'gpsCoords' => $queryResult[0]->getGpsCoords(),
+                        'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
+                        'fieldsData' => json_decode($queryResult[0]->getFieldsData()),
+                        'alerts' => $queryResult[0]->getAlerts(),
+                        'creationDate' => $queryResult[0]->getCreationDate(),
+                    );
+                }
+            }
+
+            if ($checklist !== null) {
+                $this->answer = array(
+                    'checklist' => $checklist,
+                );
+                return $this->AnswerPlugin()->format($this->answer);
+            } else {
+                $this->answer = array(
+                    "errorMessage" => "CheckList not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            $this->_showBadRequest();
+        }
+    }
+
+
     public function completeChecklistAction()
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
@@ -143,12 +193,10 @@ class VehicleController extends RestrictedAccessRestController
         if(!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach($alerts as $alert) {
-
                 $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
                 if($field === null) {
                     continue;
                 }
-
                 $newAlert = new \SafeStartApi\Entity\Alert();
                 $newAlert->setField($field);
                 $newAlert->setCheckList($checkList);
@@ -163,7 +211,47 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
+        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
+
+        $androidDevices = array();
+        $iosDevices = array();
+        $currentUser = \SafeStartApi\Application::getCurrentUser();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
+        $vehicleUsers = $vehicle->getUsers();
+
+        foreach ($responsibleUsers as $responsibleUser) {
+            if ($currentUser->getId() == $responsibleUser->getId()) continue;
+            $responsibleUserInfo = $responsibleUser->toInfoArray();
+            switch (strtolower($responsibleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        foreach ($vehicleUsers as $vehicleUser) {
+            if ($currentUser->getId() == $vehicleUser->getId()) continue;
+            $vehicleUserInfo = $vehicleUser->toInfoArray();
+            switch (strtolower($vehicleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->android($iosDevices, $data);
 
     }
 }

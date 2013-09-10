@@ -19,6 +19,8 @@
         "doctrine/annotations": ">=1.0",
         "doctrine/dbal": ">=2.2.2",
         "imagine/Imagine": "dev-develop",
-        "zendframework/zendpdf": "dev-develop"
+        "zendframework/zendpdf": "dev-develop",
+        "zendframework/zendservice-apple-apns": "dev-master",
+        "zendframework/zendservice-google-gcm": "dev-master"
     }
 }

@@ -100,6 +100,16 @@ class User extends BaseEntity
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    protected $device = '';
+
+    /**
+     * @ORM\Column(type="string", name="device_id" ,length=255, nullable=true)
+     */
+    protected $deviceId = '';
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $timezone;
 
     /**
@@ -157,6 +167,8 @@ class User extends BaseEntity
             'company' => (!is_null($this->company)) ? $this->company->toArray() : null,
             'position' => (!is_null($this->position)) ? $this->position : '',
             'department' => (!is_null($this->company)) ? $this->department : '',
+            'device' => (!is_null($this->device)) ? $this->device : '',
+            'deviceId' => (!is_null($this->deviceId)) ? $this->deviceId : '',
         );
     }
 
@@ -362,6 +374,52 @@ class User extends BaseEntity
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getDevice()
+    {
+        return $this->device;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return User
+     */
+    public function setDevice($locale)
+    {
+        $this->device = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getDeviceId()
+    {
+        return $this->deviceId;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return User
+     */
+    public function setDeviceId($locale)
+    {
+        $this->deviceId = $locale;
 
         return $this;
     }

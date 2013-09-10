@@ -57,6 +57,19 @@ return array(
                             ),
                         ),
                     ),
+                    'get-vehicle-checklist-data' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                          'route' => '/vehicle/:id/getchecklistdata',
+                          'constraints' => array(
+                              'id' => '[A-Za-z0-9]+',
+                          ),
+                          'defaults' => array(
+                             'controller' => 'Vehicle',
+                             'action' => 'getChecklistData',
+                          ),
+                       ),
+                    ),
                     'complete-vehicle-checklist' => array(
                         'type' => 'Segment',
                         'options' => array(
@@ -413,6 +426,7 @@ return array(
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
             'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
+            'PushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
         )
     ),
     'session' => array(
@@ -506,5 +520,13 @@ return array(
             'format' => "{%s}", // only
             'template' => "{name}_{user}_{vehicle}_{checkList}_at_{date}", // available: {name}, {user}, {vehicle}, {checkList}, {date}
         ),
+    ),
+    'developerApi' => array(
+        'google' => array(
+            'key' => 'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
+        ),
+        'apple' => array(
+
+        )
     ),
 );

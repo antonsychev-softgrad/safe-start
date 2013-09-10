@@ -207,8 +207,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 var alert = fieldData.alerts[0];
                 var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
+                    alertDescription: alert.alertDescription,
                     triggerValue: alert.triggerValue,
-                    fieldId: fieldData.fieldId
+                    fieldId: fieldData.fieldId,
+                    photos: []
                 });
                 alertsStore.add(alertRecord);
             }
@@ -341,18 +343,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'titlebar',
             title: 'Vehicle details'
         }];
+        console.log(passedCards);
         Ext.each(passedCards, function (card) {
-            //todo: if has alert indicate with red color
             items.push({
-                xtype: 'checkboxfield',
-                labelWidth: '90%',
-                label: card.groupName,
-                checked: true,
-                listeners: {
-                    uncheck: function (checkbox) {
-                        checkbox.setChecked(true);
-                    }
-                }
+                xtype: 'container',
+                html: card.groupName,
+                cls: card.alert ? 'checklist-details-alerts' : 'checklist-details-ok'
             });
         });
         return {
@@ -377,15 +373,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 fieldId: alert.get('fieldId'),
                 alertModel: alert,
                 items: [{
-                    label: alert.get('alertDescription'),
-                    xtype: 'checkboxfield',
-                    checked: true,
-                    labelWidth: '90%',
-                    listeners: {
-                        uncheck: function (checkbox) {
-                            checkbox.setChecked(true);
-                        }
-                    }
+                    xtype: 'container',
+                    cls: 'checklist-alert-description',
+                    html: alert.get('alertDescription')
                 }, {
                     xtype: 'textfield',
                     label: 'Additional comments',

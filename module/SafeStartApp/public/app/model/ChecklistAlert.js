@@ -7,8 +7,9 @@ Ext.define('SafeStartApp.model.ChecklistAlert', {
             {name: 'alertDescription', type: 'string'},
             {name: 'triggerValue', type: 'string'},
             {name: 'comment', type: 'string', defaultValue: ''},
-            {name: 'photos', type: 'auto', defaultValue: []},
+            {name: 'photos', type: 'auto', defaultValue: null},
             {name: 'active', type: 'boolean', defaultValue: false}
         ]
     }
+
 });
