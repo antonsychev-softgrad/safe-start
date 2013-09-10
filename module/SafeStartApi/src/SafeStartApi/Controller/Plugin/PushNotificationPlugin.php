@@ -29,13 +29,17 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setData($data);
         $message->setDelayWhileIdle(false);
 
+        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         try {
+            $logger->debug("\n\n\n============ Android Push Notification [". $this->requestId ."]==================\n");
+            $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
+            $logger->debug("Success Count: " . $response->getSuccessCount());
+            return $response->getSuccessCount();
         } catch (RuntimeException $e) {
-
+            $logger->debug("Exception: " . $e->getMessage());
+            return false;
         }
-
-        return $response->getSuccessCount();
     }
 
     public function ios($ids, $data) {
