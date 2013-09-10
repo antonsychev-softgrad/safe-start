@@ -62,8 +62,8 @@ class UserController extends RestController
                 if ($user) {
                     $userInfo = $user->toArray();
                     $user->setLastLogin(new \DateTime());
-                    if (isset($this->data->device)) $user->setDivice($this->data->device);
-                    if (isset($this->data->deviceId)) $user->setDiviceId($this->data->deviceId);
+                    if (isset($this->data->device)) $user->setDevice($this->data->device);
+                    if (isset($this->data->deviceId)) $user->setDeviceId($this->data->deviceId);
                     $this->em->flush();
                     $userData = new \stdClass();
                     $userData->user = $userInfo;
