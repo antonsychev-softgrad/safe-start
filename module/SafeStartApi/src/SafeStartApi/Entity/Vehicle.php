@@ -652,7 +652,7 @@ class Vehicle extends BaseEntity
 
     public function haveAccess(User $user)
     {
-        if(in_array($user, $this->users->toArray()) || in_array($user, $this->responsibleUsers->toArray())) {
+        if($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }
 

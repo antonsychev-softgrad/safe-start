@@ -68,6 +68,14 @@ class Alert extends BaseEntity
     protected $creation_date;
 
     /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreationDate(new \DateTime());
+    }
+
+    /**
      * Get id
      *
      * @return integer
