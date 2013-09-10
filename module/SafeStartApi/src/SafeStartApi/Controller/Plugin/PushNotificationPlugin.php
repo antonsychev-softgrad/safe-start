@@ -4,7 +4,13 @@ namespace SafeStartApi\Controller\Plugin;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use ZendService\Google\Gcm\Client as GoogleGcmClient;
 use ZendService\Google\Gcm\Message as GoogleGcmMessage;
-use ZendService\Google\Exception\RuntimeException;
+use ZendService\Google\Exception\RuntimeException as GoogleGcmRuntimeException;
+
+use ZendService\Apple\Apns\Client\Message as AppleApnsClient;
+use ZendService\Apple\Apns\Message as AppleApnsMessage;
+use ZendService\Apple\Apns\Message\Alert as AppleApnsMessageAlert;
+use ZendService\Apple\Apns\Response\Message as AppleApnsResponse;
+use ZendService\Apple\Apns\Exception\RuntimeException as AppleApnsRuntimeException;
 
 class PushNotificationPlugin extends AbstractPlugin
 {
@@ -31,12 +37,12 @@ class PushNotificationPlugin extends AbstractPlugin
 
         $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         try {
-            $logger->debug("\n\n\n============ Android Push Notification [". $this->getController()->requestId ."]==================\n");
+            $logger->debug("\n\n\n============ Android Push Notification ==================\n");
             $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
             $logger->debug("Success Count: " . $response->getSuccessCount());
             return $response->getSuccessCount();
-        } catch (RuntimeException $e) {
+        } catch (GoogleGcmRuntimeException $e) {
             $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
@@ -52,6 +58,13 @@ class PushNotificationPlugin extends AbstractPlugin
             $this->googleClient = new GoogleGcmClient();
             $config = $this->getController()->getServiceLocator()->get('Config');
             $this->googleClient->setApiKey($config['developerApi']['google']['key']);
+        }
+    }
+
+    private function getAppleApnsClient()
+    {
+        if ($this->appleClient) {
+            $this->googleClient = new AppleApnsClient();
         }
     }
 }
