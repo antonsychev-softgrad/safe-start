@@ -223,7 +223,7 @@ class VehicleController extends RestrictedAccessRestController
         foreach ($vehicleUsers as $vehicleUser) {
             if ($currentUser->getId() == $vehicleUser->getId()) continue;
             $vehicleUserInfo = $vehicleUser->toInfoArray();
-            switch (strtolower($responsibleUserInfo['device'])) {
+            switch (strtolower($vehicleUserInfo['device'])) {
                 case 'android':
                     $androidDevices[] = $vehicleUserInfo['deviceId'];
                     break;
