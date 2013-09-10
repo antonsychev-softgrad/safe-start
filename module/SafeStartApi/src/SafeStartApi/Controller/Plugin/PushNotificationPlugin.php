@@ -52,8 +52,15 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function ios($ids, $data) {
-
+    public function ios($ids, $data)
+    {
+        $this->getAppleApnsClient();
+        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
+        if (!$this->appleClient) {
+            $logger->debug("Failure client not initialised ");
+            return false;
+        }
     }
 
     private function getGoogleGcmClient()
@@ -68,8 +75,10 @@ class PushNotificationPlugin extends AbstractPlugin
 
     private function getAppleApnsClient()
     {
-        if ($this->appleClient) {
-            $this->googleClient = new AppleApnsClient();
+        if (!$this->appleClient) {
+            $this->appleClient = new AppleApnsClient();
+            $config = $this->getController()->getServiceLocator()->get('Config');
+            $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['developerApi']['apple']['key'], $config['developerApi']['apple']['password']);
         }
     }
 }

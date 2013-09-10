@@ -211,6 +211,19 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function testAction() {
+        $vehicleId = 1;
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        $this->answer = array(
+            'checklist' => '2222222222222222222222',
+        );
+
+        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
 
         $androidDevices = array();
