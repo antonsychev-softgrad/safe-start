@@ -63,6 +63,11 @@ class Alert extends BaseEntity
     protected $status = 'new';
 
     /**
+     * @ORM\Column(type="datetime", name="creation_date")
+     */
+    protected $creation_date;
+
+    /**
      * Get id
      *
      * @return integer
@@ -212,5 +217,28 @@ class Alert extends BaseEntity
         $src = '';
         if (!empty($this->images)) $src = '/api/image/' . $this->getImages()[0] . '/' . \SafeStartApi\Controller\Plugin\UploadPlugin::THUMBNAIL_SMALL;
         return $src;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return CheckList
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
     }
 }
