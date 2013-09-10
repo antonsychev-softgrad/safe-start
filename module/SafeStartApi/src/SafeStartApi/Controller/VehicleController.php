@@ -32,6 +32,7 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
         $user = $this->authService->getIdentity();
+
         $vehicles = $user->getVehicles();
 
         $vehiclesList = array();
@@ -40,6 +41,17 @@ class VehicleController extends RestrictedAccessRestController
                 'vehicleId' => $vehicle->getId(),
                 'type' => $vehicle->getType(),
                 'vehicleName' => $vehicle->getTitle(),
+                'role' => 'user'
+            );
+        }
+
+        $responsibleVehicles = $user->getResponsibleForVehicles();
+        foreach($responsibleVehicles as $vehicle) {
+            $vehiclesList[] = array(
+                'vehicleId' => $vehicle->getId(),
+                'type' => $vehicle->getType(),
+                'vehicleName' => $vehicle->getTitle(),
+                'role' => 'responsible'
             );
         }
 
