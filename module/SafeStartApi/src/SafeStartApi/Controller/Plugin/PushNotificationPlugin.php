@@ -60,6 +60,7 @@ class PushNotificationPlugin extends AbstractPlugin
     {
         if (!$this->googleClient) {
             $this->googleClient = new GoogleGcmClient();
+            $this->googleClient->getHttpClient()->setOptions(array('sslverifypeer' => false));
             $config = $this->getController()->getServiceLocator()->get('Config');
             $this->googleClient->setApiKey($config['developerApi']['google']['key']);
         }
