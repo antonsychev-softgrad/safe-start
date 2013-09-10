@@ -426,6 +426,7 @@ return array(
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
             'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
+            'PushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
         )
     ),
     'session' => array(
