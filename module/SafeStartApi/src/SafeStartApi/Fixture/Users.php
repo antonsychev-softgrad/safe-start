@@ -84,7 +84,7 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setPlainPassword('12345');
         $user->setEnabled(1);
         $user->setDevice('ios');
-        $user->setDeviceId('0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78');
+        $user->setDeviceId('edc4cf242e4a2d55736866968eda7bce2328a713e2ba0d55edd8724514c1e911');
         $manager->persist($user);
         $manager->flush();
 

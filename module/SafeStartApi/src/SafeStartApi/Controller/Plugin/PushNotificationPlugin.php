@@ -128,7 +128,7 @@ class PushNotificationPlugin extends AbstractPlugin
             }
             return false;
         } else {
-            $logger->debug("Success: " . $response->getCode());
+            $logger->debug("Success: " . $response->getCode() + 1);
             return true;
         }
     }
