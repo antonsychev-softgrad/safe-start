@@ -49,7 +49,7 @@ class AdminController extends AdminAccessRestController
         $company->setRestricted((bool)$this->data->restricted);
         $company->setMaxUsers($this->data->restricted ? (int)$this->data->max_users : 0);
         $company->setMaxVehicles($this->data->restricted ? (int)$this->data->max_vehicles : 0);
-        if ($this->data->restricted) {
+        if (isset($this->data->restricted)) {
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp((int)$this->data->expiry_date);
             $company->setExpiryDate($expiryDate);
@@ -202,6 +202,7 @@ class AdminController extends AdminAccessRestController
         $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
+        $field->setAlertCritical((int)$this->data->alert_critical);
 
         $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());

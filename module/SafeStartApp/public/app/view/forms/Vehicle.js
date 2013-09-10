@@ -46,6 +46,18 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 name: 'projectName'
             },
             {
+                xtype: 'datepickerfield',
+                name: 'warrantyStartDate',
+                required: true,
+                label: 'Warranty Start Date',
+                value: new Date(),
+                cls: 'sfa-datepicker',
+                picker: {
+                    yearFrom: new Date().getFullYear() - 10,
+                    yearTo: new Date().getFullYear() + 1
+                }
+            },
+            {
                 xtype: 'textfield',
                 label: 'Project Number',
                 name: 'projectNumber'
