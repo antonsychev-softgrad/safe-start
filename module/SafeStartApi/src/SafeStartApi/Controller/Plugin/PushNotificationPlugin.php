@@ -29,15 +29,20 @@ class PushNotificationPlugin extends AbstractPlugin
     public function android($ids, $data)
     {
         $this->getGoogleGcmClient();
+        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger->debug("\n\n\n============ Android Push Notification ==================\n");
+        if (!$this->googleClient) {
+            $logger->debug("Failure client not initialised ");
+            return false;
+        }
+
 
         $message = new GoogleGcmMessage();
         $message->setRegistrationIds((array)$ids);
         $message->setData($data);
         $message->setDelayWhileIdle(false);
 
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         try {
-            $logger->debug("\n\n\n============ Android Push Notification ==================\n");
             $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
             $logger->debug("Success Count: " . $response->getSuccessCount());
