@@ -523,7 +523,7 @@ return array(
     ),
     'developerApi' => array(
         'google' => array(
-            'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
+            'key' => 'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
         ),
         'apple' => array(
 
