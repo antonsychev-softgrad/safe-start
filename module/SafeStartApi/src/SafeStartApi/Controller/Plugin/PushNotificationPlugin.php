@@ -31,7 +31,7 @@ class PushNotificationPlugin extends AbstractPlugin
 
         $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         try {
-            $logger->debug("\n\n\n============ Android Push Notification [". $this->requestId ."]==================\n");
+            $logger->debug("\n\n\n============ Android Push Notification [". $this->getController()->requestId ."]==================\n");
             $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
             $logger->debug("Success Count: " . $response->getSuccessCount());
