@@ -176,12 +176,10 @@ class VehicleController extends RestrictedAccessRestController
         if(!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach($alerts as $alert) {
-
                 $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
                 if($field === null) {
                     continue;
                 }
-
                 $newAlert = new \SafeStartApi\Entity\Alert();
                 $newAlert->setField($field);
                 $newAlert->setCheckList($checkList);
@@ -196,7 +194,47 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
+        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
+
+        $androidDevices = array();
+        $iosDevices = array();
+        $currentUser = \SafeStartApi\Application::getCurrentUser();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
+        $vehicleUsers = $vehicle->getUsers();
+
+        foreach ($responsibleUsers as $responsibleUser) {
+            if ($currentUser->getId() == $responsibleUser->getId()) continue;
+            $responsibleUserInfo = $responsibleUser->toInfoArray();
+            switch (strtolower($responsibleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        foreach ($vehicleUsers as $vehicleUser) {
+            if ($currentUser->getId() == $vehicleUser->getId()) continue;
+            $vehicleUserInfo = $vehicleUser->toInfoArray();
+            switch (strtolower($responsibleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->android($iosDevices, $data);
 
     }
 }

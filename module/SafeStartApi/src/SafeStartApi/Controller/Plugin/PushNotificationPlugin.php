@@ -14,13 +14,13 @@ class PushNotificationPlugin extends AbstractPlugin
     public function pushNotification($ids, $data = array(), $device = 'android')
     {
         if ($device == 'android') {
-            $this->pushGoogleAndroidNotification($ids, $data);
+            $this->android($ids, $data);
         } else {
-            $this->pushAppleNotification($ids, $data);
+            $this->ios($ids, $data);
         }
     }
 
-    public function  pushGoogleAndroidNotification($ids, $data)
+    public function android($ids, $data)
     {
         $this->getGoogleGcmClient();
 
@@ -38,7 +38,7 @@ class PushNotificationPlugin extends AbstractPlugin
         return $response->getSuccessCount();
     }
 
-    public function pushAppleNotification($ids, $data) {
+    public function ios($ids, $data) {
 
     }
 
