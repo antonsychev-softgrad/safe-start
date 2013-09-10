@@ -202,6 +202,7 @@ class AdminController extends AdminAccessRestController
         $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
+        $field->setAlertCritical((int)$this->data->alert_critical);
 
         $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());

@@ -83,6 +83,11 @@ class Field extends BaseEntity
     protected $enabled;
 
     /**
+     * @ORM\Column(type="boolean", name="alert_critical")
+     */
+    protected $alert_critical;
+
+    /**
      * @ORM\Column(type="boolean", name="deleted")
      */
     protected $deleted;
@@ -105,6 +110,7 @@ class Field extends BaseEntity
     {
         $this->enabled = false;
         $this->deleted = false;
+        $this->alert_critical = false;
         $this->additional = false;
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -134,6 +140,7 @@ class Field extends BaseEntity
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
             'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
             'enabled' => (int) $this->enabled,
+            'alert_critical' => (int) $this->alert_critical,
             'additional' => (int) $this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
             'vehicleId' => $this->getVehicle() ? $this->getVehicle()->getId() : null
@@ -523,5 +530,28 @@ class Field extends BaseEntity
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Field
+     */
+    public function setAlertCritical($enabled)
+    {
+        $this->alert_critical = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getAlertCritical()
+    {
+        return $this->alert_critical;
     }
 }
