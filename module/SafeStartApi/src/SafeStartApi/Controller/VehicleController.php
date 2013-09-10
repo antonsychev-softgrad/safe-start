@@ -206,7 +206,7 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+      //  $this->_pushNewChecklistNotification($vehicle, $this->answer);
 
         return $this->AnswerPlugin()->format($this->answer);
     }
