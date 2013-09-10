@@ -4,6 +4,7 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use SafeStartApi\Entity\User;
 
 /**
  * @ORM\Entity
@@ -136,6 +137,21 @@ class Vehicle extends BaseEntity
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : ''
+        );
+    }
+    public function toResponseArray()
+    {
+        return array(
+            'vehicleId' => (!is_null($this->id)) ? $this->id : '',
+            'type' => (!is_null($this->type)) ? $this->getType() : '',
+            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
+            "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
+            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
+            "expiryDate" => $this->company->getExpiryDate()
         );
     }
 
@@ -634,6 +650,21 @@ class Vehicle extends BaseEntity
         $this->checkLists->clear();
     }
 
+    public function haveAccess(User $user)
+    {
+        if(in_array($user, $this->users->toArray()) || in_array($user, $this->responsibleUsers->toArray())) {
+            return true;
+        }
 
+        $companyAdmin = $this->company->getAdmin();
+        if($user == $companyAdmin) {
+            return true;
+        }
 
+        if($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
+        return false;
+    }
 }

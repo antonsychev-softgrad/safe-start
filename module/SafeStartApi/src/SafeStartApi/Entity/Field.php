@@ -68,7 +68,7 @@ class Field extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="fields")
-     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id", onDelete="SET NULL")
      **/
     protected $vehicle;
 
@@ -94,7 +94,7 @@ class Field extends BaseEntity
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false)
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false, onDelete="SET NULL")
      */
     protected $author;
 

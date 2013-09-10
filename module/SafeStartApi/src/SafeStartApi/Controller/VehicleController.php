@@ -72,7 +72,9 @@ class VehicleController extends RestrictedAccessRestController
         $veh = $vehRep->findOneById($id);
         if(empty($veh)) return $this->_showNotFound();
 
-        $vehicleData = $veh->toInfoArray();
+        if(!$veh->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $vehicleData = $veh->toResponseArray();
 
         $this->answer = array(
             'vehicleData' => $vehicleData,
@@ -90,6 +92,7 @@ class VehicleController extends RestrictedAccessRestController
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
         $query->setParameter(1, $vehicle);
@@ -147,12 +150,14 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         //todo: check why bad request with alerts
-       // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
         // save checklist
         $vehicleId = $this->params('id');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $user = $this->authService->getStorage()->read();
 

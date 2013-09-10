@@ -13,7 +13,6 @@ use SafeStartApi\Fixture\Users;
 use SafeStartApi\Fixture\Alerts;
 use SafeStartApi\Fixture\Companies;
 use SafeStartApi\Fixture\Fields;
-use SafeStartApi\Fixture\Groups;
 use SafeStartApi\Fixture\Vehicles;
 use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
@@ -33,8 +32,6 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->addFixtures(new Vehicles());
         $this->addFixtures(new Companies());
         $this->addFixtures(new Fields());
-        $this->addFixtures(new Groups());
-        $this->addFixtures(new Alerts());
         parent::setUp();
     }
 
