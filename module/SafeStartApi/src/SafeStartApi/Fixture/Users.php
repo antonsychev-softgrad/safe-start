@@ -65,6 +65,8 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setRole('companyManager');
         $user->setPlainPassword('12345');
         $user->setEnabled(1);
+        $user->setDevice('android');
+        $user->setDeviceId('APA91bE6LvMXz3Nnb3YuuTmx34aPp1Gj7U4BpAO_Q4vHtXRVPiVYNplzmOLwe5Y-rc68w6ZZre_I4dkHYnf5kf23IYarNDGvlT7Zvf56VZQ7I4c9uXAxkPkzBM2NhtIV77M4gr8hyBtlO-QPi3xXHNWL7OGZcvevXw');
         $manager->persist($user);
         $manager->flush();
 
@@ -81,6 +83,8 @@ class Users extends AbstractFixture implements OrderedFixtureInterface
         $user->setRole('companyManager');
         $user->setPlainPassword('12345');
         $user->setEnabled(1);
+        $user->setDevice('ios');
+        $user->setDeviceId('0f744707bebcf74f9b7c25d48e3358945f6aa01da5ddb387462c7eaf61bbad78');
         $manager->persist($user);
         $manager->flush();
 
