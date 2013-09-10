@@ -49,7 +49,7 @@ class AdminController extends AdminAccessRestController
         $company->setRestricted((bool)$this->data->restricted);
         $company->setMaxUsers($this->data->restricted ? (int)$this->data->max_users : 0);
         $company->setMaxVehicles($this->data->restricted ? (int)$this->data->max_vehicles : 0);
-        if ($this->data->restricted) {
+        if (isset($this->data->restricted)) {
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp((int)$this->data->expiry_date);
             $company->setExpiryDate($expiryDate);

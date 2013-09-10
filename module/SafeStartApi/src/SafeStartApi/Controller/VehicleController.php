@@ -177,13 +177,12 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setHash(null);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+        $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
 
         $this->em->persist($checkList);
         $this->em->flush();
 
-        $md5 = md5($checkList->getId());
-        $uniqId = hash('adler32', $md5);
-        $uniqId .= hash('crc32', $md5);
+        $uniqId = uniqid();
 
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);

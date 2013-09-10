@@ -464,4 +464,18 @@ class Company extends BaseEntity
         $company['firstName'] = $this->admin->firstName;
         return $company;
     }
+
+    public function haveAccess(User $user)
+    {
+        $companyAdmin = $this->getAdmin();
+        if($user->getId() == $companyAdmin->getId()) {
+            return true;
+        }
+
+        if($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
+        return false;
+    }
 }

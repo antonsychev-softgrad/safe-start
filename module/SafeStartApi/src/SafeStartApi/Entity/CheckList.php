@@ -43,6 +43,11 @@ class CheckList extends BaseEntity
     protected $gps_coords;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $current_odometer;
+
+    /**
      * @ORM\Column(type="json_array")
      */
     protected $fields_structure;
@@ -258,6 +263,30 @@ class CheckList extends BaseEntity
     {
         return $this->gps_coords;
     }
+
+    /**
+     * Set current_odometer
+     *
+     * @param string $gpsCoords
+     * @return CheckList
+     */
+    public function setCurrentOdometer($gpsCoords)
+    {
+        $this->current_odometer = $gpsCoords;
+
+        return $this;
+    }
+
+    /**
+     * Get current_odometer
+     *
+     * @return string
+     */
+    public function getCurrentOdometer()
+    {
+        return $this->current_odometer;
+    }
+
 
     /**
      * Add alerts
