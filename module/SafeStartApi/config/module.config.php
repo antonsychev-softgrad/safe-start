@@ -57,6 +57,19 @@ return array(
                             ),
                         ),
                     ),
+                    'get-vehicle-checklist-data' => array(
+                       'type' => 'Segment',
+                       'options' => array(
+                          'route' => '/vehicle/:id/getchecklistdata',
+                          'constraints' => array(
+                              'id' => '[A-Za-z0-9]+',
+                          ),
+                          'defaults' => array(
+                             'controller' => 'Vehicle',
+                             'action' => 'getChecklistData',
+                          ),
+                       ),
+                    ),
                     'complete-vehicle-checklist' => array(
                         'type' => 'Segment',
                         'options' => array(

@@ -9,6 +9,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleAlerts',
         'SafeStartApp.view.pages.panel.VehicleUsers',
         'SafeStartApp.view.pages.panel.VehicleInspections',
+        'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
         'SafeStartApp.store.Vehicles',
         'SafeStartApp.model.Vehicle'
     ],
@@ -90,6 +91,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 },
                 {
                     xtype: 'SafeStartVehicleUsersPanel'
+                },
+                {
+                    xtype: 'SafeStartVehicleInspectionDetails'
                 }
             ]
         };
