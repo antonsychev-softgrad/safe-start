@@ -57,6 +57,19 @@ return array(
                             ),
                         ),
                     ),
+                    'get-vehicle-alerts' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/getalerts',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Vehicle',
+                                'action' => 'getalerts',
+                            ),
+                        ),
+                    ),
                     'get-vehicle-checklist-data' => array(
                        'type' => 'Segment',
                        'options' => array(

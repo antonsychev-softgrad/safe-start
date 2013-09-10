@@ -215,7 +215,8 @@ class Alert extends BaseEntity
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
-            'comments' => $this->getComments()
+            'comments' => $this->getComments(),
+            'creation_date' => $this->getCreationDate()
         );
         return $data;
     }

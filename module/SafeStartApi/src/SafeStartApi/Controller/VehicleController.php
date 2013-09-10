@@ -216,6 +216,32 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getAlertsAction() {
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
+
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $period = $this->params('period');
+
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+        $query->setParameter(1, $vehicle);
+        $items = $query->getResult();
+
+        $checklist = $this->GetDataPlugin()->buildChecklist($items);
+
+
+        $this->answer = array(
+            'checklist' => $checklist,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
 
         $androidDevices = array();

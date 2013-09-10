@@ -146,6 +146,22 @@
                 }
             }
         },
+        "/api/vehicle/[id]/getAlerts": {
+            "description": "Get vehicle alerts",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getalerts/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getalerts/response.json"
+                    }
+                }
+            }
+        },
         "/api/upload-images": {
             "description": "Upload Images",
             "type": "object",
