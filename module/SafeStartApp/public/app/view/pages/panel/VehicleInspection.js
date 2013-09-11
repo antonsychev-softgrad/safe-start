@@ -190,6 +190,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 var alert = fieldData.alerts[0];
                 var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
+                    critical: alert.critical,
                     alertDescription: alert.alertDescription,
                     triggerValue: alert.triggerValue,
                     fieldId: fieldData.fieldId,
@@ -252,7 +253,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
                         if (alert !== null) {
                             if (alert.get('triggerValue').match(new RegExp(radio.getValue(), 'i'))) {
-                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                if (alert.get('critical')) {
+                                    Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                }
                                 alert.set('active', true);
                             } else {
                                 alert.set('active', false);
@@ -265,6 +268,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'fieldset',
             alerts: fieldData.alerts,
+            triggerable: true,
             layout: {
                 type: 'hbox',
                 pack: 'center'
@@ -275,7 +279,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             maxWidth: 900,
             width: '100%',
             fieldId: fieldData.fieldId,
-            triggerable: true,
             title: fieldData.fieldName,
             items: optionFields 
         };
@@ -293,13 +296,32 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData) {
+        var me = this;
         return {
             xtype: 'checkboxfield',
             maxWidth: 900,
             width: '100%',
             label: fieldData.fieldName,
             labelWidth: '90%',
-            fieldId: fieldData.fieldId
+            fieldId: fieldData.fieldId,
+            alerts: fieldData.alerts,
+            triggerable: true,
+            listeners: {
+                check: function (checkbox) {
+                    var alert = me.getAlertsStore().findRecord('fieldId', checkbox.config.fieldId);
+
+                    if (alert !== null) {
+                        if (alert.get('triggerValue').match(new RegExp(checkbox.getValue(), 'i'))) {
+                            if (alert.get('critical')) {
+                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                            }
+                            alert.set('active', true);
+                        } else {
+                            alert.set('active', false);
+                        }
+                    }
+                }
+            }
         };
     },
 
