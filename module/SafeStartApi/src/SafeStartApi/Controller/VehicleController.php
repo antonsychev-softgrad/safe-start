@@ -229,8 +229,8 @@ class VehicleController extends RestrictedAccessRestController
         $period = !is_null($this->params('period')) ? $this->params('period') : 0;
         $time = time() - $period;
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Alert a WHERE a.vehicle_id = ?1 AND a.creation_date > ?2');
-        $query->setParameter(1, $vehicleId);
+        $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle = ?1 AND a.creation_date > ?2');
+        $query->setParameter(1, $vehicle);
         $query->setParameter(2, $time);
         $items = $query->getResult();
 
