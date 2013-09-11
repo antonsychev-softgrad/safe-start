@@ -58,7 +58,7 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
             }
             */
             $manager->persist($field);
-            //$manager->persist($field2);
+            $manager->persist($field2);
             $manager->flush();
             //Associate a reference for other fixtures
             $this->addReference('field-' . $row['id'], $field);

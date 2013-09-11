@@ -19,7 +19,7 @@
             "required": true,
             "properties": {
                 "period": {
-                    "description": "Get alerts for this period in ms",
+                    "description": "Get alerts for this period in seconds",
                     "type": "integer",
                     "required": false
                 }
