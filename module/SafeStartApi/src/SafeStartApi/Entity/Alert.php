@@ -39,6 +39,12 @@ class Alert extends BaseEntity
     protected $field;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="alerts")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
+     **/
+    protected $vehicle;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
@@ -176,6 +182,29 @@ class Alert extends BaseEntity
     public function getField()
     {
         return $this->field;
+    }
+
+    /**
+     * Set vehicle
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicle
+     * @return Alert
+     */
+    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
+    {
+        $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicle
+     *
+     * @return \SafeStartApi\Entity\Vehicle
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
     }
 
     /**

@@ -21,6 +21,7 @@ class Vehicle extends BaseEntity
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->checkLists = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->creation_date = new \DateTime();
     }
 
@@ -123,6 +124,11 @@ class Vehicle extends BaseEntity
      * @ORM\OneToMany(targetEntity="CheckList", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
     protected $checkLists;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Alert", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $alerts;
 
     /**
      * Convert the object to an array.
@@ -687,6 +693,47 @@ class Vehicle extends BaseEntity
     public function removeCheckLists()
     {
         $this->checkLists->clear();
+    }
+
+    /**
+     * Add alert
+     *
+     * @param \SafeStartApi\Entity\Alert $alert
+     * @return Company
+     */
+    public function addAlert(\SafeStartApi\Entity\Alert $alert)
+    {
+        $this->alerts[] = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Remove alert
+     *
+     * @param \SafeStartApi\Entity\Alert $alert
+     */
+    public function removeAlert(\SafeStartApi\Entity\Alert $alert)
+    {
+        $this->alerts->removeElement($alert);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlerts()
+    {
+        return $this->alerts;
+    }
+
+    /**
+     * Remove alerts
+     */
+    public function removeAlerts()
+    {
+        $this->alerts->clear();
     }
 
     /**

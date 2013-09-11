@@ -201,6 +201,7 @@ class VehicleController extends RestrictedAccessRestController
                 $newAlert->setCheckList($checkList);
                 $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
                 $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());
+                $newAlert->setVehicle($vehicle);
                 $this->em->persist($newAlert);
             }
             $this->em->flush();
@@ -225,17 +226,21 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
         if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $period = $this->params('period');
+        $period = !is_null($this->params('period')) ? $this->params('period') : 0;
+        $time = time() - $period;
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Alert a WHERE a.vehicle_id = ?1 AND a.creation_date > ?2');
+        $query->setParameter(1, $vehicleId);
+        $query->setParameter(2, $time);
         $items = $query->getResult();
 
-        $checklist = $this->GetDataPlugin()->buildChecklist($items);
-
+        $alerts = array();
+        foreach($items as $item) {
+            $alerts[] = $item->toArray();
+        }
 
         $this->answer = array(
-            'checklist' => $checklist,
+            'alerts' => $alerts,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
