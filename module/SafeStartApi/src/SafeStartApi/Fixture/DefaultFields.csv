@@ -1,16 +1,16 @@
 id;parent_id;vehicle_id;author_id;type;title;alert_title;alert_description;trigger_value;sort_order;creation_date;enabled;alert_critical;deleted;additional
-1;;1;;root;Daily inspection checklist safety;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
-2;;1;;root;Daily inspection checklist cabin;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
-3;;1;;root;Daily inspection checklist structural;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
-4;;1;;root;Daily inspection checklist mechanical;;Description of vehicle fault should be here;;4;2013-09-10;1;0;0;0
-5;;1;;root;Daily inspection checklist trailer;;Description of vehicle fault should be here;;5;2013-09-10;1;0;0;1
-6;;1;;root;Daily inspection checklist mobile crane;;Description of vehicle fault should be here;;7;2013-09-10;1;0;0;1
+1;;1;;root;Safety;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+2;;1;;root;Cabin;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+3;;1;;root;Structural;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
+4;;1;;root;Mechanical;;Description of vehicle fault should be here;;4;2013-09-10;1;0;0;0
+5;;1;;root;Trailer;;Description of vehicle fault should be here;;5;2013-09-10;1;0;0;1
+6;;1;;root;Crane;;Description of vehicle fault should be here;;7;2013-09-10;1;0;0;1
 7;;1;;root;Auxiliary motor;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;1
-8;;1;;root;Daily inspection checklist earthmoving plant;;Description of vehicle fault should be here;;8;2013-09-10;1;0;0;1
-9;;1;;root;Daily inspection checklist elevated work platform;;Description of vehicle fault should be here;;9;2013-09-10;1;0;0;1
-10;1;1;;radio;Is the vehicle stable?;Danger. Please secure the vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-10;1;1;0;0
+8;;1;;root;Earthmoving plant;;Description of vehicle fault should be here;;8;2013-09-10;1;0;0;1
+9;;1;;root;Work platform;;Description of vehicle fault should be here;;9;2013-09-10;1;0;0;1
+10;1;1;;radio;Is the vehicle stable?;Please secure the vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-10;1;1;0;0
 11;1;1;;radio;Is the operators manual in the vehicle?;;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
-12;1;1;;radio;Are you authorised in the use of this vehicle?;Danger. Do not inspect any vehicle unless you are authorised;Description of vehicle fault should be here;no;3;2013-09-10;1;1;0;0
+12;1;1;;radio;Are you authorised in the use of this vehicle?;Do not inspect any vehicle unless you are authorised;Description of vehicle fault should be here;no;3;2013-09-10;1;1;0;0
 13;1;1;;radio;Is the first aid kit present and fully stocked?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
 14;1;1;;radio;Is the fire extinguisher present?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
 15;1;1;;datePicker;Date of next inspection- fire extinguisher;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;0

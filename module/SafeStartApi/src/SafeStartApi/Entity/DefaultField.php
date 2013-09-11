@@ -42,7 +42,7 @@ class DefaultField extends BaseEntity
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $description;
 
