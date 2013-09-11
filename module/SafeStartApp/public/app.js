@@ -86,15 +86,6 @@ Ext.apply(SafeStartApp,  {
     },
 
     setViewPort: function(menu) {
-        var viewPort = Ext.Viewport.down('SafeStartViewPort');
-        if (viewPort) {
-            Ext.each(viewPort.getInnerItems(), function (item) {
-                if (item.onShow) {
-                    item.removeListener('show', item.onShow);
-                }
-            });
-        }
-
         Ext.Viewport.removeAll(true);
 
         this.currentMenu = [];

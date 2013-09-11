@@ -8,17 +8,33 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     ],
 
     config: {
-        scrollable: true,
+        layout: 'card',
         margin: 10,
-        layout: {
-            type: 'vbox',
-            align: 'center',
-            pack: 'middle'
-        },
-        defaults: {
-        },
-        name: 'vehicle-inspection-details',
-        cls: 'sfa-vehicle-inspection-details'
+        items: [{
+            xtype: 'panel',
+            name: 'vehicle-inspection-details',
+            cls: 'sfa-vehicle-inspection-details',
+            scrollable: true,
+            layout: {
+                type: 'vbox',
+                align: 'center',
+                pack: 'middle'
+            }
+        }, {
+            xtype: 'panel',
+            cls: 'sfa-vehicle-inspection-details-map', 
+            layout: 'fit',
+            items: [{
+                xtype: 'button',
+                top: 20,
+                left: 80,
+                text: 'Back',
+                handler: function (btn) {
+                    var panel = btn.up('SafeStartVehicleInspectionDetails');
+                    panel.setActiveItem(0);
+                }
+            }]
+        }]
     },
 
     initialize: function () {
@@ -33,24 +49,31 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         });
     },
 
-    /*
-     * fields = 
-    */
     createView: function (vehicle, checklist) {
-        this.removeAll();
+        var infoGroup = [],
+            responsibleUser = vehicle.responsibleUsers().first(),
+            cords;
 
-        this.createGroup([
+        this.setActiveItem(0);
+        this.down('panel[cls=sfa-vehicle-inspection-details]').removeAll();
+
+        infoGroup.push(
             this.createContainer('Project number', vehicle.get('projectNumber')),
-            this.createContainer('Project name', vehicle.get('projectName')),
-            this.createContainer('Operators name', ''), // TODO:
-            this.createContainer('Date and Time', checklist.creationDate.date),
-            this.createContainer('Location', checklist.gpsCoords)
-        ]);
+            this.createContainer('Project name', vehicle.get('projectName'))
+        );
+        if (responsibleUser) {
+            infoGroup.push(this.createContainer('Operators name', responsibleUser.getFullName()));
+        }
+        infoGroup.push(this.createContainer('Date and Time', checklist.creationDate.date));
+        if (checklist.gpsCoords) {
+            cords = checklist.gpsCoords.split(';');
+            infoGroup.push(this.createMapsContainer('Location', parseFloat(cords[0]), parseFloat(cords[1])));
+        }
+        this.createGroup(infoGroup);
 
         this.createGroup([
             this.createContainer('Plant ID/Registration', vehicle.get('plantId')),
-            this.createContainer('Type of vehicle', vehicle.get('type')),
-            this.createContainer('Registration expiry', vehicle.get('registration'))
+            this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
@@ -90,6 +113,58 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         };
     },
 
+    createMapsContainer: function (title, lat, lon) {
+        var me = this;
+        return {
+            xtype: 'container',
+            cls: 'sfa-vehicle-inspection-details-container',
+            layout: {
+                type: 'hbox',
+                align: 'left',
+                pack: 'left'
+            },
+            width: '100%',
+            maxWidth: 700,
+            items: [{
+                xtype: 'container',
+                html: title 
+            }, {
+                xtype: 'spacer',
+                flex: 1
+            }, {
+                xtype: 'button',
+                ui: 'small',
+                text: 'Open map',
+                handler: function (btn) {
+                    var panel = me.down('panel[cls=sfa-vehicle-inspection-details-map]');
+                    var position = new google.maps.LatLng(lat, lon);
+                    var map = panel.down('map');
+                    if (map) {
+                        map.marker.setPosition(position);
+                        map.getMap().setCenter(position);
+                    } else {
+                        panel.add({
+                            xtype: 'map',
+                            mapOptions: {
+                                center: position
+                            },
+                            listeners: {
+                                maprender: function (mapCmp) {
+                                    mapCmp.marker = new google.maps.Marker({
+                                        position: position,
+                                        title: 'Vehicle Inspection',
+                                        map: mapCmp.getMap()
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    me.setActiveItem(1);
+                }
+            }]
+        };
+    },
+
     createGroup: function (items, title, depth) {
         if (title) {
             if (depth == 1) {
@@ -120,7 +195,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         if (depth > 1) {
             return item;
         }
-        this.add(item);
+        this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
     },
 
     createFields: function (fields, values, title, depth) {
@@ -156,7 +231,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     },
 
     createButtons: function (checkListId) {
-        this.add({
+        this.down('panel[cls=sfa-vehicle-inspection-details]').add({
             xtype: 'toolbar',
             margin: '0 0 10 0',
             items: [{

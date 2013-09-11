@@ -120,8 +120,6 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         }
         if (includedCards[nextIndex]) {
             checklistPanel.setActiveItem(includedCards[nextIndex]);
-        } else {
-            console.log('submitAction');
         }
     },
 
@@ -197,6 +195,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     },
 
     onReviewConfirmBtnTap: function (button) {
+        var controller = this;
         var alerts = [];
         var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var checklists = this.getChecklistForms();
@@ -255,8 +254,26 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             alerts: alerts
         };
 
+        var navMain = this.getNavMain();
+
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').hide();
+            var hash = result.checklist;
+            var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
+            navMain.getStore().on('load', function () {
+                var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
+                navMain.goToNode(inspectionsNode); 
+                inspectionNode = inspectionsNode.findChild('checkListHash', hash);
+                if (inspectionNode) {
+                    var active = navMain.getActiveItem();
+                    var index = inspectionsNode.indexOf(inspectionNode);
+                    setTimeout(function() {
+                        navMain.fireEvent('itemtap', navMain, active, index, null, inspectionNode);
+                    }, 0);
+                }
+            }, this, {single: true});
+
+            controller.getNavMain().getStore().load();
         });
     },
 

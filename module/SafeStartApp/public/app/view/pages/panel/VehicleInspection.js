@@ -343,7 +343,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'titlebar',
             title: 'Vehicle details'
         }];
-        console.log(passedCards);
         Ext.each(passedCards, function (card) {
             items.push({
                 xtype: 'container',
