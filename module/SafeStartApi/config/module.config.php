@@ -70,6 +70,19 @@ return array(
                             ),
                         ),
                     ),
+                    'get-completed-checklist' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/getcompletedchecklist',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Vehicle',
+                                'action' => 'getcompletedchecklist',
+                            ),
+                        ),
+                    ),
                     'get-vehicle-checklist-data' => array(
                        'type' => 'Segment',
                        'options' => array(

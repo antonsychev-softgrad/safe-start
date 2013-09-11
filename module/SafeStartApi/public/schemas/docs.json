@@ -162,6 +162,22 @@
                 }
             }
         },
+        "/api/vehicle/[id]/getCompletedChecklist": {
+            "description": "Get vehicle completed checklist",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getcompletedchecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getcompletedchecklist/response.json"
+                    }
+                }
+            }
+        },
         "/api/upload-images": {
             "description": "Upload Images",
             "type": "object",
