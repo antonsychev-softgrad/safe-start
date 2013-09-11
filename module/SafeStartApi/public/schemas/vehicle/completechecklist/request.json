@@ -76,6 +76,11 @@
                     "description": "GPS coords",
                     "type": "string",
                     "required": false
+                },
+                "odometer": {
+                    "description": "Current Odometer",
+                    "type": "string",
+                    "required": false
                 }
             }
         }

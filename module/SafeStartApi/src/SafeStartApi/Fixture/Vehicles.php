@@ -24,6 +24,7 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
 
         $vehicle->addResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addResponsibleUser($this->getReference('responsible-user2'));
         $vehicle->addUser($this->getReference('usual-user1'));
         $manager->flush();
 
@@ -45,6 +46,7 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
 
         $vehicle->addResponsibleUser($this->getReference('responsible-user'));
+        $vehicle->addResponsibleUser($this->getReference('responsible-user2'));
         $vehicle->addUser($this->getReference('usual-user2'));
 
         $manager->flush();

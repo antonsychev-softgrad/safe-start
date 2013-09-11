@@ -32,6 +32,7 @@ class VehicleController extends RestrictedAccessRestController
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
         $user = $this->authService->getIdentity();
+
         $vehicles = $user->getVehicles();
 
         $vehiclesList = array();
@@ -40,6 +41,17 @@ class VehicleController extends RestrictedAccessRestController
                 'vehicleId' => $vehicle->getId(),
                 'type' => $vehicle->getType(),
                 'vehicleName' => $vehicle->getTitle(),
+                'role' => 'user'
+            );
+        }
+
+        $responsibleVehicles = $user->getResponsibleForVehicles();
+        foreach($responsibleVehicles as $vehicle) {
+            $vehiclesList[] = array(
+                'vehicleId' => $vehicle->getId(),
+                'type' => $vehicle->getType(),
+                'vehicleName' => $vehicle->getTitle(),
+                'role' => 'responsible'
             );
         }
 
@@ -60,7 +72,9 @@ class VehicleController extends RestrictedAccessRestController
         $veh = $vehRep->findOneById($id);
         if(empty($veh)) return $this->_showNotFound();
 
-        $vehicleData = $veh->toInfoArray();
+        if(!$veh->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $vehicleData = $veh->toResponseArray();
 
         $this->answer = array(
             'vehicleData' => $vehicleData,
@@ -78,6 +92,7 @@ class VehicleController extends RestrictedAccessRestController
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
         $query->setParameter(1, $vehicle);
@@ -135,12 +150,14 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         //todo: check why bad request with alerts
-       // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
         // save checklist
         $vehicleId = $this->params('id');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $user = $this->authService->getStorage()->read();
 
@@ -160,13 +177,12 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setHash(null);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+        $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
 
         $this->em->persist($checkList);
         $this->em->flush();
 
-        $md5 = md5($checkList->getId());
-        $uniqId = hash('adler32', $md5);
-        $uniqId .= hash('crc32', $md5);
+        $uniqId = uniqid();
 
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
@@ -176,17 +192,16 @@ class VehicleController extends RestrictedAccessRestController
         if(!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach($alerts as $alert) {
-
                 $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
                 if($field === null) {
                     continue;
                 }
-
                 $newAlert = new \SafeStartApi\Entity\Alert();
                 $newAlert->setField($field);
                 $newAlert->setCheckList($checkList);
                 $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
                 $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());
+                $newAlert->setVehicle($vehicle);
                 $this->em->persist($newAlert);
             }
             $this->em->flush();
@@ -196,7 +211,77 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
+        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function getAlertsAction() {
+        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+        if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
+
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $period = !is_null($this->params('period')) ? $this->params('period') : 0;
+        $time = time() - $period;
+
+        $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle = ?1 AND a.creation_date > ?2');
+        $query->setParameter(1, $vehicle);
+        $query->setParameter(2, $time);
+        $items = $query->getResult();
+
+        $alerts = array();
+        foreach($items as $item) {
+            $alerts[] = $item->toArray();
+        }
+
+        $this->answer = array(
+            'alerts' => $alerts,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
+
+        $androidDevices = array();
+        $iosDevices = array();
+        $currentUser = \SafeStartApi\Application::getCurrentUser();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
+        $vehicleUsers = $vehicle->getUsers();
+
+        foreach ($responsibleUsers as $responsibleUser) {
+            if ($currentUser->getId() == $responsibleUser->getId()) continue;
+            $responsibleUserInfo = $responsibleUser->toInfoArray();
+            switch (strtolower($responsibleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        foreach ($vehicleUsers as $vehicleUser) {
+            if ($currentUser->getId() == $vehicleUser->getId()) continue;
+            $vehicleUserInfo = $vehicleUser->toInfoArray();
+            switch (strtolower($vehicleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $data);
 
     }
 }

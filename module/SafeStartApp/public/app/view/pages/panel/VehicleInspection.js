@@ -20,23 +20,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
 
-        var submitMsgBox = Ext.create('Ext.MessageBox', {
-            cls: 'sfa-messagebox-confirm',
-            message: 'Please confirm your submission',
-            hidden: true,
-            buttons: [{
-                ui: 'confirm',
-                action: 'confirm',
-                text: 'Confirm'
-            }, {
-                ui: 'action',
-                text: 'Cancel',
-                handler: function (btn) {
-                    btn.up('sheet[cls=sfa-messagebox-confirm]').hide();
-                }
-            }]
-        });
-        this.add(submitMsgBox);
     },
 
     setAlertsStore: function (store) {
@@ -335,9 +318,33 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var reviewCard = this.down('formpanel[name=checklist-card-review]');
         reviewCard.removeAll();
         reviewCard.add(this.createVehicleDetailsView(passedCards));
+        reviewCard.add(this.createGpsView());
         reviewCard.add(this.createAlertsView(alerts));
     },
 
+    createGpsView: function () {
+        return {
+            xtype: 'container',
+            width: '100%',
+            cls: 'sfa-vehicle-inspection-gps',
+            maxWidth: 900,
+            items: [{
+                xtype: 'togglefield',
+                label: 'GPS',
+                labelWidth: 50,
+                listeners: {
+                    change: function(field, slider, thumb, newValue, oldValue) {
+                        var container = field.up('container[cls=sfa-vehicle-inspection-gps]');
+                        if (newValue) {
+                            if (!container.gps) {
+                                container.gps = Ext.create('Ext.util.Geolocation');
+                            }
+                        }
+                    }
+                }
+            }]
+        };
+    },
     createVehicleDetailsView: function (passedCards) {
         var items = [{
             xtype: 'titlebar',

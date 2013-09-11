@@ -57,6 +57,19 @@ return array(
                             ),
                         ),
                     ),
+                    'get-vehicle-alerts' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/vehicle/:id/getalerts',
+                            'constraints' => array(
+                                'id' => '[0-9]*',
+                            ),
+                            'defaults' => array(
+                                'controller' => 'Vehicle',
+                                'action' => 'getalerts',
+                            ),
+                        ),
+                    ),
                     'get-vehicle-checklist-data' => array(
                        'type' => 'Segment',
                        'options' => array(
@@ -426,6 +439,7 @@ return array(
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
             'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
+            'PushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
         )
     ),
     'session' => array(
@@ -519,5 +533,14 @@ return array(
             'format' => "{%s}", // only
             'template' => "{name}_{user}_{vehicle}_{checkList}_at_{date}", // available: {name}, {user}, {vehicle}, {checkList}, {date}
         ),
+    ),
+    'developerApi' => array(
+        'google' => array(
+            'key' => 'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
+        ),
+        'apple' => array(
+            'key' =>  __DIR__ . '/apple_push_key.pem',
+            'password' =>  '',
+        )
     ),
 );

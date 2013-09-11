@@ -82,6 +82,7 @@ class GetDataPlugin extends AbstractPlugin
                         array(
                             'alertMessage' => $field->getAlertTitle(),
                             'alertDescription' => $field->getAlertDescription(),
+                            'critical' => $field->getAlertCritical(),
                             'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
                         )
                     );
@@ -126,6 +127,7 @@ class GetDataPlugin extends AbstractPlugin
                         array(
                             'alertMessage' => $field->getAlertTitle(),
                             'alertDescription' => $field->getAlertDescription(),
+                            'critical' => $field->getAlertCritical(),
                             'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
                         )
                     );

@@ -4,6 +4,7 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
+use SafeStartApi\Entity\User;
 
 /**
  * @ORM\Entity
@@ -20,6 +21,8 @@ class Vehicle extends BaseEntity
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->checkLists = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->creation_date = new \DateTime();
     }
 
     /**
@@ -88,6 +91,21 @@ class Vehicle extends BaseEntity
     protected $serviceDueKm;
 
     /**
+     * @ORM\Column(type="datetime", name="creation_date")
+     */
+    protected $creation_date;
+
+    /**
+     * @ORM\Column(type="datetime", name="warranty_start_date", nullable=true)
+     */
+    protected $warranty_start_date;
+
+    /**
+     * @ORM\Column(type="float", name="warranty_start_odometer", nullable=true)
+     */
+    protected $warranty_start_odometer;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $enabled = 1;
@@ -108,6 +126,11 @@ class Vehicle extends BaseEntity
     protected $checkLists;
 
     /**
+     * @ORM\OneToMany(targetEntity="Alert", mappedBy="vehicle", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
+     */
+    protected $alerts;
+
+    /**
      * Convert the object to an array.
      *
      * @return array
@@ -124,6 +147,9 @@ class Vehicle extends BaseEntity
         ));
     }
 
+    /**
+     * @return array
+     */
     public function toInfoArray()
     {
         return array(
@@ -135,10 +161,36 @@ class Vehicle extends BaseEntity
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : ''
+            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
+            "warrantyStartDate " => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
         );
     }
 
+    /**
+     * @return array
+     */
+    public function toResponseArray()
+    {
+        return array(
+            'vehicleId' => (!is_null($this->id)) ? $this->id : '',
+            'type' => (!is_null($this->type)) ? $this->getType() : '',
+            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
+            "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
+            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
+            "expiryDate" => $this->company->getExpiryDate(),
+            "warrantyStartDate " => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function toMenuArray() {
         $vehicleData = $this->toArray();
         $vehicleData['text'] = $vehicleData['title'];
@@ -193,6 +245,9 @@ class Vehicle extends BaseEntity
         return $vehicleData;
     }
 
+    /**
+     * @return array
+     */
     public function getInspectionsArray() {
 
         $inspections = array();
@@ -508,6 +563,9 @@ class Vehicle extends BaseEntity
         $this->responsibleUsers->removeElement($responsible);
     }
 
+    /**
+     *
+     */
     public function removeResponsibleUsers()
     {
         $this->responsibleUsers->clear();
@@ -546,6 +604,9 @@ class Vehicle extends BaseEntity
         $this->users->removeElement($users);
     }
 
+    /**
+     *
+     */
     public function removeUsers()
     {
         $this->users->clear();
@@ -635,6 +696,136 @@ class Vehicle extends BaseEntity
         $this->checkLists->clear();
     }
 
+    /**
+     * Add alert
+     *
+     * @param \SafeStartApi\Entity\Alert $alert
+     * @return Company
+     */
+    public function addAlert(\SafeStartApi\Entity\Alert $alert)
+    {
+        $this->alerts[] = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Remove alert
+     *
+     * @param \SafeStartApi\Entity\Alert $alert
+     */
+    public function removeAlert(\SafeStartApi\Entity\Alert $alert)
+    {
+        $this->alerts->removeElement($alert);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlerts()
+    {
+        return $this->alerts;
+    }
+
+    /**
+     * Remove alerts
+     */
+    public function removeAlerts()
+    {
+        $this->alerts->clear();
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Vehicle
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Vehicle
+     */
+    public function setWarrantyStartDate($creationDate)
+    {
+        $this->warranty_start_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getWarrantyStartDate()
+    {
+        return $this->warranty_start_date ? $this->warranty_start_date->getTimestamp() : null;
+    }
 
 
+    /**
+     * Set creation_date
+     *
+     * @param $creationDate
+     * @return Vehicle
+     */
+    public function setWarrantyStartOdometer($creationDate)
+    {
+        $this->warranty_start_odometer = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return float
+     */
+    public function getWarrantyStartOdometer()
+    {
+        return $this->warranty_start_odometer;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function haveAccess(User $user)
+    {
+        if($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
+            return true;
+        }
+
+        $companyAdmin = $this->company->getAdmin();
+        if($user == $companyAdmin) {
+            return true;
+        }
+
+        if($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
+        return false;
+    }
 }

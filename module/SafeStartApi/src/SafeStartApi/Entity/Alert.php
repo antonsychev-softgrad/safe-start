@@ -39,6 +39,12 @@ class Alert extends BaseEntity
     protected $field;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="alerts")
+     * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
+     **/
+    protected $vehicle;
+
+    /**
      * @ORM\Column(type="text", nullable=true)
      */
     protected $description;
@@ -61,6 +67,19 @@ class Alert extends BaseEntity
      * @ORM\Column(type="string")
      */
     protected $status = 'new';
+
+    /**
+     * @ORM\Column(type="datetime", name="creation_date")
+     */
+    protected $creation_date;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->setCreationDate(new \DateTime());
+    }
 
     /**
      * Get id
@@ -166,6 +185,29 @@ class Alert extends BaseEntity
     }
 
     /**
+     * Set vehicle
+     *
+     * @param \SafeStartApi\Entity\Vehicle $vehicle
+     * @return Alert
+     */
+    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
+    {
+        $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicle
+     *
+     * @return \SafeStartApi\Entity\Vehicle
+     */
+    public function getVehicle()
+    {
+        return $this->vehicle;
+    }
+
+    /**
      * Set field
      *
      * @return Alert
@@ -202,7 +244,8 @@ class Alert extends BaseEntity
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
-            'comments' => $this->getComments()
+            'comments' => $this->getComments(),
+            'creation_date' => $this->getCreationDate()
         );
         return $data;
     }
@@ -212,5 +255,28 @@ class Alert extends BaseEntity
         $src = '';
         if (!empty($this->images)) $src = '/api/image/' . $this->getImages()[0] . '/' . \SafeStartApi\Controller\Plugin\UploadPlugin::THUMBNAIL_SMALL;
         return $src;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return CheckList
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
     }
 }

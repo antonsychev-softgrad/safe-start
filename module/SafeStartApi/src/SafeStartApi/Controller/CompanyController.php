@@ -10,11 +10,6 @@ class CompanyController extends RestrictedAccessRestController
 {
     public function getVehiclesAction()
     {
-        //todo: check access to company
-        /*
-            todo: add json schema
-            if (!$this->_requestIsValid('admin/getcompanies')) return $this->_showBadRequest();
-        */
         $companyId = (int)$this->getRequest()->getQuery('companyId');
         $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
 
@@ -31,8 +26,10 @@ class CompanyController extends RestrictedAccessRestController
         $query->setParameter(1, $company);
         $items = $query->getResult();
 
-        foreach ($items as $item) {
-            $this->answer[] = $item->toMenuArray();
+        foreach ($items as $vehicle) {
+            if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                $this->answer[] = $vehicle->toMenuArray();
+            }
         }
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -84,6 +81,18 @@ class CompanyController extends RestrictedAccessRestController
 
     public function updateVehicleAction()
     {
+        if (isset($this->data->companyId)) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            return $this->_showBadRequest();
+        }
+
         $vehicleId = (int)$this->params('id');
         if ($vehicleId) {
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
@@ -93,25 +102,14 @@ class CompanyController extends RestrictedAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
         } else {
+            if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             $vehicle = new \SafeStartApi\Entity\Vehicle();
             $this->copyVehicleDefFields($vehicle);
         }
 
-        //todo: check access to company
-
-        if (isset($this->data->companyId)) {
-            $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
-            if (!$company) {
-                $this->answer = array(
-                    "errorMessage" => "Company not found."
-                );
-                return $this->AnswerPlugin()->format($this->answer, 404);
-            }
-
-            $vehicle->setCompany($company);
-        }
-
+        $vehicle->setCompany($company);
         $vehicle->setPlantId($this->data->plantId);
         $vehicle->setTitle($this->data->title);
         $vehicle->setType($this->data->type);
@@ -121,6 +119,13 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setProjectNumber($this->data->projectNumber);
         $vehicle->setServiceDueKm($this->data->serviceDueKm);
         $vehicle->setServiceDueHours($this->data->serviceDueHours);
+        if (isset($this->data->warrantyStartOdometer)) $vehicle->setWarrantyStartOdometer($this->data->warrantyStartOdometer);
+        if (isset($this->data->warrantyStartDate)) {
+            $warrantyStartDate = new \DateTime();
+            $warrantyStartDate->setTimestamp((int)$this->data->warrantyStartDate);
+            $vehicle->setWarrantyStartDate($warrantyStartDate);
+        }
+
         $this->em->persist($vehicle);
 
         $this->em->flush();
@@ -145,6 +150,8 @@ class CompanyController extends RestrictedAccessRestController
             );
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
+
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $vehicle->setDeleted(1);
 
@@ -195,6 +202,8 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
         $this->answer = array();
         $query = $this->em->createQuery('SELECT u FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = ?1');
         $query->setParameter(1, $vehicle->getCompany());
@@ -227,6 +236,8 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
         $vehicle->removeResponsibleUsers();
         $vehicle->removeUsers();
 
@@ -254,8 +265,6 @@ class CompanyController extends RestrictedAccessRestController
 
     public function getVehicleChecklistAction()
     {
-        // todo: check access
-
         $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) {
@@ -264,6 +273,8 @@ class CompanyController extends RestrictedAccessRestController
             );
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
+
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
         $query->setParameter(1, $vehicle);
@@ -274,7 +285,6 @@ class CompanyController extends RestrictedAccessRestController
 
     public function updateVehicleChecklistFiledAction()
     {
-        //  todo: check request format;
         $vehicleId = (int)$this->data->vehicleId;
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) {
@@ -283,6 +293,8 @@ class CompanyController extends RestrictedAccessRestController
             );
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
+
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $fieldId = (int)$this->params('id');
         if ($fieldId) {
@@ -324,6 +336,7 @@ class CompanyController extends RestrictedAccessRestController
         $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
+        $field->setAlertCritical((int)$this->data->alert_critical);
         $field->setVehicle($vehicle);
 
         $this->em->persist($field);
@@ -343,8 +356,6 @@ class CompanyController extends RestrictedAccessRestController
 
     public function deleteVehicleChecklistFiledAction()
     {
-        // todo: check access
-
         $fieldId = (int)$this->params('id');
 
         $field = $this->em->find('SafeStartApi\Entity\Field', $fieldId);
@@ -382,7 +393,7 @@ class CompanyController extends RestrictedAccessRestController
         $checkLists = $vehicle->getCheckLists();
 
         if (!empty($checkLists)) {
-            foreach($checkLists as $checkList) {
+            foreach ($checkLists as $checkList) {
                 $this->answer = array_merge($this->answer, $checkList->getAlertsArray());
             }
         }
