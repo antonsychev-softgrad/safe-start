@@ -175,8 +175,6 @@ class AdminController extends AdminAccessRestController
             $field = new \SafeStartApi\Entity\DefaultField();
         }
 
-        $field->setTitle($this->data->title);
-
         if (!empty($this->data->parentId) && $this->data->parentId != "NaN") {
             $parentField = $this->em->find('SafeStartApi\Entity\DefaultField', (int) $this->data->parentId);
             if (!$parentField) {
@@ -195,6 +193,8 @@ class AdminController extends AdminAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 401);
         }
 
+        $field->setTitle($this->data->title);
+        $field->setDescription($this->data->description);
         $field->setType($this->data->type);
         $field->setOrder((int)$this->data->sort_order);
         $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
@@ -203,16 +203,13 @@ class AdminController extends AdminAccessRestController
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
         $field->setAlertCritical((int)$this->data->alert_critical);
-
         $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());
-
-
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getDefaultChecklist";
-        $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'done' => true,

@@ -94,12 +94,18 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
         if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklist" . $vehicle->getId();
 
-        $checklist = $this->GetDataPlugin()->buildChecklist($items);
-
+        if ($cache->hasItem($cashKey)) {
+            $checklist = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+            $query->setParameter(1, $vehicle);
+            $items = $query->getResult();
+            $checklist = $this->GetDataPlugin()->buildChecklist($items);
+            $cache->setItem($cashKey, $checklist);
+        }
 
         $this->answer = array(
             'checklist' => $checklist,

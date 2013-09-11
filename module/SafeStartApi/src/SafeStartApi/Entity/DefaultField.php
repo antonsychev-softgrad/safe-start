@@ -19,7 +19,7 @@ class DefaultField extends BaseEntity
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="DefaultField", mappedBy="parent", cascade={"persist", "remove", "merge"}, orphanRemoval=true)
      */
@@ -37,9 +37,14 @@ class DefaultField extends BaseEntity
     protected $type;
 
     /**
- * @ORM\Column(type="string")
- */
+     * @ORM\Column(type="string")
+     */
     protected $title;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $description;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -112,24 +117,25 @@ class DefaultField extends BaseEntity
     }
 
     /**
-    * Convert the object to an array.
-    *
-    * @return array
-    */
+     * Convert the object to an array.
+     *
+     * @return array
+     */
     public function toArray()
     {
         return array(
             'id' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'description' => (!is_null($this->getDescription())) ? $this->getDescription() : '',
             'text' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
             'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
             'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
-            'enabled' => (int) $this->enabled,
-            'alert_critical' => (int) $this->alert_critical,
-            'additional' => (int) $this->additional,
+            'enabled' => (int)$this->enabled,
+            'alert_critical' => (int)$this->alert_critical,
+            'additional' => (int)$this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null
         );
     }
@@ -143,11 +149,11 @@ class DefaultField extends BaseEntity
     {
         $this->order = (!is_null($this->order)) ? $this->order : 0;
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -163,14 +169,14 @@ class DefaultField extends BaseEntity
     public function setOrder($order)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrder()
     {
@@ -186,14 +192,14 @@ class DefaultField extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -221,6 +227,29 @@ class DefaultField extends BaseEntity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setDescription($title)
+    {
+        $this->description= $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -278,14 +307,14 @@ class DefaultField extends BaseEntity
     public function setTriggerValue($triggerValue)
     {
         $this->trigger_value = $triggerValue;
-    
+
         return $this;
     }
 
     /**
      * Get trigger_value
      *
-     * @return string 
+     * @return string
      */
     public function getTriggerValue()
     {
@@ -301,14 +330,14 @@ class DefaultField extends BaseEntity
     public function setCreationDate($creationDate)
     {
         $this->creation_date = $creationDate;
-    
+
         return $this;
     }
 
     /**
      * Get creation_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreationDate()
     {
@@ -393,14 +422,14 @@ class DefaultField extends BaseEntity
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
-    
+
         return $this;
     }
 
     /**
      * Get deleted
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDeleted()
     {
@@ -416,7 +445,7 @@ class DefaultField extends BaseEntity
     public function addChildren(\SafeStartApi\Entity\DefaultField $child)
     {
         $this->children[] = $child;
-    
+
         return $this;
     }
 
@@ -433,7 +462,7 @@ class DefaultField extends BaseEntity
     /**
      * Get children
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChildren()
     {
@@ -449,7 +478,7 @@ class DefaultField extends BaseEntity
     public function setParent(\SafeStartApi\Entity\DefaultField $parent = null)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
@@ -472,14 +501,14 @@ class DefaultField extends BaseEntity
     public function setAuthor(\SafeStartApi\Entity\User $author = null)
     {
         $this->author = $author;
-    
+
         return $this;
     }
 
     /**
      * Get author
      *
-     * @return \SafeStartApi\Entity\User 
+     * @return \SafeStartApi\Entity\User
      */
     public function getAuthor()
     {

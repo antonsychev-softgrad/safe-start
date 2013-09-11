@@ -47,6 +47,11 @@ class Field extends BaseEntity
     protected $title;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $description;
+
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     protected $alert_title;
@@ -134,14 +139,15 @@ class Field extends BaseEntity
             'id' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'description' => (!is_null($this->getDescription())) ? $this->getDescription() : '',
             'text' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             'sort_order' => (!is_null($this->getOrder())) ? $this->getOrder() : 0,
             'trigger_value' => (!is_null($this->getTriggerValue())) ? $this->getTriggerValue() : '',
             'alert_title' => (!is_null($this->getAlertTitle())) ? $this->getAlertTitle() : '',
             'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
-            'enabled' => (int) $this->enabled,
-            'alert_critical' => (int) $this->alert_critical,
-            'additional' => (int) $this->additional,
+            'enabled' => (int)$this->enabled,
+            'alert_critical' => (int)$this->alert_critical,
+            'additional' => (int)$this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
             'vehicleId' => $this->getVehicle() ? $this->getVehicle()->getId() : null
         );
@@ -256,6 +262,29 @@ class Field extends BaseEntity
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     * @return Field
+     */
+    public function setDescription($title)
+    {
+        $this->description = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
