@@ -10,6 +10,13 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon_16.ico'))
                 ->prependStylesheet($this->basePath() . '/css/app.css'); ?>
 
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load("maps", "3", {
+                other_params: "sensor=false"
+            });
+        </script>
+
         <script>
             var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
         </script>

@@ -196,13 +196,10 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         }
     },
 
-    reloadEventSet: false,
     _reloadStore: function (fieldId) {
         this.fieldId = fieldId;
         this.getNavMain().getStore().loadData();
-        if (this.reloadEventSet) return;
-        this.reloadEventSet = true;
-        this.getNavMain().getStore().addListener('data-load-success', function () {
+        this.getNavMain().getStore().addListener('load', function () {
             // var record = this.getNavMain().getStore().getById(this.fieldId);
             //   this.currentForm.setRecord(record);
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);

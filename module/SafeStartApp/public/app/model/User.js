@@ -20,5 +20,9 @@ Ext.define('SafeStartApp.model.User', {
             {type: 'format', field: 'email', matcher: /\S+@\S+\.\S+/, message: "Wrong email format"},
             {type: 'presence', name: 'firstName', message: "Name is required"}
         ]
+    },
+
+    getFullName: function () {
+        return this.get('firstName') + ' ' + this.get('lastName');
     }
 });

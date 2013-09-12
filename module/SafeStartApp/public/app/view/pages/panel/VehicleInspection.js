@@ -20,23 +20,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
 
-        var submitMsgBox = Ext.create('Ext.MessageBox', {
-            cls: 'sfa-messagebox-confirm',
-            message: 'Please confirm your submission',
-            hidden: true,
-            buttons: [{
-                ui: 'confirm',
-                action: 'confirm',
-                text: 'Confirm'
-            }, {
-                ui: 'action',
-                text: 'Cancel',
-                handler: function (btn) {
-                    btn.up('sheet[cls=sfa-messagebox-confirm]').hide();
-                }
-            }]
-        });
-        this.add(submitMsgBox);
     },
 
     setAlertsStore: function (store) {
@@ -207,6 +190,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 var alert = fieldData.alerts[0];
                 var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
+                    critical: alert.critical,
                     alertDescription: alert.alertDescription,
                     triggerValue: alert.triggerValue,
                     fieldId: fieldData.fieldId,
@@ -269,7 +253,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
                         if (alert !== null) {
                             if (alert.get('triggerValue').match(new RegExp(radio.getValue(), 'i'))) {
-                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                if (alert.get('critical')) {
+                                    Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                }
                                 alert.set('active', true);
                             } else {
                                 alert.set('active', false);
@@ -282,6 +268,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'fieldset',
             alerts: fieldData.alerts,
+            triggerable: true,
             layout: {
                 type: 'hbox',
                 pack: 'center'
@@ -292,7 +279,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             maxWidth: 900,
             width: '100%',
             fieldId: fieldData.fieldId,
-            triggerable: true,
             title: fieldData.fieldName,
             items: optionFields 
         };
@@ -310,13 +296,32 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData) {
+        var me = this;
         return {
             xtype: 'checkboxfield',
             maxWidth: 900,
             width: '100%',
             label: fieldData.fieldName,
             labelWidth: '90%',
-            fieldId: fieldData.fieldId
+            fieldId: fieldData.fieldId,
+            alerts: fieldData.alerts,
+            triggerable: true,
+            listeners: {
+                check: function (checkbox) {
+                    var alert = me.getAlertsStore().findRecord('fieldId', checkbox.config.fieldId);
+
+                    if (alert !== null) {
+                        if (alert.get('triggerValue').match(new RegExp(checkbox.getValue(), 'i'))) {
+                            if (alert.get('critical')) {
+                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                            }
+                            alert.set('active', true);
+                        } else {
+                            alert.set('active', false);
+                        }
+                    }
+                }
+            }
         };
     },
 
@@ -335,15 +340,38 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var reviewCard = this.down('formpanel[name=checklist-card-review]');
         reviewCard.removeAll();
         reviewCard.add(this.createVehicleDetailsView(passedCards));
+        reviewCard.add(this.createGpsView());
         reviewCard.add(this.createAlertsView(alerts));
     },
 
+    createGpsView: function () {
+        return {
+            xtype: 'container',
+            width: '100%',
+            cls: 'sfa-vehicle-inspection-gps',
+            maxWidth: 900,
+            items: [{
+                xtype: 'togglefield',
+                label: 'GPS',
+                labelWidth: 50,
+                listeners: {
+                    change: function(field, slider, thumb, newValue, oldValue) {
+                        var container = field.up('container[cls=sfa-vehicle-inspection-gps]');
+                        if (newValue) {
+                            if (!container.gps) {
+                                container.gps = Ext.create('Ext.util.Geolocation');
+                            }
+                        }
+                    }
+                }
+            }]
+        };
+    },
     createVehicleDetailsView: function (passedCards) {
         var items = [{
             xtype: 'titlebar',
             title: 'Vehicle details'
         }];
-        console.log(passedCards);
         Ext.each(passedCards, function (card) {
             items.push({
                 xtype: 'container',

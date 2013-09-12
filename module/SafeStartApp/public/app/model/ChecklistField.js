@@ -7,6 +7,7 @@ Ext.define('SafeStartApp.model.ChecklistField', {
             {name: 'vehicleId', type: 'int', defaultValue: 0},
             {name: 'enabled', type: 'int', defaultValue: 1},
             {name: 'title', type: 'string'},
+            {name: 'description', type: 'string'},
             {name: 'text', type: 'string'},
             {name: 'type', type: 'string', defaultValue: ''},
             {name: 'sort_order', type: 'int', defaultValue: 1},

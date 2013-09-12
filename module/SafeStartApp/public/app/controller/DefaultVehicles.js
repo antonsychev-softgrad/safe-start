@@ -120,8 +120,6 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         }
         if (includedCards[nextIndex]) {
             checklistPanel.setActiveItem(includedCards[nextIndex]);
-        } else {
-            console.log('submitAction');
         }
     },
 
@@ -193,14 +191,37 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     },
 
     onReviewSubmitBtnTap: function (button) {
-        this.getVehicleInspectionPanel().down('sheet[cls=sfa-messagebox-confirm]').show();
+        var submitMsgBox = Ext.create('Ext.MessageBox', {
+            cls: 'sfa-messagebox-confirm',
+            message: 'Please confirm your submission',
+            buttons: [{
+                ui: 'confirm',
+                action: 'confirm',
+                text: 'Confirm'
+            }, {
+                ui: 'action',
+                text: 'Cancel',
+                handler: function (btn) {
+                    btn.up('sheet[cls=sfa-messagebox-confirm]').destroy();
+                }
+            }]
+        });
+
+        this.getVehicleInspectionPanel().add(submitMsgBox);
     },
 
     onReviewConfirmBtnTap: function (button) {
+        var controller = this;
         var alerts = [];
         var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var checklists = this.getChecklistForms();
         var fieldValues = [];
+        var gpsContainer = vehicleInspectionPanel.down('container[cls=sfa-vehicle-inspection-gps]');
+        var location = '';
+        if (gpsContainer.down('togglefield').getValue() && gpsContainer.gps) {
+            var gps = gpsContainer.gps;
+            location = gps.getLatitude() + ';' + gps.getLongitude();
+        }
         Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
             var alert = alertContaienr.config.alertModel;
             alerts.push({
@@ -252,11 +273,31 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var data = {
             date: Date.now(),
             fields: fieldValues,
-            alerts: alerts
+            alerts: alerts,
+            gps: location
         };
 
+        var navMain = this.getNavMain();
+
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
-            vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').hide();
+            vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
+            window.testMsg = vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]');
+            setTimeout(function () {
+                var hash = result.checklist;
+                var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
+                navMain.getStore().on('load', function () {
+                    var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
+                    navMain.goToNode(inspectionsNode); 
+                    inspectionNode = inspectionsNode.findChild('checkListHash', hash);
+                    if (inspectionNode) {
+                        var active = navMain.getActiveItem();
+                        var index = inspectionsNode.indexOf(inspectionNode);
+                        navMain.fireEvent('itemtap', navMain, active, index, null, inspectionNode);
+                    }
+                }, null, {single: true});
+
+                controller.getNavMain().getStore().load();
+            }, 0);
         });
     },
 
