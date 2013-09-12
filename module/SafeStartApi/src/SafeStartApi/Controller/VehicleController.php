@@ -7,28 +7,8 @@ use SafeStartApi\Base\RestrictedAccessRestController;
 class VehicleController extends RestrictedAccessRestController
 {
 
-    public function checkPlantIdAction()
-    {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
-        if (!$this->_requestIsValid('vehicle/checkplantid')) return $this->_showBadRequest();
-
-        $plantId = $this->data->plantId;
-
-        $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
-        $veh = $vehRep->findBy(array('plantId' => $plantId));
-
-        $inDb = !empty($veh);
-
-        $this->answer = array(
-            'foundInDatabase' => (bool)$inDb,
-        );
-
-        return $this->AnswerPlugin()->format($this->answer);
-    }
-
     public function getListAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getlist')) return $this->_showBadRequest();
 
         $user = $this->authService->getIdentity();
@@ -64,7 +44,6 @@ class VehicleController extends RestrictedAccessRestController
 
     public function getDataByIdAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getinfo')) return $this->_showBadRequest();
 
         $id = (int)$this->params('id');
@@ -85,7 +64,6 @@ class VehicleController extends RestrictedAccessRestController
 
     public function getChecklistAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         if (!$this->_requestIsValid('vehicle/getchecklist')) return $this->_showBadRequest();
 
         $vehicleId = (int)$this->params('id');
@@ -145,10 +123,8 @@ class VehicleController extends RestrictedAccessRestController
         }
     }
 
-
     public function completeChecklistAction()
     {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
         //todo: check why bad request with alerts
         // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
 
@@ -216,8 +192,8 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function getAlertsAction() {
-        if (!$this->authService->hasIdentity()) return $this->_showUnauthorisedRequest();
+    public function getAlertsAction()
+    {
         if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
 
         $vehicleId = (int)$this->params('id');
@@ -246,7 +222,8 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array()) {
+    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array())
+    {
 
         $androidDevices = array();
         $iosDevices = array();

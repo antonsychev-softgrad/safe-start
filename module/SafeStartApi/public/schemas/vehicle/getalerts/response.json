@@ -59,8 +59,8 @@
                                 }
                             },
                             "thumbnail": {
-                                "description": "If Group is additional then true",
-                                "type": "boolean",
+                                "description": "Thumbnail",
+                                "type": "string",
                                 "required": true
                             },
                             "comments": {
@@ -73,13 +73,13 @@
                                     "required": true,
                                     "properties": {
                                         "id": {
-                                            "description": "Group name",
-                                            "type": "string",
+                                            "description": "Comment ID",
+                                            "type": "integer",
                                             "required": true
                                         },
                                         "content": {
-                                            "description": "Group id",
-                                            "type": "integer",
+                                            "description": "Comment content",
+                                            "type": "string",
                                             "required": true
                                         }
                                     }

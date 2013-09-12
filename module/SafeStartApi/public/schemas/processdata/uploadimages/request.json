@@ -8,6 +8,23 @@
             "properties": {
 
             }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "device": {
+                    "description": "Device os (android or ios)",
+                    "type": "string",
+                    "required": false
+                },
+                "deviceId": {
+                    "description": "Unique ID of device (registration id on GSM for Android app or Apple device token)",
+                    "type": "string",
+                    "required": false
+                }
+            }
         }
     }
 }
