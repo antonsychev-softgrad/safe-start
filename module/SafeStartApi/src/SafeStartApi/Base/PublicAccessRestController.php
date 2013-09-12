@@ -9,8 +9,8 @@ class PublicAccessRestController extends RestController
     {
         parent::onDispatchEvent();
 
-        $device = $this->params('device');
-        $deviceId = $this->params('deviceId');
+        $device = $this->data['device'];
+        $deviceId = $this->data['deviceId'];
 
         if(is_null($device) || is_null($deviceId)) {
             throw new Rest401('Access denied');

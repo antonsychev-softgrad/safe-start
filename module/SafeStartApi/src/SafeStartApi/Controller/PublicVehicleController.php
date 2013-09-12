@@ -12,7 +12,7 @@ class PublicVehicleController extends PublicAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/getinfobyplantid')) return $this->_showBadRequest();
 
-        $plantId = (int)$this->params('PlantId');
+        $plantId = (int)$this->data['PlantId'];
         $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         $vehicle = $vehRep->findBy(array('plant_id' => $plantId));
         if(empty($vehicle)) return $this->_showNotFound();
@@ -37,10 +37,12 @@ class PublicVehicleController extends PublicAccessRestController
         if (!$vehicle) {
             $vehicle = new Vehicle();
             $vehicle->setCompany($this->params('company'));
+            /*
             $vehicle->setCompany($this->params('company'));
             $vehicle->setCompany($this->params('company'));
             $vehicle->setCompany($this->params('company'));
             $vehicle->setCompany($this->params('company'));
+            */
             $this->em->persist($vehicle);
         }
 
