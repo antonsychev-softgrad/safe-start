@@ -5,6 +5,7 @@ Ext.define('SafeStartApp.model.Alert', {
             {name: 'id', type: 'int', defaultValue: 0},
             {name: 'title', type: 'string'},
             {name: 'description', type: 'string'},
+            {name: 'alert_description', type: 'string'},
             {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},
             {name: 'status', type: 'string', defaultValue: 'new'}

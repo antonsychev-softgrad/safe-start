@@ -240,6 +240,7 @@ class Alert extends BaseEntity
             'id' => $this->getId(),
             'status' => $this->getStatus(),
             'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
+            'alert_description' => $this->field ? $this->field->getAlertDescription() : '',
             'user' => $this->check_list->getUser()->toInfoArray(),
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
@@ -253,7 +254,7 @@ class Alert extends BaseEntity
     public function getThumbnail()
     {
         $src = '';
-        if (!empty($this->images)) $src = '/api/image/' . $this->getImages()[0] . '/' . \SafeStartApi\Controller\Plugin\UploadPlugin::THUMBNAIL_SMALL;
+        if (!empty($this->images) && isset($this->getImages()[0])) $src = '/api/image/' . $this->getImages()[0] . '/' . \SafeStartApi\Controller\Plugin\UploadPlugin::THUMBNAIL_SMALL;
         return $src;
     }
 

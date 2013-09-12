@@ -66,7 +66,7 @@ return array(
                             ),
                             'defaults' => array(
                                 'controller' => 'Vehicle',
-                                'action' => 'getalerts',
+                                'action' => 'getAlerts',
                             ),
                         ),
                     ),
