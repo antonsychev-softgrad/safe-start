@@ -1,6 +1,6 @@
 <?php
 
-require_once('routes.config.php');
+require(__DIR__  . '/routes.config.php');
 
 return array(
     'params' => array(
@@ -8,7 +8,9 @@ return array(
         'output' => 'json',
         'href' => '/api/',
     ),
-    'router' => $routes,
+    'router' => array(
+        'routes' => $routes,
+    ),
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -36,7 +38,6 @@ return array(
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
             'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
-            'SafeStartApi\Controller\PublicVehicle' => 'SafeStartApi\Controller\PublicVehicleController',
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
