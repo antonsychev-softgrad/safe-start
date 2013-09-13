@@ -118,13 +118,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     },
 
     updateAction: function () {
+        var self = this;
         var values = {};
-        console.log(this.record.getAssociatedData());
         var vehicleId = this.record.getAssociatedData()['vehicle']['id'];
         values.status = this.down('#SafeStartVehicleAlertStatus').getValue();
         values.new_comment = this.down('#SafeStartVehicleAlertNewComment').getValue();
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/alert/' + this.record.get('id') + '/update', values, function (result) {
-            //todo: reload data
+            self.record.set('status', values.status);
+            self.record.raw['comments'].push({
+                    user: SafeStartApp.userModel.data,
+                    content: values.new_comment,
+                    update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
+            });
+            self.down('#SafeStartVehicleAlertComments').setData({comments: self.record.raw['comments']});
+            self.down('#SafeStartVehicleAlertNewComment').setValue('');
         });
     }
 
