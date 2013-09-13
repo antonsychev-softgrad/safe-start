@@ -6,7 +6,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
 
     requires: [
-        'SafeStartApp.store.Alerts'
+        'SafeStartApp.store.Alerts',
+        'SafeStartApp.view.pages.panel.VehicleAlert'
     ],
 
     config: {
@@ -17,6 +18,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 {
                     xtype: 'searchfield',
                     placeHolder: 'Search...',
+                    name: 'search-alert',
                     listeners: {
                         scope: this,
                         clearicontap: function (field) {
@@ -29,6 +31,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 },
                 {
                     xtype: 'selectfield',
+                    name: 'filter-alert-by-type',
                     placeHolder: 'Status',
                     valueField: 'rank',
                     displayField: 'title',
@@ -48,6 +51,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 {
                     xtype: 'button',
                     ui: 'action',
+                    name: 'refresh-alerts',
                     iconCls: 'refresh',
                     handler: function () {
                         this.parent.parent.parent.down('list[name=vehicle-alerts]').getStore().loadData();
@@ -55,7 +59,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 }
 
             ]
+        },
+        listeners: {
+            push: function(view, item) {
+                this.hideFilters();
+            },
+            pop: function(view, item) {
+                this.showFilters();
+            }
         }
+
     },
 
     initialize: function () {
@@ -93,7 +106,22 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
     },
 
     onSelectAlertAction: function(list, index, node, record) {
+        if (this.alertView) this.alertView.destroy();
+        this.alertView = Ext.create('SafeStartApp.view.pages.panel.VehicleAlert');
+        this.alertView.setRecord(record);
+        this.push(this.alertView);
+    },
 
+    hideFilters: function() {
+        this.down('selectfield[name=filter-alert-by-type]').hide();
+        this.down('searchfield[name=search-alert]').hide();
+        this.down('button[name=refresh-alerts]').hide();
+    },
+
+    showFilters: function() {
+        this.down('selectfield[name=filter-alert-by-type]').show();
+        this.down('searchfield[name=search-alert]').show();
+        this.down('button[name=refresh-alerts]').show();
     }
 
 });
