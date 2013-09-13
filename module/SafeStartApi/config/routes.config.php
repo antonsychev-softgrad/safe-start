@@ -287,7 +287,7 @@ $routes = array(
                     'route' => '/image/:hash[/:size][/]',
                     'constraints' => array(
                         'hash' => '[a-zA-Z0-9]+',
-                        'size' => '[0-9]+(x|X)[0-9]+', //todo: regexp for 200x200
+                        'size' => '[0-9]+(x|X)[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Info',

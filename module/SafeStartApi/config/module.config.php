@@ -1,6 +1,6 @@
 <?php
 
-require(__DIR__  . '/routes.config.php');
+require('routes.config.php');
 
 return array(
     'params' => array(
@@ -9,7 +9,7 @@ return array(
         'href' => '/api/',
     ),
     'router' => array(
-        'routes' => $routes,
+        'routes' => $routes
     ),
     'service_manager' => array(
         'abstract_factories' => array(
