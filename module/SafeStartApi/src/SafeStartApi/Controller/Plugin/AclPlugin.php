@@ -49,6 +49,11 @@ class AclPlugin extends AbstractPlugin
                     'action' => 'viewVehiclesPage',
                     'access' => 'allow'
                 ),
+                array(
+                    'resource' => 'adminPanel',
+                    'action' => 'viewAlertsPage',
+                    'access' => 'allow'
+                ),
             ),
             'companyManager' => array(
                 array(

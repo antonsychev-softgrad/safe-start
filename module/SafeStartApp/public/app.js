@@ -137,6 +137,7 @@ Ext.application({
         'pages.Companies',
         'pages.Company',
         'pages.Users',
+        'pages.Alerts',
         'pages.SystemSettings'
     ],
 
