@@ -12,7 +12,8 @@ Ext.define('SafeStartApp.model.Alert', {
         ],
         associations: [
             {type: 'hasMany', model: 'SafeStartApp.model.Comment', name: 'comments'},
-            {type: 'hasOne', model: 'SafeStartApp.model.User', name: 'user'}
+            {type: 'hasOne', model: 'SafeStartApp.model.User', name: 'user'},
+            {type: 'hasOne', model: 'SafeStartApp.model.Vehicle', name: 'vehicle'}
         ]
     }
 });

@@ -245,7 +245,7 @@ class Comment extends BaseEntity
             'user_id' => $this->getUser()->getId(),
             'user' => $this->getUser()->toInfoArray(),
             'item_id' => $this->getEntityId(),
-            'update_date' => $this->getUpdateDate(),
+            'update_date' => $this->getUpdateDate()->getTimestamp(),
             'content' => $this->getContent()
         );
     }

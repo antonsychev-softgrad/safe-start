@@ -14,6 +14,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Alert extends BaseEntity
 {
+    const STATUS_NEW = 'new';
+    const STATUS_CLOSED = 'closed';
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->status = self::STATUS_NEW;
+    }
+
     /**
      * @var string
      */
@@ -66,7 +77,7 @@ class Alert extends BaseEntity
     /**
      * @ORM\Column(type="string")
      */
-    protected $status = 'new';
+    protected $status;
 
     /**
      * @ORM\Column(type="datetime", name="creation_date")
@@ -210,10 +221,15 @@ class Alert extends BaseEntity
     /**
      * Set field
      *
+     * @param $status
+     * @throws \InvalidArgumentException
      * @return Alert
      */
     public function setStatus($status)
     {
+        if (!in_array($status, array(self::STATUS_NEW, self::STATUS_CLOSED))) {
+            throw new \InvalidArgumentException("Invalid alert status");
+        }
         $this->status = $status;
 
         return $this;
@@ -241,6 +257,7 @@ class Alert extends BaseEntity
             'status' => $this->getStatus(),
             'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
             'alert_description' => $this->field ? $this->field->getAlertDescription() : '',
+            'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list->getUser()->toInfoArray(),
             'description' => $this->getDescription(),
             'images' => $this->getImages(),

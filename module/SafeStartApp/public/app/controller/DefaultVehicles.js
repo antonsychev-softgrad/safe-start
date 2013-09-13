@@ -75,10 +75,12 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     },
 
     _reloadStore: function (vehicleId) {
+        this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
         this.getNavMain().getStore().loadData();
-        this.getNavMain().getStore().addListener('data-load-success', function () {
+        this.getNavMain().getStore().addListener('load', function () {
             if (!vehicleId) return;
-            this.currentForm.setRecord(this.getNavMain().getStore().getById(vehicleId));
+            this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(vehicleId));
+            this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(vehicleId + '-info'));
         }, this);
 
     },
@@ -194,17 +196,20 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var submitMsgBox = Ext.create('Ext.MessageBox', {
             cls: 'sfa-messagebox-confirm',
             message: 'Please confirm your submission',
-            buttons: [{
-                ui: 'confirm',
-                action: 'confirm',
-                text: 'Confirm'
-            }, {
-                ui: 'action',
-                text: 'Cancel',
-                handler: function (btn) {
-                    btn.up('sheet[cls=sfa-messagebox-confirm]').destroy();
+            buttons: [
+                {
+                    ui: 'confirm',
+                    action: 'confirm',
+                    text: 'Confirm'
+                },
+                {
+                    ui: 'action',
+                    text: 'Cancel',
+                    handler: function (btn) {
+                        btn.up('sheet[cls=sfa-messagebox-confirm]').destroy();
+                    }
                 }
-            }]
+            ]
         });
 
         this.getVehicleInspectionPanel().add(submitMsgBox);
@@ -231,9 +236,9 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             });
         });
         Ext.each(checklists, function (checklist) {
-            var fields = checklist.query('field'); 
+            var fields = checklist.query('field');
             Ext.each(fields, function (field) {
-                switch(field.xtype) {
+                switch (field.xtype) {
                     case 'checkboxfield':
                         //TODO: unhardcode field value
                         if (field.isChecked()) {
@@ -287,7 +292,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
                 var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
                 navMain.getStore().on('load', function () {
                     var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
-                    navMain.goToNode(inspectionsNode); 
+                    navMain.goToNode(inspectionsNode);
                     inspectionNode = inspectionsNode.findChild('checkListHash', hash);
                     if (inspectionNode) {
                         var active = navMain.getActiveItem();
@@ -301,7 +306,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         });
     },
 
-    showAlerts: function() {
+    showAlerts: function () {
 
     }
 
