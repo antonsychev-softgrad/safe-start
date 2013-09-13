@@ -202,19 +202,37 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
 
-        $vehicleId = (int)$this->params('id');
-        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
-
-        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
-        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
-
         $period = !is_null($this->params('period')) ? $this->params('period') : 0;
         $time = time() - $period;
 
-        $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle = ?1 AND a.creation_date > ?2');
-        $query->setParameter(1, $vehicle);
-        $query->setParameter(2, $time);
-        $items = $query->getResult();
+        if(isset($this->data->id)) {
+            $vehicleId = $this->data->id;
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+            $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle = ?1 AND a.creation_date > ?2');
+            $query->setParameter(1, $vehicle);
+            $query->setParameter(2, $time);
+            $items = $query->getResult();
+
+        } else {
+            $currentUser = \SafeStartApi\Application::getCurrentUser();
+
+            $vehicles = $currentUser->getVehicles();
+            $respVehicles = $currentUser->getResponsibleForVehicles();
+
+            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+            $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
+
+            array_merge($vehicles, $respVehicles);
+
+            $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
+            $query->setParameter(1, $vehicles);
+            $query->setParameter(2, $time);
+            $items = $query->getResult();
+        }
 
         $alerts = array();
         foreach($items as $item) {

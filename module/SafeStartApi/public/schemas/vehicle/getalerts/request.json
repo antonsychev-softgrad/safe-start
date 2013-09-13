@@ -22,6 +22,11 @@
                     "description": "Get alerts for this period in seconds",
                     "type": "integer",
                     "required": false
+                },
+                "vehicleId": {
+                    "description": "Vehicle ID",
+                    "type": "integer",
+                    "required": false
                 }
             }
         }

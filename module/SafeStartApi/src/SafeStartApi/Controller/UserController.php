@@ -10,7 +10,6 @@ use Zend\Authentication\Storage\Session as SessionStorage;
 
 class UserController extends RestController
 {
-
     public function loginAction()
     {
         if (!$this->_requestIsValid('user/login')) return $this->_showBadRequest();

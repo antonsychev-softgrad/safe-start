@@ -66,7 +66,7 @@ $routes = array(
             'get-vehicle-alerts' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/getalerts',
+                    'route' => '/vehicle/getalerts',
                     'constraints' => array(
                         'id' => '[0-9]*',
                     ),

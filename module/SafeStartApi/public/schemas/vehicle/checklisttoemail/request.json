@@ -28,6 +28,23 @@
                     "type": "string",
                     "required": false
                 },
+                "emails": {
+                    "description": "Emails to send",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Email",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "email": {
+                                "description": "Email address",
+                                "type": "string",
+                                "required": true
+                            }
+                        }
+                    }
+                },
                 "plantId": {
                     "description": "Plant Id of vehicle",
                     "type": "string",
