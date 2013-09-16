@@ -21,6 +21,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 tpl: [
                     '<div class="top">',
                     '<div class="headshot" style="background-image:url({thumbnail});"></div>',
+                    '<div class="name">{vehicle.title}' +
+                        '<span>{vehicle.plantId}</span>' +
+                    '</div>'+
                     '<div class="name">{user.firstName} {user.lastName} at {title}' +
                         '<span>{alert_description}</span>' +
                         '<span>{description}</span></div>',

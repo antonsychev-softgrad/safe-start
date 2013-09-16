@@ -61,10 +61,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             ]
         },
         listeners: {
-            push: function(view, item) {
+            push: function (view, item) {
                 this.hideFilters();
             },
-            pop: function(view, item) {
+            pop: function (view, item) {
                 this.showFilters();
             }
         }
@@ -92,41 +92,46 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             cls: 'sfa-alerts',
             store: this.alertsStore,
             listeners: {
-                itemtap: function(list, index, node, record) {
-                   self.onSelectAlertAction(list, index, node, record);
+                itemtap: function (list, index, node, record) {
+                    self.onSelectAlertAction(list, index, node, record);
                 }
             }
         };
     },
 
-    loadList: function (vehicleId) {
+    loadList: function (vehicleId, status) {
         this.vehicleId = vehicleId;
         this.alertsStore.getProxy().setExtraParam('vehicleId', this.vehicleId);
         this.alertsStore.loadData();
     },
 
-    loadCompanyList: function (companyId) {
-        this.vehicleId = companyId;
+    loadCompanyList: function (companyId, status) {
+        this.companyId = companyId;
+        this.status = status;
         this.alertsStore.getProxy().setExtraParam('companyId', this.companyId);
+        if (this.status)  {
+            this.alertsStore.getProxy().setExtraParam('status',  this.status);
+            this.down('selectfield[name=filter-alert-by-type]').hide();
+        }
         this.alertsStore.loadData();
     },
 
-    onSelectAlertAction: function(list, index, node, record) {
+    onSelectAlertAction: function (list, index, node, record) {
         if (this.alertView) this.alertView.destroy();
         this.alertView = Ext.create('SafeStartApp.view.pages.panel.VehicleAlert');
         this.alertView.setRecord(record);
         this.push(this.alertView);
     },
 
-    hideFilters: function() {
+    hideFilters: function () {
         this.down('selectfield[name=filter-alert-by-type]').hide();
         this.down('searchfield[name=search-alert]').hide();
         this.down('button[name=refresh-alerts]').hide();
     },
 
-    showFilters: function() {
+    showFilters: function () {
         this.down('list[name=vehicle-alerts]').deselectAll();
-        this.down('selectfield[name=filter-alert-by-type]').show();
+        if (!this.status) this.down('selectfield[name=filter-alert-by-type]').show();
         this.down('searchfield[name=search-alert]').show();
         this.down('button[name=refresh-alerts]').show();
     }
