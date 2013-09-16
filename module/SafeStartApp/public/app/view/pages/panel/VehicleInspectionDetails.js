@@ -30,6 +30,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 left: 80,
                 text: 'Back',
                 handler: function (btn) {
+                    console.log('test');
                     var panel = btn.up('SafeStartVehicleInspectionDetails');
                     panel.setActiveItem(0);
                 }
@@ -117,7 +118,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         var me = this;
         return {
             xtype: 'container',
-            cls: 'sfa-vehicle-inspection-details-container',
+            cls: 'sfa-vehicle-inspection-details-container2',
             layout: {
                 type: 'hbox',
                 align: 'left',
@@ -217,8 +218,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 case 'datePicker':
                     Ext.each(values, function (value) {
                         if (value.id == field.fieldId) {
-                            var date = new Date(value.value);
-                            items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d H:i:s')));
+                            if (value.value) {
+                                var date = new Date(value.value);
+                                items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d H:i:s')));
+                            } else {
+                                items.push(this.createContainer(field.fieldName, 'N/A'));
+                            }
                         }
                     }, this);
                     break;
