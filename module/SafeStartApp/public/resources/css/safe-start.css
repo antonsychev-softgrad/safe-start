@@ -867,7 +867,7 @@ div.logo {
 
 /* Company -> Vehicle Users */
 .sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical {
-    padding: 0;
+/*    padding: 0;
     border: none;
     background: none;
     -moz-border-radius: 0;
@@ -875,9 +875,9 @@ div.logo {
     -khtml-border-radius: 0;
     -o-border-radius: 0;
     border-radius: 0;
-}
+*/}
 .sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
-    margin: 0;
+    /*margin: 0;*/
 }
 .sfa-vehicle-inspection > div > form > .x-body.x-scroll-view {
     min-height: 46px;
@@ -1043,7 +1043,7 @@ div.logo {
 }
 
 .x-map:before {
-    content: '';
+    /*content: '';*/ 
     position: absolute;
     top: 0;
     left: 0;
