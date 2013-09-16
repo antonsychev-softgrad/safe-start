@@ -213,7 +213,7 @@ class Vehicle extends BaseEntity
                 'id' => $this->getId() . '-inspections',
                 'action' => 'inspections',
                 'text' => 'Inspections',
-                'data' => $this->getInspectionsArray()
+                'leaf' => true
             );
             $menuItems[] = array(
                 'id' => $this->getId() . '-alerts',
