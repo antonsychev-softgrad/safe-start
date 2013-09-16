@@ -385,7 +385,10 @@ class CompanyController extends RestrictedAccessRestController
         $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
-        if (!$vehicle) {
+        $companyId = (int)$this->getRequest()->getQuery('vehicleId');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+
+        if (!$vehicle && !empty($vehicleId)) {
             $this->answer = array(
                 "errorMessage" => "Vehicle not found."
             );
@@ -401,6 +404,44 @@ class CompanyController extends RestrictedAccessRestController
                 $this->answer = array_merge($this->answer, $checkList->getAlertsArray());
             }
         }
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function getNewIncomingAction()
+    {
+        $companyId = (int)$this->params('id');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+        $query->setParameter(1, $company);
+        $vehicles = $query->getResult();
+
+        $alertsCount = 0;
+
+        if (!empty($vehicles)) {
+            foreach ($vehicles as $vehicle) {
+                if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                    $checkLists = $vehicle->getCheckLists();
+                    if (!empty($checkLists)) {
+                        foreach ($checkLists as $checkList) {
+                            $alertsCount += count($checkList->getAlertsArray());
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->answer = array(
+           'alerts' => $alertsCount
+        );
 
         return $this->AnswerPlugin()->format($this->answer);
     }

@@ -15,25 +15,25 @@ SafeStartApp = SafeStartApp || {
     ]
 };
 
-Ext.apply(SafeStartApp,  {
+Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
 
-    AJAX: function(url, data, successCalBack, failureCalBack) {
+    AJAX: function (url, data, successCalBack, failureCalBack, silent) {
         var self = this;
         var meta = {
-            requestId: 'WEB_'+this.getHash(12)
+            requestId: 'WEB_' + this.getHash(12)
         };
         data = data || {test: 1};
-        Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        if (!silent)Ext.Viewport.setMasked({ xtype: 'loadmask' });
         Ext.Ajax.request({
             url: this.baseHref + url,
             params: Ext.encode({
                 meta: meta,
                 data: data
             }),
-            success: function(response){
-                Ext.Viewport.setMasked(false);
+            success: function (response) {
+                if (!silent) Ext.Viewport.setMasked(false);
                 var result = Ext.decode(response.responseText);
                 if (result.meta && result.meta.status == 200 && !parseInt(result.meta.errorCode)) {
                     if (successCalBack && typeof successCalBack == 'function') successCalBack(result.data || {});
@@ -41,25 +41,25 @@ Ext.apply(SafeStartApp,  {
                     self.showRequestFailureInfoMsg(result, failureCalBack);
                 }
             },
-            failure : function(response){
+            failure: function (response) {
                 Ext.Viewport.setMasked(false);
                 self.showRequestFailureInfoMsg(Ext.decode(response.responseText), failureCalBack);
             }
         });
     },
 
-    getHash: function(len, charSet) {
+    getHash: function (len, charSet) {
         len = len || 12;
         charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var randomString = '';
         for (var i = 0; i < len; i++) {
             var randomPoz = Math.floor(Math.random() * charSet.length);
-            randomString += charSet.substring(randomPoz,randomPoz+1);
+            randomString += charSet.substring(randomPoz, randomPoz + 1);
         }
         return randomString;
     },
 
-    showRequestFailureInfoMsg: function(result, failureCalBack) {
+    showRequestFailureInfoMsg: function (result, failureCalBack) {
         var func = Ext.emptyFn();
         if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
         var errorMessage = '';
@@ -67,33 +67,33 @@ Ext.apply(SafeStartApp,  {
         this.showFailureInfoMsg(errorMessage, func);
     },
 
-    showFailureInfoMsg: function(msg, failureCalBack) {
+    showFailureInfoMsg: function (msg, failureCalBack) {
         msg = msg || 'Operation filed';
         Ext.Msg.alert("Server response error", msg, failureCalBack);
     },
 
-    showInfoMsg: function(msg) {
+    showInfoMsg: function (msg) {
         msg = msg || 'Info message'
         Ext.Msg.alert("Info", msg, Ext.emptyFn());
     },
 
-    loadMainMenu: function() {
-        this.AJAX('web-panel/getMainMenu', {}, function(result) {
+    loadMainMenu: function () {
+        this.AJAX('web-panel/getMainMenu', {}, function (result) {
             SafeStartApp.userModel.setData(result.userInfo || {});
-            if(SafeStartApp.userModel.getAssociatedData().company)  SafeStartApp.companyModel.setData(SafeStartApp.userModel.getAssociatedData().company);
+            if (SafeStartApp.userModel.getAssociatedData().company)  SafeStartApp.companyModel.setData(SafeStartApp.userModel.getAssociatedData().company);
             SafeStartApp.setViewPort(result.mainMenu || null);
         });
     },
 
-    setViewPort: function(menu) {
+    setViewPort: function (menu) {
         Ext.Viewport.removeAll(true);
 
         this.currentMenu = [];
 
-        Ext.each(menu || this.defMenu, function(item) {
+        Ext.each(menu || this.defMenu, function (item) {
             SafeStartApp.currentMenu.push(
                 {
-                    xclass: 'SafeStartApp.view.pages.'+item
+                    xclass: 'SafeStartApp.view.pages.' + item
                 }
             )
         }, this);
@@ -110,7 +110,7 @@ Ext.apply(SafeStartApp,  {
         Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
 
         Ext.override('Ext.viewport.Default', {
-            doBlurInput: function(e) {
+            doBlurInput: function (e) {
                 var target = e.target,
                     focusedElement = this.focusedElement;
                 //In IE9/10 browser window loses focus and becomes inactive if focused element is <body>. So we shouldn't call blur for <body>
@@ -180,7 +180,7 @@ Ext.application({
         }
     },
 
-    launch: function() {
+    launch: function () {
         var self = this;
 
         // Destroy the #appLoadingIndicator element
@@ -192,11 +192,11 @@ Ext.application({
         SafeStartApp.loadMainMenu();
     },
 
-    onUpdated: function() {
+    onUpdated: function () {
         Ext.Msg.confirm(
             "Application Update",
             "This application has just successfully been updated to the latest version. Reload now?",
-            function(buttonId) {
+            function (buttonId) {
                 if (buttonId === 'yes') {
                     window.location.reload();
                 }

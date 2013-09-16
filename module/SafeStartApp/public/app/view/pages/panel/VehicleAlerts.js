@@ -105,6 +105,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         this.alertsStore.loadData();
     },
 
+    loadCompanyList: function (companyId) {
+        this.vehicleId = companyId;
+        this.alertsStore.getProxy().setExtraParam('companyId', this.companyId);
+        this.alertsStore.loadData();
+    },
+
     onSelectAlertAction: function(list, index, node, record) {
         if (this.alertView) this.alertView.destroy();
         this.alertView = Ext.create('SafeStartApp.view.pages.panel.VehicleAlert');
