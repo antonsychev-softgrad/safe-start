@@ -222,4 +222,9 @@ return array(
             'password' =>  '',
         )
     ),
+    'requestsLimit' => array(
+        'limitForLoggedInUsers' => 5,
+        'limitForUnloggedUsers' => 1,
+        'limitTime' => 60,
+    ),
 );

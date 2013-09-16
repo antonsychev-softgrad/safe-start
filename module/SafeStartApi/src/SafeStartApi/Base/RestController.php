@@ -7,6 +7,7 @@ use Zend\Session\Container;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
 use Zend\Session\Container as SessionContainer;
+use SafeStartApi\Base\Exception\Rest403;
 
 class RestController extends AbstractActionController
 {
@@ -17,6 +18,7 @@ class RestController extends AbstractActionController
     const EMAIL_ALREADY_EXISTS_ERROR = 4003;
     const EMAIL_INVALID_ERROR = 40004;
     const NOT_FOUND_ERROR = 4004;
+    const REQUESTS_LIMIT_ERROR = 4005;
 
     public $moduleConfig;
 
@@ -52,6 +54,47 @@ class RestController extends AbstractActionController
         \SafeStartApi\Application::setCurrentControllerServiceLocator($this->getServiceLocator());
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
         $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+
+        if(!$this->_checkRequestLimits()) throw new Rest403('Requests limit achieved');
+    }
+
+    protected function _checkRequestLimits()
+    {
+        $limitTime = $this->moduleConfig['requestsLimit']['limitTime'];
+        if($this->authService->hasIdentity()) {
+            $requestLimits = $this->moduleConfig['requestsLimit']['limitForLoggedInUsers'];
+        } else {
+            $requestLimits = $this->moduleConfig['requestsLimit']['limitForUnloggedUsers'];
+        }
+
+        $servParam = $this->request->getServer();
+        $ip = $servParam->get('REMOTE_ADDR', '');
+        $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
+        $device = isset($this->data->device) ? $this->data->device : '';
+
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $ip .'_'. $browser .'_'. $device;
+
+        if ($cache->hasItem($cashKey)) {
+            $statistic = $cache->getItem($cashKey);
+
+            foreach($statistic as $key => $requestTime) {
+                if($requestTime < time() - $limitTime) {
+                    unset($statistic[$key]);
+                }
+            }
+            $requestsCount = count($statistic);
+
+            if($requestsCount >= $requestLimits) {
+                return false;
+            }
+            $statistic[] = time();
+            $cache->setItem($cashKey, $statistic);
+        } else {
+            $statistic = array(time());
+            $cache->setItem($cashKey, $statistic);
+        }
+        return true;
     }
 
     protected function _parseRequestFormat()

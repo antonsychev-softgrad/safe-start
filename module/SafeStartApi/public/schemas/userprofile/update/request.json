@@ -31,6 +31,11 @@
                     "description": "Email",
                     "type": "string",
                     "required": true
+                },
+                "signature": {
+                    "description": "Signature",
+                    "type": "string",
+                    "required": true
                 }
             }
         }
