@@ -14,7 +14,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         title: 'Alert Information',
         baseCls: 'x-show-contact',
         layout: 'vbox',
-
+        scrollable: true,
         items: [
             {
                 id: 'SafeStartVehicleAlertContent',

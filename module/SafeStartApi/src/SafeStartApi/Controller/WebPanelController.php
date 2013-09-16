@@ -24,10 +24,6 @@ class WebPanelController extends RestController
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewAlertsPage')) $mainMenu[] = 'Alerts';
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewSystemSettingsPage')) $mainMenu[] = 'SystemSettings';
 
-       /* if($this->AclPlugin()->isAllowed('userPanel', 'view')) {
-            $mainMenu[] = 'Vehicles';
-        }*/
-
         $mainMenu[] = 'Contact';
 
         $this->answer = array(

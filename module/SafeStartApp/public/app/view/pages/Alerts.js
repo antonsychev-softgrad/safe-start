@@ -6,7 +6,7 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
         'SafeStartApp.store.Alerts'
     ],
 
-    xtype: 'SafeStartMainToolbar',
+    xtype: 'SafeStartAlertsPage',
 
     companyId: 0,
 
