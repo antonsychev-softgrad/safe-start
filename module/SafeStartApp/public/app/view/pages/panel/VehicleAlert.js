@@ -21,8 +21,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 tpl: [
                     '<div class="top">',
                     '<div class="headshot" style="background-image:url({thumbnail});"></div>',
-                    '<div class="name">{user.firstName} {user.lastName} at {title}<span>{alert_description}</span></div>',
-                    '<br/><div class="name"><span>{description}</span></div>',
+                    '<div class="name">{user.firstName} {user.lastName} at {title}' +
+                        '<span>{alert_description}</span>' +
+                        '<span>{description}</span></div>',
                     '</div>'
                 ].join('')
             },
@@ -61,6 +62,19 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 height: 400
             },
             {
+                id: 'SafeStartVehicleAlertComments',
+                tpl: [
+                    '<div class="sfa-alert-comments">',
+                        '<h3>Comments:</h3>',
+                        '<tpl for="comments">',
+                            '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
+                                '<span>{content}</span>',
+                            '</div>',
+                        '</tpl>',
+                    '</div>'
+                ].join('')
+            },
+            {
                 xtype: 'textareafield',
                 id: 'SafeStartVehicleAlertNewComment',
                 label: 'New Comment',
@@ -90,9 +104,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         if (!newRecord) return;
         this.record = newRecord;
         this.down('#SafeStartVehicleAlertContent').setData(newRecord.data);
+        this.down('#SafeStartVehicleAlertComments').setData({comments: this.record.raw['comments']});
         var images = newRecord.get('images');
         if (images.length) {
-            Ext.each(images, function(imageHash) {
+            Ext.each(images, function (imageHash) {
                 this.down('#SafeStartVehicleAlertImages').add({
                     xtype: 'image',
                     src: 'api/image/' + imageHash + '/1024x768'
@@ -102,10 +117,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         this.down('#SafeStartVehicleAlertStatus').setValue(newRecord.get('status'));
     },
 
-    updateAction: function() {
-        var values = [];
-        SafeStartApp.AJAX('vehicle/1/alert/' + this.record.get('id') + '/update', values, function (result) {
-
+    updateAction: function () {
+        var self = this;
+        var values = {};
+        var vehicleId = this.record.getAssociatedData()['vehicle']['id'];
+        values.status = this.down('#SafeStartVehicleAlertStatus').getValue();
+        values.new_comment = this.down('#SafeStartVehicleAlertNewComment').getValue();
+        SafeStartApp.AJAX('vehicle/' + vehicleId + '/alert/' + this.record.get('id') + '/update', values, function (result) {
+            self.record.set('status', values.status);
+            self.record.raw['comments'].push({
+                    user: SafeStartApp.userModel.data,
+                    content: values.new_comment,
+                    update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
+            });
+            self.down('#SafeStartVehicleAlertComments').setData({comments: self.record.raw['comments']});
+            self.down('#SafeStartVehicleAlertNewComment').setValue('');
         });
     }
 

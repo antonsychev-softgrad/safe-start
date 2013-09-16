@@ -955,6 +955,10 @@ div.logo {
     padding: 10px;
 }
 
+.sfa-alert-comments {
+    margin-bottom: 20px;
+}
+
 .sfa-alerts .x-list-item > .x-innerhtml {
     font-weight: bold;
     line-height: 18px

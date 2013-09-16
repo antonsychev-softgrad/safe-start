@@ -119,6 +119,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
     },
 
     showFilters: function() {
+        this.down('list[name=vehicle-alerts]').deselectAll();
         this.down('selectfield[name=filter-alert-by-type]').show();
         this.down('searchfield[name=search-alert]').show();
         this.down('button[name=refresh-alerts]').show();
