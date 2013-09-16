@@ -5,12 +5,14 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\View\Model\ViewModel;
 use Zend\Mail;
 use Zend\Mail\Message;
+use Zend\Mime\Part as MimePart;
+use Zend\Mime\Message as MimeMessage;
 
 class MailPlugin extends AbstractPlugin
 {
     protected $viewModel;
 
-    public function send($subject, $to, $template, $params = array())
+    public function send($subject, $to, $template, $params = array(), $pdfFileName = '')
     {
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
 
@@ -23,6 +25,16 @@ class MailPlugin extends AbstractPlugin
 
         $message = new Message();
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
+
+        if(!empty($pdfFileName)) {
+            $html = new MimeMessage;
+            $fileContent = file_get_contents($pdfFileName);
+            $attachment = new MimePart($fileContent);
+            $attachment->type = 'application/x-pdf';
+            $bodyMessage = new MimePart($html);
+            $bodyMessage->type = 'text/html';
+            $html->setParts(array($bodyMessage, $attachment));
+        }
 
         $message
             ->setSubject($subject)

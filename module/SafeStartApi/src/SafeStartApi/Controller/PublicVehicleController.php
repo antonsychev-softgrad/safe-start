@@ -30,37 +30,43 @@ class PublicVehicleController extends PublicAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/checklisttoemail')) return $this->_showBadRequest();
 
+        $email = $this->data->email;
+
         // save checklist
-        $vehicleId = $this->params('id');
-        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if(!empty($this->data->plantId)) {
+            $plantId = !empty($this->data->plantId) ? $this->data->plantId : 0;
+            $vehicle = $this->em->findBy('SafeStartApi\Entity\Vehicle', array('plantId' => $plantId));
+        } else {
+            $plantId = md5(time());
+            $vehicle = '';
+        }
 
         if (!$vehicle) {
             $vehicle = new Vehicle();
             $vehicle->setCompany($this->data->company);
             $vehicle->setEnabled(1);
-            $vehicle->setPlantId($this->data->plant_id);
-            $vehicle->setProjectName($this->data->project_name);
-            $vehicle->setProjectNumber($this->data->project_number);
-            $vehicle->setRegistrationNumber($this->data->registration_number);
-            $vehicle->setServiceDueHours($this->data->service_due_hours);
-            $vehicle->setServiceDueKm($this->data->service_due_km);
+            $vehicle->setPlantId($plantId);
+            $vehicle->setProjectName($this->data->projectName);
+            $vehicle->setProjectNumber($this->data->projectNumber);
+            $vehicle->setRegistrationNumber($this->data->registrationNumber);
+            $vehicle->setServiceDueHours($this->data->serviceDueHours);
+            $vehicle->setServiceDueKm($this->data->serviceDueKm);
             $vehicle->setTitle($this->data->title);
             $vehicle->setType($this->data->type);
             $this->em->persist($vehicle);
         } else {
             $vehicle->setCompany($this->data->company);
-            $vehicle->setPlantId($this->data->plant_id);
-            $vehicle->setProjectName($this->data->project_name);
-            $vehicle->setProjectNumber($this->data->project_number);
-            $vehicle->setRegistrationNumber($this->data->registration_number);
-            $vehicle->setServiceDueHours($this->data->service_due_hours);
-            $vehicle->setServiceDueKm($this->data->service_due_km);
+            $vehicle->setPlantId($plantId);
+            $vehicle->setProjectName($this->data->projectName);
+            $vehicle->setProjectNumber($this->data->projectNumber);
+            $vehicle->setRegistrationNumber($this->data->registrationNumber);
+            $vehicle->setServiceDueHours($this->data->serviceDueHours);
+            $vehicle->setServiceDueKm($this->data->serviceDueKm);
             $vehicle->setTitle($this->data->title);
             $vehicle->setType($this->data->type);
         }
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
         $items = $query->getResult();
 
         $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
@@ -108,7 +114,18 @@ class PublicVehicleController extends PublicAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+        $pdf = $this->PdfPlugin($checkList->getId(), false);
+
+        $this->MailPlugin()->send(
+            'Checklist',
+            $email,
+            'checklist.phtml',
+            array(
+            ),
+            $pdf
+        );
+
+        //$this->_pushNewChecklistNotification($vehicle, $this->answer);
 
         return $this->AnswerPlugin()->format($this->answer);
     }
