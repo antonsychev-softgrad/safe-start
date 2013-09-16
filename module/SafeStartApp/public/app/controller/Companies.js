@@ -25,6 +25,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             pages: 'SafeStartMainView',
             companyPage: 'SafeStartCompanyPage',
             usersPage: 'SafeStartUsersPage',
+            alertsPage: 'SafeStartAlertsPage',
             navMain: 'SafeStartCompaniesPage > list[name=companies]',
             companyInfoPanel: 'SafeStartCompaniesPage > panel[name=company-info]',
             addCompanyButton: 'SafeStartMainToolbar > button[action=add-company]'
@@ -104,6 +105,7 @@ Ext.define('SafeStartApp.controller.Companies', {
     openSelectedAction: function() {
         this.getCompanyPage().enable();
         this.getUsersPage().enable();
+        this.getAlertsPage().enable();
         this.getPages().setActiveItem(1);
     },
 

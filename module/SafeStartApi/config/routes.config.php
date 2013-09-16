@@ -361,6 +361,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-company-new-incoming' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/company/:id/get-new-incoming',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'getNewIncoming',
+                    ),
+                ),
+            ),
         ),
     ),
 );

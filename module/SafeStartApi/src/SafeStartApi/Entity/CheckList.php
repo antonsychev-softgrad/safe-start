@@ -321,12 +321,19 @@ class CheckList extends BaseEntity
         return $this->alerts;
     }
 
-    public function getAlertsArray()
+    public function getAlertsArray($filters = array())
     {
         $alerts = array();
         if (!empty($this->alerts)) {
             foreach($this->alerts as $alert) {
-                $alerts[] = $alert->toArray();
+                //todo: probably we will need more filters here and method should be refactored
+                if (isset($filters['status']) && !empty($filters['status'])) {
+                    if ($filters['status'] == $alert->getStatus()) {
+                        $alerts[] = $alert->toArray();
+                    }
+                } else {
+                    $alerts[] = $alert->toArray();
+                }
             }
         }
 

@@ -382,25 +382,108 @@ class CompanyController extends RestrictedAccessRestController
 
     public function getVehicleAlertsAction()
     {
-        $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
-        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        // filters
+        $filters = array();
+        $filters['status'] = $this->getRequest()->getQuery('status');
 
-        if (!$vehicle) {
-            $this->answer = array(
-                "errorMessage" => "Vehicle not found."
-            );
-            return $this->AnswerPlugin()->format($this->answer, 404);
+        $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
+        if (!empty($vehicleId)) {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) {
+                $this->answer = array(
+                    "errorMessage" => "Vehicle not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $this->answer = $this->getAlertsByVehicle($vehicle, $filters);
+            return $this->AnswerPlugin()->format($this->answer);
         }
 
-        $this->answer = array();
+
+        $companyId = (int)$this->getRequest()->getQuery('companyId');
+        if (!empty($companyId)) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Vehicle not found."
+                );
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+            $this->answer = $this->getAlertsByCompany($company, $filters);
+            return $this->AnswerPlugin()->format($this->answer);
+        }
+
+        return $this->_showBadRequest();
+    }
+
+    private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())
+    {
+        $data = array();
 
         $checkLists = $vehicle->getCheckLists();
 
         if (!empty($checkLists)) {
             foreach ($checkLists as $checkList) {
-                $this->answer = array_merge($this->answer, $checkList->getAlertsArray());
+                $data = array_merge($data, $checkList->getAlertsArray($filters));
             }
         }
+
+        return $data;
+    }
+
+    private function getAlertsByCompany(\SafeStartApi\Entity\Company $company, $filters = array())
+    {
+        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+        $query->setParameter(1, $company);
+        $vehicles = $query->getResult();
+        $data = array();
+
+        if (!empty($vehicles)) {
+            foreach ($vehicles as $vehicle) {
+                if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                    $data = array_merge($data, $this->getAlertsByVehicle($vehicle, $filters));
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    public function getNewIncomingAction()
+    {
+        $companyId = (int)$this->params('id');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+        $query->setParameter(1, $company);
+        $vehicles = $query->getResult();
+
+        $alertsCount = 0;
+
+        if (!empty($vehicles)) {
+            foreach ($vehicles as $vehicle) {
+                if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                    $checkLists = $vehicle->getCheckLists();
+                    if (!empty($checkLists)) {
+                        foreach ($checkLists as $checkList) {
+                            $alertsCount += count($checkList->getAlertsArray(array('status' => 'new')));
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->answer = array(
+            'alerts' => $alertsCount
+        );
 
         return $this->AnswerPlugin()->format($this->answer);
     }

@@ -192,7 +192,7 @@ class Vehicle extends BaseEntity
      * @return array
      */
     public function toMenuArray() {
-        $vehicleData = $this->toArray();
+        $vehicleData = $this->toInfoArray();
         $vehicleData['text'] = $vehicleData['title'];
         $menuItems = array();
         $user = \SafeStartApi\Application::getCurrentUser();

@@ -3,19 +3,19 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Main',
-        'SafeStartApp.store.Alerts'
+        'SafeStartApp.view.pages.panel.VehicleAlerts'
     ],
 
-    xtype: 'SafeStartMainToolbar',
+    xtype: 'SafeStartAlertsPage',
 
     companyId: 0,
 
     config: {
         title: 'Alerts',
+        id: 'SafeStartAlertsPageTab',
         iconCls: 'favorites',
         styleHtmlContent: true,
         layout: 'hbox',
-        badgeText: '0',
         items: [
 
         ],
@@ -40,10 +40,12 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
 
         this.add(this.getInfoPanel());
 
-        self.updateAlertsBadge();
-        setInterval(function(){ self.updateAlertsBadge(); }, 10000);
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) {
+            this.disable();
+            return;
+        }
 
-        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) this.disable();
+        SafeStartApp.app.getController('Company').updateAlertsBadge();
     },
 
     getInfoPanel: function() {
@@ -54,7 +56,11 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
             layout: 'card',
             minWidth: 150,
             flex: 1,
-            scrollable: true
+            items: [
+                {
+                    xtype: 'SafeStartVehicleAlertsPanel'
+                }
+            ]
         };
     },
 
@@ -62,12 +68,8 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
-    },
-
-    updateAlertsBadge: function() {
-        this.setBadgeText('5');
-        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
-
+        // we need only new alerts
+        this.down('SafeStartVehicleAlertsPanel').loadCompanyList(this.companyId, 'new');
     }
 
 });
