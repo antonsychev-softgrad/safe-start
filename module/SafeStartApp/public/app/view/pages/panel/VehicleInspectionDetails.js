@@ -151,6 +151,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                             },
                             listeners: {
                                 maprender: function (mapCmp) {
+                                    console.log('mapRender');
                                     mapCmp.marker = new google.maps.Marker({
                                         position: position,
                                         title: 'Vehicle Inspection',

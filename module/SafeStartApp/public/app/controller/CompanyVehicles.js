@@ -61,6 +61,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 break;
             case 'inspections':
                 this.getInfoPanel().setActiveItem(this.getVehicleInspectionsPanel());
+                this.getVehicleInspectionsPanel().loadList(arguments[4].parentNode);
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
