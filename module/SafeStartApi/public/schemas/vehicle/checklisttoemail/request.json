@@ -1,0 +1,155 @@
+{
+    "description": "Send checklist to email request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "device": {
+                    "description": "Device os (android or ios)",
+                    "type": "string",
+                    "required": false
+                },
+                "deviceId": {
+                    "description": "Unique ID of device (registration id on GSM for Android app or Apple device token)",
+                    "type": "string",
+                    "required": false
+                },
+                "emails": {
+                    "description": "Emails to send",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Email",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "email": {
+                                "description": "Email address",
+                                "type": "string",
+                                "required": true
+                            }
+                        }
+                    }
+                },
+                "plantId": {
+                    "description": "Plant Id of vehicle",
+                    "type": "string",
+                    "required": true
+                },
+                "vehicleType": {
+                    "description": "Type of vehicle",
+                    "type": "string",
+                    "required": true
+                },
+                "registrationNumber": {
+                    "description": "Registration number of vehicle",
+                    "type": "string",
+                    "required": true
+                },
+                "title": {
+                    "description": "Title of vehicle",
+                    "type": "string",
+                    "required": true
+                },
+                "projectNumber": {
+                    "description": "Project number",
+                    "type": "integer",
+                    "required": true
+                },
+                "serviceDueKm": {
+                    "description": "Service due Km",
+                    "type": "integer",
+                    "required": true
+                },
+                "serviceDueHours": {
+                    "description": "Service due hours",
+                    "type": "integer",
+                    "required": true
+                },
+                "creationDate": {
+                    "description": "Creation date",
+                    "type": "integer",
+                    "required": true
+                },
+                "fields": {
+                    "description": "Fields with data",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Field",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "id": {
+                                "description": "Field id",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "value": {
+                                "description": "Field value",
+                                "type": "string",
+                                "required": false
+                            }
+                        }
+                    }
+                },
+                "alerts": {
+                    "description": "Alerts",
+                    "type": "array",
+                    "required": false,
+                    "items": {
+                        "description": "Field alert",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "fieldId": {
+                                "description": "Field ID",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "comment": {
+                                "description": "Comment",
+                                "type": "string",
+                                "required": false
+                            },
+                            "images": {
+                                "description": "Photo's",
+                                "type": "array",
+                                "required": false,
+                                "items": {
+                                    "description": "Image name (e.g. file_name or file_name.ext)",
+                                    "type": "string",
+                                    "required": true
+                                }
+                            }
+                        }
+                    }
+                },
+                "gps": {
+                    "description": "GPS coords",
+                    "type": "string",
+                    "required": false
+                },
+                "odometer": {
+                    "description": "Current Odometer",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        }
+    }
+}

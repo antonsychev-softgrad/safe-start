@@ -1,5 +1,5 @@
 {
-    "description": "Check PlantId response",
+    "description": "Send checklist to email response",
     "type": "object",
     "properties": {
         "meta": {
@@ -19,11 +19,6 @@
             "type": "object",
             "required": true,
             "properties": {
-                "foundInDatabase": {
-                    "description": "If PlantId found in DB then return 1, else return 0",
-                    "type": "boolean",
-                    "required": true
-                }
             }
         }
     }

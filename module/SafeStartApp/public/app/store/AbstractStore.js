@@ -22,10 +22,12 @@ Ext.define('SafeStartApp.store.AbstractStore', {
                     this.fireEvent('data-load-failure', this);
                 } else if (operation.getResponse() && operation.getResponse().responseText) {
                     var result = Ext.decode(operation.getResponse().responseText);
-                    if (result.meta && parseInt(result.meta.errorCode)) {
+                    if (result.meta && (parseInt(result.meta.errorCode) != 0)) {
                         if (result.data && result.data.errorMessage) SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ': ' +result.data.errorMessage);
                         else SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ':Operation filed');
-                        this.fireEvent('data-load-failure', this);
+                        this.fireEvent( 'data-load-failure', this);
+                    } else {
+                        this.fireEvent('data-load-success', this);
                     }
                 } else {
                     this.fireEvent('data-load-success', this);

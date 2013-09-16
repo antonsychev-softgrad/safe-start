@@ -22,6 +22,16 @@
                     "description": "Checklist Id or hash for PDF data in Database",
                     "type": "string",
                     "required": true
+                },
+                "device": {
+                    "description": "Device os (android or ios)",
+                    "type": "string",
+                    "required": false
+                },
+                "deviceId": {
+                    "description": "Unique ID of device (registration id on GSM for Android app or Apple device token)",
+                    "type": "string",
+                    "required": false
                 }
             }
         }

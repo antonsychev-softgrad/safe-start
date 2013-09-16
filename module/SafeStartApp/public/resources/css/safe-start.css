@@ -950,3 +950,117 @@ div.logo {
     }
 }
 
+/* Alerts */
+.sfa-alerts {
+    padding: 10px;
+}
+
+.sfa-alert-comments {
+    margin-bottom: 20px;
+}
+
+.sfa-alerts .x-list-item > .x-innerhtml {
+    font-weight: bold;
+    line-height: 18px
+}
+
+.sfa-alerts .x-list-item > .x-innerhtml > span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666
+}
+
+.sfa-alerts .headshot {
+    float: left;
+    height: 37px;
+    width: 37px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center center;
+    background: #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6)
+}
+
+.sfa-alerts .x-item-pressed, .sfa-alerts .x-item-selected {
+    border-top-color: #d1d1d1 !important
+}
+
+.x-show-contact {
+    background: #EEEEEE
+}
+
+.x-show-contact .top {
+    padding: 22px;
+    height: 100px
+}
+
+.x-show-contact .top > * {
+    float: left
+}
+
+.x-show-contact .top .headshot {
+    height: 60px;
+    width: 60px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center center;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.4)
+}
+
+.x-show-contact .top .name {
+    width: 195px;
+    padding-top: 0;
+    font-size: 22px;
+    font-weight: bold
+}
+
+.x-show-contact .top .name span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666
+}
+
+.x-show-contact .top .name a:link {
+    color: #3f9b26;
+    text-decoration: none
+}
+
+.x-map {
+    position: relative
+}
+
+.x-map:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.4)
+}
+
+.x-toolbar-inner .x-layout-hbox {
+    position: relative
+}
+
+.x-toolbar-inner .x-layout-hbox #editButton, .x-toolbar-inner .x-layout-hbox #saveButton {
+    position: absolute;
+    right: 0;
+    top: .4em
+}
+
+

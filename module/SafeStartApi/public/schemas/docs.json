@@ -66,22 +66,6 @@
                 }
             }
         },
-        "/api/vehicle/checkPlantId": {
-            "description": "Check is PlantID in Database",
-            "type": "object",
-            "properties": {
-                "request": {
-                    "properties": {
-                        "$ref": "vehicle/checkplantid/request.json"
-                    }
-                },
-                "response": {
-                    "properties": {
-                        "$ref": "vehicle/checkplantid/response.json"
-                    }
-                }
-            }
-        },
         "/api/vehicle/getList": {
             "description": "Get vehicles list of authorised user",
             "type": "object",
@@ -114,6 +98,22 @@
                 }
             }
         },
+        "/api/vehicle/[id]/getInfoByPlantId": {
+            "description": "Get vehicle info by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getinfobyplantid/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getinfobyplantid/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/[id]/getChecklist": {
             "description": "Get vehicle checklist by vehicle ID",
             "type": "object",
@@ -142,6 +142,22 @@
                 "response": {
                     "properties": {
                         "$ref": "vehicle/completechecklist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/ChecklistToEmail": {
+            "description": "Send checklist to Email",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/checklisttoemail/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/checklisttoemail/response.json"
                     }
                 }
             }

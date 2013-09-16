@@ -309,8 +309,6 @@ class CompanyController extends RestrictedAccessRestController
             $field = new \SafeStartApi\Entity\Field();
         }
 
-        $field->setTitle($this->data->title);
-
         if (!empty($this->data->parentId) && $this->data->parentId != "NaN") {
             $parentField = $this->em->find('SafeStartApi\Entity\Field', (int)$this->data->parentId);
             if (!$parentField) {
@@ -329,6 +327,8 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 401);
         }
 
+        $field->setTitle($this->data->title);
+        $field->setDescription($this->data->description);
         $field->setType($this->data->type);
         $field->setOrder((int)$this->data->sort_order);
         $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
@@ -344,6 +344,10 @@ class CompanyController extends RestrictedAccessRestController
 
 
         $this->em->flush();
+
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklist" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'done' => true,

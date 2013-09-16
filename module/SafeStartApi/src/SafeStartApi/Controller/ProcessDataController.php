@@ -2,9 +2,9 @@
 
 namespace SafeStartApi\Controller;
 
-use SafeStartApi\Base\RestrictedAccessRestController;
+use SafeStartApi\Base\PublicAccessRestController;
 
-class ProcessDataController extends RestrictedAccessRestController
+class ProcessDataController extends PublicAccessRestController
 {
     public function uploadImagesAction() {
         $return = $this->UploadPlugin(array('param_name'=>'image'))->post();

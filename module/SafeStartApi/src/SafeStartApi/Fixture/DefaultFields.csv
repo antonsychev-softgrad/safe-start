@@ -1,84 +1,84 @@
-id;parent_id;vehicle_id;author_id;type;title;alert_title;alert_description;trigger_value;sort_order;creation_date;enabled;deleted;additional
-1;;1;;root;Daily inspection checklist safety;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-2;;1;;root;Daily inspection checklist cabin;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-3;;1;;root;Daily inspection checklist structural;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-4;;1;;root;Daily inspection checklist mechanical;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-5;;1;;root;Daily inspection checklist trailer;;Description of vehicle fault should be here;;5;2013-09-09;1;0;1
-58;;1;;root;Daily inspection checklist mobile crane;;Description of vehicle fault should be here;;7;2013-09-09;1;0;1
-6;;1;;root;Auxiliary motor;;Description of vehicle fault should be here;;6;2013-09-09;1;0;1
-67;;1;;root;Daily inspection checklist earthmoving plant;;Description of vehicle fault should be here;;8;2013-09-09;1;0;1
-74;;1;;root;Daily inspection checklist elevated work platform;;Description of vehicle fault should be here;;9;2013-09-09;1;0;1
-7;1;1;;radio;Is the vehicle stable?;Danger. Please secure the vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-09;1;0;0
-8;1;1;;radio;Is the operators manual in the vehicle?;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-9;1;1;;radio;Are you authorised in the use of this vehicle?;Danger. Do not inspect any vehicle unless you are authorised;Description of vehicle fault should be here;no;3;2013-09-09;1;0;0
-10;1;1;;radio;Is the first aid kit present and fully stocked?;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-11;1;1;;radio;Is the fire extinguisher present?;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-12;1;1;;datePicker;Date of next inspection- fire extinguisher;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-13;1;1;;radio;Is the vehicle clean and all items secure?;;Description of vehicle fault should be here;;7;2013-09-09;1;0;0
-14;1;1;;radio;Are the safety tools present? (Jack, Wheel brace, glass breaker);;Description of vehicle fault should be here;;8;2013-09-09;1;0;0
-15;2;1;;group;Are the following items operating as designed?;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-16;15;1;;checkbox;Lights and indicators;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-17;15;1;;checkbox;Warning alarms and horn;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-18;15;1;;checkbox;Gauges;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-19;15;1;;checkbox;Windscreen wipers;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-20;15;1;;checkbox;Two-way radio;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-21;15;1;;checkbox;Seatbelt;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-22;15;1;;checkbox;Air conditioning;;Description of vehicle fault should be here;;7;2013-09-09;1;0;0
-23;3;1;;radio;Is the vehicle free of damage?;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-24;3;1;;radio;Are all safety guards in place?;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-25;3;1;;radio;Are the tyres correctly inflated with good tread and wheel nuts tight?;;Description of vehicle fault should be here;no;3;2013-09-09;1;0;1
-26;25;1;;radio;Are you authorised to inflate or change tyres?;Do not work on tyres unless authorised;Description of vehicle fault should be here;no;4;2013-09-09;1;0;0
-27;3;1;;radio;Is the windscreen and mirrors clean and free of damage?;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-28;4;1;;radio;Have you isolated the vehicle?;Isolate vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-09;1;0;0
-29;4;1;;group;Are the fluid levels acceptable?;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-30;29;1;;checkbox;Water;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-31;29;1;;checkbox;Hydraulic;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-32;29;1;;checkbox;Brake;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-33;29;1;;checkbox;Coolant;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-34;29;1;;checkbox;Transmission;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-35;29;1;;checkbox;Battery;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-36;4;1;;radio;Are the fan and drive belts in good working order?;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-37;4;1;;radio;Has the daily greasing been carried out?;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-38;4;1;;radio;Does the vehicle start?;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-39;4;1;;radio;Is the steering functioning properly?;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-40;4;1;;radio;Do the foot and hand brakes work properly?;;Description of vehicle fault should be here;;7;2013-09-09;1;0;0
-41;5;1;;text;Plant ID;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-42;5;1;;text;Type of trailer;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-43;5;1;;datePicker;Registration expiry;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-44;5;1;;radio;Is the trailer stable?;Please secure the vehicle before continuing;Description of vehicle fault should be here;no;4;2013-09-09;1;0;0
-45;5;1;;radio;Is the trailer free of damage?;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-46;5;1;;radio;Are all guards in place?;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-47;5;1;;radio;Are the tyres correctly inflated, in good working order with wheel nuts tightened?;;Description of vehicle fault should be here;no;7;2013-09-09;1;0;1
-48;5;1;;radio;Is the tow hitch free of damage and greased if necessary?;;Description of vehicle fault should be here;;9;2013-09-09;1;0;0
-49;5;1;;radio;Are all lights and indicators functioning?;;Description of vehicle fault should be here;;10;2013-09-09;1;0;0
-50;5;1;;radio;Are electrical cables or hydraulic hoses free of damage?;;Description of vehicle fault should be here;;11;2013-09-09;1;0;0
-51;47;1;;radio;Are you authorised to inflate/change tyres?;Do not work on tyres unless authorised;Description of vehicle fault should be here;no;8;2013-09-09;1;0;0
-52;6;1;;text;Hours;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-53;6;1;;radio;Is the motor housed correctly and free of damage?;;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-54;6;1;;radio;Are all guards fuel levels acceptable?;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-55;6;1;;radio;Are all hoses fitted correctly and free from leaks? (Pump motors);;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-56;6;1;;radio;Test the Residual Current Device. Does it function as designed? (Electrical generators);Do not operate electrical equipment;Description of vehicle fault should be here;no;5;2013-09-09;1;0;0
-57;6;1;;radio;Does the motor start?;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-59;58;1;;radio;Is the data plate intact and legible?;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-60;58;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-61;58;1;;radio;Are outriggers and their locking mechanism working properly?;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-62;58;1;;radio;Is the slew ring or articulation point free of damage?;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-63;58;1;;radio;Is the load cell, limiter and anti-two block working properly?;;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-64;58;1;;radio;Are all welds, boom sections and other structural elements free of damage?;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-65;58;1;;radio;Are wire rope, sheaves, hook and wear pads in good working order?;;Description of vehicle fault should be here;;7;2013-09-09;1;0;0
-66;58;1;;radio;Are all bolts, locking pins and guides in place?;;Description of vehicle fault should be here;;8;2013-09-09;1;0;0
-68;67;1;;radio;Is the data plate intact and legible?;;Description of vehicle fault should be here;;1;2013-09-09;1;0;0
-69;67;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Description of vehicle fault should be here;;2;2013-09-09;1;0;0
-70;67;1;;radio;Are all welds, booms sections and other structural elements free of damage?;;Description of vehicle fault should be here;;3;2013-09-09;1;0;0
-71;67;1;;radio;Is the slew ring or articulation point free of damage?;;Description of vehicle fault should be here;;4;2013-09-09;1;0;0
-72;67;1;;radio;Are the ground excavating tools in good working order? (Bucket, cutting edge, augers);;Description of vehicle fault should be here;;5;2013-09-09;1;0;0
-73;67;1;;radio;Are all bolts, locking pins and guides in place?;;Description of vehicle fault should be here;;6;2013-09-09;1;0;0
-75;74;1;;radio;Are the ground conditions suitable?;Do not continue if ground conditions are not suitable;Ground conditions are not suitable;no;1;2013-09-09;1;0;0
-76;74;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Ground conditions are not suitable;;2;2013-09-09;1;0;0
-77;74;1;;radio;Are the outriggers and their locking mechanism working properly?;;Ground conditions are not suitable;;3;2013-09-09;1;0;0
-78;74;1;;radio;Is the slew ring free of damage?;;Ground conditions are not suitable;;4;2013-09-09;1;0;0
-79;74;1;;radio;Are all welds, boom sections and other structural elements free of damage?;;Ground conditions are not suitable;;5;2013-09-09;1;0;0
-80;74;1;;radio;Are the attachment points, emergency descent device and handrails in place?;;Ground conditions are not suitable;;6;2013-09-09;1;0;0
-81;74;1;;radio;Have the secondary ground controls and communication methods been checked?;;Ground conditions are not suitable;;7;2013-09-09;1;0;0
-82;74;1;;radio;Is the load sensors and wind meter working properly?;;Ground conditions are not suitable;;8;2013-09-09;1;0;0
-83;74;1;;radio;Are all bolts, locking pins and guides in place?;;Ground conditions are not suitable;;9;2013-09-09;1;0;0
+id;parent_id;vehicle_id;author_id;type;title;alert_title;alert_description;trigger_value;sort_order;creation_date;enabled;alert_critical;deleted;additional
+1;;1;;root;Safety;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+2;;1;;root;Cabin;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+3;;1;;root;Structural;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
+4;;1;;root;Mechanical;;Description of vehicle fault should be here;;4;2013-09-10;1;0;0;0
+5;;1;;root;Trailer;;Description of vehicle fault should be here;;5;2013-09-10;1;0;0;1
+6;;1;;root;Crane;;Description of vehicle fault should be here;;7;2013-09-10;1;0;0;1
+7;;1;;root;Auxiliary motor;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;1
+8;;1;;root;Earthmoving plant;;Description of vehicle fault should be here;;8;2013-09-10;1;0;0;1
+9;;1;;root;Work platform;;Description of vehicle fault should be here;;9;2013-09-10;1;0;0;1
+10;1;1;;radio;Is the vehicle stable?;Please secure the vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-10;1;1;0;0
+11;1;1;;radio;Is the operators manual in the vehicle?;;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+12;1;1;;radio;Are you authorised in the use of this vehicle?;Do not inspect any vehicle unless you are authorised;Description of vehicle fault should be here;no;3;2013-09-10;1;1;0;0
+13;1;1;;radio;Is the first aid kit present and fully stocked?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+14;1;1;;radio;Is the fire extinguisher present?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+15;1;1;;datePicker;Date of next inspection- fire extinguisher;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;0
+16;1;1;;radio;Is the vehicle clean and all items secure?;;Description of vehicle fault should be here;no;7;2013-09-10;1;0;0;0
+17;1;1;;radio;Are the safety tools present? (Jack, Wheel brace, glass breaker);;Description of vehicle fault should be here;no;8;2013-09-10;1;0;0;0
+18;2;1;;group;Are the following items operating as designed?;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+19;18;1;;checkbox;Lights and indicators;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+20;18;1;;checkbox;Warning alarms and horn;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+21;18;1;;checkbox;Gauges;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
+22;18;1;;checkbox;Windscreen wipers;;Description of vehicle fault should be here;;4;2013-09-10;1;0;0;0
+23;18;1;;checkbox;Two-way radio;;Description of vehicle fault should be here;;5;2013-09-10;1;0;0;0
+24;18;1;;checkbox;Seatbelt;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;0
+25;18;1;;checkbox;Air conditioning;;Description of vehicle fault should be here;;7;2013-09-10;1;0;0;0
+26;3;1;;radio;Is the vehicle free of damage?;;Description of vehicle fault should be here;no;1;2013-09-10;1;0;0;0
+27;3;1;;radio;Are all safety guards in place?;;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+28;3;1;;radio;Are the tyres correctly inflated with good tread and wheel nuts tight?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;1
+29;28;1;;radio;Are you authorised to inflate or change tyres?;Do not work on tyres unless authorised;Description of vehicle fault should be here;no;4;2013-09-10;1;1;0;0
+30;3;1;;radio;Is the windscreen and mirrors clean and free of damage?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+31;4;1;;radio;Have you isolated the vehicle?;Isolate vehicle before continuing;Description of vehicle fault should be here;no;1;2013-09-10;1;1;0;0
+32;4;1;;group;Are the fluid levels acceptable?;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+33;32;1;;checkbox;Water;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+34;32;1;;checkbox;Hydraulic;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+35;32;1;;checkbox;Brake;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
+36;32;1;;checkbox;Coolant;;Description of vehicle fault should be here;;4;2013-09-10;1;0;0;0
+37;32;1;;checkbox;Transmission;;Description of vehicle fault should be here;;5;2013-09-10;1;0;0;0
+38;32;1;;checkbox;Battery;;Description of vehicle fault should be here;;6;2013-09-10;1;0;0;0
+39;4;1;;radio;Are the fan and drive belts in good working order?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;0
+40;4;1;;radio;Has the daily greasing been carried out?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+41;4;1;;radio;Does the vehicle start?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+42;4;1;;radio;Is the steering functioning properly?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+43;4;1;;radio;Do the foot and hand brakes work properly?;;Description of vehicle fault should be here;no;7;2013-09-10;1;0;0;0
+44;5;1;;text;Plant ID;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+45;5;1;;text;Type of trailer;;Description of vehicle fault should be here;;2;2013-09-10;1;0;0;0
+46;5;1;;datePicker;Registration expiry;;Description of vehicle fault should be here;;3;2013-09-10;1;0;0;0
+47;5;1;;radio;Is the trailer stable?;Please secure the vehicle before continuing;Description of vehicle fault should be here;no;4;2013-09-10;1;1;0;0
+48;5;1;;radio;Is the trailer free of damage?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+49;5;1;;radio;Are all guards in place?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+50;5;1;;radio;Are the tyres correctly inflated, in good working order with wheel nuts tightened?;;Description of vehicle fault should be here;no;7;2013-09-10;1;0;0;1
+51;5;1;;radio;Is the tow hitch free of damage and greased if necessary?;;Description of vehicle fault should be here;no;9;2013-09-10;1;0;0;0
+52;5;1;;radio;Are all lights and indicators functioning?;;Description of vehicle fault should be here;no;10;2013-09-10;1;0;0;0
+53;5;1;;radio;Are electrical cables or hydraulic hoses free of damage?;;Description of vehicle fault should be here;no;11;2013-09-10;1;0;0;0
+54;50;1;;radio;Are you authorised to inflate/change tyres?;Do not work on tyres unless authorised;Description of vehicle fault should be here;no;8;2013-09-10;1;1;0;0
+55;7;1;;text;Hours;;Description of vehicle fault should be here;;1;2013-09-10;1;0;0;0
+56;7;1;;radio;Is the motor housed correctly and free of damage?;;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+57;7;1;;radio;Are all guards fuel levels acceptable?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;0
+58;7;1;;radio;Are all hoses fitted correctly and free from leaks? (Pump motors);;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+59;7;1;;radio;Test the Residual Current Device. Does it function as designed? (Electrical generators);Do not operate electrical equipment;Description of vehicle fault should be here;no;5;2013-09-10;1;1;0;0
+60;7;1;;radio;Does the motor start?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+61;6;1;;radio;Is the data plate intact and legible?;;Description of vehicle fault should be here;no;1;2013-09-10;1;0;0;0
+62;6;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+63;6;1;;radio;Are outriggers and their locking mechanism working properly?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;0
+64;6;1;;radio;Is the slew ring or articulation point free of damage?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+65;6;1;;radio;Is the load cell, limiter and anti-two block working properly?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+66;6;1;;radio;Are all welds, boom sections and other structural elements free of damage?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+67;6;1;;radio;Are wire rope, sheaves, hook and wear pads in good working order?;;Description of vehicle fault should be here;no;7;2013-09-10;1;0;0;0
+68;6;1;;radio;Are all bolts, locking pins and guides in place?;;Description of vehicle fault should be here;no;8;2013-09-10;1;0;0;0
+69;8;1;;radio;Is the data plate intact and legible?;;Description of vehicle fault should be here;no;1;2013-09-10;1;0;0;0
+70;8;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+71;8;1;;radio;Are all welds, booms sections and other structural elements free of damage?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;0
+72;8;1;;radio;Is the slew ring or articulation point free of damage?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+73;8;1;;radio;Are the ground excavating tools in good working order? (Bucket, cutting edge, augers);;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+74;8;1;;radio;Are all bolts, locking pins and guides in place?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+75;9;1;;radio;Are the ground conditions suitable?;Do not continue if ground conditions are not suitable;Description of vehicle fault should be here;no;1;2013-09-10;1;1;0;0
+76;9;1;;radio;Are hydraulics in good working order? (rams, pumps, hoses);;Description of vehicle fault should be here;no;2;2013-09-10;1;0;0;0
+77;9;1;;radio;Are the outriggers and their locking mechanism working properly?;;Description of vehicle fault should be here;no;3;2013-09-10;1;0;0;0
+78;9;1;;radio;Is the slew ring free of damage?;;Description of vehicle fault should be here;no;4;2013-09-10;1;0;0;0
+79;9;1;;radio;Are all welds, boom sections and other structural elements free of damage?;;Description of vehicle fault should be here;no;5;2013-09-10;1;0;0;0
+80;9;1;;radio;Are the attachment points, emergency descent device and handrails in place?;;Description of vehicle fault should be here;no;6;2013-09-10;1;0;0;0
+81;9;1;;radio;Have the secondary ground controls and communication methods been checked?;;Description of vehicle fault should be here;no;7;2013-09-10;1;0;0;0
+82;9;1;;radio;Is the load sensors and wind meter working properly?;;Description of vehicle fault should be here;no;8;2013-09-10;1;0;0;0
+83;9;1;;radio;Are all bolts, locking pins and guides in place?;;Description of vehicle fault should be here;no;9;2013-09-10;1;0;0;0

@@ -144,9 +144,8 @@ Ext.define('SafeStartApp.controller.Companies', {
             SafeStartApp.companyModel = this.getNavMain().getStore().getById(companyId);
             if (!this.getNavMain().getStore().getById(companyId).get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
             if (this.getNavMain().getStore().getById(companyId).get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(this.getNavMain().getStore().getById(companyId).get('expiry_date') * 1000));
-            self.currentCompanyForm.down('button[name=manage]').show();
+            this.currentCompanyForm.down('button[name=manage]').show();
         }, this);
-
     }
 
 });

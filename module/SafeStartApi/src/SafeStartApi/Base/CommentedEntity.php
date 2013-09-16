@@ -33,7 +33,7 @@ abstract class CommentedEntity extends Entity
     public function addComment($content)
     {
         $em = \SafeStartApi\Application::getEntityManager();
-        $comment = new Comment();
+        $comment = new \SafeStartApi\Entity\Comment();
         $comment->setEntity($this->comment_entity);
         $comment->setEntityId($this->getId());
         $comment->setContent($content);

@@ -19,9 +19,15 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'textfield',
-                label: 'Title',
+                label: 'Question',
                 required: true,
                 name: 'title'
+            },
+            {
+                xtype: 'textfield',
+                label: 'Title',
+                required: true,
+                name: 'description'
             },
             {
                 xtype: 'selectfield',

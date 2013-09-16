@@ -26,7 +26,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function android($ids, $data)
+    public function android($ids, $data = null)
     {
         $this->googleClient = new GoogleGcmClient();
         $this->googleClient->getHttpClient()->setOptions(array('sslverifypeer' => false));
@@ -42,7 +42,9 @@ class PushNotificationPlugin extends AbstractPlugin
 
         $message = new GoogleGcmMessage();
         $message->setRegistrationIds((array)$ids);
-        $message->setData($data);
+        if(!is_null($data)) {
+            $message->setData($data);
+        }
         $message->setDelayWhileIdle(false);
 
         try {
@@ -56,7 +58,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function ios($ids, $data)
+    public function ios($ids, $data = null)
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
@@ -86,8 +88,10 @@ class PushNotificationPlugin extends AbstractPlugin
         $message = new AppleApnsMessage();
         $message->setId('safe-start-app');
         $message->setToken($token);
-        $message->setBadge(1);
-        $message->setAlert('Update vehicle info');
+        if(!is_null($data)) {
+            $message->setBadge(1);
+            $message->setAlert('Update vehicle info');
+        }
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
