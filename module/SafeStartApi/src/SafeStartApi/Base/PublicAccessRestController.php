@@ -9,6 +9,7 @@ class PublicAccessRestController extends RestController
     {
         parent::onDispatchEvent();
 
+        /*
         $device = $this->data['device'];
         $deviceId = $this->data['deviceId'];
 
@@ -27,5 +28,6 @@ class PublicAccessRestController extends RestController
                 throw new Rest401('Access denied');
                 break;
         }
+        */
     }
 }
