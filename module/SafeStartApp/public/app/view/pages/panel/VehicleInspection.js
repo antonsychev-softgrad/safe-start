@@ -183,12 +183,24 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createFields: function (fieldsData) {
         var fields = [];
         var alertsStore = this.getAlertsStore();
+        var alert;
+        var alertRecord;
+        var additionalFieldsConfig;
+        var additionalFields;
+
 
 
         Ext.each(fieldsData, function (fieldData) {
+            alert = [];
+            alertRecord = null;
+            additionalFields = [];
+            additionalFieldsConfig = [];
+            if (fieldData.additional) {
+                additionalFieldsConfig = this.createFields(fieldData.items, true);
+            }
             if (Ext.isArray(fieldData.alerts) && fieldData.alerts[0]) {
-                var alert = fieldData.alerts[0];
-                var alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
+                alert = fieldData.alerts[0];
+                alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
                     critical: alert.critical,
                     alertDescription: alert.alertDescription,
@@ -203,7 +215,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createTextField(fieldData));
                     break;
                 case 'radio':
-                    fields.push(this.createRadioField(fieldData));
+                    fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
                     fields.push(this.createDatePickerFiled(fieldData));
@@ -212,13 +224,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createGroupField(fieldData));
                     break;
                 case 'checkbox':
-                    fields.push(this.createCheckboxField(fieldData));
+                    fields.push(this.createCheckboxField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 default: 
                     Ext.Logger.log('Unexpected field type:' + fieldData.type, 'warn');
                     break;
             }
+
+            Ext.each(additionalFields, function (field) {
+                fields.push(field);
+            });
         }, this);
+        
         return fields;
     },
 
@@ -232,9 +249,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createRadioField: function (fieldData) {
-        var me = this,
-            name = 'checklist-radio-' + fieldData.fieldId,
+    createRadioField: function (fieldData, alertRecord, additionalFieldsConfig) {
+        var name = 'checklist-radio-' + fieldData.fieldId,
             optionFields = [];
 
         Ext.each(fieldData.options, function (option) {
@@ -248,19 +264,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 checked: fieldData.fieldValue === option.value,
                 listeners: {
                     check: function (radio) {
-                        var fieldSet = radio.up('fieldset'),
-                            alert = me.getAlertsStore().findRecord('fieldId', fieldSet.config.fieldId);
-
-                        if (alert !== null) {
-                            if (alert.get('triggerValue').match(new RegExp(radio.getValue(), 'i'))) {
-                                if (alert.get('critical')) {
-                                    Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
-                                }
-                                alert.set('active', true);
-                            } else {
-                                alert.set('active', false);
-                            }
-                        }
+                        var value = radio.getValue();
+                        radio.up('fieldset').fireEvent('checkTriggers', value);
                     }
                 }
             });
@@ -268,6 +273,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'fieldset',
             alerts: fieldData.alerts,
+            additional: fieldData.additional,
+            additionalFieldsConfig: additionalFieldsConfig,
+            triggerValue: fieldData.triggerValue,
             triggerable: true,
             layout: {
                 type: 'hbox',
@@ -280,7 +288,64 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             width: '100%',
             fieldId: fieldData.fieldId,
             title: fieldData.fieldName,
-            items: optionFields 
+            items: optionFields,
+            alertRecord: alertRecord,
+            listeners: {
+                checkTriggers: function (value) {
+                    var alert = this.config.alertRecord,
+                        additionalFields;
+                    console.log(alert);  
+                    if (alert) {
+                        if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
+                            if (alert.get('critical')) {
+                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                            }
+                            alert.set('active', true);
+                        } else {
+                            alert.set('active', false);
+                        }
+                    }
+
+                    if (this.config.additional) {
+                        if (! this.hasOwnProperty('additionalFields')) {
+                            this.additionalFields = [];
+                            var index = this.up('component').indexOf(this);
+
+                            Ext.each(additionalFieldsConfig, function (config) {
+                                index++;
+                                config.hidden = true;
+                                this.additionalFields.push(this.up('component').insert(index, config));
+                            }, this);
+                        }
+                        additionalFields = this.additionalFields;
+                        if (this.config.triggerValue.match(new RegExp(value, 'i'))) {
+                            Ext.each(additionalFields, function (field) {
+                                field.show(true);
+                                field.enable();
+                                console.log(field.config.fieldId);
+                            });
+                        } else {
+                            Ext.each(additionalFields, function (field) {
+                                field.hide(true);
+                                field.disable();
+                            });
+                        }
+                    }
+                },
+                hide: function (fieldset) {
+                    if (Ext.isArray(this.additionalFields)) {
+                        Ext.each(this.additionalFields, function (field) {
+                            field.hide();
+                        });
+                    }
+                },
+                show: function (fieldset) {
+                    if (Ext.isArray(this.additionalFields)) {
+                        this.fireEvent('checkTriggers', this.down('radiofield[checked]').getValue());
+                    }
+                }
+
+            }
         };
     },
 
@@ -295,29 +360,63 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createCheckboxField: function (fieldData) {
-        var me = this;
+    createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
         return {
             xtype: 'checkboxfield',
             maxWidth: 900,
+            additional: fieldData.additional,
             width: '100%',
             label: fieldData.fieldName,
             labelWidth: '90%',
+            triggerValue: fieldData.triggerValue,
             fieldId: fieldData.fieldId,
             alerts: fieldData.alerts,
+            alertRecord: alertRecord,
             triggerable: true,
             listeners: {
                 check: function (checkbox) {
-                    var alert = me.getAlertsStore().findRecord('fieldId', checkbox.config.fieldId);
-
-                    if (alert !== null) {
-                        if (alert.get('triggerValue').match(new RegExp(checkbox.getValue(), 'i'))) {
+                    this.fireEvent('checkTriggers', 'Yes');
+                },
+                uncheck: function (checkbox) {
+                    this.fireEvent('checkTriggers', 'No');
+                },
+                checkTriggers: function (value) {
+                    var alert = this.config.alertRecord,
+                        additionalFields;
+                    if (alert) {
+                        console.log(value, alert.get('triggerValue'));
+                        if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
                             if (alert.get('critical')) {
                                 Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
                         } else {
                             alert.set('active', false);
+                        }
+                    }
+
+                    if (this.config.additional) {
+                        if (! this.hasOwnProperty('additionalFields')) {
+                            this.additionalFields = [];
+                            var index = this.up('component').indexOf(this);
+
+                            Ext.each(additionalFieldsConfig, function (config) {
+                                index++;
+                                config.hidden = true;
+                                this.additionalFields.push(this.up('component').insert(index, config));
+                            }, this);
+                        }
+                        additionalFields = this.additionalFields;
+                        if (this.config.triggerValue.match(new RegExp(value, 'i'))) {
+                            Ext.each(additionalFields, function (field) {
+                                field.show(true);
+                                field.enable();
+                            });
+                        } else {
+                            Ext.each(additionalFields, function (field) {
+                                field.hide(true);
+                                field.disable();
+                            });
                         }
                     }
                 }

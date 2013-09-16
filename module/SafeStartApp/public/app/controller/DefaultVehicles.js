@@ -233,9 +233,12 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         Ext.each(checklists, function (checklist) {
             var fields = checklist.query('field'); 
             Ext.each(fields, function (field) {
+                if (field.isHidden()) {
+                    return;
+
+                }
                 switch(field.xtype) {
                     case 'checkboxfield':
-                        //TODO: unhardcode field value
                         if (field.isChecked()) {
                             value = 'Yes';
                         } else {
