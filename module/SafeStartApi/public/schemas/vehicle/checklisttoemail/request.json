@@ -48,7 +48,7 @@
                 "plantId": {
                     "description": "Plant Id of vehicle",
                     "type": "string",
-                    "required": true
+                    "required": false
                 },
                 "vehicleType": {
                     "description": "Type of vehicle",

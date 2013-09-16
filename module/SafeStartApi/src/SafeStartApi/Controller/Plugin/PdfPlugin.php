@@ -40,17 +40,17 @@ class PdfPlugin extends AbstractPlugin {
     protected $dateGeneration;
 
 
-    public function __invoke($checkListId = null) {
+    public function __invoke($checkListId = null, $echoPdf = true) {
 
         if ($checkListId === null) {
             return $this;
         }
 
-        return $this->create($checkListId);
+        return $this->create($checkListId, $echoPdf);
     }
 
 
-    public function create($checkListId = null) {
+    public function create($checkListId = null, $echoPdf = true) {
 
         $this->document = new ZendPdf\PdfDocument();
         $this->currentPage = new ZendPdf\Page(ZendPdf\Page::SIZE_A4);
@@ -151,11 +151,13 @@ class PdfPlugin extends AbstractPlugin {
 
         chmod($full_name, 0777);
 
-        /**/
-        header("Content-Disposition: inline; filename={$file_name}");
-        header("Content-type: application/x-pdf");
-        echo file_get_contents($full_name);
-        /**/
+        if($echoPdf) {
+            /**/
+            header("Content-Disposition: inline; filename={$file_name}");
+            header("Content-type: application/x-pdf");
+            echo file_get_contents($full_name);
+            /**/
+        }
 
         return $full_name;
     }
