@@ -86,11 +86,11 @@ class UserController extends RestController
                 break;
         }
 
-        $this->answer = array(
-            'authToken' => $this->authToken,
-            'userInfo' => $userInfo,
-            'errorMessage' => $errorMessage,
-        );
+        $this->answer = array();
+
+        if ($userInfo) $this->answer['userInfo'] = $userInfo;
+        if ($userInfo) $this->answer['authToken'] = $this->authToken;
+        if ($userInfo) $this->answer['errorMessage'] = $errorMessage;
 
         return $this->AnswerPlugin()->format($this->answer, $errorCode);
     }

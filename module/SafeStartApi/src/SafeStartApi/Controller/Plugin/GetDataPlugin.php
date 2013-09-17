@@ -73,7 +73,7 @@ class GetDataPlugin extends AbstractPlugin
                     'additional' => $field->getAdditional(),
                     'triggerValue' => $field->getTriggerValue(),
                 );
-                $listField['items'] = $this->_buildChecklist($fields, $field->getId());
+                $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
                 if ($inspection) {
                     $listField['fieldValue'] = $inspection->getFieldValue($field);
                 } else {

@@ -162,8 +162,11 @@ class Vehicle extends BaseEntity
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
-            "warrantyStartDate " => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
+            "warrantyStartDate" => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
+            "currentOdometerKms" => $this->getCurrentOdometerKms(),
+            "currentOdometerHours" => $this->getCurrentOdometerHours(),
+            "enabled" => $this->getEnabled(),
         );
     }
 
@@ -183,8 +186,10 @@ class Vehicle extends BaseEntity
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => $this->company->getExpiryDate(),
-            "warrantyStartDate " => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
+            "warrantyStartDate" => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
+            "currentOdometerKms" => $this->getCurrentOdometerKms(),
+            "currentOdometerHours" => $this->getCurrentOdometerHours(),
         );
     }
 
@@ -275,6 +280,35 @@ class Vehicle extends BaseEntity
         }
 
         return $inspections;
+    }
+
+    public function getCurrentOdometerKms()
+    {
+        $value = 'unknown';
+        $lastInspection = $this->getLastInspection();
+        if ($lastInspection) {
+            $value = $lastInspection->getCurrentOdometer();
+        }
+        return $value;
+    }
+
+    public function getCurrentOdometerHours()
+    {
+        $value = 'unknown';
+        $lastInspection = $this->getLastInspection();
+        if ($lastInspection) {
+            $value = $lastInspection->getCurrentOdometerHours();
+        }
+        return $value;
+    }
+
+    public function getLastInspection()
+    {
+        if (!empty($this->checkLists)) {
+           return $this->checkLists->first();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -813,6 +847,8 @@ class Vehicle extends BaseEntity
      */
     public function haveAccess(User $user)
     {
+        if ($this->deleted) return false;
+
         if($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }

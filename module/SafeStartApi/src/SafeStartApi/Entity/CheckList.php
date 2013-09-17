@@ -78,6 +78,11 @@ class CheckList extends BaseEntity
     protected $update_date;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $deleted = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -366,14 +371,21 @@ class CheckList extends BaseEntity
      */
     public function getAlerts()
     {
-        return $this->alerts;
+        $alerts = array();
+        if (!$this->alerts) return $alerts;
+        foreach ($this->alerts as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
     }
 
     public function getAlertsArray($filters = array())
     {
         $alerts = array();
-        if (!empty($this->alerts)) {
-            foreach ($this->alerts as $alert) {
+        if ($this->getAlerts()) {
+            foreach ($this->getAlerts() as $alert) {
                 //todo: probably we will need more filters here and method should be refactored
                 if (isset($filters['status']) && !empty($filters['status'])) {
                     if ($filters['status'] == $alert->getStatus()) {
@@ -419,5 +431,28 @@ class CheckList extends BaseEntity
             }
         }
         return $value;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return User
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }

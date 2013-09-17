@@ -45,7 +45,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 label: 'Project Name',
                 name: 'projectName'
             },
-            {
+           /* {
                 xtype: 'datepickerfield',
                 name: 'warrantyStartDate',
                 required: true,
@@ -56,7 +56,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     yearFrom: new Date().getFullYear() - 10,
                     yearTo: new Date().getFullYear() + 1
                 }
-            },
+            },*/
             {
                 xtype: 'textfield',
                 label: 'Project Number',
@@ -79,9 +79,27 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         xtype: 'spinnerfield',
                         maxValue: 1000000,
                         minValue: 1000,
-                        stepValue: 1000,
+                        stepValue: 500,
                         name: 'serviceDueKm',
                         required: true,
+                        label: 'Kilometres'
+                    }
+                ]
+            },
+            {
+                xtype: 'fieldset',
+                title: 'Current odometer:',
+                items: [
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        name: 'currentOdometerHours',
+                        label: 'Hours'
+                    },
+                    {
+                        xtype: 'textfield',
+                        disabled: true,
+                        name: 'currentOdometerKms',
                         label: 'Kilometres'
                     }
                 ]

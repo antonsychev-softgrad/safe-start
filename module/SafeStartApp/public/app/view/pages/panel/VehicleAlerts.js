@@ -109,8 +109,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         this.companyId = companyId;
         this.status = status;
         this.alertsStore.getProxy().setExtraParam('companyId', this.companyId);
-        if (this.status)  {
-            this.alertsStore.getProxy().setExtraParam('status',  this.status);
+        if (this.status) {
+            this.alertsStore.getProxy().setExtraParam('status', this.status);
             this.down('selectfield[name=filter-alert-by-type]').hide();
         }
         this.alertsStore.loadData();
@@ -130,10 +130,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
     },
 
     showFilters: function () {
-        this.down('list[name=vehicle-alerts]').deselectAll();
-        if (!this.status) this.down('selectfield[name=filter-alert-by-type]').show();
-        this.down('searchfield[name=search-alert]').show();
-        this.down('button[name=refresh-alerts]').show();
+        try {
+            this.down('list[name=vehicle-alerts]').deselectAll();
+            if (!this.status) this.down('selectfield[name=filter-alert-by-type]').show();
+            this.down('searchfield[name=search-alert]').show();
+            this.down('button[name=refresh-alerts]').show();
+        } catch (e) {
+
+        }
+
     }
 
 });
