@@ -172,6 +172,7 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->flush();
 
         // save alerts
+        $alerts = array();
         if (!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach ($alerts as $alert) {
@@ -188,7 +189,6 @@ class VehicleController extends RestrictedAccessRestController
                 $this->em->persist($newAlert);
             }
             $this->em->flush();
-            $this->_pushNewChecklistNotification($vehicle, $this->answer);
         }
 
         $this->answer = array(
@@ -196,7 +196,7 @@ class VehicleController extends RestrictedAccessRestController
         );
 
 
-        $this->_pushNewChecklistNotification($vehicle, $this->answer);
+        $this->_pushNewChecklistNotification($vehicle, $this->answer, $alerts);
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -300,7 +300,7 @@ class VehicleController extends RestrictedAccessRestController
 
     }
 
-    private function _pushNewChecklistNotification(Vehicle $vehicle, $data = array())
+    private function _pushNewChecklistNotification(Vehicle $vehicle, $data = array(), $alerts = array())
     {
 
         $androidDevices = array();
@@ -335,8 +335,8 @@ class VehicleController extends RestrictedAccessRestController
             }
         }
 
-        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data);
-        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $data);
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data, $alerts, $vehicle);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $data, $alerts, $vehicle);
 
     }
 }

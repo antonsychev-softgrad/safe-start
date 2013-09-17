@@ -30,7 +30,7 @@ class PublicVehicleController extends PublicAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/checklisttoemail')) return $this->_showBadRequest();
 
-        $email = $this->data->email;
+        $emails = $this->data->emails;
 
         // save checklist
         if(!empty($this->data->plantId)) {
@@ -116,14 +116,16 @@ class PublicVehicleController extends PublicAccessRestController
 
         $pdf = $this->PdfPlugin($checkList->getId(), false);
 
-        $this->MailPlugin()->send(
-            'Checklist',
-            $email,
-            'checklist.phtml',
-            array(
-            ),
-            $pdf
-        );
+        foreach($emails as $email) {
+            $this->MailPlugin()->send(
+                'Checklist',
+                $email,
+                'checklist.phtml',
+                array(
+                ),
+                $pdf
+            );
+        }
 
         //$this->_pushNewChecklistNotification($vehicle, $this->answer);
 

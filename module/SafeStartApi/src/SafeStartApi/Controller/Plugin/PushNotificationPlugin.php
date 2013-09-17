@@ -11,6 +11,7 @@ use ZendService\Apple\Apns\Message as AppleApnsMessage;
 use ZendService\Apple\Apns\Message\Alert as AppleApnsMessageAlert;
 use ZendService\Apple\Apns\Response\Message as AppleApnsResponse;
 use ZendService\Apple\Apns\Exception\RuntimeException as AppleApnsRuntimeException;
+use SafeStartApi\Entity\Vehicle;
 
 class PushNotificationPlugin extends AbstractPlugin
 {
@@ -26,7 +27,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function android($ids, $data = null)
+    public function android($ids, $data = array(), $alerts = array(), Vehicle $vehicle)
     {
         $this->googleClient = new GoogleGcmClient();
         $this->googleClient->getHttpClient()->setOptions(array('sslverifypeer' => false));
@@ -42,8 +43,17 @@ class PushNotificationPlugin extends AbstractPlugin
 
         $message = new GoogleGcmMessage();
         $message->setRegistrationIds((array)$ids);
-        if(!is_null($data)) {
-            $message->setData($data);
+        if(!empty($alerts)) {
+            $messageData = array();
+            foreach($alerts as $alert) {
+                $messageData[] =
+                    "Vehicle Alert \n\r" .
+                    "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r" .
+                    $alert->getDescription();
+            }
+            $message->setData($messageData);
+        } else {
+            $message->setData('Checklist for Vehicle ID #' . $vehicle->get . ' added');
         }
         $message->setDelayWhileIdle(false);
 
@@ -58,7 +68,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function ios($ids, $data = null)
+    public function ios($ids, $data = array(), $alerts = array(), Vehicle $vehicle)
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
@@ -73,7 +83,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $done = 0;
 
         foreach ((array)$ids as $id) {
-            $done += $this->_ios($id, $data);
+            $done += $this->_ios($id, $data, $alerts, $vehicle);
         }
 
         $this->appleClient->close();
@@ -82,16 +92,27 @@ class PushNotificationPlugin extends AbstractPlugin
 
     }
 
-    private function _ios($token, $data)
+    private function _ios($token, $data, $alerts, $vehicle)
     {
         $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         $message = new AppleApnsMessage();
         $message->setId('safe-start-app');
         $message->setToken($token);
-        if(!is_null($data)) {
+
+        if(!empty($alerts)) {
+            $message->setBadge(count($alerts));
+            $messageData =
+                "Vehicle Alert \n\r" .
+                    "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
+            foreach($alerts as $alert) {
+                $messageData .= $alert->getDescription() . "\n\r";
+            }
+            $message->setAlert($messageData);
+        } else {
             $message->setBadge(1);
-            $message->setAlert('Update vehicle info');
+            $message->setAlert('Checklist for Vehicle ID #' . $vehicle->get . ' added');
         }
+        
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
