@@ -167,7 +167,7 @@ class VehicleController extends RestrictedAccessRestController
             if (!$inspection) return $this->_showNotFound("Requested inspection does not exist.");
         }
 
-        if (!$inspection) {
+        if ($inspection) {
             $checkList = $inspection;
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
