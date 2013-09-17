@@ -439,12 +439,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var reviewCard = this.down('formpanel[name=checklist-card-review]');
         reviewCard.removeAll();
         reviewCard.add(this.createVehicleDetailsView(passedCards));
-        reviewCard.add(this.createGpsView());
+        reviewCard.add(this.createAdditionalFields());
         reviewCard.add(this.createAlertsView(alerts));
     },
 
-    createGpsView: function () {
-        return {
+    createAdditionalFields: function () {
+        return [{
             xtype: 'container',
             width: '100%',
             cls: 'sfa-vehicle-inspection-gps',
@@ -464,7 +464,35 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     }
                 }
             }]
-        };
+        }, {
+            xtype: 'container',
+            name: 'vehicle-inspection-additional-fields',
+            width: '100%',
+            maxWidth: 900,
+            height: 'auto',
+            items: [{
+                xtype: 'fieldset',
+                title: 'Current odometer',
+                layout: {
+                    type: 'hbox'
+                },
+                width: '100%',
+                items: [{
+                    xtype: 'spinnerfield',
+                    name: 'current-odometer-kms',
+                    label: 'Kilometers',
+                    stepValue: 1000,
+                    required: true,
+                    minValue: 1000
+                }, {
+                    xtype: 'spinnerfield',
+                    name: 'current-odometer-hours',
+                    label: 'Hours',
+                    stepValue: 1000,
+                    minValue: 0 
+                }]
+            }]
+        }];
     },
     createVehicleDetailsView: function (passedCards) {
         var items = [{

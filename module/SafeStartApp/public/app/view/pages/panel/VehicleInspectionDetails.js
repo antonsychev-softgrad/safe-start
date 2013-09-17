@@ -30,7 +30,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 left: 80,
                 text: 'Back',
                 handler: function (btn) {
-                    console.log('test');
                     var panel = btn.up('SafeStartVehicleInspectionDetails');
                     panel.setActiveItem(0);
                 }
@@ -39,7 +38,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     },
 
     initialize: function () {
-
         this.callParent();
     },
 
@@ -47,7 +45,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         var me = this;
         SafeStartApp.AJAX('vehicle/' + checklistId + '/getchecklistdata', {}, function (result) {
             me.createView(vehicle, result.checklist);
-        });
+        }, true, true);
     },
 
     createView: function (vehicle, checklist) {
@@ -84,6 +82,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         ]);
 
         this.createButtons(checklist.id);
+
+        this.checkListId = checklist.id;
 
         Ext.each(checklist.fieldsStructure, function (fieldGroup) {
             this.createFields(fieldGroup.fields, checklist.fieldsData, fieldGroup.groupName, 1);

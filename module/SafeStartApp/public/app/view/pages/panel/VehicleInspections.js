@@ -10,6 +10,33 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails'
     ],
 
+    config: {
+        navigationBar: {
+            items: [{
+                name: 'edit-inspection',
+                align: 'right',
+                hidden: true,
+                text: 'Edit',
+                handler: function (button) {
+                    var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel');
+                    var checkListId = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails').checkListId;
+                    vehicleInspectionsPanel.fireEvent('editInspection', checkListId);
+                }
+            }]
+        },
+        listeners: {
+            push: function (view, item) {
+                this.changeButtons(item);
+            },
+            pop: function (view, item) {
+                this.changeButtons(view);
+            },
+            back: function () {
+                this.hideButtons();
+            }
+        }
+    },
+
     initialize: function () {
         this.callParent();
         this.inspectionsStore = Ext.create('SafeStartApp.store.VehicleInspections');
@@ -19,15 +46,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
 
     getListPanel: function () {
         var self = this;
-        return {
+        return [{
             xtype: 'list',
             name: 'vehicle-inspections',
+            disableSelection: true,
             title: 'Vehicle Inspections',
             emptyText: 'No Inspections',
-            itemTpl: [
-                '{title}'
-                // '<span>{user.firstName} {user.lastName} at {title}</span>'
-            ].join(''),
+            itemTpl: '{title}',
             cls: 'sfa-inspections',
             store: this.inspectionsStore,
             listeners: {
@@ -35,7 +60,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                    self.onSelectInspectionAction(list, index, node, record);
                 }
             }
-        };
+        }];
     },
 
     loadList: function (vehicle, checklists) {
@@ -49,8 +74,29 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         if (this.inspectionView) {
             this.inspectionView.destroy();
         }
-        this.inspectionView = Ext.create('SafeStartApp.view.pages.panel.VehicleInspectionDetails');
-        this.inspectionView.loadChecklist(this.vehicle, record.get('checkListId'));
+        this.inspectionView = Ext.create('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
+            title: 'Inspection'
+        });
+        this.hideButtons();
         this.push(this.inspectionView);
+        this.inspectionView.loadChecklist(this.vehicle, record.get('checkListId'));
+    },
+
+    onEditInspectionAction: function () {
+    },
+
+    changeButtons: function (view) {
+        switch (view.xtype) {
+            case 'SafeStartVehicleInspectionsPanel':
+                break;
+            case 'SafeStartVehicleInspectionDetails':
+                this.down('button[name=edit-inspection]').show(true);
+                break;
+        }
+    },
+
+    hideButtons: function () {
+        this.down('button[name=edit-inspection]').hide(true);
     }
+
 });
