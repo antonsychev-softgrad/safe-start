@@ -83,14 +83,14 @@ class VehicleController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleChecklist" . $vehicle->getId();
 
-        if ($cache->hasItem($cashKey)) {
+        if ($cache->hasItem($cashKey) && !$inspection) {
             $checklist = $cache->getItem($cashKey);
         } else {
             $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
             $query->setParameter(1, $vehicle);
             $items = $query->getResult();
             $checklist = $this->GetDataPlugin()->buildChecklist($items, $inspection);
-            $cache->setItem($cashKey, $checklist);
+            if (!$inspection) $cache->setItem($cashKey, $checklist);
         }
 
         $this->answer = array(
@@ -201,6 +201,7 @@ class VehicleController extends RestrictedAccessRestController
                 $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
                 $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
                 $newAlert->setVehicle($vehicle);
+
                 $this->em->persist($newAlert);
             }
             $this->em->flush();
@@ -209,7 +210,6 @@ class VehicleController extends RestrictedAccessRestController
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
-
 
         $this->_pushNewChecklistNotification($vehicle, $this->answer, $alerts);
 
@@ -266,7 +266,6 @@ class VehicleController extends RestrictedAccessRestController
 
     public function getInspectionsAction()
     {
-
         if (($vehicleId = (int)$this->params('id')) !== null) {
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
@@ -276,8 +275,8 @@ class VehicleController extends RestrictedAccessRestController
             $query->setParameters(array('id' => $vehicle));
             $items = $query->getResult();
 
-            if(is_array($items) && !empty($items)) {
-                foreach($items as $checkList) {
+            if (is_array($items) && !empty($items)) {
+                foreach ($items as $checkList) {
                     $checkListData = $checkList->toArray();
 
                     $checkListData['checkListId'] = $checkList->getId();
@@ -300,7 +299,7 @@ class VehicleController extends RestrictedAccessRestController
         $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
         if (!$alert) return $this->_showNotFound("Alert not found.");
         $vehicle = $alert->getVehicle();
-        if(!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         if (isset($this->data->status)) $alert->setStatus($this->data->status);
         if (isset($this->data->new_comment) && !empty($this->data->new_comment)) $alert->addComment($this->data->new_comment);
@@ -352,11 +351,11 @@ class VehicleController extends RestrictedAccessRestController
 
         $message = '';
         $badge = 0;
-        if(!empty($alerts)) {
+        if (!empty($alerts)) {
             $message =
                 "Vehicle Alert \n\r" .
-                    "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
-            foreach($alerts as $alert) {
+                "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
+            foreach ($alerts as $alert) {
                 $badge++;
                 $message .= $alert->getDescription() . "\n\r";
             }
@@ -367,6 +366,5 @@ class VehicleController extends RestrictedAccessRestController
 
         if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $message, $badge);
         if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $message, $badge);
-
     }
 }
