@@ -126,8 +126,8 @@ class UserController extends RestController
 
         // todo: check if unique email if user deleted = 1 and username
 
-        $user->setEmail($this->data->email);
-        $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
+        if (isset($this->data->email)) $user->setEmail($this->data->email);
+        if (isset($this->data->username)) $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
         $user->setDeleted(0);
         $user->setFirstName($this->data->firstName);
         $user->setLastName($this->data->lastName);

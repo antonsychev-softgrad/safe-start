@@ -17,18 +17,8 @@
             "description": "Request data",
             "type": "object",
             "properties": {
-                "firstName": {
-                    "description": "First name",
-                    "type": "string",
-                    "required": true
-                },
-                "lastName": {
-                    "description": "Last name",
-                    "type": "string",
-                    "required": false
-                },
-                "email": {
-                    "description": "Email",
+                "signature": {
+                    "description": "Signature",
                     "type": "string",
                     "required": true
                 }

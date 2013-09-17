@@ -29,3 +29,8 @@
 
      c) own console command
         php ./public/index.php doctrine set-def-data
+
+5. Sencha
+   a) Build JS
+   cd ./module/SafeStartApp/public/
+   sencha app build production

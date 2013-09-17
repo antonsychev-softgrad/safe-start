@@ -141,6 +141,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'update-user-signature' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/:id/profile/updatesignature',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'UserProfile',
+                        'action' => 'updatesignature',
+                    ),
+                ),
+            ),
             'update-user' => array(
                 'type' => 'Segment',
                 'options' => array(

@@ -48,6 +48,11 @@ class CheckList extends BaseEntity
     protected $current_odometer;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $current_odometer_hours;
+
+    /**
      * @ORM\Column(type="json_array")
      */
     protected $fields_structure;
@@ -68,6 +73,11 @@ class CheckList extends BaseEntity
     protected $creation_date;
 
     /**
+     * @ORM\Column(type="datetime", name="update_date")
+     */
+    protected $update_date;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -76,21 +86,12 @@ class CheckList extends BaseEntity
     }
 
     /**
-     * Convert the object to an array.
-     *
-     * @return array
-     */
-    public function toArray()
-    {
-        return get_object_vars($this);
-    }
-
-    /**
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->setCreationDate(new \DateTime());
+        if (!$this->creation_date) $this->setCreationDate(new \DateTime());
+        $this->setUpdateDate(new \DateTime());
     }
 
     /**
@@ -196,6 +197,29 @@ class CheckList extends BaseEntity
     }
 
     /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return CheckList
+     */
+    public function setUpdateDate($creationDate)
+    {
+        $this->update_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
      * Set user
      *
      * @param \SafeStartApi\Entity\User $user
@@ -270,9 +294,9 @@ class CheckList extends BaseEntity
      * @param string $gpsCoords
      * @return CheckList
      */
-    public function setCurrentOdometer($gpsCoords)
+    public function setCurrentOdometer($value)
     {
-        $this->current_odometer = $gpsCoords;
+        $this->current_odometer = $value;
 
         return $this;
     }
@@ -285,6 +309,30 @@ class CheckList extends BaseEntity
     public function getCurrentOdometer()
     {
         return $this->current_odometer;
+    }
+
+    /**
+     * Get current_odometer
+     *
+     * @return string
+     */
+    public function getCurrentOdometerHours()
+    {
+        return $this->current_odometer_hours;
+    }
+
+    /**
+     * Set current_odometer
+     *
+     * @param $value
+     * @internal param string $gpsCoords
+     * @return CheckList
+     */
+    public function setCurrentOdometerHours($value)
+    {
+        $this->current_odometer_hours = $value;
+
+        return $this;
     }
 
 
@@ -325,7 +373,7 @@ class CheckList extends BaseEntity
     {
         $alerts = array();
         if (!empty($this->alerts)) {
-            foreach($this->alerts as $alert) {
+            foreach ($this->alerts as $alert) {
                 //todo: probably we will need more filters here and method should be refactored
                 if (isset($filters['status']) && !empty($filters['status'])) {
                     if ($filters['status'] == $alert->getStatus()) {
@@ -338,5 +386,38 @@ class CheckList extends BaseEntity
         }
 
         return $alerts;
+    }
+
+    /**
+     * Convert the object to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'hash' => $this->getHash(),
+            'gps' => $this->getGpsCoords(),
+            'odometer_kms' => $this->getCurrentOdometer(),
+            'odometer_hours' => $this->getCurrentOdometerHours(),
+            'creation_date' => $this->getCreationDate()->getTimestamp(),
+            'update_date' => $this->getUpdateDate()->getTimestamp(),
+            'vehicle' => $this->getVehicle()->toInfoArray(),
+            'data' => json_decode($this->getFieldsData(), true),
+        );
+    }
+
+    public function getFieldValue($field)
+    {
+        $value = null;
+        $fieldsValue = json_decode($this->getFieldsData(), true);
+        foreach ($fieldsValue as $fieldValue) {
+            if ($fieldValue['id'] == $field->getId()) {
+                $value = $fieldValue['value'];
+                break;
+            }
+        }
+        return $value;
     }
 }

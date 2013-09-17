@@ -57,6 +57,11 @@ class User extends BaseEntity
     protected $email;
 
     /**
+     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
+     */
+    protected $signature;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $role = 'guest';
@@ -271,6 +276,29 @@ class User extends BaseEntity
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * Set signature
+     *
+     * @param string $signature
+     * @return User
+     */
+    public function setSignature($signature)
+    {
+        $this->signature = $signature;
+
+        return $this;
+    }
+
+    /**
+     * Get signature
+     *
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->signature;
     }
 
     /**

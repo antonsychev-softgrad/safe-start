@@ -45,6 +45,5 @@ Ext.define('SafeStartApp.view.components.FileUpload', {
         } else {
             http.send(me.getForm(file));
         }
-    },
-    
+    }
 });

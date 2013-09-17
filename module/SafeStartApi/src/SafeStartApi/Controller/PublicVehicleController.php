@@ -30,15 +30,15 @@ class PublicVehicleController extends PublicAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/checklisttoemail')) return $this->_showBadRequest();
 
-        $email = $this->data->email;
+        $emails = $this->data->emails;
 
         // save checklist
         if(!empty($this->data->plantId)) {
             $plantId = !empty($this->data->plantId) ? $this->data->plantId : 0;
             $vehicle = $this->em->findBy('SafeStartApi\Entity\Vehicle', array('plantId' => $plantId));
         } else {
-            $plantId = md5(time());
-            $vehicle = '';
+            $plantId = uniqid('vehicle');
+            $vehicle = null;
         }
 
         if (!$vehicle) {
@@ -78,37 +78,13 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setVehicle($vehicle);
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
-        $checkList->setHash(null);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
         $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
-
-        $this->em->persist($checkList);
-        $this->em->flush();
-
+        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->oodometer_hours)) ? $this->data->odometer_hours : null);
         $uniqId = uniqid();
-
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
         $this->em->flush();
-
-        // save alerts
-        if(!empty($this->data->alerts) && is_array($this->data->alerts)) {
-            $alerts = $this->data->alerts;
-            foreach($alerts as $alert) {
-                $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
-                if($field === null) {
-                    continue;
-                }
-                $newAlert = new \SafeStartApi\Entity\Alert();
-                $newAlert->setField($field);
-                $newAlert->setCheckList($checkList);
-                $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
-                $newAlert->setImages(!empty($alert->images) ?  $alert->images : array());
-                $newAlert->setVehicle($vehicle);
-                $this->em->persist($newAlert);
-            }
-            $this->em->flush();
-        }
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
@@ -116,16 +92,16 @@ class PublicVehicleController extends PublicAccessRestController
 
         $pdf = $this->PdfPlugin($checkList->getId(), false);
 
-        $this->MailPlugin()->send(
-            'Checklist',
-            $email,
-            'checklist.phtml',
-            array(
-            ),
-            $pdf
-        );
-
-        //$this->_pushNewChecklistNotification($vehicle, $this->answer);
+        foreach($emails as $email) {
+            $this->MailPlugin()->send(
+                'Checklist',
+                $email,
+                'checklist.phtml',
+                array(
+                ),
+                $pdf
+            );
+        }
 
         return $this->AnswerPlugin()->format($this->answer);
     }
