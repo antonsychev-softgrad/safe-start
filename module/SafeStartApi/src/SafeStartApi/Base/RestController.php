@@ -55,7 +55,7 @@ class RestController extends AbstractActionController
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
         $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
 
-        if(!$this->_checkRequestLimits()) throw new Rest403('Requests limit achieved');
+     //   if(!$this->_checkRequestLimits()) throw new Rest403('Requests limit achieved');
     }
 
     protected function _checkRequestLimits()
