@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
 
     extend: 'SafeStartApp.view.pages.toolbar.Main',
 
-    xtype: 'SafeStartMainToolbar',
+    xtype: 'SafeStartCompaniesToolbar',
 
     getToolbarItems: function () {
         return this.toolbarButtons = [

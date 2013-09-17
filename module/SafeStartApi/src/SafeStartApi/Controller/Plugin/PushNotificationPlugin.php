@@ -18,16 +18,16 @@ class PushNotificationPlugin extends AbstractPlugin
     private $googleClient = null;
     private $appleClient = null;
 
-    public function pushNotification($ids, $data = array(), $device = 'android')
+    public function pushNotification($ids, $msg = '', $badge = 0, $device = 'android')
     {
         if ($device == 'android') {
-            $this->android($ids, $data);
+            $this->android($ids, $msg, $badge);
         } else {
-            $this->ios($ids, $data);
+            $this->ios($ids, $msg, $badge);
         }
     }
 
-    public function android($ids, $data = array())
+    public function android($ids, $msg = '', $badge = 0)
     {
         $this->googleClient = new GoogleGcmClient();
         $this->googleClient->getHttpClient()->setOptions(array('sslverifypeer' => false));
@@ -43,9 +43,11 @@ class PushNotificationPlugin extends AbstractPlugin
 
         $message = new GoogleGcmMessage();
         $message->setRegistrationIds((array)$ids);
-        if(!empty($data)) {
-            $message->setData($data);
-        }
+        $message->setData(array(
+            'message' => $msg,
+            'badge' => $badge,
+        ));
+
         $message->setDelayWhileIdle(false);
 
         try {
@@ -59,7 +61,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function ios($ids, $data = array())
+    public function ios($ids, $msg = '', $badge = 0)
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
@@ -74,7 +76,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $done = 0;
 
         foreach ((array)$ids as $id) {
-            $done += $this->_ios($id, $data);
+            $done += $this->_ios($id, $msg, $badge);
         }
 
         $this->appleClient->close();
@@ -83,16 +85,14 @@ class PushNotificationPlugin extends AbstractPlugin
 
     }
 
-    private function _ios($token, $data)
+    private function _ios($token, $msg = '', $badge = 0)
     {
         $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
         $message = new AppleApnsMessage();
         $message->setId('safe-start-app');
         $message->setToken($token);
-        if(!empty($data)) {
-            $message->setBadge(1);
-            $message->setAlert($data);
-        }
+        $message->setBadge($badge);
+        $message->setAlert($msg);
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);

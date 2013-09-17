@@ -10,10 +10,13 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'plantId', type: 'string', defaultValue: ''},
             {name: 'projectName', type: 'string', defaultValue: ''},
             {name: 'projectNumber', type: 'string', defaultValue: ''},
+            {name: 'currentOdometerKms', type: 'string', defaultValue: 'unknown'},
             {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
+            {name: 'currentOdometerHours', type: 'string', defaultValue: 'unknown'},
             {name: 'serviceDueHours', type: 'int', defaultValue: 24},
             {name: 'action', type: 'string', defaultValue: ''},
             {name: 'checkListId', type: 'int', defaultValue: 0},
+            {name: 'enabled', type: 'int', defaultValue: 1},
             {name: 'checkListHash', type: 'string', defaultValue: ''},
             {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()}
         ],

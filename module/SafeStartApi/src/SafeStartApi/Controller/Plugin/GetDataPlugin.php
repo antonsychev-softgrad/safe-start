@@ -8,7 +8,7 @@ use SafeStartApi\Entity\Field;
 class GetDataPlugin extends AbstractPlugin
 {
 
-    public function buildChecklist($fields)
+    public function buildChecklist($fields, \SafeStartApi\Entity\CheckList $inspection = null)
     {
         $checklist = array();
         foreach ($fields as $field) {
@@ -19,7 +19,7 @@ class GetDataPlugin extends AbstractPlugin
                 'id' => $field->getId(),
                 'groupOrder' => $field->getOrder(),
                 'additional' => $field->getAdditional(),
-                'fields' => $this->_buildChecklist($fields, $field->getId()),
+                'fields' => $this->_buildChecklist($fields, $field->getId(), $inspection),
             );
         }
         return $checklist;
@@ -56,7 +56,7 @@ class GetDataPlugin extends AbstractPlugin
         return $tree;
     }
 
-    private function _buildChecklist($fields, $parentId = null)
+    private function _buildChecklist($fields, $parentId = null, $inspection = null)
     {
         $checklist = array();
         $fieldsConfig = $this->getController()->moduleConfig['fieldTypes'];
@@ -74,7 +74,11 @@ class GetDataPlugin extends AbstractPlugin
                     'triggerValue' => $field->getTriggerValue(),
                 );
                 $listField['items'] = $this->_buildChecklist($fields, $field->getId());
-                if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
+                if ($inspection) {
+                    $listField['fieldValue'] = $inspection->getFieldValue($field);
+                } else {
+                    if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
+                }
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
                 $alertMassage = $field->getAlertTitle();
                 if (!empty($alertMassage) && empty($listField['items'])) {

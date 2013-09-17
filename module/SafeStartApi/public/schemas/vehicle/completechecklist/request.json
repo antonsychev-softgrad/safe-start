@@ -78,8 +78,13 @@
                     "required": false
                 },
                 "odometer": {
-                    "description": "Current Odometer",
-                    "type": "string",
+                    "description": "Current Odometer Kms",
+                    "type": "integer",
+                    "required": false
+                },
+                "odometer_hours": {
+                    "description": "Current Odometer Hours",
+                    "type": "integer",
                     "required": false
                 }
             }
