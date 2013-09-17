@@ -167,7 +167,7 @@ class VehicleController extends RestrictedAccessRestController
             if (!$inspection) return $this->_showNotFound("Requested inspection does not exist.");
         }
 
-        if (!$inspection) {
+        if ($inspection) {
             $checkList = $inspection;
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
@@ -357,7 +357,7 @@ class VehicleController extends RestrictedAccessRestController
                 "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
                 $badge++;
-                $message .= $alert->getDescription() . "\n\r";
+                $message .= /*$alert->getDescription() .*/ "\n\r";
             }
         } else {
             $badge = 1;

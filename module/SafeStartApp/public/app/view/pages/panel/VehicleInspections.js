@@ -18,9 +18,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 hidden: true,
                 text: 'Edit',
                 handler: function (button) {
+                    console.log('insp onEdit');
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel');
-                    var checkListId = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails').checkListId;
-                    vehicleInspectionsPanel.fireEvent('editInspection', checkListId);
+                    var vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails');
+
+                    var checkListId = vehicleInspectionDetails.checkListId; 
+                    var vehicleId = vehicleInspectionDetails.vehicleId;
+                    vehicleInspectionsPanel.fireEvent('editInspection', vehicleId, checkListId);
                 }
             }]
         },

@@ -21,7 +21,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspectionDetails button[action=print]': {
                 tap: 'downloadVehicleInspectionDetailsPdf'
             },
-            'SafeStartCompanyPage SafeStartVehicleInspections': {
+            'SafeStartCompanyPage SafeStartVehicleInspectionsPanel': {
                 editInspection: 'onEditInspectionAction'
             },
             reviewCard: {
@@ -125,13 +125,14 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         window.open('/api/checklist/' + btn.config.checkListId + '/generate-pdf', '_blank');
     },
 
-    onEditInspectionAction: function (checkListId) {
+    onEditInspectionAction: function (vehicleId, checkListId) {
+        console.log('contr onEdit');
         this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
-        // var self = this;
-        // SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
-        //     self.getVehicleInspectionPanel().loadChecklist(result.checklist, id);
-        // });
-        this.editChecklist(checkListId);
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + vehicleId + '/getchecklist?checklistId=' + checkListId, {}, function (result) {
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist, vehicleId, checkListId);
+        });
+        // this.editChecklist(checkListId);
     }
 
 });

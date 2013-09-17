@@ -84,6 +84,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.createButtons(checklist.id);
 
         this.checkListId = checklist.id;
+        this.vehicleId = vehicle.get('id');
 
         Ext.each(checklist.fieldsStructure, function (fieldGroup) {
             this.createFields(fieldGroup.fields, checklist.fieldsData, fieldGroup.groupName, 1);
