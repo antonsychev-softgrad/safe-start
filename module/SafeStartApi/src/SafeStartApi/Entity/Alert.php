@@ -4,7 +4,7 @@ namespace SafeStartApi\Entity;
 
 use SafeStartApi\Base\CommentedEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
-
+use SafeStartApi\Entity\Vehicle;
 
 /**
  * @ORM\Entity
@@ -201,7 +201,7 @@ class Alert extends BaseEntity
      * @param \SafeStartApi\Entity\Vehicle $vehicle
      * @return Alert
      */
-    public function setVehicle(\SafeStartApi\Entity\Vehicle $vehicle = null)
+    public function setVehicle(Vehicle $vehicle = null)
     {
         $this->vehicle = $vehicle;
 
