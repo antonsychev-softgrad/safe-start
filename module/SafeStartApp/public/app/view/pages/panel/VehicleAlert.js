@@ -86,6 +86,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             {
                 xtype: 'toolbar',
                 items: [
+                    {
+                        xtype: 'button',
+                        text: 'Delete',
+                        name: 'delete-data',
+                        ui: 'decline',
+                        iconCls: 'delete',
+                        handler: function () {
+                            this.up('SafeStartVehicleAlertPanel').deleteAction();
+                        }
+                    },
                     { xtype: 'spacer' },
                     {
                         xtype: 'button',
@@ -135,6 +145,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             });
             self.down('#SafeStartVehicleAlertComments').setData({comments: self.record.raw['comments']});
             self.down('#SafeStartVehicleAlertNewComment').setValue('');
+        });
+    },
+
+    deleteAction: function() {
+        var self = this;
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function(){
+            SafeStartApp.AJAX('vehicle/alert/' + self.record.get('id') + '/delete', {}, function (result) {
+                self.getParent().pop();
+                self.getParent().alertsStore.loadData();
+            });
         });
     }
 
