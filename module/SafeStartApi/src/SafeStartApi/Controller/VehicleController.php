@@ -3,6 +3,7 @@
 namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestrictedAccessRestController;
+use SafeStartApi\Entity\Vehicle;
 
 class VehicleController extends RestrictedAccessRestController
 {
@@ -187,11 +188,13 @@ class VehicleController extends RestrictedAccessRestController
                 $this->em->persist($newAlert);
             }
             $this->em->flush();
+            $this->_pushNewChecklistNotification($vehicle, $this->answer);
         }
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
+
 
         $this->_pushNewChecklistNotification($vehicle, $this->answer);
 
@@ -267,7 +270,7 @@ class VehicleController extends RestrictedAccessRestController
 
     }
 
-    private function _pushNewChecklistNotification(\SafeStartApi\Entity\Vehicle $vehicle, $data = array())
+    private function _pushNewChecklistNotification(Vehicle $vehicle, $data = array())
     {
 
         $androidDevices = array();

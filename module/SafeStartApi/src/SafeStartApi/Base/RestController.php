@@ -88,8 +88,10 @@ class RestController extends AbstractActionController
             if($requestsCount >= $requestLimits) {
                 return false;
             }
-            $statistic[] = time();
-            $cache->setItem($cashKey, $statistic);
+            if(!$this->authService->hasIdentity()) {
+                $statistic[] = time();
+                $cache->setItem($cashKey, $statistic);
+            }
         } else {
             $statistic = array(time());
             $cache->setItem($cashKey, $statistic);

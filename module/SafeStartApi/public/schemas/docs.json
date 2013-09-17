@@ -66,6 +66,22 @@
                 }
             }
         },
+        "/api/user/[id]/profile/updateSignature": {
+            "description": "Update user's signature",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "userprofile/updatesignature/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "userprofile/updatesignature/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/getList": {
             "description": "Get vehicles list of authorised user",
             "type": "object",
