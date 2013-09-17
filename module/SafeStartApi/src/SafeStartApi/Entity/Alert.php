@@ -68,13 +68,6 @@ class Alert extends BaseEntity
     protected $images;
 
     /**
-     * Magic getter to expose protected properties.
-     *
-     * @param string $property
-     * @return mixed
-     */
-
-    /**
      * @ORM\Column(type="string")
      */
     protected $status;
@@ -83,6 +76,11 @@ class Alert extends BaseEntity
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $deleted = 0;
 
     /**
      * @ORM\PrePersist
@@ -296,5 +294,28 @@ class Alert extends BaseEntity
     public function getCreationDate()
     {
         return $this->creation_date;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return User
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
     }
 }

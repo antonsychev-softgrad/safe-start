@@ -387,6 +387,34 @@ $routes = array(
                     ),
                 ),
             ),
+            'delete-vehicle-alert' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/alert/:alertId/delete',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                        'alertId' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'deleteAlert',
+                    ),
+                ),
+            ),
+            'delete-vehicle-inspection' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/inspection/:inspectionId/delete',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                        'alertId' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'deleteInspection',
+                    ),
+                ),
+            ),
             'get-company-new-incoming' => array(
                 'type' => 'Segment',
                 'options' => array(

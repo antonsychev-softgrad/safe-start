@@ -169,6 +169,7 @@ class VehicleController extends RestrictedAccessRestController
 
         if ($inspection) {
             $checkList = $inspection;
+
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
             $uniqId = uniqid();
@@ -271,7 +272,7 @@ class VehicleController extends RestrictedAccessRestController
 
             $inspections = array();
 
-            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = :id");
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
             $query->setParameters(array('id' => $vehicle));
             $items = $query->getResult();
 
@@ -311,7 +312,44 @@ class VehicleController extends RestrictedAccessRestController
         );
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
 
+    public function deleteAlertAction()
+    {
+        $alertId = $this->params('alertId');
+        $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
+        if (!$alert) return $this->_showNotFound("Alert not found.");
+        $vehicle = $alert->getVehicle();
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $alert->setDeleted(1);
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function deleteInspectionAction()
+    {
+        $inspectionId = $this->params('inspectionId');
+        $inspection = $this->em->find('SafeStartApi\Entity\CheckList', $inspectionId);
+        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+        $vehicle = $inspection->getVehicle();
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $inspection->setDeleted(1);
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 
     private function _pushNewChecklistNotification(Vehicle $vehicle, $data = array(), $alerts = array())

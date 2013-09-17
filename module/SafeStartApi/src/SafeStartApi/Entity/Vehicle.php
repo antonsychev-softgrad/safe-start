@@ -162,10 +162,10 @@ class Vehicle extends BaseEntity
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
-            "warrantyStartDate " => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
-            "currentOdometerKms " => $this->getCurrentOdometerKms(),
-            "currentOdometerHours " => $this->getCurrentOdometerHours(),
+            "warrantyStartDate" => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
+            "currentOdometerKms" => $this->getCurrentOdometerKms(),
+            "currentOdometerHours" => $this->getCurrentOdometerHours(),
             "enabled" => $this->getEnabled(),
         );
     }
@@ -186,10 +186,10 @@ class Vehicle extends BaseEntity
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => $this->company->getExpiryDate(),
-            "warrantyStartDate " => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer " => $this->getWarrantyStartOdometer(),
-            "currentOdometerKms " => $this->getCurrentOdometerKms(),
-            "currentOdometerHours " => $this->getCurrentOdometerHours(),
+            "warrantyStartDate" => $this->getWarrantyStartDate(),
+            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
+            "currentOdometerKms" => $this->getCurrentOdometerKms(),
+            "currentOdometerHours" => $this->getCurrentOdometerHours(),
         );
     }
 
@@ -847,6 +847,8 @@ class Vehicle extends BaseEntity
      */
     public function haveAccess(User $user)
     {
+        if ($this->deleted) return false;
+
         if($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }
