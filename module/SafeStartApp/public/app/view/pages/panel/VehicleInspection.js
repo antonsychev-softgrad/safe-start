@@ -62,7 +62,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return false;
     },
 
-    loadChecklist: function (checklists, vehicleId, checkListId) {
+    loadChecklist: function (checklists, vehicleId, inspectionRecord) {
         var me = this;
         var checklistForms = [],
             checklistAdditionalForms = [],
@@ -70,7 +70,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         this.getAlertsStore().removeAll();
         this.vehicleId = vehicleId || 0;
-        this.isNew = ! checkListId;
+        this.isNew = ! inspectionRecord;
+        this.inspectionRecord = inspectionRecord;
         checklists = checklists || [];
 
         Ext.each(this.query('formpanel'), function (panel) {
@@ -90,7 +91,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 checklistForm.name = 'checklist-card-additional';
                 checklistAdditionalForms.push(checklistForm);
 
-                // check to fields
                 choiseAdditionalFields.push({
                     xtype: 'checkboxfield',
                     label: checklist.groupName,
@@ -477,6 +477,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createAdditionalFields: function () {
+        var odometerKms = 1000,
+            odometerHours = 24;
+        console.log(this.inspectionRecord);
+
+        if (! this.isNew && this.inspectionRecord) {
+            odometerKms = this.inspectionRecord.get('odometerKms');
+            odometerHours = this.inspectionRecord.get('odometerHours');
+        }
         return [{
             xtype: 'container',
             width: '100%',
@@ -516,13 +524,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     label: 'Kilometers',
                     stepValue: 1000,
                     required: true,
+                    value: odometerKms,
                     minValue: 1000
                 }, {
                     xtype: 'spinnerfield',
                     name: 'current-odometer-hours',
                     label: 'Hours',
-                    stepValue: 1000,
-                    minValue: 0 
+                    stepValue: 24,
+                    value: odometerHours,
+                    minValue: 0
                 }]
             }]
         }];

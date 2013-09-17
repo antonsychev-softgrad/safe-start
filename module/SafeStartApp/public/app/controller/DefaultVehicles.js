@@ -223,7 +223,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             fieldValues = [],
             gpsContainer = vehicleInspectionPanel.down('container[cls=sfa-vehicle-inspection-gps]'),
             odometerKms = vehicleInspectionPanel.down('field[name=current-odometer-kms]').getValue(),
-            odometerHours = vehicleInspectionPanel.down('field[name=current-odometer-kms]').getValue(),
+            odometerHours = vehicleInspectionPanel.down('field[name=current-odometer-hours]').getValue(),
             location = '',
             gps,
             alert,
@@ -289,7 +289,8 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             date: Date.now(),
             fields: fieldValues,
             alerts: alerts,
-            odometer: '', // TODO: adomter value
+            odometer: odometerKms, 
+            odometer_hours: odometerHours,
             gps: location
         };
 
