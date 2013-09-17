@@ -32,6 +32,25 @@ class UserProfileController extends RestrictedAccessRestController
         );
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
 
+    public function updateSignatureAction()
+    {
+        $userId = (int)$this->params('id');
+        $userInfo = $this->authService->getStorage()->read()->toArray();
+        if ((int)$userId != $userInfo['id']) return $this->AnswerPlugin()->format(array('errorMessage' => 'Acess denied'), 403, 200);
+        if (!$this->_requestIsValid('userprofile/updatesignature')) return $this->_showBadRequest();
+
+        $user = $this->em->find('SafeStartApi\Entity\User', $userId);
+        $user->setSignature($this->data->signature);
+        $this->em->flush();
+
+        $this->authService->getStorage()->write($user);
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 }
