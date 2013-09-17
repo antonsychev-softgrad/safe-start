@@ -350,8 +350,24 @@ class VehicleController extends RestrictedAccessRestController
             }
         }
 
-        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $data, $alerts, $vehicle);
-        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $data, $alerts, $vehicle);
+        if(!empty($alerts)) {
+            $androidData = array();
+            $iosData =
+                "Vehicle Alert \n\r" .
+                    "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
+            foreach($alerts as $alert) {
+                $androidData[] =
+                    "Vehicle Alert \n\r" .
+                        "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r" .
+                        $alert->getDescription();
+                $iosData .= $alert->getDescription() . "\n\r";
+            }
+        } else {
+            $iosData  = $androidData = 'Checklist for Vehicle ID #' . $vehicle->get . ' added';
+        }
+
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $androidData);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $iosData);
 
     }
 }
