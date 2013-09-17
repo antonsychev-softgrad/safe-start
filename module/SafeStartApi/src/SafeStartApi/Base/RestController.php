@@ -55,13 +55,13 @@ class RestController extends AbstractActionController
         $this->moduleConfig = $this->getServiceLocator()->get('Config');
         $this->em = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
 
-     //   if(!$this->_checkRequestLimits()) throw new Rest403('Requests limit achieved');
+        if (!$this->_checkRequestLimits()) throw new Rest403('Requests limit achieved');
     }
 
     protected function _checkRequestLimits()
     {
         $limitTime = $this->moduleConfig['requestsLimit']['limitTime'];
-        if($this->authService->hasIdentity()) {
+        if ($this->authService->hasIdentity()) {
             $requestLimits = $this->moduleConfig['requestsLimit']['limitForLoggedInUsers'];
         } else {
             $requestLimits = $this->moduleConfig['requestsLimit']['limitForUnloggedUsers'];
@@ -73,22 +73,22 @@ class RestController extends AbstractActionController
         $device = isset($this->data->device) ? $this->data->device : '';
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = $ip .'_'. $browser .'_'. $device;
+        $cashKey = $ip . '_' . $browser . '_' . $device;
 
         if ($cache->hasItem($cashKey)) {
             $statistic = $cache->getItem($cashKey);
 
-            foreach($statistic as $key => $requestTime) {
-                if($requestTime < time() - $limitTime) {
+            foreach ($statistic as $key => $requestTime) {
+                if ($requestTime < time() - $limitTime) {
                     unset($statistic[$key]);
                 }
             }
             $requestsCount = count($statistic);
 
-            if($requestsCount >= $requestLimits) {
+            if ($requestsCount >= $requestLimits) {
                 return false;
             }
-            if(!$this->authService->hasIdentity()) {
+            if (!$this->authService->hasIdentity()) {
                 $statistic[] = time();
                 $cache->setItem($cashKey, $statistic);
             }
@@ -102,7 +102,7 @@ class RestController extends AbstractActionController
     protected function _parseRequestFormat()
     {
         $this->requestJson = $this->getRequest()->getContent() ? $this->getRequest()->getContent() : json_encode($this->params()->fromPost());
-        $this->headers =  $this->getRequest()->getHeaders()->toArray();
+        $this->headers = $this->getRequest()->getHeaders()->toArray();
         $requestData = json_decode($this->requestJson);
         $this->data = isset($requestData->data) ? $requestData->data : null;
         $this->meta = isset($requestData->meta) ? $requestData->meta : null;
@@ -130,20 +130,23 @@ class RestController extends AbstractActionController
         //$this->_checkExpiryDate();
     }
 
-    protected function _getJsonSchemaRequest($method = "index/ping") {
-        $schemaFile =  __DIR__ . '/../../../public/schemas/' . $method . '/request.json';
+    protected function _getJsonSchemaRequest($method = "index/ping")
+    {
+        $schemaFile = __DIR__ . '/../../../public/schemas/' . $method . '/request.json';
         $schema = $this->jsonSchemaRetriever->retrieve('file://' . $schemaFile);
         return $schema;
     }
 
-    protected function _requestIsValid($method = "index/ping") {
+    protected function _requestIsValid($method = "index/ping")
+    {
         $schema = $this->_getJsonSchemaRequest($method);
         $data = json_decode($this->requestJson);
         $this->jsonSchemaValidator->check($data, $schema);
         return $this->jsonSchemaValidator->isValid();
     }
 
-    protected function _showBadRequest() {
+    protected function _showBadRequest()
+    {
         $this->answer = array(
             'errorMessage' => 'Wrong request params',
             'stack' => $this->jsonSchemaValidator->getErrors()
@@ -151,71 +154,76 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, 400, 400);
     }
 
-    protected function _showUnauthorisedRequest() {
+    protected function _showUnauthorisedRequest()
+    {
         $this->answer = array(
             'errorMessage' => 'Access denied',
         );
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
     }
 
-    protected function _showNotFound($msg = '') {
+    protected function _showNotFound($msg = '')
+    {
         $this->answer = array(
             'errorMessage' => $msg ? $msg : 'Not found',
         );
         return $this->AnswerPlugin()->format($this->answer, self::NOT_FOUND_ERROR);
     }
 
-    protected function _showEmailExists() {
+    protected function _showEmailExists()
+    {
         $this->answer = array(
             'errorMessage' => 'Email already in use',
         );
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR);
     }
 
-    protected function _showEmailInvalid() {
+    protected function _showEmailInvalid()
+    {
         $this->answer = array(
             'errorMessage' => 'Email invalid',
         );
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_INVALID_ERROR);
     }
 
-    protected function _checkExpiryDate($userId = null) {
+    protected function _checkExpiryDate($userId = null)
+    {
 
         $user = null;
 
-        if($userId === null) {
+        if ($userId === null) {
             if ($this->authService->hasIdentity()) {
                 $user = $this->authService->getStorage()->read();
             }
         } else {
-            if(is_integer($userId) && $userId > 0) {
+            if (is_integer($userId) && $userId > 0) {
                 $user = $this->em->find('SafeStartApi\Entity\User', $userId);
             } else {
 
             }
         }
 
-        if($user !== null) {
-            if(($company = $user->getCompany()) !== null) {
+        if ($user !== null) {
+            if (($company = $user->getCompany()) !== null) {
                 $now = new \DateTime();
                 $expiretyDate = $company->getExpiryDate();
-                if($expiretyDate !== null) {
-                    if(is_integer($expiretyDate)) {
+                if ($expiretyDate !== null) {
+                    if (is_integer($expiretyDate)) {
                         $now = $now->getTimestamp();
-                    } elseif($expiretyDate instanceof \DateTime) {
+                    } elseif ($expiretyDate instanceof \DateTime) {
                         $now = $now->getTimestamp();
                         $expiretyDate = $expiretyDate->getTimestamp();
-                    } elseif(is_string($expiretyDate)) {
+                    } elseif (is_string($expiretyDate)) {
                         $now = $now->getTimestamp();
                         $expiretyDate = strtotime($expiretyDate);
-                        if(!$expiretyDate) {
+                        if (!$expiretyDate) {
                             $expiretyDate = $now;
                         }
                     } else {
                         $expiretyDate = $now;
                     }
 
-                    if($now >= $expiretyDate) {
+                    if ($now >= $expiretyDate) {
                         $this->answer = array(
                             'errorMessage' => 'Date is Expired.',
                         );
