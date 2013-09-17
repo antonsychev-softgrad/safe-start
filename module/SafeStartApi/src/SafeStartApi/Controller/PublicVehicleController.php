@@ -78,15 +78,10 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setVehicle($vehicle);
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
-        $checkList->setHash(null);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
         $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
-
-        $this->em->persist($checkList);
-        $this->em->flush();
-
+        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->oodometer_hours)) ? $this->data->odometer_hours : null);
         $uniqId = uniqid();
-
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
         $this->em->flush();
