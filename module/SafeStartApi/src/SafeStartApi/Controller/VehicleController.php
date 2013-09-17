@@ -278,7 +278,7 @@ class VehicleController extends RestrictedAccessRestController
 
             if(is_array($items) && !empty($items)) {
                 foreach($items as $checkList) {
-                    $checkListData = array();
+                    $checkListData = $checkList->toArray();
 
                     $checkListData['checkListId'] = $checkList->getId();
                     $checkListData['title'] = $checkList->getCreationDate()->format("g:i A d/m/y");
