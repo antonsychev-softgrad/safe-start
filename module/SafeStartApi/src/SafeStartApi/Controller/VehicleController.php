@@ -249,6 +249,36 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getInspectionsAction()
+    {
+
+        if (($vehicleId = (int)$this->params('id')) !== null) {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+            $inspections = array();
+
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = :id");
+            $query->setParameters(array('id' => $vehicle));
+            $items = $query->getResult();
+
+            if(is_array($items) && !empty($items)) {
+                foreach($items as $checkList) {
+                    $checkListData = array();
+
+                    $checkListData['checkListId'] = $checkList->getId();
+                    $checkListData['title'] = $checkList->getCreationDate()->format("g:i A d/m/y");
+
+                    $inspections[] = $checkListData;
+                }
+            }
+
+            $this->answer = $inspections;
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            $this->_showBadRequest();
+        }
+    }
+
     public function updateAlertAction()
     {
         $alertId = $this->params('alertId');

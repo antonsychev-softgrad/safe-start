@@ -89,6 +89,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-vehicle-inspections' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/getinspections',
+                    'constraints' => array(
+                        'id' => '[A-Za-z0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getInspections'
+                    ),
+                ),
+            ),
             'complete-vehicle-checklist' => array(
                 'type' => 'Segment',
                 'options' => array(
