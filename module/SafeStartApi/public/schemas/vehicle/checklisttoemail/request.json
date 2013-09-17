@@ -67,7 +67,7 @@
                 },
                 "projectNumber": {
                     "description": "Project number",
-                    "type": "integer",
+                    "type": "string",
                     "required": true
                 },
                 "serviceDueKm": {
