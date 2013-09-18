@@ -426,7 +426,7 @@ class VehicleController extends RestrictedAccessRestController
                 "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
                 $badge++;
-                $message .= $alert->comment . "\n\r";
+                $message .= isset($alert->comment) ? $alert->comment : '' . "\n\r";
             }
         } else {
             $badge = 1;
