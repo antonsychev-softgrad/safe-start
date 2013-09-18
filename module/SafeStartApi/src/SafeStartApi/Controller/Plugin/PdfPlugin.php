@@ -291,7 +291,8 @@ class PdfPlugin extends AbstractPlugin
         return $topPosInPage;
     }
 
-    protected function drawVehicleBlock($headerTitle, $params, $topPosInPage) {
+    protected function drawVehicleBlock($headerTitle, $params, $topPosInPage)
+    {
 
         $pageWidth = $this->getPageWidth();
 
