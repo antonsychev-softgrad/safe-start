@@ -395,7 +395,7 @@ class PdfPlugin extends AbstractPlugin
 
             $title  = $field->fieldName;
             $value = !empty($this->fieldsData[$field->id]) ? $this->fieldsData[$field->id] : '-';
-            if($field->type == 'datePicker') {
+            if($field->type == 'datePicker' && !empty($this->fieldsData[$field->id]) && is_int($this->fieldsData[$field->id])) {
                 $value = gmdate('Y-m-d H:i:s', $value);
             }
 
