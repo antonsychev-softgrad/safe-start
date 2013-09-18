@@ -428,6 +428,20 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-inspection-alerts' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/inspection/:inspectionId/alerts',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                        'alertId' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getInspectionAlerts',
+                    ),
+                ),
+            ),
         ),
     ),
 );

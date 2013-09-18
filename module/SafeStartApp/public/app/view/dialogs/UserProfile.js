@@ -30,8 +30,8 @@ Ext.define('SafeStartApp.view.dialogs.UserProfile', {
             easing: 'ease-out'
         },
         centered: true,
-        width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
-        height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 350,
+        width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 460 : 600,
+        height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 370 : 500,
         styleHtmlContent: true,
         scrollable: false,
         cls: 'sfa-modal-form',
@@ -44,7 +44,7 @@ Ext.define('SafeStartApp.view.dialogs.UserProfile', {
                         text: 'Cancel',
                         ui: 'action',
                         handler: function() {
-                            this.up('SafeStartAbstractDialog').hide();
+                            this.up('SafeStartUserProfileDialog').hide();
                         }
                     },
                     { xtype: 'spacer' },
@@ -53,7 +53,7 @@ Ext.define('SafeStartApp.view.dialogs.UserProfile', {
                         action: 'save-data',
                         ui: 'confirm',
                         handler: function() {
-                            this.up('SafeStartAbstractDialog').fireEvent('save-data', this.up('SafeStartAbstractDialog'));
+                            this.up('SafeStartUserProfileDialog').fireEvent('save-data', this.up('SafeStartUserProfileDialog'));
                         }
                     }
                 ]

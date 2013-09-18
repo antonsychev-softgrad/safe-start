@@ -255,6 +255,7 @@ class Alert extends BaseEntity
             'status' => $this->getStatus(),
             'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
             'alert_description' => $this->field ? $this->field->getAlertDescription() : '',
+            'field' => $this->field ? $this->field->toArray() : null,
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list->getUser()->toInfoArray(),
             'description' => $this->getDescription(),
