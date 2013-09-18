@@ -182,7 +182,7 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
         $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
-        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->oodometer_hours)) ? $this->data->odometer_hours : null);
+        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours)) ? $this->data->odometer_hours : null);
 
         $this->em->persist($checkList);
         $this->em->flush();
