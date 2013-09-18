@@ -77,9 +77,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         ]);
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
+        var odometerString = '';
+        if (inspection.get('odometerKms')) {
+            odometerString += inspection.get('odometerKms') + ' km';
+        }
+        if (inspection.get('odometerHours')) {
+            odometerString += ' ' + inspection.get('odomterHours') + ' hours';
+        }
         this.createGroup([
             this.createContainer('Service due', serviceDueString),
-            this.createContainer('Current odometer', '') // TODO:
+            this.createContainer('Current odometer', odometerString)
         ]);
 
         this.createButtons(checklist.id);

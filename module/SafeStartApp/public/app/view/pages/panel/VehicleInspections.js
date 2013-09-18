@@ -18,7 +18,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 hidden: true,
                 text: 'Edit',
                 handler: function (button) {
-                    console.log('insp onEdit');
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel');
                     var vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails');
 
@@ -75,6 +74,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
     },
 
     onSelectInspectionAction: function(list, index, node, record) {
+        this.loadChecklistDetails(record);
+    },
+
+    loadChecklistDetails: function (record) {
         if (this.inspectionView) {
             this.inspectionView.destroy();
         }
