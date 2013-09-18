@@ -142,19 +142,19 @@ return array(
             'id' => 1,
             'options' => array(
                 array(
-                    'value' => 'Yes',
+                    'value' => 'yes',
                     'label' => 'Yes'
                 ),
                 array(
-                    'value' => 'No',
+                    'value' => 'no',
                     'label' => 'No'
                 ),
                 array(
-                    'value' => 'N/A',
+                    'value' => 'n/a',
                     'label' => 'N/A'
                 ),
             ),
-            'default' => 'N/A'
+            'default' => 'n/a'
         ),
         'checkbox' => array(
             'id' => 3,

@@ -386,7 +386,6 @@ class VehicleController extends RestrictedAccessRestController
 
     private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
     {
-
         $androidDevices = array();
         $iosDevices = array();
         $currentUser = \SafeStartApi\Application::getCurrentUser();
