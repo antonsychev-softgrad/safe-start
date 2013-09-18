@@ -10,12 +10,12 @@ class PdfPlugin extends AbstractPlugin
     const PAGE_PADDING_LEFT   = 58;
     const PAGE_PADDING_TOP    = 24;
     const PAGE_PADDING_RIGHT  = 58;
-    const PAGE_PADDING_BOTTOM = 58;
+    const PAGE_PADDING_BOTTOM = 70;
 
     const PAGE_HEADER_TITLE_SIZE = 22;
 
     const BLOCK_PADDING_TOP                         = 25;
-    const BLOCK_PADDING_BOTTOM                      = 60;
+    const BLOCK_PADDING_BOTTOM                      = 20;
     const BLOCK_HEADER_SIZE                         = 19;
     const BLOCK_SUBHEADER_SIZE                      = 16;
     const BLOCK_SUBHEADER_COLOR_LINE_SIZE           = 36;
@@ -139,6 +139,7 @@ class PdfPlugin extends AbstractPlugin
         // draw alerts block >
         $topPosInPage = $this->drawTextBlock('alerts', 'alerts', $alertsDetails, $topPosInPage);
 
+        $this->drawFooter();
         $this->document->pages[] = $this->currentPage;
 
         $file_name = $this->get_name();
@@ -268,7 +269,50 @@ class PdfPlugin extends AbstractPlugin
     }
 
     protected function drawFooter() {
+        if ($drawFooter = true) {
+            $font      = $this->font;
+            $fontSize  = self::BLOCK_TEXT_SIZE;
+            $fontColor = "#333333";
 
+            $logoMaxHeight = self::PAGE_PADDING_BOTTOM / 16 * 10;
+            $logoMaxWidth  = $logoMaxHeight / 3 * 4;
+
+            $topPosInPage = (($logoMaxHeight) / 2);
+
+            $user    = $this->checkList->getUser();
+            $vehicle = $this->checkList->getVehicle();
+
+            $name      = "Name: " . $user->getFirstName() . " " . $user->getLastName();
+            $signature = "Signature: ";
+            $date      = "Date: " . $this->dateGeneration->format('Y-m-d H:i');
+
+            $color = ZendPdf\Color\Html::color($fontColor);
+            $style = new ZendPdf\Style();
+            $style->setFillColor($color);
+            $style->setFont($font, $fontSize);
+            $this->currentPage->setStyle($style);
+
+            $leftPosInStr = $this->getLeftStartPos($name, $font, $fontSize, self::TEXT_ALIGN_LEFT);
+            $this->currentPage->drawText($name, $leftPosInStr, $topPosInPage);
+
+            $strWidth     = $this->widthForStringUsingFontSize($signature, $font, $fontSize);
+            $leftPosInStr = $this->getLeftStartPos($signature, $font, $fontSize, self::TEXT_ALIGN_CENTER);
+            $this->currentPage->drawText($signature, $leftPosInStr - ($logoMaxWidth / 2), $topPosInPage);
+            if (($logoPath = $this->getImagePathByName($user->getSignature())) !== null) {
+                $logo       = ZendPdf\Image::imageWithPath($logoPath);
+                $logoWidth  = $logo->getPixelWidth();
+                $logoHeight = $logo->getPixelHeight();
+
+                $scale         = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
+                $logoNewWidth  = (int) ($logoWidth * $scale);
+                $logoNewHeight = (int) ($logoHeight * $scale);
+
+                $this->currentPage->drawImage($logo, $leftPosInStr - ($logoMaxWidth / 2) + $strWidth, $topPosInPage + (($logoMaxHeight + $fontSize) / 2) - $logoNewHeight, $leftPosInStr - ($logoMaxWidth / 2) + $strWidth + $logoNewWidth, $topPosInPage + (($logoMaxHeight + $fontSize) / 2));
+            }
+
+            $leftPosInStr = $this->getLeftStartPos($date, $font, $fontSize, self::TEXT_ALIGN_RIGHT);
+            $this->currentPage->drawText($date, $leftPosInStr, $topPosInPage);
+        }
     }
 
     protected function drawTextBlock($type, $headerTitle, $params, $topPosInPage) {
@@ -505,46 +549,46 @@ class PdfPlugin extends AbstractPlugin
     }
 
     protected function drawImagesInColumns($topPosInPage, $images = array(), $columns = 3, $crops = true) {
-        if(is_array($images) && !empty($images)) {
-            if(is_integer($columns) < 1) {
+        if (is_array($images) && !empty($images)) {
+            if (is_integer($columns) < 1) {
                 $columns = 1;
-            } elseif(!is_integer($columns)) {
+            } elseif (!is_integer($columns)) {
                 $columns = 1;
             }
 
-            $pageContentWidth = $this->getPageContentWidth();
+            $pageContentWidth  = $this->getPageContentWidth();
             $pageContentHeight = $this->getPageContentHeight();
 
-            $newWidthForImage =  $pageContentWidth / $columns;
+            $newWidthForImage = $pageContentWidth / $columns;
 
             $xOffset = 0;
-            $yPos = $topPosInPage;
-            foreach($images as $counter => $image) {
+            $yPos    = $topPosInPage;
+            foreach ($images as $counter => $image) {
 
                 $position = $this->drawImage($image, $yPos, self::TEXT_ALIGN_LEFT, $newWidthForImage, 0, $xOffset, $crops);
-                if((($counter+1) % $columns) == 0) {
+                if ((($counter + 1) % $columns) == 0) {
                     $xOffset = 0;
-                    $yPos = $position['endYPos'];
+                    $yPos    = $position['endYPos'];
                 } else {
                     $xOffset += $newWidthForImage;
-                    if($position['endYPos'] > $yPos) { // if new page
+                    if ($position['endYPos'] > $yPos) { // if new page
 
-                        $logo = getimagesize($image);
-                        $logoWidth = $logo[0];
-                        $logoHeight = $logo[1];
-                        $logoNewWidth = $logoWidth;
+                        $logo          = getimagesize($image);
+                        $logoWidth     = $logo[0];
+                        $logoHeight    = $logo[1];
+                        $logoNewWidth  = $logoWidth;
                         $logoNewHeight = $logoHeight;
 
                         if ($logoWidth > $newWidthForImage) {
-                            $scale = $newWidthForImage / $logoWidth;
-                            $logoNewWidth = ceil($logoWidth * $scale);
+                            $scale         = $newWidthForImage / $logoWidth;
+                            $logoNewWidth  = ceil($logoWidth * $scale);
                             $logoNewHeight = ceil($logoHeight * $scale);
                         }
                         $yPos = $position['startYPos'];
                     }
                 }
 
-                if($position['endYPos'] > $yPos) {
+                if ($position['endYPos'] > $yPos) {
                     $yPos = $position['startYPos'];
                 }
 
@@ -555,43 +599,42 @@ class PdfPlugin extends AbstractPlugin
         return $topPosInPage;
     }
 
-
     protected function drawImage($logoPath, $topPosInPage, $position = self::TEXT_ALIGN_CENTER, $newImW = 0, $newImH = 0, $xOffset = 0, $crop = false) {
 
         $thumbLogoPath = null;
 
-        $pageContentWidth = $this->getPageContentWidth();
+        $pageContentWidth  = $this->getPageContentWidth();
         $pageContentHeight = $this->getPageContentHeight();
 
-        if((is_integer($newImW) || is_float($newImW)) && ($newImW > 1) && ($newImW < $pageContentWidth)) {
+        if ((is_integer($newImW) || is_float($newImW)) && ($newImW > 1) && ($newImW < $pageContentWidth)) {
             // ToDo
             // it's OK )
         } else {
             $newImW = 0;
         }
 
-        if((is_integer($newImH) || is_float($newImH)) && ($newImH > 1) && ($newImH < $pageContentHeight)) {
+        if ((is_integer($newImH) || is_float($newImH)) && ($newImH > 1) && ($newImH < $pageContentHeight)) {
             // ToDo
             // it's OK )
         } else {
             $newImH = 0;
         }
 
-        if($crop) {
-            if($newImW > 0 && !$newImH) {
+        if ($crop) {
+            if ($newImW > 0 && !$newImH) {
                 $newImH = $newImW * 2 / 3;
             }
 
-            if($newImH > 0 && !$newImW) {
-                $newImW = $newImH * 3 / 2 ;
+            if ($newImH > 0 && !$newImW) {
+                $newImW = $newImH * 3 / 2;
             }
         }
 
-        $logo = ZendPdf\Image::imageWithPath($logoPath);
-        $logoWidth = $logo->getPixelWidth();
+        $logo       = ZendPdf\Image::imageWithPath($logoPath);
+        $logoWidth  = $logo->getPixelWidth();
         $logoHeight = $logo->getPixelHeight();
 
-        if($newImW && $newImH && $crop) {
+        if ($newImW && $newImH && $crop) {
 
             // create tmp folder for image
             $tmpFolderPath = $this->get_pdf_tmp_path();
@@ -599,55 +642,43 @@ class PdfPlugin extends AbstractPlugin
             $thumbLogoPath = preg_replace('/(\.[^\.]*)$/isU', "_crop$1", $thumbLogoPath);
 
             if (($logoWidth / $logoHeight) >= ($newImW / $newImH)) {
-                $logoNewWidth = $logoWidth / ($logoHeight / $newImH);
+                $logoNewWidth  = $logoWidth / ($logoHeight / $newImH);
                 $logoNewHeight = $newImH;
             } else {
-                $logoNewWidth = $newImW;
+                $logoNewWidth  = $newImW;
                 $logoNewHeight = $logoHeight / ($logoWidth / $newImW);
             }
-            $dst_x = 0 - ($logoNewWidth - $newImW) / 2;
-            $dst_y = 0 - ($logoNewHeight - $newImH) / 2;
+            $dst_x   = 0 - ($logoNewWidth - $newImW) / 2;
+            $dst_y   = 0 - ($logoNewHeight - $newImH) / 2;
             $new_img = imagecreatetruecolor($newImW, $newImH);
 
             switch (strtolower(substr(strrchr($logoPath, '.'), 1))) {
                 case 'jpg':
                 case 'jpeg':
-                    $src_img = imagecreatefromjpeg($logoPath);
-                    $write_image = 'imagejpeg';
-                    $image_quality = isset($options['jpeg_quality']) ?
-                        $options['jpeg_quality'] : 95;
+                    $src_img       = imagecreatefromjpeg($logoPath);
+                    $write_image   = 'imagejpeg';
+                    $image_quality = isset($options['jpeg_quality']) ? $options['jpeg_quality'] : 95;
                     break;
                 case 'gif':
                     imagecolortransparent($new_img, imagecolorallocate($new_img, 0, 0, 0));
-                    $src_img = imagecreatefromgif($logoPath);
-                    $write_image = 'imagegif';
+                    $src_img       = imagecreatefromgif($logoPath);
+                    $write_image   = 'imagegif';
                     $image_quality = null;
                     break;
                 case 'png':
                     imagecolortransparent($new_img, imagecolorallocate($new_img, 0, 0, 0));
                     imagealphablending($new_img, false);
                     imagesavealpha($new_img, true);
-                    $src_img = imagecreatefrompng($logoPath);
-                    $write_image = 'imagepng';
-                    $image_quality = isset($options['png_quality']) ?
-                        $options['png_quality'] : 9;
+                    $src_img       = imagecreatefrompng($logoPath);
+                    $write_image   = 'imagepng';
+                    $image_quality = isset($options['png_quality']) ? $options['png_quality'] : 9;
                     break;
                 default:
                     imagedestroy($new_img);
+
                     return false;
             }
-            $success = imagecopyresampled(
-                    $new_img,
-                    $src_img,
-                    $dst_x,
-                    $dst_y,
-                    0,
-                    0,
-                    $logoNewWidth,
-                    $logoNewHeight,
-                    $logoWidth,
-                    $logoHeight
-                ) && $write_image($new_img, $thumbLogoPath, $image_quality);
+            $success = imagecopyresampled($new_img, $src_img, $dst_x, $dst_y, 0, 0, $logoNewWidth, $logoNewHeight, $logoWidth, $logoHeight) && $write_image($new_img, $thumbLogoPath, $image_quality);
 
             // Free up memory (imagedestroy does not delete files):
             imagedestroy($src_img);
@@ -659,13 +690,12 @@ class PdfPlugin extends AbstractPlugin
                 $imProc->save($thumbLogoPath);*/
             }
 
-            $logo = ZendPdf\Image::imageWithPath($thumbLogoPath);
-            $logoWidth = $logo->getPixelWidth();
+            $logo       = ZendPdf\Image::imageWithPath($thumbLogoPath);
+            $logoWidth  = $logo->getPixelWidth();
             $logoHeight = $logo->getPixelHeight();
-        }
-        elseif ($logoWidth > ($newImW ? $newImW : $pageContentWidth) || $logoHeight > $pageContentHeight) {
-            $scale = min(($newImW ? $newImW : $pageContentWidth) / $logoWidth, $pageContentHeight / $logoHeight);
-            $logoNewWidth = floor($logoWidth * $scale);
+        } elseif ($logoWidth > ($newImW ? $newImW : $pageContentWidth) || $logoHeight > $pageContentHeight) {
+            $scale         = min(($newImW ? $newImW : $pageContentWidth) / $logoWidth, $pageContentHeight / $logoHeight);
+            $logoNewWidth  = floor($logoWidth * $scale);
             $logoNewHeight = floor($logoHeight * $scale);
 
             // create tmp folder for image
@@ -674,18 +704,20 @@ class PdfPlugin extends AbstractPlugin
             $thumbLogoPath = preg_replace('/(\.[^\.]*)$/isU', "_{$logoNewWidth}x{$logoNewHeight}$1", $thumbLogoPath);
             if (!file_exists($thumbLogoPath)) {
                 $imProc = new ImageProcessor($logoPath);
-                $imProc->contain(array('width' => $logoNewWidth, 'height' => $logoNewHeight));
+                $imProc->contain(array('width'  => $logoNewWidth,
+                                       'height' => $logoNewHeight
+                ));
                 $imProc->save($thumbLogoPath);
             }
 
-            $logo = ZendPdf\Image::imageWithPath($thumbLogoPath);
-            $logoWidth = $logo->getPixelWidth();
+            $logo       = ZendPdf\Image::imageWithPath($thumbLogoPath);
+            $logoWidth  = $logo->getPixelWidth();
             $logoHeight = $logo->getPixelHeight();
         }
 
         $topPosInPage = $this->detectNewPage($topPosInPage -= ($logoHeight + self::BLOCK_TEXT_LINE_SPACING_AT), $logoHeight);
 
-        $posInfo = array();
+        $posInfo              = array();
         $posInfo['startYPos'] = $topPosInPage + ($logoHeight + self::BLOCK_TEXT_LINE_SPACING_AT);
 
         switch ($position) {
@@ -711,13 +743,12 @@ class PdfPlugin extends AbstractPlugin
                 unlink($thumbLogoPath);
                 if (is_dir($dir_name = dirname($thumbLogoPath))) {
                     // scan folder
-                    $flags = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS;
+                    $flags    = \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS;
                     $iterator = new \RecursiveDirectoryIterator($dir_name, $flags);
                     $iterator = new \RecursiveIteratorIterator($iterator, \RecursiveIteratorIterator::SELF_FIRST, \RecursiveIteratorIterator::CATCH_GET_CHILD);
                     if (iterator_count($iterator) == 0) {
                         rmdir($dir_name);
-                    }
-                    else {
+                    } else {
                         // clean and remove tmp dir
                         // foreach($iterator as $path) {
                         //     $path->isFile() ? unlink($path->getPathname()) : rmdir($path->getPathname());
@@ -751,8 +782,7 @@ class PdfPlugin extends AbstractPlugin
 
         if ($drawHeader = false) {
             $pageYPosition = $this->drawHeader();
-        }
-        else {
+        } else {
             $pageYPosition = $this->getPageHeight();
             $pageYPosition -= self::PAGE_PADDING_TOP;
         }
