@@ -82,7 +82,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             odometerString += inspection.get('odometerKms') + ' km';
         }
         if (inspection.get('odometerHours')) {
-            odometerString += ' ' + inspection.get('odomterHours') + ' hours';
+            odometerString += ' ' + inspection.get('odometerHours') + ' hours';
         }
         this.createGroup([
             this.createContainer('Service due', serviceDueString),
