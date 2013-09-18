@@ -18,7 +18,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 hidden: true,
                 text: 'Edit',
                 handler: function (button) {
-                    console.log('insp onEdit');
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel');
                     var vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails');
 
@@ -72,9 +71,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.vehicle = vehicle;
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/' + this.vehicleId + '/getinspections');
         this.inspectionsStore.load();
+        this.removeChecklistDetails();
     },
 
     onSelectInspectionAction: function(list, index, node, record) {
+        this.loadChecklistDetails(record);
+    },
+
+    loadChecklistDetails: function (record) {
         if (this.inspectionView) {
             this.inspectionView.destroy();
         }
@@ -84,6 +88,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.hideButtons();
         this.push(this.inspectionView);
         this.inspectionView.loadChecklist(this.vehicle, record);
+    },
+
+    removeChecklistDetails: function () {
+        var detailsView = this.down('SafeStartVehicleInspectionDetails');
+        if (detailsView) {
+            this.pop(detailsView);
+            this.hideButtons();
+        }
     },
 
     onEditInspectionAction: function () {

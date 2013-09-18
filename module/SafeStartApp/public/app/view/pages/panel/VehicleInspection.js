@@ -62,21 +62,39 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return false;
     },
 
+    clearChecklist: function () {
+        this.inspectionRecord = null;
+        this.getAlertsStore().removeAll();
+        Ext.each(this.query('formpanel'), function (panel) {
+            this.remove(panel);
+        }, this);
+    },
+
+    fillAlertsData: function (alerts) {
+        var store = this.getAlertsStore();
+        var alertRecord;
+        Ext.each(alerts, function (alert) {
+            alertRecord = store.findRecord('fieldId', alert.field.id);
+            if (alertRecord) {
+                alertRecord.set('photos', alert.images);
+                alertRecord.set('comment', alert.description);
+            }
+        });
+
+    },
+
     loadChecklist: function (checklists, vehicleId, inspectionRecord) {
         var me = this;
         var checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
-        this.getAlertsStore().removeAll();
         this.vehicleId = vehicleId || 0;
         this.isNew = ! inspectionRecord;
         this.inspectionRecord = inspectionRecord;
         checklists = checklists || [];
 
-        Ext.each(this.query('formpanel'), function (panel) {
-            this.remove(panel);
-        }, this);
+        this.clearChecklist();
 
         var choiseAdditionalListeners = {
             painted: function (checkbox) {
@@ -107,45 +125,53 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add(checklistForms);
 
         if (choiseAdditionalFields.length) {
-            this.add({
-                xtype: 'formpanel',
-                name: 'checklist-card-choise-additional',
-                cls: 'sfa-checklist-form',
-                layout: {
-                    type: 'vbox',
-                    align: 'center'
-                },
-                items: [{
-                    xtype: 'fieldset',
-                    maxWidth: 900,
-                    width: '100%',
-                    items: choiseAdditionalFields
-                },{
-                    xtype: 'titlebar',
-                    docked: 'top',
-                    title: 'Daily inspection checklist additional'
-                }, {
-                    xtype: 'toolbar',
-                    docked: 'bottom',
-                    margin: '40 0 0 0',
-                    layout: {
-                        type: 'hbox',
-                        align: 'stretch',
-                        pack: 'center'
-                    },
-                    items: [{
-                        text: 'Prev',
-                        action: 'prev'
-                    }, {
-                        text: 'Next',
-                        action: 'next'
-                    }]
-                }]
-            });
+            this.add(this.createChoiseAdditionalCard(choiseAdditionalFields));
         }
         this.add(checklistAdditionalForms);
 
-        this.add({
+        this.add(this.createReviewCard());
+    },
+
+    createChoiseAdditionalCard: function (fields) {
+        return {
+            xtype: 'formpanel',
+            name: 'checklist-card-choise-additional',
+            cls: 'sfa-checklist-form',
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
+            items: [{
+                xtype: 'fieldset',
+                maxWidth: 900,
+                width: '100%',
+                items: fields
+            },{
+                xtype: 'titlebar',
+                docked: 'top',
+                title: 'Daily inspection checklist additional'
+            }, {
+                xtype: 'toolbar',
+                docked: 'bottom',
+                margin: '40 0 0 0',
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch',
+                    pack: 'center'
+                },
+                items: [{
+                    text: 'Prev',
+                    action: 'prev'
+                }, {
+                    text: 'Next',
+                    action: 'next'
+                }]
+            }]
+        };
+    },
+
+    createReviewCard: function () {
+        return {
             xtype: 'formpanel',
             name: 'checklist-card-review',
             cls: 'sfa-checklist-form',
@@ -174,7 +200,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     action: 'submit'
                 }]
             }]
-        });
+        };
     },
 
     createForm: function (checklist) {
@@ -288,6 +314,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var name = 'checklist-radio-' + fieldData.fieldId,
             optionFields = [];
 
+        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+            alertRecord.set('active', true);
+        }
+
         Ext.each(fieldData.options, function (option) {
             optionFields.push({
                 xtype: 'radiofield',
@@ -394,6 +424,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
+        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+            alertRecord.set('active', true);
+        }
         return {
             xtype: 'checkboxfield',
             maxWidth: 900,
@@ -479,7 +512,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createAdditionalFields: function () {
         var odometerKms = 1000,
             odometerHours = 24;
-        console.log(this.inspectionRecord);
 
         if (! this.isNew && this.inspectionRecord) {
             odometerKms = this.inspectionRecord.get('odometerKms');
