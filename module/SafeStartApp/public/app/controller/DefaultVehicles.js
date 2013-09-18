@@ -216,19 +216,28 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
     },
 
     onReviewConfirmBtnTap: function (button) {
-        var controller = this;
-        var alerts = [];
-        var vehicleInspectionPanel = this.getVehicleInspectionPanel();
-        var checklists = this.getChecklistForms();
-        var fieldValues = [];
-        var gpsContainer = vehicleInspectionPanel.down('container[cls=sfa-vehicle-inspection-gps]');
-        var location = '';
+        var controller = this,
+            alerts = [],
+            vehicleInspectionPanel = this.getVehicleInspectionPanel(),
+            checklists = this.getChecklistForms(),
+            fieldValues = [],
+            gpsContainer = vehicleInspectionPanel.down('container[cls=sfa-vehicle-inspection-gps]'),
+            odometerKms = vehicleInspectionPanel.down('field[name=current-odometer-kms]').getValue(),
+            odometerHours = vehicleInspectionPanel.down('field[name=current-odometer-hours]').getValue(),
+            location = '',
+            gps,
+            alert,
+            fields = [],
+            data;
+
+
+
         if (gpsContainer.down('togglefield').getValue() && gpsContainer.gps) {
-            var gps = gpsContainer.gps;
+            gps = gpsContainer.gps;
             location = gps.getLatitude() + ';' + gps.getLongitude();
         }
         Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
-            var alert = alertContaienr.config.alertModel;
+            alert = alertContaienr.config.alertModel;
             alerts.push({
                 fieldId: parseInt(alert.get('fieldId')),
                 comment: alert.get('comment'),
@@ -236,7 +245,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             });
         });
         Ext.each(checklists, function (checklist) {
-            var fields = checklist.query('field');
+            fields = checklist.query('field');
             Ext.each(fields, function (field) {
  				if (field.isHidden()) return;
                 switch (field.xtype) {
@@ -276,10 +285,12 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             });
         });
 
-        var data = {
+        data = {
             date: Date.now(),
             fields: fieldValues,
             alerts: alerts,
+            odometer: odometerKms, 
+            odometer_hours: odometerHours,
             gps: location
         };
 
@@ -287,23 +298,22 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
 
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
-            window.testMsg = vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]');
-            setTimeout(function () {
-                var hash = result.checklist;
-                var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
-                navMain.getStore().on('load', function () {
-                    var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
-                    navMain.goToNode(inspectionsNode);
-                    inspectionNode = inspectionsNode.findChild('checkListHash', hash);
-                    if (inspectionNode) {
-                        var active = navMain.getActiveItem();
-                        var index = inspectionsNode.indexOf(inspectionNode);
-                        navMain.fireEvent('itemtap', navMain, active, index, null, inspectionNode);
-                    }
-                }, null, {single: true});
+            // setTimeout(function () {
+            //     var hash = result.checklist;
+            //     var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
+            //     navMain.getStore().on('load', function () {
+            //         var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
+            //         navMain.goToNode(inspectionsNode);
+            //         inspectionNode = inspectionsNode.findChild('checkListHash', hash);
+            //         if (inspectionNode) {
+            //             var active = navMain.getActiveItem();
+            //             var index = inspectionsNode.indexOf(inspectionNode);
+            //             navMain.fireEvent('itemtap', navMain, active, index, null, inspectionNode);
+            //         }
+            //     }, null, {single: true});
 
-                controller.getNavMain().getStore().load();
-            }, 0);
+            //     controller.getNavMain().getStore().load();
+            // }, 0);
         });
     },
 

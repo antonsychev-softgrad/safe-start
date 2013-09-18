@@ -30,7 +30,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 left: 80,
                 text: 'Back',
                 handler: function (btn) {
-                    console.log('test');
                     var panel = btn.up('SafeStartVehicleInspectionDetails');
                     panel.setActiveItem(0);
                 }
@@ -39,18 +38,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     },
 
     initialize: function () {
-
         this.callParent();
     },
 
-    loadChecklist: function (vehicle, checklistId) {
+    //todo remove checklist request
+    loadChecklist: function (vehicle, inspection) {
         var me = this;
-        SafeStartApp.AJAX('vehicle/' + checklistId + '/getchecklistdata', {}, function (result) {
-            me.createView(vehicle, result.checklist);
-        });
+        SafeStartApp.AJAX('vehicle/' + inspection.get('checkListId') + '/getchecklistdata', {}, function (result) {
+            me.createView(vehicle, result.checklist, inspection);
+        }, true, true);
     },
 
-    createView: function (vehicle, checklist) {
+    createView: function (vehicle, checklist, inspection) {
         var infoGroup = [],
             responsibleUser = vehicle.responsibleUsers().first(),
             cords;
@@ -84,6 +83,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         ]);
 
         this.createButtons(checklist.id);
+
+        this.checkListId = checklist.id;
+        this.vehicleId = vehicle.get('id');
+        this.inspectionRecord = inspection;
 
         Ext.each(checklist.fieldsStructure, function (fieldGroup) {
             this.createFields(fieldGroup.fields, checklist.fieldsData, fieldGroup.groupName, 1);
