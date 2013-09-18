@@ -17,9 +17,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     initialize: function () {
         this.callParent();
-
+        
         this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
-
     },
 
     setAlertsStore: function (store) {
@@ -80,7 +79,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 alertRecord.set('comment', alert.description);
             }
         });
-
     },
 
     loadChecklist: function (checklists, vehicleId, inspectionRecord) {
@@ -89,12 +87,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
+        this.clearChecklist();
+
         this.vehicleId = vehicleId || 0;
         this.isNew = ! inspectionRecord;
         this.inspectionRecord = inspectionRecord;
+
         checklists = checklists || [];
 
-        this.clearChecklist();
 
         var choiseAdditionalListeners = {
             painted: function (checkbox) {
@@ -314,11 +314,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var name = 'checklist-radio-' + fieldData.fieldId,
             optionFields = [];
 
-        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+        if (alertRecord && RegExp(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
             alertRecord.set('active', true);
         }
 
         Ext.each(fieldData.options, function (option) {
+            var fieldValue = fieldData.fieldValue || 'n/a';
+
             optionFields.push({
                 xtype: 'radiofield',
                 value: option.value,
@@ -326,7 +328,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 labelWidth: 50,
                 fieldId: fieldData.fieldId,
                 name: name,
-                checked: fieldData.fieldValue === option.value,
+                checked: new RegExp(option.value, 'i').test(fieldValue),
                 listeners: {
                     check: function (radio) {
                         var value = radio.getValue();
@@ -360,7 +362,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     var alert = this.config.alertRecord,
                         additionalFields;
                     if (alert) {
-                        if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
+                        if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
                             if (alert.get('critical')) {
                                 Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
                             }
@@ -382,7 +384,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                             }, this);
                         }
                         additionalFields = this.additionalFields;
-                        if (this.config.triggerValue.match(new RegExp(value, 'i'))) {
+                        if (RegExp(this.config.triggerValue, 'i').test(value)) {
                             Ext.each(additionalFields, function (field) {
                                 field.show(true);
                                 field.enable();
@@ -424,7 +426,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
-        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+        if (alertRecord && RegExp.test(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
             alertRecord.set('active', true);
         }
         return {
@@ -438,7 +440,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             fieldId: fieldData.fieldId,
             alerts: fieldData.alerts,
             alertRecord: alertRecord,
-            checked: fieldData.fieldValue == 'Yes', //TODO
+            checked: fieldData.fieldValue == 'yes', //TODO
             triggerable: true,
             listeners: {
                 check: function (checkbox) {
@@ -451,7 +453,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     var alert = this.config.alertRecord,
                         additionalFields;
                     if (alert) {
-                        if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
+                        if (RegExp(alert.get('triggerValue', 'i').test(value))) {
                             if (alert.get('critical')) {
                                 Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
                             }
@@ -473,7 +475,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                             }, this);
                         }
                         additionalFields = this.additionalFields;
-                        if (this.config.triggerValue.match(new RegExp(value, 'i'))) {
+                        if (RegExp(this.config.triggerValue, 'i').test(value)) {
                             Ext.each(additionalFields, function (field) {
                                 field.show(true);
                                 field.enable();
@@ -511,12 +513,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     createAdditionalFields: function () {
         var odometerKms = 1000,
-            odometerHours = 24;
+            odometerHours = 0;
 
         if (! this.isNew && this.inspectionRecord) {
             odometerKms = this.inspectionRecord.get('odometerKms');
             odometerHours = this.inspectionRecord.get('odometerHours');
         }
+        console.log(this.isNew, this.inspectionRecord);
         return [{
             xtype: 'container',
             width: '100%',
