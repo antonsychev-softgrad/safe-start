@@ -187,7 +187,18 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->persist($checkList);
         $this->em->flush();
 
-        // save alerts
+        // delete existing alerts
+        if ($inspection) {
+            $prevAlerts = $inspection->getAlerts();
+            if ($prevAlerts) {
+                foreach ($prevAlerts as $prevAlert) {
+                    $prevAlert->setDeleted(1);
+                    $this->em->flush();
+                }
+            }
+        }
+
+        // save new alerts
         $alerts = array();
         if (!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
@@ -212,7 +223,7 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        $this->_pushNewChecklistNotification($vehicle, $this->answer, $alerts);
+        $this->_pushNewChecklistNotification($vehicle, $alerts);
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -294,6 +305,17 @@ class VehicleController extends RestrictedAccessRestController
         }
     }
 
+    public function getInspectionAlertsAction()
+    {
+        $inspectionId = $this->params('inspectionId');
+        $inspection = $this->em->find('SafeStartApi\Entity\CheckList', $inspectionId);
+        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+        $vehicle = $inspection->getVehicle();
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+        $this->answer = $inspection->getAlertsArray();
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function updateAlertAction()
     {
         $alertId = $this->params('alertId');
@@ -342,8 +364,18 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $inspection->setDeleted(1);
-
         $this->em->flush();
+
+        // delete existing alerts
+        if ($inspection) {
+            $prevAlerts = $inspection->getAlerts();
+            if ($prevAlerts) {
+                foreach ($prevAlerts as $prevAlert) {
+                    $prevAlert->setDeleted(1);
+                    $this->em->flush();
+                }
+            }
+        }
 
         $this->answer = array(
             'done' => true
@@ -352,7 +384,7 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    private function _pushNewChecklistNotification(Vehicle $vehicle, $data = array(), $alerts = array())
+    private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
     {
 
         $androidDevices = array();
@@ -395,7 +427,7 @@ class VehicleController extends RestrictedAccessRestController
                 "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
                 $badge++;
-                $message .= /*$alert->getDescription() .*/ "\n\r";
+                $message .= $alert->comment . "\n\r";
             }
         } else {
             $badge = 1;
