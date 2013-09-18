@@ -70,6 +70,19 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }, this);
     },
 
+    fillAlertsData: function (alerts) {
+        var store = this.getAlertsStore();
+        var alertRecord;
+        Ext.each(alerts, function (alert) {
+            alertRecord = store.findRecord('fieldId', alert.field.id);
+            if (alertRecord) {
+                alertRecord.set('photos', alert.images);
+                alertRecord.set('comment', alert.description);
+            }
+        });
+
+    },
+
     loadChecklist: function (checklists, vehicleId, inspectionRecord) {
         var me = this;
         var checklistForms = [],
@@ -301,6 +314,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var name = 'checklist-radio-' + fieldData.fieldId,
             optionFields = [];
 
+        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+            alertRecord.set('active', true);
+        }
+
         Ext.each(fieldData.options, function (option) {
             optionFields.push({
                 xtype: 'radiofield',
@@ -407,6 +424,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
+        if (alertRecord && alertRecord.get('triggerValue').match(new RegExp(fieldData.fieldValue, 'i'))) {
+            alertRecord.set('active', true);
+        }
         return {
             xtype: 'checkboxfield',
             maxWidth: 900,
