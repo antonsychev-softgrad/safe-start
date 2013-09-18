@@ -39,28 +39,64 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return this.alerts[fieldId];
     },
 
-    loadChecklist: function (checklists, id) {
+    fieldValueExists: function (fields) {
+        var field, 
+            len,
+            i;
+
+        for (i = 0, len = fields.length; i < len; i++) {
+            field = fields[i];
+            switch (field.type) {
+                case 'group': 
+                    if (this.fieldValueExists(field.items)) {
+                        return true;
+                    }
+                    break;
+                default:
+                    if (Ext.isString(field.fieldValue) && field.fieldValue.length) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
+    },
+
+    loadChecklist: function (checklists, vehicleId, inspectionRecord) {
+        var me = this;
         var checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
         this.getAlertsStore().removeAll();
-        this.vehicleId = id || 0;
+        this.vehicleId = vehicleId || 0;
+        this.isNew = ! inspectionRecord;
+        this.inspectionRecord = inspectionRecord;
         checklists = checklists || [];
 
         Ext.each(this.query('formpanel'), function (panel) {
             this.remove(panel);
         }, this);
 
+        var choiseAdditionalListeners = {
+            painted: function (checkbox) {
+                me.down('formpanel{config.groupId === ' + this.config.checklistGroupId + '}')
+                    .isIncluded = this.config.checked;
+            }
+        };
+
         Ext.each(checklists, function (checklist, index) {
             var checklistForm = this.createForm(checklist);
             if (checklist.additional) {
                 checklistForm.name = 'checklist-card-additional';
                 checklistAdditionalForms.push(checklistForm);
+
                 choiseAdditionalFields.push({
                     xtype: 'checkboxfield',
                     label: checklist.groupName,
-                    checklistGroupId: checklist.groupId
+                    checked: this.isNew ? false : this.fieldValueExists(checklist.fields),
+                    checklistGroupId: checklist.groupId,
+                    listeners: this.isNew ? {} : choiseAdditionalListeners
                 });
             } else {
                 checklistForm.name = 'checklist-card';
@@ -188,8 +224,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var additionalFieldsConfig;
         var additionalFields;
 
-
-
         Ext.each(fieldsData, function (fieldData) {
             alert = [];
             alertRecord = null;
@@ -245,6 +279,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             label: fieldData.fieldName,
             maxWidth: 900,
             width: '100%',
+            value: fieldData.fieldValue,
             fieldId: fieldData.fieldId
         };
     },
@@ -294,7 +329,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 checkTriggers: function (value) {
                     var alert = this.config.alertRecord,
                         additionalFields;
-                    console.log(alert);  
                     if (alert) {
                         if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
                             if (alert.get('critical')) {
@@ -322,7 +356,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                             Ext.each(additionalFields, function (field) {
                                 field.show(true);
                                 field.enable();
-                                console.log(field.config.fieldId);
                             });
                         } else {
                             Ext.each(additionalFields, function (field) {
@@ -356,7 +389,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             width: '100%',
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
-            value: new Date()
+            value: new Date(fieldData.fieldValue || Date.now())
         };
     },
 
@@ -372,6 +405,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             fieldId: fieldData.fieldId,
             alerts: fieldData.alerts,
             alertRecord: alertRecord,
+            checked: fieldData.fieldValue == 'Yes', //TODO
             triggerable: true,
             listeners: {
                 check: function (checkbox) {
@@ -384,7 +418,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     var alert = this.config.alertRecord,
                         additionalFields;
                     if (alert) {
-                        console.log(value, alert.get('triggerValue'));
                         if (alert.get('triggerValue').match(new RegExp(value, 'i'))) {
                             if (alert.get('critical')) {
                                 Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
@@ -439,12 +472,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var reviewCard = this.down('formpanel[name=checklist-card-review]');
         reviewCard.removeAll();
         reviewCard.add(this.createVehicleDetailsView(passedCards));
-        reviewCard.add(this.createGpsView());
+        reviewCard.add(this.createAdditionalFields());
         reviewCard.add(this.createAlertsView(alerts));
     },
 
-    createGpsView: function () {
-        return {
+    createAdditionalFields: function () {
+        var odometerKms = 1000,
+            odometerHours = 24;
+        console.log(this.inspectionRecord);
+
+        if (! this.isNew && this.inspectionRecord) {
+            odometerKms = this.inspectionRecord.get('odometerKms');
+            odometerHours = this.inspectionRecord.get('odometerHours');
+        }
+        return [{
             xtype: 'container',
             width: '100%',
             cls: 'sfa-vehicle-inspection-gps',
@@ -464,7 +505,37 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     }
                 }
             }]
-        };
+        }, {
+            xtype: 'container',
+            name: 'vehicle-inspection-additional-fields',
+            width: '100%',
+            maxWidth: 900,
+            height: 'auto',
+            items: [{
+                xtype: 'fieldset',
+                title: 'Current odometer',
+                layout: {
+                    type: 'hbox'
+                },
+                width: '100%',
+                items: [{
+                    xtype: 'spinnerfield',
+                    name: 'current-odometer-kms',
+                    label: 'Kilometers',
+                    stepValue: 1000,
+                    required: true,
+                    value: odometerKms,
+                    minValue: 1000
+                }, {
+                    xtype: 'spinnerfield',
+                    name: 'current-odometer-hours',
+                    label: 'Hours',
+                    stepValue: 24,
+                    value: odometerHours,
+                    minValue: 0
+                }]
+            }]
+        }];
     },
     createVehicleDetailsView: function (passedCards) {
         var items = [{

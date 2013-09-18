@@ -89,8 +89,8 @@ class UserController extends RestController
         $this->answer = array();
 
         if ($userInfo) $this->answer['userInfo'] = $userInfo;
-        if ($userInfo) $this->answer['authToken'] = $this->authToken;
-        if ($userInfo) $this->answer['errorMessage'] = $errorMessage;
+        if ($this->authToken) $this->answer['authToken'] = $this->authToken;
+        if ($errorMessage) $this->answer['errorMessage'] = $errorMessage;
 
         return $this->AnswerPlugin()->format($this->answer, $errorCode);
     }

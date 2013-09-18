@@ -15,16 +15,22 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         baseCls: 'x-show-contact',
         layout: 'vbox',
         scrollable: true,
-        items: [
+        record: null
+    },
+
+    initialize: function () {
+        var self = this;
+        this.uniqueId = Ext.id();
+        this.callParent();
+        this.add([
             {
-                id: 'SafeStartVehicleAlertContent',
+                id: 'SafeStartVehicleAlertContent' + this.uniqueId,
                 tpl: [
                     '<div class="top">',
-                    '<div class="headshot" style="background-image:url({thumbnail});"></div>',
                     '<div class="name">{vehicle.title}' +
                         '<span>{vehicle.plantId}</span>' +
-                    '</div>'+
-                    '<div class="name">{user.firstName} {user.lastName} at {title}' +
+                        '</div>' +
+                        '<div class="name">{user.firstName} {user.lastName} at {title}' +
                         '<span>{alert_description}</span>' +
                         '<span>{description}</span></div>',
                     '</div>'
@@ -32,7 +38,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             },
             {
                 xtype: 'selectfield',
-                id: 'SafeStartVehicleAlertStatus',
+                id: 'SafeStartVehicleAlertStatus' + this.uniqueId,
                 label: 'Status',
                 valueField: 'rank',
                 displayField: 'title',
@@ -61,25 +67,25 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             {
                 xtype: 'carousel',
                 direction: 'horizontal',
-                id: 'SafeStartVehicleAlertImages',
+                id: 'SafeStartVehicleAlertImages' + this.uniqueId,
                 height: 400
             },
             {
-                id: 'SafeStartVehicleAlertComments',
+                id: 'SafeStartVehicleAlertComments' + this.uniqueId,
                 tpl: [
                     '<div class="sfa-alert-comments">',
-                        '<h3>Comments:</h3>',
-                        '<tpl for="comments">',
-                            '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
-                                '<span>{content}</span>',
-                            '</div>',
-                        '</tpl>',
+                    '<h3>Comments:</h3>',
+                    '<tpl for="comments">',
+                    '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
+                    '<span>{content}</span>',
+                    '</div>',
+                    '</tpl>',
                     '</div>'
                 ].join('')
             },
             {
                 xtype: 'textareafield',
-                id: 'SafeStartVehicleAlertNewComment',
+                id: 'SafeStartVehicleAlertNewComment' + this.uniqueId,
                 label: 'New Comment',
                 maxRows: 4
             },
@@ -108,49 +114,47 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     }
                 ]
             }
-        ],
-
-        record: null
+       ] );
     },
 
     updateRecord: function (newRecord) {
         if (!newRecord) return;
         this.record = newRecord;
-        this.down('#SafeStartVehicleAlertContent').setData(newRecord.data);
-        this.down('#SafeStartVehicleAlertComments').setData({comments: this.record.raw['comments']});
+        this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(newRecord.data);
+        this.down('#SafeStartVehicleAlertComments' + this.uniqueId).setData({comments: this.record.raw['comments']});
         var images = newRecord.get('images');
         if (images.length) {
             Ext.each(images, function (imageHash) {
-                this.down('#SafeStartVehicleAlertImages').add({
+                this.down('#SafeStartVehicleAlertImages' + this.uniqueId).add({
                     xtype: 'image',
                     src: 'api/image/' + imageHash + '/1024x768'
                 });
             }, this)
         }
-        this.down('#SafeStartVehicleAlertStatus').setValue(newRecord.get('status'));
+        this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).setValue(newRecord.get('status'));
     },
 
     updateAction: function () {
         var self = this;
         var values = {};
         var vehicleId = this.record.getAssociatedData()['vehicle']['id'];
-        values.status = this.down('#SafeStartVehicleAlertStatus').getValue();
-        values.new_comment = this.down('#SafeStartVehicleAlertNewComment').getValue();
+        values.status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
+        values.new_comment = this.down('#SafeStartVehicleAlertNewComment' + this.uniqueId).getValue();
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/alert/' + this.record.get('id') + '/update', values, function (result) {
             self.record.set('status', values.status);
             self.record.raw['comments'].push({
-                    user: SafeStartApp.userModel.data,
-                    content: values.new_comment,
-                    update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
+                user: SafeStartApp.userModel.data,
+                content: values.new_comment,
+                update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
             });
-            self.down('#SafeStartVehicleAlertComments').setData({comments: self.record.raw['comments']});
-            self.down('#SafeStartVehicleAlertNewComment').setValue('');
+            self.down('#SafeStartVehicleAlertComments' + self.uniqueId).setData({comments: self.record.raw['comments']});
+            self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
         });
     },
 
-    deleteAction: function() {
+    deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function(){
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function () {
             SafeStartApp.AJAX('vehicle/alert/' + self.record.get('id') + '/delete', {}, function (result) {
                 self.getParent().pop();
                 self.getParent().alertsStore.loadData();
