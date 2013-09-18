@@ -30,8 +30,8 @@ Ext.define('SafeStartApp.view.dialogs.UserProfile', {
             easing: 'ease-out'
         },
         centered: true,
-        width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 260 : 400,
-        height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 220 : 350,
+        width: Ext.filterPlatform('ie10') ? '100%' : (Ext.os.deviceType == 'Phone') ? 460 : 600,
+        height: Ext.filterPlatform('ie10') ? '30%' : Ext.os.deviceType == 'Phone' ? 370 : 500,
         styleHtmlContent: true,
         scrollable: false,
         cls: 'sfa-modal-form',

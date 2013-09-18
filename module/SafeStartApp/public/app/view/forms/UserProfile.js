@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.forms.UserProfile', {
     extend: 'Ext.form.Panel',
     xtype: 'SafeStartUserProfileForm',
     config: {
-        height: 300,
+        height: 450,
         items: [
             {
                 xtype: 'fieldset',
@@ -23,6 +23,22 @@ Ext.define('SafeStartApp.view.forms.UserProfile', {
                         xtype: 'emailfield',
                         label: 'Email',
                         name: 'email'
+                    },
+                    {
+                        xtype: 'fieldset',
+                        title: 'Change password:',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                name: 'new_password',
+                                label: 'New'
+                            },
+                            {
+                                xtype: 'textfield',
+                                name: 'confirm_password',
+                                label: 'Confirm'
+                            }
+                        ]
                     }
                 ]
             }
