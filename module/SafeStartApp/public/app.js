@@ -146,9 +146,9 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        'DefaultVehicles',
-        'CompanyVehicles',
-        'UserVehicles'
+        // 'DefaultVehicles',
+        'CompanyVehicles'
+        // 'UserVehicles'
     ],
 
     icon: {

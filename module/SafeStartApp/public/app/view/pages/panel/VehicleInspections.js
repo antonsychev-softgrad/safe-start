@@ -23,6 +23,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
 
                     var checkListId = vehicleInspectionDetails.checkListId; 
                     var vehicleId = vehicleInspectionDetails.vehicleId;
+                    vehicleInspectionsPanel.removeChecklistDetails();
                     vehicleInspectionsPanel.fireEvent('editInspection', vehicleId, checkListId, vehicleInspectionDetails.inspectionRecord);
                 }
             }, {
@@ -101,7 +102,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
     removeChecklistDetails: function () {
         var detailsView = this.down('SafeStartVehicleInspectionDetails');
         if (detailsView) {
-            this.pop(detailsView);
+            this.remove(detailsView);
             this.hideButtons();
         }
     },

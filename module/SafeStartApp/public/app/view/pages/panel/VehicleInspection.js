@@ -145,6 +145,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'fieldset',
                 maxWidth: 900,
                 width: '100%',
+                defaults: {
+                    labelWidth: '80%'
+                },
                 items: fields
             },{
                 xtype: 'titlebar',
@@ -524,7 +527,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             odometerKms = this.inspectionRecord.get('odometerKms');
             odometerHours = this.inspectionRecord.get('odometerHours');
         }
-        console.log(this.isNew, this.inspectionRecord);
         return [{
             xtype: 'container',
             width: '100%',
