@@ -1064,3 +1064,19 @@ div.logo {
 }
 
 
+.sfa-vehicle-details-container-alert {
+    color: #F00;
+}
+
+.x-form-fieldset-title .x-innerhtml {
+    white-space: normal;
+}
+
+.x-form-label-nowrap .x-form-label {
+    white-space: normal;
+    text-overflow: none;
+}
+
+.x-title .x-innerhtml {
+    white-space: normal;
+}

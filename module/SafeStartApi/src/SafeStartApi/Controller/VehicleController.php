@@ -115,7 +115,7 @@ class VehicleController extends RestrictedAccessRestController
                         'gpsCoords' => $queryResult[0]->getGpsCoords(),
                         'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
                         'fieldsData' => json_decode($queryResult[0]->getFieldsData()),
-                        'alerts' => $queryResult[0]->getAlerts(),
+                        'alerts' => $queryResult[0]->getAlertsArray(),
                         'creationDate' => $queryResult[0]->getCreationDate(),
                     );
                 }
