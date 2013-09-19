@@ -14,27 +14,37 @@ class VehicleController extends RestrictedAccessRestController
 
         $user = $this->authService->getIdentity();
 
-        $vehicles = $user->getVehicles();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getUserVehiclesList" . $user->getId();
 
         $vehiclesList = array();
-        foreach ($vehicles as $vehicle) {
-            $vehiclesList[] = array(
-                'vehicleId' => $vehicle->getId(),
-                'type' => $vehicle->getType(),
-                'vehicleName' => $vehicle->getTitle(),
-                'role' => 'user'
-            );
+
+        if ($cache->hasItem($cashKey)) {
+            $vehiclesList = $cache->getItem($cashKey);
+        } else {
+            $vehicles = $user->getVehicles();
+
+            foreach ($vehicles as $vehicle) {
+                $vehiclesList[] = array(
+                    'vehicleId' => $vehicle->getId(),
+                    'type' => $vehicle->getType(),
+                    'vehicleName' => $vehicle->getTitle(),
+                    'role' => 'user'
+                );
+            }
+
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            foreach ($responsibleVehicles as $vehicle) {
+                $vehiclesList[] = array(
+                    'vehicleId' => $vehicle->getId(),
+                    'type' => $vehicle->getType(),
+                    'vehicleName' => $vehicle->getTitle(),
+                    'role' => 'responsible'
+                );
+            }
+            $cache->setItem($cashKey, $vehiclesList);
         }
 
-        $responsibleVehicles = $user->getResponsibleForVehicles();
-        foreach ($responsibleVehicles as $vehicle) {
-            $vehiclesList[] = array(
-                'vehicleId' => $vehicle->getId(),
-                'type' => $vehicle->getType(),
-                'vehicleName' => $vehicle->getTitle(),
-                'role' => 'responsible'
-            );
-        }
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -221,6 +231,10 @@ class VehicleController extends RestrictedAccessRestController
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByVehicle" . $vehicleId;
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
