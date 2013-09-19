@@ -1,4 +1,3 @@
-
 Ext.define('SafeStartApp.store.Vehicles', {
     extend: 'SafeStartApp.store.AbstractTreeStore',
 
@@ -7,11 +6,11 @@ Ext.define('SafeStartApp.store.Vehicles', {
     ],
 
     config: {
-        autoLoad: false,
+        defaultRootId: 0,
         model: 'SafeStartApp.model.Vehicle',
         proxy: {
             type: "ajax",
-            url : 'api/company/getvehicles',
+            url: 'api/company/getvehicles',
             reader: {
                 type: "json",
                 rootProperty: "data"
@@ -21,7 +20,7 @@ Ext.define('SafeStartApp.store.Vehicles', {
         sorters: 'title',
 
         grouper: {
-            groupFn: function(record) {
+            groupFn: function (record) {
                 return record.get('title')[0];
             }
         }

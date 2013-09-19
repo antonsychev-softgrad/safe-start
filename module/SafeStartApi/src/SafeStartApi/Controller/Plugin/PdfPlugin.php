@@ -38,6 +38,7 @@ class PdfPlugin extends AbstractPlugin
     protected $docHeaderTitle = 'checklist review';
     protected $opts = array();
     protected $dateGeneration;
+    protected $fieldsData = array();
 
     public function __invoke($checkListId = null, $echoPdf = true) {
 
@@ -75,6 +76,10 @@ class PdfPlugin extends AbstractPlugin
         $vehicleDetails = array();
         $alertsDetails  = array();
         $fieldsStruct   = json_decode($this->checkList->getFieldsStructure());
+        $fieldsData   = json_decode($this->checkList->getFieldsData(),true);
+        foreach($fieldsData as $fieldData) {
+            $this->fieldsData[$fieldData['id']] = $fieldData['value'];
+        }
         foreach ($fieldsStruct as $groupBlock) {
 
             $group         = new \stdClass();
@@ -127,6 +132,7 @@ class PdfPlugin extends AbstractPlugin
 
             // set status
             $group->status    = empty($group->alerts) ? 'ok' : 'alert';
+            $group->fields = $filds;
             $vehicleDetails[] = $group;
         }
         /**/
@@ -335,21 +341,15 @@ class PdfPlugin extends AbstractPlugin
         return $topPosInPage;
     }
 
-    protected function drawVehicleBlock($headerTitle, $params, $topPosInPage) {
-
-        $pageWidth = $this->getPageWidth();
-
+    protected function drawVehicleBlock($headerTitle, $params, $topPosInPage)
+    {
         $topPosInPage -= self::BLOCK_HEADER_SIZE;
         $text         = ucfirst($headerTitle);
-        $topPosInPage = $this->drawText($text, self::BLOCK_HEADER_SIZE, '#0F5B8D', $topPosInPage);
+        $topPosInPage = $this->drawText($text, self::BLOCK_HEADER_SIZE, '#0F5B8D', $topPosInPage, self::TEXT_ALIGN_CENTER);
 
-        $lineCounter = 0;
         $topPosInPage += 8;
         $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_SIZE + self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
         foreach ($params as $group) {
-
-            $drawLine = (bool) (++$lineCounter % 2);
-            $fLinePos = $topPosInPage;
 
             if (is_array($group) && !empty($group)) {
                 $title  = $group['name'];
@@ -364,6 +364,44 @@ class PdfPlugin extends AbstractPlugin
             $title          = strip_tags($title);
             $title          = ucwords($title);
             $headlineArray  = $this->getTextLines($title, self::BLOCK_SUBHEADER_SIZE);
+            foreach ($headlineArray as $line) {
+
+                $text         = trim($line);
+                $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_CENTER);
+                $topPosInPage -= self::BLOCK_SUBHEADER_COLOR_LINE_SIZE;
+            }
+
+            $topPosInPage = $this->_drawFields($group->fields, $topPosInPage);
+        }
+
+        return $topPosInPage;
+    }
+
+    protected function _drawFields($fields = array(), $topPosInPage)
+    {
+        if(empty($fields)) return $topPosInPage;
+
+        $pageWidth = $this->getPageWidth();
+        $contentWidth = $this->getPageContentWidth() - 50;
+
+        $lineCounter = 0;
+        foreach ($fields as $field) {
+
+            if($field->type == 'group') {
+                $lineCounter = 0;
+            }
+            $drawLine = (bool) (++$lineCounter % 2);
+            $fLinePos = $topPosInPage;
+
+            $title  = $field->fieldName;
+            $value = !empty($this->fieldsData[$field->id]) ? $this->fieldsData[$field->id] : '-';
+            if($field->type == 'datePicker' && !empty($this->fieldsData[$field->id]) && is_int($this->fieldsData[$field->id])) {
+                $value = gmdate('Y-m-d H:i:s', $value);
+            }
+
+            $title          = strip_tags($title);
+            $title          = ucwords($title);
+            $headlineArray  = $this->getTextLines($title, self::BLOCK_SUBHEADER_SIZE, null, $contentWidth);
             $subLineCounter = 0;
             foreach ($headlineArray as $line) {
                 if ($drawLine) {
@@ -382,7 +420,11 @@ class PdfPlugin extends AbstractPlugin
                 }
 
                 $text         = trim($line);
-                $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage);
+                if($field->type == 'group') {
+                    $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_CENTER);
+                } else {
+                    $topPosInPage = $this->drawText($text, self::BLOCK_SUBHEADER_SIZE, '#333333', $topPosInPage);
+                }
 
                 if (!$subLineCounter++) {
                     $fLinePos = $topPosInPage;
@@ -392,21 +434,18 @@ class PdfPlugin extends AbstractPlugin
             }
 
             // draw status >
-            $status = strtoupper($status);
-            switch (strtolower($status)) {
-                case 'alert':
-                    $color = "#ff0000";
-                    break;
-                case 'ok':
-                default:
-                    $color = "#0f5b8d";
-                    break;
+            $value = strtoupper($value);
+            $color = "#0f5b8d";
+
+            if($field->type == 'group') {
+                $topPosInPage = $this->_drawFields($field->items, $topPosInPage);
+            } else {
+                $this->drawText($value, self::BLOCK_SUBHEADER_SIZE, $color, $fLinePos, self::TEXT_ALIGN_RIGHT);
             }
-            $this->drawText($status, self::BLOCK_SUBHEADER_SIZE, $color, $fLinePos, self::TEXT_ALIGN_RIGHT);
-            // > end draw status.
 
         }
 
+        $topPosInPage -= (self::BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM);
         return $topPosInPage;
     }
 

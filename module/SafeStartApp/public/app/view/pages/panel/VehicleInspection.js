@@ -434,7 +434,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
-        if (alertRecord && RegExp.test(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
+        if (alertRecord && RegExp(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
             alertRecord.set('active', true);
         }
         return {

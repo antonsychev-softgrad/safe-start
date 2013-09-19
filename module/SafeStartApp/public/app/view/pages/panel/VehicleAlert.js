@@ -121,15 +121,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         if (!newRecord) return;
         this.record = newRecord;
         this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(newRecord.data);
-        this.down('#SafeStartVehicleAlertComments' + this.uniqueId).setData({comments: this.record.raw['comments']});
+        this.setComments(this.record.raw['comments']);
         var images = newRecord.get('images');
         if (images.length) {
+            this.down('#SafeStartVehicleAlertImages' + this.uniqueId).show();
             Ext.each(images, function (imageHash) {
                 this.down('#SafeStartVehicleAlertImages' + this.uniqueId).add({
                     xtype: 'image',
                     src: 'api/image/' + imageHash + '/1024x768'
                 });
             }, this)
+        } else {
+            this.down('#SafeStartVehicleAlertImages' + this.uniqueId).hide();
         }
         this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).setValue(newRecord.get('status'));
     },
@@ -142,14 +145,25 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         values.new_comment = this.down('#SafeStartVehicleAlertNewComment' + this.uniqueId).getValue();
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/alert/' + this.record.get('id') + '/update', values, function (result) {
             self.record.set('status', values.status);
-            self.record.raw['comments'].push({
-                user: SafeStartApp.userModel.data,
-                content: values.new_comment,
-                update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
-            });
-            self.down('#SafeStartVehicleAlertComments' + self.uniqueId).setData({comments: self.record.raw['comments']});
+            if (values.new_comment != '') {
+                self.record.raw['comments'].push({
+                    user: SafeStartApp.userModel.data,
+                    content: values.new_comment,
+                    update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
+                });
+            }
+            self.setComments(self.record.raw['comments']);
             self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
         });
+    },
+
+    setComments: function(comments) {
+        if (comments.length) {
+            this.down('#SafeStartVehicleAlertComments' + this.uniqueId).show();
+            this.down('#SafeStartVehicleAlertComments' + this.uniqueId).setData({comments: comments});
+        } else {
+            this.down('#SafeStartVehicleAlertComments' + this.uniqueId).hide();
+        }
     },
 
     deleteAction: function () {
