@@ -17,7 +17,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     initialize: function () {
         this.callParent();
-        
+
         this.setAlertsStore(SafeStartApp.store.ChecklistAlerts.create({}));
     },
 
@@ -104,7 +104,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
 
         Ext.each(checklists, function (checklist, index) {
-            var checklistForm = this.createForm(checklist);
+            var checklistForm = this.createForm(checklist, index);
             if (checklist.additional) {
                 checklistForm.name = 'checklist-card-additional';
                 checklistAdditionalForms.push(checklistForm);
@@ -149,7 +149,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             },{
                 xtype: 'titlebar',
                 docked: 'top',
-                title: 'Daily inspection checklist additional'
+                title: 'Additional'
             }, {
                 xtype: 'toolbar',
                 docked: 'bottom',
@@ -203,7 +203,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createForm: function (checklist) {
+    createForm: function (checklist, index) {
+        var buttons = []; 
+        if (index !== 0) {
+            buttons.push({
+                text: 'Prev',
+                action: 'prev'
+            });
+        }
+        buttons.push({
+            text: 'Next',
+            action: 'next'
+        });
         var fields = this.createFields(checklist.fields);
 
         fields.push({
@@ -219,13 +230,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 align: 'stretch',
                 pack: 'center'
             },
-            items: [{
-                text: 'Prev',
-                action: 'prev'
-            }, {
-                text: 'Next',
-                action: 'next'
-            }]
+            items: buttons
         });
 
         return {
@@ -364,7 +369,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     if (alert) {
                         if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
                             if (alert.get('critical')) {
-                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                Ext.Msg.alert('DANGER', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
                         } else {
@@ -455,7 +460,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     if (alert) {
                         if (RegExp(alert.get('triggerValue', 'i').test(value))) {
                             if (alert.get('critical')) {
-                                Ext.Msg.alert('CHECKLIST', alert.get('alertMessage'));
+                                Ext.Msg.alert('DANGER', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
                         } else {
@@ -550,7 +555,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'fieldset',
                 title: 'Current odometer',
                 layout: {
-                    type: 'hbox'
+                    type: 'vbox'
                 },
                 width: '100%',
                 items: [{
