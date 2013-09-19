@@ -426,7 +426,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
-        if (alertRecord && RegExp.test(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
+        if (alertRecord && RegExp(alertRecord.get('triggerValue'), 'i').test(fieldData.fieldValue)) {
             alertRecord.set('active', true);
         }
         return {
@@ -519,7 +519,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             odometerKms = this.inspectionRecord.get('odometerKms');
             odometerHours = this.inspectionRecord.get('odometerHours');
         }
-        console.log(this.isNew, this.inspectionRecord);
         return [{
             xtype: 'container',
             width: '100%',
