@@ -295,10 +295,19 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
-        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleForEditChecklist" . $vehicleId;
+
+        if ($cache->hasItem($cashKey)) {
+            $this->answer = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
+            $query->setParameter(1, $vehicle);
+            $items = $query->getResult();
+            $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+            $cache->setItem($cashKey, $this->answer);
+        }
+
         return $this->AnswerPlugin()->format($this->answer);
     }
 
@@ -361,12 +370,13 @@ class CompanyController extends RestrictedAccessRestController
         $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());
 
-
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleChecklist" . $vehicle->getId();
+        $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
 
         $this->answer = array(
             'done' => true,
