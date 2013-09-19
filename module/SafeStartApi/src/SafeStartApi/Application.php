@@ -51,7 +51,7 @@ class Application
                     'adapter' => array(
                         'name' => 'apc',
                         'options' => array(
-                            'namespace' => 'presslife',
+                            'namespace' => 'SafeStartApp',
                         ),
                     ),
                     'plugins' => array(
@@ -63,7 +63,7 @@ class Application
                     'adapter' => array(
                         'name' => 'filesystem',
                         'options' => array(
-                            'namespace' => 'presslife',
+                            'namespace' => 'SafeStartApp',
                             'cache_dir' => self::getFileSystemPath('data/cache/'),
                         ),
                     ),
