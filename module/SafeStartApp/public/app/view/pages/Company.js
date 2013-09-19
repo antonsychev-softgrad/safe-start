@@ -10,8 +10,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleUsers',
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
-        'SafeStartApp.store.Vehicles',
-        'SafeStartApp.model.Vehicle'
+        'SafeStartApp.store.MenuVehicles',
+        'SafeStartApp.model.MenuVehicle'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -46,7 +46,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             docked: 'top'
         });
 
-        this.vehiclesStore = new SafeStartApp.store.Vehicles();
+        this.vehiclesStore = new SafeStartApp.store.MenuVehicles();
         this.add(this.getVehiclesList());
 
         this.add(this.getInfoPanel());

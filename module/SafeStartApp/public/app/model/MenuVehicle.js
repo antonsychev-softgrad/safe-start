@@ -1,4 +1,4 @@
-Ext.define('SafeStartApp.model.Vehicle', {
+Ext.define('SafeStartApp.model.MenuVehicle', {
     extend: "Ext.data.Model",
     config: {
         fields: [
@@ -14,7 +14,10 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
             {name: 'currentOdometerHours', defaultValue: 'unknown'},
             {name: 'serviceDueHours', type: 'int', defaultValue: 24},
+            {name: 'action', type: 'string', defaultValue: ''},
+            {name: 'checkListId', type: 'int', defaultValue: 0},
             {name: 'enabled', defaultValue: 1},
+            {name: 'checkListHash', type: 'string', defaultValue: ''},
             {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()}
         ],
         associations: [{
