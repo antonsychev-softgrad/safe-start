@@ -1,13 +1,13 @@
-Ext.define('SafeStartApp.store.Vehicles', {
+Ext.define('SafeStartApp.store.MenuVehicles', {
     extend: 'SafeStartApp.store.AbstractTreeStore',
 
     requires: [
-        'SafeStartApp.model.Vehicle'
+        'SafeStartApp.model.MenuVehicle'
     ],
 
     config: {
         defaultRootId: 0,
-        model: 'SafeStartApp.model.Vehicle',
+        model: 'SafeStartApp.model.MenuVehicle',
         proxy: {
             type: "ajax",
             url: 'api/company/getvehicles',

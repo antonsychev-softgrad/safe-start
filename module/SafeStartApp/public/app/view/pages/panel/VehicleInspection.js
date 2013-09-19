@@ -145,6 +145,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'fieldset',
                 maxWidth: 900,
                 width: '100%',
+                defaults: {
+                    labelWidth: '80%'
+                },
                 items: fields
             },{
                 xtype: 'titlebar',

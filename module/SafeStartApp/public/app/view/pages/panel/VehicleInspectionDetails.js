@@ -50,7 +50,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     },
 
     createView: function (vehicle, checklist, inspection) {
-        console.log(checklist, inspection);
         var infoGroup = [],
             responsibleUser = vehicle.responsibleUsers().first(),
             cords;
@@ -232,7 +231,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 case 'text':
                 case 'checkbox':
                     Ext.each(alerts, function (alert) {
-                        // console.log(alert.field.id, field.fieldId);
                         if (alert.field.id == field.fieldId) {
                             isAlert = true;
                         }
