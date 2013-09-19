@@ -11,7 +11,11 @@ Ext.define('Ext.ux.event.recognizer.MouseWheelDrag', {
         this.onMouseWheel = Ext.Function.bind(this.onMouseWheel, this);
         this.fireDragEnd = Ext.Function.bind(this.fireDragEnd, this);
  
-        document.addEventListener('mousewheel', this.onMouseWheel, true);
+        if (document.hasOwnProperty('onmousewheel')) {
+            document.addEventListener('mousewheel', this.onMouseWheel, true);
+        } else {
+            document.addEventListener('wheel', this.onMouseWheel, true);
+        }
     },
  
     onMouseWheel: function(e) {
@@ -26,6 +30,13 @@ Ext.define('Ext.ux.event.recognizer.MouseWheelDrag', {
                 }
             ],
             lastPoint, time;
+
+        if (e.deltaX) {
+            deltaX = e.deltaX * -50;
+        }
+        if (e.deltaY) {
+            deltaY = e.deltaY * -50;
+        }
  
         e = new Ext.event.Dom(e);
         time = e.time;
@@ -85,7 +96,7 @@ Ext.define('Ext.ux.event.recognizer.MouseWheelDrag', {
  
     getInfo: function(e, touch) {
  
-        var slowCoefficient = .14,
+        var slowCoefficient = 0.14,
             time = e.time,
             startPoint = this.startPoint,
             previousPoint = this.previousPoint,
