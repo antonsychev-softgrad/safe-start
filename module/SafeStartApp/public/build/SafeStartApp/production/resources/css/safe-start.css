@@ -1,4 +1,4 @@
-/*56b5199a5ef419c5d8d9a7dcefd052522173febe*//* main */
+/*5cb5c421534b43ee2b6ab7eeb8cc8ad57ca0ff99*//* main */
 
 /* for All */
 @font-face {
@@ -149,6 +149,21 @@ html, body {
 }
 .x-form-fieldset-instructions {
     margin: 0.3em 0.7em 0.3em;
+}
+
+.x-select-overlay.x-floating .x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl {
+    background: rgb(102,102,102); /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(102,102,102,1) 0%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(102,102,102,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(204,204,204,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(102,102,102,1) 0%,rgba(204,204,204,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(102,102,102,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#666666', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+
+.x-select-overlay.x-floating .x-list .x-list-item.x-item-selected .x-dock-horizontal, .x-list .x-list-item.x-item-selected.x-list-item-tpl span.x-list-label {
+    color: #fff;
 }
 
 
@@ -841,6 +856,38 @@ div.logo {
 .sfa-checklist-form .x-container.x-form-fieldset .x-dock.x-dock-vertical .x-dock-body {
     height: auto;
 }
+.sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-form-label {
+    text-align: right;
+    padding-right: 0;
+    padding-left: 20px;
+}
+.sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-component-outer {
+    left: -8px;
+}
+
+/* Company -> Vehicle Users */
+.sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical {
+/*    padding: 0;
+    border: none;
+    background: none;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -khtml-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+*/}
+.sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
+    /*margin: 0;*/
+}
+.sfa-vehicle-inspection > div > form > .x-body.x-scroll-view {
+    min-height: 46px;
+}
+.sfa-vehicle-inspection > div > form > input {
+    display: none;
+}
+.sfa-vehicle-inspection > div > form:last-child {
+    min-height: 68px;
+}
 
 
 
@@ -881,6 +928,10 @@ div.logo {
     .x-container.x-toolbar-dark.x-toolbar.sfa-main-toolbar .x-body.x-scroll-view .x-center {padding-right: 180px}
     .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-left: 0.16em}
     .sfa-main-toolbar .x-title {font-size: 32px}
+    .sfa-vehicle-inspection .x-dock.x-dock-vertical .x-toolbar-dark.x-toolbar.x-docked-top .x-button.x-iconalign-left.x-button-action .x-button-label {
+        padding-left: 28px;
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 800px) {
@@ -893,9 +944,123 @@ div.logo {
     .sfa-main-toolbar .x-button, .sfa-main-toolbar .x-button .x-button-label {font-size: 20px !important;}
     .sfa-main-toolbar .x-title {font-size: 30px;}
     .sfa-main-toolbar .x-toolbar .x-button {margin: 0 0.2em 1px;}
-    .sfa-info-container .x-button {padding: 0 6px 5px !important; margin: 0 3px !important;}
+    .sfa-info-container .x-button {padding: 0 15px 5px !important; margin: 0 3px !important;}
     .sfa-info-container .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
-        font-size: 18px;
+        font-size: 18px; padding-top: 5px;
     }
 }
+
+/* Alerts */
+.sfa-alerts {
+    padding: 10px;
+}
+
+.sfa-alert-comments {
+    margin-bottom: 20px;
+}
+
+.sfa-alerts .x-list-item > .x-innerhtml {
+    font-weight: bold;
+    line-height: 18px
+}
+
+.sfa-alerts .x-list-item > .x-innerhtml > span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666
+}
+
+.sfa-alerts .headshot {
+    float: left;
+    height: 37px;
+    width: 37px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center center;
+    background: #ddd;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.6)
+}
+
+.sfa-alerts .x-item-pressed, .sfa-alerts .x-item-selected {
+    border-top-color: #d1d1d1 !important
+}
+
+.x-show-contact {
+    background: #EEEEEE
+}
+
+.x-show-contact .top {
+    padding: 22px;
+    height: 100px
+}
+
+.x-show-contact .top > * {
+    float: left
+}
+
+.x-show-contact .top .headshot {
+    height: 60px;
+    width: 60px;
+    margin-right: 10px;
+    background-size: cover;
+    background-position: center center;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.4)
+}
+
+.x-show-contact .top .name {
+    width: 195px;
+    padding-top: 0;
+    font-size: 22px;
+    font-weight: bold
+}
+
+.x-show-contact .top .name span {
+    display: block;
+    font-size: 14px;
+    font-weight: normal;
+    color: #666
+}
+
+.x-show-contact .top .name a:link {
+    color: #3f9b26;
+    text-decoration: none
+}
+
+.x-map {
+    position: relative
+}
+
+.x-map:before {
+    /*content: '';*/ 
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    -webkit-box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.4)
+}
+
+.x-toolbar-inner .x-layout-hbox {
+    position: relative
+}
+
+.x-toolbar-inner .x-layout-hbox #editButton, .x-toolbar-inner .x-layout-hbox #saveButton {
+    position: absolute;
+    right: 0;
+    top: .4em
+}
+
 
