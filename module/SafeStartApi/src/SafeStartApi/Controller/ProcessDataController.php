@@ -47,8 +47,13 @@ class ProcessDataController extends PublicAccessRestController
             }
 
             if ($checkList !== null) {
-                $this->PdfPlugin($checkList->getId());
-                return;
+                $link = $checkList->getPdfLink();
+                if(!is_null($link) && !empty($link)) {
+                    $this->PdfPlugin()->printPdf($link);
+                } else {
+                    $this->PdfPlugin($checkList->getId());
+                }
+                return true;
             } else {
                 $this->answer = array(
                     "errorMessage" => "CheckList not found."

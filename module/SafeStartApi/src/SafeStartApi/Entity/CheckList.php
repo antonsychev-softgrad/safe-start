@@ -40,6 +40,11 @@ class CheckList extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $pdf_link;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $gps_coords;
 
     /**
@@ -118,6 +123,29 @@ class CheckList extends BaseEntity
     public function setHash($hash)
     {
         $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Get pdf_link
+     *
+     * @return string
+     */
+    public function getPdfLink()
+    {
+        return $this->pdf_link;
+    }
+
+    /**
+     * Set pdf_link
+     *
+     * @param string $pdf_link
+     * @return CheckList
+     */
+    public function setPdfLink($pdf_link)
+    {
+        $this->pdf_link = $pdf_link;
 
         return $this;
     }
