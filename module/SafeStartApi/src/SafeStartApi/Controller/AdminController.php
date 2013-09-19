@@ -152,10 +152,18 @@ class AdminController extends AdminAccessRestController
 
     public function getDefaultChecklistAction()
     {
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0');
-        $items = $query->getResult();
-        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
-        return $this->AnswerPlugin()->format($this->answer);
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getForEditDefaultChecklist";
+        $checklist = array();
+        if ($cache->hasItem($cashKey)) {
+            $checklist = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0');
+            $items = $query->getResult();
+            $checklist = $this->GetDataPlugin()->buildChecklistTree($items);
+            $cache->setItem($cashKey, $checklist);
+        }
+        return $this->AnswerPlugin()->format($checklist);
     }
 
     public function updateDefaultChecklistFiledAction()
@@ -209,7 +217,9 @@ class AdminController extends AdminAccessRestController
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getDefaultChecklist";
+        $cashKey2 = "getForEditDefaultChecklist";
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
 
         $this->answer = array(
             'done' => true,

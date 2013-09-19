@@ -70,7 +70,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.vehicleId = vehicle.get('id');
         this.vehicle = vehicle;
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/' + this.vehicleId + '/getinspections');
-        this.inspectionsStore.load();
+        this.inspectionsStore.loadData();
         this.removeChecklistDetails();
     },
 

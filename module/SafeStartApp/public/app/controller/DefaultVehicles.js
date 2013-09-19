@@ -51,6 +51,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var self = this;
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();
                 self.currentForm.down('button[name=delete-data]').hide();
