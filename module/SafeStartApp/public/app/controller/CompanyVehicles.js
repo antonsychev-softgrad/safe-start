@@ -34,7 +34,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 tap: 'downloadVehicleInspectionDetailsPdf'
             },
             'SafeStartCompanyPage SafeStartVehicleInspectionsPanel': {
-                editInspection: 'onEditInspectionAction'
+                editInspection: 'onEditInspectionAction',
+                deleteInspection: 'onDeleteInspectionAction'
             },
             reviewCard: {
                 activate: 'onActivateReviewCard'
@@ -144,6 +145,16 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/getchecklist?checklistId=' + checkListId, {}, function (result) {
             me.getVehicleInspectionPanel().loadChecklist(result.checklist, vehicleId, inspectionRecord);
             me.loadAlerts(checkListId);
+        });
+    },
+
+    onDeleteInspectionAction: function (vehicleId, checkListId) {
+        var navMain = this.getNavMain();
+        SafeStartApp.AJAX('vehicle/inspection/' + checkListId + '/delete', {}, function (result) {
+            var active = navMain.getActiveItem();
+            var inspectionsNode = navMain.getStore().getNodeById(vehicleId + '-inspections');
+            var index = navMain.getStore().getNodeById(vehicleId).indexOf(inspectionsNode);
+            navMain.fireEvent('itemtap', navMain, active, index, null, inspectionsNode);
         });
     },
 

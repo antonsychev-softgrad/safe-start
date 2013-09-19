@@ -41,7 +41,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.callParent();
     },
 
-    //todo remove checklist request
     loadChecklist: function (vehicle, inspection) {
         var me = this;
         SafeStartApp.AJAX('vehicle/' + inspection.get('checkListId') + '/getchecklistdata', {}, function (result) {
@@ -74,8 +73,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
             this.createContainer('Registration', vehicle.get('registration')),
-            this.createContainer('Type of vehicle', vehicle.get('type')),
-
+            this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';

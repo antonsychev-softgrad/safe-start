@@ -69,6 +69,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             }
         }
 
+
     },
 
     initialize: function () {
@@ -84,6 +85,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             name: 'vehicle-alerts',
             title: 'Vehicle Alerts',
             emptyText: 'No new Alerts',
+            plugins: [{
+                xclass: 'Ext.plugin.ListPaging',
+                autoPaging: true
+            }],
             itemTpl: [
                 '<div class="headshot" style="background-image:url({thumbnail});"></div>',
                 '{alert_description}',
@@ -138,7 +143,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         } catch (e) {
 
         }
-
     }
 
 });
