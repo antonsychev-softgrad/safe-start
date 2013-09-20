@@ -38,6 +38,7 @@ return array(
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
             'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
+            'SafeStartApi\Controller\PublicVehicle' => 'SafeStartApi\Controller\PublicVehicleController',
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',

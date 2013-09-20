@@ -43,9 +43,9 @@ class PdfPlugin extends AbstractPlugin
     protected $full_name;
 
     protected $echoPdf = true;
-    protected $saveToDisk = true;
+    protected $emailMode = false;
 
-    public function __invoke($checkListId = null, $echoPdf = true, $saveToDisk = true)
+    public function __invoke($checkListId = null, $emailMode = false)
     {
         $moduleConfig     = $this->getController()->getServiceLocator()->get('Config');
         $this->opts       = $moduleConfig['pdf'];
@@ -55,8 +55,7 @@ class PdfPlugin extends AbstractPlugin
             return $this;
         }
 
-        $this->echoPdf = $echoPdf;
-        $this->saveToDisk = $saveToDisk;
+        $this->emailMode = $emailMode;
         return $this->create($checkListId);
     }
 
@@ -116,7 +115,11 @@ class PdfPlugin extends AbstractPlugin
             // get alerts
             if (!empty($fieldIds)) {
 
-                $query = $this->getController()->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.check_list = :cl AND a.field IN (' . implode(',', $fieldIds) . ')');
+                if($this->emailMode) {
+                    $query = $this->getController()->em->createQuery('SELECT a FROM SafeStartApi\Entity\DefaultAlert a WHERE a.check_list = :cl AND a.default_field IN (' . implode(',', $fieldIds) . ')');
+                } else {
+                    $query = $this->getController()->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.check_list = :cl AND a.field IN (' . implode(',', $fieldIds) . ')');
+                }
                 $query->setParameters(array('cl' => $this->checkList));
                 $group->alerts = $query->getResult();
                 if (is_array($group->alerts) && !empty($group->alerts)) {
@@ -175,13 +178,13 @@ class PdfPlugin extends AbstractPlugin
         $this->full_name = $this->get_full_name();
 
         $this->savePdf();
-        return $this->printPdf($this->file_name, $this->echoPdf);
+        return $this->printPdf($this->file_name, $this->emailMode);
     }
 
-    public function printPdf($name, $echo = true)
+    public function printPdf($name, $emailMode = false)
     {
         $path = $this->get_pdf_path() . $name;
-        if ($echo) {
+        if (!$emailMode) {
             /**/
             header("Content-Disposition: inline; filename={$name}");
             header("Content-type: application/x-pdf");
@@ -194,7 +197,7 @@ class PdfPlugin extends AbstractPlugin
 
     protected function savePdf()
     {
-        if($this->saveToDisk) {
+        if(!$this->emailMode) {
             $this->document->save($this->full_name);
             chmod($this->full_name, 0777);
             $this->checkList->setPdfLink($this->file_name);

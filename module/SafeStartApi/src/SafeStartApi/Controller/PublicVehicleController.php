@@ -84,13 +84,33 @@ class PublicVehicleController extends PublicAccessRestController
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
+
+        // save new alerts
+        $alerts = array();
+        if (!empty($this->data->alerts) && is_array($this->data->alerts)) {
+            $alerts = $this->data->alerts;
+            foreach ($alerts as $alert) {
+                $field = $this->em->find('SafeStartApi\Entity\DefaultField', $alert->fieldId);
+                if ($field === null) {
+                    continue;
+                }
+                $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert->setDefaultField($field);
+                $newAlert->setCheckList($checkList);
+                $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
+                $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
+                $newAlert->setVehicle($vehicle);
+
+                $this->em->persist($newAlert);
+            }
+        }
         $this->em->flush();
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
 
-        $pdf = $this->PdfPlugin($checkList->getId(), false, false);
+        $pdf = $this->PdfPlugin($checkList->getId(), true);
 
         foreach($emails as $email) {
             $this->MailPlugin()->send(

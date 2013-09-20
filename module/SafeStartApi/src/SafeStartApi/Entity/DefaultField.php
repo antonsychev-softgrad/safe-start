@@ -98,6 +98,11 @@ class DefaultField extends BaseEntity
     protected $author;
 
     /**
+     * @ORM\OneToMany(targetEntity="DefaultAlert", mappedBy="field", cascade={"persist", "remove", "merge"})
+     */
+    protected $default_alerts;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -106,6 +111,7 @@ class DefaultField extends BaseEntity
         $this->deleted = false;
         $this->alert_critical = false;
         $this->additional = false;
+        $this->default_alerts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -138,6 +144,39 @@ class DefaultField extends BaseEntity
             'additional' => (int)$this->additional,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null
         );
+    }
+
+    /**
+     * Add default alerts
+     *
+     * @param \SafeStartApi\Entity\DefaultAlert $default_alerts
+     * @return DefaultField
+     */
+    public function addAlert(\SafeStartApi\Entity\DefaultAlert $default_alerts)
+    {
+        $this->default_alerts[] = $default_alerts;
+
+        return $this;
+    }
+
+    /**
+     * Remove default alerts
+     *
+     * @param \SafeStartApi\Entity\DefaultAlert $default_alerts
+     */
+    public function removeAlert(\SafeStartApi\Entity\DefaultAlert $default_alerts)
+    {
+        $this->alerts->removeElement($default_alerts);
+    }
+
+    /**
+     * Get default alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDefaultAlerts()
+    {
+        return $this->default_alerts;
     }
 
 

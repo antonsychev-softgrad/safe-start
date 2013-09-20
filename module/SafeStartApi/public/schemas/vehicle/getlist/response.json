@@ -42,6 +42,31 @@
                                 "description": "Vehicle Name",
                                 "type": "string",
                                 "required": true
+                            },
+                            "projectName": {
+                                "description": "Project Name",
+                                "type": "string",
+                                "required": true
+                            },
+                            "projectNumber": {
+                                "description": "Project Number",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "expiryDate": {
+                                "description": "Expiry Date",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "kmsUntilNext": {
+                                "description": "Kilometres until next service due",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "hoursUntilNext": {
+                                "description": "Hours until next service due",
+                                "type": "integer",
+                                "required": true
                             }
                         }
                     }
