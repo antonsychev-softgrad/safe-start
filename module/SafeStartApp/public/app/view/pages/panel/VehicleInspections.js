@@ -10,7 +10,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails'
     ],
 
-    config: {
+    config: {cls:'sfa-container-padding',
         navigationBar: {
             items: [{
                 name: 'edit-inspection',

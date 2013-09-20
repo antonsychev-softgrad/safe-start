@@ -10,7 +10,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
 
     record: false,
 
-    config: {
+    config: {cls:'sfa-alert-information',
         title: 'Alert Information',
         baseCls: 'x-show-contact',
         layout: 'vbox',
@@ -40,6 +40,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 xtype: 'selectfield',
                 id: 'SafeStartVehicleAlertStatus' + this.uniqueId,
                 label: 'Status',
+                cls:'sfa-atatus',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
