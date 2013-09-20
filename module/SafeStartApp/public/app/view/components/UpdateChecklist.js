@@ -22,6 +22,10 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
                 xtype: 'nestedlist',
                 name: 'checklist-tree',
                 flex: 1,
+                masked: {
+                    xtype: 'loadmask',
+                    message: 'Loading...'
+                },
                 title: 'Checklist',
                 displayField: 'text',
                 useTitleAsBackText: false,
