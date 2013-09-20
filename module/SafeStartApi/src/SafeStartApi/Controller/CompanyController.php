@@ -22,13 +22,29 @@ class CompanyController extends RestrictedAccessRestController
 
         $this->answer = array();
 
-        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
-        $query->setParameter(1, $company);
-        $items = $query->getResult();
+        $node = (int)$this->getRequest()->getQuery('node');
 
-        foreach ($items as $vehicle) {
-            if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
-                $this->answer[] = $vehicle->toMenuArray();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getCompanyVehiclesList" . $node;
+
+        if ($cache->hasItem($cashKey)) {
+            $this->answer = $cache->getItem($cashKey);
+        } else {
+            if (!$node) {
+                $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+                $query->setParameter(1, $company);
+                $items = $query->getResult();
+                foreach ($items as $vehicle) {
+                    if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                        $this->answer[] = $vehicle->toMenuArray();
+                    }
+                }
+                $cache->setItem($cashKey, $this->answer);
+            } else {
+                $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $node);
+                if ($vehicle) {
+                    $this->answer = $vehicle->getMenuItems();
+                }
             }
         }
 
@@ -130,13 +146,16 @@ class CompanyController extends RestrictedAccessRestController
 
         $this->em->flush();
 
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getCompanyVehiclesList";
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
         $this->answer = array(
             'done' => true,
             'vehicleId' => $vehicle->getId(),
         );
 
         return $this->AnswerPlugin()->format($this->answer);
-
     }
 
     public function deleteVehicleAction()
@@ -276,10 +295,19 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
-        $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleForEditChecklist" . $vehicleId;
+
+        if ($cache->hasItem($cashKey)) {
+            $this->answer = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.vehicle = ?1');
+            $query->setParameter(1, $vehicle);
+            $items = $query->getResult();
+            $this->answer = $this->GetDataPlugin()->buildChecklistTree($items);
+            $cache->setItem($cashKey, $this->answer);
+        }
+
         return $this->AnswerPlugin()->format($this->answer);
     }
 
@@ -342,12 +370,13 @@ class CompanyController extends RestrictedAccessRestController
         $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());
 
-
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleChecklist" . $vehicle->getId();
+        $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
 
         $this->answer = array(
             'done' => true,
@@ -384,7 +413,7 @@ class CompanyController extends RestrictedAccessRestController
     {
         // filters
         $filters = array();
-        $filters['status'] = $this->getRequest()->getQuery('status');
+        $filters['status'] = (string)$this->getRequest()->getQuery('status');
 
         $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
         if (!empty($vehicleId)) {
@@ -419,14 +448,21 @@ class CompanyController extends RestrictedAccessRestController
 
     private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())
     {
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getAlertsByVehicle" . $vehicle->getId();
+
         $data = array();
 
-        $checkLists = $vehicle->getCheckLists();
-
-        if (!empty($checkLists)) {
-            foreach ($checkLists as $checkList) {
-                $data = array_merge($data, $checkList->getAlertsArray($filters));
+        if ($cache->hasItem($cashKey)) {
+            $data = $cache->getItem($cashKey);
+        } else {
+            $checkLists = $vehicle->getCheckLists();
+            if (!empty($checkLists)) {
+                foreach ($checkLists as $checkList) {
+                    $data = array_merge($data, $checkList->getAlertsArray($filters));
+                }
             }
+            $cache->setItem($cashKey, $data);
         }
 
         return $data;
@@ -434,17 +470,26 @@ class CompanyController extends RestrictedAccessRestController
 
     private function getAlertsByCompany(\SafeStartApi\Entity\Company $company, $filters = array())
     {
-        $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
-        $query->setParameter(1, $company);
-        $vehicles = $query->getResult();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getAlertsByCompany" . $company->getId();
+
         $data = array();
 
-        if (!empty($vehicles)) {
-            foreach ($vehicles as $vehicle) {
-                if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
-                    $data = array_merge($data, $this->getAlertsByVehicle($vehicle, $filters));
+        if ($cache->hasItem($cashKey)) {
+            $data = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
+            $query->setParameter(1, $company);
+            $vehicles = $query->getResult();
+            if (!empty($vehicles)) {
+                foreach ($vehicles as $vehicle) {
+                    if ($vehicle->haveAccess($this->authService->getStorage()->read())) {
+                        $data = array_merge($data, $this->getAlertsByVehicle($vehicle, $filters));
+                    }
                 }
             }
+
+            $cache->setItem($cashKey, $data);
         }
 
         return $data;

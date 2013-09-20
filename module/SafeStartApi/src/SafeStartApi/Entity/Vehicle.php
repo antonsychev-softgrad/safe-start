@@ -196,9 +196,18 @@ class Vehicle extends BaseEntity
     /**
      * @return array
      */
-    public function toMenuArray() {
+    public function toMenuArray()
+    {
         $vehicleData = $this->toInfoArray();
         $vehicleData['text'] = $vehicleData['title'];
+        $menuItems = $this->getMenuItems();
+        if (empty($menuItems)) $vehicleData['leaf'] = true;
+        else $vehicleData['data'] = $menuItems;
+        return $vehicleData;
+    }
+
+    public function getMenuItems()
+    {
         $menuItems = array();
         $user = \SafeStartApi\Application::getCurrentUser();
         if ($user) {
@@ -230,30 +239,29 @@ class Vehicle extends BaseEntity
                 case 'superAdmin':
                 case 'companyAdmin':
                 case 'companyManager':
-                        $menuItems[] = array(
-                            'id' => $this->getId() . '-update-checklist',
-                            'action' => 'update-checklist',
-                            'text' => 'Manage Checklist',
-                            'leaf' => true,
-                        );
-                        $menuItems[] = array(
-                            'id' => $this->getId() . '-users',
-                            'action' => 'users',
-                            'text' => 'Manage Users',
-                            'leaf' => true,
-                        );
+                    $menuItems[] = array(
+                        'id' => $this->getId() . '-update-checklist',
+                        'action' => 'update-checklist',
+                        'text' => 'Manage Checklist',
+                        'leaf' => true,
+                    );
+                    $menuItems[] = array(
+                        'id' => $this->getId() . '-users',
+                        'action' => 'users',
+                        'text' => 'Manage Users',
+                        'leaf' => true,
+                    );
                     break;
             }
         }
-        if (empty($menuItems)) $vehicleData['leaf'] = true;
-        else $vehicleData['data'] = $menuItems;
-        return $vehicleData;
+        return $menuItems;
     }
 
     /**
      * @return array
      */
-    public function getInspectionsArray() {
+    public function getInspectionsArray()
+    {
 
         $inspections = array();
 
@@ -264,8 +272,8 @@ class Vehicle extends BaseEntity
         $query->setParameter(1, $this);
         $items = $query->getResult();
 
-        if(is_array($items) && !empty($items)) {
-            foreach($items as $checkList) {
+        if (is_array($items) && !empty($items)) {
+            foreach ($items as $checkList) {
                 $checkListData = array();
 
                 $checkListData['id'] = "checklist-" . $checkList->getId();
@@ -305,7 +313,7 @@ class Vehicle extends BaseEntity
     public function getLastInspection()
     {
         if (!empty($this->checkLists)) {
-           return $this->checkLists->first();
+            return $this->checkLists->first();
         } else {
             return null;
         }
@@ -602,7 +610,13 @@ class Vehicle extends BaseEntity
      */
     public function removeResponsibleUsers()
     {
-        $this->responsibleUsers->clear();
+        if (!empty($this->responsibleUsers)) return true;
+        $cache = \SafeStartApi\Application::getCache();
+        foreach ($this->responsibleUsers as $user) {
+            $cashKey = "getUserVehiclesList" . $user->getId();
+            if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        }
+        return $this->responsibleUsers->clear();
     }
 
     /**
@@ -643,6 +657,12 @@ class Vehicle extends BaseEntity
      */
     public function removeUsers()
     {
+        if (!empty($this->users)) return true;
+        $cache = \SafeStartApi\Application::getCache();
+        foreach ($this->users as $user) {
+            $cashKey = "getUserVehiclesList" . $user->getId();
+            if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        }
         $this->users->clear();
     }
 
@@ -849,16 +869,16 @@ class Vehicle extends BaseEntity
     {
         if ($this->deleted) return false;
 
-        if($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
+        if ($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }
 
         $companyAdmin = $this->company->getAdmin();
-        if($user == $companyAdmin) {
+        if ($user == $companyAdmin) {
             return true;
         }
 
-        if($user->getRole() == 'superAdmin') {
+        if ($user->getRole() == 'superAdmin') {
             return true;
         }
 

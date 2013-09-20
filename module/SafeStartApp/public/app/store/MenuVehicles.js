@@ -1,17 +1,16 @@
-
-Ext.define('SafeStartApp.store.Vehicles', {
+Ext.define('SafeStartApp.store.MenuVehicles', {
     extend: 'SafeStartApp.store.AbstractTreeStore',
 
     requires: [
-        'SafeStartApp.model.Vehicle'
+        'SafeStartApp.model.MenuVehicle'
     ],
 
     config: {
-        autoLoad: false,
-        model: 'SafeStartApp.model.Vehicle',
+        defaultRootId: 0,
+        model: 'SafeStartApp.model.MenuVehicle',
         proxy: {
             type: "ajax",
-            url : 'api/company/getvehicles',
+            url: 'api/company/getvehicles',
             reader: {
                 type: "json",
                 rootProperty: "data"
@@ -21,7 +20,7 @@ Ext.define('SafeStartApp.store.Vehicles', {
         sorters: 'title',
 
         grouper: {
-            groupFn: function(record) {
+            groupFn: function (record) {
                 return record.get('title')[0];
             }
         }

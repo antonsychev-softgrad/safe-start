@@ -72,14 +72,23 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.createGroup(infoGroup);
 
         this.createGroup([
-            this.createContainer('Plant ID/Registration', vehicle.get('plantId')),
-            this.createContainer('Type of vehicle', vehicle.get('type'))
+            this.createContainer('Plant ID', vehicle.get('plantId')),
+            this.createContainer('Registration', vehicle.get('registration')),
+            this.createContainer('Type of vehicle', vehicle.get('type')),
+
         ]);
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
+        var odometerString = '';
+        if (inspection.get('odometerKms')) {
+            odometerString += inspection.get('odometerKms') + ' km';
+        }
+        if (inspection.get('odometerHours')) {
+            odometerString += ' ' + inspection.get('odometerHours') + ' hours';
+        }
         this.createGroup([
             this.createContainer('Service due', serviceDueString),
-            this.createContainer('Current odometer', '') // TODO:
+            this.createContainer('Current odometer', odometerString)
         ]);
 
         this.createButtons(checklist.id);
@@ -89,14 +98,22 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.inspectionRecord = inspection;
 
         Ext.each(checklist.fieldsStructure, function (fieldGroup) {
-            this.createFields(fieldGroup.fields, checklist.fieldsData, fieldGroup.groupName, 1);
+            this.createFields(
+                fieldGroup.fields, 
+                checklist.fieldsData, 
+                checklist.alerts, 
+                fieldGroup.groupName, 
+                1
+            );
         }, this);
     },
 
-    createContainer: function (key, value) {
+    createContainer: function (key, value, alert) {
+        var cls = alert ? 'sfa-vehicle-details-container-alert'
+            : 'sfa-vehicle-details-container';
         return {
             xtype: 'container',
-            cls: 'sfa-vehicle-inspection-details-container',
+            cls: cls,
             layout: {
                 type: 'hbox',
                 align: 'left',
@@ -154,7 +171,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                             },
                             listeners: {
                                 maprender: function (mapCmp) {
-                                    console.log('mapRender');
                                     mapCmp.marker = new google.maps.Marker({
                                         position: position,
                                         title: 'Vehicle Inspection',
@@ -203,19 +219,25 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
     },
 
-    createFields: function (fields, values, title, depth) {
+    createFields: function (fields, values, alerts, title, depth) {
         var items = [];
         Ext.each(fields, function (field) {
+            var isAlert = false;
             switch (field.type) {
                 case 'group':
-                    items.push(this.createFields(field.items, values, field.fieldName, depth + 1));
+                    items.push(this.createFields(field.items, values, alerts, field.fieldName, depth + 1));
                     break;
                 case 'radio':
                 case 'text':
                 case 'checkbox':
+                    Ext.each(alerts, function (alert) {
+                        if (alert.field.id == field.fieldId) {
+                            isAlert = true;
+                        }
+                    }, this);
                     Ext.each(values, function (value) {
                         if (value.id == field.fieldId) {
-                            items.push(this.createContainer(field.fieldName, value.value));
+                            items.push(this.createContainer(field.fieldName, value.value, isAlert));
                         }
                     }, this);
                     break;
@@ -224,7 +246,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                         if (value.id == field.fieldId) {
                             if (value.value) {
                                 var date = new Date(value.value);
-                                items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d H:i:s')));
+                                items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
                             } else {
                                 items.push(this.createContainer(field.fieldName, 'N/A'));
                             }

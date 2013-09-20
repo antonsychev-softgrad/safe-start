@@ -14,27 +14,37 @@ class VehicleController extends RestrictedAccessRestController
 
         $user = $this->authService->getIdentity();
 
-        $vehicles = $user->getVehicles();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getUserVehiclesList" . $user->getId();
 
         $vehiclesList = array();
-        foreach ($vehicles as $vehicle) {
-            $vehiclesList[] = array(
-                'vehicleId' => $vehicle->getId(),
-                'type' => $vehicle->getType(),
-                'vehicleName' => $vehicle->getTitle(),
-                'role' => 'user'
-            );
+
+        if ($cache->hasItem($cashKey)) {
+            $vehiclesList = $cache->getItem($cashKey);
+        } else {
+            $vehicles = $user->getVehicles();
+
+            foreach ($vehicles as $vehicle) {
+                $vehiclesList[] = array(
+                    'vehicleId' => $vehicle->getId(),
+                    'type' => $vehicle->getType(),
+                    'vehicleName' => $vehicle->getTitle(),
+                    'role' => 'user'
+                );
+            }
+
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            foreach ($responsibleVehicles as $vehicle) {
+                $vehiclesList[] = array(
+                    'vehicleId' => $vehicle->getId(),
+                    'type' => $vehicle->getType(),
+                    'vehicleName' => $vehicle->getTitle(),
+                    'role' => 'responsible'
+                );
+            }
+            $cache->setItem($cashKey, $vehiclesList);
         }
 
-        $responsibleVehicles = $user->getResponsibleForVehicles();
-        foreach ($responsibleVehicles as $vehicle) {
-            $vehiclesList[] = array(
-                'vehicleId' => $vehicle->getId(),
-                'type' => $vehicle->getType(),
-                'vehicleName' => $vehicle->getTitle(),
-                'role' => 'responsible'
-            );
-        }
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -115,7 +125,7 @@ class VehicleController extends RestrictedAccessRestController
                         'gpsCoords' => $queryResult[0]->getGpsCoords(),
                         'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
                         'fieldsData' => json_decode($queryResult[0]->getFieldsData()),
-                        'alerts' => $queryResult[0]->getAlerts(),
+                        'alerts' => $queryResult[0]->getAlertsArray(),
                         'creationDate' => $queryResult[0]->getCreationDate(),
                     );
                 }
@@ -220,6 +230,14 @@ class VehicleController extends RestrictedAccessRestController
             $this->em->flush();
         }
 
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleInspections" . $vehicleId;
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByVehicle" . $vehicleId;
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
@@ -227,6 +245,59 @@ class VehicleController extends RestrictedAccessRestController
         $this->_pushNewChecklistNotification($vehicle, $alerts);
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
+    {
+        $androidDevices = array();
+        $iosDevices = array();
+        $currentUser = \SafeStartApi\Application::getCurrentUser();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
+        $vehicleUsers = $vehicle->getUsers();
+
+        foreach ($responsibleUsers as $responsibleUser) {
+            if ($currentUser->getId() == $responsibleUser->getId()) continue;
+            $responsibleUserInfo = $responsibleUser->toInfoArray();
+            switch (strtolower($responsibleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $responsibleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        foreach ($vehicleUsers as $vehicleUser) {
+            if ($currentUser->getId() == $vehicleUser->getId()) continue;
+            $vehicleUserInfo = $vehicleUser->toInfoArray();
+            switch (strtolower($vehicleUserInfo['device'])) {
+                case 'android':
+                    $androidDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+                case 'ios':
+                    $iosDevices[] = $vehicleUserInfo['deviceId'];
+                    break;
+            }
+        }
+
+        $message = '';
+        $badge = 0;
+        if (!empty($alerts)) {
+            $message =
+                "Vehicle Alert \n\r" .
+                "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
+            foreach ($alerts as $alert) {
+                $badge++;
+                $message .= isset($alert->comment) ? $alert->comment : '' . "\n\r";
+            }
+        } else {
+            $badge = 1;
+            $message .= 'Checklist for Vehicle ID #' . $vehicle->getId() . ' added';
+        }
+
+        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $message, $badge);
+        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $message, $badge);
     }
 
     public function getAlertsAction()
@@ -283,22 +354,27 @@ class VehicleController extends RestrictedAccessRestController
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
 
             $inspections = array();
+            $cache = \SafeStartApi\Application::getCache();
+            $cashKey = "getVehicleInspections" . $vehicleId;
+            if ($cache->hasItem($cashKey)) {
+                $inspections = $cache->getItem($cashKey);
+            } else {
+                $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
+                $query->setParameters(array('id' => $vehicle));
+                $items = $query->getResult();
 
-            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
-            $query->setParameters(array('id' => $vehicle));
-            $items = $query->getResult();
+                if (is_array($items) && !empty($items)) {
+                    foreach ($items as $checkList) {
+                        $checkListData = $checkList->toArray();
 
-            if (is_array($items) && !empty($items)) {
-                foreach ($items as $checkList) {
-                    $checkListData = $checkList->toArray();
+                        $checkListData['checkListId'] = $checkList->getId();
+                        $checkListData['title'] = $checkList->getCreationDate()->format("g:i A d/m/y");
 
-                    $checkListData['checkListId'] = $checkList->getId();
-                    $checkListData['title'] = $checkList->getCreationDate()->format("g:i A d/m/y");
-
-                    $inspections[] = $checkListData;
+                        $inspections[] = $checkListData;
+                    }
                 }
+                $cache->setItem($cashKey, $inspections);
             }
-
             $this->answer = $inspections;
             return $this->AnswerPlugin()->format($this->answer);
         } else {
@@ -378,63 +454,14 @@ class VehicleController extends RestrictedAccessRestController
             }
         }
 
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleInspections" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
         $this->answer = array(
             'done' => true
         );
 
         return $this->AnswerPlugin()->format($this->answer);
-    }
-
-    private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
-    {
-        $androidDevices = array();
-        $iosDevices = array();
-        $currentUser = \SafeStartApi\Application::getCurrentUser();
-        $responsibleUsers = $vehicle->getResponsibleUsers();
-        $vehicleUsers = $vehicle->getUsers();
-
-        foreach ($responsibleUsers as $responsibleUser) {
-            if ($currentUser->getId() == $responsibleUser->getId()) continue;
-            $responsibleUserInfo = $responsibleUser->toInfoArray();
-            switch (strtolower($responsibleUserInfo['device'])) {
-                case 'android':
-                    $androidDevices[] = $responsibleUserInfo['deviceId'];
-                    break;
-                case 'ios':
-                    $iosDevices[] = $responsibleUserInfo['deviceId'];
-                    break;
-            }
-        }
-
-        foreach ($vehicleUsers as $vehicleUser) {
-            if ($currentUser->getId() == $vehicleUser->getId()) continue;
-            $vehicleUserInfo = $vehicleUser->toInfoArray();
-            switch (strtolower($vehicleUserInfo['device'])) {
-                case 'android':
-                    $androidDevices[] = $vehicleUserInfo['deviceId'];
-                    break;
-                case 'ios':
-                    $iosDevices[] = $vehicleUserInfo['deviceId'];
-                    break;
-            }
-        }
-
-        $message = '';
-        $badge = 0;
-        if (!empty($alerts)) {
-            $message =
-                "Vehicle Alert \n\r" .
-                "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
-            foreach ($alerts as $alert) {
-                $badge++;
-                $message .= $alert->comment . "\n\r";
-            }
-        } else {
-            $badge = 1;
-            $message .= 'Checklist for Vehicle ID #' . $vehicle->getId() . ' added';
-        }
-
-        if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $message, $badge);
-        if (!empty($iosDevices)) $this->PushNotificationPlugin()->ios($iosDevices, $message, $badge);
     }
 }

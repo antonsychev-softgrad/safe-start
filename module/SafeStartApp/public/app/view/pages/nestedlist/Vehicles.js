@@ -1,6 +1,7 @@
 Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     extend: 'Ext.dataview.NestedList',
     alias: 'widget.SafeStartNestedListVehicles',
+    xtype: 'SafeStartNestedListVehicles',
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
     name: 'vehicles',
     config: {
@@ -10,46 +11,53 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         displayField: 'text',
         cls: 'sfa-left-container',
         flex: 1,
-        getTitleTextTpl: function() {
+        getTitleTextTpl: function () {
             return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
         },
-        getItemTextTpl: function() {
+        getItemTextTpl: function () {
             return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
         }
     },
 
     initialize: function () {
-        this.setItems([{
-            xtype: 'toolbar',
-            docked: 'top',
-            items: [{
-                xtype: 'searchfield',
-                placeHolder: 'Search...',
-                listeners: {
-                    clearicontap: function() {
-                        this.getStore().clearFilter();
+        this.setItems([
+            {
+                xtype: 'toolbar',
+                docked: 'top',
+                items: [
+                    {
+                        xtype: 'searchfield',
+                        placeHolder: 'Search...',
+                        listeners: {
+                            clearicontap: function () {
+                                this.getStore().clearFilter();
+                            },
+                            keyup: function (field) {
+                                this.filterStoreDataBySearchFiled(this.getStore(), field, 'text');
+                            },
+                            scope: this
+                        }
                     },
-                    keyup: function(field) {
-                        this.filterStoreDataBySearchFiled(this.getStore(), field, 'text');
-                        //todo: fix searching
-                        // this.setData(this.getStore().getData());
+                    {
+                        xtype: 'spacer'
                     },
-                    scope: this
-                }
-            }, {
-                xtype: 'spacer'
-            }, {
-                xtype: 'button',
-                name: 'reload',
-                ui: 'action',
-                iconCls: 'refresh',
-                cls: 'sfa-search-reload',
-                handler: function() {
-                    this.up('nestedlist[name=vehicles]').goToNode(this.up('nestedlist[name=vehicles]').getStore().getRoot());
-                    this.up('nestedlist[name=vehicles]').getStore().loadData();
+                    {
+                        xtype: 'button',
+                        name: 'reload',
+                        ui: 'action',
+                        iconCls: 'refresh',
+                        cls: 'sfa-search-reload',
+                        handler: function () {
+                            this.up('nestedlist[name=vehicles]').getStore().loadData();
+                        }
+                    }
+                ]
+            }
+        ]);
 
-                }
-            }]
-        }]);
+        this.getStore().addListener('beforeload', function () {
+            this.goToNode(this.getStore().getRoot());
+            //this.getStore().removeAll();
+        }, this);
     }
 });

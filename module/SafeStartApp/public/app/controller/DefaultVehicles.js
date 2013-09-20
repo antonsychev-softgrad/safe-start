@@ -51,6 +51,7 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
         var self = this;
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();
                 self.currentForm.down('button[name=delete-data]').hide();
@@ -227,6 +228,8 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             location = '',
             gps,
             alert,
+            inspectionRecord = vehicleInspectionPanel.inspectionRecord,
+            getParams = '',
             fields = [],
             data;
 
@@ -294,26 +297,29 @@ Ext.define('SafeStartApp.controller.DefaultVehicles', {
             gps: location
         };
 
+        if (inspectionRecord) {
+            getParams = '?checklistId=' + inspectionRecord.get('checkListId');
+        }
+
         var navMain = this.getNavMain();
+        var inspectionsPanel = this.getVehicleInspectionsPanel();
 
-        SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist', data, function (result) {
+
+        SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist' + getParams, data, function (result) {
+            vehicleInspectionPanel.clearChecklist();
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
-            // setTimeout(function () {
-            //     var hash = result.checklist;
-            //     var vehicleId = navMain.getActiveItem().getSelection()[0].parentNode.get('id');
-            //     navMain.getStore().on('load', function () {
-            //         var inspectionsNode = navMain.getStore().getRoot().findChild('id', vehicleId).findChild('action', 'inspections');
-            //         navMain.goToNode(inspectionsNode);
-            //         inspectionNode = inspectionsNode.findChild('checkListHash', hash);
-            //         if (inspectionNode) {
-            //             var active = navMain.getActiveItem();
-            //             var index = inspectionsNode.indexOf(inspectionNode);
-            //             navMain.fireEvent('itemtap', navMain, active, index, null, inspectionNode);
-            //         }
-            //     }, null, {single: true});
-
-            //     controller.getNavMain().getStore().load();
-            // }, 0);
+            var active = navMain.getActiveItem();
+            var vehicleId = vehicleInspectionPanel.vehicleId;
+            var inspectionsNode = navMain.getStore().getNodeById(vehicleId + '-inspections');
+            var index = navMain.getStore().getNodeById(vehicleId).indexOf(inspectionsNode);
+            inspectionsPanel.inspectionsStore.on({
+                load: function (store, records) {
+                    var record = store.findRecord('hash', result.checklist);
+                    inspectionsPanel.loadChecklistDetails(record);
+                },
+                single: true
+            });
+            navMain.fireEvent('itemtap', navMain, active, index, null, inspectionsNode);
         });
     },
 
