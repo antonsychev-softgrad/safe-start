@@ -179,6 +179,7 @@ class VehicleController extends RestrictedAccessRestController
 
         if ($inspection) {
             $checkList = $inspection;
+            $checkList->setPdfLink(NULL);
 
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();

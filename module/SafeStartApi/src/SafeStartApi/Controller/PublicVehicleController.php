@@ -90,7 +90,7 @@ class PublicVehicleController extends PublicAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        $pdf = $this->PdfPlugin($checkList->getId(), false);
+        $pdf = $this->PdfPlugin($checkList->getId(), false, false);
 
         foreach($emails as $email) {
             $this->MailPlugin()->send(
