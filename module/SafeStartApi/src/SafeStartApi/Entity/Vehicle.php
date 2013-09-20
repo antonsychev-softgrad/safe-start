@@ -164,8 +164,8 @@ class Vehicle extends BaseEntity
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "warrantyStartDate" => $this->getWarrantyStartDate(),
             "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
-            "currentOdometerKms" => $this->getCurrentOdometerKms(),
-            "currentOdometerHours" => $this->getCurrentOdometerHours(),
+            "currentOdometerKms" => (!is_null($this->getCurrentOdometerKms())) ? $this->getCurrentOdometerKms() : 0,
+            "currentOdometerHours" => (!is_null($this->getCurrentOdometerHours())) ? $this->getCurrentOdometerHours() : 0,
             "enabled" => $this->getEnabled(),
         );
     }

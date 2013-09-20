@@ -43,8 +43,9 @@ class PdfPlugin extends AbstractPlugin
     protected $full_name;
 
     protected $echoPdf = true;
+    protected $saveToDisk = true;
 
-    public function __invoke($checkListId = null, $echoPdf = true)
+    public function __invoke($checkListId = null, $echoPdf = true, $saveToDisk = true)
     {
         $moduleConfig     = $this->getController()->getServiceLocator()->get('Config');
         $this->opts       = $moduleConfig['pdf'];
@@ -53,7 +54,9 @@ class PdfPlugin extends AbstractPlugin
         if ($checkListId === null) {
             return $this;
         }
+
         $this->echoPdf = $echoPdf;
+        $this->saveToDisk = $saveToDisk;
         return $this->create($checkListId);
     }
 
@@ -74,15 +77,24 @@ class PdfPlugin extends AbstractPlugin
 
         $vehicleDetails = array();
         $alertsDetails  = array();
-        $vehicle = $this->checkList->getVehicle();
-        $vehicleData = $vehicle->toInfoArray();
-        $vehicleData = array(
-            'Project number' => $vehicleData['projectNumber'],
-            'Project name' => $vehicleData['projectName'],
-            'Plant ID/Registration' => $vehicleData['plantId'],
-            'Type of vehicle' => $vehicleData['type'],
-            'Service due' => $vehicleData['serviceDueKm'] .' km '. $vehicleData['serviceDueHours'] . ' hours',
-        );
+        $vehicleData = array();
+
+        if ($this->getController()->authService->hasIdentity()) {
+            $vehicle = $this->checkList->getVehicle();
+            $company = $vehicle->getCompany();
+            $vehicleData = $vehicle->toInfoArray();
+            $companyData = $company->toArray();
+            $vehicleData = array(
+                'Company name' => $companyData['title'],
+                'Vehivcle title' => $vehicleData['title'],
+                'Project number' => $vehicleData['projectNumber'],
+                'Project name' => $vehicleData['projectName'],
+                'Plant ID / Registration' => $vehicleData['plantId'] .' / '. $vehicleData['registration'],
+                'Type of vehicle' => $vehicleData['type'],
+                'Service due' => $vehicleData['serviceDueKm'] .' km '. $vehicleData['serviceDueHours'] . ' hours',
+                'Current odometr' => $vehicleData['currentOdometerKms'] .' km '. $vehicleData['currentOdometerHours'] . ' hours',
+            );
+        }
         $fieldsStruct   = json_decode($this->checkList->getFieldsStructure());
         $fieldsData   = json_decode($this->checkList->getFieldsData(), true);
         foreach($fieldsData as $fieldData) {
@@ -182,10 +194,12 @@ class PdfPlugin extends AbstractPlugin
 
     protected function savePdf()
     {
-        $this->document->save($this->full_name);
-        chmod($this->full_name, 0777);
-        $this->checkList->setPdfLink($this->file_name);
-        $this->getController()->em->flush();
+        if($this->saveToDisk) {
+            $this->document->save($this->full_name);
+            chmod($this->full_name, 0777);
+            $this->checkList->setPdfLink($this->file_name);
+            $this->getController()->em->flush();
+        }
     }
 
     protected function getFileByDirAndName($dir, $tosearch)
