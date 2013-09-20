@@ -91,7 +91,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             emptyText: 'No new Alerts',
             plugins: [{
                 xclass: 'Ext.plugin.ListPaging',
-                autoPaging: true
+                autoPaging: true,
+                noMoreRecordsText: ''
             }],
             itemTpl: [
                 '<div class="headshot" style="background-image:url({thumbnail});"></div>',
