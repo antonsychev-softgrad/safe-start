@@ -5,6 +5,8 @@ require('routes.config.php');
 return array(
     'params' => array(
         'version' => '0.1',
+        'date_format' => 'd/m/Y',
+        'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
     ),
@@ -38,6 +40,7 @@ return array(
             'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
             'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
             'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
+            'SafeStartApi\Controller\PublicVehicle' => 'SafeStartApi\Controller\PublicVehicleController',
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',

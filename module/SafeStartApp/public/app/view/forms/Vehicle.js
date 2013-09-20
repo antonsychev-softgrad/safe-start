@@ -25,6 +25,12 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'textfield',
+                disabled: true,
+                name: 'nextServiceDay',
+                label: 'Next Service Day'
+            },
+            {
+                xtype: 'textfield',
                 label: 'Type',
                 name: 'type'
             },

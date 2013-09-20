@@ -41,12 +41,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.callParent();
     },
 
-    //todo remove checklist request
     loadChecklist: function (vehicle, inspection) {
         var me = this;
         SafeStartApp.AJAX('vehicle/' + inspection.get('checkListId') + '/getchecklistdata', {}, function (result) {
             me.createView(vehicle, result.checklist, inspection);
-        }, true, true);
+        });
     },
 
     createView: function (vehicle, checklist, inspection) {
@@ -54,7 +53,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             responsibleUser = vehicle.responsibleUsers().first(),
             cords;
 
-        this.setActiveItem(0);
         this.down('panel[cls=sfa-vehicle-inspection-details]').removeAll();
 
         infoGroup.push(
@@ -74,8 +72,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
             this.createContainer('Registration', vehicle.get('registration')),
-            this.createContainer('Type of vehicle', vehicle.get('type')),
-
+            this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
@@ -157,30 +154,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 ui: 'small',
                 text: 'Open map',
                 handler: function (btn) {
-                    var panel = me.down('panel[cls=sfa-vehicle-inspection-details-map]');
-                    var position = new google.maps.LatLng(lat, lon);
-                    var map = panel.down('map');
-                    if (map) {
-                        map.marker.setPosition(position);
-                        map.getMap().setCenter(position);
-                    } else {
-                        panel.add({
-                            xtype: 'map',
-                            mapOptions: {
-                                center: position
-                            },
-                            listeners: {
-                                maprender: function (mapCmp) {
-                                    mapCmp.marker = new google.maps.Marker({
-                                        position: position,
-                                        title: 'Vehicle Inspection',
-                                        map: mapCmp.getMap()
-                                    });
-                                }
-                            }
-                        });
-                    }
-                    me.setActiveItem(1);
+                    me.up('SafeStartVehicleInspectionsPanel').fireEvent('openMap', lat, lon);
                 }
             }]
         };
