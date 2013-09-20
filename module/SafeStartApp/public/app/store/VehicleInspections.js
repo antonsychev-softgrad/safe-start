@@ -13,6 +13,9 @@ Ext.define('SafeStartApp.store.VehicleInspections', {
             reader: {
                 type: "json",
                 rootProperty: "data"
+            },
+            extraParams: {
+                limit: 10
             }
         },
 

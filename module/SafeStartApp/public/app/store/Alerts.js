@@ -14,6 +14,9 @@ Ext.define('SafeStartApp.store.Alerts', {
             reader: {
                 type: "json",
                 rootProperty: "data"
+            },
+            extraParams: {
+                limit: 10
             }
         },
 

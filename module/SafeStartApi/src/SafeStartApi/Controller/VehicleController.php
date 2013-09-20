@@ -179,6 +179,7 @@ class VehicleController extends RestrictedAccessRestController
 
         if ($inspection) {
             $checkList = $inspection;
+            $checkList->setPdfLink(NULL);
 
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
@@ -351,7 +352,6 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (($vehicleId = (int)$this->params('id')) !== null) {
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
-
             $inspections = array();
             $cache = \SafeStartApi\Application::getCache();
             $cashKey = "getVehicleInspections" . $vehicleId;
@@ -374,7 +374,18 @@ class VehicleController extends RestrictedAccessRestController
                 }
                 $cache->setItem($cashKey, $inspections);
             }
-            $this->answer = $inspections;
+            $page = (int)$this->getRequest()->getQuery('page');
+            $limit = (int)$this->getRequest()->getQuery('limit');
+            if (count($inspections) < ($page - 1) * $limit) {
+                $this->answer = array();
+                return $this->AnswerPlugin()->format($this->answer);
+            }
+            $iteratorAdapter = new \Zend\Paginator\Adapter\ArrayAdapter($inspections);
+            $paginator = new \Zend\Paginator\Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page ? $page : 1);
+            $paginator->setItemCountPerPage($limit ? $limit : 10);
+            $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
+            $this->answer = $items;
             return $this->AnswerPlugin()->format($this->answer);
         } else {
             $this->_showBadRequest();
