@@ -69,12 +69,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             }
         }
 
+
     },
 
     initialize: function () {
         this.callParent();
         this.alertsStore = Ext.create('SafeStartApp.store.Alerts');
         this.add(this.getListPanel());
+        this.alertsStore.addListener('load', function(store) {
+            //todo: hide load more if no data loaded
+            //this.down('list[name=vehicle-alerts]').getPlugins()[0].hide();
+        }, this)
     },
 
     getListPanel: function () {
@@ -84,6 +89,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
             name: 'vehicle-alerts',
             title: 'Vehicle Alerts',
             emptyText: 'No new Alerts',
+            plugins: [{
+                xclass: 'Ext.plugin.ListPaging',
+                autoPaging: true
+            }],
             itemTpl: [
                 '<div class="headshot" style="background-image:url({thumbnail});"></div>',
                 '{alert_description}',
@@ -138,7 +147,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         } catch (e) {
 
         }
-
     }
 
 });

@@ -121,7 +121,7 @@ $routes = array(
                     'route' => '/vehicle/checklisttoemail',
                     'defaults' => array(
                         'controller' => 'PublicVehicle',
-                        'action' => 'checklisttoemail',
+                        'action' => 'checklistToEmail',
                     ),
                 ),
             ),

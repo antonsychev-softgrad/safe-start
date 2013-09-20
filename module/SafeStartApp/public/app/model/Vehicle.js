@@ -13,6 +13,7 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'currentOdometerKms', defaultValue: 'unknown'},
             {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
             {name: 'currentOdometerHours', defaultValue: 'unknown'},
+            {name: 'nextServiceDay', defaultValue: 'unknown'},
             {name: 'serviceDueHours', type: 'int', defaultValue: 24},
             {name: 'enabled', defaultValue: 1},
             {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()}

@@ -10,6 +10,8 @@ class Application
 
     private static $em = null;
 
+    private static $config = null;
+
     private static  $cache = null;
 
     public static function setCurrentControllerServiceLocator(\Zend\ServiceManager\ServiceManager $sl)
@@ -43,6 +45,12 @@ class Application
         return self::$em;
     }
 
+    public static function getConfig()
+    {
+        if (!self::$config) self::$config = self::$serviceLocator->get('Config');
+        return self::$config;
+    }
+
     public static function getCache()
     {
         if (self::$cache == NULL) {
@@ -73,7 +81,10 @@ class Application
                     ),
                 ));
             }
+
         }
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+        self::$cache->setCaching($env == 'prod');
         return self::$cache;
     }
 

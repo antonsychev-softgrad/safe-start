@@ -541,7 +541,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                         var container = field.up('container[cls=sfa-vehicle-inspection-gps]');
                         if (newValue) {
                             if (!container.gps) {
-                                container.gps = Ext.create('Ext.util.Geolocation');
+                                container.gps = Ext.create('Ext.util.Geolocation', {
+                                    autoUpdate: false
+                                });
+                                container.gps.updateLocation();
                             }
                         }
                     }

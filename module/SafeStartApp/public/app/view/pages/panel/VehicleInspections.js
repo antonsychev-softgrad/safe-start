@@ -15,36 +15,53 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
             items: [{
                 name: 'edit-inspection',
                 align: 'right',
-                hidden: true,
                 text: 'Edit',
+                hidden: true,
                 handler: function (button) {
-                    var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel');
-                    var vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails');
+                    var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),
+                        vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails'),
+                        checkListId = vehicleInspectionDetails.checkListId,
+                        vehicleId = vehicleInspectionDetails.vehicleId;
 
-                    var checkListId = vehicleInspectionDetails.checkListId; 
-                    var vehicleId = vehicleInspectionDetails.vehicleId;
-                    vehicleInspectionsPanel.removeChecklistDetails();
                     vehicleInspectionsPanel.fireEvent('editInspection', vehicleId, checkListId, vehicleInspectionDetails.inspectionRecord);
                 }
             }, {
                 name: 'delete-inspection',
                 align: 'right',
-                hidden: true,
                 text: 'Delete',
+                hidden: true,
                 handler: function (button) {
-                    console.log('Delete inspection handler');
+                    var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),
+                        vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails'),
+                        checkListId = vehicleInspectionDetails.checkListId,
+                        vehicleId = vehicleInspectionDetails.vehicleId;
+                        
+                    Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this inspection?", function(){
+                        vehicleInspectionsPanel.fireEvent('deleteInspection', vehicleId, checkListId);
+                    });
                 }
             }]
         },
         listeners: {
             push: function (view, item) {
+                this.hideButtons();
                 this.changeButtons(item);
             },
             pop: function (view, item) {
-                this.changeButtons(view);
             },
-            back: function () {
+            back: function (view, item, item2) {
+                var innerItems = this.getInnerItems();
                 this.hideButtons();
+                this.changeButtons(innerItems[innerItems.length-2]);
+            },
+            openMap: function (lat, lon) {
+                this.onOpenMapAction(lat, lon);
+            },
+            hide: function () {
+                var innerItems = this.getInnerItems();
+                for (var i = 1, len = innerItems.length; i < len; i++) {
+                    this.remove(innerItems[i]);
+                }
             }
         }
     },
@@ -61,6 +78,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         return [{
             xtype: 'list',
             name: 'vehicle-inspections',
+            plugins: [{
+                xclass: 'Ext.plugin.ListPaging',
+                autoPaging: true
+            }],
             disableSelection: true,
             title: 'Vehicle Inspections',
             emptyText: 'No Inspections',
@@ -80,31 +101,58 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.vehicle = vehicle;
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/' + this.vehicleId + '/getinspections');
         this.inspectionsStore.loadData();
-        this.removeChecklistDetails();
     },
 
     onSelectInspectionAction: function(list, index, node, record) {
         this.loadChecklistDetails(record);
     },
 
-    loadChecklistDetails: function (record) {
-        if (this.inspectionView) {
-            this.inspectionView.destroy();
+    onOpenMapAction: function  (lat, lon) {
+        var panel;
+        if (! google) {
+            Ext.Msg.alert(
+                "Error", 
+                "The maps is currently unreachable"
+            );
+            return;
         }
+        panel = Ext.create('Ext.Panel', {
+            cls: 'sfa-vehicle-inspection-details-map', 
+            layout: 'fit'
+        });
+        var position = new google.maps.LatLng(lat, lon);
+        var map = panel.down('map');
+        if (map) {
+            map.marker.setPosition(position);
+            map.getMap().setCenter(position);
+        } else {
+            panel.add({
+                xtype: 'map',
+                mapOptions: {
+                    center: position
+                },
+                listeners: {
+                    maprender: function (mapCmp) {
+                        mapCmp.marker = new google.maps.Marker({
+                            position: position,
+                            title: 'Vehicle Inspection',
+                            map: mapCmp.getMap()
+                        });
+                    }
+                }
+            });
+        }
+        this.push(panel);
+    },
+
+    loadChecklistDetails: function (record) {
         this.inspectionView = Ext.create('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             title: 'Inspection'
         });
-        this.hideButtons();
         this.push(this.inspectionView);
         this.inspectionView.loadChecklist(this.vehicle, record);
-    },
-
-    removeChecklistDetails: function () {
-        var detailsView = this.down('SafeStartVehicleInspectionDetails');
-        if (detailsView) {
-            this.remove(detailsView);
-            this.hideButtons();
-        }
+        var me = this;
+            me.changeButtons(me.inspectionView);
     },
 
     changeButtons: function (view) {
@@ -115,12 +163,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 this.down('button[name=edit-inspection]').show(true);
                 this.down('button[name=delete-inspection]').show(true);
                 break;
+            case 'SafeStartVehicleInspectionMapPanel':
+                break;
         }
     },
 
     hideButtons: function () {
-        this.down('button[name=edit-inspection]').hide(true);
-        this.down('button[name=delete-inspection]').hide(true);
+        this.down('button[name=edit-inspection]').hide();
+        this.down('button[name=delete-inspection]').hide();
     }
 
 });

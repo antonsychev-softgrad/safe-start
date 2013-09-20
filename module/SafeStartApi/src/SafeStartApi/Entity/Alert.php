@@ -78,6 +78,11 @@ class Alert extends BaseEntity
     protected $creation_date;
 
     /**
+     * @ORM\Column(type="datetime", name="update_date")
+     */
+    protected $update_date;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $deleted = 0;
@@ -87,7 +92,8 @@ class Alert extends BaseEntity
      */
     public function prePersist()
     {
-        $this->setCreationDate(new \DateTime());
+        if (!$this->creation_date) $this->setCreationDate(new \DateTime());
+        $this->setUpdateDate(new \DateTime());
     }
 
     /**
@@ -301,7 +307,7 @@ class Alert extends BaseEntity
      * Set deleted
      *
      * @param boolean $deleted
-     * @return User
+     * @return Alert
      */
     public function setDeleted($deleted)
     {
@@ -318,5 +324,28 @@ class Alert extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Alert
+     */
+    public function setUpdateDate($creationDate)
+    {
+        $this->update_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
     }
 }
