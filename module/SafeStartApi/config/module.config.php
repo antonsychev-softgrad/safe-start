@@ -5,6 +5,8 @@ require('routes.config.php');
 return array(
     'params' => array(
         'version' => '0.1',
+        'date_format' => 'd/m/Y',
+        'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
     ),

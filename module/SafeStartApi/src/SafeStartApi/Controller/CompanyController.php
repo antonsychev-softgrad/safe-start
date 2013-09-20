@@ -412,6 +412,7 @@ class CompanyController extends RestrictedAccessRestController
     public function getVehicleAlertsAction()
     {
         $alerts = null;
+        $this->answer = array();
         // filters
         $filters = array();
         $filters['status'] = (string)$this->getRequest()->getQuery('status');
@@ -456,9 +457,9 @@ class CompanyController extends RestrictedAccessRestController
             $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
             $this->answer = $items;
             return $this->AnswerPlugin()->format($this->answer);
-        } else {
-            return $this->_showBadRequest();
         }
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 
     private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())
