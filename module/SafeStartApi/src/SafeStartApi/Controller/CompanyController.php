@@ -411,9 +411,12 @@ class CompanyController extends RestrictedAccessRestController
 
     public function getVehicleAlertsAction()
     {
+        $alerts = null;
         // filters
         $filters = array();
         $filters['status'] = (string)$this->getRequest()->getQuery('status');
+        $page = (int)$this->getRequest()->getQuery('page');
+        $limit = (int)$this->getRequest()->getQuery('limit');
 
         $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
         if (!empty($vehicleId)) {
@@ -425,8 +428,7 @@ class CompanyController extends RestrictedAccessRestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
-            $this->answer = $this->getAlertsByVehicle($vehicle, $filters);
-            return $this->AnswerPlugin()->format($this->answer);
+            $alerts = $this->getAlertsByVehicle($vehicle, $filters);
         }
 
 
@@ -439,11 +441,24 @@ class CompanyController extends RestrictedAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
-            $this->answer = $this->getAlertsByCompany($company, $filters);
-            return $this->AnswerPlugin()->format($this->answer);
+            $alerts = $this->getAlertsByCompany($company, $filters);
         }
 
-        return $this->_showBadRequest();
+        if ($alerts) {
+            if (count($alerts) < ($page - 1) * $limit) {
+                $this->answer = array();
+                return $this->AnswerPlugin()->format($this->answer);
+            }
+            $iteratorAdapter = new \Zend\Paginator\Adapter\ArrayAdapter($alerts);
+            $paginator = new \Zend\Paginator\Paginator($iteratorAdapter);
+            $paginator->setCurrentPageNumber($page ? $page : 1);
+            $paginator->setItemCountPerPage($limit ? $limit : 10);
+            $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
+            $this->answer = $items;
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            return $this->_showBadRequest();
+        }
     }
 
     private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())
