@@ -76,8 +76,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         this.callParent();
         this.alertsStore = Ext.create('SafeStartApp.store.Alerts');
         this.add(this.getListPanel());
-        this.alertsStore.addListener('load', function() {
-            console.log(this.down('list[name=vehicle-alerts]').getPlugins());
+        this.alertsStore.addListener('load', function(store) {
+            //todo: hide load more if no data loaded
+            //this.down('list[name=vehicle-alerts]').getPlugins()[0].hide();
         }, this)
     },
 
