@@ -119,12 +119,9 @@ $routes = array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/vehicle/checklisttoemail',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                    ),
                     'defaults' => array(
                         'controller' => 'PublicVehicle',
-                        'action' => 'checklisttoemail',
+                        'action' => 'checklistToEmail',
                     ),
                 ),
             ),
