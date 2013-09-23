@@ -56,6 +56,16 @@ Ext.define('SafeStartApp.view.pages.Users', {
             itemTpl: '<div class="contact">{firstName} {lastName}</div>',
             minWidth: 150,
             maxWidth: 300,
+            showAnimation: {
+                type: 'slide',
+                direction: 'right',
+                duration: 100
+            },
+            hideAnimation: {
+                type: 'slide',
+                direction: 'left',
+                duration: 200
+            },
             flex: 1,
             cls: 'sfa-left-container',
             store: this.usersStore,

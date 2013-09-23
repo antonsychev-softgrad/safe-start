@@ -59,7 +59,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
             xtype: 'SafeStartNestedListVehicles',
             vehiclesStore: this.vehiclesStore,
             store: this.listVehiclesStore
-
         });
 
         this.add(this.getInfoPanel());

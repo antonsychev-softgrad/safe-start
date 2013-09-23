@@ -7,6 +7,16 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     config: {
         minWidth: 150,
         maxWidth: 300,
+        showAnimation: {
+            type: 'slide',
+            direction: 'right',
+            duration: 100
+        },
+        hideAnimation: {
+            type: 'slide',
+            direction: 'left',
+            duration: 200
+        },
         title: 'Vehicles',
         displayField: 'text',
         cls: 'sfa-left-container',
@@ -18,8 +28,11 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
         },
         listeners: {
-            activeitemchange: function (nestedlist, view, view) {
-                this.down('toolbar').hide();
+            activeitemchange: function (nestedlist) {
+                var toolbar = this.down('toolbar');
+                if (toolbar) {
+                    toolbar.hide();
+                }
             },
             back: function () {
                 if(this._backButton._hidden) {
@@ -43,21 +56,30 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         var filters = this.filters;
         var store = this.getStore();
         var vehiclesStore = this.vehiclesStore;
-        var records = Ext.clone(store.getRoot().childNodes);
+        var records = [];
+        if (! filters['text']) {
+            records = Ext.clone(vehiclesStore.getRoot().childNodes);
+            Ext.each(records, function (record) {
+                store.getRoot().appendChild(record);
+            });
+            this.goToNode(store.getRoot());
+            return;
+        }
+        records = Ext.clone(store.getRoot().childNodes);
         Ext.each(records, function (record) {
             vehiclesStore.getRoot().appendChild(record);
+            // record.appendChild(Ext.clone(record.childNodes));
         });
         records = Ext.clone(vehiclesStore.getRoot().childNodes);
 
         Ext.each(records, function (record) {
+            record.childNodes = Ext.clone(record.childNodes);
             var match = true;
             var regExp;
-            var property;
-            for (property in filters) {
-                regExp = RegExp(filters[property], 'i');
-                if (! (record.get(property) && regExp.test(record.get(property).toString()))) {
-                    match = false;
-                }
+            var property = 'text';
+            regExp = RegExp('.*' + filters[property] + '.*', 'i');
+            if (! (record.get(property) && regExp.test(record.get(property).toString()))) {
+                match = false;
             }
             if (match) {
                 store.getRoot().appendChild(record);
@@ -65,6 +87,10 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         }, this);
 
         this.goToNode(store.getRoot());
+    },
+
+    getVehiclesStore: function () {
+        return this.vehiclesStore();
     },
 
     setFilterValue: function (key, value) {
@@ -86,7 +112,19 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         });
 
         this.vehiclesStore.on('load', function (store, records) {
+            // Ext.each(records, function (record) {
+            //     record.childNodes = Ext.clone(record.childNodes);
+            // });
             me.updateNestedListStore();
+        });
+
+        this.vehiclesStore.on('add', function (store, record) {
+            // record.childNodes = Ext.clone(record.childNodes);
+            // console.log('ok');
+        });
+        this.getStore().on('add', function (store, record) {
+            // record.childNodes = Ext.clone(record.childNodes);
+            // console.log('ok');
         });
 
         this.setItems([{
