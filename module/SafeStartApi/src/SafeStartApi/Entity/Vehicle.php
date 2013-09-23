@@ -275,7 +275,7 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-alerts',
                     'action' => 'alerts',
-                    'text' => 'Alerts',
+                    'text' => 'Alerts ('. count($this->getAlerts()) .')',
                     'leaf' => true,
                 );
             }
@@ -283,7 +283,7 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
-                    'text' => 'Inspections',
+                    'text' => 'Inspections ('. count($this->getCheckLists()) .')',
                     'leaf' => true
                 );
             }
@@ -377,6 +377,11 @@ class Vehicle extends BaseEntity
         } else {
             return null;
         }
+    }
+
+    public function getStatistic(\DateTime $from = null, \DateTime $to = null)
+    {
+
     }
 
     /**

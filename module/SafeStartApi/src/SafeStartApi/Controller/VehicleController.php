@@ -265,6 +265,8 @@ class VehicleController extends RestrictedAccessRestController
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getCompanyVehiclesList";
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
@@ -444,6 +446,12 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->persist($alert);
         $this->em->flush();
 
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getAlertsByVehicle" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
         $this->answer = array(
             'done' => true,
         );
@@ -462,6 +470,14 @@ class VehicleController extends RestrictedAccessRestController
         $alert->setDeleted(1);
 
         $this->em->flush();
+
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getCompanyVehiclesList";
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByVehicle" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'done' => true
@@ -495,9 +511,42 @@ class VehicleController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getCompanyVehiclesList";
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByVehicle" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function getStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if (isset($this->data->form) && !empty($this->data->form)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->form);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $vehicle->getStatistic($from, $to)
         );
 
         return $this->AnswerPlugin()->format($this->answer);

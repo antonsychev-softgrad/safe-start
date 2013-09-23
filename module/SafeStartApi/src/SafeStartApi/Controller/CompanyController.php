@@ -77,6 +77,7 @@ class CompanyController extends RestrictedAccessRestController
             $newFild->setEnabled($defField->getEnabled());
             $newFild->setDeleted($defField->getDeleted());
             $newFild->setAuthor($defField->getAuthor());
+
             if ($parent !== null) {
                 $parent->addChildred($newFild);
                 $this->em->persist($parent);
