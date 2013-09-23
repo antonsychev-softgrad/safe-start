@@ -67,20 +67,20 @@ class RequestLogger extends AbstractHelper
         $logger->debug("\n\n\n============[". $this->requestId ."]==================\n");
         $logger->debug("New " . $request->getMethod() . " request to " . $request->getRequestUri());
         //log headers
-        if (function_exists('yaml_emit')) {
+       /* if (function_exists('yaml_emit')) {
             $writer = new YamlWriter();
             $logger->debug("Headers:\n" . $writer->toString($this->headers));
-        } else {
+        } else {*/
             $logger->debug("Headers:\n" . json_encode($this->headers));
-        }
+       /* }*/
         // log POST data
         if ($request->getMethod() == 'POST') {
-            if (function_exists('yaml_emit')) {
+           /* if (function_exists('yaml_emit')) {
                 $writer = new YamlWriter();
                 $logger->debug("POST data:\n" . $writer->toString(json_decode($this->requestJson, true)));
-            } else {
+            } else {*/
                 $logger->debug("POST data:\n" . $this->requestJson);
-            }
+           /* }*/
         }
 
         if (isset($_FILES) && !empty($_FILES)) {
@@ -88,12 +88,12 @@ class RequestLogger extends AbstractHelper
         }
 
         // log response
-        if (function_exists('yaml_emit')) {
+       /* if (function_exists('yaml_emit')) {
             $writer = new YamlWriter();
             $logger->debug("Response:\n" . $writer->toString((array)$value));
-        } else {
-            $logger->debug("Response:\n" . json_encode($value));
-        }
+        } else {*/
+           // $logger->debug("Response:\n" . json_encode($value));
+        /*}*/
 
         return true;
     }
