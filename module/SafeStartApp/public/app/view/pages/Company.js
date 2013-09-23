@@ -46,8 +46,21 @@ Ext.define('SafeStartApp.view.pages.Company', {
             docked: 'top'
         });
 
-        this.vehiclesStore = new SafeStartApp.store.MenuVehicles();
-        this.add(this.getVehiclesList());
+        this.vehiclesStore = new SafeStartApp.store.MenuVehicles({
+            recursive: true
+        });
+        this.listVehiclesStore = new SafeStartApp.store.MenuVehicles({
+            proxy: {
+                type: 'memory',
+                rootProperty: 'data'
+            }
+        });
+        this.add({
+            xtype: 'SafeStartNestedListVehicles',
+            vehiclesStore: this.vehiclesStore,
+            store: this.listVehiclesStore
+
+        });
 
         this.add(this.getInfoPanel());
 
@@ -56,8 +69,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     getVehiclesList: function () {
         return {
-            xtype: 'SafeStartNestedListVehicles',
-            store: this.vehiclesStore
         };
     },
 
@@ -128,7 +139,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         this.companyId = SafeStartApp.companyModel.get('id');
         this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);
         this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
-        this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
+        // this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
         this.vehiclesStore.loadData();
     }
 
