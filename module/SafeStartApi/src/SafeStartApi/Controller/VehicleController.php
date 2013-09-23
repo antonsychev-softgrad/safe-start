@@ -25,10 +25,16 @@ class VehicleController extends RestrictedAccessRestController
             $vehicles = $user->getVehicles();
 
             foreach ($vehicles as $vehicle) {
+                $vehicleData = $vehicle->toResponseArray();
                 $vehiclesList[] = array(
                     'vehicleId' => $vehicle->getId(),
                     'type' => $vehicle->getType(),
                     'vehicleName' => $vehicle->getTitle(),
+                    'projectName' => $vehicle->getProjectName(),
+                    'projectNumber' => $vehicle->getProjectNumber(),
+                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
+                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
+                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
                     'role' => 'user'
                 );
             }
@@ -39,6 +45,11 @@ class VehicleController extends RestrictedAccessRestController
                     'vehicleId' => $vehicle->getId(),
                     'type' => $vehicle->getType(),
                     'vehicleName' => $vehicle->getTitle(),
+                    'projectName' => $vehicle->getProjectName(),
+                    'projectNumber' => $vehicle->getProjectNumber(),
+                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
+                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
+                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
                     'role' => 'responsible'
                 );
             }

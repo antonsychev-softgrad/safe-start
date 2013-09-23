@@ -97,6 +97,7 @@ class UserController extends RestController
 
     public function logoutAction()
     {
+        $this->cleatRequestLimits();
         $this->answer = array(
             'done' => $this->authService->clearIdentity(),
         );

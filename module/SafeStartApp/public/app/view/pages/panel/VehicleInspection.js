@@ -666,7 +666,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                         },
 
                         uploading: {
-                            loading: true
+                            loading: false
                         }
                     },
                     listeners: {

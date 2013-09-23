@@ -67,13 +67,8 @@ class RestController extends AbstractActionController
             $requestLimits = $this->moduleConfig['requestsLimit']['limitForUnloggedUsers'];
         }
 
-        $servParam = $this->request->getServer();
-        $ip = $servParam->get('REMOTE_ADDR', '');
-        $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
-        $device = isset($this->data->device) ? $this->data->device : '';
-
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = $ip . '_' . $browser . '_' . $device;
+        $cashKey = $this->_getCashKey();
 
         if ($cache->hasItem($cashKey)) {
             $statistic = $cache->getItem($cashKey);
@@ -97,6 +92,22 @@ class RestController extends AbstractActionController
             $cache->setItem($cashKey, $statistic);
         }
         return true;
+    }
+
+    public function cleatRequestLimits()
+    {
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $this->_getCashKey();
+        $cache->removeItem($cashKey);
+    }
+
+    protected function _getCashKey()
+    {
+        $servParam = $this->request->getServer();
+        $ip = $servParam->get('REMOTE_ADDR', '');
+        $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
+        $device = isset($this->data->device) ? $this->data->device : '';
+        return $ip . '_' . $browser . '_' . $device;
     }
 
     protected function _parseRequestFormat()

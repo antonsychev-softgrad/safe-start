@@ -227,7 +227,9 @@ class VehicleControllerTest extends HttpControllerTestCase
         $vehicleId = $data->data->vehicles[0]->vehicleId;
 
         $data = array(
-            ''
+            'emails' => array(
+
+            ),
         );
 
         $this->getRequest()
