@@ -42,7 +42,7 @@ class Company extends BaseEntity
      * @ORM\ManyToMany(targetEntity="User")
      * @ORM\JoinTable(name="companies_responsible_users",
      *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")}
      *      )
      */
     protected $responsibleUsers;

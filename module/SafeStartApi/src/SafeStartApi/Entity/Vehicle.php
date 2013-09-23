@@ -799,7 +799,14 @@ class Vehicle extends BaseEntity
      */
     public function getCheckLists()
     {
-        return $this->checkLists;
+        $alerts = array();
+        if (!$this->checkLists) return $alerts;
+        foreach ($this->checkLists as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
     }
 
     /**

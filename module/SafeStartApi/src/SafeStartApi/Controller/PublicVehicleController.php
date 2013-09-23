@@ -35,7 +35,7 @@ class PublicVehicleController extends PublicAccessRestController
         // save checklist
         if(!empty($this->data->plantId)) {
             $plantId = !empty($this->data->plantId) ? $this->data->plantId : 0;
-            $vehicle = $this->em->findBy('SafeStartApi\Entity\Vehicle', array('plantId' => $plantId));
+            $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findBy(array('plantId' => $plantId));
         } else {
             $plantId = uniqid('vehicle');
             $vehicle = null;
