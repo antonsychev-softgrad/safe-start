@@ -90,7 +90,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     },
 
     getVehiclesStore: function () {
-        return this.vehiclesStore();
+        return this.vehiclesStore;
     },
 
     setFilterValue: function (key, value) {
@@ -112,19 +112,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         });
 
         this.vehiclesStore.on('load', function (store, records) {
-            // Ext.each(records, function (record) {
-            //     record.childNodes = Ext.clone(record.childNodes);
-            // });
             me.updateNestedListStore();
-        });
-
-        this.vehiclesStore.on('add', function (store, record) {
-            // record.childNodes = Ext.clone(record.childNodes);
-            // console.log('ok');
-        });
-        this.getStore().on('add', function (store, record) {
-            // record.childNodes = Ext.clone(record.childNodes);
-            // console.log('ok');
         });
 
         this.setItems([{

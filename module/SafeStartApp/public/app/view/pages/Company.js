@@ -11,6 +11,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleUsers',
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
+        'SafeStartApp.view.pages.panel.Vehicles',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
     ],
@@ -67,11 +68,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) this.disable();
     },
 
-    getVehiclesList: function () {
-        return {
-        };
-    },
-
     getInfoPanel: function () {
         return {
             cls: 'sfa-info-container',
@@ -108,6 +104,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 },
                 {
                     xtype: 'SafeStartVehicleInspectionDetails'
+                },
+                {
+                    xtype: 'SafeStartVehiclesPanel'
                 }
             ]
         };
