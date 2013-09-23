@@ -15,6 +15,9 @@ Ext.define('SafeStartApp.store.AbstractStore', {
     },
 
     loadData: function () {
+        Ext.apply(this, {
+            currentPage: 1
+        });
         this.load({
             callback: function (records, operation, success) {
                 if (operation.getError() && operation.getError().statusText != 'transaction aborted') {

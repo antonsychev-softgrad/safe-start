@@ -23,7 +23,10 @@ SafeStartApp = SafeStartApp || {
     defMenu: [
         'Auth',
         'Contact'
-    ]
+    ],
+
+    dateFormat: 'Y-m-d',
+    tmeFormat: 'H:i'
 };
 
 Ext.apply(SafeStartApp, {

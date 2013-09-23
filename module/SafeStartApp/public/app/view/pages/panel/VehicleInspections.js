@@ -10,7 +10,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails'
     ],
 
-    config: {
+    config: {cls:'sfa-container-padding',
         navigationBar: {
             items: [{
                 name: 'edit-inspection',
@@ -35,7 +35,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                         vehicleInspectionDetails = vehicleInspectionsPanel.down('SafeStartVehicleInspectionDetails'),
                         checkListId = vehicleInspectionDetails.checkListId,
                         vehicleId = vehicleInspectionDetails.vehicleId;
-                        
+
                     Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this inspection?", function(){
                         vehicleInspectionsPanel.fireEvent('deleteInspection', vehicleId, checkListId);
                     });
@@ -80,7 +80,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
             name: 'vehicle-inspections',
             plugins: [{
                 xclass: 'Ext.plugin.ListPaging',
-                autoPaging: true
+                autoPaging: true,
+                noMoreRecordsText: ''
             }],
             disableSelection: true,
             title: 'Vehicle Inspections',
