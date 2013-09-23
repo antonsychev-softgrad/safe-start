@@ -272,17 +272,19 @@ class Vehicle extends BaseEntity
                 'leaf' => true,
             );
             $menuItems[] = array(
-                'id' => $this->getId() . '-inspections',
-                'action' => 'inspections',
-                'text' => 'Inspections',
-                'leaf' => true
-            );
-            $menuItems[] = array(
                 'id' => $this->getId() . '-alerts',
                 'action' => 'alerts',
                 'text' => 'Alerts',
                 'leaf' => true,
             );
+            if (!empty($this->checkLists)) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-inspections',
+                    'action' => 'inspections',
+                    'text' => 'Inspections',
+                    'leaf' => true
+                );
+            }
             if (!empty($this->checkLists)) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-report',
@@ -324,7 +326,7 @@ class Vehicle extends BaseEntity
         $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0');
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 ORDER BY cl.update_date DESC');
         $query->setParameter(1, $this);
         $items = $query->getResult();
 

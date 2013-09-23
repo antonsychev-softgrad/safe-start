@@ -395,7 +395,7 @@ class VehicleController extends RestrictedAccessRestController
                         $checkListData = $checkList->toArray();
 
                         $checkListData['checkListId'] = $checkList->getId();
-                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['date_format'] . $this->moduleConfig['time_format']);
+                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['time_format'] . ' ' . $this->moduleConfig['params']['date_format']);
 
                         $inspections[] = $checkListData;
                     }
