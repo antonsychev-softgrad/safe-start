@@ -1222,4 +1222,17 @@ color: #558FAC;
     color: #558FAC;
 }
 
+.sfa-info-container .x-dock.x-dock-vertical .x-toolbar.x-navigation-bar.x-dock-item.x-docked-top .x-title .x-innerhtml,
+.sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-toolbar.x-navigation-bar.x-dock-item.x-docked-top .x-title .x-innerhtml {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
+
+.sfa-container-padding .x-list-emptytext .x-innerhtml {
+    font-size: 20px;
+}
+.x-show-contact.sfa-alert-information .x-innerhtml .top {
+    padding: 22px 0;
+}
