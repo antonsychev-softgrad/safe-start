@@ -86,7 +86,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
         };
         var post = {};
         if (this.down('datepickerfield[name=from]').getValue()) post.from = this.down('datepickerfield[name=from]').getValue().getTime() / 1000;
-        if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=from]').getValue().getTime() / 1000;
+        if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=to]').getValue().getTime() / 1000;
         SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/statistic', post, function (result) {
             if (result.statistic) {
                 data.statistic = result.statistic;
