@@ -73,10 +73,12 @@ class CompanyController extends RestrictedAccessRestController
             $newFild->setAdditional($defField->getAdditional());
             $newFild->setTriggerValue($defField->getTriggerValue());
             $newFild->setAlertTitle($defField->getAlertTitle());
+            /*
             $alertsList = $defField->getAlerts();
             foreach ($alertsList as $alert) {
                 $newFild->addAlert($alert);
             }
+            */
             $newFild->setOrder($defField->getOrder());
             $newFild->setEnabled($defField->getEnabled());
             $newFild->setDeleted($defField->getDeleted());
@@ -121,6 +123,7 @@ class CompanyController extends RestrictedAccessRestController
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
         } else {
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            if ((count($company->getVehicles()) + 1) > $company->getMaxVehicles()) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
             $this->copyVehicleDefFields($vehicle);
         }

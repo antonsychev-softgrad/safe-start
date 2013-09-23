@@ -19,6 +19,7 @@ class RestController extends AbstractActionController
     const EMAIL_INVALID_ERROR = 40004;
     const NOT_FOUND_ERROR = 4004;
     const REQUESTS_LIMIT_ERROR = 4005;
+    const COMPANY_LIMIT_ERROR = 4006;
 
     public $moduleConfig;
 
@@ -171,6 +172,14 @@ class RestController extends AbstractActionController
             'errorMessage' => 'Access denied',
         );
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
+    }
+
+    protected function _showCompanyLimitReached($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'Company Limit reached',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::COMPANY_LIMIT_ERROR);
     }
 
     protected function _showNotFound($msg = '')
