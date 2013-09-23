@@ -271,13 +271,15 @@ class Vehicle extends BaseEntity
                 'text' => 'Daily Inspection',
                 'leaf' => true,
             );
-            $menuItems[] = array(
-                'id' => $this->getId() . '-alerts',
-                'action' => 'alerts',
-                'text' => 'Alerts',
-                'leaf' => true,
-            );
-            if (!empty($this->checkLists)) {
+            if (count($this->getAlerts()) > 0) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-alerts',
+                    'action' => 'alerts',
+                    'text' => 'Alerts',
+                    'leaf' => true,
+                );
+            }
+            if (count($this->getCheckLists()) > 0) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
@@ -285,7 +287,7 @@ class Vehicle extends BaseEntity
                     'leaf' => true
                 );
             }
-            if (!empty($this->checkLists)) {
+            if (count($this->getCheckLists()) > 0) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-report',
                     'action' => 'report',
@@ -838,7 +840,14 @@ class Vehicle extends BaseEntity
      */
     public function getAlerts()
     {
-        return $this->alerts;
+        $alerts = array();
+        if (!$this->alerts) return $alerts;
+        foreach ($this->alerts as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
     }
 
     /**
