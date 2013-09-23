@@ -150,7 +150,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 self.record.raw['comments'].push({
                     user: SafeStartApp.userModel.data,
                     content: values.new_comment,
-                    update_date: Ext.Date.format(new Date(), 'd/m/Y H:i')
+                    update_date: Ext.Date.format(new Date(), SafeStartApp.dateFormat +' '+ SafeStartApp.timeFormat)
                 });
             }
             self.setComments(self.record.raw['comments']);

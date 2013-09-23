@@ -381,7 +381,13 @@ class Vehicle extends BaseEntity
 
     public function getStatistic(\DateTime $from = null, \DateTime $to = null)
     {
-
+        return array(
+          'kms' => 1500,
+          'hours' => 800,
+          'inspections' => 2,
+          'completed_alerts' => 5,
+          'new_alerts' => 1,
+        );
     }
 
     /**
