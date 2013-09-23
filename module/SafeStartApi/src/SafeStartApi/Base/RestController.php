@@ -20,6 +20,7 @@ class RestController extends AbstractActionController
     const NOT_FOUND_ERROR = 4004;
     const REQUESTS_LIMIT_ERROR = 4005;
     const COMPANY_LIMIT_ERROR = 4006;
+    const KEY_ALREADY_EXISTS_ERROR = 4007;
 
     public $moduleConfig;
 
@@ -196,6 +197,13 @@ class RestController extends AbstractActionController
             'errorMessage' => 'Email already in use',
         );
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR);
+    }
+    protected function _showKeyExists($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'Item with such data already exists',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::KEY_ALREADY_EXISTS_ERROR);
     }
 
     protected function _showEmailInvalid()
