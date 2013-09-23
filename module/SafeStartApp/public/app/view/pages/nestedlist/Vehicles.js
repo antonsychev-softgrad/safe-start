@@ -17,6 +17,8 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             direction: 'left',
             duration: 200
         },
+        filterValue: '',
+        filterField: 'text',
         title: 'Vehicles',
         displayField: 'text',
         cls: 'sfa-left-container',
@@ -42,74 +44,61 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         }
     },
 
-    filterVehiclesByName: function (value) {
-        this.setFilterValue('text', value);
-        this.updateNestedListStore();
-    },
-
     syncStores: function () {
-        this.filters = [];
+        this.setFilterValue('');
         this.updateNestedListStore();
     },
 
     updateNestedListStore: function () {
-        var filters = this.filters;
         var store = this.getStore();
         var vehiclesStore = this.vehiclesStore;
+        var filter = this.getFilterValue();
         var records = [];
-        if (! filters['text']) {
-            records = Ext.clone(vehiclesStore.getRoot().childNodes);
-            Ext.each(records, function (record) {
-                store.getRoot().appendChild(record);
-            });
-            this.goToNode(store.getRoot());
+
+        if (! filter) {
+            records = [];
+            var nodes = vehiclesStore.getRoot().childNodes;
+            for (var i = 0, len = nodes.length; i < len; i++) {
+                records.push(this._parseNode(nodes[i]));
+            }
+            store.fillNode(store.getRoot(), Ext.clone(records));
             return;
         }
-        records = Ext.clone(store.getRoot().childNodes);
-        Ext.each(records, function (record) {
-            vehiclesStore.getRoot().appendChild(record);
-            // record.appendChild(Ext.clone(record.childNodes));
-        });
-        records = Ext.clone(vehiclesStore.getRoot().childNodes);
+    },
 
-        Ext.each(records, function (record) {
-            record.childNodes = Ext.clone(record.childNodes);
-            var match = true;
-            var regExp;
-            var property = 'text';
-            regExp = RegExp('.*' + filters[property] + '.*', 'i');
-            if (! (record.get(property) && regExp.test(record.get(property).toString()))) {
-                match = false;
-            }
-            if (match) {
-                store.getRoot().appendChild(record);
-            }
-        }, this);
-
-        this.goToNode(store.getRoot());
+    _parseNode: function (node) {
+        var childNodes = node.childNodes;
+        var data = Ext.clone(node.getData());
+        delete data.internalId;
+        delete data.parentId;
+        if (childNodes.length) {
+            data.expanded = true;
+        }
+        data.data = [];
+        for (var i = 0, len = childNodes.length; i < len; i++) {
+            data.data.push(this._parseNode(childNodes[i]));
+        }
+        return data;
     },
 
     getVehiclesStore: function () {
         return this.vehiclesStore;
     },
 
-    setFilterValue: function (key, value) {
-        this.filters[key] = value;
-    },
-
-    getFilters: function (key, value) {
-        return this.filters;
+    tapOnNode: function (node) {
+        this.fireEvent('itemtap', this, this.getActiveItem(), 0, null, node);
+        this.on({
+            activeitemchange: function () {
+                this.getActiveItem().select(node);
+            },
+            single: true
+        });
     },
 
     initialize: function() {
         var me = this;
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
-
-        this.vehiclesStore.on('beforeload', function (store) {
-            store.removeAll();
-            me.getStore().removeAll();
-        });
 
         this.vehiclesStore.on('load', function (store, records) {
             me.updateNestedListStore();

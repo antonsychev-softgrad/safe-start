@@ -73,6 +73,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.add(this.getListPanel());
     },
 
+    tapOnNode: function (node) {
+        // todo calc index
+        this.fireEvent('itemtap', this, this.getActiveItem(), 0, null, node);
+    },
+
     getListPanel: function () {
         var self = this;
         return [{

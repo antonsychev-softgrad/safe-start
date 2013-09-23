@@ -8,12 +8,13 @@ Ext.define('SafeStartApp.store.MenuVehicles', {
     config: {
         defaultRootId: 0,
         model: 'SafeStartApp.model.MenuVehicle',
+        defaultRootProperty: 'data',
         proxy: {
             type: "ajax",
             url: 'api/company/getvehicles',
             reader: {
                 type: "json",
-                rootProperty: "data"
+                root: "data"
             }
         },
 
