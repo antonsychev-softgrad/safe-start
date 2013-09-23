@@ -9,10 +9,10 @@ use SafeStartApi\Entity\Vehicle;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="inspection_alerts")
+ * @ORM\Table(name="default_alerts")
  *
  */
-class Alert extends BaseEntity
+class DefaultAlert extends BaseEntity
 {
     const STATUS_NEW = 'new';
     const STATUS_CLOSED = 'closed';
@@ -44,10 +44,10 @@ class Alert extends BaseEntity
     protected $check_list;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Field", inversedBy="alerts")
-     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="alerts")
+     * @ORM\JoinColumn(name="default_field_id", referencedColumnName="id")
      **/
-    protected $field;
+    protected $default_field;
 
     /**
      * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="alerts")
@@ -78,11 +78,6 @@ class Alert extends BaseEntity
     protected $creation_date;
 
     /**
-     * @ORM\Column(type="datetime", name="update_date")
-     */
-    protected $update_date;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     protected $deleted = 0;
@@ -92,8 +87,7 @@ class Alert extends BaseEntity
      */
     public function prePersist()
     {
-        if (!$this->creation_date) $this->setCreationDate(new \DateTime());
-        $this->setUpdateDate(new \DateTime());
+        $this->setCreationDate(new \DateTime());
     }
 
     /**
@@ -177,26 +171,26 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Set field
+     * Set default field
      *
-     * @param \SafeStartApi\Entity\Field $field
+     * @param \SafeStartApi\Entity\DefaultField $default_field
      * @return Alert
      */
-    public function setField(\SafeStartApi\Entity\Field $field = null)
+    public function setDefaultField(\SafeStartApi\Entity\DefaultField $default_field = null)
     {
-        $this->field = $field;
+        $this->default_field = $default_field;
 
         return $this;
     }
 
     /**
-     * Get field
+     * Get default field
      *
-     * @return \SafeStartApi\Entity\Field
+     * @return \SafeStartApi\Entity\DefaultField
      */
-    public function getField()
+    public function getDefaultField()
     {
-        return $this->field;
+        return $this->default_field;
     }
 
     /**
@@ -307,7 +301,7 @@ class Alert extends BaseEntity
      * Set deleted
      *
      * @param boolean $deleted
-     * @return Alert
+     * @return User
      */
     public function setDeleted($deleted)
     {
@@ -324,28 +318,5 @@ class Alert extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
-    }
-
-    /**
-     * Set creation_date
-     *
-     * @param \DateTime $creationDate
-     * @return Alert
-     */
-    public function setUpdateDate($creationDate)
-    {
-        $this->update_date = $creationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get creation_date
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
     }
 }

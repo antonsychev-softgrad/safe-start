@@ -13,6 +13,7 @@ Ext.define('SafeStartApp.model.MenuVehicle', {
             {name: 'currentOdometerKms', defaultValue: 'unknown'},
             {name: 'serviceDueKm', type: 'int', defaultValue: 1000},
             {name: 'currentOdometerHours', defaultValue: 'unknown'},
+            {name: 'nextServiceDay', defaultValue: 'unknown'},
             {name: 'serviceDueHours', type: 'int', defaultValue: 24},
             {name: 'action', type: 'string', defaultValue: ''},
             {name: 'checkListId', type: 'int', defaultValue: 0},

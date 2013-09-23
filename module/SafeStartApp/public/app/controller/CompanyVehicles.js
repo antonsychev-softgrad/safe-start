@@ -6,7 +6,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     requires: [
         'SafeStartApp.view.components.UpdateChecklist',
         'SafeStartApp.store.VehicleChecklist',
-        'SafeStartApp.model.Vehicle',
+        'SafeStartApp.model.MenuVehicle',
         'SafeStartApp.view.forms.Vehicle'
     ],
 
@@ -177,14 +177,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     addAction: function () {
         this.getInfoPanel().setActiveItem(0);
         this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
-        this.selectedNodeId = 0;
-        if (!this.currentForm) {
-            this._createForm();
-        }
-        if (this.vehicleModel) {
-            this.vehicleModel.destroy();
-        }
-        this.vehicleModel = new SafeStartApp.model.Vehicle();
+        this.selectedNodeId = 0;   
+        this._createForm();
+        if (this.vehicleModel) this.vehicleModel.destroy();
+        this.vehicleModel = new SafeStartApp.model.MenuVehicle();
         this.currentForm.setRecord(this.vehicleModel);
         this.currentForm.down('button[name=delete-data]').hide();
         this.currentForm.down('button[name=reset-data]').show();
@@ -192,7 +188,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     saveAction: function () {
         if (!this.vehicleModel) {
-            this.vehicleModel = Ext.create('SafeStartApp.model.Vehicle');
+            this.vehicleModel = Ext.create('SafeStartApp.model.MenuVehicle');
         }
         if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
             var self = this;
@@ -216,11 +212,11 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var self = this;
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
                 self.getNavMain().getStore().loadData();
                 self.currentForm.reset();
                 self.currentForm.down('button[name=delete-data]').hide();
                 self.currentForm.down('button[name=reset-data]').show();
-                self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
             });
         });
     },
@@ -243,11 +239,12 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
         this.getNavMain().getStore().loadData();
         this.getNavMain().getStore().addListener('load', function () {
-            if (!vehicleId) {
-                return;
+            var node = this.getNavMain().getStore().getNodeById(vehicleId);
+            if (node) {
+                this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(vehicleId));
+                this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(vehicleId + '-info'));
+                this.currentForm.setRecord(this.getNavMain().getStore().getNodeById(vehicleId));
             }
-            this.getNavMain().goToNode(this.getNavMain().getStore().getNodeById(vehicleId));
-            this.getNavMain().goToLeaf(this.getNavMain().getStore().getNodeById(vehicleId + '-info'));
         }, this);
 
     },

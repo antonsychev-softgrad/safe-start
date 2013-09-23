@@ -19,6 +19,8 @@ class RestController extends AbstractActionController
     const EMAIL_INVALID_ERROR = 40004;
     const NOT_FOUND_ERROR = 4004;
     const REQUESTS_LIMIT_ERROR = 4005;
+    const COMPANY_LIMIT_ERROR = 4006;
+    const KEY_ALREADY_EXISTS_ERROR = 4007;
 
     public $moduleConfig;
 
@@ -67,13 +69,8 @@ class RestController extends AbstractActionController
             $requestLimits = $this->moduleConfig['requestsLimit']['limitForUnloggedUsers'];
         }
 
-        $servParam = $this->request->getServer();
-        $ip = $servParam->get('REMOTE_ADDR', '');
-        $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
-        $device = isset($this->data->device) ? $this->data->device : '';
-
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = $ip . '_' . $browser . '_' . $device;
+        $cashKey = $this->_getCashKey();
 
         if ($cache->hasItem($cashKey)) {
             $statistic = $cache->getItem($cashKey);
@@ -97,6 +94,22 @@ class RestController extends AbstractActionController
             $cache->setItem($cashKey, $statistic);
         }
         return true;
+    }
+
+    public function cleatRequestLimits()
+    {
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $this->_getCashKey();
+        $cache->removeItem($cashKey);
+    }
+
+    protected function _getCashKey()
+    {
+        $servParam = $this->request->getServer();
+        $ip = $servParam->get('REMOTE_ADDR', '');
+        $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
+        $device = isset($this->data->device) ? $this->data->device : '';
+        return $ip . '_' . $browser . '_' . $device;
     }
 
     protected function _parseRequestFormat()
@@ -162,6 +175,14 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, 401, 401);
     }
 
+    protected function _showCompanyLimitReached($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'Company Limit reached',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::COMPANY_LIMIT_ERROR);
+    }
+
     protected function _showNotFound($msg = '')
     {
         $this->answer = array(
@@ -176,6 +197,13 @@ class RestController extends AbstractActionController
             'errorMessage' => 'Email already in use',
         );
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR);
+    }
+    protected function _showKeyExists($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'Item with such data already exists',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::KEY_ALREADY_EXISTS_ERROR);
     }
 
     protected function _showEmailInvalid()

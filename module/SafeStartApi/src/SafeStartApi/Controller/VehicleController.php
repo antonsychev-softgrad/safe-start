@@ -25,10 +25,16 @@ class VehicleController extends RestrictedAccessRestController
             $vehicles = $user->getVehicles();
 
             foreach ($vehicles as $vehicle) {
+                $vehicleData = $vehicle->toResponseArray();
                 $vehiclesList[] = array(
                     'vehicleId' => $vehicle->getId(),
                     'type' => $vehicle->getType(),
                     'vehicleName' => $vehicle->getTitle(),
+                    'projectName' => $vehicle->getProjectName(),
+                    'projectNumber' => $vehicle->getProjectNumber(),
+                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
+                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
+                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
                     'role' => 'user'
                 );
             }
@@ -39,6 +45,11 @@ class VehicleController extends RestrictedAccessRestController
                     'vehicleId' => $vehicle->getId(),
                     'type' => $vehicle->getType(),
                     'vehicleName' => $vehicle->getTitle(),
+                    'projectName' => $vehicle->getProjectName(),
+                    'projectNumber' => $vehicle->getProjectNumber(),
+                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
+                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
+                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
                     'role' => 'responsible'
                 );
             }
@@ -218,14 +229,31 @@ class VehicleController extends RestrictedAccessRestController
                 if ($field === null) {
                     continue;
                 }
-                $newAlert = new \SafeStartApi\Entity\Alert();
-                $newAlert->setField($field);
-                $newAlert->setCheckList($checkList);
-                $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
-                $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
-                $newAlert->setVehicle($vehicle);
+                $addNewAlert = true;
+                $filedAlerts = $field->getAlerts();
+                if ($filedAlerts) {
+                    foreach ($filedAlerts as $filedAlert) {
+                        if ($filedAlert->getVehicle()->getId() == $vehicleId
+                            && $filedAlert->getStatus() == \SafeStartApi\Entity\Alert::STATUS_NEW
+                            && !$filedAlert->getDeleted()
+                        ) {
+                            $addNewAlert = false;
+                            $filedAlert->setCheckList($checkList);
+                            if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
+                            if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->image));
+                        }
+                    }
+                }
+                if ($addNewAlert) {
+                    $newAlert = new \SafeStartApi\Entity\Alert();
+                    $newAlert->setField($field);
+                    $newAlert->setCheckList($checkList);
+                    $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
+                    $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
+                    $newAlert->setVehicle($vehicle);
+                    $this->em->persist($newAlert);
+                }
 
-                $this->em->persist($newAlert);
             }
             $this->em->flush();
         }
@@ -367,7 +395,7 @@ class VehicleController extends RestrictedAccessRestController
                         $checkListData = $checkList->toArray();
 
                         $checkListData['checkListId'] = $checkList->getId();
-                        $checkListData['title'] = $checkList->getCreationDate()->format("g:i A d/m/y");
+                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['date_format'] . $this->moduleConfig['time_format']);
 
                         $inspections[] = $checkListData;
                     }

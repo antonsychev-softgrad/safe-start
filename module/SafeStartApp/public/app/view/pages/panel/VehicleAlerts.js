@@ -10,13 +10,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         'SafeStartApp.view.pages.panel.VehicleAlert'
     ],
 
-    config: {
-        navigationBar: {
+    config: {cls:'sfa-container-padding',
+        navigationBar: {cls:'sfa-alerts-topbar',
             ui: 'sencha',
             items: [
                 { xtype: 'spacer' },
                 {
                     xtype: 'searchfield',
+                    cls:'sfa-alerts-searchbar',
                     placeHolder: 'Search...',
                     name: 'search-alert',
                     listeners: {

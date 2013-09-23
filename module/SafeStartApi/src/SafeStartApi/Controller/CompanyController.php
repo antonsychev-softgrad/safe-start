@@ -73,16 +73,10 @@ class CompanyController extends RestrictedAccessRestController
             $newFild->setAdditional($defField->getAdditional());
             $newFild->setTriggerValue($defField->getTriggerValue());
             $newFild->setAlertTitle($defField->getAlertTitle());
-            $alertsList = $defField->getAlerts();
-            foreach ($alertsList as $alert) {
-                $newFild->addAlert($alert);
-            }
             $newFild->setOrder($defField->getOrder());
             $newFild->setEnabled($defField->getEnabled());
             $newFild->setDeleted($defField->getDeleted());
             $newFild->setAuthor($defField->getAuthor());
-
-            // $newFild->setCreation_date(date_create());
             if ($parent !== null) {
                 $parent->addChildred($newFild);
                 $this->em->persist($parent);
@@ -110,8 +104,11 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
+        $plantId = $this->data->plantId;
+        $registration = $this->data->registration;
+        $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
-            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            $vehicle = $repository->find($vehicleId);
             if (!$vehicle) {
                 $this->answer = array(
                     "errorMessage" => "Vehicle not found."
@@ -120,17 +117,28 @@ class CompanyController extends RestrictedAccessRestController
             }
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
         } else {
+            $vehicle = $repository->findOneBy(array(
+                'plantId' => $plantId,
+                'deleted' => 0,
+            ));
+            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            $vehicle = $repository->findOneBy(array(
+                'registrationNumber' => $registration,
+                'deleted' => 0,
+            ));
+            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Registration number already exists');
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            if ((count($company->getVehicles()) + 1) > $company->getMaxVehicles()) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
             $this->copyVehicleDefFields($vehicle);
         }
 
         $vehicle->setCompany($company);
-        $vehicle->setPlantId($this->data->plantId);
+        $vehicle->setPlantId($plantId);
         $vehicle->setTitle($this->data->title);
         $vehicle->setType($this->data->type);
         $vehicle->setEnabled((int)$this->data->enabled);
-        $vehicle->setRegistrationNumber($this->data->registration);
+        $vehicle->setRegistrationNumber($registration);
         $vehicle->setProjectName($this->data->projectName);
         $vehicle->setProjectNumber($this->data->projectNumber);
         $vehicle->setServiceDueKm($this->data->serviceDueKm);
@@ -412,6 +420,7 @@ class CompanyController extends RestrictedAccessRestController
     public function getVehicleAlertsAction()
     {
         $alerts = null;
+        $this->answer = array();
         // filters
         $filters = array();
         $filters['status'] = (string)$this->getRequest()->getQuery('status');
@@ -456,9 +465,9 @@ class CompanyController extends RestrictedAccessRestController
             $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
             $this->answer = $items;
             return $this->AnswerPlugin()->format($this->answer);
-        } else {
-            return $this->_showBadRequest();
         }
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
 
     private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())

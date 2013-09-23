@@ -97,6 +97,7 @@ class UserController extends RestController
 
     public function logoutAction()
     {
+        $this->cleatRequestLimits();
         $this->answer = array(
             'done' => $this->authService->clearIdentity(),
         );
@@ -147,6 +148,7 @@ class UserController extends RestController
 
         $this->em->persist($user);
 
+
         if (isset($this->data->companyId)) {
             $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
             if (!$company) {
@@ -156,6 +158,7 @@ class UserController extends RestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
 
+            if ((count($company->getUsers()) + 1) > $company->getMaxUsers()) return $this->_showCompanyLimitReached('Company limit of users reached');
             $user->setCompany($company);
         }
 
