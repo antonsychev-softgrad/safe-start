@@ -41,6 +41,25 @@ class AdminController extends AdminAccessRestController
             $company = new \SafeStartApi\Entity\Company();
         }
 
+        // set company admin
+        $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
+        $user = $userRep->findOneBy(array('email' => $this->data->email));
+
+        if (!$user) {
+            $user = new \SafeStartApi\Entity\User();
+            $user->setEmail($this->data->email);
+            $user->setFirstName($this->data->firstName);
+            $user->setUsername($this->data->firstName);
+            $user->setRole('companyAdmin');
+            $this->em->persist($user);
+        } else {
+            $adminForCompany = $this->em->getRepository('SafeStartApi\Entity\Company')->findOneBy(array(
+                'admin' => $user,
+                'deleted' => 0,
+            ));
+            if(!is_null($adminForCompany)) return $this->_showAdminAlreadyInUse();
+        }
+
         // set company data
         $company->setTitle($this->data->title);
         $company->setAddress($this->data->address);
@@ -54,21 +73,8 @@ class AdminController extends AdminAccessRestController
             $expiryDate->setTimestamp((int)$this->data->expiry_date);
             $company->setExpiryDate($expiryDate);
         }
-        $this->em->persist($company);
-        // set company admin
-        $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
-        $user = $userRep->findOneBy(array('email' => $this->data->email));
-
-        if (!$user) {
-            $user = new \SafeStartApi\Entity\User();
-            $user->setEmail($this->data->email);
-            $user->setFirstName($this->data->firstName);
-            $user->setUsername($this->data->firstName);
-            $user->setRole('companyAdmin');
-            $this->em->persist($user);
-        }
-
         $company->setAdmin($user);
+        $this->em->persist($company);
 
         $user->setCompany($company);
 
