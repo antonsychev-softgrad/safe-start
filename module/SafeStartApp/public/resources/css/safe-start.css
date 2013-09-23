@@ -970,6 +970,7 @@ div.logo {
 .sfa-alert-comments {
     margin-top: 15px;
     color: #565555;
+    font-size: 17px;
 }
 .sfa-alert-comments h3 {
     color: #565555;
@@ -1043,7 +1044,7 @@ div.logo {
 
 .x-show-contact .top .name span {
     display: block;
-    font-size: 16px;
+    font-size: 17px;
     font-weight: normal;
     color: #666
 }
@@ -1090,7 +1091,7 @@ div.logo {
     font-size: 20px;
 }
 .sfa-checklist-form .checklist-details-ok, .sfa-checklist-form .checklist-details-alerts {
-    font-size: 20px;
+    font-size: 22px;
     color: #565555;
     position: relative;
 }
@@ -1170,6 +1171,19 @@ div.logo {
 .sfa-alerts-topbar .x-input-el.x-form-field.x-input-search {
     border: none;
 }
+.sfa-alerts-topbar {
+    font-size: 22px;
+    color: #558FAC;
+}
+.sfa-alerts-searchbar > .x-component-outer > .x-unsized.x-field-input:before {
+top: 0;
+}
+.sfa-alerts .x-list-paging .x-list-paging-msg {
+color: #558FAC;
+}
+.sfa-info-container .sfa-container-padding .sfa-alerts-topbar .x-button.x-button-action {margin-right: 10px;}
+
+.x-toolbar.sfa-alerts-topbar.x-docked-top {border: none;}
 
 .x-button-label {
     color: #fff;
@@ -1195,3 +1209,17 @@ div.logo {
 .sfa-atatus {
     margin-top: 15px;
 }
+
+.sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back, .sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back:before {
+    background-color: #1676b9;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #359ee7), color-stop(3%, #1985d0), color-stop(100%, #1468a2));
+    background-image: -webkit-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
+    background-image: -o-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
+}
+
+.sfa-inspections .x-list-paging-msg {
+    font-size: 22px;
+    color: #558FAC;
+}
+
+

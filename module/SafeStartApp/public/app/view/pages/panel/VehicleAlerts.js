@@ -17,6 +17,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 { xtype: 'spacer' },
                 {
                     xtype: 'searchfield',
+                    cls:'sfa-alerts-searchbar',
                     placeHolder: 'Search...',
                     name: 'search-alert',
                     listeners: {
