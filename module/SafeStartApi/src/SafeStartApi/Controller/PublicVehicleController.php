@@ -41,9 +41,10 @@ class PublicVehicleController extends PublicAccessRestController
             $vehicle = null;
         }
 
+        $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findBy(array('plantId' => $plantId));
+
         if (!$vehicle) {
             $vehicle = new Vehicle();
-            $vehicle->setCompany($this->data->company);
             $vehicle->setEnabled(1);
             $vehicle->setPlantId($plantId);
             $vehicle->setProjectName($this->data->projectName);
@@ -55,7 +56,6 @@ class PublicVehicleController extends PublicAccessRestController
             $vehicle->setType($this->data->type);
             $this->em->persist($vehicle);
         } else {
-            $vehicle->setCompany($this->data->company);
             $vehicle->setPlantId($plantId);
             $vehicle->setProjectName($this->data->projectName);
             $vehicle->setProjectNumber($this->data->projectNumber);
