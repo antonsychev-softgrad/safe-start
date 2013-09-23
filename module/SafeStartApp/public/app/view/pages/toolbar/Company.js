@@ -5,7 +5,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Company', {
     xtype: 'SafeStartCompanyToolbar',
 
     getToolbarItems: function () {
-         if (SafeStartApp.userModel.get('role') == 'companyUser') {
+         if (SafeStartApp.userModel.get('role') == 'companyUser' || SafeStartApp.userModel.get('role') == 'companyUser') {
              this.toolbarButtons = [
                  { xtype: 'spacer' },
                  { iconCls: 'user', ui: 'action', text: SafeStartApp.userModel.get('firstName') + ' ' + SafeStartApp.userModel.get('lastName'), action: 'update_profile'},

@@ -19,11 +19,19 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         },
         listeners: {
             activeitemchange: function (nestedlist, view, view) {
-                this.down('toolbar').hide();
+                try {
+                    this.down('toolbar').hide();
+                } catch (e) {
+
+                }
             },
             back: function () {
-                if(this._backButton._hidden) {
-                    this.down('toolbar').show();
+                try {
+                    if(this._backButton._hidden) {
+                        this.down('toolbar').show();
+                    }
+                } catch (e) {
+
                 }
             }
         }

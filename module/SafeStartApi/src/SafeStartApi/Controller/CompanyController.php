@@ -73,18 +73,10 @@ class CompanyController extends RestrictedAccessRestController
             $newFild->setAdditional($defField->getAdditional());
             $newFild->setTriggerValue($defField->getTriggerValue());
             $newFild->setAlertTitle($defField->getAlertTitle());
-            /*
-            $alertsList = $defField->getAlerts();
-            foreach ($alertsList as $alert) {
-                $newFild->addAlert($alert);
-            }
-            */
             $newFild->setOrder($defField->getOrder());
             $newFild->setEnabled($defField->getEnabled());
             $newFild->setDeleted($defField->getDeleted());
             $newFild->setAuthor($defField->getAuthor());
-
-            // $newFild->setCreation_date(date_create());
             if ($parent !== null) {
                 $parent->addChildred($newFild);
                 $this->em->persist($parent);

@@ -283,6 +283,14 @@ class Vehicle extends BaseEntity
                 'text' => 'Alerts',
                 'leaf' => true,
             );
+            if (!empty($this->checkLists)) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-report',
+                    'action' => 'report',
+                    'text' => 'Report',
+                    'leaf' => true,
+                );
+            }
             switch ($user->getRole()) {
                 case 'superAdmin':
                 case 'companyAdmin':
