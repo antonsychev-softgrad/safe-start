@@ -125,16 +125,16 @@ class CompanyController extends RestrictedAccessRestController
             }
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
         } else {
-            $vehicle = $repository->findBy(array(
+            $vehicle = $repository->findOneBy(array(
                 'plantId' => $plantId,
                 'deleted' => 0,
             ));
-            if(is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
-            $vehicle = $repository->findBy(array(
-                'registration' => $registration,
+            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            $vehicle = $repository->findOneBy(array(
+                'registrationNumber' => $registration,
                 'deleted' => 0,
             ));
-            if(is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Registration number already exists');
+            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Registration number already exists');
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ((count($company->getVehicles()) + 1) > $company->getMaxVehicles()) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
