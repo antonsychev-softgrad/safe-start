@@ -358,10 +358,14 @@ class VehicleController extends RestrictedAccessRestController
             $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
             $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
 
-            array_merge($vehicles, $respVehicles);
+            $vehicles = array_merge($vehicles, $respVehicles);
 
-            $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
-            $query->setParameter(1, $vehicles);
+            if(count($vehicles) > 0) {
+                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
+                $query->setParameter(1, $vehicles);
+            } else {
+                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.creation_date > ?2');
+            }
             $query->setParameter(2, $time);
             $items = $query->getResult();
         }
