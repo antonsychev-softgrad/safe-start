@@ -925,16 +925,20 @@ class Vehicle extends BaseEntity
     {
         if ($this->deleted) return false;
 
+        if ($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
         if ($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }
 
         $companyAdmin = $this->company->getAdmin();
-        if ($user == $companyAdmin) {
+        if ($user->getId() == $companyAdmin->getId()) {
             return true;
         }
 
-        if ($user->getRole() == 'superAdmin') {
+        if($user->getRole() == 'companyManager' && $user->getCompany()->getId() == $this->getCompany()->getId()) {
             return true;
         }
 
