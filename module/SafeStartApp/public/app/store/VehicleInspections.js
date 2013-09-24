@@ -15,15 +15,7 @@ Ext.define('SafeStartApp.store.VehicleInspections', {
                 rootProperty: "data"
             }
         },
-
-        sorters: 'title',
-        pageSize: 10,
-
-        grouper: {
-            groupFn: function(record) {
-                return record.get('title')[0];
-            }
-        }
+        pageSize: 10
     },
 
     checkForLastPage: function(store, records, isSuccessful) {

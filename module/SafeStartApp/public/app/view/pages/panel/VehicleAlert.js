@@ -121,7 +121,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     updateRecord: function (newRecord) {
         if (!newRecord) return;
         this.record = newRecord;
-        this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(newRecord.data);
+        this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(this.record.raw);
         this.setComments(this.record.raw['comments']);
         var images = newRecord.get('images');
         if (images.length) {
@@ -141,7 +141,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     updateAction: function () {
         var self = this;
         var values = {};
-        var vehicleId = this.record.getAssociatedData()['vehicle']['id'];
+        var vehicleId = this.record.raw['vehicle']['id'];
         values.status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
         values.new_comment = this.down('#SafeStartVehicleAlertNewComment' + this.uniqueId).getValue();
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/alert/' + this.record.get('id') + '/update', values, function (result) {
