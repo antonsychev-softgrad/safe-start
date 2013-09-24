@@ -82,9 +82,9 @@ class PdfPlugin extends AbstractPlugin
             $vehicle = $this->checkList->getVehicle();
             $company = $vehicle->getCompany();
             $vehicleData = $vehicle->toInfoArray();
-            $companyData = $company->toArray();
+            $companyData = $company ? $company->toArray() : array();
             $vehicleData = array(
-                'Company name' => $companyData['title'],
+                'Company name' => isset($companyData['title']) ? $companyData['title'] : '',
                 'Vehivcle title' => $vehicleData['title'],
                 'Project number' => $vehicleData['projectNumber'],
                 'Project name' => $vehicleData['projectName'],
