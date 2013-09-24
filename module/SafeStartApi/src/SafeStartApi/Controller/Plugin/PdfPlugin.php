@@ -335,7 +335,7 @@ class PdfPlugin extends AbstractPlugin
 
             $name      = "Name: " . $user->getFirstName() . " " . $user->getLastName();
             $signature = "Signature: ";
-            $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] . $this->getController()->moduleConfig['params']['time_format']);
+            $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format']);
 
             $color = ZendPdf\Color\Html::color($fontColor);
             $style = new ZendPdf\Style();
@@ -456,7 +456,7 @@ class PdfPlugin extends AbstractPlugin
                 if(!is_int($value)) {
                     $value = strtotime($value);
                 }
-                $value = gmdate($this->getController()->moduleConfig['params']['date_format'] . $this->getController()->moduleConfig['params']['time_format'], $value);
+                $value = gmdate($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format'], $value);
             }
 
             $title          = strip_tags($title);
@@ -1139,7 +1139,7 @@ class PdfPlugin extends AbstractPlugin
         $checkList = "";
         $user      = "";
         $vehicle   = "";
-        $date      = $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] . $this->getController()->moduleConfig['params']['time_format']);
+        $date      = $this->dateGeneration->format('Y-m-d');
 
         if (!empty($this->checkList)) {
             $checkList .= $this->checkList->getId();

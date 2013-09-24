@@ -34,36 +34,33 @@ class PublicVehicleController extends PublicAccessRestController
 
         // save checklist
         if(!empty($this->data->plantId)) {
-            $plantId = !empty($this->data->plantId) ? $this->data->plantId : 0;
+            $plantId = $this->data->plantId;
             $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findBy(array('plantId' => $plantId));
         } else {
             $plantId = uniqid('vehicle');
-            $vehicle = null;
-        }
-
-        $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findBy(array('plantId' => $plantId));
-
-        if (!$vehicle) {
             $vehicle = new Vehicle();
             $vehicle->setEnabled(1);
-            $vehicle->setPlantId($plantId);
-            $vehicle->setProjectName($this->data->projectName);
-            $vehicle->setProjectNumber($this->data->projectNumber);
-            $vehicle->setRegistrationNumber($this->data->registrationNumber);
-            $vehicle->setServiceDueHours($this->data->serviceDueHours);
-            $vehicle->setServiceDueKm($this->data->serviceDueKm);
-            $vehicle->setTitle($this->data->title);
-            $vehicle->setType($this->data->type);
+        }
+
+        $projectName = !empty($this->data->projectName) ? $this->data->projectName : '';
+        $projectNumber = !empty($this->data->projectNumber) ? $this->data->projectNumber : 0;
+        $registrationNumber = !empty($this->data->registrationNumber) ? $this->data->registrationNumber : '';
+        $serviceDueHours = !empty($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
+        $serviceDueKm = !empty($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
+        $title = !empty($this->data->title) ? $this->data->title : '';
+        $type = !empty($this->data->type) ? $this->data->type : '';
+
+        $vehicle->setPlantId($plantId);
+        $vehicle->setProjectName($projectName);
+        $vehicle->setProjectNumber($projectNumber);
+        $vehicle->setRegistrationNumber($registrationNumber);
+        $vehicle->setServiceDueHours($serviceDueHours);
+        $vehicle->setServiceDueKm($serviceDueKm);
+        $vehicle->setTitle($title);
+        $vehicle->setType($type);
+
+        if(empty($this->data->plantId)) {
             $this->em->persist($vehicle);
-        } else {
-            $vehicle->setPlantId($plantId);
-            $vehicle->setProjectName($this->data->projectName);
-            $vehicle->setProjectNumber($this->data->projectNumber);
-            $vehicle->setRegistrationNumber($this->data->registrationNumber);
-            $vehicle->setServiceDueHours($this->data->serviceDueHours);
-            $vehicle->setServiceDueKm($this->data->serviceDueKm);
-            $vehicle->setTitle($this->data->title);
-            $vehicle->setType($this->data->type);
         }
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
