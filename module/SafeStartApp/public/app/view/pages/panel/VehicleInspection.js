@@ -448,7 +448,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             fieldId: fieldData.fieldId,
             alerts: fieldData.alerts,
             alertRecord: alertRecord,
-            checked: new RegExp(fieldData.fieldValue, 'i').test('yes'),
+            checked: fieldData.fieldValue ? new RegExp(fieldData.fieldValue, 'i').test('yes') : false,
             triggerable: true,
             listeners: {
                 check: function (checkbox) {
