@@ -197,12 +197,10 @@ class PdfPlugin extends AbstractPlugin
 
     protected function savePdf()
     {
-        if(!$this->emailMode) {
-            $this->document->save($this->full_name);
-            chmod($this->full_name, 0777);
-            $this->checkList->setPdfLink($this->file_name);
-            $this->getController()->em->flush();
-        }
+        $this->document->save($this->full_name);
+        chmod($this->full_name, 0777);
+        $this->checkList->setPdfLink($this->file_name);
+        $this->getController()->em->flush();
     }
 
     protected function getFileByDirAndName($dir, $tosearch)
