@@ -194,6 +194,17 @@ class DefaultAlert extends BaseEntity
     }
 
     /**
+     * Get default field
+     *
+     * @return \SafeStartApi\Entity\DefaultField
+     */
+    public function getField()
+    {
+        return $this->default_field;
+    }
+
+
+    /**
      * Set vehicle
      *
      * @param \SafeStartApi\Entity\Vehicle $vehicle

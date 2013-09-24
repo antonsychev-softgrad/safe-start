@@ -49,6 +49,14 @@ class Module
             },
             100);
 
+        register_shutdown_function(function ()
+        {
+            if ($e = error_get_last()) {
+                echo json_encode(array('error' => $e['message'] . " in " . $e['file'] . ' line ' . $e['line']));
+                die();
+            }
+        });
+
     }
 
     /**

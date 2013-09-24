@@ -51,7 +51,7 @@ class PublicVehicleController extends PublicAccessRestController
         $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
 
         if (!$vehicle) $vehicle = new Vehicle();
-        
+
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
         $vehicle->setProjectNumber($projectNumber);
