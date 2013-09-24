@@ -51,6 +51,7 @@ class PublicVehicleController extends PublicAccessRestController
         $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
 
         if (!$vehicle) $vehicle = new Vehicle();
+        
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
         $vehicle->setProjectNumber($projectNumber);
@@ -59,6 +60,7 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
         $vehicle->setType($type);
+
         $this->em->persist($vehicle);
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');

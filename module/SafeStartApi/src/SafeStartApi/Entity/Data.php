@@ -21,7 +21,7 @@ class Data extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=32, unique=true,)
      */
     protected $key;
 
