@@ -78,22 +78,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
                     ]
                 },
-                interactions: [
-                    {
-                        type: 'panzoom',
-                        axes: {
-                            "left": {
-                                allowPan: false,
-                                allowZoom: false
-                            },
-                            "bottom": {
-                                allowPan: true,
-                                allowZoom: true
-                            }
-                        }
-                    },
-                    'itemhighlight'
-                ],
                 axes: [
                     {
                         type: 'numeric',
@@ -136,7 +120,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             barWidth: 30,
                             minBarWidth: 10
                         }
-                    }/*,
+                    },
                     {
                         type: 'line',
                         highlight: {
@@ -152,7 +136,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             radius: 10,
                             lineWidth: 0
                         }
-                    }*/
+                    }
                 ]
             }
         ]
