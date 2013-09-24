@@ -57,7 +57,6 @@ class VehicleController extends RestrictedAccessRestController
             $cache->setItem($cashKey, $vehiclesList);
         }
 
-
         $this->answer = array(
             'vehicles' => $vehiclesList,
         );
