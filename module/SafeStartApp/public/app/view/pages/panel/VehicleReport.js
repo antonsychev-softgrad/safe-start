@@ -1,6 +1,6 @@
 Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
     extend: 'Ext.Panel',
-
+    xtype: 'SafeStartVehicleReportPanel',
     alias: 'widget.SafeStartVehicleReportPanel',
 
     requires: [
@@ -47,7 +47,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         action: 'refresh',
                         iconCls: 'refresh',
                         handler: function () {
-
+                            this.up('SafeStartVehicleReportPanel').updateDataView();
                         }
                     }
                 ]

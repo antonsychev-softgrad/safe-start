@@ -11,7 +11,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleUsers',
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
-    //    'SafeStartApp.view.pages.panel.Vehicles',
+        'SafeStartApp.view.pages.panel.Vehicles',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
     ],
@@ -104,10 +104,10 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 },
                 {
                     xtype: 'SafeStartVehicleInspectionDetails'
-                }/*,
+                },
                 {
                     xtype: 'SafeStartVehiclesPanel'
-                }*/
+                }
             ]
         };
     },
