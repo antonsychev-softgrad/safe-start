@@ -106,14 +106,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 if (Ext.isNumeric(record.get('id'))) {
                     Ext.each(record.childNodes, function (actionNode) {
                         if (actionNode.get('id') == record.get('id') + '-info') {
-                            this.getNavMain().fireEvent(
-                                'itemtap', 
-                                this.getNavMain(), 
-                                this.getNavMain().getActiveItem(), 
-                                0, 
-                                null, 
-                                actionNode
-                            );
+                            this.getNavMain().tapOnNode(actionNode);
                             return false;
                         }
                     }, this);
@@ -174,10 +167,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     onDeleteInspectionAction: function (vehicleId, checkListId) {
         var navMain = this.getNavMain();
         SafeStartApp.AJAX('vehicle/inspection/' + checkListId + '/delete', {}, function (result) {
-            var active = navMain.getActiveItem();
             var inspectionsNode = navMain.getStore().getNodeById(vehicleId + '-inspections');
-            var index = navMain.getStore().getNodeById(vehicleId).indexOf(inspectionsNode);
-            navMain.fireEvent('itemtap', navMain, active, index, null, inspectionsNode);
+            if (inspectionsNode) {
+                navMain.tapOnNode(inspectionsNode);
+            }
         });
     },
 
@@ -491,10 +484,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         SafeStartApp.AJAX('vehicle/' + vehicleInspectionPanel.vehicleId + '/completechecklist' + getParams, data, function (result) {
             vehicleInspectionPanel.clearChecklist();
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
-            var active = navMain.getActiveItem();
             var vehicleId = vehicleInspectionPanel.vehicleId;
-            var inspectionsNode = navMain.getStore().getNodeById(vehicleId + '-inspections');
-            var index = navMain.getStore().getNodeById(vehicleId).indexOf(inspectionsNode);
+            var inspectionsNode = navMain.getStore().findRecord('id', vehicleId).findChild('action', 'inspections');
             inspectionsPanel.inspectionsStore.on({
                 load: function (store, records) {
                     var record = store.findRecord('hash', result.checklist);
@@ -502,8 +493,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 },
                 single: true
             });
-            navMain.fireEvent('itemtap', navMain, active, index, null, inspectionsNode);
+            navMain.tapOnNode(inspectionsNode);
         });
     }
-
 });
