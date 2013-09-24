@@ -78,6 +78,22 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
                     ]
                 },
+                interactions: [
+                    {
+                        type: 'panzoom',
+                        axes: {
+                            "left": {
+                                allowPan: false,
+                                allowZoom: false
+                            },
+                            "bottom": {
+                                allowPan: true,
+                                allowZoom: true
+                            }
+                        }
+                    },
+                    'itemhighlight'
+                ],
                 axes: [
                     {
                         type: 'numeric',
@@ -87,7 +103,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             fontSize: 15
                         },
                         fields: 'value',
-                        grid: true,
+                        grid: {
+                            odd: {
+                                fill: '#e8e8e8'
+                            }
+                        },
                         minimum: 0
                     },
                     {
@@ -97,20 +117,42 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         title: {
                             text: 'Date of inspection',
                             fontSize: 15
+                        },
+                        label: {
+                            rotate: {
+                                degrees: -30
+                            }
                         }
                     }
                 ],
                 series: [
                     {
                         type: 'bar',
-                        fill: true,
                         xField: 'date',
                         yField: 'value',
                         style: {
-                            fill: 'blue'
+                            minGapWidth: 1,
+                            maxBarWidth: 30,
+                            barWidth: 30,
+                            minBarWidth: 10
                         }
-
-                    }
+                    }/*,
+                    {
+                        type: 'line',
+                        highlight: {
+                            size: 7,
+                            radius: 7
+                        },
+                        fill: true,
+                        xField: 'date',
+                        yField: 'value',
+                        marker: {
+                            type: 'circle',
+                            fillStyle: 'blue',
+                            radius: 10,
+                            lineWidth: 0
+                        }
+                    }*/
                 ]
             }
         ]
