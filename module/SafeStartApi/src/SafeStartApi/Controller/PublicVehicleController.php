@@ -36,7 +36,7 @@ class PublicVehicleController extends PublicAccessRestController
         if(!empty($this->data->plantId)) {
             $plantId = $this->data->plantId;
             $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findBy(array('plantId' => $plantId));
-            if ($vehicle) $vehicle = new Vehicle();
+            if (!$vehicle) $vehicle = new Vehicle();
         } else {
             $plantId = uniqid('vehicle');
             $vehicle = new Vehicle();
@@ -59,10 +59,7 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
         $vehicle->setType($type);
-
-        if(empty($this->data->plantId)) {
-            $this->em->persist($vehicle);
-        }
+        $this->em->persist($vehicle);
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
         $items = $query->getResult();
