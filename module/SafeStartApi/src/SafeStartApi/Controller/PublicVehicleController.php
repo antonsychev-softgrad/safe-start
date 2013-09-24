@@ -109,11 +109,13 @@ class PublicVehicleController extends PublicAccessRestController
 
         if (file_exists($pdf)) {
             foreach($emails as $email) {
+                $email = (array) $email;
                 $this->MailPlugin()->send(
-                    'Checklist',
-                    $email,
+                    'New inspection report',
+                    $email['email'],
                     'checklist.phtml',
                     array(
+                        'name' => isset($email['name']) ? $email['name'] : 'friend'
                     ),
                     $pdf
                 );
