@@ -131,4 +131,17 @@ class PublicVehicleController extends PublicAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 500, 500);
         }
     }
+
+    public function sendTestEmailAction() {
+    /*    $email = 'ponomarenko.t@gmail.com';
+        $this->MailPlugin()->send(
+            'New inspection report',
+            $email,
+            'checklist.phtml',
+            array(
+                'name' => 'Artem'
+            ),
+            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_11_at_2013-09-20.pdf'
+        );*/
+    }
 }
