@@ -8,14 +8,11 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         minWidth: 150,
         maxWidth: 300,
         showAnimation: {
-            type: 'slide',
-            direction: 'right',
-            duration: 100
+            type: 'pop'
         },
         hideAnimation: {
-            type: 'slide',
-            direction: 'left',
-            duration: 200
+            type: 'pop',
+            out: 'true'
         },
         filterValue: '',
         filterField: 'text',

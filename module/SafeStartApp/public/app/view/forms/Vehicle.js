@@ -129,6 +129,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         name: 'delete-data',
                         text: 'Delete',
                         ui: 'decline',
+                        hidden: true,
                         iconCls: 'delete',
                         handler: function () {
                             this.up('SafeStartVehicleForm').fireEvent('delete-data', this.up('SafeStartVehicleForm'));

@@ -51,14 +51,11 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                 minWidth: 150,
                 maxWidth: 300,
                 showAnimation: {
-                    type: 'slide',
-                    direction: 'right',
-                    duration: 100
+                    type: 'pop'
                 },
                 hideAnimation: {
-                    type: 'slide',
-                    direction: 'left',
-                    duration: 200
+                    type: 'pop',
+                    out: 'true'
                 },
                 flex: 1,
                 cls: 'sfa-left-container',

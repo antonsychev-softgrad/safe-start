@@ -174,6 +174,7 @@ class User extends BaseEntity
             'department' => (!is_null($this->company)) ? $this->department : '',
             'device' => (!is_null($this->device)) ? $this->device : '',
             'deviceId' => (!is_null($this->deviceId)) ? $this->deviceId : '',
+            'enabled' => (!is_null($this->enabled)) ? $this->enabled : 0,
         );
     }
 

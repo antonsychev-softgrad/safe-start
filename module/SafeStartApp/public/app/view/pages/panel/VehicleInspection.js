@@ -327,7 +327,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }
 
         Ext.each(fieldData.options, function (option) {
-            var fieldValue = fieldData.fieldValue || 'n/a';
+            var fieldValue = fieldData.fieldValue || 'N/A';
 
             optionFields.push({
                 xtype: 'radiofield',
@@ -448,7 +448,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             fieldId: fieldData.fieldId,
             alerts: fieldData.alerts,
             alertRecord: alertRecord,
-            checked: fieldData.fieldValue == 'yes', //TODO
+            checked: new RegExp(fieldData.fieldValue, 'i').test('yes'),
             triggerable: true,
             listeners: {
                 check: function (checkbox) {
