@@ -42,13 +42,13 @@ class PublicVehicleController extends PublicAccessRestController
             $vehicle->setEnabled(1);
         }
 
-        $projectName = !empty($this->data->projectName) ? $this->data->projectName : '';
-        $projectNumber = !empty($this->data->projectNumber) ? $this->data->projectNumber : 0;
-        $registrationNumber = !empty($this->data->registrationNumber) ? $this->data->registrationNumber : '';
-        $serviceDueHours = !empty($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
-        $serviceDueKm = !empty($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
-        $title = !empty($this->data->title) ? $this->data->title : '';
-        $type = !empty($this->data->type) ? $this->data->type : '';
+        $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
+        $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : 0;
+        $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '';
+        $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
+        $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
+        $title = isset($this->data->title) ? $this->data->title : '';
+        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
 
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
