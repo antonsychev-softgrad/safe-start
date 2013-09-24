@@ -202,6 +202,7 @@ class Vehicle extends BaseEntity
                 $lastHour = $checkList->getCurrentOdometerHours();
             }
             if (!empty($averageKms) || !empty($averageHours)) {
+                $averageNextServiceSec = 0;
                 if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
                 if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
                 if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {

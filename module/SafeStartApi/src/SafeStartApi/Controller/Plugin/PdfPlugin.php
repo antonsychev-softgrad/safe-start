@@ -333,7 +333,7 @@ class PdfPlugin extends AbstractPlugin
             $user    = $this->checkList->getUser();
             $vehicle = $this->checkList->getVehicle();
 
-            $name      = "Name: " . $user->getFirstName() . " " . $user->getLastName();
+            $name      = $user ? "Name: " . $user->getFirstName() . " " . $user->getLastName() : '';
             $signature = "Signature: ";
             $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format']);
 
