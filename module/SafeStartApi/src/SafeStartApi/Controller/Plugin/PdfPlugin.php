@@ -331,6 +331,7 @@ class PdfPlugin extends AbstractPlugin
             $topPosInPage = (($logoMaxHeight) / 2);
 
             $user    = $this->checkList->getUser();
+            if (!$user) return;
             $vehicle = $this->checkList->getVehicle();
 
             $name      = $user ? "Name: " . $user->getFirstName() . " " . $user->getLastName() : '';
