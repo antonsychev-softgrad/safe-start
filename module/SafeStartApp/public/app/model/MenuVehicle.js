@@ -3,7 +3,7 @@ Ext.define('SafeStartApp.model.MenuVehicle', {
     config: {
         idProperty: 'internalId',
         fields: [
-            {name: 'id', type: 'int', defaultValue: 0},
+            {name: 'id', type: 'string', defaultValue: 0},
             {name: 'title', type: 'string'},
             {name: 'text', type: 'string'},
             {name: 'type', type: 'string', defaultValue: ''},

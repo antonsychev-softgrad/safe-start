@@ -40,59 +40,112 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 if(this._backButton._hidden) {
                     this.down('toolbar').show();
                 }
-            }
+                this._activeNode = this.getStore().getRoot();
+            },
+            itemtap: function (nestedlist, list, index, target, record) {
+                this._activeNode = record;
+                if (record.get('depth') == 1) {
+                    this.fireEvent('selectVehicle', record);
+                } else if (record.get('depth') == 2) {
+                    this.fireEvent('selectAction', record);
+                }
+            } 
         }
-    },
-
-    syncStores: function () {
-        this.setFilterValue('');
-        this.updateNestedListStore();
     },
 
     updateNestedListStore: function () {
-        var store = this.getStore();
-        var vehiclesStore = this.vehiclesStore;
-        var filter = this.getFilterValue();
-        var records = [];
+        var store = this.getStore(),
+            vehiclesStore = this.vehiclesStore,
+            filter = this.getFilterValue(),
+            records = [],
+            filteredRecords = [];
 
-        if (! filter) {
-            records = [];
-            var nodes = vehiclesStore.getRoot().childNodes;
-            for (var i = 0, len = nodes.length; i < len; i++) {
-                records.push(this._parseNode(nodes[i]));
-            }
-            store.fillNode(store.getRoot(), Ext.clone(records));
-            return;
+        this._activeNode = this.getStore().getRoot();
+        records = [];
+        var nodes = vehiclesStore.getRoot().childNodes;
+        for (var i = 0, len = nodes.length; i < len; i++) {
+            records.push(function parseNode (node) {
+                var childNodes = node.childNodes;
+                var data = Ext.clone(node.getData());
+                delete data.internalId;
+                delete data.parentId;
+                if (childNodes.length) {
+                    data.expanded = true;
+                }
+                data.data = [];
+                for (var i = 0, len = childNodes.length; i < len; i++) {
+                    data.data.push(parseNode(childNodes[i]));
+                }
+                return data;
+            }(nodes[i]));
         }
-    },
+        store.removeAll();
+        this.goToNode(store.getRoot());
 
-    _parseNode: function (node) {
-        var childNodes = node.childNodes;
-        var data = Ext.clone(node.getData());
-        delete data.internalId;
-        delete data.parentId;
-        if (childNodes.length) {
-            data.expanded = true;
+        if (filter) {
+            Ext.each(records, function (record) {
+                if (RegExp(filter, 'i').test(record.text)) {
+                    filteredRecords.push(record);
+                }
+            });
+        } else {
+            filteredRecords = records;
         }
-        data.data = [];
-        for (var i = 0, len = childNodes.length; i < len; i++) {
-            data.data.push(this._parseNode(childNodes[i]));
-        }
-        return data;
+
+        store.getRoot().appendChild(filteredRecords);
     },
 
     getVehiclesStore: function () {
         return this.vehiclesStore;
     },
 
-    tapOnNode: function (node) {
-        this.fireEvent('itemtap', this, this.getActiveItem(), 0, null, node);
-        this.on({
-            activeitemchange: function () {
-                this.getActiveItem().select(node);
-            },
-            single: true
-        });
+    tapOnActionNode: function (action, vehicleId) {
+        var activeNode = this._activeNode,
+            actionNode = null;
+
+        if (! activeNode) {
+            return false;
+        }
+
+        if (activeNode.get('depth') === 0 && vehicleId) {
+            vehicleNode = activeNode.findChild('id', vehicleId);
+            this.on({
+                activeitemchange: function () {
+                    this.tapOnActionNode(action, vehicleId);
+                },
+                single: true
+            });
+            this._activeNode = vehicleNode;
+            this.goToNode(vehicleNode);
+            this.getActiveItem().select(vehicleNode);
+            return;
+        }
+
+        if (activeNode.get('depth') === 1) {
+            vehicleNode = activeNode;
+        }
+
+        if (activeNode.get('depth') === 2) {
+            vehicleNode = activeNode.parentNode;
+        }
+
+        actionNode = vehicleNode.findChild('action', action);
+        if (this.getActiveItem().getStore().indexOf(actionNode) === -1) {
+            this.on({
+                activeitemchange: function () {
+                    this.goToLeaf(actionNode);
+                    this.getActiveItem().select(actionNode);
+                    this._activeNode = actionNode;
+                    this.fireEvent('selectAction', actionNode);
+                },
+                single: true
+            });
+            return;
+        }
+        this.goToLeaf(actionNode);
+        this.getActiveItem().select(actionNode);
+        this._activeNode = actionNode;
+        this.fireEvent('selectAction', actionNode);
     },
 
     initialize: function() {
@@ -101,8 +154,8 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.vehiclesStore = this.config.vehiclesStore;
 
         this.vehiclesStore.on('load', function (store, records) {
-            me.updateNestedListStore();
-        });
+            this.updateNestedListStore();
+        }, this);
 
         this.setItems([{
             xtype: 'toolbar',
@@ -112,10 +165,12 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 placeHolder: 'Search...',
                 listeners: {
                     clearicontap: function() {
-                        this.getStore().clearFilter();
+                        this.setFilterValue('');
+                        this.updateNestedListStore();
                     },
                     keyup: function(field, e) {
-                        this.filterVehiclesByName(field.getValue());
+                        this.setFilterValue(field.getValue());
+                        this.updateNestedListStore();
                     },
                     scope: this
                 }
@@ -129,11 +184,11 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 iconCls: 'refresh',
                 cls: 'sfa-search-reload',
                 handler: function() {
-                    var nestedlist = this.up('nestedlist');
-                    this.up('toolbar').down('searchfield').setValue('');
-                    nestedlist.filterVehiclesByName('');
-                    nestedlist.vehiclesStore.loadData();
-                }
+                    this.down('searchfield').setValue('');
+                    this.setFilterValue('');
+                    this.getVehiclesStore().loadData();
+                },
+                scope: this
             }]
         }]);
     }
