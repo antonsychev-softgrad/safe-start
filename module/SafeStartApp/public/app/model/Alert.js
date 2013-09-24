@@ -8,7 +8,8 @@ Ext.define('SafeStartApp.model.Alert', {
             {name: 'alert_description', type: 'string'},
             {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},
-            {name: 'status', type: 'string', defaultValue: 'new'}
+            {name: 'status', type: 'string', defaultValue: 'new'},
+            {name: 'vehicle'}
         ],
         associations: [
             {type: 'hasMany', model: 'SafeStartApp.model.Comment', name: 'comments'},

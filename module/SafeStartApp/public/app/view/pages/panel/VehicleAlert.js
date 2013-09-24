@@ -73,6 +73,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             },
             {
                 id: 'SafeStartVehicleAlertComments' + this.uniqueId,
+                minHeight: 300,
                 tpl: [
                     '<div class="sfa-alert-comments">',
                     '<h3>Comments:</h3>',

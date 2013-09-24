@@ -64,6 +64,54 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     '<div class="name">Total number of outstanding Alerts: {statistic.new_alerts} </div>',
                     '</div>'
                 ].join('')
+            },
+            {
+                xtype: 'chart',
+                id: 'SafeStartVehicleReportChart',
+                style: {
+                    marginTop: '140px'
+                },
+                animate: true,
+                store: {
+                    fields: ['date', 'value'],
+                    data: [
+
+                    ]
+                },
+                axes: [
+                    {
+                        type: 'numeric',
+                        position: 'left',
+                        title: {
+                            text: 'kms/hours',
+                            fontSize: 15
+                        },
+                        fields: 'value',
+                        grid: true,
+                        minimum: 0
+                    },
+                    {
+                        type: 'time',
+                        position: 'bottom',
+                        fields: 'date',
+                        title: {
+                            text: 'Date of inspection',
+                            fontSize: 15
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        fill: true,
+                        xField: 'date',
+                        yField: 'value',
+                        style: {
+                            fill: 'blue'
+                        }
+
+                    }
+                ]
             }
         ]
 
@@ -91,8 +139,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
             if (result.statistic) {
                 data.statistic = result.statistic;
                 self.down('#SafeStartVehicleReportContent').setData(data);
+                if (result.statistic.chart && result.statistic.chart.length) {
+                    self.down('#SafeStartVehicleReportChart').show();
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setDateFormat(SafeStartApp.dateFormat);
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setFromDate(self.down('datepickerfield[name=from]').getValue());
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setToDate(self.down('datepickerfield[name=to]').getValue());
+                    self.down('#SafeStartVehicleReportChart').getStore().setData(result.statistic.chart);
+                    self.down('#SafeStartVehicleReportChart').getStore().sync();
+                }
             }
         });
+
     }
 
 });
