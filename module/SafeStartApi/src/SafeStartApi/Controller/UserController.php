@@ -217,6 +217,8 @@ class UserController extends RestController
         $user->setPlainPassword($password);
         $this->em->flush();
 
+        $config = $this->getServiceLocator()->get('Config');
+
         $this->MailPlugin()->send(
             'Credentials',
             $user->getEmail(),

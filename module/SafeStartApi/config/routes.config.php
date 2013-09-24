@@ -154,7 +154,7 @@ $routes = array(
             'update-user-signature' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/user/:id/profile/updatesignature',
+                    'route' => '/user/profile/updatesignature',
                     'constraints' => array(
                         'id' => '[0-9]*',
                     ),

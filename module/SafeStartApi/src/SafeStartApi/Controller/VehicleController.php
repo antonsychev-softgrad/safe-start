@@ -27,29 +27,30 @@ class VehicleController extends RestrictedAccessRestController
             foreach ($vehicles as $vehicle) {
                 $vehicleData = $vehicle->toResponseArray();
                 $vehiclesList[] = array(
-                    'vehicleId' => $vehicle->getId(),
-                    'type' => $vehicle->getType(),
-                    'vehicleName' => $vehicle->getTitle(),
-                    'projectName' => $vehicle->getProjectName(),
-                    'projectNumber' => $vehicle->getProjectNumber(),
-                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
-                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
-                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
+                    'vehicleId' => $vehicleData['vehicleId'],
+                    'type' => $vehicleData['type'],
+                    'vehicleName' => $vehicleData['title'],
+                    'projectName' => $vehicleData['projectName'],
+                    'projectNumber' => $vehicleData['projectNumber'],
+                    'expiryDate' => $vehicleData['expiryDate'],
+                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
                     'role' => 'user'
                 );
             }
 
             $responsibleVehicles = $user->getResponsibleForVehicles();
             foreach ($responsibleVehicles as $vehicle) {
+                $vehicleData = $vehicle->toResponseArray();
                 $vehiclesList[] = array(
-                    'vehicleId' => $vehicle->getId(),
-                    'type' => $vehicle->getType(),
-                    'vehicleName' => $vehicle->getTitle(),
-                    'projectName' => $vehicle->getProjectName(),
-                    'projectNumber' => $vehicle->getProjectNumber(),
-                    'expiryDate' => $vehicle->getCompany()->getExpiryDate(),
-                    'kmsUntilNext' => $vehicle->getServiceDueKm(),
-                    'hoursUntilNext' => $vehicle->getServiceDueHours(),
+                    'vehicleId' => $vehicleData['vehicleId'],
+                    'type' => $vehicleData['type'],
+                    'vehicleName' => $vehicleData['title'],
+                    'projectName' => $vehicleData['projectName'],
+                    'projectNumber' => $vehicleData['projectNumber'],
+                    'expiryDate' => $vehicleData['expiryDate'],
+                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
                     'role' => 'responsible'
                 );
             }
