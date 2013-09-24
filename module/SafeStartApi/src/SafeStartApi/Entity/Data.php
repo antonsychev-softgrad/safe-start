@@ -73,7 +73,7 @@ class Data extends BaseEntity
      */
     public function setValue($entity)
     {
-        $this->key = $entity;
+        $this->value = $entity;
 
         return $this;
     }
@@ -85,7 +85,7 @@ class Data extends BaseEntity
      */
     public function getValue()
     {
-        return $this->key;
+        return $this->value;
     }
 
 

@@ -89,7 +89,7 @@ class PublicVehicleController extends PublicAccessRestController
                 if ($field === null) {
                     continue;
                 }
-                $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert = new \SafeStartApi\Entity\DefaultAlert();
                 $newAlert->setDefaultField($field);
                 $newAlert->setCheckList($checkList);
                 $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
