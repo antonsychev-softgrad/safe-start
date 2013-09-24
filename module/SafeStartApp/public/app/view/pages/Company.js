@@ -7,9 +7,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.components.UpdateVehicleChecklist',
         'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.view.pages.panel.VehicleAlerts',
+        'SafeStartApp.view.pages.panel.VehicleReport',
         'SafeStartApp.view.pages.panel.VehicleUsers',
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
+        'SafeStartApp.view.pages.panel.Vehicles',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
     ],
@@ -59,17 +61,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
             xtype: 'SafeStartNestedListVehicles',
             vehiclesStore: this.vehiclesStore,
             store: this.listVehiclesStore
-
         });
 
         this.add(this.getInfoPanel());
 
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) this.disable();
-    },
-
-    getVehiclesList: function () {
-        return {
-        };
     },
 
     getInfoPanel: function () {
@@ -90,10 +86,13 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     xtype: 'SafeStartVehicleInspection'
                 },
                 {
+                    xtype: 'SafeStartVehicleAlertsPanel'
+                },
+                {
                     xtype: 'SafeStartVehicleInspectionsPanel'
                 },
                 {
-                    xtype: 'SafeStartVehicleAlertsPanel'
+                    xtype: 'SafeStartVehicleReportPanel'
                 },
                 {
                     xtype: 'panel',
@@ -105,6 +104,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 },
                 {
                     xtype: 'SafeStartVehicleInspectionDetails'
+                },
+                {
+                    xtype: 'SafeStartVehiclesPanel'
                 }
             ]
         };

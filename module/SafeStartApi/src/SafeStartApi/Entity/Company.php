@@ -476,6 +476,10 @@ class Company extends BaseEntity
             return true;
         }
 
+        if($user->getRole() == 'companyManager' && $user->getCompany()->getId() == $this->getId()) {
+            return true;
+        }
+
         return false;
     }
 }

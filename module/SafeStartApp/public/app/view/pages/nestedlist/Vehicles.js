@@ -7,6 +7,18 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     config: {
         minWidth: 150,
         maxWidth: 300,
+        showAnimation: {
+            type: 'slide',
+            direction: 'right',
+            duration: 100
+        },
+        hideAnimation: {
+            type: 'slide',
+            direction: 'left',
+            duration: 200
+        },
+        filterValue: '',
+        filterField: 'text',
         title: 'Vehicles',
         displayField: 'text',
         cls: 'sfa-left-container',
@@ -18,8 +30,11 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
         },
         listeners: {
-            activeitemchange: function (nestedlist, view, view) {
-                this.down('toolbar').hide();
+            activeitemchange: function (nestedlist) {
+                var toolbar = this.down('toolbar');
+                if (toolbar) {
+                    toolbar.hide();
+                }
             },
             back: function () {
                 if(this._backButton._hidden) {
@@ -29,61 +44,61 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         }
     },
 
-    filterVehiclesByName: function (value) {
-        this.setFilterValue('text', value);
-        this.updateNestedListStore();
-    },
-
     syncStores: function () {
-        this.filters = [];
+        this.setFilterValue('');
         this.updateNestedListStore();
     },
 
     updateNestedListStore: function () {
-        var filters = this.filters;
         var store = this.getStore();
         var vehiclesStore = this.vehiclesStore;
-        var records = Ext.clone(store.getRoot().childNodes);
-        Ext.each(records, function (record) {
-            vehiclesStore.getRoot().appendChild(record);
+        var filter = this.getFilterValue();
+        var records = [];
+
+        if (! filter) {
+            records = [];
+            var nodes = vehiclesStore.getRoot().childNodes;
+            for (var i = 0, len = nodes.length; i < len; i++) {
+                records.push(this._parseNode(nodes[i]));
+            }
+            store.fillNode(store.getRoot(), Ext.clone(records));
+            return;
+        }
+    },
+
+    _parseNode: function (node) {
+        var childNodes = node.childNodes;
+        var data = Ext.clone(node.getData());
+        delete data.internalId;
+        delete data.parentId;
+        if (childNodes.length) {
+            data.expanded = true;
+        }
+        data.data = [];
+        for (var i = 0, len = childNodes.length; i < len; i++) {
+            data.data.push(this._parseNode(childNodes[i]));
+        }
+        return data;
+    },
+
+    getVehiclesStore: function () {
+        return this.vehiclesStore;
+    },
+
+    tapOnNode: function (node) {
+        this.fireEvent('itemtap', this, this.getActiveItem(), 0, null, node);
+        this.on({
+            activeitemchange: function () {
+                this.getActiveItem().select(node);
+            },
+            single: true
         });
-        records = Ext.clone(vehiclesStore.getRoot().childNodes);
-
-        Ext.each(records, function (record) {
-            var match = true;
-            var regExp;
-            var property;
-            for (property in filters) {
-                regExp = RegExp(filters[property], 'i');
-                if (! (record.get(property) && regExp.test(record.get(property).toString()))) {
-                    match = false;
-                }
-            }
-            if (match) {
-                store.getRoot().appendChild(record);
-            }
-        }, this);
-
-        this.goToNode(store.getRoot());
-    },
-
-    setFilterValue: function (key, value) {
-        this.filters[key] = value;
-    },
-
-    getFilters: function (key, value) {
-        return this.filters;
     },
 
     initialize: function() {
         var me = this;
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
-
-        this.vehiclesStore.on('beforeload', function (store) {
-            store.removeAll();
-            me.getStore().removeAll();
-        });
 
         this.vehiclesStore.on('load', function (store, records) {
             me.updateNestedListStore();

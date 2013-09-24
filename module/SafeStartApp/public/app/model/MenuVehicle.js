@@ -1,6 +1,7 @@
 Ext.define('SafeStartApp.model.MenuVehicle', {
     extend: "Ext.data.Model",
     config: {
+        idProperty: 'internalId',
         fields: [
             {name: 'id', type: 'int', defaultValue: 0},
             {name: 'title', type: 'string'},

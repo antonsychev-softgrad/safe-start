@@ -2,6 +2,7 @@
 
 namespace SafeStartApi\View\Helper;
 
+use Doctrine\ORM\Tools\Export\ExportException;
 use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Config\Writer\Yaml as YamlWriter;
@@ -54,6 +55,8 @@ class RequestLogger extends AbstractHelper
      */
     public function __invoke($value)
     {
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+        if ($env == 'prod') return;
         $logger = $this->serviceLocator->get('RequestLogger');
         $request = $this->serviceLocator->get('Request');
         $this->requestJson = $request->getContent() ? $request->getContent() : json_encode($request->getPost());
@@ -64,38 +67,38 @@ class RequestLogger extends AbstractHelper
         if (isset($this->headers['X-Request-Id'])) $this->requestId = $this->headers['X-Request-Id'];
         if (!empty($this->meta) && isset($this->meta->requestId)) $this->requestId = $this->meta->requestId;
 
-        $logger->debug("\n\n\n============[". $this->requestId ."]==================\n");
+        $logger->debug("\n\n\n============[" . $this->requestId . "]==================\n");
         $logger->debug("New " . $request->getMethod() . " request to " . $request->getRequestUri());
+
         //log headers
-       /* if (function_exists('yaml_emit')) {
-            $writer = new YamlWriter();
-            $logger->debug("Headers:\n" . $writer->toString($this->headers));
-        } else {*/
-            $logger->debug("Headers:\n" . json_encode($this->headers));
-       /* }*/
+        $this->_log("Headers", $this->headers);
         // log POST data
-        if ($request->getMethod() == 'POST') {
-           /* if (function_exists('yaml_emit')) {
-                $writer = new YamlWriter();
-                $logger->debug("POST data:\n" . $writer->toString(json_decode($this->requestJson, true)));
-            } else {*/
-                $logger->debug("POST data:\n" . $this->requestJson);
-           /* }*/
-        }
-
+        $this->_log("POST params", json_decode($this->requestJson, true));
+        // log POST files
         if (isset($_FILES) && !empty($_FILES)) {
-            $logger->debug("FILES data:\n" .  json_encode($_FILES));
+            $this->_log("POST Files", $_FILES);
         }
-
         // log response
-       /* if (function_exists('yaml_emit')) {
-            $writer = new YamlWriter();
-            $logger->debug("Response:\n" . $writer->toString((array)$value));
-        } else {*/
-           // $logger->debug("Response:\n" . json_encode($value));
-        /*}*/
+        $this->_log("Response", $value);
 
         return true;
+    }
+
+    private function _log($key, $value) {
+        $logger = $this->serviceLocator->get('RequestLogger');
+        $value = (array) $value;
+        // log response
+        if (function_exists('yaml_emit')) {
+            $writer = new YamlWriter();
+            try {
+                $logger->debug($key . ": " . $writer->toString($value));
+            } catch (Exception $e) {
+                $logger->debug($key .": " . json_encode($value));
+            }
+
+        } else {
+            $logger->debug($key . ": " . json_encode($value));
+        }
     }
 
     /**

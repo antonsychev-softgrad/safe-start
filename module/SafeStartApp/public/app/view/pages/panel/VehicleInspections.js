@@ -11,7 +11,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
     ],
 
     config: {cls:'sfa-container-padding',
-        navigationBar: {
+        navigationBar: {cls:'sfa-inspection-toolbar',
             items: [{
                 name: 'edit-inspection',
                 align: 'right',
@@ -71,6 +71,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.inspectionsStore = Ext.create('SafeStartApp.store.VehicleInspections');
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/1/getinspections');
         this.add(this.getListPanel());
+    },
+
+    tapOnNode: function (node) {
+        // todo calc index
+        this.fireEvent('itemtap', this, this.getActiveItem(), 0, null, node);
     },
 
     getListPanel: function () {

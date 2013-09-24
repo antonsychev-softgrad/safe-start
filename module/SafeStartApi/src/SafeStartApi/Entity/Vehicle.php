@@ -175,10 +175,10 @@ class Vehicle extends BaseEntity
     {
         $date = 'unknown';
         if (!count($this->checkLists)) {
-           if ($this->serviceDueHours) {
-               $config = \SafeStartApi\Application::getConfig();
-               $date = date($config['params']['date_format'], time() + (int) $this->serviceDueHours * 60 * 60);
-           }
+            if ($this->serviceDueHours) {
+                $config = \SafeStartApi\Application::getConfig();
+                $date = date($config['params']['date_format'], time() + (int)$this->serviceDueHours * 60 * 60);
+            }
         } else {
             $averageKms = array();
             $averageHours = array();
@@ -202,8 +202,8 @@ class Vehicle extends BaseEntity
                 $lastHour = $checkList->getCurrentOdometerHours();
             }
             if (!empty($averageKms) || !empty($averageHours)) {
-                if(!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
-                if(!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
+                if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
+                if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
                 if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
                     $averageNextServiceSec = ($averageNextServiceSec1 + $averageNextServiceSec2) / 2;
                 } else if (!empty($averageNextServiceSec1)) {
@@ -271,18 +271,30 @@ class Vehicle extends BaseEntity
                 'text' => 'Daily Inspection',
                 'leaf' => true,
             );
-            $menuItems[] = array(
-                'id' => $this->getId() . '-inspections',
-                'action' => 'inspections',
-                'text' => 'Inspections',
-                'leaf' => true
-            );
-            $menuItems[] = array(
-                'id' => $this->getId() . '-alerts',
-                'action' => 'alerts',
-                'text' => 'Alerts',
-                'leaf' => true,
-            );
+            if (count($this->getAlerts()) > 0) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-alerts',
+                    'action' => 'alerts',
+                    'text' => 'Alerts (' . count($this->getAlerts()) . ')',
+                    'leaf' => true,
+                );
+            }
+            if (count($this->getCheckLists()) > 0) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-inspections',
+                    'action' => 'inspections',
+                    'text' => 'Inspections (' . count($this->getCheckLists()) . ')',
+                    'leaf' => true
+                );
+            }
+            if (count($this->getCheckLists()) > 0) {
+                $menuItems[] = array(
+                    'id' => $this->getId() . '-report',
+                    'action' => 'report',
+                    'text' => 'Report',
+                    'leaf' => true,
+                );
+            }
             switch ($user->getRole()) {
                 case 'superAdmin':
                 case 'companyAdmin':
@@ -316,7 +328,7 @@ class Vehicle extends BaseEntity
         $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
-        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0');
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 ORDER BY cl.update_date DESC');
         $query->setParameter(1, $this);
         $items = $query->getResult();
 
@@ -365,6 +377,53 @@ class Vehicle extends BaseEntity
         } else {
             return null;
         }
+    }
+
+    public function getStatistic(\DateTime $from = null, \DateTime $to = null)
+    {
+        if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
+        if (!$to) $to = new \DateTime();
+
+        $em = \SafeStartApi\Application::getEntityManager();
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
+        $query->setParameter(1, $this)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to);
+        $items = $query->getResult();
+
+        $kms = 0;
+        $hours = 0;
+        if (count($items) >= 2) {
+            $kms = $items[0]->getCurrentOdometer() - $items[count($items) - 1]->getCurrentOdometer();
+            $hours = (int)$items[0]->getCurrentOdometerHours() - (int)$items[count($items) - 1]->getCurrentOdometerHours();
+        }
+
+        $inspections = count($items);
+        $completed_alerts = array();
+        $new_alerts = array();
+
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                $alerts = $item->getAlerts();
+                if (!empty($items)) {
+                    foreach ($alerts as $alert) {
+                        if ($alert->getStatus() == 'new') {
+                            $new_alerts[] = $alert;
+                        } else {
+                            $completed_alerts[] = $alert;
+                        }
+                    }
+                }
+            }
+        }
+
+        return array(
+            'kms' => $kms,
+            'hours' => $hours,
+            'inspections' => $inspections,
+            'completed_alerts' => count($completed_alerts),
+            'new_alerts' => count($new_alerts),
+        );
     }
 
     /**
@@ -787,7 +846,14 @@ class Vehicle extends BaseEntity
      */
     public function getCheckLists()
     {
-        return $this->checkLists;
+        $alerts = array();
+        if (!$this->checkLists) return $alerts;
+        foreach ($this->checkLists as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
     }
 
     /**
@@ -828,7 +894,14 @@ class Vehicle extends BaseEntity
      */
     public function getAlerts()
     {
-        return $this->alerts;
+        $alerts = array();
+        if (!$this->alerts) return $alerts;
+        foreach ($this->alerts as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
     }
 
     /**
@@ -917,16 +990,20 @@ class Vehicle extends BaseEntity
     {
         if ($this->deleted) return false;
 
+        if ($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
         if ($this->users->contains($user) || $this->responsibleUsers->contains($user)) {
             return true;
         }
 
         $companyAdmin = $this->company->getAdmin();
-        if ($user == $companyAdmin) {
+        if ($user->getId() == $companyAdmin->getId()) {
             return true;
         }
 
-        if ($user->getRole() == 'superAdmin') {
+        if ($user->getRole() == 'companyManager' && $user->getCompany()->getId() == $this->getCompany()->getId()) {
             return true;
         }
 
