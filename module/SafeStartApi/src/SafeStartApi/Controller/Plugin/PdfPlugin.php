@@ -1137,18 +1137,18 @@ class PdfPlugin extends AbstractPlugin
         $name = $this->opts['name'];
         $ext  = !empty($this->opts['ext']) ? $this->opts['ext'] : '.pdf';
 
-        $checkList = "";
-        $user      = "";
-        $vehicle   = "";
+        $checkList = "0";
+        $user      = "0";
+        $vehicle   = "0";
         $date      = $this->dateGeneration->format('Y-m-d');
 
         if (!empty($this->checkList)) {
-            $checkList .= $this->checkList->getId();
+            $checkList = $this->checkList->getId();
             if (($clUser = $this->checkList->getUser()) !== null) {
-                $user .= $clUser->getId();
+                $user = $clUser->getId();
             }
             if (($clVehicle = $this->checkList->getVehicle()) !== null) {
-                $vehicle .= $clVehicle->getId();
+                $vehicle = $clVehicle->getId();
             }
         }
 
