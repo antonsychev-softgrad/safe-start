@@ -22,6 +22,7 @@ Ext.define('SafeStartApp.controller.Users', {
 
         refs: {
             navMain: 'SafeStartUsersPage > list[name=users]',
+            mainToolbar: 'SafeStartUsersPage > SafeStartMainToolbar',
             infoPanel: 'SafeStartUsersPage > panel[name=user-info]',
             addButton: 'SafeStartUsersToolbar > button[action=add-user]'
         }
@@ -29,6 +30,14 @@ Ext.define('SafeStartApp.controller.Users', {
 
 
     onSelectAction: function (element, index, target, record, e, eOpts) {
+        var button = null;
+        if (Ext.os.deviceType !== 'Desktop') {
+            button = this.getMainToolbar().down('button[action=toggle-menu]');
+            if (button) {
+                button.getHandler().call(button, button);
+            }
+        }
+
         if (!this.currentForm) this._createForm();
         this.currentForm.setRecord(record);
         this.currentForm.down('button[name=delete-data]').show();
@@ -107,7 +116,7 @@ Ext.define('SafeStartApp.controller.Users', {
         this.getNavMain().getStore().addListener('data-load-success', function () {
             if (!userId) return;
             this.currentForm.setRecord(this.getNavMain().getStore().getById(userId));
-        }, this);
+        }, this, {single: true});
 
     }
 

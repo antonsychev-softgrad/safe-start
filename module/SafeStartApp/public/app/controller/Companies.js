@@ -23,6 +23,7 @@ Ext.define('SafeStartApp.controller.Companies', {
         refs: {
             main: 'SafeStartCompaniesPage',
             pages: 'SafeStartMainView',
+            mainToolbar: 'SafeStartCompaniesPage > SafeStartMainToolbar',
             companyPage: 'SafeStartCompanyPage',
             usersPage: 'SafeStartUsersPage',
             alertsPage: 'SafeStartAlertsPage',
@@ -34,6 +35,14 @@ Ext.define('SafeStartApp.controller.Companies', {
 
 
     onSelectAction: function (element, index, target, record, e, eOpts) {
+        var button = null;
+        if (Ext.os.deviceType !== 'Desktop') {
+            button = this.getMainToolbar().down('button[action=toggle-menu]');
+            if (button) {
+                button.getHandler().call(button, button);
+            }
+        }
+
         if (!this.currentCompanyForm) this._createForm();
         this.currentCompanyForm.setRecord(record);
         if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
