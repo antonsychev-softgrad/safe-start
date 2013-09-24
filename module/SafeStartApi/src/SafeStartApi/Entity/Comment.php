@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="data")
+ * @ORM\Table(name="comments")
  */
-class Data extends BaseEntity
+class Comment extends BaseEntity
 {
     /**
      * @ORM\Id
@@ -21,16 +21,49 @@ class Data extends BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      */
-    protected $key;
+    protected $parent_id = 0;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $value;
+    protected  $user;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $entity = 'system';
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $entity_id = 0;
+
+    /**
+     * @ORM\Column(type="text", nullable=false)
+     */
+    protected $content = '';
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $add_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $update_date;
+
+    /**
+     *
+     */
+    public function setUpdated()
+    {
+        // WILL be saved in the database
+        $this->update_date = new \DateTime("now");
+    }
 
     /**
      * Get id
@@ -43,14 +76,37 @@ class Data extends BaseEntity
     }
 
     /**
+     * Set parent_id
+     *
+     * @param integer $parentId
+     * @return Comment
+     */
+    public function setParentId($parentId)
+    {
+        $this->parent_id = $parentId;
+
+        return $this;
+    }
+
+    /**
+     * Get parent_id
+     *
+     * @return integer
+     */
+    public function getParentId()
+    {
+        return $this->parent_id;
+    }
+
+    /**
      * Set entity
      *
      * @param string $entity
-     * @return Data
+     * @return Comment
      */
-    public function setKey($entity)
+    public function setEntity($entity)
     {
-        $this->key = $entity;
+        $this->entity = $entity;
 
         return $this;
     }
@@ -60,34 +116,125 @@ class Data extends BaseEntity
      *
      * @return string
      */
-    public function getKey()
+    public function getEntity()
     {
-        return $this->key;
+        return $this->entity;
     }
 
     /**
-     * Set entity
+     * Set entity_id
      *
-     * @param string $entity
-     * @return Data
+     * @param integer $entityId
+     * @return Comment
      */
-    public function setValue($entity)
+    public function setEntityId($entityId)
     {
-        $this->key = $entity;
+        $this->entity_id = $entityId;
 
         return $this;
     }
 
     /**
-     * Get entity
+     * Get entity_id
+     *
+     * @return integer
+     */
+    public function getEntityId()
+    {
+        return $this->entity_id;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return Comment
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
      *
      * @return string
      */
-    public function getValue()
+    public function getContent()
     {
-        return $this->key;
+        return $this->content;
     }
 
+    /**
+     * Set add_date
+     *
+     * @param \DateTime $addDate
+     * @return Comment
+     */
+    public function setAddDate($addDate)
+    {
+        $this->add_date = $addDate;
+
+        return $this;
+    }
+
+    /**
+     * Get add_date
+     *
+     * @return \DateTime
+     */
+    public function getAddDate()
+    {
+        return $this->add_date;
+    }
+
+    /**
+     * Set update_date
+     *
+     * @param \DateTime $updateDate
+     * @return Comment
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->update_date = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get update_date
+     *
+     * @return \DateTime
+     */
+    public function getUpdateDate()
+    {
+        return $this->update_date;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \SafeStartApi\Entity\User $user
+     * @return Comment
+     */
+    public function setUser(\SafeStartApi\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \SafeStartApi\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 
     /**
      * @return array
@@ -95,8 +242,11 @@ class Data extends BaseEntity
     public function toArray() {
         return array(
             'id' => $this->id,
-            'key' => $this->getKey(),
-            'value' => $this->getValue()
+            'user_id' => $this->getUser()->getId(),
+            'user' => $this->getUser()->toInfoArray(),
+            'item_id' => $this->getEntityId(),
+            'update_date' => date('d/m/Y H:i', $this->getUpdateDate()->getTimestamp()),
+            'content' => $this->getContent()
         );
     }
 }
