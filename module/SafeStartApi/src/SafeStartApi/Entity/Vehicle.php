@@ -401,7 +401,7 @@ class Vehicle extends BaseEntity
         $inspections = count($items);
         $completed_alerts = array();
         $new_alerts = array();
-
+        $chart = array();
         if (!empty($items)) {
             foreach ($items as $item) {
                 $alerts = $item->getAlerts();
@@ -414,15 +414,25 @@ class Vehicle extends BaseEntity
                         }
                     }
                 }
+                $km = $item->getCurrentOdometer();
+                $hour = $item->getCurrentOdometerHours();
+                if (!empty($km) && !empty($hour)) {
+                    $chart[] = array(
+                        'value' => round($km/$hour),
+                        'formattedDate' => date('Y-m-d', $item->getCreationDate()->getTimestamp()),
+                        'date' => $item->getCreationDate()->getTimestamp() * 1000,
+                    );
+                }
             }
         }
 
         return array(
-            'kms' => $kms,
-            'hours' => $hours,
+            'kms' => ((int)$kms <= 0) ? 'unknown' : $kms,
+            'hours' => ((int)$hours <= 0) ? 'unknown' : $hours,
             'inspections' => $inspections,
             'completed_alerts' => count($completed_alerts),
             'new_alerts' => count($new_alerts),
+            'chart' => $chart
         );
     }
 
