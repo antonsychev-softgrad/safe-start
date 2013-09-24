@@ -92,8 +92,8 @@ class PublicVehicleController extends PublicAccessRestController
                 $newAlert = new \SafeStartApi\Entity\DefaultAlert();
                 $newAlert->setDefaultField($field);
                 $newAlert->setCheckList($checkList);
-                $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
-                $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
+                $newAlert->setDescription((isset($alert->comment) && !empty($alert->comment)) ? $alert->comment : null);
+                $newAlert->setImages((isset($alert->images) && !empty($alert->images)) ? $alert->images : array());
                 $newAlert->setVehicle($vehicle);
 
                 $this->em->persist($newAlert);
