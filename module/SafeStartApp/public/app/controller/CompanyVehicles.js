@@ -41,7 +41,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 activate: 'onActivateReviewCard'
             },
             navMain: {
-                itemtap: 'onSelectAction',
+                selectAction: 'onSelectAction',
+                selectVehicle: 'onSelectVehicle',
                 back: 'hideSelectionAction'
             },
             addButton: {
@@ -64,7 +65,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         }
     },
 
-    onSelectAction: function (nestedlist, list, index, target, record) {
+    onSelectAction: function (record) {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = record.get('id');
         switch (record.get('action')) {
@@ -97,17 +98,11 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 this.getInfoPanel().setActiveItem(panel);
                 panel.loadChecklist(record.parentNode.parentNode, record.get('checkListId'));
                 break;
-            default: 
-                if (Ext.isNumeric(record.get('id'))) {
-                    Ext.each(record.childNodes, function (actionNode) {
-                        if (actionNode.get('id') == record.get('id') + '-info') {
-                            this.getNavMain().tapOnNode(actionNode);
-                            return false;
-                        }
-                    }, this);
-                }
-                break;
         }
+    },
+
+    onSelectVehicle: function (record) {
+        this.getNavMain().tapOnActionNode('info', record.get('id'));
     },
 
     hideSelectionAction: function() {
@@ -162,10 +157,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     onDeleteInspectionAction: function (vehicleId, checkListId) {
         var navMain = this.getNavMain();
         SafeStartApp.AJAX('vehicle/inspection/' + checkListId + '/delete', {}, function (result) {
-            var inspectionsNode = navMain.getStore().getNodeById(vehicleId + '-inspections');
-            if (inspectionsNode) {
-                navMain.tapOnNode(inspectionsNode);
-            }
+            navMain.tapOnActionNode('inspections', vehicleId);
         });
     },
 
@@ -224,7 +216,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var self = this;
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
             SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
-                // self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
                 self.getNavMain().getVehiclesStore().loadData();
                 self.currentForm.reset();
                 self.currentForm.down('button[name=delete-data]').hide();
@@ -249,27 +240,14 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     _reloadStore: function (vehicleId) {
-        this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
         this.getNavMain().getVehiclesStore().addListener('load', function () {
-            var node = null,
-                infoNode = null;
-
-            Ext.each(this.getNavMain().getStore().getRoot().childNodes, function (vehicle) {
-                if (vehicle.get('id') == vehicleId) {
-                    node = vehicle;
-                }
-            });
-
-            if (node) {
-                this.getNavMain().goToNode(node);
-                Ext.each(node.childNodes, function (actionNode) {
-                    if (actionNode.get('id') == vehicleId + '-info') {
-                        this.getNavMain().goToLeaf(actionNode);
-                    }
-                }, this);
-                this.currentForm.setRecord(node);
+            var vehicleNode = this.getNavMain().getStore().getRoot().findChild('id', vehicleId);
+            if (vehicleNode) {
+                this.getNavMain().tapOnActionNode('info', vehicleId);
+                this.currentForm.setRecord(vehicleNode);
             }
         }, this, {single: true, order: 'after'});
+
         this.getNavMain().getVehiclesStore().loadData();
     },
 
@@ -488,7 +466,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 },
                 single: true
             });
-            navMain.tapOnNode(inspectionsNode);
+            navMain.tapOnActionNode('inspections');
         });
     }
 });
