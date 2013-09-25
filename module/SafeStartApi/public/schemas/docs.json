@@ -178,7 +178,7 @@
                 }
             }
         },
-        "/api/vehicle/[id]/getAlerts": {
+        "/api/vehicle/getAlerts": {
             "description": "Get vehicle alerts",
             "type": "object",
             "properties": {

@@ -32,7 +32,7 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->addFixtures(new Vehicles());
         $this->addFixtures(new Companies());
         $this->addFixtures(new Fields());
-        //$this->addFixtures(new Alerts());
+        $this->addFixtures(new Alerts());
         parent::setUp();
     }
 
@@ -111,7 +111,7 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
-    public function testGetAlertsByIdAndPeriod()
+    public function testGetAlertsByPeriod()
     {
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
@@ -124,7 +124,6 @@ class VehicleControllerTest extends HttpControllerTestCase
 
         $data = array(
             'period' => 60*60*24,
-            'vehicleId' => $vehicleId,
         );
 
         $this->getRequest()
@@ -136,33 +135,7 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getalerts');
         $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
-        Bootstrap::$jsonSchemaValidator->check($data, $schema);
-        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
-    }
-
-    public function testGetAlertsByPeriod()
-    {
-        if (!$this->_loginUser('username', '12345')) {
-            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
-        }
-
-        $this->getRequest()->setMethod('POST');
-
-        $data = array(
-            'period' => 60*60*24*60,
-        );
-
-        $this->getRequest()
-            ->setMethod('POST')
-            ->setContent(json_encode($this->_setApiResponseFormat($data)));
-
-        $this->dispatch('/api/vehicle/getalerts');
-
-        $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getalerts');
-        $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
+        print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
@@ -190,8 +163,6 @@ class VehicleControllerTest extends HttpControllerTestCase
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');
         $data = json_decode($this->getResponse()->getContent(), true);
 
-        var_dump($data['data']);
-/*
         $data = array(
             'emails' => array(
             ),
@@ -201,15 +172,15 @@ class VehicleControllerTest extends HttpControllerTestCase
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/'.$vehicleId.'/completeChecklist');
+        $this->dispatch('/api/vehicle/'.$vehicleId.'/completechecklist');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/completeChecklist');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/completechecklist');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
-*/
+
     }
 
 /*

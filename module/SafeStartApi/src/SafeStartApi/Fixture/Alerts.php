@@ -12,23 +12,22 @@ class Alerts extends AbstractFixture implements OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $alert = new Alert();
-        $alert->setTitle('Do not work on tyres unless authorised');
-        $alert->setTriggerValue('No');
+        $alert->setDescription('Description of alert 1');
         $alert->setField($this->getReference('field-4'));
+        $alert->setVehicle($this->getReference('vehicle-1'));
         $manager->persist($alert);
         $manager->flush();
         //Associate a reference for other fixtures
         $this->addReference('alert-1', $alert);
 
         $alert = new Alert();
-        $alert->setTitle('Isolate vehicle before continuing');
-        $alert->setTriggerValue('No');
+        $alert->setDescription('Description of alert 2');
         $alert->setField($this->getReference('field-6'));
+        $alert->setVehicle($this->getReference('vehicle-2'));
         $manager->persist($alert);
         $manager->flush();
         //Associate a reference for other fixtures
         $this->addReference('alert-2', $alert);
-
     }
 
     /**

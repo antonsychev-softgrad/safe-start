@@ -4,6 +4,7 @@ namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestrictedAccessRestController;
 use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Application;
 
 class VehicleController extends RestrictedAccessRestController
 {
@@ -162,6 +163,7 @@ class VehicleController extends RestrictedAccessRestController
     {
         //todo: check why bad request with alerts
         // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        if (!isset($this->data->fields)) return $this->_showBadRequest();
 
         // save checklist
         $vehicleId = $this->params('id');
@@ -179,7 +181,7 @@ class VehicleController extends RestrictedAccessRestController
         $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
 
         $fieldsStructure = json_encode($fieldsStructure);
-        $fieldsData = json_encode($this->data->fields);
+        $fieldsData = json_encode($fields);
 
         $inspection = null;
         $checklistId = (int)$this->getRequest()->getQuery('checklistId'); //todo: also check by hash
@@ -334,7 +336,7 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
 
-        $period = !is_null($this->params('period')) ? $this->params('period') : 0;
+        $period = !is_null($this->data->period) ? $this->data->period : 0;
         $time = time() - $period;
 
         if (isset($this->data->id)) {
@@ -350,24 +352,29 @@ class VehicleController extends RestrictedAccessRestController
             $items = $query->getResult();
 
         } else {
-            $currentUser = \SafeStartApi\Application::getCurrentUser();
+            $currentUser = Application::getCurrentUser();
+            $role = $currentUser->getRole();
+            if($role == 'companyManager' || $role == 'companyAdmin') {
+                $company = $currentUser->getCompany();
+                $vehicles = $company->getVehicles()->toArray();
+            } else {
+                $vehicles = $currentUser->getVehicles();
+                $respVehicles = $currentUser->getResponsibleForVehicles();
 
-            $vehicles = $currentUser->getVehicles();
-            $respVehicles = $currentUser->getResponsibleForVehicles();
+                $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+                $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
 
-            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
-            $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
-
-            $vehicles = array_merge($vehicles, $respVehicles);
+                $vehicles = array_merge($vehicles, $respVehicles);
+            }
 
             if(count($vehicles) > 0) {
                 $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
                 $query->setParameter(1, $vehicles);
+                $query->setParameter(2, $time);
+                $items = $query->getResult();
             } else {
-                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.creation_date > ?2');
+                $items = array();
             }
-            $query->setParameter(2, $time);
-            $items = $query->getResult();
         }
 
         $alerts = array();

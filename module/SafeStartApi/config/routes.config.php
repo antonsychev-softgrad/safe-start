@@ -67,9 +67,6 @@ $routes = array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/vehicle/getalerts',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                    ),
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'getalerts',
