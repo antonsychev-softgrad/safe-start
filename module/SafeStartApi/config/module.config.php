@@ -227,7 +227,7 @@ return array(
     ),
     'requestsLimit' => array(
         'limitForLoggedInUsers' => 50,
-        'limitForUnloggedUsers' => 5,
+        'limitForUnloggedUsers' => 5000,
         'limitTime' => 60,
     ),
 );
