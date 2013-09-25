@@ -104,6 +104,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.vehicle = vehicle;
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/' + this.vehicleId + '/getinspections');
         this.inspectionsStore.loadData();
+        this.hideButtons();
+        var innerItems = this.getInnerItems();
+        for (var i = 1, len = innerItems.length; i < len; i++) {
+            this.remove(innerItems[i]);
+        }
     },
 
     onSelectInspectionAction: function(list, index, node, record) {

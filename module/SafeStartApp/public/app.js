@@ -32,6 +32,7 @@ SafeStartApp = SafeStartApp || {
 Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
+    mainMenuLoaded: false,
     dateFormat: 'm/d/Y',
     timeFormat: 'H:i',
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
@@ -97,6 +98,8 @@ Ext.apply(SafeStartApp, {
             SafeStartApp.userModel.setData(result.userInfo || {});
             if (SafeStartApp.userModel.getAssociatedData().company)  SafeStartApp.companyModel.setData(SafeStartApp.userModel.getAssociatedData().company);
             SafeStartApp.setViewPort(result.mainMenu || null);
+            SafeStartApp.mainMenuLoaded = true;
+            Ext.Viewport.fireEvent('mainMenuLoaded');
         });
     },
 
