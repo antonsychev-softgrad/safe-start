@@ -141,7 +141,8 @@ Ext.application({
         'pages.Company',
         'pages.Users',
         'pages.Alerts',
-        'pages.SystemSettings'
+        'pages.SystemSettings',
+        'pages.SystemStatistic'
     ],
 
     controllers: [
@@ -150,9 +151,7 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        // 'DefaultVehicles',
         'CompanyVehicles'
-        // 'UserVehicles'
     ],
 
     icon: {
