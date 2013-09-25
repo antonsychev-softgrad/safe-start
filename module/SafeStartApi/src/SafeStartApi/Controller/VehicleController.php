@@ -181,7 +181,7 @@ class VehicleController extends RestrictedAccessRestController
         $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
 
         $fieldsStructure = json_encode($fieldsStructure);
-        $fieldsData = json_encode($fields);
+        $fieldsData = json_encode($this->data->fields);
 
         $inspection = null;
         $checklistId = (int)$this->getRequest()->getQuery('checklistId'); //todo: also check by hash
@@ -357,7 +357,8 @@ class VehicleController extends RestrictedAccessRestController
             if($role == 'companyManager' || $role == 'companyAdmin') {
                 $company = $currentUser->getCompany();
                 if(!is_null($company)) {
-                    $vehicles = $company->getVehicles()->toArray();
+                    $vehicles = $company->getVehicles();
+                    if($vehicles) $vehicles = $vehicles->toArray();
                 } else {
                     $vehicles = array();
                 }
