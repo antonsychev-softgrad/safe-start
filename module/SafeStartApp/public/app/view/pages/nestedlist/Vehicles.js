@@ -151,6 +151,12 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.vehiclesStore = this.config.vehiclesStore;
 
         this.vehiclesStore.on('load', function (store, records) {
+        }, this, {order: 'before'});
+
+        this.vehiclesStore.on('load', function (store, records) {
+        }, this, {order: 'after'});
+
+        this.vehiclesStore.on('load', function (store, records) {
             this.updateNestedListStore();
         }, this);
 

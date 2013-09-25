@@ -53,7 +53,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         refs: {
             mainToolbar: 'SafeStartCompanyPage SafeStartCompanyToolbar',
             navMain: 'SafeStartCompanyPage SafeStartNestedListVehicles',
-            infoPanel: 'SafeStartCompanyPage panel[name=info-container]',
+            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
+            vehicleInfoPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-info]',
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
             vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
             vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
@@ -81,7 +82,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
         switch (record.get('action')) {
             case 'info':
-                this.getInfoPanel().setActiveItem(0);
+                this.getInfoPanel().setActiveItem(this.getVehicleInfoPanel());
                 this.showUpdateForm(record.parentNode);
                 break;
             case 'fill-checklist':
@@ -94,24 +95,19 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 break;
             case 'report':
                 this.getInfoPanel().setActiveItem(this.getVehicleReportPanel());
-                this.getVehicleReportPanel().loadData(arguments[4].parentNode);
+                this.getVehicleReportPanel().loadData(record.parentNode);
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
                 this.getVehicleAlertsPanel().loadList(record.parentNode.get('id'));
                 break;
             case 'update-checklist':
-                this.getInfoPanel().setActiveItem(4);
+                this.getInfoPanel().setActiveItem(this.getManageChecklistPanel());
                 this.showUpdateCheckList();
                 break;
             case 'users':
                 this.loadUsers(record.parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
-                break;
-            case 'check-list':
-                var panel = this.getVehicleInspectionDetailsPanel();
-                this.getInfoPanel().setActiveItem(panel);
-                panel.loadChecklist(record.parentNode.parentNode, record.get('checkListId'));
                 break;
         }
     },

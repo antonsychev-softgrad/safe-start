@@ -58,6 +58,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 this.onOpenMapAction(lat, lon);
             },
             hide: function () {
+                this.hideButtons();
                 var innerItems = this.getInnerItems();
                 for (var i = 1, len = innerItems.length; i < len; i++) {
                     this.remove(innerItems[i]);
