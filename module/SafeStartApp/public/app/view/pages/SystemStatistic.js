@@ -131,11 +131,6 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                                 fontSize: 15
                             },
                             fields: ['value1', 'value2'],
-                            grid: {
-                                odd: {
-                                    fill: '#e8e8e8'
-                                }
-                            },
                             minimum: 0
                         },
                         {
@@ -161,14 +156,14 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             labelField: 'value1',
                             title: 'DateBase Inspections',
                             style: {
-                                stroke: SafeStartApp.getBaseColors(0),
+                                stroke: "#115fa6",
                                 miterLimit: 3,
                                 lineCap: 'miter',
                                 lineWidth: 2
                             },
                             marker: {
                                 type: 'circle',
-                                fill: SafeStartApp.getBaseColors(0),
+                                fill: "#115fa6",
                                 radius: 10
                             }
                         },
@@ -179,14 +174,14 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             labelField: 'value2',
                             title: 'Email Inspections',
                             style: {
-                                stroke: SafeStartApp.getBaseColors(1),
+                                stroke: "#94ae0a",
                                 miterLimit: 3,
                                 lineCap: 'miter',
                                 lineWidth: 2
                             },
                             marker: {
                                 type: 'circle',
-                                fill: SafeStartApp.getBaseColors(1),
+                                fill: "#94ae0a",
                                 radius: 10
                             }
                         }
@@ -200,9 +195,15 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
     },
 
     loadData: function () {
+
         var from = new Date();
         from.setYear(from.getYear() - 1);
         this.down('datepickerfield[name=from]').setValue(from);
+
+        var date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        this.down('datepickerfield[name=to]').setValue(date);
+
         this.updateDataView();
     },
 

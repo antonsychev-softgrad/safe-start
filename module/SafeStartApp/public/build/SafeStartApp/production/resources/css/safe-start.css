@@ -1,4 +1,4 @@
-/*5cb5c421534b43ee2b6ab7eeb8cc8ad57ca0ff99*//* main */
+/*479465b77f156ca24375454a9ae2972672eab252*//* main */
 
 /* for All */
 @font-face {
@@ -166,6 +166,18 @@ html, body {
     color: #fff;
 }
 
+.x-form-fieldset-title .x-innerhtml {
+    white-space: normal;
+}
+
+.x-form-label-nowrap .x-form-label {
+    white-space: normal;
+    text-overflow: none;
+}
+
+.x-title .x-innerhtml {
+    white-space: normal;
+}
 
 
 
@@ -956,25 +968,29 @@ div.logo {
 }
 
 .sfa-alert-comments {
-    margin-bottom: 20px;
+    margin-top: 15px;
+    color: #565555;
+    font-size: 17px;
 }
-
+.sfa-alert-comments h3 {
+    color: #565555;
+}
 .sfa-alerts .x-list-item > .x-innerhtml {
-    font-weight: bold;
-    line-height: 18px
+    color: #558FAC;
+    line-height: 34px;
 }
 
 .sfa-alerts .x-list-item > .x-innerhtml > span {
     display: block;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: normal;
     color: #666
 }
 
 .sfa-alerts .headshot {
     float: left;
-    height: 37px;
-    width: 37px;
+    height: 62px;
+    width: 62px;
     margin-right: 10px;
     background-size: cover;
     background-position: center center;
@@ -1023,12 +1039,12 @@ div.logo {
     width: 195px;
     padding-top: 0;
     font-size: 22px;
-    font-weight: bold
+    color: #558FAC;
 }
 
 .x-show-contact .top .name span {
     display: block;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: normal;
     color: #666
 }
@@ -1063,4 +1079,160 @@ div.logo {
     top: .4em
 }
 
+.sfa-vehicle-details-container-alert {
+    color: #F00;
+}
 
+.sfa-alerts .x-innerhtml {
+    font-size: 22px;
+    color: #565555;
+}
+.sfa-alerts .x-innerhtml > span {
+    font-size: 20px;
+}
+.sfa-checklist-form .checklist-details-ok, .sfa-checklist-form .checklist-details-alerts {
+    font-size: 22px;
+    color: #565555;
+    position: relative;
+}
+.sfa-checklist-form .checklist-details-ok:after, .sfa-checklist-form .checklist-details-alerts:after {
+    bottom: 0;
+    content: "3";
+    font-family: 'Pictos';
+    font-size: 30px;
+    line-height: 30px;
+    position: absolute;
+    color: #006BB6;
+    right: 10px;
+    text-align: right;
+    top: 0;
+}
+.sfa-checklist-form .checklist-details-alerts:after {
+    color: #f00;
+}
+
+.x-item-selected > div {
+    background: #EAEDEF;
+}
+
+.sfa-container-padding > div {
+    padding: 0 10px;
+}
+.sfa-container-padding > div > .x-container.x-toolbar.x-navigation-bar.x-dock-item.x-docked-top {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+.sfa-inspections {
+    padding: 0 10px;
+}
+.sfa-container-padding .sfa-inspections .x-list-item .x-innerhtml {
+    font-size: 22px;
+    color: #565555;
+}
+.sfa-vehicle-inspection-details .x-container.x-layout-box-item .x-innerhtml {
+    font-size: 22px;
+    color: #565555;
+}
+.sfa-vehicle-inspection-details .sfa-vehicle-details-container-alert .x-container.x-layout-box-item .x-innerhtml {
+    color: #f00;
+}
+
+.sfa-vehicle-inspection-details .x-button.x-button-small .x-button-label {
+    font-size: 20px;
+    color: #fff;
+}
+
+.sfa-container-padding .x-container.x-toolbar.x-toolbar-dark.x-stretched.x-paint-monitored.x-navigation-bar.x-dock-item.x-docked-top {
+    height: 50px;
+}
+
+.sfa-vehicle-inspection-details-map .x-button.x-floating {
+    padding-top: 5px;
+    color: #fff;
+}
+
+.x-select-overlay .x-list .x-list-item.x-item-selected.x-list-item-tpl span.x-list-label {
+    color: #558FAC;
+}
+
+.x-list-normal .x-list-item.x-item-selected.x-list-item-tpl {
+    border-top-color: #ddd;
+}
+
+.x-field-select .x-component-outer:before {
+    background: none;
+}
+
+.sfa-alerts-topbar .x-input-el.x-form-field.x-input-text {
+    height: 35px;
+    color: #565555;
+    background: #fff;
+}
+.sfa-alerts-topbar .x-input-el.x-form-field.x-input-search {
+    border: none;
+}
+.sfa-alerts-topbar {
+    font-size: 22px;
+    color: #558FAC;
+}
+.sfa-alerts-searchbar > .x-component-outer > .x-unsized.x-field-input:before {
+top: 0;
+}
+.sfa-alerts .x-list-paging .x-list-paging-msg {
+color: #558FAC;
+}
+.sfa-info-container .sfa-container-padding .sfa-alerts-topbar .x-button.x-button-action {margin-right: 10px;}
+
+.x-toolbar.sfa-alerts-topbar.x-docked-top {border: none;}
+
+.x-button-label {
+    color: #fff;
+}
+.x-img.x-img-image.x-img-background.x-paint-monitored.x-size-monitored.x-sized {
+    margin-top: 15px;
+}
+.sfa-alert-information {
+    padding: 0 10px 15px;
+}
+.sfa-alert-information .x-field-textarea.x-field-labeled {
+    margin-top: 15px;
+}
+
+.sfa-alert-information .x-field {
+    background: none;
+}
+
+.sfa-alert-information .top {
+    color: #565555;
+}
+
+.sfa-atatus {
+    margin-top: 15px;
+}
+
+.sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back, .sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back:before {
+    background-color: #1676b9;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #359ee7), color-stop(3%, #1985d0), color-stop(100%, #1468a2));
+    background-image: -webkit-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
+    background-image: -o-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
+}
+
+.sfa-inspections .x-list-paging-msg {
+    font-size: 22px;
+    color: #558FAC;
+}
+
+.sfa-info-container .x-dock.x-dock-vertical .x-toolbar.x-navigation-bar.x-dock-item.x-docked-top .x-title .x-innerhtml,
+.sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-toolbar.x-navigation-bar.x-dock-item.x-docked-top .x-title .x-innerhtml {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.sfa-container-padding .x-list-emptytext .x-innerhtml {
+    font-size: 20px;
+}
+.x-show-contact.sfa-alert-information .x-innerhtml .top {
+    padding: 22px 0;
+}
