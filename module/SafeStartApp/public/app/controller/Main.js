@@ -9,6 +9,7 @@ Ext.define('SafeStartApp.controller.Main', {
             'alerts/:companyId': 'showAlertsAction',
             'users/:companyId': 'showUsersAction',
             'system-settings': 'showSystemSettingsAction',
+            'system-statistic': 'showSystemStatisticAction',
             'contact': 'showContactAction'
         },
 
@@ -25,6 +26,7 @@ Ext.define('SafeStartApp.controller.Main', {
             alertsPage: 'SafeStartAlertsPage',
             usersPage: 'SafeStartUsersPage',
             systemSettingsPage: 'SafeStartSystemSettingsPage',
+            systemStatisticPage: 'SafeStartSystemStatisticPage',
             vehiclesPage: 'SafeStartVehiclesPage',
             contactPage: 'SafeStartContactPage',
             authPage: 'SafeStartAuthPage'
@@ -37,6 +39,7 @@ Ext.define('SafeStartApp.controller.Main', {
             case 'vehicles':
             case 'auth':
             case 'system-settings':
+            case 'system-statistic':
             case 'contact':
                 this.redirectTo(action);
                 break;
@@ -158,6 +161,20 @@ Ext.define('SafeStartApp.controller.Main', {
             Ext.Viewport.on({
                 mainMenuLoaded: function () {
                     me.activateTab(me.getSystemSettingsPage(), true);
+                },
+                single: true
+            });
+        }
+    },
+
+    showSystemStatisticAction: function () {
+        var me = this;
+        if (this.getMainView()) {
+            this.activateTab(this.getSystemStatisticPage());
+        } else {
+            Ext.Viewport.on({
+                mainMenuLoaded: function () {
+                    me.activateTab(me.getSystemStatisticPage(), true);
                 },
                 single: true
             });

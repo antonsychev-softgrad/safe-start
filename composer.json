@@ -21,6 +21,7 @@
         "imagine/Imagine": "dev-develop",
         "zendframework/zendpdf": "dev-develop",
         "zendframework/zendservice-apple-apns": "dev-master",
-        "zendframework/zendservice-google-gcm": "dev-master"
+        "zendframework/zendservice-google-gcm": "dev-master",
+        "zendframework/zend-queue": "dev-master"
     }
 }

@@ -146,6 +146,22 @@
                 }
             }
         },
+        "/api/vehicle/getChecklistByHash": {
+            "description": "Get vehicle checklist by Hash",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/[id]/completeChecklist": {
             "description": "Complete vehicle's checklist with vehicle ID",
             "type": "object",
@@ -178,7 +194,7 @@
                 }
             }
         },
-        "/api/vehicle/[id]/getAlerts": {
+        "/api/vehicle/getAlerts": {
             "description": "Get vehicle alerts",
             "type": "object",
             "properties": {
@@ -190,6 +206,22 @@
                 "response": {
                     "properties": {
                         "$ref": "vehicle/getalerts/response.json"
+                    }
+                }
+            }
+        },
+        "/vehicle/inspection/:inspectionId/delete": {
+            "description": "Delete inspection",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/response.json"
                     }
                 }
             }

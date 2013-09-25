@@ -82,7 +82,7 @@ class UserController extends RestController
                 $errorCode = RestController::INVALID_CREDENTIAL_ERROR;
                 break;
             default:
-                $errorMessage = '';
+                $errorMessage = 'Error authorisation';
                 break;
         }
 

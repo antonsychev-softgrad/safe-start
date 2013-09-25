@@ -85,12 +85,12 @@ class Field extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="enabled")
      */
-    protected $enabled;
+    protected $enabled = 1;
 
     /**
      * @ORM\Column(type="boolean", name="alert_critical")
      */
-    protected $alert_critical;
+    protected $alert_critical = 1;
 
     /**
      * @ORM\Column(type="boolean", name="deleted")

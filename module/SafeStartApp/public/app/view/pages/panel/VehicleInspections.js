@@ -16,6 +16,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 name: 'edit-inspection',
                 align: 'right',
                 text: 'Edit',
+                cls:'sfa-edit-button',
                 hidden: true,
                 handler: function (button) {
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),
@@ -29,6 +30,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 name: 'delete-inspection',
                 align: 'right',
                 text: 'Delete',
+                cls:'sfa-delete-button',
                 hidden: true,
                 handler: function (button) {
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),

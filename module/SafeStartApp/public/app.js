@@ -126,6 +126,16 @@ Ext.apply(SafeStartApp, {
         });
 
         Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
+    },
+
+    colors: ["#115fa6", "#94ae0a", "#a61120", "#ff8809", "#ffd13e", "#a61187", "#24ad9a", "#7c7474", "#a66111"],
+
+    getBaseColors: function (index) {
+        if (index == null) {
+            return this.colors.slice();
+        } else {
+            return this.colors[index];
+        }
     }
 });
 
@@ -144,7 +154,8 @@ Ext.application({
         'pages.Company',
         'pages.Users',
         'pages.Alerts',
-        'pages.SystemSettings'
+        'pages.SystemSettings',
+        'pages.SystemStatistic'
     ],
 
     controllers: [
@@ -153,9 +164,7 @@ Ext.application({
         'Companies',
         'Users',
         'Company',
-        // 'DefaultVehicles',
         'CompanyVehicles'
-        // 'UserVehicles'
     ],
 
     icon: {
