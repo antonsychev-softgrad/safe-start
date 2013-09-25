@@ -36,10 +36,8 @@ Ext.define('SafeStartApp.view.forms.Contact', {
             {
                 xtype: 'button',
                 text: 'Send',
-                ui: 'confirm',
-                handler: function() {
-                    SafeStartApp.showInfoMsg('Coming soon');
-                }
+                action: 'contact',
+                ui: 'confirm'
             }
         ]
     }

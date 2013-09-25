@@ -158,6 +158,7 @@ Ext.application({
     controllers: [
         'Main',
         'Auth',
+        'Contact',
         'Companies',
         'Users',
         'Company',

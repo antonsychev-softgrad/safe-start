@@ -1,5 +1,5 @@
 {
-    "description": "Get Checklist response",
+    "description": "Get Checklist by hash response",
     "type": "object",
     "properties": {
         "meta": {

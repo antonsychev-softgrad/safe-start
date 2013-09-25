@@ -289,6 +289,22 @@
                     }
                 }
             }
+        },
+        "info/contact": {
+            "description": "Send contact form",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/contact/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/contact/response.json"
+                    }
+                }
+            }
         }
     }
 }

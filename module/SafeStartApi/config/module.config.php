@@ -9,6 +9,7 @@ return array(
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
+        'emailForContacts' => 'test21141@gmail.com',
     ),
     'router' => array(
         'routes' => $routes
@@ -227,7 +228,7 @@ return array(
     ),
     'requestsLimit' => array(
         'limitForLoggedInUsers' => 50,
-        'limitForUnloggedUsers' => 5000,
+        'limitForUnloggedUsers' => 5,
         'limitTime' => 60,
     ),
 );

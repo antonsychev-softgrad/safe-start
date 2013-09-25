@@ -1,5 +1,5 @@
 {
-    "description": "Get Ckecklist by hash request",
+    "description": "Send contact",
     "type": "object",
     "properties": {
         "meta": {
@@ -18,8 +18,18 @@
             "type": "object",
             "required": true,
             "properties": {
-                "hash": {
-                    "description": "Checklist hash",
+                "name": {
+                    "description": "Name",
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
+                    "description": "Email",
+                    "type": "string",
+                    "required": true
+                },
+                "message": {
+                    "description": "Message",
                     "type": "string",
                     "required": true
                 }

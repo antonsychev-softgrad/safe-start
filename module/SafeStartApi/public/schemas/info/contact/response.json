@@ -1,5 +1,5 @@
 {
-    "description": "Delete checklist response",
+    "description": "Send contact",
     "type": "object",
     "properties": {
         "meta": {
@@ -19,7 +19,7 @@
             "type": "object",
             "required": true,
             "properties": {
-                "done" : {
+                "done": {
                     "description": "Is done",
                     "type": "boolean",
                     "required": true

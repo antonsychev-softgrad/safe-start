@@ -1,5 +1,5 @@
 {
-    "description": "Complete Checklist request",
+    "description": "Delete checklist request",
     "type": "object",
     "properties": {
         "meta": {
