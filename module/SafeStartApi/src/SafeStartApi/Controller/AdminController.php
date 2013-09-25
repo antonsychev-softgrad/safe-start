@@ -266,18 +266,30 @@ class AdminController extends AdminAccessRestController
         if (isset($this->data->form) && !empty($this->data->form)) {
             $from = new \DateTime();
             $from->setTimestamp((int)$this->data->form);
+        } else {
+            $from = new \DateTime();
+            $from->setTimestamp(time() - 366*24*60*60);
         }
 
         $to = null;
         if (isset($this->data->to) && !empty($this->data->to)) {
             $to = new \DateTime();
             $to->setTimestamp((int)$this->data->to);
+        } else {
+            $to = new \DateTime();
         }
 
         $range = 'monthly';
         if (isset($this->data->range) && !empty($this->data->range)) {
             $range = $this->data->range;
         }
+
+        if ( $range == 'monthly' ) {
+
+
+        }
+
+        $dates =
 
         $statistic['chart'] = array();
 
