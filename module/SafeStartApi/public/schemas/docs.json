@@ -194,6 +194,22 @@
                 }
             }
         },
+        "/vehicle/inspection/:inspectionId/delete": {
+            "description": "Delete inspection",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/response.json"
+                    }
+                }
+            }
+        },
         "/api/upload-images": {
             "description": "Upload Images",
             "type": "object",

@@ -356,7 +356,11 @@ class VehicleController extends RestrictedAccessRestController
             $role = $currentUser->getRole();
             if($role == 'companyManager' || $role == 'companyAdmin') {
                 $company = $currentUser->getCompany();
-                $vehicles = $company->getVehicles()->toArray();
+                if(!is_null($company)) {
+                    $vehicles = $company->getVehicles()->toArray();
+                } else {
+                    $vehicles = array();
+                }
             } else {
                 $vehicles = $currentUser->getVehicles();
                 $respVehicles = $currentUser->getResponsibleForVehicles();
