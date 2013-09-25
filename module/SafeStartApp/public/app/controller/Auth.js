@@ -9,6 +9,9 @@ Ext.define('SafeStartApp.controller.Auth', {
     ],
 
     config: {
+        routes: {
+            ':': Ext.empyFn
+        },
         control: {
             loginButton: {
                 tap: 'loginAction'
@@ -35,8 +38,11 @@ Ext.define('SafeStartApp.controller.Auth', {
     },
 
     loginAction: function () {
+        window.location.replace('#');
         if (!this.userAuthModel)this.userAuthModel = Ext.create('SafeStartApp.model.UserAuth');
         if (this.validateFormByModel(this.userAuthModel, this.getLoginForm())) {
+            SafeStartApp.loadedMainMenu = false;
+            SafeStartApp.companyModel = SafeStartApp.model.Company.create({});
             SafeStartApp.AJAX('user/login', this.getLoginForm().getValues(), function (result) {
                 SafeStartApp.loadMainMenu();
             });
@@ -44,6 +50,7 @@ Ext.define('SafeStartApp.controller.Auth', {
     },
 
     logoutAction: function() {
+        window.location.replace('#');
         SafeStartApp.AJAX('user/logout', {}, function (result) {
             SafeStartApp.currentUser = result.userInfo;
             SafeStartApp.loadMainMenu();

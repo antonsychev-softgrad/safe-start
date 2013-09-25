@@ -12,5 +12,18 @@ Ext.define('SafeStartApp.view.Main', {
             { xclass: 'SafeStartApp.view.pages.Auth'},
             { xclass: 'SafeStartApp.view.pages.Contact'}
         ]
+    },
+    initialize: function () {
+        var me = this;
+        this.callParent();
+        Ext.each(this.query('tab'), function (tab) {
+            tab.on({
+                tap: function (tab, e) {
+                    me.fireEvent('changeTab', tab.config.action);
+                    return false;
+                },
+                order: 'before'
+            });
+        });
     }
 });

@@ -11,6 +11,9 @@ Ext.define('SafeStartApp.view.pages.Auth', {
 
         layout: 'fit',
         styleHtmlContent: false,
+        tab: {
+            action: 'auth'
+        },
 
         html: [
             '<div class="logo"><img height=100 width="381" src="/resources/img/logo-small.png" /><div>'

@@ -16,6 +16,9 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
         iconCls: 'favorites',
         styleHtmlContent: true,
         layout: 'hbox',
+        tab: {
+            action: 'alerts'
+        },
         items: [
 
         ],
