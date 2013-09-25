@@ -102,6 +102,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-vehicle-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/statistic',
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getStatistic'
+                    ),
+                ),
+            ),
             'complete-vehicle-checklist' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -141,7 +154,7 @@ $routes = array(
             'update-user-signature' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/user/:id/profile/updatesignature',
+                    'route' => '/user/profile/updatesignature',
                     'constraints' => array(
                         'id' => '[0-9]*',
                     ),

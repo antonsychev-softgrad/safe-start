@@ -57,6 +57,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
             vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
             vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
+            vehicleReportPanel: 'SafeStartCompanyPage SafeStartVehicleReportPanel',
             vehicleInspectionDetailsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionDetails',
             vehicleInspectionsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionsPanel',
             vehiclesPanel: 'SafeStartCompanyPage SafeStartVehiclesPanel',
@@ -90,6 +91,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             case 'inspections':
                 this.getInfoPanel().setActiveItem(this.getVehicleInspectionsPanel());
                 this.getVehicleInspectionsPanel().loadList(record.parentNode);
+                break;
+            case 'report':
+                this.getInfoPanel().setActiveItem(this.getVehicleReportPanel());
+                this.getVehicleReportPanel().loadData(arguments[4].parentNode);
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());

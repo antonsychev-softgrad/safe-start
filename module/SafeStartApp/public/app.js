@@ -25,14 +25,15 @@ SafeStartApp = SafeStartApp || {
         'Contact'
     ],
 
-    dateFormat: 'Y-m-d',
-    tmeFormat: 'H:i'
+    dateFormat: 'm/d/Y',
+    timeFormat: 'H:i'
 };
 
 Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
-
+    dateFormat: 'm/d/Y',
+    timeFormat: 'H:i',
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
         var self = this;
         var meta = {

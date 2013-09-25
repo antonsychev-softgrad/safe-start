@@ -82,9 +82,9 @@ class PdfPlugin extends AbstractPlugin
             $vehicle = $this->checkList->getVehicle();
             $company = $vehicle->getCompany();
             $vehicleData = $vehicle->toInfoArray();
-            $companyData = $company->toArray();
+            $companyData = $company ? $company->toArray() : array();
             $vehicleData = array(
-                'Company name' => $companyData['title'],
+                'Company name' => isset($companyData['title']) ? $companyData['title'] : '',
                 'Vehivcle title' => $vehicleData['title'],
                 'Project number' => $vehicleData['projectNumber'],
                 'Project name' => $vehicleData['projectName'],
@@ -197,12 +197,10 @@ class PdfPlugin extends AbstractPlugin
 
     protected function savePdf()
     {
-        if(!$this->emailMode) {
-            $this->document->save($this->full_name);
-            chmod($this->full_name, 0777);
-            $this->checkList->setPdfLink($this->file_name);
-            $this->getController()->em->flush();
-        }
+        $this->document->save($this->full_name);
+        chmod($this->full_name, 0777);
+        $this->checkList->setPdfLink($this->file_name);
+        $this->getController()->em->flush();
     }
 
     protected function getFileByDirAndName($dir, $tosearch)
@@ -331,11 +329,12 @@ class PdfPlugin extends AbstractPlugin
             $topPosInPage = (($logoMaxHeight) / 2);
 
             $user    = $this->checkList->getUser();
+            if (!$user) return;
             $vehicle = $this->checkList->getVehicle();
 
-            $name      = "Name: " . $user->getFirstName() . " " . $user->getLastName();
+            $name      = $user ? "Name: " . $user->getFirstName() . " " . $user->getLastName() : '';
             $signature = "Signature: ";
-            $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['date_format'] . $this->getController()->moduleConfig['time_format']);
+            $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format']);
 
             $color = ZendPdf\Color\Html::color($fontColor);
             $style = new ZendPdf\Style();
@@ -456,7 +455,7 @@ class PdfPlugin extends AbstractPlugin
                 if(!is_int($value)) {
                     $value = strtotime($value);
                 }
-                $value = gmdate($this->getController()->moduleConfig['date_format'] . $this->getController()->moduleConfig['time_format'], $value);
+                $value = gmdate($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format'], $value);
             }
 
             $title          = strip_tags($title);
@@ -1136,18 +1135,18 @@ class PdfPlugin extends AbstractPlugin
         $name = $this->opts['name'];
         $ext  = !empty($this->opts['ext']) ? $this->opts['ext'] : '.pdf';
 
-        $checkList = "";
-        $user      = "";
-        $vehicle   = "";
-        $date      = $this->dateGeneration->format($this->getController()->moduleConfig['date_format'] . $this->getController()->moduleConfig['time_format']);
+        $checkList = "0";
+        $user      = "0";
+        $vehicle   = "0";
+        $date      = $this->dateGeneration->format('Y-m-d');
 
         if (!empty($this->checkList)) {
-            $checkList .= $this->checkList->getId();
+            $checkList = $this->checkList->getId();
             if (($clUser = $this->checkList->getUser()) !== null) {
-                $user .= $clUser->getId();
+                $user = $clUser->getId();
             }
             if (($clVehicle = $this->checkList->getVehicle()) !== null) {
-                $vehicle .= $clVehicle->getId();
+                $vehicle = $clVehicle->getId();
             }
         }
 

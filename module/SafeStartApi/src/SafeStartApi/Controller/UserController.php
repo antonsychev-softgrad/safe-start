@@ -128,7 +128,7 @@ class UserController extends RestController
         // todo: check if unique email if user deleted = 1 and username
 
         if (isset($this->data->email)) $user->setEmail($this->data->email);
-        if (isset($this->data->username)) $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
+        $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
         $user->setDeleted(0);
         $user->setFirstName($this->data->firstName);
         $user->setLastName($this->data->lastName);
@@ -158,7 +158,7 @@ class UserController extends RestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
 
-            if ((count($company->getUsers()) + 1) > $company->getMaxUsers()) return $this->_showCompanyLimitReached('Company limit of users reached');
+            if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of users reached');
             $user->setCompany($company);
         }
 
@@ -216,6 +216,8 @@ class UserController extends RestController
         $password = substr(md5($user->getId() . time() . rand()), 0, 6);
         $user->setPlainPassword($password);
         $this->em->flush();
+
+        $config = $this->getServiceLocator()->get('Config');
 
         $this->MailPlugin()->send(
             'Credentials',

@@ -49,6 +49,13 @@ class Module
             },
             100);
 
+        register_shutdown_function(function ()
+        {
+            if ($e = error_get_last()) {
+                //todo: log exception
+            }
+        });
+
     }
 
     /**
