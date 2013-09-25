@@ -1,6 +1,7 @@
 /* main */
 
 /* for All */
+
 @font-face {
     font-family: HelveticaNeueLTStd;
     src: url(/resources/fonts/HelveticaNeueLTStd-Cn.otf);
@@ -21,19 +22,14 @@ html, body {
 .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
     font-size: 1.5em;
 }
-.x-button.x-button-action, .x-button.x-button-action.x-button-back:after, .x-button.x-button-action.x-button-forward:after, .x-toolbar .x-button.x-button-action, .x-toolbar .x-button.x-button-action.x-button-back:after, .x-toolbar .x-button.x-button-action.x-button-forward:after,
-.x-button.x-button-action-round,
-.x-button.x-button-action-round.x-button-back:after,
-.x-button.x-button-action-round.x-button-forward:after, .x-toolbar
-.x-button.x-button-action-round, .x-toolbar
-.x-button.x-button-action-round.x-button-back:after, .x-toolbar
-.x-button.x-button-action-round.x-button-forward:after,
-.x-button.x-button-action-small,
-.x-button.x-button-action-small.x-button-back:after,
-.x-button.x-button-action-small.x-button-forward:after, .x-toolbar
-.x-button.x-button-action-small, .x-toolbar
-.x-button.x-button-action-small.x-button-back:after, .x-toolbar
-.x-button.x-button-action-small.x-button-forward:after {
+.x-button.x-button-action, .x-button.x-button-action.x-button-back:after, .x-button.x-button-action.x-button-forward:after,
+.x-toolbar .x-button.x-button-action, .x-toolbar .x-button.x-button-action.x-button-back:after, .x-toolbar .x-button.x-button-action.x-button-forward:after,
+.x-button.x-button-action-round, .x-button.x-button-action-round.x-button-back:after,
+.x-button.x-button-action-round.x-button-forward:after, .x-toolbar .x-button.x-button-action-round,
+.x-toolbar .x-button.x-button-action-round.x-button-back:after, .x-toolbar .x-button.x-button-action-round.x-button-forward:after,
+.x-button.x-button-action-small, .x-button.x-button-action-small.x-button-back:after,
+.x-button.x-button-action-small.x-button-forward:after, .x-toolbar .x-button.x-button-action-small, .x-toolbar
+.x-button.x-button-action-small.x-button-back:after, .x-toolbar .x-button.x-button-action-small.x-button-forward:after {
     border: none;
     background: #6bbde3; /* Old browsers */
     background: -moz-linear-gradient(top, #6bbde3 0%, #2c7cb1 100%); /* FF3.6+ */
@@ -338,6 +334,14 @@ div.logo {
 .sfa-main-toolbar .x-button, .sfa-main-toolbar .x-button .x-button-label:hover {
     color: #75AFCC !important;
 }
+.sfa-main-toolbar .x-toolbar-inner .x-button.x-button-action .x-button-icon.x-shown.more:before {
+    content:'Q';
+}
+
+.sfa-main-toolbar .x-button.x-button-action.x-button-pressing .x-button-icon.x-shown.more:before {
+    color: #ccc;
+}
+
 
 
 
@@ -972,6 +976,9 @@ div.logo {
     color: #565555;
     font-size: 17px;
 }
+.sfa-alert-comments .name {
+    font-size: 22px;
+}
 .sfa-alert-comments h3 {
     color: #565555;
 }
@@ -1044,7 +1051,7 @@ div.logo {
 
 .x-show-contact .top .name span {
     display: block;
-    font-size: 17px;
+    font-size: 22px;
     font-weight: normal;
     color: #666
 }
@@ -1059,7 +1066,7 @@ div.logo {
 }
 
 .x-map:before {
-    /*content: '';*/ 
+    /*content: '';*/
     position: absolute;
     top: 0;
     left: 0;
@@ -1216,6 +1223,10 @@ color: #558FAC;
     background-image: -webkit-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
     background-image: -o-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
 }
+.sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back:before {
+    background: red;
+    color: green;
+}
 
 .sfa-inspections .x-list-paging-msg {
     font-size: 22px;
@@ -1235,4 +1246,55 @@ color: #558FAC;
 }
 .x-show-contact.sfa-alert-information .x-innerhtml .top {
     padding: 22px 0;
+}
+
+.sfa-inspection-toolbar .x-button-normal.x-button.sfa-edit-button,
+.sfa-vehicle-inspection-details .x-container.sfa-vehicle-inspection-details-container2 .x-button.x-button-small{
+    background: #6bbde3; /* Old browsers */
+    background: -moz-linear-gradient(top, #6bbde3 0%, #2c7cb1 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#6bbde3), color-stop(100%,#2c7cb1)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #6bbde3 0%,#2c7cb1 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #6bbde3 0%,#2c7cb1 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6bbde3', endColorstr='#2c7cb1',GradientType=0 ); /* IE6-9 */
+}
+
+.sfa-inspection-toolbar .x-button-normal.x-button.sfa-delete-button {
+    background-image: none;
+    background-color: #c70505;
+    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f91f1f), color-stop(3%, #e00606), color-stop(100%, #ae0404));
+    background-image: -webkit-linear-gradient(top, #f91f1f, #e00606 3%, #ae0404);
+    background-image: -moz-linear-gradient(top, #f91f1f, #e00606 3%, #ae0404);
+    background-image: -o-linear-gradient(top, #f91f1f, #e00606 3%, #ae0404);
+    background-image: linear-gradient(top, #f91f1f, #e00606 3%, #ae0404);
+}
+
+.sfa-vehicle-inspection.sfa-vehicle-report > div {
+    padding: 0 10px;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report .x-inner.x-toolbar-inner.x-horizontal.x-align-center.x-pack-start.x-layout-box div,
+.sfa-vehicle-inspection.sfa-vehicle-report .x-component-outer:before,
+.sfa-vehicle-inspection.sfa-vehicle-report input, .sfa-vehicle-inspection.sfa-vehicle-report textarea{
+    border: none;
+}
+
+.sfa-vehicle-inspection.sfa-vehicle-report .top {
+    font-size: 22px;
+    color: #666;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report .top > div {
+    padding-bottom: 5px;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report #SafeStartVehicleReportContent {
+    padding: 7px 7px 15px;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report .sfa-datepickerfield {
+    display: block !important;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
+    margin-top: 15px;
+}
+.sfa-vehicle-inspection.sfa-vehicle-report .x-field-input {
+    min-width: 1em;
 }
