@@ -26,6 +26,9 @@ Ext.define('SafeStartApp.view.pages.Company', {
         styleHtmlContent: true,
         layout: 'hbox',
         cls: 'page-company',
+        tab: {
+            action: 'company'
+        },
         items: [
 
         ],

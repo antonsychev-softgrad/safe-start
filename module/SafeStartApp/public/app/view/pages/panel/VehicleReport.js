@@ -11,7 +11,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
     config: {
         name: 'vehicle-report',
-        cls: 'sfa-vehicle-inspection',
+        cls: 'sfa-vehicle-inspection sfa-vehicle-report',
         layout: {
             type: 'card'
         },
@@ -64,19 +64,65 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     '<div class="name">Total number of outstanding Alerts: {statistic.new_alerts} </div>',
                     '</div>'
                 ].join('')
-            },
+            }
+        ]
+
+    },
+
+    loadData: function (record) {
+        this.record = record;
+        var date = new Date();
+        date.setMonth(date.getMonth() - 1);
+        this.down('datepickerfield[name=from]').setValue(date);
+        this.updateDataView();
+    },
+
+    updateDataView: function () {
+        var self = this;
+        var data = {};
+        data.period = {
+            from: Ext.Date.format(this.down('datepickerfield[name=from]').getValue(), SafeStartApp.dateFormat),
+            to: Ext.Date.format(this.down('datepickerfield[name=to]').getValue(), SafeStartApp.dateFormat)
+        };
+        var post = {};
+        if (this.down('datepickerfield[name=from]').getValue()) post.from = this.down('datepickerfield[name=from]').getValue().getTime() / 1000;
+        if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=to]').getValue().getTime() / 1000;
+        SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/statistic', post, function (result) {
+            if (result.statistic) {
+                if (!self.chartAdded) {
+                    try{
+                        self.addChart();
+                        self.chartAdded = true;
+                    } catch (e) {
+                        console.log(e);
+                        return;
+                    }
+                }
+                data.statistic = result.statistic;
+                self.down('#SafeStartVehicleReportContent').setData(data);
+                if (result.statistic.chart && result.statistic.chart.length) {
+                    self.down('#SafeStartVehicleReportChart').show();
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setDateFormat(SafeStartApp.dateFormat);
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setFromDate(self.down('datepickerfield[name=from]').getValue());
+                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setToDate(self.down('datepickerfield[name=to]').getValue());
+                    self.down('#SafeStartVehicleReportChart').getStore().setData(result.statistic.chart);
+                    self.down('#SafeStartVehicleReportChart').getStore().sync();
+                }
+            }
+        });
+    },
+
+    addChart: function () {
+        this.add(
             {
                 xtype: 'chart',
                 id: 'SafeStartVehicleReportChart',
                 style: {
-                    marginTop: '140px'
+                    marginTop: '160px'
                 },
                 animate: true,
                 store: {
-                    fields: ['date', 'value'],
-                    data: [
-
-                    ]
+                    fields: ['date', 'value']
                 },
                 axes: [
                     {
@@ -136,46 +182,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     }
                 ]
             }
-        ]
-
-    },
-
-    loadData: function (record) {
-        this.record = record;
-        var date = new Date();
-        date.setMonth(date.getMonth() - 1);
-        this.down('datepickerfield[name=from]').setValue(date);
-        this.add(
-
         );
-        this.updateDataView();
-    },
-
-    updateDataView: function () {
-        var self = this;
-        var data = {};
-        data.period = {
-            from: Ext.Date.format(this.down('datepickerfield[name=from]').getValue(), SafeStartApp.dateFormat),
-            to: Ext.Date.format(this.down('datepickerfield[name=to]').getValue(), SafeStartApp.dateFormat)
-        };
-        var post = {};
-        if (this.down('datepickerfield[name=from]').getValue()) post.from = this.down('datepickerfield[name=from]').getValue().getTime() / 1000;
-        if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=to]').getValue().getTime() / 1000;
-        SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/statistic', post, function (result) {
-            if (result.statistic) {
-                data.statistic = result.statistic;
-                self.down('#SafeStartVehicleReportContent').setData(data);
-                if (result.statistic.chart && result.statistic.chart.length) {
-                    self.down('#SafeStartVehicleReportChart').show();
-                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setDateFormat(SafeStartApp.dateFormat);
-                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setFromDate(self.down('datepickerfield[name=from]').getValue());
-                    self.down('#SafeStartVehicleReportChart').getAxes()[1].setToDate(self.down('datepickerfield[name=to]').getValue());
-                    self.down('#SafeStartVehicleReportChart').getStore().setData(result.statistic.chart);
-                    self.down('#SafeStartVehicleReportChart').getStore().sync();
-                }
-            }
-        });
-
     }
-
 });

@@ -12,6 +12,9 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         iconCls: 'info',
         styleHtmlContent: true,
         layout: 'card',
+        tab: {
+          action: 'system-statistic'
+        },
         items: [
 
         ],
@@ -45,6 +48,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             cls: 'sfa-info-container',
             xtype: 'panel',
             layout: 'card',
+            name: 'statistic',
             items: [
                 {
                     xtype: 'toolbar',
@@ -105,87 +109,6 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                         '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
                         '</div>'
                     ].join('')
-                },
-                {
-                    xtype: 'chart',
-                    id: 'SafeStartSystemStatisticChart',
-                    style: {
-                        marginTop: '100px'
-                    },
-                    animate: true,
-                    store: {
-                        fields: ['date', 'value1', 'value2'],
-                        data: [
-
-                        ]
-                    },
-                    legend: {
-                        position: 'bottom'
-                    },
-                    axes: [
-                        {
-                            type: 'numeric',
-                            position: 'left',
-                            title: {
-                                text: 'Quantity',
-                                fontSize: 15
-                            },
-                            fields: ['value1', 'value2'],
-                            minimum: 0
-                        },
-                        {
-                            type: 'category',
-                            position: 'bottom',
-                            fields: 'date',
-                            title: {
-                                text: 'Date',
-                                fontSize: 15
-                            },
-                            label: {
-                                rotate: {
-                                    degrees: -30
-                                }
-                            }
-                        }
-                    ],
-                    series: [
-                        {
-                            type: 'line',
-                            xField: 'date',
-                            yField: 'value1',
-                            labelField: 'value1',
-                            title: 'DateBase Inspections',
-                            style: {
-                                stroke: "#115fa6",
-                                miterLimit: 3,
-                                lineCap: 'miter',
-                                lineWidth: 2
-                            },
-                            marker: {
-                                type: 'circle',
-                                fill: "#115fa6",
-                                radius: 10
-                            }
-                        },
-                        {
-                            type: 'line',
-                            xField: 'date',
-                            yField: 'value2',
-                            labelField: 'value2',
-                            title: 'Email Inspections',
-                            style: {
-                                stroke: "#94ae0a",
-                                miterLimit: 3,
-                                lineCap: 'miter',
-                                lineWidth: 2
-                            },
-                            marker: {
-                                type: 'circle',
-                                fill: "#94ae0a",
-                                radius: 10
-                            }
-                        }
-                    ]
                 }
             ],
             listeners: {
@@ -207,7 +130,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         this.updateDataView();
     },
 
-
+    chartAdded: false,
     updateDataView: function () {
         var self = this;
         var post = {};
@@ -222,6 +145,15 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         };
 
         SafeStartApp.AJAX('admin/getstatistic', post, function (result) {
+            if (!self.chartAdded) {
+                try{
+                    self.addChart();
+                    self.chartAdded = true;
+                } catch (e) {
+                    console.log(e);
+                    return;
+                }
+            }
             if (result.statistic) {
                 if (result.statistic.total) {
                     data.total = result.statistic.total;
@@ -233,6 +165,90 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     self.down('#SafeStartSystemStatisticChart').getStore().sync();
                 }
             }
+        });
+    },
+
+    addChart: function () {
+        this.down('panel[name=statistic]').add({
+            xtype: 'chart',
+            id: 'SafeStartSystemStatisticChart',
+            style: {
+                marginTop: '100px'
+            },
+            animate: true,
+            store: {
+                fields: ['date', 'value1', 'value2'],
+                data: [
+                    {'date': 'y-m-d', 'value1': 0, 'value2': 0}
+                ]
+            },
+            legend: {
+                position: 'bottom'
+            },
+            axes: [
+                {
+                    type: 'numeric',
+                    position: 'left',
+                    title: {
+                        text: 'Quantity',
+                        fontSize: 15
+                    },
+                    fields: ['value1', 'value2'],
+                    minimum: 0
+                },
+                {
+                    type: 'category',
+                    position: 'bottom',
+                    fields: 'date',
+                    title: {
+                        text: 'Date',
+                        fontSize: 15
+                    },
+                    label: {
+                        rotate: {
+                            degrees: -30
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    type: 'line',
+                    xField: 'date',
+                    yField: 'value1',
+                    labelField: 'value1',
+                    title: 'DateBase Inspections',
+                    style: {
+                        stroke: "#115fa6",
+                        miterLimit: 3,
+                        lineCap: 'miter',
+                        lineWidth: 2
+                    },
+                    marker: {
+                        type: 'circle',
+                        fill: "#115fa6",
+                        radius: 10
+                    }
+                },
+                {
+                    type: 'line',
+                    xField: 'date',
+                    yField: 'value2',
+                    labelField: 'value2',
+                    title: 'Email Inspections',
+                    style: {
+                        stroke: "#94ae0a",
+                        miterLimit: 3,
+                        lineCap: 'miter',
+                        lineWidth: 2
+                    },
+                    marker: {
+                        type: 'circle',
+                        fill: "#94ae0a",
+                        radius: 10
+                    }
+                }
+            ]
         });
     }
 

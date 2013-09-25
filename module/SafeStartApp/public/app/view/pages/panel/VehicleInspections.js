@@ -16,6 +16,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 name: 'edit-inspection',
                 align: 'right',
                 text: 'Edit',
+                cls:'sfa-edit-button',
                 hidden: true,
                 handler: function (button) {
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),
@@ -29,6 +30,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 name: 'delete-inspection',
                 align: 'right',
                 text: 'Delete',
+                cls:'sfa-delete-button',
                 hidden: true,
                 handler: function (button) {
                     var vehicleInspectionsPanel = button.up('SafeStartVehicleInspectionsPanel'),
@@ -102,6 +104,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         this.vehicle = vehicle;
         this.inspectionsStore.getProxy().setUrl('/api/vehicle/' + this.vehicleId + '/getinspections');
         this.inspectionsStore.loadData();
+        this.hideButtons();
+        var innerItems = this.getInnerItems();
+        for (var i = 1, len = innerItems.length; i < len; i++) {
+            this.remove(innerItems[i]);
+        }
     },
 
     onSelectInspectionAction: function(list, index, node, record) {

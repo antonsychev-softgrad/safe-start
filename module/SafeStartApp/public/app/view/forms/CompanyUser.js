@@ -2,6 +2,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
     extend: 'Ext.form.Panel',
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartCompanyUserForm',
+    scrollable: false,
     config: {
         minHeight: 400,
         //maxWidth: 600,

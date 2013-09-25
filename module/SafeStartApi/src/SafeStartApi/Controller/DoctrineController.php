@@ -72,8 +72,8 @@ class DoctrineController extends AbstractActionController
         $this->addFixture(new \SafeStartApi\Fixture\Companies());
         $this->addFixture(new \SafeStartApi\Fixture\DefaultFields());
         $this->addFixture(new \SafeStartApi\Fixture\Fields());
-        $this->addFixture(new \SafeStartApi\Fixture\Checklists());
-        $this->addFixture(new \SafeStartApi\Fixture\Alerts());
+      //  $this->addFixture(new \SafeStartApi\Fixture\Checklists());
+      //  $this->addFixture(new \SafeStartApi\Fixture\Alerts());
         $this->loadFixtures();
     }
 

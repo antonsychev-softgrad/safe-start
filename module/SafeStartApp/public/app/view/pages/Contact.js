@@ -11,7 +11,10 @@ Ext.define('SafeStartApp.view.pages.Contact', {
         title: 'Contact',
         iconCls: 'info',
         styleHtmlContent: true,
-        scrollable: true
+        scrollable: true,
+        tab: {
+            action: 'contact'
+        }
     },
 
     initialize: function () {

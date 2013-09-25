@@ -16,7 +16,9 @@ Ext.define('SafeStartApp.view.pages.Users', {
         iconCls: 'user',
         styleHtmlContent: true,
         layout: 'hbox',
-
+        tab: {
+            action: 'users'
+        },
         items: [
 
         ],
