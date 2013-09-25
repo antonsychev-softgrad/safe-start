@@ -51,8 +51,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         },
 
         refs: {
+            mainToolbar: 'SafeStartCompanyPage SafeStartCompanyToolbar',
             navMain: 'SafeStartCompanyPage SafeStartNestedListVehicles',
-            infoPanel: 'SafeStartCompanyPage panel[name=info-container]',
+            infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
+            vehicleInfoPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-info]',
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
             vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
             vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
@@ -69,9 +71,18 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     onSelectAction: function (record) {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = record.get('id');
+
+        var button = null;
+        if (Ext.os.deviceType !== 'Desktop') {
+            button = this.getMainToolbar().down('button[action=toggle-menu]');
+            if (button) {
+                button.getHandler().call(button, button);
+            }
+        }
+
         switch (record.get('action')) {
             case 'info':
-                this.getInfoPanel().setActiveItem(0);
+                this.getInfoPanel().setActiveItem(this.getVehicleInfoPanel());
                 this.showUpdateForm(record.parentNode);
                 break;
             case 'fill-checklist':
@@ -84,24 +95,19 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 break;
             case 'report':
                 this.getInfoPanel().setActiveItem(this.getVehicleReportPanel());
-                this.getVehicleReportPanel().loadData(arguments[4].parentNode);
+                this.getVehicleReportPanel().loadData(record.parentNode);
                 break;
             case 'alerts':
                 this.getInfoPanel().setActiveItem(this.getVehicleAlertsPanel());
                 this.getVehicleAlertsPanel().loadList(record.parentNode.get('id'));
                 break;
             case 'update-checklist':
-                this.getInfoPanel().setActiveItem(4);
+                this.getInfoPanel().setActiveItem(this.getManageChecklistPanel());
                 this.showUpdateCheckList();
                 break;
             case 'users':
                 this.loadUsers(record.parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
-                break;
-            case 'check-list':
-                var panel = this.getVehicleInspectionDetailsPanel();
-                this.getInfoPanel().setActiveItem(panel);
-                panel.loadChecklist(record.parentNode.parentNode, record.get('checkListId'));
                 break;
         }
     },
@@ -178,7 +184,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             this._createForm();
         }
         this.currentForm.setRecord(selectedRecord);
-        this.currentForm.down('button[name=delete-data]').show();
+        if (SafeStartApp.userModel.get('role') !== 'companyUser') {
+            this.currentForm.down('button[name=delete-data]').show();
+        }
         this.currentForm.down('button[name=reset-data]').hide();
     },
 
@@ -210,7 +218,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 if (result.vehicleId) {
                     self._reloadStore(result.vehicleId);
                     self.currentForm.down('hiddenfield[name=id]').setValue(result.vehicleId);
-                    self.currentForm.down('button[name=delete-data]').show();
+                    if (SafeStartApp.userModel.get('role') !== 'companyUser') {
+                        self.currentForm.down('button[name=delete-data]').show();
+                    }
                     self.currentForm.down('button[name=reset-data]').hide();
                 }
             });
@@ -219,14 +229,16 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function () {
-            SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
-                self.getNavMain().getVehiclesStore().loadData();
-                self.currentForm.reset();
-                self.currentForm.down('button[name=delete-data]').hide();
-                self.currentForm.down('button[name=reset-data]').show();
-                self.getInfoPanel().setActiveItem(self.getVehiclesPanel());
-            });
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function (buttonId) {
+            if (buttonId === 'yes') {
+                SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                    self.getNavMain().getVehiclesStore().loadData();
+                    self.currentForm.reset();
+                    self.currentForm.down('button[name=delete-data]').hide();
+                    self.currentForm.down('button[name=reset-data]').show();
+                    self.getInfoPanel().setActiveItem(self.getVehiclesPanel());
+                });
+            }
         });
     },
 
@@ -240,6 +252,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             this.getInfoPanel().getActiveItem().add(this.currentForm);
             this.currentForm.addListener('save-data', this.saveAction, this);
             this.currentForm.addListener('reset-data', this.resetAction, this);
+
             this.currentForm.addListener('delete-data', this.deleteAction, this);
         }
     },
@@ -463,7 +476,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionPanel.clearChecklist();
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
             var vehicleId = vehicleInspectionPanel.vehicleId;
-            var inspectionsNode = navMain.getStore().findRecord('id', vehicleId).findChild('action', 'inspections');
             inspectionsPanel.inspectionsStore.on({
                 load: function (store, records) {
                     var record = store.findRecord('hash', result.checklist);

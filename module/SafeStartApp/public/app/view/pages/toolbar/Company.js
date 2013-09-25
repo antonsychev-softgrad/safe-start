@@ -9,6 +9,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Company', {
             this.toolbarButtons = [{
                 iconCls: 'more',
                 ui: 'action',
+                action: 'toggle-menu',
                 isPressed: true,
                 handler: function (button) {
                     this.config.isPressed = ! this.config.isPressed;
@@ -43,6 +44,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Company', {
                 iconCls: 'more',
                 ui: 'action',
                 isPressed: true,
+                action: 'toggle-menu',
                 handler: function (button) {
                     this.config.isPressed = ! this.config.isPressed;
                     if (this.config.isPressed) {

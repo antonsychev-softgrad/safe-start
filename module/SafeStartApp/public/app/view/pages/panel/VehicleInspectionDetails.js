@@ -65,7 +65,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         infoGroup.push(this.createContainer('Date and Time', checklist.creationDate.date));
         if (checklist.gpsCoords) {
             cords = checklist.gpsCoords.split(';');
-            infoGroup.push(this.createMapsContainer('Location', parseFloat(cords[0]), parseFloat(cords[1])));
+            if ((parseFloat(cords[0]) !== 0) || (parseFloat(cords[1]) !== 0)) {
+                infoGroup.push(this.createMapsContainer('Location', parseFloat(cords[0]), parseFloat(cords[1])));
+            }
         }
         this.createGroup(infoGroup);
 
@@ -211,6 +213,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     }, this);
                     Ext.each(values, function (value) {
                         if (value.id == field.fieldId) {
+                            if (RegExp(value.value, 'i').test('yes')) {
+                                value.value = 'Yes';
+                            }
+                            if (RegExp(value.value, 'i').test('no')) {
+                                value.value = 'No';
+                            }
+                            if (RegExp(value.value, 'i').test('n/a')) {
+                                value.value = 'N/A';
+                            }
+
                             items.push(this.createContainer(field.fieldName, value.value, isAlert));
                         }
                     }, this);

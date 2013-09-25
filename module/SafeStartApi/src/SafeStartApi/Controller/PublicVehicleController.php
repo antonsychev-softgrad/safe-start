@@ -103,23 +103,45 @@ class PublicVehicleController extends PublicAccessRestController
         }
         $this->em->flush();
 
-        $this->answer = array(
-            'checklist' => $checkList->getHash(),
-        );
+
 
         $pdf = $this->PdfPlugin($checkList->getId(), true);
 
-        foreach($emails as $email) {
-            $this->MailPlugin()->send(
-                'Checklist',
-                $email,
-                'checklist.phtml',
-                array(
-                ),
-                $pdf
+        if (file_exists($pdf)) {
+            foreach($emails as $email) {
+                $email = (array) $email;
+                $this->MailPlugin()->send(
+                    'New inspection report',
+                    $email['email'],
+                    'checklist.phtml',
+                    array(
+                        'name' => isset($email['name']) ? $email['name'] : 'friend'
+                    ),
+                    $pdf
+                );
+            }
+            $this->answer = array(
+                'checklist' => $checkList->getHash(),
             );
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            $this->answer = array(
+                'errorMessage' => 'PDF document was not generated'
+            );
+            return $this->AnswerPlugin()->format($this->answer, 500, 500);
         }
+    }
 
-        return $this->AnswerPlugin()->format($this->answer);
+    public function sendTestEmailAction() {
+    /*    $email = 'ponomarenko.t@gmail.com';
+        $this->MailPlugin()->send(
+            'New inspection report',
+            $email,
+            'checklist.phtml',
+            array(
+                'name' => 'Artem'
+            ),
+            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_11_at_2013-09-20.pdf'
+        );*/
     }
 }

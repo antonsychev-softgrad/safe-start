@@ -8,14 +8,11 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         minWidth: 150,
         maxWidth: 300,
         showAnimation: {
-            type: 'slide',
-            direction: 'right',
-            duration: 100
+            type: 'pop'
         },
         hideAnimation: {
-            type: 'slide',
-            direction: 'left',
-            duration: 200
+            type: 'pop',
+            out: 'true'
         },
         filterValue: '',
         filterField: 'text',
@@ -152,6 +149,12 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         var me = this;
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
+
+        this.vehiclesStore.on('load', function (store, records) {
+        }, this, {order: 'before'});
+
+        this.vehiclesStore.on('load', function (store, records) {
+        }, this, {order: 'after'});
 
         this.vehiclesStore.on('load', function (store, records) {
             this.updateNestedListStore();

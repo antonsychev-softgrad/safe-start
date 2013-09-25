@@ -7,6 +7,7 @@ use Zend\Mail;
 use Zend\Mail\Message;
 use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
+use Zend\Mime\Mime as Mime;
 
 class MailPlugin extends AbstractPlugin
 {
@@ -26,21 +27,32 @@ class MailPlugin extends AbstractPlugin
         $message = new Message();
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
-        if(!empty($pdfFileName)) {
-            $html = new MimeMessage;
-            $fileContent = file_get_contents($pdfFileName);
-            $attachment = new MimePart($fileContent);
-            $attachment->type = 'application/x-pdf';
-            $bodyMessage = new MimePart($html);
-            $bodyMessage->type = 'text/html';
-            $html->setParts(array($bodyMessage, $attachment));
+        $content  = new MimeMessage();
+        $htmlPart = new MimePart($html);
+        $htmlPart->type = 'text/html';
+        $content->setParts(array($htmlPart));
+
+        $contentPart = new MimePart($content->generateMessage());
+        $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
+        $bodyParts = array($contentPart);
+        if(!empty($pdfFileName) && file_exists($pdfFileName)) {
+            $attachment = new MimePart(fopen($pdfFileName, 'r'));
+            $attachment->type = 'application/pdf';
+            $attachment->encoding    = Mime::ENCODING_BASE64;
+            $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+            $attachment->filename = basename($pdfFileName);
+            $bodyParts[] = $attachment;
         }
 
-        $message
+        $body = new MimeMessage();
+        $body->setParts($bodyParts);
+
+        $message->setEncoding('utf-8')
             ->setSubject($subject)
-            ->setBody($html)
             ->setFrom($moduleConfig['mail']['from'])
-            ->setTo($to);
+            ->setTo($to)
+            ->setBody($body);
+
         $transport->send($message);
     }
 }
