@@ -271,6 +271,10 @@ class AdminController extends AdminAccessRestController
             $from->setTimestamp(time() - 366*24*60*60);
         }
 
+        $fromFirstMonthDay = date('1-m-Y', $from->getTimestamp());
+        $from = \DateTime::createFromFormat('d-m-Y', $fromFirstMonthDay);
+
+
         $to = null;
         if (isset($this->data->to) && !empty($this->data->to)) {
             $to = new \DateTime();
@@ -284,14 +288,48 @@ class AdminController extends AdminAccessRestController
             $range = $this->data->range;
         }
 
-        if ( $range == 'monthly' ) {
+        if ( $range == 'monthly' ) $delta = 30 * 24 * 60 * 60;
+        else $delta = 7 * 24 * 60 * 60;
 
+        $fromTime = $from->getTimestamp();
+        $toTime = $to->getTimestamp();
 
+        $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $statistic['total']['database_inspections'] = $query->getSingleScalarResult();
+
+        $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $statistic['total']['email_inspections'] = $query->getSingleScalarResult();
+
+        $chart = array();
+
+        while ($fromTime < $toTime) {
+            $date = date('Y-m-d', $fromTime);
+
+            $toTimeParam = new \DateTime();
+            $toTimeParam->setTimestamp($fromTime + $delta);
+            $fromTimeParam = new \DateTime();
+            $fromTimeParam->setTimestamp($fromTime);
+
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null');
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+            $value1 = $query->getSingleScalarResult();
+
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+            $value2 = $query->getSingleScalarResult();
+
+            $chart[] = array(
+                'date' => $date,
+                'value1' => $value1,
+                'value2' => $value2,
+            );
+
+            $fromTime = $fromTime + $delta;
         }
 
-        $dates = 1;
-
-        $statistic['chart'] = array();
+        $statistic['chart'] = $chart;
 
         $this->answer = array(
             'done' => true,

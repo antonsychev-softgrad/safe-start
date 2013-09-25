@@ -123,18 +123,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     },
                     {
                         type: 'line',
-                        highlight: {
-                            size: 7,
-                            radius: 7
-                        },
-                        fill: true,
                         xField: 'date',
                         yField: 'value',
+                        labelField: 'value',
+                        title: 'Inspections',
+                        style: {
+                            stroke: SafeStartApp.getBaseColors(0),
+                            miterLimit: 3,
+                            lineCap: 'miter',
+                            lineWidth: 2
+                        },
                         marker: {
                             type: 'circle',
-                            fillStyle: 'blue',
-                            radius: 10,
-                            lineWidth: 0
+                            fill: SafeStartApp.getBaseColors(0),
+                            radius: 10
                         }
                     }
                 ]
