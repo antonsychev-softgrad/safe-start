@@ -146,6 +146,22 @@
                 }
             }
         },
+        "/api/vehicle/getChecklistByHash": {
+            "description": "Get vehicle checklist by Hash",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/[id]/completeChecklist": {
             "description": "Complete vehicle's checklist with vehicle ID",
             "type": "object",

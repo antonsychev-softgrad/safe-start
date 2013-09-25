@@ -452,10 +452,12 @@ class CheckList extends BaseEntity
     {
         $value = null;
         $fieldsValue = json_decode($this->getFieldsData(), true);
-        foreach ($fieldsValue as $fieldValue) {
-            if ($fieldValue['id'] == $field->getId()) {
-                $value = $fieldValue['value'];
-                break;
+        if(is_array($fieldsValue)) {
+            foreach ($fieldsValue as $fieldValue) {
+                if ($fieldValue['id'] == $field->getId()) {
+                    $value = $fieldValue['value'];
+                    break;
+                }
             }
         }
         return $value;

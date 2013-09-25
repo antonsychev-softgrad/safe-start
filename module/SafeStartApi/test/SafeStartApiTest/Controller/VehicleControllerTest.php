@@ -14,6 +14,7 @@ use SafeStartApi\Fixture\Alerts;
 use SafeStartApi\Fixture\Companies;
 use SafeStartApi\Fixture\Fields;
 use SafeStartApi\Fixture\Vehicles;
+use SafeStartApi\Fixture\Checklists;
 use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
@@ -33,6 +34,7 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->addFixtures(new Companies());
         $this->addFixtures(new Fields());
         $this->addFixtures(new Alerts());
+        $this->addFixtures(new Checklists());
         parent::setUp();
     }
 
@@ -111,6 +113,26 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
+    public function testGetChecklistByHash()
+    {
+        $data = array(
+            'hash' => '523065c9ed073',
+        );
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/vehicle/getchecklistbyhash');
+
+        $this->assertResponseStatusCode(200);
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklistbyhash');
+        $data = json_decode($this->getResponse()->getContent());
+        print_r($data);
+        Bootstrap::$jsonSchemaValidator->check($data, $schema);
+        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+    }
+
     public function testGetAlertsByPeriod()
     {
         if (!$this->_loginUser('username', '12345')) {
@@ -135,11 +157,11 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
         $schema = Bootstrap::getJsonSchemaResponse('vehicle/getalerts');
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
-
+/*
     public function testCompleteChecklist()
     {
         if (!$this->_loginUser('username', '12345')) {

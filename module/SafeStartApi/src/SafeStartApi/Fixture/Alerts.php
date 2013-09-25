@@ -15,6 +15,7 @@ class Alerts extends AbstractFixture implements OrderedFixtureInterface
         $alert->setDescription('Description of alert 1');
         $alert->setField($this->getReference('field-4'));
         $alert->setVehicle($this->getReference('vehicle-1'));
+        $alert->setChecklist($this->getReference('checklist-1'));
         $manager->persist($alert);
         $manager->flush();
         //Associate a reference for other fixtures
@@ -24,6 +25,7 @@ class Alerts extends AbstractFixture implements OrderedFixtureInterface
         $alert->setDescription('Description of alert 2');
         $alert->setField($this->getReference('field-6'));
         $alert->setVehicle($this->getReference('vehicle-2'));
+        $alert->setChecklist($this->getReference('checklist-2'));
         $manager->persist($alert);
         $manager->flush();
         //Associate a reference for other fixtures
