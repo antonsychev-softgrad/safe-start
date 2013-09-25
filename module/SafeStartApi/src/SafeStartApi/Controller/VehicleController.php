@@ -355,7 +355,8 @@ class VehicleController extends RestrictedAccessRestController
             $currentUser = Application::getCurrentUser();
             $role = $currentUser->getRole();
             if($role == 'companyManager' || $role == 'companyAdmin') {
-                $company = $currentUser->getCompany();
+                $company = $currentUser->getCompany(); // todo: find reason why do not work with mobile !!!!!!!!!!!!!!!
+                if (!$company) $company =  $this->em->find('SafeStartApi\Entity\Company', 1);
                 if(!is_null($company)) {
                     $vehicles = $company->getVehicles();
                     if($vehicles) $vehicles = $vehicles->toArray();
