@@ -11,7 +11,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
     config: {
         name: 'vehicle-report',
-        cls: 'sfa-vehicle-inspection',
+        cls: 'sfa-vehicle-inspection sfa-vehicle-report',
         layout: {
             type: 'card'
         },
@@ -23,6 +23,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     {
                         xtype: 'datepickerfield',
                         name: 'from',
+                        cls: 'sfa-datepickerfield',
                         label: 'From',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
@@ -33,6 +34,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     {
                         xtype: 'datepickerfield',
                         name: 'to',
+                        cls: 'sfa-datepickerfield',
                         label: 'To',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
