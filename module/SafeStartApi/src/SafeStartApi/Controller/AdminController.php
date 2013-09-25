@@ -289,7 +289,7 @@ class AdminController extends AdminAccessRestController
 
         }
 
-        $dates =
+        $dates = 1;
 
         $statistic['chart'] = array();
 
