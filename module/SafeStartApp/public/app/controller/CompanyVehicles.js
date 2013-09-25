@@ -475,7 +475,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionPanel.clearChecklist();
             vehicleInspectionPanel.down('sheet[cls=sfa-messagebox-confirm]').destroy();
             var vehicleId = vehicleInspectionPanel.vehicleId;
-            var inspectionsNode = navMain.getStore().findRecord('id', vehicleId).findChild('action', 'inspections');
             inspectionsPanel.inspectionsStore.on({
                 load: function (store, records) {
                     var record = store.findRecord('hash', result.checklist);
