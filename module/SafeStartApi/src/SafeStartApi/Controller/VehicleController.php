@@ -242,7 +242,7 @@ class VehicleController extends RestrictedAccessRestController
                             $addNewAlert = false;
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
-                            if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->image));
+                            if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
                         }
                     }
                 }
