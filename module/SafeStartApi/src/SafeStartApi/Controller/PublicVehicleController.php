@@ -160,7 +160,8 @@ class PublicVehicleController extends PublicAccessRestController
     }
 
     public function sendTestEmailAction() {
-    /*    $email = 'ponomarenko.t@gmail.com';
+        /*
+        $email = 'test21141@gmail.com';
         $this->MailPlugin()->send(
             'New inspection report',
             $email,
@@ -168,7 +169,8 @@ class PublicVehicleController extends PublicAccessRestController
             array(
                 'name' => 'Artem'
             ),
-            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_11_at_2013-09-20.pdf'
-        );*/
+            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_113_at_2013-09-17.pdf'
+        );
+        */
     }
 }

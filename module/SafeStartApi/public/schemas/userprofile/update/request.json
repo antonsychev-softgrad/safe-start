@@ -31,6 +31,16 @@
                     "description": "Email",
                     "type": "string",
                     "required": true
+                },
+                "newPassword": {
+                    "description": "New password",
+                    "type": "string",
+                    "required": false
+                },
+                "confirmPassword": {
+                    "description": "Confirm password",
+                    "type": "string",
+                    "required": false
                 }
             }
         }

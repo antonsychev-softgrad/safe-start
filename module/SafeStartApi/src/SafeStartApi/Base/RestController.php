@@ -22,6 +22,7 @@ class RestController extends AbstractActionController
     const COMPANY_LIMIT_ERROR = 4006;
     const KEY_ALREADY_EXISTS_ERROR = 4007;
     const ALREADY_ADMIN_ERROR = 4008;
+    const PASS_NOT_EQUAL = 4009;
 
     public $moduleConfig;
 
@@ -205,6 +206,13 @@ class RestController extends AbstractActionController
             'errorMessage' => $msg ? $msg : 'Item with such data already exists',
         );
         return $this->AnswerPlugin()->format($this->answer, self::KEY_ALREADY_EXISTS_ERROR);
+    }
+    protected function _showPassIsNotEqual($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'Passwords are not equal',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::PASS_NOT_EQUAL);
     }
 
     protected function _showAdminAlreadyInUse()

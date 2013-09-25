@@ -30,12 +30,12 @@ Ext.define('SafeStartApp.view.forms.UserProfile', {
                         items: [
                             {
                                 xtype: 'textfield',
-                                name: 'new_password',
+                                name: 'newPassword',
                                 label: 'New'
                             },
                             {
                                 xtype: 'textfield',
-                                name: 'confirm_password',
+                                name: 'confirmPassword',
                                 label: 'Confirm'
                             }
                         ]
