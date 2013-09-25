@@ -258,4 +258,35 @@ class AdminController extends AdminAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getStatisticAction()
+    {
+        $statistic = array();
+
+        $from = null;
+        if (isset($this->data->form) && !empty($this->data->form)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->form);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $range = 'monthly';
+        if (isset($this->data->range) && !empty($this->data->range)) {
+            $range = $this->data->range;
+        }
+
+        $statistic['chart'] = array();
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $statistic
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
 }
