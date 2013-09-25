@@ -336,7 +336,7 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
 
-        $period = !is_null($this->data->period) ? $this->data->period : 0;
+        $period = isset($this->data->period) ? (int) $this->data->period : 0;
         $time = time() - $period;
 
         if (isset($this->data->id)) {

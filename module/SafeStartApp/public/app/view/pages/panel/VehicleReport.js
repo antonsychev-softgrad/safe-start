@@ -87,11 +87,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             fontSize: 15
                         },
                         fields: 'value',
-                        grid: {
-                            odd: {
-                                fill: '#e8e8e8'
-                            }
-                        },
                         minimum: 0
                     },
                     {
@@ -123,18 +118,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     },
                     {
                         type: 'line',
-                        highlight: {
-                            size: 7,
-                            radius: 7
-                        },
-                        fill: true,
                         xField: 'date',
                         yField: 'value',
+                        labelField: 'value',
+                        title: 'Inspections',
+                        style: {
+                            stroke: "#115fa6",
+                            miterLimit: 3,
+                            lineCap: 'miter',
+                            lineWidth: 2
+                        },
                         marker: {
                             type: 'circle',
-                            fillStyle: 'blue',
-                            radius: 10,
-                            lineWidth: 0
+                            fill: "#115fa6",
+                            radius: 10
                         }
                     }
                 ]
@@ -145,9 +142,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
     loadData: function (record) {
         this.record = record;
-        var from = new Date();
-        from.setMonth(from.getMonth() - 1);
-        this.down('datepickerfield[name=from]').setValue(from);
+        var date = new Date();
+        date.setMonth(date.getMonth() - 1);
+        this.down('datepickerfield[name=from]').setValue(date);
+        this.add(
+
+        );
         this.updateDataView();
     },
 
