@@ -4,7 +4,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
     alias: 'widget.SafeStartVehicleReportPanel',
 
     requires: [
-
+        'Ext.chart.axis.Numeric',
+        'Ext.chart.axis.Category',
+        'Ext.chart.series.Line'
     ],
 
     record: null,

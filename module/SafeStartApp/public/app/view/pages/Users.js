@@ -15,7 +15,6 @@ Ext.define('SafeStartApp.view.pages.Users', {
         title: 'Users',
         iconCls: 'user',
         styleHtmlContent: true,
-        scrollable: false,
         layout: 'hbox',
         tab: {
             action: 'users'
@@ -111,7 +110,6 @@ Ext.define('SafeStartApp.view.pages.Users', {
             cls: 'sfa-info-container',
             xtype: 'panel',
             name: 'user-info',
-            scrollable: false,
             layout: 'card',
             flex: 2,
             minWidth: 150
