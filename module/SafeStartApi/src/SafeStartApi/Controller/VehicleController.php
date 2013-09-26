@@ -352,17 +352,12 @@ class VehicleController extends RestrictedAccessRestController
             $items = $query->getResult();
 
         } else {
-            $currentUser = Application::getCurrentUser();
+            $currentUser = $this->authService->getIdentity();
             $role = $currentUser->getRole();
             if($role == 'companyManager' || $role == 'companyAdmin') {
-                $company = $currentUser->getCompany(); // todo: find reason why do not work with mobile !!!!!!!!!!!!!!!
-                if (!$company) $company =  $this->em->find('SafeStartApi\Entity\Company', 1);
-                if(!is_null($company)) {
-                    $vehicles = $company->getVehicles();
-                    if($vehicles) $vehicles = $vehicles->toArray();
-                } else {
-                    $vehicles = array();
-                }
+                $company = $currentUser->getCompany();
+                $vehicles = $company->getVehicles();
+                if($vehicles) $vehicles = $vehicles->toArray();
             } else {
                 $vehicles = $currentUser->getVehicles();
                 $respVehicles = $currentUser->getResponsibleForVehicles();
@@ -374,7 +369,7 @@ class VehicleController extends RestrictedAccessRestController
             }
 
             if(count($vehicles) > 0) {
-                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
+                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2 AND a.deleted = 0');
                 $query->setParameter(1, $vehicles);
                 $query->setParameter(2, $time);
                 $items = $query->getResult();
