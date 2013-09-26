@@ -350,7 +350,12 @@ class VehicleController extends RestrictedAccessRestController
             $query->setParameter(1, $vehicle);
             $query->setParameter(2, $time);
             $items = $query->getResult();
-
+            $alerts = array();
+            if (!empty($items)) {
+                foreach ($items as $item) {
+                    $alerts[] = $item->toArray();
+                }
+            }
         } else {
             $currentUser = $this->authService->getIdentity();
             $cache = \SafeStartApi\Application::getCache();
@@ -373,10 +378,12 @@ class VehicleController extends RestrictedAccessRestController
                     $items = array();
                 }
                 $alerts = array();
-                foreach ($items as $item) {
-                    $alerts[] = $item->toArray();
+                if (!empty($items)) {
+                    foreach ($items as $item) {
+                        $alerts[] = $item->toArray();
+                    }
                 }
-               // $cache->setItem($cashKey, $alerts); todo: we mast use tags for clear this cache key!!!!
+                // $cache->setItem($cashKey, $alerts); todo: we mast use tags for clear this cache key!!!!
             }
         }
 
