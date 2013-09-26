@@ -45,6 +45,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleUsers', {
                 {
                     xtype: 'formpanel',
                     margin: '2 20 2 20',
+                    scrollable: false,
                     items: [
                         {
                             xtype: 'hiddenfield',
@@ -75,6 +76,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleUsers', {
         if (this.users.length) {
             this.add({
                 xtype: 'formpanel',
+                scrollable: false,
                 items: [
                     {
                         xtype: 'toolbar',
