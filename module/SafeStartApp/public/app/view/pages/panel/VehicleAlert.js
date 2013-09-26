@@ -28,7 +28,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 tpl: [
                     '<div>'+
                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}/{vehicle.registration}</b>)</div>'+
-                       '<div>Fault: <b>{alert_description}</b> {description} </div>'+
+                       '<div>Fault: <b>{alert_description}</b></div>'+
+                       '<div>Description: {description} </div>'+
                        '<div>Added by: {user.firstName} {user.lastName} at {title} </div>'+
                     '</div>'
                 ].join('')
