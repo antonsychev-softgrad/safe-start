@@ -111,7 +111,11 @@ class RestController extends AbstractActionController
         $ip = $servParam->get('REMOTE_ADDR', '');
         $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
         $device = isset($this->data->device) ? $this->data->device : '';
-        return $ip . '_' . $browser . '_' . $device;
+        $key =  $ip . '-' . $browser . '-' . $device;
+        $key = preg_replace('/[^a-z0-9_\+\-]/i', '', $key);
+        var_dump($key);
+        exit();
+        return $key;
     }
 
     protected function _parseRequestFormat()
