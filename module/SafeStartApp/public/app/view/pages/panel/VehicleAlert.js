@@ -30,9 +30,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     '<div class="name">{vehicle.title}' +
                         '<span>{vehicle.plantId}</span>' +
                         '</div>' +
-                        '<div class="name">{user.firstName} {user.lastName} at {title}' +
+                        '<div class="name sfa-no-float">{user.firstName} {user.lastName} at {title}' +
                         '<span>{alert_description}</span>' +
-                        '<span>{description}</span></div>',
+                        '<span class="it2">{description}</span></div>',
                     '</div>'
                 ].join('')
             },
@@ -78,9 +78,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     '<div class="sfa-alert-comments">',
                     '<h3>Comments:</h3>',
                     '<tpl for="comments">',
+                    '<div class="sfa-item">',
                     '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
-                    '<span>{content}</span>',
                     '</div>',
+                    '<span class="sfa-comment-content">{content}</span><div class="clear"></div></div>',
                     '</tpl>',
                     '</div>'
                 ].join('')
