@@ -415,6 +415,7 @@ class VehicleController extends RestrictedAccessRestController
             }
             $page = (int)$this->getRequest()->getQuery('page');
             $limit = (int)$this->getRequest()->getQuery('limit');
+            $inspections = array_reverse($inspections);
             if (count($inspections) < ($page - 1) * $limit) {
                 $this->answer = array();
                 return $this->AnswerPlugin()->format($this->answer);
