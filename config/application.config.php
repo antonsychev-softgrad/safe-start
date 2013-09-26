@@ -46,7 +46,7 @@ return array(
 
         'module_map_cache_key' => 'safe_start_api_module_map',
 
-        'cache_dir' => 'data/config/',
+        'cache_dir' => 'data/cache/modulecache',
 
         // Use the $env value to determine the state of the flag
         'check_dependencies' => ($env != 'prod'),
