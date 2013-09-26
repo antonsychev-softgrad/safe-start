@@ -2,7 +2,10 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Main'
+        'SafeStartApp.view.pages.toolbar.Main',
+        'Ext.chart.axis.Numeric',
+        'Ext.chart.axis.Category',
+        'Ext.chart.series.Line'
     ],
 
     xtype: 'SafeStartSystemStatisticPage',
@@ -146,13 +149,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
 
         SafeStartApp.AJAX('admin/getstatistic', post, function (result) {
             if (!self.chartAdded) {
-                try{
-                    self.addChart();
-                    self.chartAdded = true;
-                } catch (e) {
-                    console.log(e);
-                    return;
-                }
+                self.addChart();
+                self.chartAdded = true;
             }
             if (result.statistic) {
                 if (result.statistic.total) {
