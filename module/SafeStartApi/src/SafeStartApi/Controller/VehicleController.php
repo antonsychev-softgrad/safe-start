@@ -353,21 +353,11 @@ class VehicleController extends RestrictedAccessRestController
 
         } else {
             $currentUser = $this->authService->getIdentity();
-            $role = $currentUser->getRole();
-            if($role == 'companyManager' || $role == 'companyAdmin') {
-                $company = $currentUser->getCompany();
-                $vehicles = $company->getVehicles();
-                if($vehicles) $vehicles = $vehicles->toArray();
-            } else {
-                $vehicles = $currentUser->getVehicles();
-                $respVehicles = $currentUser->getResponsibleForVehicles();
-
-                $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
-                $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
-
-                $vehicles = array_merge($vehicles, $respVehicles);
-            }
-
+            $vehicles = $currentUser->getVehicles();
+            $respVehicles = $currentUser->getResponsibleForVehicles();
+            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+            $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
+            $vehicles = array_merge($vehicles, $respVehicles);  
             if(count($vehicles) > 0) {
                 $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2 AND a.deleted = 0');
                 $query->setParameter(1, $vehicles);
