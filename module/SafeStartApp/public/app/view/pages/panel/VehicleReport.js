@@ -5,7 +5,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
     requires: [
         'Ext.chart.axis.Numeric',
-        'Ext.chart.axis.Category',
+        'Ext.chart.axis.Time',
         'Ext.chart.series.Line'
     ],
 
@@ -124,7 +124,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                 },
                 animate: true,
                 store: {
-                    fields: ['date', 'value']
+                    fields: ['date', 'value'],
+                    data: [
+                        {'date': 'y-m-d', 'value': 0}
+                    ]
                 },
                 axes: [
                     {
@@ -153,17 +156,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     }
                 ],
                 series: [
-                    {
-                        type: 'bar',
-                        xField: 'date',
-                        yField: 'value',
-                        style: {
-                            minGapWidth: 1,
-                            maxBarWidth: 30,
-                            barWidth: 30,
-                            minBarWidth: 10
-                        }
-                    },
                     {
                         type: 'line',
                         xField: 'date',
