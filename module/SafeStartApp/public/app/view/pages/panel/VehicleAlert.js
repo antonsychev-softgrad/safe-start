@@ -26,13 +26,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             {
                 id: 'SafeStartVehicleAlertContent' + this.uniqueId,
                 tpl: [
-                    '<div class="top">',
-                    '<div class="name">{vehicle.title}' +
-                        '<span>{vehicle.plantId}</span>' +
-                        '</div>' +
-                        '<div class="name sfa-no-float">{user.firstName} {user.lastName} at {title}' +
-                        '<span>{alert_description}</span>' +
-                        '<span class="it2">{description}</span></div>',
+                    '<div>'+
+                       '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}/{vehicle.registration}</b>)</div>'+
+                       '<div>Fault: <b>{alert_description}</b> {description} </div>'+
+                       '<div>Added by: {user.firstName} {user.lastName} at {title} </div>'+
                     '</div>'
                 ].join('')
             },
