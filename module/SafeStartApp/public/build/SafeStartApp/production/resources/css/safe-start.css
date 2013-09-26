@@ -948,6 +948,9 @@ div.logo {
         padding-left: 28px;
         width: 100%;
     }
+    .sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
+        margin-top: 23px !important;
+    }
 }
 
 @media screen and (max-width: 800px) {
@@ -963,6 +966,9 @@ div.logo {
     .sfa-info-container .x-button {padding: 0 15px 5px !important; margin: 0 3px !important;}
     .sfa-info-container .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
         font-size: 18px; padding-top: 5px;
+    }
+    .sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
+        margin-top: 24px !important;
     }
 }
 
@@ -998,7 +1004,7 @@ div.logo {
     float: left;
     height: 62px;
     width: 62px;
-    margin: 0px 10px 0 0;
+    margin: 9px 10px 0 0;
     background-size: cover;
     background-position: center center;
     background: #ddd;
@@ -1198,20 +1204,6 @@ color: #558FAC;
 .x-img.x-img-image.x-img-background.x-paint-monitored.x-size-monitored.x-sized {
     margin-top: 15px;
 }
-.sfa-alert-information {
-    padding: 0 10px 15px;
-}
-.sfa-alert-information .x-field-textarea.x-field-labeled {
-    margin-top: 15px;
-}
-
-.sfa-alert-information .x-field {
-    background: none;
-}
-
-.sfa-alert-information .top {
-    color: #565555;
-}
 
 .sfa-atatus {
     margin-top: 15px;
@@ -1277,7 +1269,7 @@ color: #558FAC;
 }
 
 .sfa-vehicle-inspection.sfa-vehicle-report .top {
-    font-size: 16px;
+    font-size: 22px;
     color: #666;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .top > div {
@@ -1290,27 +1282,10 @@ color: #558FAC;
     display: block !important;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
-    margin-top: 15px;
+    margin-top: 17px;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .x-field-input {
     min-width: 1em;
-}
-
-.sfa-alert-information .top .sfa-no-float {
-    float: none;
-    width: auto;
-    margin-left: 211px;
-}
-.sfa-alert-information .top .sfa-no-float span {
-    display: inline-block;
-}
-.sfa-alert-information .top .sfa-no-float span.it2 {
-    padding-left: 10px;
-    color: #000;
-}
-.sfa-alert-information .top {
-    height: auto;
-    padding: 20px 0 5px;
 }
 
 .clear {
@@ -1326,10 +1301,42 @@ color: #558FAC;
 .sfa-alert-comments .sfa-item:nth-child(even) {
     color: #99A899;
 }
+.sfa-alert-comments .sfa-item .name {
+    min-height: 49px;
+}
 span.sfa-comment-content {
     display: block;
     margin-left: 41%;
+    font-size: 22px;
 }
 .sfa-alert-comments .clear {
     margin-bottom: 15px;
+}
+
+.sfa-alert-information {
+    padding: 0 10px 15px;
+}
+.sfa-alert-information .x-field {
+    background: none;
+}
+.sfa-alert-information .x-field-textarea.x-field-labeled {
+    margin-top: 15px;
+}
+
+.sfa-alert-info {
+    padding: 15px 0 5px;
+    color: #565555;
+    font-size: 22px;
+}
+
+.sfa-vehicle-inspection.sfa-vehicle-report .x-layout-box > .x-layout-box-item {
+    display: block !important;
+}
+
+.sfa-vehicle-inspection.sfa-vehicle-report .x-button.x-button-action .x-button-icon.x-shown.refresh {
+    top: 3px;
+}
+
+.sfa-vehicle-inspection.sfa-vehicle-report .x-toolbar-dark.x-dock-item.x-docked-top .x-pack-start .x-form-label {
+    padding-bottom: 6px;
 }
