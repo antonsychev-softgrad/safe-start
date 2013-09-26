@@ -230,4 +230,6 @@ return array(
         'limitForUnloggedUsers' => 5000,
         'limitTime' => 60,
     ),
+    'date_format' => 'Y-m-d',
+    'time_format' => 'H:i',
 );

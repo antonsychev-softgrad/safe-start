@@ -4,7 +4,7 @@ Ext.define('SafeStartApp.view.pages.Vehicles', {
         'SafeStartApp.view.pages.toolbar.Vehicles',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
         'SafeStartApp.view.pages.panel.VehicleInspection',
-        'SafeStartApp.store.Vehicles'
+        'SafeStartApp.store.MenuVehicles'
     ],
     alias: 'widget.SafeStartVehiclesPage',
 
