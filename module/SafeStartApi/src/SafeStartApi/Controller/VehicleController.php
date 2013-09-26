@@ -243,6 +243,7 @@ class VehicleController extends RestrictedAccessRestController
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
                             if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
+                            $newAlerts[] = $filedAlert;
                         }
                     }
                 }
@@ -254,8 +255,9 @@ class VehicleController extends RestrictedAccessRestController
                     $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
                     $newAlert->setVehicle($vehicle);
                     $this->em->persist($newAlert);
+                    $newAlerts[] = $newAlert;
                 }
-                $newAlerts[] = $newAlert;
+
             }
             $this->em->flush();
         }
