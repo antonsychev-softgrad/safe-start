@@ -237,7 +237,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                         if (value.id == field.fieldId) {
                             if (value.value) {
                                 var date = new Date(value.value);
-                                if (! isNaN( d.getTime() ) ) {
+                                if (! isNaN( date.getTime() ) ) {
                                     items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
                                 } else {
                                     items.push(this.createContainer(field.fieldName, 'N/A'));
