@@ -454,6 +454,8 @@ class CompanyController extends RestrictedAccessRestController
             $alerts = $this->getAlertsByCompany($company, $filters);
         }
 
+        $alerts = array_reverse($alerts);
+
         if ($alerts) {
             if (count($alerts) < ($page - 1) * $limit) {
                 $this->answer = array();
