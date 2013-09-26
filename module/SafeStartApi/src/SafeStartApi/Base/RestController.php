@@ -113,8 +113,6 @@ class RestController extends AbstractActionController
         $device = isset($this->data->device) ? $this->data->device : '';
         $key =  $ip . '-' . $browser . '-' . $device;
         $key = preg_replace('/[^a-z0-9_\+\-]/i', '', $key);
-        var_dump($key);
-        exit();
         return $key;
     }
 
