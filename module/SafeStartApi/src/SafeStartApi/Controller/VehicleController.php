@@ -376,7 +376,7 @@ class VehicleController extends RestrictedAccessRestController
                 foreach ($items as $item) {
                     $alerts[] = $item->toArray();
                 }
-                $cache->setItem($cashKey, $alerts);
+               // $cache->setItem($cashKey, $alerts); todo: we mast use tags for clear this cache key!!!!
             }
         }
 
