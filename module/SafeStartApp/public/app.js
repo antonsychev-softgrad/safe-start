@@ -3,17 +3,6 @@ Ext.Loader.setPath({
     'Ext': 'touch/src',
     'Ext.ux': 'app/ux'
 });
-Ext.override('Ext.viewport.Default', {
-    doBlurInput: function (e) {
-        var target = e.target,
-            focusedElement = this.focusedElement;
-        //In IE9/10 browser window loses focus and becomes inactive if focused element is <body>. So we shouldn't call blur for <body>
-        if (focusedElement && focusedElement.nodeName.toUpperCase() != 'BODY' && !this.isInputRegex.test(target.tagName)) {
-            delete this.focusedElement;
-            if (typeof focusedElement == 'object' && typeof focusedElement.blur == 'function')  focusedElement.blur();
-        }
-    }
-});
 //</debug>
 SafeStartApp = SafeStartApp || {
     version: "1.0",
@@ -197,6 +186,22 @@ Ext.application({
 
     launch: function () {
         var self = this;
+
+        if (Ext.Viewport.self.getName() === 'Ext.viewport.Default') {
+            Ext.Viewport.applyAutoBlurInput(false);
+            Ext.Viewport.doBlurInput = Ext.Function.bind(function (e) {
+                var target = e.target,
+                    focusedElement = this.focusedElement;
+                if (focusedElement && focusedElement.nodeName.toUpperCase() != "BODY" && !this.isInputRegex.test(target.tagName)) {
+                    delete this.focusedElement;
+                    if (typeof focusedElement == 'object' && typeof focusedElement.blur == 'function') {
+                        focusedElement.blur();
+                    }
+                }
+            }, Ext.Viewport);
+            var clickEvent = (Ext.feature.has.Touch) ? "touchstart" : "mousedown";
+            Ext.Viewport.addWindowListener(clickEvent, Ext.Viewport.doBlurInput, false)
+        }
 
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();
