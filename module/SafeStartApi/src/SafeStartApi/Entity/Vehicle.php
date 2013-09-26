@@ -912,7 +912,7 @@ class Vehicle extends BaseEntity
                 $alerts[] = $alert;
             }
         }
-        return array_reverse($alerts);
+        return $alerts;
     }
 
     /**

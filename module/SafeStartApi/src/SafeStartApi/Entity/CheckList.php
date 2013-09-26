@@ -425,7 +425,7 @@ class CheckList extends BaseEntity
             }
         }
 
-        return $alerts;
+        return array_reverse($alerts);
     }
 
     /**
