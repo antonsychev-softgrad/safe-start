@@ -27,25 +27,29 @@ class MailPlugin extends AbstractPlugin
         $message = new Message();
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
-        $content  = new MimeMessage();
-        $htmlPart = new MimePart($html);
-        $htmlPart->type = 'text/html';
-        $content->setParts(array($htmlPart));
-
-        $contentPart = new MimePart($content->generateMessage());
-        $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
-        $bodyParts = array($contentPart);
         if(!empty($pdfFileName) && file_exists($pdfFileName)) {
+
+            $content  = new MimeMessage();
+            $htmlPart = new MimePart($html);
+            $htmlPart->type = 'text/html';
+            $content->setParts(array($htmlPart));
+
+            $contentPart = new MimePart($content->generateMessage());
+            $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
+            $bodyParts = array($contentPart);
+
             $attachment = new MimePart(fopen($pdfFileName, 'r'));
             $attachment->type = 'application/pdf';
             $attachment->encoding    = Mime::ENCODING_BASE64;
             $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
             $attachment->filename = basename($pdfFileName);
             $bodyParts[] = $attachment;
-        }
 
-        $body = new MimeMessage();
-        $body->setParts($bodyParts);
+            $body = new MimeMessage();
+            $body->setParts($bodyParts);
+        } else {
+            $body = $html;
+        }
 
         $message->setEncoding('utf-8')
             ->setSubject($subject)

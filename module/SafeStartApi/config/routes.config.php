@@ -63,13 +63,20 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-checklist-by-hash' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/getchecklistbyhash',
+                    'defaults' => array(
+                        'controller' => 'PublicVehicle',
+                        'action' => 'getchecklistbyhash',
+                    ),
+                ),
+            ),
             'get-vehicle-alerts' => array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/vehicle/getalerts',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                    ),
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'getalerts',

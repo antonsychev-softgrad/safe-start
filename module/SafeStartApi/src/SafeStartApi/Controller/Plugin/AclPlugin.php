@@ -78,6 +78,11 @@ class AclPlugin extends AbstractPlugin
                     'action' => 'viewSystemSettingsPage',
                     'access' => 'allow'
                 ),
+                array(
+                    'resource' => 'adminPanel',
+                    'action' => 'viewSystemStatisticPage',
+                    'access' => 'allow'
+                ),
 
             )
         ));

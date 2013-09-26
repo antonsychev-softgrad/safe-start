@@ -1,5 +1,5 @@
 {
-    "description": "User login request",
+    "description": "Send contact",
     "type": "object",
     "properties": {
         "meta": {
@@ -16,31 +16,22 @@
         "data": {
             "description": "Request data",
             "type": "object",
+            "required": true,
             "properties": {
-                "firstName": {
-                    "description": "First name",
+                "name": {
+                    "description": "Name",
                     "type": "string",
                     "required": true
-                },
-                "lastName": {
-                    "description": "Last name",
-                    "type": "string",
-                    "required": false
                 },
                 "email": {
                     "description": "Email",
                     "type": "string",
                     "required": true
                 },
-                "newPassword": {
-                    "description": "New password",
+                "message": {
+                    "description": "Message",
                     "type": "string",
-                    "required": false
-                },
-                "confirmPassword": {
-                    "description": "Confirm password",
-                    "type": "string",
-                    "required": false
+                    "required": true
                 }
             }
         }

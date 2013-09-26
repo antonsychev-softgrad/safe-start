@@ -32,42 +32,7 @@ class UserControllerTest extends HttpControllerTestCase
         parent::setUp();
     }
 
-    public function testLoginActionCanBeAccessed()
-    {
-        $data = array(
-            'username' => 'username',
-            'password' => '12345',
-        );
-
-        $this->getRequest()
-            ->setMethod('POST')
-            ->setContent(json_encode($this->_setApiResponseFormat($data)));
-         //   ->setPost(new Parameters($this->_setApiResponseFormat($data))); // two ways of sending request
-
-        $this->dispatch('/api/user/login');
-
-        $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('user/login');
-        $data = json_decode($this->getResponse()->getContent());
-        Bootstrap::$jsonSchemaValidator->check($data, $schema);
-        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
-    }
-/*
-    public function testLoginActionBadRequest() {
-        $data = array(
-            'username' => 'username',
-        );
-
-        $this->getRequest()
-            ->setMethod('POST')
-          ->setPost(new Parameters($this->_setApiResponseFormat($data)));
-
-        $this->dispatch('/api/user/login');
-
-        $this->assertResponseStatusCode(400);
-    }
-
-    public function testLoginActionCanNotBeAccessed()
+    public function testLoginAction()
     {
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
@@ -78,11 +43,12 @@ class UserControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
 
         $data = json_decode($this->getResponse()->getContent());
+        print_r($data);
         $schema = Bootstrap::getJsonSchemaResponse('user/login');
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
         $this->assertTrue($data->meta->errorCode === \SafeStartApi\Base\RestController::USER_ALREADY_LOGGED_IN_ERROR);
 
     }
-*/
+
 }

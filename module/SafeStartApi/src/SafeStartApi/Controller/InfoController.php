@@ -107,4 +107,32 @@ class InfoController extends RestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function contactAction()
+    {
+        $name = $this->data->name;
+        $email = $this->data->email;
+        $message = $this->data->message;
+
+        if (!$this->ValidationPlugin()->isValidEmail($email)) $this->_showBadRequest();
+
+        $config = $this->getServiceLocator()->get('Config');
+
+        $this->MailPlugin()->send(
+            'Message from contact form',
+            $config['params']['emailForContacts'],
+            'contact.phtml',
+            array(
+                'name' => $name,
+                'message' => $message,
+                'email' => $email,
+            )
+        );
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
 }

@@ -9,6 +9,7 @@ return array(
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
+        'emailForContacts' => 'test21141@gmail.com',
     ),
     'router' => array(
         'routes' => $routes

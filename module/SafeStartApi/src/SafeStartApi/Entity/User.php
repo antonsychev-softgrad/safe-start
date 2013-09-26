@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 // @UniqueEntity("email")
@@ -29,8 +30,8 @@ class User extends BaseEntity
     {
         $this->enabled = true;
         $this->deleted = false;
-        $this->responsibleForVehicles = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->responsibleForVehicles = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
     }
 
     /**
@@ -687,6 +688,12 @@ class User extends BaseEntity
      */
     public function getVehicles()
     {
-        return $this->vehicles;
+        $vehicles = new ArrayCollection();
+        foreach($this->vehicles as $vehicle) {
+            if(!($vehicle->getDeleted()) && ($vehicle->getEnabled())) {
+                $vehicles->add($vehicle);
+            }
+        }
+        return $vehicles;
     }
 }

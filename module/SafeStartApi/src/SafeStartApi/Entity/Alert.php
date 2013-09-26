@@ -65,7 +65,7 @@ class Alert extends BaseEntity
      *
      * PHP array using json_encode() and json_decode()
      */
-    protected $images;
+    protected $images = '';
 
     /**
      * @ORM\Column(type="string")
@@ -150,7 +150,7 @@ class Alert extends BaseEntity
      */
     public function getImages()
     {
-        return json_decode($this->images);
+        return $this->images ? json_decode($this->images, true) : array();
     }
 
     /**
@@ -259,16 +259,16 @@ class Alert extends BaseEntity
         $data = array(
             'id' => $this->getId(),
             'status' => $this->getStatus(),
-            'title' => $this->check_list->getCreationDate()->format('Y-m-d H:i'),
+            'title' => $this->check_list ? $this->check_list->getCreationDate()->format('Y-m-d H:i') : '',
             'alert_description' => $this->field ? $this->field->getAlertDescription() : '',
             'field' => $this->field ? $this->field->toArray() : null,
             'vehicle' => $this->getVehicle()->toInfoArray(),
-            'user' => $this->check_list->getUser()->toInfoArray(),
+            'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : array(),
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
             'comments' => $this->getComments(),
-            'creation_date' => $this->getCreationDate()
+            'creation_date' => time($this->getCreationDate()),
         );
         return $data;
     }

@@ -127,7 +127,7 @@ class PdfPlugin extends AbstractPlugin
 
                         $alertInfo          = new \stdClass();
                         $alertInfo->title   = $alert->getField()->getAlertTitle();
-                        $alertInfo->description   = $alert->getField()->getAlertDescription();
+                        $alertInfo->description   = $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle();
                         $alertInfo->comment = $alert->getDescription();
 
                         $images     = array();

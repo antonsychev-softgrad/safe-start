@@ -42,9 +42,9 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             itemtap: function (nestedlist, list, index, target, record) {
                 this._activeNode = record;
                 if (record.get('depth') == 1) {
-                    this.fireEvent('selectVehicle', record);
+                    this.fireEvent('selectVehicle', record, false);
                 } else if (record.get('depth') == 2) {
-                    this.fireEvent('selectAction', record);
+                    this.fireEvent('selectAction', record, false);
                 }
             } 
         }
@@ -96,7 +96,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         return this.vehiclesStore;
     },
 
-    tapOnActionNode: function (action, vehicleId) {
+    tapOnActionNode: function (action, vehicleId, silent) {
         var activeNode = this._activeNode,
             actionNode = null;
 
@@ -108,7 +108,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             vehicleNode = activeNode.findChild('id', vehicleId);
             this.on({
                 activeitemchange: function () {
-                    this.tapOnActionNode(action, vehicleId);
+                    this.tapOnActionNode(action, vehicleId, silent);
                 },
                 single: true
             });
@@ -133,7 +133,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                     this.goToLeaf(actionNode);
                     this.getActiveItem().select(actionNode);
                     this._activeNode = actionNode;
-                    this.fireEvent('selectAction', actionNode);
+                    this.fireEvent('selectAction', actionNode, silent);
                 },
                 single: true
             });
@@ -142,7 +142,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.goToLeaf(actionNode);
         this.getActiveItem().select(actionNode);
         this._activeNode = actionNode;
-        this.fireEvent('selectAction', actionNode);
+        this.fireEvent('selectAction', actionNode, silent);
     },
 
     initialize: function() {

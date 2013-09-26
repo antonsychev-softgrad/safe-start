@@ -73,11 +73,11 @@
     "css": [
         {
             "path": "resources/css/app.css",
-            "update": "delta"
+            "update": "full"
         },
         {
             "path": "resources/css/safe-start.css",
-            "update": "delta"
+            "update": "full"
         }
     ],
 

@@ -192,7 +192,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         if (depth > 1) {
             return item;
         }
-        this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
+        try {
+            this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
+        } catch (e) {
+            if (window['qbaka']) qbaka.reportException(e);
+        }
+
     },
 
     createFields: function (fields, values, alerts, title, depth) {
@@ -232,7 +237,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                         if (value.id == field.fieldId) {
                             if (value.value) {
                                 var date = new Date(value.value);
-                                items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
+                                if (! isNaN( date.getTime() ) ) {
+                                    items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
+                                } else {
+                                    items.push(this.createContainer(field.fieldName, 'N/A'));
+                                }
                             } else {
                                 items.push(this.createContainer(field.fieldName, 'N/A'));
                             }

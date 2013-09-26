@@ -32,6 +32,7 @@ SafeStartApp = SafeStartApp || {
 Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
+    mainMenuLoaded: false,
     dateFormat: 'm/d/Y',
     timeFormat: 'H:i',
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
@@ -97,6 +98,8 @@ Ext.apply(SafeStartApp, {
             SafeStartApp.userModel.setData(result.userInfo || {});
             if (SafeStartApp.userModel.getAssociatedData().company)  SafeStartApp.companyModel.setData(SafeStartApp.userModel.getAssociatedData().company);
             SafeStartApp.setViewPort(result.mainMenu || null);
+            SafeStartApp.mainMenuLoaded = true;
+            Ext.Viewport.fireEvent('mainMenuLoaded');
         });
     },
 
@@ -123,6 +126,16 @@ Ext.apply(SafeStartApp, {
         });
 
         Ext.Viewport.add({ xtype: 'SafeStartViewPort' });
+    },
+
+    colors: ["#115fa6", "#94ae0a", "#a61120", "#ff8809", "#ffd13e", "#a61187", "#24ad9a", "#7c7474", "#a66111"],
+
+    getBaseColors: function (index) {
+        if (index == null) {
+            return this.colors.slice();
+        } else {
+            return this.colors[index];
+        }
     }
 });
 
@@ -141,18 +154,18 @@ Ext.application({
         'pages.Company',
         'pages.Users',
         'pages.Alerts',
-        'pages.SystemSettings'
+        'pages.SystemSettings',
+        'pages.SystemStatistic'
     ],
 
     controllers: [
         'Main',
         'Auth',
+        'Contact',
         'Companies',
         'Users',
         'Company',
-        // 'DefaultVehicles',
         'CompanyVehicles'
-        // 'UserVehicles'
     ],
 
     icon: {

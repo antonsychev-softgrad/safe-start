@@ -17,6 +17,9 @@ Ext.define('SafeStartApp.controller.Companies', {
             },
             addCompanyButton: {
                 tap: 'addAction'
+            },
+            companiesPage: {
+                activate: 'activateCompaniesPage'
             }
         },
 
@@ -24,6 +27,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             main: 'SafeStartCompaniesPage',
             pages: 'SafeStartMainView',
             mainToolbar: 'SafeStartCompaniesPage > SafeStartMainToolbar',
+            companiesPage: 'SafeStartCompaniesPage',
             companyPage: 'SafeStartCompanyPage',
             usersPage: 'SafeStartUsersPage',
             alertsPage: 'SafeStartAlertsPage',
@@ -34,7 +38,17 @@ Ext.define('SafeStartApp.controller.Companies', {
     },
 
 
-    onSelectAction: function (element, index, target, record, e, eOpts) {
+    activateCompaniesPage: function () {
+        var selection = this.getNavMain().getSelection();
+        if (SafeStartApp.companyModel.get('id')) {
+            if (! selection.length || selection[0] !== SafeStartApp.companyModel) {
+                this.getNavMain().select(SafeStartApp.companyModel);
+                this.fillCompanyForm(SafeStartApp.companyModel);
+            }
+        }
+    },
+
+    onSelectAction: function (element, index, target, record) {
         var button = null;
         if (Ext.os.deviceType !== 'Desktop') {
             button = this.getMainToolbar().down('button[action=toggle-menu]');
@@ -42,7 +56,10 @@ Ext.define('SafeStartApp.controller.Companies', {
                 button.getHandler().call(button, button);
             }
         }
+        this.fillCompanyForm(record);
+    },
 
+    fillCompanyForm: function (record) {
         if (!this.currentCompanyForm) this._createForm();
         this.currentCompanyForm.setRecord(record);
         if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
@@ -52,6 +69,10 @@ Ext.define('SafeStartApp.controller.Companies', {
         this.currentCompanyForm.down('button[name=manage]').show();
         this.currentCompanyForm.down('button[name=reset-data]').hide();
         SafeStartApp.companyModel = record;
+
+        this.getCompanyPage().enable();
+        this.getUsersPage().enable();
+        this.getAlertsPage().enable();
     },
 
     addAction: function () {
@@ -112,10 +133,7 @@ Ext.define('SafeStartApp.controller.Companies', {
     },
 
     openSelectedAction: function() {
-        this.getCompanyPage().enable();
-        this.getUsersPage().enable();
-        this.getAlertsPage().enable();
-        this.getPages().setActiveItem(1);
+        this.redirectTo('company/' + SafeStartApp.companyModel.get('id'));
     },
 
     _createForm: function () {

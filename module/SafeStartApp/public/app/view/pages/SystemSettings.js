@@ -14,6 +14,9 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         iconCls: 'settings',
         styleHtmlContent: true,
         layout: 'card',
+        tab: {
+            action: 'system-settings'            
+        },
         items: [
 
         ],

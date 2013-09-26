@@ -132,8 +132,36 @@ class PublicVehicleController extends PublicAccessRestController
         }
     }
 
+    public function getChecklistByHashAction()
+    {
+        if (!$this->_requestIsValid('vehicle/getchecklistbyhash')) return $this->_showBadRequest();
+
+        $hash = $this->data->hash;
+        $inspection = $this->em->getRepository('SafeStartApi\Entity\Checklist')->findOneBy(array(
+            'hash' => $hash,
+            'deleted' => 0,
+        ));
+
+        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+
+        $vehicle = $inspection->getVehicle();
+        if (!$vehicle) return $this->_showNotFound("Vehicle with this checklist not found.");
+
+        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+        $query->setParameter(1, $vehicle);
+        $items = $query->getResult();
+        $checklist = $this->GetDataPlugin()->buildChecklist($items, $inspection);
+
+        $this->answer = array(
+            'checklist' => $checklist,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function sendTestEmailAction() {
-    /*    $email = 'ponomarenko.t@gmail.com';
+        /*
+        $email = 'test21141@gmail.com';
         $this->MailPlugin()->send(
             'New inspection report',
             $email,
@@ -141,7 +169,8 @@ class PublicVehicleController extends PublicAccessRestController
             array(
                 'name' => 'Artem'
             ),
-            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_11_at_2013-09-20.pdf'
-        );*/
+            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_113_at_2013-09-17.pdf'
+        );
+        */
     }
 }

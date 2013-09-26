@@ -54,7 +54,7 @@ class DefaultField extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
-    protected $alert_description = 'Description of vehicle fault should be here';
+    protected $alert_description;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -74,12 +74,12 @@ class DefaultField extends BaseEntity
     /**
      * @ORM\Column(type="boolean", name="enabled")
      */
-    protected $enabled;
+    protected $enabled = 1;
 
     /**
      * @ORM\Column(type="boolean", name="alert_critical")
      */
-    protected $alert_critical;
+    protected $alert_critical = 1;
 
     /**
      * @ORM\Column(type="boolean", name="deleted")

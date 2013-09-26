@@ -55,7 +55,7 @@
                                 "items": {
                                     "description": "Image name (e.g. file_name or file_name.ext)",
                                     "type": "string",
-                                    "required": true
+                                    "required": false
                                 }
                             },
                             "thumbnail": {
@@ -88,7 +88,7 @@
                             "creation_date": {
                                 "description": "Date",
                                 "type": "integer",
-                                "required": true
+                                "required": false
                             }
                         }
                     }

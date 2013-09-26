@@ -14,6 +14,7 @@ use SafeStartApi\Fixture\Alerts;
 use SafeStartApi\Fixture\Companies;
 use SafeStartApi\Fixture\Fields;
 use SafeStartApi\Fixture\Vehicles;
+use SafeStartApi\Fixture\Checklists;
 use Zend\Stdlib\Parameters;
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\SessionManager;
@@ -32,7 +33,8 @@ class VehicleControllerTest extends HttpControllerTestCase
         $this->addFixtures(new Vehicles());
         $this->addFixtures(new Companies());
         $this->addFixtures(new Fields());
-        //$this->addFixtures(new Alerts());
+        $this->addFixtures(new Alerts());
+        $this->addFixtures(new Checklists());
         parent::setUp();
     }
 
@@ -110,56 +112,28 @@ class VehicleControllerTest extends HttpControllerTestCase
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
-/*
-    public function testCheckPlantIdFound()
-    {
-        if (!$this->_loginUser('username', '12345')) {
-            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
-        }
 
+    public function testGetChecklistByHash()
+    {
         $data = array(
-            'plantId' => 'ACHJ-DJ34-A234',
+            'hash' => '523065c9ed073',
         );
 
         $this->getRequest()
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/checkplantid');
+        $this->dispatch('/api/vehicle/getchecklistbyhash');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/checkplantid');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklistbyhash');
         $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
+        print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
 
-    public function testCheckPlantIdNotFound()
-    {
-        if (!$this->_loginUser('username', '12345')) {
-            Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
-        }
-
-        $data = array(
-            'plantId' => 'ACHJDJ342341',
-        );
-
-        $this->getRequest()
-            ->setMethod('POST')
-            ->setContent(json_encode($this->_setApiResponseFormat($data)));
-
-        $this->dispatch('/api/vehicle/checkplantid');
-
-        $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/checkplantid');
-        $data = json_decode($this->getResponse()->getContent());
-        //print_r($data);
-        Bootstrap::$jsonSchemaValidator->check($data, $schema);
-        $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
-    }
-*/
-    public function testGetAlertsByIdAndPeriod()
+    public function testGetAlertsByPeriod()
     {
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
@@ -172,7 +146,6 @@ class VehicleControllerTest extends HttpControllerTestCase
 
         $data = array(
             'period' => 60*60*24,
-            'vehicleId' => $vehicleId,
         );
 
         $this->getRequest()
@@ -188,33 +161,51 @@ class VehicleControllerTest extends HttpControllerTestCase
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
-
-    public function testGetAlertsByPeriod()
+/*
+    public function testCompleteChecklist()
     {
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
 
         $this->getRequest()->setMethod('POST');
+        $this->dispatch('/api/vehicle/getlist');
+        $data = json_decode($this->getResponse()->getContent());
+        $vehicleId = $data->data->vehicles[0]->vehicleId;
+
+        $data = array();
+
+        $this->getRequest()
+            ->setMethod('POST')
+            ->setContent(json_encode($this->_setApiResponseFormat($data)));
+
+        $this->dispatch('/api/vehicle/'.$vehicleId.'/getchecklist');
+
+        $this->assertResponseStatusCode(200);
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');
+        $data = json_decode($this->getResponse()->getContent(), true);
 
         $data = array(
-            'period' => 60*60*24,
+            'emails' => array(
+            ),
         );
 
         $this->getRequest()
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/getalerts');
+        $this->dispatch('/api/vehicle/'.$vehicleId.'/completechecklist');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getalerts');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/completechecklist');
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
+
     }
 
+/*
     public function testChecklistToEmail()
     {
         if (!$this->_loginUser('username', '12345')) {
@@ -228,7 +219,6 @@ class VehicleControllerTest extends HttpControllerTestCase
 
         $data = array(
             'emails' => array(
-
             ),
         );
 
@@ -236,13 +226,14 @@ class VehicleControllerTest extends HttpControllerTestCase
             ->setMethod('POST')
             ->setContent(json_encode($this->_setApiResponseFormat($data)));
 
-        $this->dispatch('/api/vehicle/'.$vehicleId.'/checklisttoemail');
+        $this->dispatch('/api/vehicle/checklisttoemail');
 
         $this->assertResponseStatusCode(200);
-        $schema = Bootstrap::getJsonSchemaResponse('vehicle/getchecklist');
+        $schema = Bootstrap::getJsonSchemaResponse('vehicle/checklisttoemail');
         $data = json_decode($this->getResponse()->getContent());
         //print_r($data);
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
+*/
 }

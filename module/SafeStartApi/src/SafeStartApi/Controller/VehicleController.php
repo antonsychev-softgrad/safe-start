@@ -4,6 +4,7 @@ namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestrictedAccessRestController;
 use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Application;
 
 class VehicleController extends RestrictedAccessRestController
 {
@@ -162,6 +163,7 @@ class VehicleController extends RestrictedAccessRestController
     {
         //todo: check why bad request with alerts
         // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        if (!isset($this->data->fields)) return $this->_showBadRequest();
 
         // save checklist
         $vehicleId = $this->params('id');
@@ -240,7 +242,7 @@ class VehicleController extends RestrictedAccessRestController
                             $addNewAlert = false;
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
-                            if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->image));
+                            if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
                         }
                     }
                 }
@@ -334,7 +336,7 @@ class VehicleController extends RestrictedAccessRestController
     {
         if (!$this->_requestIsValid('vehicle/getalerts')) return $this->_showBadRequest();
 
-        $period = !is_null($this->params('period')) ? $this->params('period') : 0;
+        $period = isset($this->data->period) ? (int)$this->data->period : 0;
         $time = time() - $period;
 
         if (isset($this->data->id)) {
@@ -350,29 +352,32 @@ class VehicleController extends RestrictedAccessRestController
             $items = $query->getResult();
 
         } else {
-            $currentUser = \SafeStartApi\Application::getCurrentUser();
+            $currentUser = $this->authService->getIdentity();
+            $cache = \SafeStartApi\Application::getCache();
+            $cashKey = "getUserAlerts" . $currentUser->getId();
 
-            $vehicles = $currentUser->getVehicles();
-            $respVehicles = $currentUser->getResponsibleForVehicles();
-
-            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
-            $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
-
-            $vehicles = array_merge($vehicles, $respVehicles);
-
-            if(count($vehicles) > 0) {
-                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2');
-                $query->setParameter(1, $vehicles);
+            if ($cache->hasItem($cashKey)) {
+                $alerts = $cache->getItem($cashKey);
             } else {
-                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.creation_date > ?2');
+                $vehicles = $currentUser->getVehicles();
+                $respVehicles = $currentUser->getResponsibleForVehicles();
+                $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+                $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
+                $vehicles = array_merge($vehicles, $respVehicles);
+                if (count($vehicles) > 0) {
+                    $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2 AND a.deleted = 0 ORDER BY a.creation_date DESC');
+                    $query->setParameter(1, $vehicles);
+                    $query->setParameter(2, $time);
+                    $items = $query->getResult();
+                } else {
+                    $items = array();
+                }
+                $alerts = array();
+                foreach ($items as $item) {
+                    $alerts[] = $item->toArray();
+                }
+               // $cache->setItem($cashKey, $alerts); todo: we mast use tags for clear this cache key!!!!
             }
-            $query->setParameter(2, $time);
-            $items = $query->getResult();
-        }
-
-        $alerts = array();
-        foreach ($items as $item) {
-            $alerts[] = $item->toArray();
         }
 
         $this->answer = array(
@@ -401,7 +406,7 @@ class VehicleController extends RestrictedAccessRestController
                         $checkListData = $checkList->toArray();
 
                         $checkListData['checkListId'] = $checkList->getId();
-                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] .' '. $this->moduleConfig['params']['time_format']);
+                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
 
                         $inspections[] = $checkListData;
                     }
