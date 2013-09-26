@@ -26,7 +26,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             {
                 id: 'SafeStartVehicleAlertContent' + this.uniqueId,
                 tpl: [
-                    '<div>'+
+                    '<div class="sfa-alert-info">'+
                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}/{vehicle.registration}</b>)</div>'+
                        '<div>Fault: <b>{alert_description}</b></div>'+
                        '<div>Description: {description} </div>'+
