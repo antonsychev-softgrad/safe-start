@@ -211,6 +211,8 @@ class CompanyController extends RestrictedAccessRestController
         $items = $query->getResult();
 
         foreach ($items as $item) {
+            if ($item->getId() == $this->authService->getIdentity()->getId()) continue;
+            if ($item->getId() ==  $company->getAdmin()->getId()) continue;
             $this->answer[] = $item->toArray();
         }
 

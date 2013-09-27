@@ -28,10 +28,12 @@ class Companies extends AbstractFixture implements OrderedFixtureInterface
 
         $company->setAdmin($this->getReference('company-admin-user'));
         $company->addResponsibleUser($this->getReference('responsible-user'));
+        $company->addResponsibleUser($this->getReference('responsible-user2'));
 
         $this->getReference('usual-user1')->setCompany($company);
         $this->getReference('usual-user2')->setCompany($company);
         $this->getReference('responsible-user')->setCompany($company);
+        $this->getReference('responsible-user2')->setCompany($company);
         $this->getReference('company-admin-user')->setCompany($company);
         $this->getReference('vehicle-1')->setCompany($company);
         $this->getReference('vehicle-2')->setCompany($company);
