@@ -32,16 +32,6 @@ class PublicVehicleController extends PublicAccessRestController
 
         $emails = $this->data->emails;
 
-        // save checklist
-        if(!empty($this->data->plantId)) {
-            $plantId = $this->data->plantId;
-            $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('plantId' => $plantId));
-        } else {
-            $plantId = uniqid('vehicle');
-            $vehicle = new Vehicle();
-            $vehicle->setEnabled(1);
-        }
-
         $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
         $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : 0;
         $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '';
@@ -50,7 +40,29 @@ class PublicVehicleController extends PublicAccessRestController
         $title = isset($this->data->title) ? $this->data->title : '';
         $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
 
-        if (!$vehicle) $vehicle = new Vehicle();
+        $userData = array(
+            'firstName' => isset($this->data->firstName) ? $this->data->firstName : '',
+            'lastName' => isset($this->data->lastName) ? $this->data->lastName : '',
+            'signature' => isset($this->data->signature) ? $this->data->signature : '',
+        );
+
+        // save checklist
+        if(!empty($this->data->plantId)) {
+            $plantId = $this->data->plantId;
+            $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('plantId' => $plantId));
+            if (!$vehicle) $vehicle = new Vehicle();
+        } else {
+            $testVehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('registration_number' => $registrationNumber));
+            if($testVehicle) return $this->_showKeyExists('Vehicle with this Registration number already exists');
+            $plantId = uniqid('vehicle');
+            $testVehicle = $this->em->findOneById('SafeStartApi\Entity\Vehicle', $plantId);
+            while($testVehicle) {
+                $plantId = uniqid('vehicle');
+                $testVehicle = $this->em->findOneById('SafeStartApi\Entity\Vehicle', $plantId);
+            }
+            $vehicle = new Vehicle();
+            $vehicle->setEnabled(1);
+        }
 
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
@@ -103,9 +115,7 @@ class PublicVehicleController extends PublicAccessRestController
         }
         $this->em->flush();
 
-
-
-        $pdf = $this->PdfPlugin($checkList->getId(), true);
+        $pdf = $this->PdfPlugin($checkList->getId(), true, $userData);
 
         if (file_exists($pdf)) {
             foreach($emails as $email) {
@@ -147,9 +157,7 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle = $inspection->getVehicle();
         if (!$vehicle) return $this->_showNotFound("Vehicle with this checklist not found.");
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
+        $items = $vehicle->getFields();
         $checklist = $this->GetDataPlugin()->buildChecklist($items, $inspection);
 
         $this->answer = array(

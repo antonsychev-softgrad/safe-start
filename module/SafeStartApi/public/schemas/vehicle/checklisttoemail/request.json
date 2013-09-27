@@ -60,6 +60,21 @@
                     "type": "string",
                     "required": true
                 },
+                "fistName": {
+                    "description": "First name",
+                    "type": "string",
+                    "required": true
+                },
+                "lastName": {
+                    "description": "Last name",
+                    "type": "string",
+                    "required": true
+                },
+                "signature": {
+                    "description": "Signature",
+                    "type": "string",
+                    "required": true
+                },
                 "title": {
                     "description": "Title of vehicle",
                     "type": "string",

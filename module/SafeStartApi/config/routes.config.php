@@ -421,11 +421,7 @@ $routes = array(
             'delete-vehicle-inspection' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/inspection/:inspectionId/delete',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                        'alertId' => '[0-9]*',
-                    ),
+                    'route' => '/vehicle/inspection/delete',
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'deleteInspection',

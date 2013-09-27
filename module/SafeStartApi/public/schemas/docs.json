@@ -210,7 +210,7 @@
                 }
             }
         },
-        "/vehicle/inspection/:inspectionId/delete": {
+        "/vehicle/inspection/delete": {
             "description": "Delete inspection",
             "type": "object",
             "properties": {
