@@ -171,6 +171,15 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, 400, 400);
     }
 
+    protected function _showUserUnavailable($msg = '')
+    {
+        $this->answer = array(
+            'errorMessage' => $msg ? $msg : 'This user account is unavailable',
+            'stack' => $this->jsonSchemaValidator->getErrors()
+        );
+        return $this->AnswerPlugin()->format($this->answer, 400, 401);
+    }
+
     protected function _showUnauthorisedRequest()
     {
         $this->answer = array(
