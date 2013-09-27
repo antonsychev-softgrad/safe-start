@@ -416,14 +416,8 @@ class PdfPlugin extends AbstractPlugin
             } else {
                 continue;
             }
-            $anyValue = false;
-            foreach($group->fields as $field) {
-                if(!empty($this->fieldsData[$field->id]) || $field->type == 'group') {
-                    $anyValue = true;
-                    break;
-                }
-            }
-            if(!$anyValue) continue;
+
+            if($this->_isEmptyGroup($group)) continue;
 
             $title          = strip_tags($title);
             $title          = ucwords($title);
@@ -439,6 +433,26 @@ class PdfPlugin extends AbstractPlugin
         }
 
         return $topPosInPage;
+    }
+
+    protected function _isEmptyGroup($group)
+    {
+        if(isset($group->items) && is_array($group->items)) {
+            $fields = $group->items;
+        } elseif(isset($group->fields) && is_array($group->fields)) {
+            $fields = $group->fields;
+        } else {
+            return true;
+        }
+        foreach($fields as $field) {
+            if($field->type == 'group') {
+                if(!$this->_isEmptyGroup($field)) return false;
+            }
+            if(!empty($this->fieldsData[$field->id])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     protected function _drawFields($fields = array(), $topPosInPage)
@@ -461,9 +475,10 @@ class PdfPlugin extends AbstractPlugin
             $value = !empty($this->fieldsData[$field->id]) ? $this->fieldsData[$field->id] : '-';
             if($field->type == 'datePicker' && !empty($this->fieldsData[$field->id])) {
                 if(!is_int($value)) {
-                    $value = strtotime($value);
+                    $value = '-';
+                } else {
+                    $value = gmdate($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format'], $value);
                 }
-                $value = gmdate($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format'], $value);
             }
 
             $title          = strip_tags($title);
