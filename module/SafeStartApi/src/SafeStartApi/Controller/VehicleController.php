@@ -30,7 +30,7 @@ class VehicleController extends RestrictedAccessRestController
                 $vehiclesList[] = array(
                     'vehicleId' => $vehicleData['vehicleId'],
                     'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['title'],
+                    'vehicleName' => $vehicleData['vehicleName'],
                     'projectName' => $vehicleData['projectName'],
                     'projectNumber' => $vehicleData['projectNumber'],
                     'expiryDate' => $vehicleData['expiryDate'],
@@ -46,7 +46,7 @@ class VehicleController extends RestrictedAccessRestController
                 $vehiclesList[] = array(
                     'vehicleId' => $vehicleData['vehicleId'],
                     'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['title'],
+                    'vehicleName' => $vehicleData['vehicleName'],
                     'projectName' => $vehicleData['projectName'],
                     'projectNumber' => $vehicleData['projectNumber'],
                     'expiryDate' => $vehicleData['expiryDate'],
