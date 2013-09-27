@@ -407,11 +407,7 @@ $routes = array(
             'delete-vehicle-alert' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/alert/:alertId/delete',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                        'alertId' => '[0-9]*',
-                    ),
+                    'route' => '/vehicle/deletealert',
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'deleteAlert',
