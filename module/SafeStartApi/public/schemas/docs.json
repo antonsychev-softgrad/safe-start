@@ -226,6 +226,22 @@
                 }
             }
         },
+        "/vehicle/deleteAlert": {
+            "description": "Delete alert",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/deletealert/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/deletealert/response.json"
+                    }
+                }
+            }
+        },
         "/api/upload-images": {
             "description": "Upload Images",
             "type": "object",
