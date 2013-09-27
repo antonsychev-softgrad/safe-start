@@ -990,11 +990,13 @@ div.logo {
 }
 .sfa-alerts .x-list-item > .x-innerhtml {
     color: #558FAC;
-    line-height: 34px;
+    line-height: 28px;
 }
 
 .sfa-alerts .x-list-item > .x-innerhtml > span {
     display: block;
+    line-height: 25px;
+    padding-top: 10px;
     font-size: 20px;
     font-weight: normal;
     color: #666
@@ -1019,7 +1021,18 @@ div.logo {
 .sfa-alerts .x-item-pressed, .sfa-alerts .x-item-selected {
     border-top-color: #d1d1d1 !important
 }
+.sfa-alerts .x-list-item .x-innerhtml:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
 
+.sfa-alerts .sfa-alert-description {
+    position: relative;
+    top: 8px;
+}
 .x-show-contact {
     background: #EEEEEE
 }
