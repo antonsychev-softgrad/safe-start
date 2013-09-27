@@ -14,10 +14,12 @@ class UserController extends RestController
     {
         if (!$this->_requestIsValid('user/login')) return $this->_showBadRequest();
 
-        //todo: check if user enabled; checkcompany epiry date
+        //todo: check if user enabled; checkcompany expiry date
 
         if ($this->authService->hasIdentity()) {
             $userInfo = $this->authService->getStorage()->read();
+            if($userInfo->getDeleted()) return $this->_showUserUnavailable('User has been removed');
+            if(!$userInfo->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
             $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
             $this->answer = array(
                 'authToken' => $this->sessionManager->getId(),
@@ -59,6 +61,8 @@ class UserController extends RestController
                 $errorMessage = '';
                 $user = $userRep->findOneBy(array($identityProperty => $identity));
                 if ($user) {
+                    if($user->getDeleted()) return $this->_showUserUnavailable('User has been removed');
+                    if(!$user->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
                     $userInfo = $user->toArray();
                     $user->setLastLogin(new \DateTime());
                     if (isset($this->data->device)) $user->setDevice(strtolower($this->data->device));
