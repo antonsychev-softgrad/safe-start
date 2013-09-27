@@ -76,6 +76,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $done = 0;
 
         foreach ((array)$ids as $id) {
+            if (empty($id)) continue;
             $done += $this->_ios($id, $msg, $badge);
         }
 
