@@ -60,7 +60,7 @@
                     "type": "string",
                     "required": true
                 },
-                "fistName": {
+                "firstName": {
                     "description": "First name",
                     "type": "string",
                     "required": true
