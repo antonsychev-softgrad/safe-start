@@ -227,7 +227,7 @@ class Vehicle extends BaseEntity
         return array(
             'vehicleId' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
-            'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'vehicleName' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
