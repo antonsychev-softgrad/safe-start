@@ -41,11 +41,12 @@ class PdfPlugin extends AbstractPlugin
     protected $fieldsData = array();
     protected $file_name;
     protected $full_name;
+    protected $userData;
 
     protected $echoPdf = true;
     protected $emailMode = false;
 
-    public function __invoke($checkListId = null, $emailMode = false)
+    public function __invoke($checkListId = null, $emailMode = false, $userData = null)
     {
         $moduleConfig     = $this->getController()->getServiceLocator()->get('Config');
         $this->opts       = $moduleConfig['pdf'];
@@ -56,6 +57,7 @@ class PdfPlugin extends AbstractPlugin
         }
 
         $this->emailMode = $emailMode;
+        $this->userData = $userData;
         return $this->create($checkListId);
     }
 
@@ -91,7 +93,7 @@ class PdfPlugin extends AbstractPlugin
                 'Plant ID / Registration' => $vehicleData['plantId'] .' / '. $vehicleData['registration'],
                 'Type of vehicle' => $vehicleData['type'],
                 'Service due' => $vehicleData['serviceDueKm'] .' km '. $vehicleData['serviceDueHours'] . ' hours',
-                'Current odometr' => $vehicleData['currentOdometerKms'] .' km '. $vehicleData['currentOdometerHours'] . ' hours',
+                'Current odometer' => $vehicleData['currentOdometerKms'] .' km '. $vehicleData['currentOdometerHours'] . ' hours',
             );
         }
         $fieldsStruct   = json_decode($this->checkList->getFieldsStructure());
@@ -332,7 +334,13 @@ class PdfPlugin extends AbstractPlugin
             if (!$user) return;
             $vehicle = $this->checkList->getVehicle();
 
-            $name      = $user ? "Name: " . $user->getFirstName() . " " . $user->getLastName() : '';
+            if($this->emailMode){
+                $name      = "Name: " . $this->userData['firstName'] . " " . $this->userData['lastName'];
+                $signatureName = $this->userData['signature'];
+            } else {
+                $name      = $user ? "Name: " . $user->getFirstName() . " " . $user->getLastName() : '';
+                $signatureName = $user->getSignature();
+            }
             $signature = "Signature: ";
             $date      = "Date: " . $this->dateGeneration->format($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format']);
 
@@ -347,7 +355,7 @@ class PdfPlugin extends AbstractPlugin
 
             $strWidth     = $this->widthForStringUsingFontSize($signature, $font, $fontSize);
             $leftPosInStr = $this->getLeftStartPos($signature, $font, $fontSize, self::TEXT_ALIGN_CENTER);
-            if (($logoPath = $this->getImagePathByName($user->getSignature())) !== null) {
+            if (($logoPath = $this->getImagePathByName($signatureName)) !== null) {
                 $this->currentPage->drawText($signature, $leftPosInStr - ($logoMaxWidth / 2), $topPosInPage);
                 $logo       = ZendPdf\Image::imageWithPath($logoPath);
                 $logoWidth  = $logo->getPixelWidth();

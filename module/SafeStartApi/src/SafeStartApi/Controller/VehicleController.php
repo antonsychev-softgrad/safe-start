@@ -497,9 +497,15 @@ class VehicleController extends RestrictedAccessRestController
 
     public function deleteInspectionAction()
     {
-        $inspectionId = $this->params('inspectionId');
-        $inspection = $this->em->find('SafeStartApi\Entity\CheckList', $inspectionId);
-        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+        $inspectionId = $this->data->id;
+        $repository = $this->em->getRepository('SafeStartApi\Entity\CheckList');
+        $inspection = $repository->find($inspectionId);
+        if (!$inspection) {
+            $inspection = $repository->findOneBy(array(
+                'hash' => $inspectionId,
+            ));
+            if(!$inspection) return $this->_showNotFound("Inspection not found.");
+        }
         $vehicle = $inspection->getVehicle();
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 

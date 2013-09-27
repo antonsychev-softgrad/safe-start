@@ -116,7 +116,7 @@ class VehicleControllerTest extends HttpControllerTestCase
     public function testGetChecklistByHash()
     {
         $data = array(
-            'hash' => '523065c9ed073',
+            'hash' => 'aaa',
         );
 
         $this->getRequest()
@@ -132,17 +132,12 @@ class VehicleControllerTest extends HttpControllerTestCase
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
     }
-
+/*
     public function testGetAlertsByPeriod()
     {
         if (!$this->_loginUser('username', '12345')) {
             Bootstrap::$console->write("WARNING: User not logged! \r\n", 2);
         }
-
-        $this->getRequest()->setMethod('POST');
-        $this->dispatch('/api/vehicle/getlist');
-        $data = json_decode($this->getResponse()->getContent());
-        $vehicleId = $data->data->vehicles[0]->vehicleId;
 
         $data = array(
             'period' => 60*60*24,

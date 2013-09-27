@@ -12,6 +12,18 @@
                     "required": false
                 }
             }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "id" : {
+                    "description": "Inspection ID or hash",
+                    "type": "string",
+                    "required": true
+                }
+            }
         }
     }
 }
