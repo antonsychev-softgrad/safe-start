@@ -63,17 +63,17 @@
                 "firstName": {
                     "description": "First name",
                     "type": "string",
-                    "required": true
+                    "required": false
                 },
                 "lastName": {
                     "description": "Last name",
                     "type": "string",
-                    "required": true
+                    "required": false
                 },
                 "signature": {
                     "description": "Signature",
                     "type": "string",
-                    "required": true
+                    "required": false
                 },
                 "title": {
                     "description": "Title of vehicle",
@@ -92,11 +92,6 @@
                 },
                 "serviceDueHours": {
                     "description": "Service due hours",
-                    "type": "integer",
-                    "required": true
-                },
-                "creationDate": {
-                    "description": "Creation date",
                     "type": "integer",
                     "required": true
                 },
