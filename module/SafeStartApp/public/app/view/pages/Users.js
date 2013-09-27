@@ -111,9 +111,8 @@ Ext.define('SafeStartApp.view.pages.Users', {
             xtype: 'panel',
             name: 'user-info',
             layout: 'card',
-            minWidth: 150,
             flex: 2,
-            scrollable: true
+            minWidth: 150
         };
     },
 

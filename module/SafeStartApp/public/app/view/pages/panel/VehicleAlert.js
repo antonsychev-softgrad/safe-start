@@ -26,13 +26,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             {
                 id: 'SafeStartVehicleAlertContent' + this.uniqueId,
                 tpl: [
-                    '<div class="top">',
-                    '<div class="name">{vehicle.title}' +
-                        '<span>{vehicle.plantId}</span>' +
-                        '</div>' +
-                        '<div class="name">{user.firstName} {user.lastName} at {title}' +
-                        '<span>{alert_description}</span>' +
-                        '<span>{description}</span></div>',
+                    '<div class="sfa-alert-info">'+
+                       '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}/{vehicle.registration}</b>)</div>'+
+                       '<div>Fault: <b>{alert_description}</b></div>'+
+                       '<div>Description: {description} </div>'+
+                       '<div>Added by: {user.firstName} {user.lastName} at {title} </div>'+
                     '</div>'
                 ].join('')
             },
@@ -78,9 +76,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     '<div class="sfa-alert-comments">',
                     '<h3>Comments:</h3>',
                     '<tpl for="comments">',
+                    '<div class="sfa-item">',
                     '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
-                    '<span>{content}</span>',
                     '</div>',
+                    '<span class="sfa-comment-content">{content}</span><div class="clear"></div></div>',
                     '</tpl>',
                     '</div>'
                 ].join('')

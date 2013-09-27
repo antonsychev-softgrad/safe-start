@@ -223,7 +223,7 @@ class VehicleController extends RestrictedAccessRestController
         }
 
         // save new alerts
-        $alerts = array();
+        $newAlerts = array();
         if (!empty($this->data->alerts) && is_array($this->data->alerts)) {
             $alerts = $this->data->alerts;
             foreach ($alerts as $alert) {
@@ -243,6 +243,7 @@ class VehicleController extends RestrictedAccessRestController
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
                             if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
+                            $newAlerts[] = $filedAlert;
                         }
                     }
                 }
@@ -254,6 +255,7 @@ class VehicleController extends RestrictedAccessRestController
                     $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
                     $newAlert->setVehicle($vehicle);
                     $this->em->persist($newAlert);
+                    $newAlerts[] = $newAlert;
                 }
 
             }
@@ -274,7 +276,7 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        $this->_pushNewChecklistNotification($vehicle, $alerts);
+        $this->_pushNewChecklistNotification($vehicle, $newAlerts);
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -318,14 +320,14 @@ class VehicleController extends RestrictedAccessRestController
         if (!empty($alerts)) {
             $message =
                 "Vehicle Alert \n\r" .
-                "Vehicle ID#" . $vehicle->getId() . " has a critical error with its: \n\r";
+                "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
                 $badge++;
-                $message .= isset($alert->comment) ? $alert->comment : '' . "\n\r";
+                $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }
         } else {
             $badge = 1;
-            $message .= 'Checklist for Vehicle ID #' . $vehicle->getId() . ' added';
+            $message .= 'Checklist for Vehicle ID #' . $vehicle->getPlantId() . ' added';
         }
 
         if (!empty($androidDevices)) $this->PushNotificationPlugin()->android($androidDevices, $message, $badge);
@@ -350,33 +352,27 @@ class VehicleController extends RestrictedAccessRestController
             $query->setParameter(1, $vehicle);
             $query->setParameter(2, $time);
             $items = $query->getResult();
-
         } else {
             $currentUser = $this->authService->getIdentity();
-            $cache = \SafeStartApi\Application::getCache();
-            $cashKey = "getUserAlerts" . $currentUser->getId();
-
-            if ($cache->hasItem($cashKey)) {
-                $alerts = $cache->getItem($cashKey);
+            $vehicles = $currentUser->getVehicles();
+            $respVehicles = $currentUser->getResponsibleForVehicles();
+            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+            $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
+            $vehicles = array_merge($vehicles, $respVehicles);
+            if (count($vehicles) > 0) {
+                $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2 AND a.deleted = 0 ORDER BY a.creation_date DESC');
+                $query->setParameter(1, $vehicles);
+                $query->setParameter(2, $time);
+                $items = $query->getResult();
             } else {
-                $vehicles = $currentUser->getVehicles();
-                $respVehicles = $currentUser->getResponsibleForVehicles();
-                $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
-                $respVehicles = !empty($respVehicles) ? $respVehicles->toArray() : array();
-                $vehicles = array_merge($vehicles, $respVehicles);
-                if (count($vehicles) > 0) {
-                    $query = $this->em->createQuery('SELECT a FROM SafeStartApi\Entity\Alert a WHERE a.vehicle IN (?1) AND a.creation_date > ?2 AND a.deleted = 0 ORDER BY a.creation_date DESC');
-                    $query->setParameter(1, $vehicles);
-                    $query->setParameter(2, $time);
-                    $items = $query->getResult();
-                } else {
-                    $items = array();
-                }
-                $alerts = array();
-                foreach ($items as $item) {
-                    $alerts[] = $item->toArray();
-                }
-                $cache->setItem($cashKey, $alerts);
+                $items = array();
+            }
+        }
+
+        $alerts = array();
+        if (!empty($items)) {
+            foreach ($items as $item) {
+                $alerts[] = $item->toArray();
             }
         }
 
@@ -415,6 +411,7 @@ class VehicleController extends RestrictedAccessRestController
             }
             $page = (int)$this->getRequest()->getQuery('page');
             $limit = (int)$this->getRequest()->getQuery('limit');
+            $inspections = array_reverse($inspections);
             if (count($inspections) < ($page - 1) * $limit) {
                 $this->answer = array();
                 return $this->AnswerPlugin()->format($this->answer);
