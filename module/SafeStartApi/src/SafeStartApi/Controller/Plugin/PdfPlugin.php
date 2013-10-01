@@ -474,7 +474,8 @@ class PdfPlugin extends AbstractPlugin
             $title  = $field->fieldName;
             $value = !empty($this->fieldsData[$field->id]) ? $this->fieldsData[$field->id] : '-';
             if($field->type == 'datePicker' && !empty($this->fieldsData[$field->id])) {
-                if(!is_int($value)) {
+                $value = (int) $value;
+                if(!$value) {
                     $value = '-';
                 } else {
                     $value = gmdate($this->getController()->moduleConfig['params']['date_format'] .' '. $this->getController()->moduleConfig['params']['time_format'], $value);

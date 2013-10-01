@@ -90,11 +90,13 @@ var JSONParser = function(){
         // в зависимости от ключа можно использовать отдельные tpl, по умолчанию просто работает tpl.text
         var self = this;
         for (var key in json) {
-            if (typeof json[key] === "string" || typeof json[key] === "number" ) {
+            if (typeof json[key] === "string" || typeof json[key] === "number" ||  typeof json[key] === "boolean") {
                 switch (key) {
                     case 'name': $wrap.append(_.template(opt.tpl.title, {label: key, text: json[key]}) );
                         break;
                     case 'description': $wrap.append(_.template(opt.tpl.description, {label: key, text: json[key]}) );
+                        break;
+                    case 'required': $wrap.append(_.template(opt.tpl.description, {label: key, text: json[key].toString()}) );
                         break;
                     case '$ref':
                         var obj = this.getJSON(json[key]);

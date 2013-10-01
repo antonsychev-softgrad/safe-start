@@ -6,10 +6,6 @@ Ext.define('SafeStartApp.controller.Companies', {
         'SafeStartApp.model.CompanySubscription'
     ],
 
-    init: function () {
-
-    },
-
     config: {
         control: {
             navMain: {
@@ -41,7 +37,7 @@ Ext.define('SafeStartApp.controller.Companies', {
     activateCompaniesPage: function () {
         var selection = this.getNavMain().getSelection();
         if (SafeStartApp.companyModel.get('id')) {
-            if (! selection.length || selection[0] !== SafeStartApp.companyModel) {
+            if (!selection.length || selection[0] !== SafeStartApp.companyModel) {
                 this.getNavMain().select(SafeStartApp.companyModel);
                 this.fillCompanyForm(SafeStartApp.companyModel);
             }
@@ -77,10 +73,7 @@ Ext.define('SafeStartApp.controller.Companies', {
 
     addAction: function () {
         if (!this.currentCompanyForm) this._createForm();
-        if (this.companyModel) {
-            //todo: check if form not empty
-            this.companyModel.destroy();
-        }
+        if (this.companyModel) this.companyModel.destroy();
         this.companyModel = Ext.create('SafeStartApp.model.Company');
         this.currentCompanyForm.setRecord(this.companyModel);
         this.currentCompanyForm.down('fieldset').down('fieldset').disable();
@@ -107,6 +100,7 @@ Ext.define('SafeStartApp.controller.Companies', {
     },
 
     sendCredentialsAction: function () {
+        var self = this;
         SafeStartApp.AJAX('admin/company/' + this.currentCompanyForm.getValues().id + '/send-credentials', {}, function (result) {
 
         });
@@ -114,7 +108,7 @@ Ext.define('SafeStartApp.controller.Companies', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function(){
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function () {
             SafeStartApp.AJAX('admin/company/' + self.currentCompanyForm.getValues().id + '/delete', {}, function (result) {
                 self.getNavMain().getStore().loadData();
                 self.currentCompanyForm.reset();
@@ -128,11 +122,11 @@ Ext.define('SafeStartApp.controller.Companies', {
         });
     },
 
-    resetAction: function() {
+    resetAction: function () {
         this.currentCompanyForm.reset();
     },
 
-    openSelectedAction: function() {
+    openSelectedAction: function () {
         this.redirectTo('company/' + SafeStartApp.companyModel.get('id'));
     },
 
