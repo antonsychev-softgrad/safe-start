@@ -58,13 +58,17 @@ Ext.define('SafeStartApp.controller.Companies', {
     fillCompanyForm: function (record) {
         if (!this.currentCompanyForm) this._createForm();
         this.currentCompanyForm.setRecord(record);
-        if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
-        if (record.get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(record.get('expiry_date') * 1000));
-        this.currentCompanyForm.down('button[name=delete-data]').show();
-        this.currentCompanyForm.down('button[name=send-credentials]').show();
-        this.currentCompanyForm.down('button[name=manage]').show();
-        this.currentCompanyForm.down('button[name=reset-data]').hide();
-        SafeStartApp.companyModel = record;
+        try {
+            if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
+            if (record.get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(record.get('expiry_date') * 1000));
+            this.currentCompanyForm.down('button[name=delete-data]').show();
+            this.currentCompanyForm.down('button[name=send-credentials]').show();
+            this.currentCompanyForm.down('button[name=manage]').show();
+            this.currentCompanyForm.down('button[name=reset-data]').hide();
+            SafeStartApp.companyModel = record;
+        } catch (e) {
+            SafeStartApp.logException(e);
+        }
 
         this.getCompanyPage().enable();
         this.getUsersPage().enable();

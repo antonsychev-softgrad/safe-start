@@ -150,10 +150,15 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
 
-        this.vehiclesStore.on('load', function (store, records) {
-        }, this, {order: 'before'});
+        this.vehiclesStore.on('beforeload', function (store, records) {
+            this.setMasked({
+                xtype: 'loadmask',
+                message: 'Loading...'
+            });
+        }, this);
 
         this.vehiclesStore.on('load', function (store, records) {
+            this.setMasked(false);
         }, this, {order: 'after'});
 
         this.vehiclesStore.on('load', function (store, records) {

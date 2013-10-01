@@ -53,6 +53,7 @@ Ext.define('SafeStartApp.controller.Auth', {
         window.location.replace('#');
         SafeStartApp.AJAX('user/logout', {}, function (result) {
             SafeStartApp.currentUser = result.userInfo;
+            Ext.Ajax.abortAll();
             SafeStartApp.loadMainMenu();
         });
     },

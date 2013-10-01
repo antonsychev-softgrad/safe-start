@@ -125,6 +125,24 @@ Ext.apply(SafeStartApp, {
         } else {
             return this.colors[index];
         }
+    },
+
+    logException: function (e) {
+        if (typeof console === 'object') {
+            console.error(e.name + ': ' +  e.message);
+        }
+        if (typeof qbaka === 'object') {
+            qbaka.reportException(e);    
+        }
+    },
+
+    logMessage: function (message) {
+        if (typeof console === 'object') {
+            console.error(message);
+        }
+        if (typeof qbaka === 'object') {
+            qbaka.report(message);    
+        }
     }
 });
 

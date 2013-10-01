@@ -134,6 +134,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
             map.marker.setPosition(position);
             map.getMap().setCenter(position);
         } else {
+            panel.setMasked({
+                xtype: 'loadmask',
+                message: 'Loading...'
+            });
             panel.add({
                 xtype: 'map',
                 mapOptions: {
@@ -141,6 +145,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                 },
                 listeners: {
                     maprender: function (mapCmp) {
+                        panel.setMasked(false);
                         mapCmp.marker = new google.maps.Marker({
                             position: position,
                             title: 'Vehicle Inspection',
