@@ -145,7 +145,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             fields['type'].hide();
         } else {
             fields['additional'].hide();
-            fileds['type'].show();
+            fields['type'].show();
             fields['additional'].hide();
         }
         this.show();
