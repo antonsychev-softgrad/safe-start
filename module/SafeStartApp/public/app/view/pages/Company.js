@@ -4,7 +4,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
     requires: [
         'SafeStartApp.view.pages.toolbar.Company',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
-        'SafeStartApp.view.components.UpdateVehicleChecklist',
         'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.view.pages.panel.VehicleAlerts',
         'SafeStartApp.view.pages.panel.VehicleReport',
