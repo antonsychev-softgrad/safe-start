@@ -3,7 +3,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.SystemSettings',
-        'SafeStartApp.view.components.UpdateChecklist',
+        'SafeStartApp.view.pages.panel.UpdateChecklist',
         'SafeStartApp.store.ChecklistDefault'
     ],
 
@@ -30,7 +30,6 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
     },
 
     initialize: function () {
-        var self = this;
         this.callParent();
 
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.SystemSettings');
@@ -45,8 +44,6 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
 
 
     getInfoPanel: function () {
-        var self = this;
-        this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.checklistDefaultStoreStore});
         return {
             cls: 'sfa-info-container sfa-system-settings',
             xtype: 'tabpanel',
@@ -54,7 +51,10 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
             minWidth: 150,
             scrollable: false,
             items: [
-                this.checkListTree,
+                {
+                    xtype: 'SafeStartUpdateChecklistPanel',
+                    checklistStore: this.checklistDefaultStoreStore
+                },
                 {
                     xtype: 'panel',
                     title: 'System',
@@ -69,15 +69,12 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         };
     },
 
+    getChecklistTree: function () {
+        return this.down('SafeStartUpdateChecklistPanel');
+    },
+
     loadData: function () {
-        var self = this;
-        self.checkListTree.getTreeList().getStore().loadData();
-        self.checkListTree.getTreeList().getStore().addListener('data-load-success', function () {
-            var node = this.checkListTree.getTreeList().getStore().getNodeById(this.checkListTree.getTreeList().selectedNodeId);
-            if (!node) node = this.checklistDefaultStoreStore.getRoot();
-            if (node.isLeaf()) this.checkListTree.getTreeList().goToLeaf(node);
-            else this.checkListTree.getTreeList().goToNode(node);
-        }, self);
+        this.getChecklistTree().getChecklistStore().loadData();
     }
 
 });
