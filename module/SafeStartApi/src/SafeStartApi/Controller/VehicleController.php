@@ -540,14 +540,15 @@ class VehicleController extends RestrictedAccessRestController
     public function getStatisticAction()
     {
         $vehicleId = (int)$this->params('id');
+
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $from = null;
-        if (isset($this->data->form) && !empty($this->data->form)) {
+        if (isset($this->data->from) && !empty($this->data->from)) {
             $from = new \DateTime();
-            $from->setTimestamp((int)$this->data->form);
+            $from->setTimestamp((int)$this->data->from);
         }
 
         $to = null;

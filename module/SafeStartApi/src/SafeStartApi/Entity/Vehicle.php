@@ -61,7 +61,7 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ORM\Column(type="string", name="registration_number", nullable=false)
+     * @ORM\Column(type="string", name="registration_number", unique=true, nullable=false)
      **/
     protected $registrationNumber;
 
