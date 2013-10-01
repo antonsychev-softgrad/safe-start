@@ -248,7 +248,7 @@ class Vehicle extends BaseEntity
     public function toMenuArray()
     {
         $vehicleData = $this->toInfoArray();
-        $vehicleData['text'] = $vehicleData['title'];
+        $vehicleData['text'] = $vehicleData['plantId'] .' '. $vehicleData['title'];
         $menuItems = $this->getMenuItems();
         if (empty($menuItems)) $vehicleData['leaf'] = true;
         else $vehicleData['data'] = $menuItems;
@@ -269,7 +269,7 @@ class Vehicle extends BaseEntity
             $menuItems[] = array(
                 'id' => $this->getId() . '-fill-checklist',
                 'action' => 'fill-checklist',
-                'text' => 'Daily Inspection',
+                'text' => 'Perform An Inspection',
                 'leaf' => true,
             );
             if (count($this->getAlerts()) > 0) {
@@ -284,7 +284,7 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
-                    'text' => 'Inspections (' . count($this->getCheckLists()) . ')',
+                    'text' => 'Previous Inspections (' . count($this->getCheckLists()) . ')',
                     'leaf' => true
                 );
             }
@@ -292,7 +292,7 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-report',
                     'action' => 'report',
-                    'text' => 'Report',
+                    'text' => 'Reporting',
                     'leaf' => true,
                 );
             }
@@ -303,7 +303,7 @@ class Vehicle extends BaseEntity
                     $menuItems[] = array(
                         'id' => $this->getId() . '-update-checklist',
                         'action' => 'update-checklist',
-                        'text' => 'Manage Checklist',
+                        'text' => 'Manage Checklists',
                         'leaf' => true,
                     );
                     $menuItems[] = array(
