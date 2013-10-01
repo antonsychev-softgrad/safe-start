@@ -73,7 +73,7 @@
                     }
                 },
                 "gps": {
-                    "description": "GPS coords",
+                    "description": "GPS coords, '%s;%s' -> 'latitude;longitude'",
                     "type": "string",
                     "required": false
                 },

@@ -51,7 +51,10 @@ class PublicVehicleController extends PublicAccessRestController
         if(!empty($this->data->plantId)) {
             $plantId = $this->data->plantId;
             $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('plantId' => $plantId));
-            if (!$vehicle) {
+            if ($vehicle) {
+                $company = $vehicle->getCompany();
+                if(!is_null($company)) return $this->_showKeyExists('Vehicle with such Plant ID already exists');
+            } else {
                 $vehicle = new Vehicle();
                 $persist = true;
             }
