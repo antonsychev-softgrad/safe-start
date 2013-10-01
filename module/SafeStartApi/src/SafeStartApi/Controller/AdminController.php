@@ -262,10 +262,18 @@ class AdminController extends AdminAccessRestController
     {
         $statistic = array();
 
+        $companyId = isset($this->data->company) ? $this->data->company : 0;
+        if($companyId != 0) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+            if (!$company) return $this->_showNotFound("Company not found.");
+        } else {
+            $company = null;
+        }
+
         $from = null;
-        if (isset($this->data->form) && !empty($this->data->form)) {
+        if (isset($this->data->from) && !empty($this->data->from)) {
             $from = new \DateTime();
-            $from->setTimestamp((int)$this->data->form);
+            $from->setTimestamp((int)$this->data->from);
         } else {
             $from = new \DateTime();
             $from->setTimestamp(time() - 366*24*60*60);
@@ -273,7 +281,6 @@ class AdminController extends AdminAccessRestController
 
         $fromFirstMonthDay = date('1-m-Y', $from->getTimestamp());
         $from = \DateTime::createFromFormat('d-m-Y', $fromFirstMonthDay);
-
 
         $to = null;
         if (isset($this->data->to) && !empty($this->data->to)) {
