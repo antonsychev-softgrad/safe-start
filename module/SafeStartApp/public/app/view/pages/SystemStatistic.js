@@ -140,7 +140,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
     loadData: function () {
 
         var from = new Date();
-        from.setYear(from.getYear() - 1);
+        from.setYear(from.getFullYear() - 1);
         this.down('datepickerfield[name=from]').setValue(from);
 
         var date = new Date();
@@ -197,9 +197,9 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             },
             animate: true,
             store: {
-                fields: ['date', 'value1', 'value2'],
+                fields: ['date', 'value1', 'value2', 'value3'],
                 data: [
-                    {'date': 'y-m-d', 'value1': 0, 'value2': 0}
+                    {'date': 'y-m-d', 'value1': 0, 'value2': 0, 'value3': 0}
                 ]
             },
             legend: {
@@ -213,7 +213,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                         text: 'Quantity',
                         fontSize: 15
                     },
-                    fields: ['value1', 'value2'],
+                    fields: ['value1', 'value2', 'value3'],
                     minimum: 0
                 },
                 {
@@ -265,6 +265,24 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     marker: {
                         type: 'circle',
                         fill: "#94ae0a",
+                        radius: 10
+                    }
+                },
+                {
+                    type: 'line',
+                    xField: 'date',
+                    yField: 'value3',
+                    labelField: 'value3',
+                    title: 'Alerts',
+                    style: {
+                        stroke: "#A80000",
+                        miterLimit: 3,
+                        lineCap: 'miter',
+                        lineWidth: 2
+                    },
+                    marker: {
+                        type: 'circle',
+                        fill: "#A80000",
                         radius: 10
                     }
                 }
