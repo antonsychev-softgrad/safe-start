@@ -47,13 +47,15 @@ class PublicVehicleController extends PublicAccessRestController
         );
 
         // save checklist
+        $persist = false;
         if(!empty($this->data->plantId)) {
             $plantId = $this->data->plantId;
             $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('plantId' => $plantId));
-            if (!$vehicle) $vehicle = new Vehicle();
+            if (!$vehicle) {
+                $vehicle = new Vehicle();
+                $persist = true;
+            }
         } else {
-            $testVehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('registration_number' => $registrationNumber));
-            if($testVehicle) return $this->_showKeyExists('Vehicle with this Registration number already exists');
             $plantId = uniqid('vehicle');
             $testVehicle = $this->em->findOneById('SafeStartApi\Entity\Vehicle', $plantId);
             while($testVehicle) {
@@ -62,6 +64,7 @@ class PublicVehicleController extends PublicAccessRestController
             }
             $vehicle = new Vehicle();
             $vehicle->setEnabled(1);
+            $persist = true;
         }
 
         $vehicle->setPlantId($plantId);
@@ -73,7 +76,9 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setTitle($title);
         $vehicle->setType($type);
 
-        $this->em->persist($vehicle);
+        if($persist) {
+            $this->em->persist($vehicle);
+        }
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
         $items = $query->getResult();

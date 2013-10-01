@@ -5,7 +5,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         'SafeStartApp.view.pages.toolbar.Main',
         'Ext.chart.axis.Numeric',
         'Ext.chart.axis.Category',
-        'Ext.chart.series.Line'
+        'Ext.chart.series.Line',
+        'SafeStartApp.store.Companies'
     ],
 
     xtype: 'SafeStartSystemStatisticPage',
@@ -46,7 +47,13 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
 
     getInfoPanel: function () {
         var self = this;
+        var companiesStore = Ext.create(SafeStartApp.store.Companies);
         this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.checklistDefaultStoreStore});
+        companiesStore.loadData();
+        companiesStore.addListener('data-load-success', function(){
+            companiesStore.add({id: 0, title: 'All companies'});
+            self.down('selectfield[name=company]').setValue(0);
+        });
         return {
             cls: 'sfa-info-container',
             xtype: 'panel',
@@ -57,6 +64,16 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     xtype: 'toolbar',
                     docked: 'top',
                     items: [
+                        {
+                            xtype: 'selectfield',
+                            name: 'company',
+                            label: 'Status',
+                            cls: 'sfa-atatus',
+                            valueField: 'id',
+                            displayField: 'title',
+                            value: 0,
+                            store: companiesStore
+                        },
                         {
                             xtype: 'selectfield',
                             name: 'range',
@@ -140,6 +157,11 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         if (this.down('datepickerfield[name=from]').getValue()) post.from = this.down('datepickerfield[name=from]').getValue().getTime() / 1000;
         if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=to]').getValue().getTime() / 1000;
         post.range = this.down('selectfield[name=range]').getValue();
+        if (this.down('selectfield[name=company]').getValue()) {
+            post.company =  this.down('selectfield[name=company]').getValue();
+        } else {
+            post.company = 0;
+        }
 
         var data = {};
         data.period = {
