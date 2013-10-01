@@ -3,12 +3,25 @@
 namespace SafeStartApi\Model;
 
 
+/**
+ * Class ImageProcessor
+ * @package SafeStartApi\Model
+ */
 class ImageProcessor {
 
+    /**
+     * @var null
+     */
     private $image = null;
+    /**
+     * @var \Imagine\Gd\Imagine|null
+     */
     private $imagine = null;
 
 
+    /**
+     * @param null $source
+     */
     public function __construct ($source = null) {
         if (extension_loaded('imagick')) {
             $this->imagine = new \Imagine\Imagick\Imagine();
@@ -22,15 +35,26 @@ class ImageProcessor {
     }
 
 
+    /**
+     * @param $source
+     */
     public function openImage ($source) {
         $this->image = $this->imagine->open($source);
     }
 
 
+    /**
+     * @param $destination
+     * @return mixed
+     */
     public function save ($destination) {
         return $this->image->save($destination);
     }
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function rotate(array $options)
     {
         if (!isset($options['angle'])) {
@@ -71,6 +95,10 @@ class ImageProcessor {
     }
 
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function resize (array $options) {
         if (!isset($options['width']) || !isset($options['height'])) {
             throw new \Exception();
@@ -81,6 +109,10 @@ class ImageProcessor {
     }
 
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function thumbnail (array $options) {
         if (!isset($options['width']) || !isset($options['height']) || !isset($options['destination'])) {
             throw new \Exception();
@@ -94,6 +126,10 @@ class ImageProcessor {
     }
 
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function crop (array $options) {
         if (!isset($options['width']) || !isset($options['height']) || !isset($options['start'])) {
             throw new \Exception();
@@ -116,6 +152,7 @@ class ImageProcessor {
      * images have different ratios.
      *
      * @param array $options
+     * @throws Exception
      * @throws \Exception
      */
     public function cover (array $options) {

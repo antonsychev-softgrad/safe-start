@@ -204,8 +204,6 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         this.fieldId = fieldId;
         this.getNavMain().getStore().loadData();
         this.getNavMain().getStore().addListener('load', function () {
-            // var record = this.getNavMain().getStore().getById(this.fieldId);
-            //   this.currentForm.setRecord(record);
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);
             if (node.isLeaf()) this.getNavMain().goToLeaf(node);
             else this.getNavMain().goToNode(node);

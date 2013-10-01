@@ -6,8 +6,15 @@ use SafeStartApi\Base\RestrictedAccessRestController;
 use Doctrine\Common\Collections\ArrayCollection;
 
 
+/**
+ * Class CompanyController
+ * @package SafeStartApi\Controller
+ */
 class CompanyController extends RestrictedAccessRestController
 {
+    /**
+     * @return mixed
+     */
     public function getVehiclesAction()
     {
         $companyId = (int)$this->getRequest()->getQuery('companyId');
@@ -51,6 +58,11 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @param $vehicle
+     * @param null $defParent
+     * @param null $parent
+     */
     protected function copyVehicleDefFields($vehicle, $defParent = null, $parent = null)
     {
         $repField = $this->em->getRepository('SafeStartApi\Entity\DefaultField');
@@ -64,32 +76,35 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         foreach ($defFields as $defField) {
-            $newFild = new \SafeStartApi\Entity\Field();
+            $newField = new \SafeStartApi\Entity\Field();
 
-            $newFild->setParent($parent);
-            $newFild->setVehicle($vehicle);
-            $newFild->setTitle($defField->getTitle());
-            $newFild->setType($defField->getType());
-            $newFild->setAdditional($defField->getAdditional());
-            $newFild->setTriggerValue($defField->getTriggerValue());
-            $newFild->setAlertTitle($defField->getAlertTitle());
-            $newFild->setOrder($defField->getOrder());
-            $newFild->setEnabled($defField->getEnabled());
-            $newFild->setDeleted($defField->getDeleted());
-            $newFild->setAuthor($defField->getAuthor());
+            $newField->setParent($parent);
+            $newField->setVehicle($vehicle);
+            $newField->setTitle($defField->getTitle());
+            $newField->setType($defField->getType());
+            $newField->setAdditional($defField->getAdditional());
+            $newField->setTriggerValue($defField->getTriggerValue());
+            $newField->setAlertTitle($defField->getAlertTitle());
+            $newField->setOrder($defField->getOrder());
+            $newField->setEnabled($defField->getEnabled());
+            $newField->setDeleted($defField->getDeleted());
+            $newField->setAuthor($defField->getAuthor());
 
             if ($parent !== null) {
-                $parent->addChildred($newFild);
+                $parent->addChildred($newField);
                 $this->em->persist($parent);
             }
 
-            $this->copyVehicleDefFields($vehicle, $defField, $newFild);
-            $this->em->persist($newFild);
-            $vehicle->addField($newFild);
+            $this->copyVehicleDefFields($vehicle, $defField, $newField);
+            $this->em->persist($newField);
+            $vehicle->addField($newField);
             $this->em->persist($vehicle);
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function updateVehicleAction()
     {
         if (isset($this->data->companyId)) {
@@ -167,6 +182,9 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @return mixed
+     */
     public function deleteVehicleAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -192,6 +210,9 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @return mixed
+     */
     public function getUsersAction()
     {
         $companyId = (int)$this->getRequest()->getQuery('companyId');
@@ -220,6 +241,9 @@ class CompanyController extends RestrictedAccessRestController
 
     }
 
+    /**
+     * @return mixed
+     */
     public function getVehicleUsersAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -254,6 +278,9 @@ class CompanyController extends RestrictedAccessRestController
 
     }
 
+    /**
+     * @return mixed
+     */
     public function updateVehicleUsersAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -293,6 +320,9 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @return mixed
+     */
     public function getVehicleChecklistAction()
     {
         $vehicleId = (int)$this->getRequest()->getQuery('vehicleId');
@@ -322,6 +352,9 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @return mixed
+     */
     public function updateVehicleChecklistFiledAction()
     {
         $vehicleId = (int)$this->data->vehicleId;
@@ -398,6 +431,9 @@ class CompanyController extends RestrictedAccessRestController
 
     }
 
+    /**
+     * @return mixed
+     */
     public function deleteVehicleChecklistFiledAction()
     {
         $fieldId = (int)$this->params('id');
@@ -420,6 +456,9 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @return mixed
+     */
     public function getVehicleAlertsAction()
     {
         $alerts = null;
@@ -475,6 +514,11 @@ class CompanyController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    /**
+     * @param \SafeStartApi\Entity\Vehicle $vehicle
+     * @param array $filters
+     * @return array|mixed
+     */
     private function getAlertsByVehicle(\SafeStartApi\Entity\Vehicle $vehicle, $filters = array())
     {
         $cache = \SafeStartApi\Application::getCache();
@@ -497,6 +541,11 @@ class CompanyController extends RestrictedAccessRestController
         return $data;
     }
 
+    /**
+     * @param \SafeStartApi\Entity\Company $company
+     * @param array $filters
+     * @return array|mixed
+     */
     private function getAlertsByCompany(\SafeStartApi\Entity\Company $company, $filters = array())
     {
         $cache = \SafeStartApi\Application::getCache();
@@ -524,6 +573,9 @@ class CompanyController extends RestrictedAccessRestController
         return $data;
     }
 
+    /**
+     * @return mixed
+     */
     public function getNewIncomingAction()
     {
         $companyId = (int)$this->params('id');
