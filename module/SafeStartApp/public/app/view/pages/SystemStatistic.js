@@ -55,7 +55,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             self.down('selectfield[name=company]').setValue(0);
         });
         return {
-            cls: 'sfa-info-container',
+            cls: 'sfa-info-container sfa-statistic',
             xtype: 'panel',
             layout: 'card',
             name: 'statistic',
@@ -63,6 +63,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                 {
                     xtype: 'toolbar',
                     docked: 'top',
+                    cls: 'sfa-top-toolbar',
                     items: [
                         {
                             xtype: 'selectfield',

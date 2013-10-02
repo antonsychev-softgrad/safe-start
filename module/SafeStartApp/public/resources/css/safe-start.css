@@ -1144,6 +1144,9 @@ div.logo {
 .sfa-container-padding > div {
     padding: 0 10px;
 }
+.sfa-statistic > div {
+    padding: 0 18px;
+}
 .sfa-container-padding > div > .x-container.x-toolbar.x-navigation-bar.x-dock-item.x-docked-top {
     margin-left: 10px !important;
     margin-right: 10px !important;
@@ -1277,8 +1280,21 @@ color: #558FAC;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .x-inner.x-toolbar-inner.x-horizontal.x-align-center.x-pack-start.x-layout-box div,
 .sfa-vehicle-inspection.sfa-vehicle-report .x-component-outer:before,
-.sfa-vehicle-inspection.sfa-vehicle-report input, .sfa-vehicle-inspection.sfa-vehicle-report textarea{
+.sfa-vehicle-inspection.sfa-vehicle-report input, .sfa-vehicle-inspection.sfa-vehicle-report textarea,
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer,
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer:before {
     border: none;
+}
+.sfa-info-container.sfa-statistic .top {
+    font-size: 22px;
+}
+.sfa-info-container.sfa-statistic .sfa-top-toolbar {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom-color: #acacac;
+}
+#SafeStartSystemStatisticChart {
+    margin-top: 140px !important;
 }
 
 .sfa-vehicle-inspection.sfa-vehicle-report .top {
