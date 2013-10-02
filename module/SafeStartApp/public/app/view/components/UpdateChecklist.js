@@ -65,9 +65,11 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             store: store,
             listeners: {
                 itemtap:  function(nestedlist, list, index, target, record) {
+                    console.log('itemtap');
                     this.up('SafeStartUpdateChecklist').onSelectAction(record);
                 },
                 back:  function(nestedlist, node) {
+                    console.log('back');
                     this.up('SafeStartUpdateChecklist').onSelectAction(node.parentNode);
                 }
             },
@@ -195,6 +197,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     },
 
     _reloadStore: function (fieldId) {
+        conosle.log('reloadStore');
         this.fieldId = fieldId;
         this.getNavMain().getStore().addListener('load', function () {
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);

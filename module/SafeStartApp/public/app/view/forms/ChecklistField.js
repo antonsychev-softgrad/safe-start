@@ -139,6 +139,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     },
 
     setRecord: function (record) {
+        if (! record) {
+            this.reset();
+            return;
+        }
         var fields = this.getFields();
         if (record.get('type') == 'root') {
             fields['additional'].show();
