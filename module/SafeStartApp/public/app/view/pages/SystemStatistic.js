@@ -59,6 +59,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             xtype: 'panel',
             layout: 'card',
             name: 'statistic',
+            scrollable: true,
+            minHeight: 300,
             items: [
                 {
                     xtype: 'toolbar',
@@ -196,6 +198,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             style: {
                 marginTop: '100px'
             },
+            minHeight: 200,
             animate: true,
             store: {
                 fields: ['date', 'value1', 'value2', 'value3'],

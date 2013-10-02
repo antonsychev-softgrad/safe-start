@@ -6,10 +6,8 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
 
     getToolbarItems: function() {
         return this.toolbarButtons = [{
-            iconCls: 'add',
             ui: 'action',
-            text: 'Add Company',
-            action: 'add-company'
+            text: 'Companies'
         }, {
             iconCls: 'more',
             ui: 'action',

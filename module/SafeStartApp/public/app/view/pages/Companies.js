@@ -33,8 +33,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Companies');
         this.add({
             xtype: 'SafeStartCompaniesToolbar',
-            docked: 'top',
-            title: 'Companies'
+            docked: 'top'
         });
 
         this.companiesStore = Ext.create('SafeStartApp.store.Companies');
@@ -67,7 +66,6 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                 {
                     xtype: 'toolbar',
                     docked: 'top',
-
                     items: [
                         {
                             xtype: 'searchfield',
@@ -94,7 +92,20 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                             }
                         }
                     ]
+                },
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+                    items: [
+                        {
+                            iconCls: 'add',
+                            ui: 'action',
+                            text: 'Add Company',
+                            action: 'add-company'
+                        }
+                    ]
                 }
+
             ]
         };
     },

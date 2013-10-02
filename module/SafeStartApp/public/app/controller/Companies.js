@@ -29,7 +29,7 @@ Ext.define('SafeStartApp.controller.Companies', {
             alertsPage: 'SafeStartAlertsPage',
             navMain: 'SafeStartCompaniesPage > list[name=companies]',
             companyInfoPanel: 'SafeStartCompaniesPage > panel[name=company-info]',
-            addCompanyButton: 'SafeStartMainToolbar > button[action=add-company]'
+            addCompanyButton: 'SafeStartCompaniesPage button[action=add-company]'
         }
     },
 
