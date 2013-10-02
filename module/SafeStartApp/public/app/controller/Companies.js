@@ -66,13 +66,12 @@ Ext.define('SafeStartApp.controller.Companies', {
             this.currentCompanyForm.down('button[name=manage]').show();
             this.currentCompanyForm.down('button[name=reset-data]').hide();
             SafeStartApp.companyModel = record;
+            this.getCompanyPage().enable();
+            this.getUsersPage().enable();
+            this.getAlertsPage().enable();
         } catch (e) {
             SafeStartApp.logException(e);
         }
-
-        this.getCompanyPage().enable();
-        this.getUsersPage().enable();
-        this.getAlertsPage().enable();
     },
 
     addAction: function () {

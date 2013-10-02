@@ -62,7 +62,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionDetailsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionDetails',
             vehicleInspectionsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionsPanel',
             vehiclesPanel: 'SafeStartCompanyPage SafeStartVehiclesPanel',
-            addButton: 'SafeStartCompanyPage SafeStartCompanyToolbar > button[action=add-vehicle]',
+            addButton: 'SafeStartCompanyPage button[action=add-vehicle]',
             updateChecklistPanel: 'SafeStartCompanyPage SafeStartUpdateVehicleChecklistPanel',
             reviewCard: 'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-review]'
         }

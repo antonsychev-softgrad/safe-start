@@ -21,7 +21,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
     xtype: 'SafeStartCompanyPage',
     companyId: 0,
     config: {
-        title: 'Company',
+        title: 'Vehicles',
         iconCls: 'more',
         styleHtmlContent: true,
         layout: 'hbox',
@@ -141,8 +141,10 @@ Ext.define('SafeStartApp.view.pages.Company', {
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
         this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);
-        this.down('SafeStartCompanyToolbar').setTitle(SafeStartApp.companyModel.get('title'));
-        // this.down('nestedlist[name=vehicles]').goToNode(this.vehiclesStore.getRoot());
+        this.down('SafeStartCompanyToolbar').add({
+            ui: 'action',
+            text: SafeStartApp.companyModel.get('title')
+        });
         this.vehiclesStore.loadData();
     }
 

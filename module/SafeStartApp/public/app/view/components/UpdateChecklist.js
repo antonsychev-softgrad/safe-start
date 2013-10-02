@@ -65,11 +65,9 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             store: store,
             listeners: {
                 itemtap:  function(nestedlist, list, index, target, record) {
-                    console.log('itemtap');
                     this.up('SafeStartUpdateChecklist').onSelectAction(record);
                 },
                 back:  function(nestedlist, node) {
-                    console.log('back');
                     this.up('SafeStartUpdateChecklist').onSelectAction(node.parentNode);
                 }
             },

@@ -126,6 +126,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                         '<div class="top">',
                         '<div class="name">Period from {period.from} to {period.to}</div>',
                         '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
+                        '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
                         '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
                         '</div>'
                     ].join('')
@@ -273,7 +274,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     xField: 'date',
                     yField: 'value3',
                     labelField: 'value3',
-                    title: 'Alerts',
+                    title: 'DateBase Alerts',
                     style: {
                         stroke: "#A80000",
                         miterLimit: 3,
