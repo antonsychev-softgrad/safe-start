@@ -199,6 +199,16 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
+        $users = $vehicle->getUsers() ? $vehicle->getUsers()->toArray() : array();
+        $responsibleUsers = $vehicle->getResponsibleUsers() ? $vehicle->getResponsibleUsers()->toArray() : array();
+        $users = array_merge($users, $responsibleUsers);
+
+        $cache = \SafeStartApi\Application::getCache();
+        foreach($users as $user) {
+            $cashKey = "getUserVehiclesList" . $user->getId();
+            $cache->removeItem($cashKey);
+        }
+
         $vehicle->setDeleted(1);
 
         $this->em->flush();
