@@ -18,3 +18,5 @@ config/autoload/api.dev.php
 config/autoload/api.prod.php
 config/autoload/api.test.php
 module/SafeStartApp/public/lib
+module/SafeStartApp/public/build/SafeStartApp/production/deltas
+module/SafeStartApp/public/build/SafeStartApp/production/deltas/app.js

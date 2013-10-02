@@ -4,6 +4,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     xtype: 'SafeStartChecklistFieldForm',
     config: {
         minHeight: 400,
+        hidden: true,
         items: [
             {
                 xtype: 'hiddenfield',
@@ -46,8 +47,8 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     ]
                 },
                 listeners: {
-                    change: function (field, slider, thumb, newValue, oldValue) {
-                        this.up('SafeStartChecklistFieldForm').showCreateFieldCategory();
+                    change: function (field, value) {
+                        this.up('SafeStartChecklistFieldForm').changeFieldType(value);
                     }
                 }
             },
@@ -133,53 +134,58 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     }
                 ]
             }
-        ],
+        ]
 
-        listeners: {
-            change: function (form, record, xz, eOpts) {
-                if (!record || !record.get('parentId') || record.get('type') == 'root') {
-                    form.showCreateRootCategory();
-                } else {
-                    form.showCreateFieldCategory();
-                }
-            }
+    },
+
+    setRecord: function (record) {
+        if (! record) {
+            this.reset();
+            return;
         }
+        var fields = this.getFields();
+        if (record.get('type') == 'root') {
+            fields['additional'].show();
+            fields['type'].hide();
+        } else {
+            fields['additional'].hide();
+            fields['type'].show();
+            fields['additional'].hide();
+        }
+        this.show();
+
+        this.changeFieldType(record.get('type'));
+        this.callParent([record]);
     },
 
-    showCreateRootCategory: function () {
-        this.getFields()['additional'].show();
-        this.getFields()['type'].setValue('root');
-        this.getFields()['type'].hide();
-        this.getFields()['alert_title'].hide();
-        this.getFields()['alert_description'].hide();
-        this.getFields()['alert_critical'].hide();
-        this.getFields()['trigger_value'].hide();
-        this.getFields()['trigger_value'].setValue('yes');
-    },
-
-    showCreateFieldCategory: function () {
-        this.getFields()['type'].show();
-        this.getFields()['additional'].hide();
-        switch (this.getFields()['type'].getValue()) {
+    changeFieldType: function (type) {
+        var fields = this.getFields();
+        switch (type) {
             case 'group':
-                this.getFields()['alert_title'].hide();
-                this.getFields()['alert_critical'].hide();
-                this.getFields()['alert_description'].hide();
-                this.getFields()['trigger_value'].hide();
+                fields['alert_title'].hide();
+                fields['alert_critical'].hide();
+                fields['alert_description'].hide();
+                fields['trigger_value'].hide();
             break;
             case 'radio':
             case 'checkbox':
-                this.getFields()['alert_title'].show();
-                this.getFields()['alert_critical'].show();
-                this.getFields()['alert_description'].show();
-                this.getFields()['trigger_value'].show();
+                fields['alert_title'].show();
+                fields['alert_critical'].show();
+                fields['alert_description'].show();
+                fields['trigger_value'].show();
                 break;
             default:
-                this.getFields()['alert_title'].hide();
-                this.getFields()['alert_critical'].hide();
-                this.getFields()['alert_description'].hide();
-                this.getFields()['trigger_value'].hide();
+                fields['alert_title'].hide();
+                fields['alert_critical'].hide();
+                fields['alert_description'].hide();
+                fields['trigger_value'].hide();
                 break;
         }
+    },
+
+    resetRecord: function () {
+        this.reset();
+        this.hide();
     }
+
 });

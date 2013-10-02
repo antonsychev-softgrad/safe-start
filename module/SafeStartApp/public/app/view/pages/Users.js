@@ -100,6 +100,18 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             }
                         }
                     ]
+                },
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+                    items: [
+                        {
+                            iconCls: 'add',
+                            ui: 'action',
+                            text: 'Add User',
+                            action: 'add-user'
+                        }
+                    ]
                 }
             ]
         };
@@ -120,7 +132,12 @@ Ext.define('SafeStartApp.view.pages.Users', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
-        this.down('SafeStartUsersToolbar').setTitle(SafeStartApp.companyModel.get('title')+': '+'users');
+        this.down('SafeStartUsersToolbar').add(
+            {
+                ui: 'action',
+                text: SafeStartApp.companyModel.get('title')+': '+'Users'
+            }
+        );
         this.usersStore.getProxy().setExtraParam('companyId', this.companyId);
         this.usersStore.loadData();
     }

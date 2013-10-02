@@ -62,8 +62,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleInspectionDetailsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionDetails',
             vehicleInspectionsPanel: 'SafeStartCompanyPage SafeStartVehicleInspectionsPanel',
             vehiclesPanel: 'SafeStartCompanyPage SafeStartVehiclesPanel',
-            addButton: 'SafeStartCompanyPage SafeStartCompanyToolbar > button[action=add-vehicle]',
-            manageChecklistPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-manage]',
+            addButton: 'SafeStartCompanyPage button[action=add-vehicle]',
+            updateChecklistPanel: 'SafeStartCompanyPage SafeStartUpdateVehicleChecklistPanel',
             reviewCard: 'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-review]'
         }
     },
@@ -103,8 +103,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 this.getVehicleAlertsPanel().loadList(record.parentNode.get('id'));
                 break;
             case 'update-checklist':
-                this.getInfoPanel().setActiveItem(this.getManageChecklistPanel());
-                this.showUpdateCheckList();
+                this.getInfoPanel().setActiveItem(this.getUpdateChecklistPanel());
+                this.getUpdateChecklistPanel().setVehicleId(record.parentNode.get('id'));
                 break;
             case 'users':
                 this.loadUsers(record.parentNode.get('id'));
@@ -123,22 +123,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     checklistStores: {},
     checkListTrees: {},
-
-    showUpdateCheckList: function () {
-        Ext.Object.each(this.checkListTrees, function(key, obj) {
-            obj.hide();
-        });
-        if (!this.checklistStores[this.selectedNodeId]) {
-            this.checklistStores[this.selectedNodeId] = Ext.create('SafeStartApp.store.VehicleChecklist');
-            this.checklistStores[this.selectedNodeId].getProxy().setExtraParam('vehicleId', this.selectedNodeId);
-        }
-        if (!this.checkListTrees[this.selectedNodeId]) {
-            this.checkListTrees[this.selectedNodeId] = new SafeStartApp.view.components.UpdateVehicleChecklist({checkListStore: this.checklistStores[this.selectedNodeId]});
-            this.getInfoPanel().getActiveItem().add(this.checkListTrees[this.selectedNodeId]);
-        }
-        this.checkListTrees[this.selectedNodeId].show();
-    },
-
 
     loadUsers: function (id) {
         var self = this;

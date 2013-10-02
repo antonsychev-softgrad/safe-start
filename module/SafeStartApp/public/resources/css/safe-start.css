@@ -1353,3 +1353,7 @@ span.sfa-comment-content {
 .sfa-vehicle-inspection.sfa-vehicle-report .x-toolbar-dark.x-dock-item.x-docked-top .x-pack-start .x-form-label {
     padding-bottom: 6px;
 }
+
+.x-chart-watermark {
+    display: none;
+}

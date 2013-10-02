@@ -6,11 +6,6 @@ Ext.define('SafeStartApp.view.pages.toolbar.Users', {
 
     getToolbarItems: function () {
         return this.toolbarButtons = [{
-            iconCls: 'add',
-            ui: 'action',
-            text: 'Add User',
-            action: 'add-user'
-        }, {
             iconCls: 'more',
             ui: 'action',
             action: 'toggle-menu',

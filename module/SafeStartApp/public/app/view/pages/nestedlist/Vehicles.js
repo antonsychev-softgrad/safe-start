@@ -28,14 +28,19 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         },
         listeners: {
             activeitemchange: function (nestedlist) {
-                var toolbar = this.down('toolbar');
-                if (toolbar) {
-                    toolbar.hide();
+                var toolbar1 = this.down('toolbar[name=search]');
+                if (toolbar1) {
+                    toolbar1.hide();
+                }
+                var toolbar2 = this.down('toolbar[name=add]');
+                if (toolbar2) {
+                    toolbar2.hide();
                 }
             },
             back: function () {
                 if(this._backButton._hidden) {
-                    this.down('toolbar').show();
+                    this.down('toolbar[name=search]').show();
+                    this.down('toolbar[name=add]').show();
                 }
                 this._activeNode = this.getStore().getRoot();
             },
@@ -150,49 +155,109 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
 
-        this.vehiclesStore.on('load', function (store, records) {
-        }, this, {order: 'before'});
+        this.vehiclesStore.on('beforeload', function (store, records) {
+            this.setMasked({
+                xtype: 'loadmask',
+                message: 'Loading...'
+            });
+        }, this);
 
         this.vehiclesStore.on('load', function (store, records) {
+            this.setMasked(false);
         }, this, {order: 'after'});
 
         this.vehiclesStore.on('load', function (store, records) {
             this.updateNestedListStore();
         }, this);
 
-        this.setItems([{
-            xtype: 'toolbar',
-            docked: 'top',
-            items: [{
-                xtype: 'searchfield',
-                placeHolder: 'Search...',
-                listeners: {
-                    clearicontap: function() {
-                        this.setFilterValue('');
-                        this.updateNestedListStore();
-                    },
-                    keyup: function(field, e) {
-                        this.setFilterValue(field.getValue());
-                        this.updateNestedListStore();
-                    },
-                    scope: this
+        if (SafeStartApp.userModel.get('role') == 'companyUser') {
+            this.setItems([
+                {
+                    xtype: 'toolbar',
+                    docked: 'top',
+                    items: [{
+                        xtype: 'searchfield',
+                        placeHolder: 'Search...',
+                        listeners: {
+                            clearicontap: function() {
+                                this.setFilterValue('');
+                                this.updateNestedListStore();
+                            },
+                            keyup: function(field, e) {
+                                this.setFilterValue(field.getValue());
+                                this.updateNestedListStore();
+                            },
+                            scope: this
+                        }
+                    }, {
+                        xtype: 'spacer'
+                    }, {
+                        xtype: 'button',
+                        name: 'reload',
+                        ui: 'action',
+                        action: 'refresh',
+                        iconCls: 'refresh',
+                        cls: 'sfa-search-reload',
+                        handler: function() {
+                            this.down('searchfield').setValue('');
+                            this.setFilterValue('');
+                            this.getVehiclesStore().loadData();
+                        },
+                        scope: this
+                    }]
                 }
-            }, {
-                xtype: 'spacer'
-            }, {
-                xtype: 'button',
-                name: 'reload',
-                ui: 'action',
-                action: 'refresh',
-                iconCls: 'refresh',
-                cls: 'sfa-search-reload',
-                handler: function() {
-                    this.down('searchfield').setValue('');
-                    this.setFilterValue('');
-                    this.getVehiclesStore().loadData();
+            ]);
+        } else {
+            this.setItems([
+                {
+                    xtype: 'toolbar',
+                    name: 'search',
+                    docked: 'top',
+                    items: [{
+                        xtype: 'searchfield',
+                        placeHolder: 'Search...',
+                        listeners: {
+                            clearicontap: function() {
+                                this.setFilterValue('');
+                                this.updateNestedListStore();
+                            },
+                            keyup: function(field, e) {
+                                this.setFilterValue(field.getValue());
+                                this.updateNestedListStore();
+                            },
+                            scope: this
+                        }
+                    }, {
+                        xtype: 'spacer'
+                    }, {
+                        xtype: 'button',
+                        name: 'reload',
+                        ui: 'action',
+                        action: 'refresh',
+                        iconCls: 'refresh',
+                        cls: 'sfa-search-reload',
+                        handler: function() {
+                            this.down('searchfield').setValue('');
+                            this.setFilterValue('');
+                            this.getVehiclesStore().loadData();
+                        },
+                        scope: this
+                    }]
                 },
-                scope: this
-            }]
-        }]);
+                {
+                    xtype: 'toolbar',
+                    name: 'add',
+                    docked: 'top',
+                    items: [
+                        {
+                            iconCls: 'add',
+                            ui: 'action',
+                            text: 'Add Vehicle',
+                            action: 'add-vehicle'
+                        }
+                    ]
+                }
+            ]);
+        }
     }
 });

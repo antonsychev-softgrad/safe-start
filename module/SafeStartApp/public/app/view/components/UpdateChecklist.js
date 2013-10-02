@@ -8,81 +8,109 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         'Ext.mixin.Observable',
         'SafeStartApp.controller.mixins.Form'
     ],
-
-    xtype: 'SafeStartUpdateChecklistComponent',
-
-    checkListStore: null,
+    alias: 'widget.SafeStartUpdateChecklist',
+    checklistStore: null,
 
     config: {
         name: 'checklist',
         title: 'Default Checklist',
-        layout: 'hbox',
-        items: [
-            {
-                xtype: 'nestedlist',
-                name: 'checklist-tree',
-                flex: 1,
-                masked: {
-                    xtype: 'loadmask',
-                    message: 'Loading...'
-                },
-                title: 'Checklist',
-                displayField: 'text',
-                useTitleAsBackText: false,
-                getTitleTextTpl: function () {
-                    return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
-                },
-                getItemTextTpl: function () {
-                    return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
-                },
-                detailCard: false,
-                store: this.checkListStore,
-                listeners: {
-                    itemtap:  function() {
-                        this.up('SafeStartUpdateChecklistComponent').onSelectAction.apply(this.up('SafeStartUpdateChecklistComponent'), arguments);
-                    },
-                    back:  function() {
-                        this.up('SafeStartUpdateChecklistComponent').onSelectChangeAction.apply(this.up('SafeStartUpdateChecklistComponent'), arguments);
-                    }
-                },
-                items: [
-                    {
-                        xtype: 'toolbar',
-                        docked: 'top',
-                        items: [
-                            {
-                                xtype: 'button',
-                                name: 'add-field',
-                                action: 'add-field',
-                                text: 'Add Inspection Field',
-                                ui: 'action',
-                                iconCls: 'add',
-                                handler: function() {
-                                    this.up('SafeStartUpdateChecklistComponent').addAction();
-                                }
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                xtype: 'panel',
-                layout: 'card',
-                flex: 2,
-                minWidth: 150,
-                name: 'field-info'
-            }
-        ]
+        layout: {
+            type: 'hbox',
+            align: 'stretch'
+        }
     },
 
-    constructor: function (config) {
-        this.callParent(arguments);
-        Ext.apply(this, config);
-        this.getTreeList().setStore(this.getChecklistStore());
+    initialize: function () {
+        if (this.config.checklistStore) {
+            this.checklistStore = this.config.checklistStore;
+        } else {
+            this.checklistStore = Ext.create('SafeStartApp.store.VehicleChecklist');
+        }
+
+        this.callParent();
+
+        this.add(this.createNestedList(this.getChecklistStore()));
+        var form = this.add(this.createForm()).down('SafeStartChecklistFieldForm');
+        form.on('save-data', this.saveAction, this);
+        form.on('delete-data', this.deleteAction, this);
+    },
+
+    setVehicleId: function (vehicleId) {
+        if (this.vehicleId != vehicleId) {
+            this.getChecklistStore().getProxy().setExtraParam('vehicleId', vehicleId);
+            this.vehicleId = vehicleId;
+            this.getChecklistStore().loadData();
+        }
+    },
+
+    createNestedList: function (store) {
+        return {
+            xtype: 'nestedlist',
+            name: 'checklist-tree',
+            flex: 1,
+            masked: {
+                xtype: 'loadmask',
+                message: 'Loading...'
+            },
+            title: 'Checklist',
+            displayField: 'text',
+            useTitleAsBackText: false,
+            getTitleTextTpl: function () {
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
+            },
+            getItemTextTpl: function () {
+                return '{' + this.getDisplayField() + '}<tpl if="leaf !== true">  </tpl>';
+            },
+            detailCard: false,
+            store: store,
+            listeners: {
+                itemtap:  function(nestedlist, list, index, target, record) {
+                    this.up('SafeStartUpdateChecklist').onSelectAction(record);
+                },
+                back:  function(nestedlist, node) {
+                    this.up('SafeStartUpdateChecklist').onSelectAction(node.parentNode);
+                }
+            },
+            items: [
+            {
+                xtype: 'toolbar',
+                docked: 'top',
+                items: [
+                {
+                    xtype: 'button',
+                    name: 'add-field',
+                    action: 'add-field',
+                    text: 'Add Inspection Field',
+                    ui: 'action',
+                    iconCls: 'add',
+                    handler: function() {
+                        this.up('SafeStartUpdateChecklist').addAction();
+                    }
+                }
+                ]
+            }
+            ]
+        };
+    },
+
+    createForm: function () {
+        return {
+            xtype: 'container',
+            flex: 2,
+            layout: 'fit',
+            items: [{
+                xtype: 'SafeStartChecklistFieldForm',
+                flex: 1
+            }]
+        };
+    },
+
+    getForm: function () {
+        return this.down('SafeStartChecklistFieldForm');
     },
 
     getChecklistStore: function () {
-        return this.checkListStore;
+        return this.checklistStore;
     },
 
     getTreeList: function () {
@@ -102,67 +130,43 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     },
 
     selectedNodeId: 0,
-    selectedRecord: 0,
 
-    onSelectChangeAction: function (obj, node, selections, eOpts) {
-        try{
-            this.selectedRecord =  this.getNavMain().getStore().getById(node.get('parentId'));
-            if (!this.selectedRecord)  {
-                this.selectedRecord = Ext.create('SafeStartApp.model.ChecklistField');
-                this.selectedNodeId = 0;
-            }
-            else this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
-            this.getNavMain().selectedNodeId = this.selectedNodeId;
-            if (!this.currentForm) this._createForm();
-            this.currentForm.setRecord(this.selectedRecord);
-            this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
-            this.currentForm.down('button[name=delete-data]').show();
-        } catch(e) {
-
-        }
-    },
-
-    onSelectAction: function () {
-        try{
-            this.selectedRecord = arguments[4];
-            this.selectedNodeId = parseInt(this.selectedRecord.get('id'));
-            this.getNavMain().selectedNodeId = this.selectedNodeId;
-            if (!this.currentForm) this._createForm();
-            this.currentForm.setRecord(this.selectedRecord);
-            this.currentForm.fireEvent('change', this.currentForm, this.selectedRecord);
-            this.currentForm.down('button[name=delete-data]').show();
-        } catch(e) {
-
+    onSelectAction: function (record) {
+        if (record.isRoot()) {
+            this.getForm().resetRecord();
+            this.selectedNodeId = 0;
+        } else {
+            this.getForm().setRecord(record);
+            this.selectedNodeId = record.get('id');
         }
     },
 
     addAction: function () {
-        if (!this.currentForm) this._createForm();
-        this.currentForm.down('button[name=delete-data]').hide();
-        if (this.checklistFieldModel) this.checklistFieldModel.destroy();
-        this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
-        this.checklistFieldModel.set('parentId', this.selectedNodeId);
-        if(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']) this.checklistFieldModel.set('vehicleId', parseInt(this.getNavMain().getStore().getProxy().getExtraParams()['vehicleId']));
+        var form = this.getForm();
+        var record = form.getRecord();
+        form.down('button[name=delete-data]').hide();
+        record = Ext.create('SafeStartApp.model.ChecklistField');
+        record.set('parentId', this.selectedNodeId);
+        record.set('vehicleId', this.vehicleId);
         if (this.selectedNodeId == 0) {
-            this.checklistFieldModel.set('type', 'root');
-            this.currentForm.showCreateRootCategory();
+            record.set('type', 'root');
         } else {
-            this.checklistFieldModel.set('type', 'text');
-            this.currentForm.showCreateFieldCategory();
+            record.set('type', 'text');
         }
-        this.currentForm.setRecord(this.checklistFieldModel);
-        this.currentForm.fireEvent('change', this.currentForm, this.checklistFieldModel);
+        form.setRecord(record);
     },
 
-    saveAction: function () {
-        if (!this.checklistFieldModel) this.checklistFieldModel = Ext.create('SafeStartApp.model.ChecklistField');
-        if (this.validateFormByModel(this.checklistFieldModel, this.currentForm)) {
+    saveAction: function (form) {
+        var record = form.getRecord();
+        var type = record.get('type');
+        if (this.validateFormByModel(record, form)) {
             var self = this;
-            var formValues = this.currentForm.getValues();
+            var formValues = form.getValues();
+            formValues['type'] = type;
             SafeStartApp.AJAX(this._getUpdateUrl(), formValues, function (result) {
                 if (result.fieldId) {
                     self._reloadStore(result.fieldId);
-                    self.currentForm.down('button[name=delete-data]').show();
+                    form.down('button[name=delete-data]').show();
                 }
             });
         }
@@ -170,25 +174,15 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this field from checklist?", function () {
+        var parentId = this.getForm().getRecord().parentNode.get('id');
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this field from checklist?", function (btn) {
+            if (btn != 'yes') {
+                return;
+            } 
             SafeStartApp.AJAX(self._getDeleteUrl(), {}, function (result) {
-                var parentId = self.selectedRecord.get('parentId');
-                self.getNavMain().getStore().loadData();
-                self.getNavMain().getStore().addListener('data-load-success', function () {
-                    self.currentForm.reset();
-                    self.currentForm.down('button[name=delete-data]').hide();
-                    try {
-                        self.getNavMain().goToNode(self.getNavMain().getStore().getNodeById(parentId));
-                    } catch (e) {
-                        self.getNavMain().goToNode(self.getNavMain().getStore().getRoot());
-                    }
-                });
+                self._reloadStore(parentId);
             });
         });
-    },
-
-    resetAction: function () {
-        this.currentForm.reset();
     },
 
     _createForm: function () {
@@ -201,22 +195,34 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     },
 
     _reloadStore: function (fieldId) {
+        conosle.log('reloadStore');
         this.fieldId = fieldId;
-        this.getNavMain().getStore().loadData();
         this.getNavMain().getStore().addListener('load', function () {
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);
-            if (node.isLeaf()) this.getNavMain().goToLeaf(node);
-            else this.getNavMain().goToNode(node);
-        }, this);
-
+            if (! node) {
+                this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
+                this.getForm().resetRecord();
+                this.selectedNodeId = 0;
+                return;
+            }
+            this.getForm().setRecord(node);
+            if (node.isLeaf()) {
+                this.getNavMain().goToLeaf(node);
+            }
+            else {
+                this.getNavMain().goToNode(node);
+            }
+        }, this, {single: true});
+        this.getNavMain().getStore().loadData();
     },
 
     _getDeleteUrl: function() {
-        return 'admin/checklist/' + this.currentForm.getValues().id + '/delete';
+        return 'checklist/' + this.getForm().getValues().id + '/delete';
     },
 
     _getUpdateUrl: function() {
-        return 'admin/checklist/' + this.currentForm.getValues().id + '/update';
+        return 'checklist/' + this.getForm().getValues().id + '/update';
     }
 
 });
+
