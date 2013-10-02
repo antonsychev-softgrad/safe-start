@@ -266,6 +266,8 @@ class AdminController extends AdminAccessRestController
         if($companyId != 0) {
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
             if (!$company) return $this->_showNotFound("Company not found.");
+            $vehicles = $company->getVehicles();
+            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
         } else {
             $company = null;
         }
@@ -301,13 +303,24 @@ class AdminController extends AdminAccessRestController
         $fromTime = $from->getTimestamp();
         $toTime = $to->getTimestamp();
 
-        $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null');
+        $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+        if($company) {
+            $dql .= ' AND cl.vehicle in (:vehicles)';
+        }
+        $query = $this->em->createQuery($dql);
         $query->setParameter('from', $from)->setParameter('to', $to);
+        if($company) {
+            $query->setParameter('vehicles', $vehicles);
+        }
         $statistic['total']['database_inspections'] = $query->getSingleScalarResult();
 
-        $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
-        $query->setParameter('from', $from)->setParameter('to', $to);
-        $statistic['total']['email_inspections'] = $query->getSingleScalarResult();
+        if(!$company) {
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+            $query->setParameter('from', $from)->setParameter('to', $to);
+            $statistic['total']['email_inspections'] = $query->getSingleScalarResult();
+        } else {
+            $statistic['total']['email_inspections'] = 0;
+        }
 
         $chart = array();
 
@@ -319,18 +332,41 @@ class AdminController extends AdminAccessRestController
             $fromTimeParam = new \DateTime();
             $fromTimeParam->setTimestamp($fromTime);
 
-            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null');
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+            if($company) {
+                $dql .= ' AND cl.vehicle in (:vehicles)';
+            }
+            $query = $this->em->createQuery($dql);
             $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+            if($company) {
+                $query->setParameter('vehicles', $vehicles);
+            }
             $value1 = $query->getSingleScalarResult();
 
-            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+            if(!$company) {
+                $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+                $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+                $value2 = $query->getSingleScalarResult();
+            } else {
+                $value2 = null;
+            }
+
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\Alert cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to';
+            if($company) {
+                $dql .= ' AND cl.vehicle in (:vehicles)';
+            }
+            $query = $this->em->createQuery($dql);
             $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
-            $value2 = $query->getSingleScalarResult();
+            if($company) {
+                $query->setParameter('vehicles', $vehicles);
+            }
+            $value3 = $query->getSingleScalarResult();
 
             $chart[] = array(
                 'date' => $date,
                 'value1' => $value1,
                 'value2' => $value2,
+                'value3' => $value3,
             );
 
             $fromTime = $fromTime + $delta;
