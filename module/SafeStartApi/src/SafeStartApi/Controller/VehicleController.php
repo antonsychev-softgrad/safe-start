@@ -162,7 +162,7 @@ class VehicleController extends RestrictedAccessRestController
     public function completeChecklistAction()
     {
         //todo: check why bad request with alerts
-        // if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
+        //if (!$this->_requestIsValid('vehicle/completechecklist')) return $this->_showBadRequest();
         if (!isset($this->data->fields)) return $this->_showBadRequest();
 
         // save checklist

@@ -141,10 +141,15 @@ Ext.define('SafeStartApp.view.pages.Company', {
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
         this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);
-        this.down('SafeStartCompanyToolbar').add({
-            ui: 'action',
-            text: SafeStartApp.companyModel.get('title')
-        });
+        if (this.down('#SafeStartCompanyToolbarTitle')) {
+            this.down('#SafeStartCompanyToolbarTitle').setText( SafeStartApp.companyModel.get('title') );
+        } else {
+            this.down('SafeStartCompanyToolbar').add({
+                ui: 'action',
+                id: 'SafeStartCompanyToolbarTitle',
+                text: SafeStartApp.companyModel.get('title')
+            });
+        }
         this.vehiclesStore.loadData();
     }
 

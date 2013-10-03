@@ -655,7 +655,13 @@ class User extends BaseEntity
      */
     public function getResponsibleForVehicles()
     {
-        return $this->responsibleForVehicles;
+        $vehicles = new ArrayCollection();
+        foreach($this->responsibleForVehicles as $vehicle) {
+            if(!($vehicle->getDeleted()) && ($vehicle->getEnabled())) {
+                $vehicles->add($vehicle);
+            }
+        }
+        return $vehicles;
     }
 
     /**

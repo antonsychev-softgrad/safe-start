@@ -132,6 +132,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     selectedNodeId: 0,
 
     onSelectAction: function (record) {
+        this.currentRecord  = record;
         if (record.isRoot()) {
             this.getForm().resetRecord();
             this.selectedNodeId = 0;
@@ -158,11 +159,10 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
 
     saveAction: function (form) {
         var record = form.getRecord();
-        var type = record.get('type');
         if (this.validateFormByModel(record, form)) {
             var self = this;
             var formValues = form.getValues();
-            formValues['type'] = type;
+            if (this.currentRecord && !parseInt(this.currentRecord.get('parentId'))) formValues['type'] = 'root';
             SafeStartApp.AJAX(this._getUpdateUrl(), formValues, function (result) {
                 if (result.fieldId) {
                     self._reloadStore(result.fieldId);
@@ -195,7 +195,6 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     },
 
     _reloadStore: function (fieldId) {
-        conosle.log('reloadStore');
         this.fieldId = fieldId;
         this.getNavMain().getStore().addListener('load', function () {
             var node = this.getNavMain().getStore().getNodeById(this.fieldId);

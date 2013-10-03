@@ -1,4 +1,4 @@
-/*83ff80f3ac50251531238da5de22202ac9065f2a*//* main */
+/*55ae235865520afa3392c354995e5b4095064e37*//* main */
 
 /* for All */
 
@@ -1352,4 +1352,8 @@ span.sfa-comment-content {
 
 .sfa-vehicle-inspection.sfa-vehicle-report .x-toolbar-dark.x-dock-item.x-docked-top .x-pack-start .x-form-label {
     padding-bottom: 6px;
+}
+
+.x-chart-watermark {
+    display: none;
 }

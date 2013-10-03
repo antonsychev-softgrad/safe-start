@@ -196,7 +196,7 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, self::COMPANY_LIMIT_ERROR);
     }
 
-    protected function _showNotFound($msg = '')
+    public function _showNotFound($msg = '')
     {
         $this->answer = array(
             'errorMessage' => $msg ? $msg : 'Not found',

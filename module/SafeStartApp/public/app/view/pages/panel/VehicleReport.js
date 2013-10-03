@@ -14,6 +14,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
     config: {
         name: 'vehicle-report',
         cls: 'sfa-vehicle-inspection sfa-vehicle-report',
+        scrollable: true,
+        minHeight: 300,
         layout: {
             type: 'card'
         },
@@ -122,6 +124,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                 style: {
                     marginTop: '160px'
                 },
+                minHeight: 200,
                 animate: true,
                 store: {
                     fields: ['date', 'value'],

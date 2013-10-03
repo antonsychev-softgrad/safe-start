@@ -132,12 +132,15 @@ Ext.define('SafeStartApp.view.pages.Users', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
-        this.down('SafeStartUsersToolbar').add(
-            {
+        if (this.down('#SafeStartUsersToolbarTitle')) {
+            this.down('#SafeStartUsersToolbarTitle').setText( SafeStartApp.companyModel.get('title')+': '+'Users' );
+        } else {
+            this.down('SafeStartUsersToolbar').add({
                 ui: 'action',
+                id: 'SafeStartUsersToolbarTitle',
                 text: SafeStartApp.companyModel.get('title')+': '+'Users'
-            }
-        );
+            });
+        }
         this.usersStore.getProxy().setExtraParam('companyId', this.companyId);
         this.usersStore.loadData();
     }
