@@ -4,7 +4,7 @@
 
 @font-face {
     font-family: HelveticaNeueLTStd;
-    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.otf);
+    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.ttf);
 }
 html, body {
     font-family: HelveticaNeueLTStd, "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
@@ -432,7 +432,7 @@ div.logo {
     background-position: 0 -1px !important;
 }
 .sfa-info-container  .x-button.x-button-pressing {
-    background-position: 0 -48px !important;
+    background-position: 0 -40px !important;
 }
 
 .sfa-info-container   .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
@@ -872,14 +872,15 @@ div.logo {
 .sfa-checklist-form .x-container.x-form-fieldset .x-dock.x-dock-vertical .x-dock-body {
     height: auto;
 }
-.sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-form-label {
-    text-align: right;
-    padding-right: 0;
-    padding-left: 20px;
-}
 .sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-component-outer {
     left: -8px;
 }
+.sfa-checklist-form .x-dock.x-dock-vertical .x-field-radio .x-form-label {
+    position: relative;
+    left: -10px;
+}
+
+
 
 /* Company -> Vehicle Users */
 .sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical {
@@ -951,6 +952,11 @@ div.logo {
     .sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
         margin-top: 23px !important;
     }
+
+    /* кнопка обновить */
+    .sfa-info-container.sfa-statistic .sfa-top-toolbar .refresh {
+        top: -2px;
+    }
 }
 
 @media screen and (max-width: 800px) {
@@ -978,7 +984,7 @@ div.logo {
 }
 
 .sfa-alert-comments {
-    margin-top: 24px;
+    padding-top: 24px;
     color: #565555;
     font-size: 17px;
 }
@@ -1225,17 +1231,6 @@ color: #558FAC;
     margin-top: 15px;
 }
 
-.sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back, .sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back:before {
-    background-color: #1676b9;
-    background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #359ee7), color-stop(3%, #1985d0), color-stop(100%, #1468a2));
-    background-image: -webkit-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
-    background-image: -o-linear-gradient(top, #359ee7, #1985d0 3%, #1468a2);
-}
-.sfa-container-padding .sfa-inspection-toolbar .x-button.x-button-back:before {
-    background: red;
-    color: green;
-}
-
 .sfa-inspections .x-list-paging-msg {
     font-size: 22px;
     color: #558FAC;
@@ -1282,6 +1277,7 @@ color: #558FAC;
 .sfa-vehicle-inspection.sfa-vehicle-report .x-component-outer:before,
 .sfa-vehicle-inspection.sfa-vehicle-report input, .sfa-vehicle-inspection.sfa-vehicle-report textarea,
 .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer,
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer input,
 .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer:before {
     border: none;
 }
@@ -1293,6 +1289,21 @@ color: #558FAC;
     margin-bottom: 10px;
     border-bottom-color: #acacac;
 }
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-form-label {
+    text-align: right;
+    padding-right: 7px;
+}
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-form-label span {
+    display: inline-block;
+    padding-top: 5px;
+}
+
+
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-field-labeled .x-component-outer {
+    width: 70%;
+}
+
+
 #SafeStartSystemStatisticChart {
     margin-top: 140px !important;
 }
@@ -1372,4 +1383,23 @@ span.sfa-comment-content {
 
 .x-chart-watermark {
     display: none;
+}
+
+/* кнопка Back */
+.x-button.x-button-back, .x-button.x-button-back:before {
+    background: rgb(217,217,217);
+    background: -moz-linear-gradient(top, rgba(217,217,217,1) 0%, rgba(191,191,191,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(217,217,217,1)), color-stop(100%,rgba(191,191,191,1)));
+    background: -webkit-linear-gradient(top, rgba(217,217,217,1) 0%,rgba(191,191,191,1) 100%);
+    background: -o-linear-gradient(top, rgba(217,217,217,1) 0%,rgba(191,191,191,1) 100%);
+    background: -ms-linear-gradient(top, rgba(217,217,217,1) 0%,rgba(191,191,191,1) 100%);
+    background: linear-gradient(to bottom, rgba(217,217,217,1) 0%,rgba(191,191,191,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9d9d9', endColorstr='#bfbfbf',GradientType=0 );
+}
+
+
+.sfa-left-container .x-dock.x-dock-vertical .x-navigation-bar.x-dock-item.x-docked-top .x-title.x-floating .x-innerhtml {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
