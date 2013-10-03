@@ -32,12 +32,13 @@ class PushNotificationPlugin extends AbstractPlugin
         $this->googleClient = new GoogleGcmClient();
         $this->googleClient->getHttpClient()->setOptions(array('sslverifypeer' => false));
         $config = $this->getController()->getServiceLocator()->get('Config');
-        $this->googleClient->setApiKey($config['developerApi']['google']['key']);
+        $this->googleClient->setApiKey($config['externalApi']['google']['key']);
 
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
-        $logger->debug("\n\n\n============ Android Push Notification ==================\n");
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+        if ($env == 'dev') $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        if ($env == 'dev') $logger->debug("\n\n\n============ Android Push Notification ==================\n");
         if (!$this->googleClient) {
-            $logger->debug("Failure client not initialised ");
+            if ($env == 'dev') $logger->debug("Failure client not initialised ");
             return false;
         }
 
@@ -51,12 +52,12 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setDelayWhileIdle(false);
 
         try {
-            $logger->debug("IDs: " . json_encode($ids));
+            if ($env == 'dev') $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
-            $logger->debug("Success Count: " . $response->getSuccessCount());
+            if ($env == 'dev') $logger->debug("Success Count: " . $response->getSuccessCount());
             return $response->getSuccessCount();
         } catch (GoogleGcmRuntimeException $e) {
-            $logger->debug("Exception: " . $e->getMessage());
+            if ($env == 'dev') $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
     }
@@ -65,11 +66,12 @@ class PushNotificationPlugin extends AbstractPlugin
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
-        $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['developerApi']['apple']['key'], $config['developerApi']['apple']['password']);
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
-        $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
+        $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['externalApi']['apple']['key'], $config['externalApi']['apple']['password']);
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+        if ($env == 'dev') $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        if ($env == 'dev') $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
         if (!$this->appleClient) {
-            $logger->debug("Failure client not initialised");
+            if ($env == 'dev') $logger->debug("Failure client not initialised");
             return false;
         }
 
@@ -94,47 +96,48 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setToken($token);
         $message->setBadge($badge);
         $message->setAlert($msg);
+        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
         try {
-            $logger->debug("Device Token: " . $token);
+            if ($env == 'dev') $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
         } catch (RuntimeException $e) {
-            $logger->debug("Exception: " . $e->getMessage());
+            if ($env == 'dev') $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
 
         if ($response->getCode() != AppleApnsResponse::RESULT_OK) {
             switch ($response->getCode()) {
                 case AppleApnsResponse::RESULT_PROCESSING_ERROR:
-                    $logger->debug("Error: you may want to retry");
+                    if ($env == 'dev') $logger->debug("Error: you may want to retry");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_TOKEN:
-                    $logger->debug("Error: you were missing a token");
+                    if ($env == 'dev') $logger->debug("Error: you were missing a token");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_TOPIC:
-                    $logger->debug("Error: you are missing a message id");
+                    if ($env == 'dev') $logger->debug("Error: you are missing a message id");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_PAYLOAD:
-                    $logger->debug("Error: you need to send a payload");
+                    if ($env == 'dev') $logger->debug("Error: you need to send a payload");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOKEN_SIZE:
-                    $logger->debug("Error: the token provided was not of the proper size");
+                    if ($env == 'dev') $logger->debug("Error: the token provided was not of the proper size");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOPIC_SIZE:
-                    $logger->debug("Error: the topic was too long");
+                    if ($env == 'dev') $logger->debug("Error: the topic was too long");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_PAYLOAD_SIZE:
-                    $logger->debug("Error: the payload was too large");
+                    if ($env == 'dev') $logger->debug("Error: the payload was too large");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOKEN:
-                    $logger->debug("Error: the token was invalid; remove it from your system");
+                    if ($env == 'dev') $logger->debug("Error: the token was invalid; remove it from your system");
                     break;
                 case AppleApnsResponse::RESULT_UNKNOWN_ERROR:
-                    $logger->debug("Error: apple didn't tell us what happened");
+                    if ($env == 'dev') $logger->debug("Error: apple didn't tell us what happened");
                     break;
             }
             return false;
         } else {
-            $logger->debug("Success: " . $response->getCode() + 1);
+            if ($env == 'dev') $logger->debug("Success: " . $response->getCode() + 1);
             return true;
         }
     }
