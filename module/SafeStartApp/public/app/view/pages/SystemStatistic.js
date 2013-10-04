@@ -71,6 +71,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'selectfield',
                             name: 'company',
                             label: 'Status',
+                            labelWidth: '',
                             cls: 'sfa-atatus',
                             valueField: 'id',
                             displayField: 'title',
@@ -81,6 +82,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'selectfield',
                             name: 'range',
                             label: 'Status',
+                            labelWidth: '',
                             cls: 'sfa-atatus',
                             valueField: 'rank',
                             displayField: 'title',
@@ -96,6 +98,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'datepickerfield',
                             name: 'from',
                             label: 'From',
+                            labelWidth: '',
                             picker: {
                                 yearFrom: new Date().getFullYear() - 10,
                                 yearTo: new Date().getFullYear()
@@ -105,6 +108,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'datepickerfield',
                             name: 'to',
                             label: 'To',
+                            labelWidth: '',
                             picker: {
                                 yearFrom: new Date().getFullYear() - 10,
                                 yearTo: new Date().getFullYear()
