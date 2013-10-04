@@ -19,6 +19,11 @@ Ext.define('SafeStartApp.view.pages.toolbar.Users', {
                     this.up('SafeStartUsersPage').down('list{config.cls == \'sfa-left-container\'}').hide();
                     this.removeCls(this.getPressedCls());
                 }
+            },
+            listeners: {
+                initialize: function () {
+                    this.addCls(this.getPressedCls()); 
+                }
             }
         }, {
             xtype: 'spacer'

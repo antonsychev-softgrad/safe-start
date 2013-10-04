@@ -6,23 +6,24 @@ use SafeStartApi\Base\PublicAccessRestController;
 
 class ProcessDataController extends PublicAccessRestController
 {
-    public function uploadImagesAction() {
-        $return = $this->UploadPlugin(array('param_name'=>'image'))->post();
+    public function uploadImagesAction()
+    {
+        $return = $this->UploadPlugin(array('param_name' => 'image'))->post();
         $errors = array();
-        if(is_array($return)) {
-            if(!empty($return)) {
-                foreach($return as $fileInfo) {
-                    if(!empty($fileInfo->error)) {
+        if (is_array($return)) {
+            if (!empty($return)) {
+                foreach ($return as $fileInfo) {
+                    if (!empty($fileInfo->error)) {
                         $errors[] = trim($fileInfo->error);
                     }
                 }
             }
         } else {
-            if(!empty($return->error)) {
+            if (!empty($return->error)) {
                 $errors[] = trim($return->error);
             }
         }
-        if(!empty($errors)) {
+        if (!empty($errors)) {
             $this->answer = array(
                 "errorMessage" => trim(implode("\n", $errors))
             );
@@ -32,36 +33,25 @@ class ProcessDataController extends PublicAccessRestController
         return $this->AnswerPlugin()->format($this->answer, !empty($errors) ? 400 : 0);
     }
 
-    public function generatePdfAction() {
-        if (($checkListId = (int)$this->params('id')) !== null) {
+    public function generatePdfAction()
+    {
+        $checkListId = (int)$this->params('id');
 
-            $checkList = null;
+        $checkList = null;
+        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
+        $query->setParameters(array('id' => $checkListId, 'hash' => $checkListId));
+        $queryResult = $query->getResult();
+        if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0]))  $checkList = $queryResult[0];
 
-            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
-            $query->setParameters(array('id' => $checkListId, 'hash' => $checkListId));
-            $queryResult = $query->getResult();
-            if(is_array($queryResult) && !empty($queryResult)) {
-                if(isset($queryResult[0])) {
-                    $checkList = $queryResult[0];
-                }
-            }
+        if (!$checkList) return $this->getController()->_showNotFound('Requested inspection not found.');
 
-            if ($checkList !== null) {
-                $link = $checkList->getPdfLink();
-                if(!is_null($link) && !empty($link)) {
-                    $this->PdfPlugin()->printPdf($link);
-                } else {
-                    $this->PdfPlugin($checkList->getId());
-                }
-                return true;
-            } else {
-                $this->answer = array(
-                    "errorMessage" => "CheckList not found."
-                );
-                return $this->AnswerPlugin()->format($this->answer, 404);
-            }
-        } else {
-            $this->_showBadRequest();
-        }
+        $link = $checkList->getPdfLink();
+        $path = '';//$this->inspectionPdf()->getFilePathByName($link);
+        if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
+
+        header("Content-Disposition: inline; filename={$checkList->getPdfLink()}");
+        header("Content-type: application/x-pdf");
+        echo file_get_contents($path);
+        return true;
     }
 }

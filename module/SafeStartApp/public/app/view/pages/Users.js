@@ -104,6 +104,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                 {
                     xtype: 'toolbar',
                     docked: 'top',
+                    cls: 'sfa-add-button',
                     items: [
                         {
                             iconCls: 'add',

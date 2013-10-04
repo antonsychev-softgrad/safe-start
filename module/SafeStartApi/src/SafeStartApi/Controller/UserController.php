@@ -63,11 +63,11 @@ class UserController extends RestController
                 if ($user) {
                     if($user->getDeleted()) return $this->_showUserUnavailable('User has been removed');
                     if(!$user->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
-                    $userInfo = $user->toArray();
                     $user->setLastLogin(new \DateTime());
                     if (isset($this->data->device)) $user->setDevice(strtolower($this->data->device));
                     if (isset($this->data->deviceId)) $user->setDeviceId($this->data->deviceId);
                     $this->em->flush();
+                    $userInfo = $user->toArray();
                     $userData = new \stdClass();
                     $userData->user = $userInfo;
                     $this->authService->getStorage()->write($user);

@@ -55,7 +55,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             self.down('selectfield[name=company]').setValue(0);
         });
         return {
-            cls: 'sfa-info-container',
+            cls: 'sfa-info-container sfa-statistic',
             xtype: 'panel',
             layout: 'card',
             name: 'statistic',
@@ -65,11 +65,13 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                 {
                     xtype: 'toolbar',
                     docked: 'top',
+                    cls: 'sfa-top-toolbar',
                     items: [
                         {
                             xtype: 'selectfield',
                             name: 'company',
                             label: 'Status',
+                            labelWidth: '',
                             cls: 'sfa-atatus',
                             valueField: 'id',
                             displayField: 'title',
@@ -80,6 +82,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'selectfield',
                             name: 'range',
                             label: 'Status',
+                            labelWidth: '',
                             cls: 'sfa-atatus',
                             valueField: 'rank',
                             displayField: 'title',
@@ -95,6 +98,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'datepickerfield',
                             name: 'from',
                             label: 'From',
+                            labelWidth: '',
                             picker: {
                                 yearFrom: new Date().getFullYear() - 10,
                                 yearTo: new Date().getFullYear()
@@ -104,6 +108,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                             xtype: 'datepickerfield',
                             name: 'to',
                             label: 'To',
+                            labelWidth: '',
                             picker: {
                                 yearFrom: new Date().getFullYear() - 10,
                                 yearTo: new Date().getFullYear()

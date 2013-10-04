@@ -88,6 +88,11 @@ class CheckList extends BaseEntity
     protected $deleted = 0;
 
     /**
+     * @ORM\Column(type="json_array")
+     */
+    protected $user_data;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -204,6 +209,29 @@ class CheckList extends BaseEntity
     public function getFieldsData()
     {
         return $this->fields_data;
+    }
+
+    /**
+     * Set fields_data
+     *
+     * @param array $fieldsData
+     * @return CheckList
+     */
+    public function setUserData($fieldsData)
+    {
+        $this->user_data = $fieldsData;
+
+        return $this;
+    }
+
+    /**
+     * Get fields_data
+     *
+     * @return array
+     */
+    public function getUserData()
+    {
+        return $this->user_data;
     }
 
     /**
