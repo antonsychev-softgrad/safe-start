@@ -4,10 +4,11 @@
 
 @font-face {
     font-family: HelveticaNeueLTStd;
-    src: url(/resources/fonts/HelveticaNeueLTStd-Cn.ttf);
+    src: url(/resources/fonts/helvetica-neue-regular.ttf);
 }
+
 html, body {
-    font-family: HelveticaNeueLTStd, "Helvetica Neue", HelveticaNeue, "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+    font-family: 'Abel',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
 .x-toolbar-dark .x-title {
@@ -232,12 +233,8 @@ div.logo {
     display: inline-block;
     padding: 8px 30px 10px;
     font-size: 22px;
+}
 
-}
-.sfa-auth-form .x-unsized.x-button.x-button-confirm span {
-    position: relative;
-    top: 5px;
-}
 .sfa-auth-form .x-form-fieldset-title {
     margin: 0 0 15px;
     font-size: 33px;
@@ -263,7 +260,7 @@ div.logo {
     margin: 0;
 }
 .sfa-auth-form .x-input-el.x-form-field {
-    padding: 10px 7px 2px;
+    padding: 6px 7px 8px;
     line-height: 1.2;
     font-size: 22px;
     color: #565555;
@@ -460,7 +457,7 @@ div.logo {
 
 .sfa-info-container  input, .sfa-info-container textarea {
     font-size: 22px;
-    padding: 10px 2px 6px 7px;
+    padding: 8px 2px 8px 7px;
     color: #565555;
     border: 1px solid #cacaca;
     -moz-border-radius: 10px;
@@ -898,15 +895,15 @@ div.logo {
 
 /* Company -> Vehicle Users */
 .sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical {
-/*    padding: 0;
-    border: none;
-    background: none;
-    -moz-border-radius: 0;
-    -webkit-border-radius: 0;
-    -khtml-border-radius: 0;
-    -o-border-radius: 0;
-    border-radius: 0;
-*/}
+    /*    padding: 0;
+        border: none;
+        background: none;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        -khtml-border-radius: 0;
+        -o-border-radius: 0;
+        border-radius: 0;
+    */}
 .sfa-vehicle-inspection > div > form:first-child .x-dock.x-dock-vertical .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top {
     /*margin: 0;*/
 }
@@ -1177,10 +1174,10 @@ div.logo {
     color: #558FAC;
 }
 .sfa-alerts-searchbar > .x-component-outer > .x-unsized.x-field-input:before {
-top: 0;
+    top: 0;
 }
 .sfa-alerts .x-list-paging .x-list-paging-msg {
-color: #558FAC;
+    color: #558FAC;
 }
 .sfa-info-container .sfa-container-padding .sfa-alerts-topbar .x-button.x-button-action {margin-right: 10px;}
 
@@ -1368,11 +1365,9 @@ span.sfa-comment-content {
 
 .x-msgbox-dark.x-msgbox .x-toolbar .x-button .x-button-label {
     font-size: 22px;
-    position: relative;
-    top: 5px;
 }
 .x-msgbox-dark.x-msgbox .x-button-normal.x-button, .x-msgbox-dark.x-msgbox .x-button-action.x-button {
-padding: 0;
+    padding: 0;
 }
 
 .x-msgbox-dark.x-msgbox .x-button-normal.x-button span, .x-msgbox-dark.x-msgbox .x-button-action.x-button span {
@@ -1430,8 +1425,6 @@ padding: 0;
     }
 }
 
-
-
 /* кнопка обновить */
 .sfa-info-container.sfa-statistic .sfa-top-toolbar .refresh {
     top: -2px;
@@ -1470,7 +1463,7 @@ padding: 0;
 
 @media screen and (max-width: 980px) {
 
-    @-moz-document url-prefix() {
+@-moz-document url-prefix() {
         .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
             float: none;
         }
@@ -1502,7 +1495,7 @@ padding: 0;
         text-align: left;
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-field-select.x-field {
-       width: 10.5em;
+        width: 10.5em;
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
         top: 11px;
@@ -1540,9 +1533,3 @@ padding: 0;
     }
 }
 
-
-
-
-.x-button-label {
-
-}
