@@ -78,12 +78,31 @@ $api = array(
     ),
     'defUsersPath' => '/data/users/',
     'pdf' => array(
-        'name' => 'checklist_review',
-        'ext' => '.pdf', // automatic add to name
-        'template_for_name' => array(
-            'format' => "{%s}", // only
-            'template' => "{name}_{user}_{vehicle}_{checkList}_at_{date}", // available: {name}, {user}, {vehicle}, {checkList}, {date}
-        ),
+        'inspection' => array(
+            'ext' => '.pdf',
+            'output_name_title' => 'inspection',
+            'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
+            'title' => 'safe start inspection',
+            'style' => array(
+                'content_width' => 2/3,
+                'content_columns' => 3,
+                'page_padding_top' => 24,
+                'page_padding_right' => 10,
+                'page_padding_bottom' => 24,
+                'page_padding_left' => 10,
+                'field_size' => 10,
+                'field_line_spacing' => 2.5,
+                'field_color' => '#333333',
+                'field_group_color' => '#0F5B8D',
+                'field_ok_color' => '#0f5b8d',
+                'field_alert_text' => 'alert',
+                'field_alert_color' => '#ff0000',
+                'category_field_size' => 12,
+                'category_field_line_spacing' => 4,
+                'category_field_color' => '#0F5B8D',
+            )
+        )
+
     ),
     'externalApi' => array(
         'google' => array(

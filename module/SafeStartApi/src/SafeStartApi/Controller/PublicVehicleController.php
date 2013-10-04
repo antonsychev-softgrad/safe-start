@@ -98,6 +98,7 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
         $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
         $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->oodometer_hours)) ? $this->data->odometer_hours : null);
+        $checkList->setUserData($userData);
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
@@ -123,7 +124,7 @@ class PublicVehicleController extends PublicAccessRestController
         }
         $this->em->flush();
 
-        $pdf = $this->PdfPlugin($checkList->getId(), true, $userData);
+        $pdf = $this->inspectionPdf()->create($checkList);
 
         if (file_exists($pdf)) {
             foreach($emails as $email) {

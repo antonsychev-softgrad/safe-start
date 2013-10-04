@@ -114,6 +114,7 @@ $general = array(
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
             'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
             'PdfPlugin' => 'SafeStartApi\Controller\Plugin\PdfPlugin',
+            'inspectionPdf' => 'SafeStartApi\Controller\Plugin\InspectionPdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
             'PushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
         )

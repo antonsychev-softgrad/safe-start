@@ -176,6 +176,7 @@ class User extends BaseEntity
             'device' => (!is_null($this->device)) ? $this->device : '',
             'deviceId' => (!is_null($this->deviceId)) ? $this->deviceId : '',
             'enabled' => (!is_null($this->enabled)) ? $this->enabled : 0,
+            'signature' => (!is_null($this->signature)) ? $this->signature : '',
         );
     }
 
