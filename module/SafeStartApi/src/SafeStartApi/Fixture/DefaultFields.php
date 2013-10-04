@@ -36,6 +36,8 @@ class DefaultFields extends AbstractFixture implements OrderedFixtureInterface
             $field->setAdditional($row['additional']);
             $field->setTriggerValue($row['trigger_value']);
             $field->setAlertTitle($row['alert_title']);
+            $field->setDescription($row['description']);
+            $field->setAlertDescription($row['alert_description']);
             $field->setAlertCritical(1);
             if (!empty($row['parent_id'])) {
                 $field->setParent($this->getReference('default-field-' . $row['parent_id']));

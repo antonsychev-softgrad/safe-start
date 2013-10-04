@@ -43,7 +43,7 @@ class UserControllerTest extends HttpControllerTestCase
         $this->assertResponseStatusCode(200);
 
         $data = json_decode($this->getResponse()->getContent());
-        print_r($data);
+        //print_r($data);
         $schema = Bootstrap::getJsonSchemaResponse('user/login');
         Bootstrap::$jsonSchemaValidator->check($data, $schema);
         $this->assertTrue(Bootstrap::$jsonSchemaValidator->isValid(), print_r(Bootstrap::$jsonSchemaValidator->getErrors(), true));
