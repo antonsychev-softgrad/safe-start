@@ -14,7 +14,7 @@ class PublicVehicleController extends PublicAccessRestController
 
         $plantId = (int)$this->data->plantId;
         $vehRep = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
-        $vehicle = $vehRep->findBy(array('plant_id' => $plantId));
+        $vehicle = $vehRep->findOneBy(array('plantId' => $plantId));
         if(empty($vehicle)) return $this->_showNotFound();
 
         $vehicleData = $vehicle->toResponseArray();
@@ -46,11 +46,13 @@ class PublicVehicleController extends PublicAccessRestController
             'signature' => isset($this->data->signature) ? $this->data->signature : '',
         );
 
+        $vehicleRepository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+
         // save checklist
         $persist = false;
         if(!empty($this->data->plantId)) {
             $plantId = $this->data->plantId;
-            $vehicle = $this->em->getRepository('SafeStartApi\Entity\Vehicle')->findOneBy(array('plantId' => $plantId));
+            $vehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             if ($vehicle) {
                 $company = $vehicle->getCompany();
                 if(!is_null($company)) return $this->_showKeyExists('Vehicle with such Plant ID already exists');
@@ -60,10 +62,10 @@ class PublicVehicleController extends PublicAccessRestController
             }
         } else {
             $plantId = uniqid('vehicle');
-            $testVehicle = $this->em->findOneById('SafeStartApi\Entity\Vehicle', $plantId);
+            $testVehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             while($testVehicle) {
                 $plantId = uniqid('vehicle');
-                $testVehicle = $this->em->findOneById('SafeStartApi\Entity\Vehicle', $plantId);
+                $testVehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             }
             $vehicle = new Vehicle();
             $vehicle->setEnabled(1);
