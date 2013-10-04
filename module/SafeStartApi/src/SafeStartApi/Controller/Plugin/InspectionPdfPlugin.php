@@ -251,9 +251,9 @@ class InspectionPdfPlugin extends AbstractPlugin
 
     private function drawInspectionFields($fields, $fieldsDataValues, $currentColumn = 1)
     {
-        $columns = $this->opts['content_columns'];
-        $columnsPadding = $this->opts['content_column_padding'];
-        $contentWidth = $this->getPageContentWidth() * $this->opts['content_width'];
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $columnFieldValueWidth = 50;
         $columnFieldTitleWidth = $columnWidth - $columnFieldValueWidth;
