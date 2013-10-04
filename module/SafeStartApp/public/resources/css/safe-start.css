@@ -2,13 +2,13 @@
 
 /* for All */
 
-@font-face {
+/*@font-face {
     font-family: HelveticaNeueLTStd;
     src: url(/resources/fonts/helvetica-neue-regular.ttf);
-}
+}*/
 
 html, body {
-    font-family: 'Abel',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+    font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
 .x-toolbar-dark .x-title {
