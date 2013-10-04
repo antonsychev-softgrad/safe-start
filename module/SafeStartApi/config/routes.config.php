@@ -40,10 +40,7 @@ $routes = array(
             'get-vehicle-info-by-plant-id' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/getinfobyplantid',
-                    'constraints' => array(
-                        'id' => '[0-9]*',
-                    ),
+                    'route' => '/vehicle/getinfobyplantid',
                     'defaults' => array(
                         'controller' => 'PublicVehicle',
                         'action' => 'getinfobyplantid',
