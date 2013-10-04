@@ -260,7 +260,7 @@ class InspectionPdfPlugin extends AbstractPlugin
 
         foreach ($fields as $field) {
             // todo: check if additional field if triggered
-            $lines = array_filter($this->getTextLines(isset($field->fieldName) ? $field->fieldName : '', $this->opts['style']['field_size'], $columnFieldTitleWidth));
+            $lines = array_filter($this->getTextLines(isset($field->fieldName) ? $field->fieldName : '', $this->opts['style']['field_size'], ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth));
             $startYPos = $this->lastTopPos;
             foreach ($lines as $line) {
                 if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
@@ -281,7 +281,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     ($field->type == 'group') ? self::TEXT_ALIGN_CENTER : self::TEXT_ALIGN_LEFT ,
                     ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
                     $this->font,
-                    $columnFieldTitleWidth
+                    ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth
                 );
                 $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
             }
