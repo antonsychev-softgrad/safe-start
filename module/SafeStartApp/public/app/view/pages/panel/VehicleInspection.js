@@ -149,26 +149,23 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     labelWidth: '80%'
                 },
                 items: fields
-            },{
-                xtype: 'titlebar',
-                docked: 'top',
-                title: 'Additional'
             }, {
                 xtype: 'toolbar',
-                docked: 'bottom',
-                margin: '40 0 0 0',
-                layout: {
-                    type: 'hbox',
-                    align: 'stretch',
-                    pack: 'center'
-                },
+                title: 'PRE START INSPECTION',
+                docked: 'top',
                 items: [{
                     text: 'Prev',
                     action: 'prev'
                 }, {
+                    xtype: 'spacer'
+                }, {
                     text: 'Next',
                     action: 'next'
                 }]
+            }, {
+                xtype: 'toolbar',
+                docked: 'top',
+                title: 'ADDITIONAL'
             }]
         };
     },
@@ -183,13 +180,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 align: 'center'
             },
             items: [{
-                xtype: 'titlebar',
-                docked: 'top',
-                title: 'Review'
-            }, {
                 xtype: 'toolbar',
-                margin: '40 0 0 0',
-                docked: 'bottom',
+                title: 'PRE START INSPECTION',
+                docked: 'top',
                 layout: {
                     type: 'hbox',
                     align: 'stretch',
@@ -199,9 +192,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     text: 'Prev',
                     action: 'prev'
                 }, {
+                    xtype: 'spacer'
+                }, {
                     text: 'Submit',
                     action: 'submit'
                 }]
+            }, {
+                xtype: 'toolbar',
+                docked: 'top',
+                title: 'REVIEW'
             }]
         };
     },
@@ -215,25 +214,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             });
         }
         buttons.push({
+            xtype: 'spacer'
+        },{
             text: 'Next',
             action: 'next'
         });
         var fields = this.createFields(checklist.fields);
 
         fields.push({
-            xtype: 'titlebar',
-            docked: 'top',
-            title: checklist.groupName
-        }, {
             xtype: 'toolbar',
-            docked: 'bottom',
-            margin: '40 0 0 0',
+            title: 'PRE START INSPECTION',
+            docked: 'top',
             layout: {
                 type: 'hbox',
                 align: 'stretch',
                 pack: 'center'
             },
             items: buttons
+        }, {
+            xtype: 'toolbar',
+            docked: 'top',
+            title: checklist.groupName.toUpperCase()
         });
 
         return {

@@ -15,10 +15,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     config: {
         control: {
-            'SafeStartCompanyPage SafeStartVehicleInspection formpanel button[action=prev]': {
+            'SafeStartCompanyPage SafeStartVehicleInspection button[action=prev]': {
                 tap: 'onPrevBtnTap'
             },
-            'SafeStartCompanyPage SafeStartVehicleInspection formpanel button[action=next]': {
+            'SafeStartCompanyPage SafeStartVehicleInspection button[action=next]': {
                 tap: 'onNextBtnTap'
             },
             'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-choise-additional] checkboxfield': {
@@ -76,7 +76,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         if (Ext.os.deviceType !== 'Desktop') {
             button = this.getMainToolbar().down('button[action=toggle-menu]');
             if (button && button.config.isPressed && ! silent) {
-                // console.log(button.config.isPressed);
                 button.getHandler().call(button, button);
             }
         }
@@ -264,7 +263,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     onNextBtnTap: function (btn) {
         var checklistPanel = this.getVehicleInspectionPanel(),
-            activeCard = btn.up('formpanel'),
+            activeCard = checklistPanel.getActiveItem(),
             includedCards = this.getIncludedChecklistCards(),
             nextIndex = 0,
             index = includedCards.indexOf(activeCard);
@@ -279,7 +278,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     onPrevBtnTap: function (btn) {
         var vehicleInspectionPanel = this.getVehicleInspectionPanel(),
-            activeCard = btn.up('formpanel'),
+            activeCard = vehicleInspectionPanel.getActiveItem(),
             includedCards = this.getIncludedChecklistCards(),
             prevIndex = 0,
             index = includedCards.indexOf(activeCard);
