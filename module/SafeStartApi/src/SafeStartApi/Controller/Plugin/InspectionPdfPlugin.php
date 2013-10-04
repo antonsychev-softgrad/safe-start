@@ -218,9 +218,9 @@ class InspectionPdfPlugin extends AbstractPlugin
         $fieldsDataValues = array();
         foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
 
-        $columns = 3;
-        $columnsPadding = 20;
-        $contentWidth = $this->getPageContentWidth() * (2 / 3);
+        $columns = $this->opts['content_columns'];
+        $columnsPadding = $this->opts['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $currentColumn = 1;
 
@@ -251,9 +251,9 @@ class InspectionPdfPlugin extends AbstractPlugin
 
     private function drawInspectionFields($fields, $fieldsDataValues, $currentColumn = 1)
     {
-        $columns = 3;
-        $columnsPadding = 20;
-        $contentWidth = $this->getPageContentWidth() * (2 / 3);
+        $columns = $this->opts['content_columns'];
+        $columnsPadding = $this->opts['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $columnFieldValueWidth = 50;
         $columnFieldTitleWidth = $columnWidth - $columnFieldValueWidth;

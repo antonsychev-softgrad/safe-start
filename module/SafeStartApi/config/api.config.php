@@ -86,6 +86,7 @@ $api = array(
             'style' => array(
                 'content_width' => 2/3,
                 'content_columns' => 3,
+                'content_column_padding' => 20,
                 'page_padding_top' => 24,
                 'page_padding_right' => 10,
                 'page_padding_bottom' => 24,

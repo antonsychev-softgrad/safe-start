@@ -125,8 +125,8 @@ $general = array(
             'options' => array(
                 'name' => 'SafeStartApi',
                 'remember_me_seconds' => 3600,
-                'cookie_lifetime' => 3600,
-                'use_cookies' => true,
+              //  'cookie_lifetime' => 3600,
+               // 'use_cookies' => true,
                 'save_path' => __DIR__ . '/../../../data/sessions',
             ),
         ),

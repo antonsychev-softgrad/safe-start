@@ -88,7 +88,7 @@ class CheckList extends BaseEntity
     protected $deleted = 0;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json_array", nullable=true)
      */
     protected $user_data;
 
