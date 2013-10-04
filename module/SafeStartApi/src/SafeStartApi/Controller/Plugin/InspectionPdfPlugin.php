@@ -168,7 +168,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         $userData = array();
         $user = $this->checkList->getUser();
         if ($user) $userData = $user->toInfoArray();
-        else $userData = json_decode($this->checkList->getUserData(), true);
+        else $userData = (!is_array($this->checkList->getUserData())) ? json_decode((string)$this->checkList->getUserData(), true) : $this->checkList->getUserData();
 
         $userName = "Name: " . ((isset($userData['firstName']) ? $userData['firstName'] : '') . " " . (isset($userData['lastName']) ? $userData['lastName'] : ''));
         $date = "Date: " . ($this->checkList->getCreationDate()->format($this->getController()->moduleConfig['params']['date_format'] . ' ' . $this->getController()->moduleConfig['params']['time_format']));
