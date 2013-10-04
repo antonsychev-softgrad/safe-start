@@ -20,6 +20,11 @@ Ext.define('SafeStartApp.view.pages.toolbar.Company', {
                         this.up('SafeStartCompanyPage').down('nestedlist{config.cls == \'sfa-left-container\'}').hide();
                         this.removeCls(this.getPressedCls());
                     }
+                },
+                listeners: {
+                    initialize: function () {
+                        this.addCls(this.getPressedCls()); 
+                    }
                 }
             }, {
                 xtype: 'spacer'
@@ -53,6 +58,11 @@ Ext.define('SafeStartApp.view.pages.toolbar.Company', {
                     } else {
                         this.up('SafeStartCompanyPage').down('nestedlist').hide();
                         this.removeCls(this.getPressedCls());
+                    }
+                },
+                listeners: {
+                    initialize: function () {
+                        this.addCls(this.getPressedCls()); 
                     }
                 }
             }, {
