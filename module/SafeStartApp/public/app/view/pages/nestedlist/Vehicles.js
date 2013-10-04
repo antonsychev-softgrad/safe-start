@@ -248,6 +248,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                     xtype: 'toolbar',
                     name: 'add',
                     docked: 'top',
+                    cls: 'sfa-add-button',
                     items: [
                         {
                             iconCls: 'add',
