@@ -90,6 +90,7 @@ class Module
                         ));
                         $viewModel->setVariable('errorCode', 401);
                         $viewModel->setVariable('statusCode', 401);
+                        $e->getResponse()->setStatusCode(401);
                         break;
                     case 'SafeStartApi\Base\Exception\Rest403':
                         $viewModel->setTemplate('json/response');
@@ -98,6 +99,7 @@ class Module
                         ));
                         $viewModel->setVariable('errorCode', 403);
                         $viewModel->setVariable('statusCode', 403);
+                        $e->getResponse()->setStatusCode(403);
                         break;
                     default:
                         $viewModel->setTemplate('json/500');
