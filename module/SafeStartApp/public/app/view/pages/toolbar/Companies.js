@@ -22,6 +22,11 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
                     this.up('SafeStartCompaniesPage').down('list{config.cls == \'sfa-left-container\'}').hide();
                     this.removeCls(this.getPressedCls());
                 }
+            }, 
+            listeners: {
+                initialize: function () {
+                    this.addCls(this.getPressedCls()); 
+                }
             }
         }, {
             xtype: 'spacer'
@@ -35,6 +40,6 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
             ui: 'action',
             text: 'Logout',
             action: 'logout'
-        }]
+        }];
     }
 });
