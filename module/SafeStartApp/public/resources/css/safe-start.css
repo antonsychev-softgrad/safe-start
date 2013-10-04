@@ -235,7 +235,8 @@ div.logo {
 
 }
 .sfa-auth-form .x-unsized.x-button.x-button-confirm span {
-    line-height: 1;
+    position: relative;
+    top: 5px;
 }
 .sfa-auth-form .x-form-fieldset-title {
     margin: 0 0 15px;
@@ -262,7 +263,8 @@ div.logo {
     margin: 0;
 }
 .sfa-auth-form .x-input-el.x-form-field {
-    padding: 6px 7px 9px;
+    padding: 10px 7px 2px;
+    line-height: 1.2;
     font-size: 22px;
     color: #565555;
     border: 1px solid #cacaca;
@@ -458,7 +460,7 @@ div.logo {
 
 .sfa-info-container  input, .sfa-info-container textarea {
     font-size: 22px;
-    padding: 6px 30px 9px 7px;
+    padding: 10px 2px 6px 7px;
     color: #565555;
     border: 1px solid #cacaca;
     -moz-border-radius: 10px;
@@ -765,7 +767,7 @@ div.logo {
 }
 
 .sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button span {
-    top: -3px;
+    top: 2px;
 }
 .sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button.x-button-back span {
     top: -1px;
@@ -1366,6 +1368,8 @@ span.sfa-comment-content {
 
 .x-msgbox-dark.x-msgbox .x-toolbar .x-button .x-button-label {
     font-size: 22px;
+    position: relative;
+    top: 5px;
 }
 .x-msgbox-dark.x-msgbox .x-button-normal.x-button, .x-msgbox-dark.x-msgbox .x-button-action.x-button {
 padding: 0;
@@ -1440,7 +1444,10 @@ padding: 0;
     .sfa-info-container .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin: 0}
     .sfa-info-container .x-toolbar .x-button .x-button-label,
     .sfa-info-container .x-toolbar .x-button .x-badge,
-    .sfa-info-container .x-toolbar .x-button .x-hasbadge .x-badge {font-size: 20px;}
+    .sfa-info-container .x-toolbar .x-button .x-hasbadge .x-badge {
+        font-size: 20px;
+        line-height: 1.2;
+    }
     .x-toolbar .x-button .x-button-icon:before {line-height: 1.1em;}
     .sfa-info-container .x-button {padding: 0 18px; height: 38px}
     .sfa-main-toolbar .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-top: 0}
@@ -1537,5 +1544,5 @@ padding: 0;
 
 
 .x-button-label {
-    
+
 }
