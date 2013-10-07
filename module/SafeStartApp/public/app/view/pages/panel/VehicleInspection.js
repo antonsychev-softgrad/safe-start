@@ -81,7 +81,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         });
     },
 
-    loadChecklist: function (checklists, vehicleId, inspectionRecord) {
+    loadChecklist: function (checklists, vehicle, inspectionRecord) {
         var me = this;
         var checklistForms = [],
             checklistAdditionalForms = [],
@@ -89,7 +89,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         this.clearChecklist();
 
-        this.vehicleId = vehicleId || 0;
+        if (Ext.isNumeric(vehicle)) {
+            this.vehicleId = vehicle;
+            this.vehicleRecord = null;
+        } else {
+            this.vehicleId = vehicle.get('id');
+            this.vehicleRecord = vehicle;
+        }
+        this.vehicleId = vehicle.get('id') || 0;
+        this.vehicleRecord = vehicle;
         this.isNew = ! inspectionRecord;
         this.inspectionRecord = inspectionRecord;
 
@@ -279,6 +287,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 });
                 alertsStore.add(alertRecord);
             }
+
             switch(fieldData.type) {
                 case 'text':
                     fields.push(this.createTextField(fieldData));
@@ -524,7 +533,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var odometerKms = 1000,
             odometerHours = 0;
 
-        if (! this.isNew && this.inspectionRecord) {
+        if (this.vehicleRecord) {
+            odometerKms = this.vehicleRecord.get('currentOdometerKms');
+            odometerHours = this.vehicleRecord.get('currentOdometerHours');
+        } else if (! this.isNew && this.inspectionRecord) {
             odometerKms = this.inspectionRecord.get('odometerKms');
             odometerHours = this.inspectionRecord.get('odometerHours');
         }
