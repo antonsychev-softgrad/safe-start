@@ -386,46 +386,46 @@ class VehicleController extends RestrictedAccessRestController
     public function getInspectionsAction()
     {
         if (($vehicleId = (int)$this->params('id')) !== null) {
-            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
-            $inspections = array();
-            $cache = \SafeStartApi\Application::getCache();
-            $cashKey = "getVehicleInspections" . $vehicleId;
-            if ($cache->hasItem($cashKey)) {
-                $inspections = $cache->getItem($cashKey);
-            } else {
-                $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
-                $query->setParameters(array('id' => $vehicle));
-                $items = $query->getResult();
-
-                if (is_array($items) && !empty($items)) {
-                    foreach ($items as $checkList) {
-                        $checkListData = $checkList->toArray();
-
-                        $checkListData['checkListId'] = $checkList->getId();
-                        $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
-
-                        $inspections[] = $checkListData;
-                    }
-                }
-                $cache->setItem($cashKey, $inspections);
-            }
-            $page = (int)$this->getRequest()->getQuery('page');
-            $limit = (int)$this->getRequest()->getQuery('limit');
-            $inspections = array_reverse($inspections);
-            if (count($inspections) < ($page - 1) * $limit) {
-                $this->answer = array();
-                return $this->AnswerPlugin()->format($this->answer);
-            }
-            $iteratorAdapter = new \Zend\Paginator\Adapter\ArrayAdapter($inspections);
-            $paginator = new \Zend\Paginator\Paginator($iteratorAdapter);
-            $paginator->setCurrentPageNumber($page ? $page : 1);
-            $paginator->setItemCountPerPage($limit ? $limit : 10);
-            $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
-            $this->answer = $items;
-            return $this->AnswerPlugin()->format($this->answer);
-        } else {
             $this->_showBadRequest();
+            return;
         }
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        $inspections = array();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleInspections" . $vehicleId;
+        if ($cache->hasItem($cashKey)) {
+            $inspections = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
+            $query->setParameters(array('id' => $vehicle));
+            $items = $query->getResult();
+
+            if (is_array($items) && !empty($items)) {
+                foreach ($items as $checkList) {
+                    $checkListData = $checkList->toArray();
+
+                    $checkListData['checkListId'] = $checkList->getId();
+                    $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
+
+                    $inspections[] = $checkListData;
+                }
+            }
+            $cache->setItem($cashKey, $inspections);
+        }
+        $page = (int)$this->getRequest()->getQuery('page');
+        $limit = (int)$this->getRequest()->getQuery('limit');
+        $inspections = array_reverse($inspections);
+        if (count($inspections) < ($page - 1) * $limit) {
+            $this->answer = array();
+            return $this->AnswerPlugin()->format($this->answer);
+        }
+        $iteratorAdapter = new \Zend\Paginator\Adapter\ArrayAdapter($inspections);
+        $paginator = new \Zend\Paginator\Paginator($iteratorAdapter);
+        $paginator->setCurrentPageNumber($page ? $page : 1);
+        $paginator->setItemCountPerPage($limit ? $limit : 10);
+        $items = $paginator->getCurrentItems() ? $paginator->getCurrentItems()->getArrayCopy() : array();
+        $this->answer = $items;
+        return $this->AnswerPlugin()->format($this->answer);
     }
 
     public function getInspectionAlertsAction()
@@ -441,7 +441,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function updateAlertAction()
     {
-        $alertId = (int) $this->params('alertId');
+        $alertId = (int)$this->params('alertId');
         $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
         if (!$alert) return $this->_showNotFound("Alert not found.");
         $vehicle = $alert->getVehicle();
@@ -467,7 +467,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function deleteAlertAction()
     {
-        $alertId = (int) $this->params('alertId');
+        $alertId = isset($this->data->id) ? (int)$this->data->id : (int)$this->params('alertId');
         $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
         if (!$alert) return $this->_showNotFound("Alert not found.");
         $vehicle = $alert->getVehicle();
@@ -494,14 +494,14 @@ class VehicleController extends RestrictedAccessRestController
 
     public function deleteInspectionAction()
     {
-        $inspectionId = $this->data->id;
+        $inspectionId = isset($this->data->id) ? (int)$this->data->id : (int)$this->params('inspectionId');
         $repository = $this->em->getRepository('SafeStartApi\Entity\CheckList');
         $inspection = $repository->find($inspectionId);
         if (!$inspection) {
             $inspection = $repository->findOneBy(array(
                 'hash' => $inspectionId,
             ));
-            if(!$inspection) return $this->_showNotFound("Inspection not found.");
+            if (!$inspection) return $this->_showNotFound("Inspection not found.");
         }
         $vehicle = $inspection->getVehicle();
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();

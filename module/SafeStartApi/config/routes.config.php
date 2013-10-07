@@ -424,6 +424,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'delete-vehicle-inspection-by-id' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/inspection/:inspectionId/delete',
+                    'constraints' => array(
+                        'inspectionId' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'deleteInspection',
+                    ),
+                ),
+            ),
             'get-company-new-incoming' => array(
                 'type' => 'Segment',
                 'options' => array(
