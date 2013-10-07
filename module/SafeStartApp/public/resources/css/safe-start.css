@@ -137,7 +137,7 @@ html, body {
     white-space: nowrap;
 }
 .x-toolbar .x-button .x-button-icon:before {
-    line-height: 1.1em;
+   /* line-height: 1.1em;*/
 }
 
 .x-panel.x-floating, .x-msgbox, .x-form.x-floating {
