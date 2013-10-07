@@ -169,11 +169,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function () {
-            SafeStartApp.AJAX('vehicle/alert/' + self.record.get('id') + '/delete', {}, function (result) {
-                self.getParent().pop();
-                self.getParent().alertsStore.loadData();
-            });
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function (btn) {
+            if (btn == 'yes') {
+                SafeStartApp.AJAX('vehicle/alert/' + self.record.get('id') + '/delete', {}, function (result) {
+                    self.getParent().pop();
+                    self.getParent().alertsStore.loadData();
+                });
+            }
         });
     }
 
