@@ -441,7 +441,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function updateAlertAction()
     {
-        $alertId = $this->params('alertId');
+        $alertId = (int) $this->params('alertId');
         $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
         if (!$alert) return $this->_showNotFound("Alert not found.");
         $vehicle = $alert->getVehicle();
@@ -467,7 +467,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function deleteAlertAction()
     {
-        $alertId = $this->data->id;
+        $alertId = (int) $this->params('alertId');
         $alert = $this->em->find('SafeStartApi\Entity\Alert', $alertId);
         if (!$alert) return $this->_showNotFound("Alert not found.");
         $vehicle = $alert->getVehicle();
