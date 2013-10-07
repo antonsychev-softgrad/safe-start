@@ -30,7 +30,7 @@ class InspectionPdfPlugin extends AbstractPlugin
     const TEXT_ALIGN_CENTER = 'center';
     const TEXT_ALIGN_JUSTIFY = 'justify';
 
-    const HEADER_EMPIRIC_HEIGHT = 80;
+    const HEADER_EMPIRIC_HEIGHT = 90;
 
     private $document;
     private $currentPage;
@@ -224,10 +224,12 @@ class InspectionPdfPlugin extends AbstractPlugin
         $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $currentColumn = 1;
+        $this->lastTopPos -= 10;
 
         foreach ($fieldsStructure as $groupBlock) {
             if ($this->_isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
-            $lines = $this->getTextLines(isset($groupBlock->groupName) ? $groupBlock->groupName : '', $this->opts['style']['category_field_size'], $columnWidth);
+            $text = (isset($groupBlock->fieldDescription) && !empty($groupBlock->fieldDescription)) ? $groupBlock->fieldDescription : $groupBlock->groupName;
+            $lines = $this->getTextLines($text, $this->opts['style']['category_field_size'], $columnWidth);
             foreach ($lines as $line) {
                 if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
                     $currentColumn++;
@@ -261,7 +263,8 @@ class InspectionPdfPlugin extends AbstractPlugin
 
         foreach ($fields as $field) {
             // todo: check if additional field if triggered
-            $lines = array_filter($this->getTextLines(isset($field->fieldName) ? $field->fieldName : '', $this->opts['style']['field_size'], ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth));
+            $text = (isset($field->fieldDescription) && !empty($field->fieldDescription)) ? $field->fieldDescription : (string)$field->fieldName;
+            $lines = array_filter($this->getTextLines($text, $this->opts['style']['field_size'], ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth));
             $startYPos = $this->lastTopPos;
             foreach ($lines as $line) {
                 if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
@@ -292,7 +295,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                 } else {
                     $value = (isset($fieldsDataValues[$field->id]) && !empty($fieldsDataValues[$field->id])) ? $fieldsDataValues[$field->id] : '-';
                 }
-                if (!$field->additional && isset($field->alerts) && ($field->triggerValue == strtolower($value))) {
+                if (!$field->additional && (strtolower($field->triggerValue) == strtolower($value))) {
                     $value =  $this->opts['style']['field_alert_text'];
                     $color = $this->opts['style']['field_alert_color'];
                 } else {

@@ -15,6 +15,7 @@ class GetDataPlugin extends AbstractPlugin
             if ($field->getParent()) continue;
             $checklist[] = array(
                 'groupName' => $field->getTitle(),
+                'fieldDescription' => $field->getDescription(),
                 'groupId' => $field->getId(),
                 'id' => $field->getId(),
                 'groupOrder' => $field->getOrder(),
@@ -32,6 +33,7 @@ class GetDataPlugin extends AbstractPlugin
             if ($field->getParent()) continue;
             $checklist[] = array(
                 'groupName' => $field->getTitle(),
+                'fieldDescription' => $field->getDescription(),
                 'groupId' => $field->getId(),
                 'id' => $field->getId(),
                 'groupOrder' => $field->getOrder(),
@@ -68,7 +70,10 @@ class GetDataPlugin extends AbstractPlugin
                     'id' => $field->getId(),
                     'fieldOrder' => $field->getOrder(),
                     'fieldName' => $field->getTitle(),
+                    'fieldDescription' => $field->getDescription(),
                     'fieldType' => $fieldsConfig[$field->getType()]['id'],
+                    'alertMessage' => $field->getAlertTitle(),
+                    'alertDescription' => $field->getAlertDescription(),
                     'type' => $field->getType(),
                     'additional' => $field->getAdditional(),
                     'triggerValue' => $field->getTriggerValue(),
@@ -115,6 +120,9 @@ class GetDataPlugin extends AbstractPlugin
                     'id' => $field->getId(),
                     'fieldOrder' => $field->getOrder(),
                     'fieldName' => $field->getTitle(),
+                    'fieldDescription' => $field->getDescription(),
+                    'alertMessage' => $field->getAlertTitle(),
+                    'alertDescription' => $field->getAlertDescription(),
                     'fieldType' => $fieldsConfig[$field->getType()]['id'],
                     'type' => $field->getType(),
                     'additional' => $field->getAdditional(),
