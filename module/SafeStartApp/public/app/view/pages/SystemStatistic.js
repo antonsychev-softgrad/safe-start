@@ -57,7 +57,10 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         return {
             cls: 'sfa-info-container sfa-statistic',
             xtype: 'panel',
-            layout: 'card',
+            layout: {
+                type: 'vbox',
+                align: 'stretch'
+            },
             name: 'statistic',
             scrollable: true,
             minHeight: 300,
@@ -128,15 +131,19 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     ]
                 },
                 {
-                    id: 'SafeStartSystemStatisticContent',
-                    tpl: [
-                        '<div class="top">',
-                        '<div class="name">Period from {period.from} to {period.to}</div>',
-                        '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
-                        '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
-                        '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
-                        '</div>'
-                    ].join('')
+                    xtype: 'panel', 
+                    items: [{
+                        id: 'SafeStartSystemStatisticContent',
+                        docked: 'top',
+                        tpl: [
+                            '<div class="top">',
+                            '<div class="name">Period from {period.from} to {period.to}</div>',
+                            '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
+                            '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
+                            '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
+                            '</div>'
+                        ].join('')
+                    }]
                 }
             ],
             listeners: {
@@ -200,10 +207,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         this.down('panel[name=statistic]').add({
             xtype: 'chart',
             id: 'SafeStartSystemStatisticChart',
-            style: {
-                marginTop: '100px'
-            },
-            minHeight: 200,
+            minHeight: 300,
+            flex: 1,
             animate: true,
             store: {
                 fields: ['date', 'value1', 'value2', 'value3'],

@@ -17,7 +17,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
         scrollable: true,
         minHeight: 300,
         layout: {
-            type: 'card'
+            type: 'vbox'
         },
         items: [
             {
@@ -57,17 +57,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                 ]
             },
             {
-                id: 'SafeStartVehicleReportContent',
-                tpl: [
-                    '<div class="top">',
-                    '<div class="name">Period from {period.from} to {period.to}</div>',
-                    '<div class="name">Amount of travelled kms: {statistic.kms} </div>',
-                    '<div class="name">Sum of used hours: {statistic.hours} </div>',
-                    '<div class="name">Total number of completed inspections: {statistic.inspections} </div>',
-                    '<div class="name">Total number of completed Alerts: {statistic.completed_alerts} </div>',
-                    '<div class="name">Total number of outstanding Alerts: {statistic.new_alerts} </div>',
-                    '</div>'
-                ].join('')
+                xtype: 'panel', 
+                items: [{
+                    id: 'SafeStartVehicleReportContent',
+                    docked: 'top',
+                    tpl: [
+                        '<div class="top">',
+                        '<div class="name">Period from {period.from} to {period.to}</div>',
+                        '<div class="name">Amount of travelled kms: {statistic.kms} </div>',
+                        '<div class="name">Sum of used hours: {statistic.hours} </div>',
+                        '<div class="name">Total number of completed inspections: {statistic.inspections} </div>',
+                        '<div class="name">Total number of completed Alerts: {statistic.completed_alerts} </div>',
+                        '<div class="name">Total number of outstanding Alerts: {statistic.new_alerts} </div>',
+                        '</div>'
+                    ].join('')
+                }]
             }
         ]
 
@@ -121,10 +125,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
             {
                 xtype: 'chart',
                 id: 'SafeStartVehicleReportChart',
-                style: {
-                    marginTop: '160px'
-                },
-                minHeight: 200,
+                minHeight: 300,
+                flex: 1,
                 animate: true,
                 store: {
                     fields: ['date', 'value'],
