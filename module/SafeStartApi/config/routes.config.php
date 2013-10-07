@@ -414,16 +414,6 @@ $routes = array(
                     ),
                 ),
             ),
-            'delete-vehicle-alert' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/vehicle/deletealert',
-                    'defaults' => array(
-                        'controller' => 'Vehicle',
-                        'action' => 'deleteAlert',
-                    ),
-                ),
-            ),
             'delete-vehicle-inspection' => array(
                 'type' => 'Segment',
                 'options' => array(
