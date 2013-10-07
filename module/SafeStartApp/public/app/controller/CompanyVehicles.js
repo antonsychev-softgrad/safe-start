@@ -248,8 +248,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     loadChecklist: function (id) {
         var self = this;
+        var vehicle = this.getNavMain().getVehiclesStore().getRoot().findChild('id', id);
+
         SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
-            self.getVehicleInspectionPanel().loadChecklist(result.checklist, id);
+            self.getVehicleInspectionPanel().loadChecklist(result.checklist, vehicle);
         });
     },
 
