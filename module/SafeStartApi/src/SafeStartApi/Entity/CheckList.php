@@ -73,6 +73,11 @@ class CheckList extends BaseEntity
     protected $alerts;
 
     /**
+     * @ORM\OneToMany(targetEntity="DefaultAlert", mappedBy="check_list", cascade={"persist", "remove", "merge"})
+     */
+    protected $default_alerts;
+
+    /**
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
@@ -437,11 +442,64 @@ class CheckList extends BaseEntity
         return $alerts;
     }
 
+    /**
+     * Add alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     * @return CheckList
+     */
+    public function addDefaultAlert(\SafeStartApi\Entity\DefaultAlert $alerts)
+    {
+        $this->default_alerts[] = $alerts;
+
+        return $this;
+    }
+
+    /**
+     * Remove alerts
+     *
+     * @param \SafeStartApi\Entity\Alert $alerts
+     */
+    public function removeDefaultAlert(\SafeStartApi\Entity\Alert $alerts)
+    {
+        $this->default_alerts->removeElement($alerts);
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDefaultAlerts()
+    {
+        $alerts = array();
+        if (!$this->default_alerts) return $alerts;
+        foreach ($this->default_alerts as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+        return $alerts;
+    }
+
     public function getAlertsArray($filters = array())
     {
         $alerts = array();
-        if ($this->getAlerts()) {
-            foreach ($this->getAlerts() as $alert) {
+        if ($checkListAlert = $this->getAlerts()) {
+            foreach ($checkListAlert as $alert) {
+                //todo: probably we will need more filters here and method should be refactored
+                if (isset($filters['status']) && !empty($filters['status'])) {
+                    if ($filters['status'] == $alert->getStatus()) {
+                        $alerts[] = $alert->toArray();
+                    }
+                } else {
+                    $alerts[] = $alert->toArray();
+                }
+            }
+        }
+
+        if ($defCheckListAlert = $this->getDefaultAlerts()) {
+            foreach ($defCheckListAlert as $alert) {
                 //todo: probably we will need more filters here and method should be refactored
                 if (isset($filters['status']) && !empty($filters['status'])) {
                     if ($filters['status'] == $alert->getStatus()) {

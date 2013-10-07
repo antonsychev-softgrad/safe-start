@@ -588,7 +588,6 @@ class CompanyController extends RestrictedAccessRestController
      */
     public function getNewIncomingAction()
     {
-        putenv("APP_ENV=prod");
         $companyId = (int)$this->params('id');
         $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
 

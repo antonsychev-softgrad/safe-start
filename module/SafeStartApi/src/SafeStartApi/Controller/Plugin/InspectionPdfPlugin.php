@@ -57,6 +57,9 @@ class InspectionPdfPlugin extends AbstractPlugin
         $this->lastTopPos = $this->drawHeader();
         // add inspection fields
         $this->drawInspection();
+        // add additional comments
+        $this->drawAlerts();
+        // save document
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();
         $this->saveDocument();
