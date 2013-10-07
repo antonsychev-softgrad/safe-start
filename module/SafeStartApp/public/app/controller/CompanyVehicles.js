@@ -467,7 +467,15 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 },
                 single: true
             });
-            navMain.tapOnActionNode('inspections', null, true);
+
+            navMain.getVehiclesStore().on({
+                load: function (store, record) {
+                    navMain.tapOnActionNode('inspections', vehicleId, true);
+                }, 
+                order: 'after',
+                single: true
+            });
+            navMain.getVehiclesStore().load();
         });
     }
 });
