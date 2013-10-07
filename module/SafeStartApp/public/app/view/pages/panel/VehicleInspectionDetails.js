@@ -218,7 +218,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                                 isAlert = true;
                             }
 
-                            console.log(field.triggerValue, value.value);
                             if (RegExp(value.value, 'i').test('yes')) {
                                 value.value = 'Yes';
                             }

@@ -30,7 +30,9 @@ Ext.apply(SafeStartApp, {
             requestId: 'WEB_' + this.getHash(12)
         };
         data = data || {test: 1};
-        if (!silent)Ext.Viewport.setMasked({ xtype: 'loadmask' });
+        if (!silent) {
+            Ext.Viewport.setMasked({xtype: 'loadmask', zIndex: 20});
+        }
         Ext.Ajax.request({
             url: this.baseHref + url,
             params: Ext.encode({
