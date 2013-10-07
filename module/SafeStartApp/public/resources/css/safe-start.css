@@ -308,7 +308,7 @@ div.logo {
 
 .sfa-main-toolbar.x-toolbar.x-docked-top {
     position: relative;
-    z-index: 999;
+    z-index: 16;
     height: 60px;
     margin-bottom: 20px;
     border: none;
@@ -334,7 +334,9 @@ div.logo {
 }
 .sfa-main-toolbar .x-toolbar-inner .x-button.x-button-action .x-button-icon.x-shown.more:before {
     content:']';
-    font-size: 33px;
+    font-size: 28px;
+    top: 4px;
+    left: 9px;
 }
 
 .sfa-main-toolbar .x-button.x-button-action.x-button-pressing .x-button-icon.x-shown.more:before {
@@ -470,7 +472,7 @@ font-size: 26px;
 
 .sfa-info-container  input, .sfa-info-container textarea {
     font-size: 22px;
-    padding: 8px 2px 8px 7px;
+    padding: 8px 30px 8px 7px;
     color: #565555;
     border: 1px solid #cacaca;
     -moz-border-radius: 10px;
@@ -539,6 +541,11 @@ font-size: 26px;
     padding: 0;
     background: none;
 }
+.sfa-info-container .sfa-checklist-form .x-container.x-toolbar-dark.x-toolbar.x-dock-item.x-docked-top.x-stretched:nth-child(2) {
+    position: relative;
+    top: -15px;
+}
+
 .sfa-info-container .x-button.x-button-action {
     margin: 0;
 }
@@ -677,11 +684,11 @@ font-size: 26px;
 }
 .sfa-system-settings .x-tabbar-dark {
     background: #0088cc;
-    -moz-border-radius: 10px 10px 0 0;
-    -webkit-border-radius: 10px 10px 0 0;
-    -khtml-border-radius: 10px 10px 0 0;
-    -o-border-radius: 10px 10px 0 0;
-    border-radius: 10px 10px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -khtml-border-radius: 5px 5px 0 0;
+    -o-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
 
     -webkit-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset,
     -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset,
@@ -715,9 +722,7 @@ font-size: 26px;
 
 
 /* content 1 column with blue head */
-.sfa-system-settings {
-    background: none;
-}
+
 .sfa-system-settings .x-tabbar-inner .x-tab {
     height: auto;
 }
@@ -899,7 +904,6 @@ font-size: 26px;
 .sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-component-outer {
     left: -8px;
 }
-
 
 .sfa-checklist-form .x-dock.x-dock-vertical .x-field-radio .x-form-label {
     position: relative;
