@@ -96,8 +96,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             this.vehicleId = vehicle.get('id');
             this.vehicleRecord = vehicle;
         }
-        this.vehicleId = vehicle.get('id') || 0;
-        this.vehicleRecord = vehicle;
         this.isNew = ! inspectionRecord;
         this.inspectionRecord = inspectionRecord;
 
@@ -439,7 +437,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             width: '100%',
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
-            value: new Date(fieldData.fieldValue || Date.now())
+            value: new Date(fieldData.fieldValue * 1000 || Date.now())
         };
     },
 
