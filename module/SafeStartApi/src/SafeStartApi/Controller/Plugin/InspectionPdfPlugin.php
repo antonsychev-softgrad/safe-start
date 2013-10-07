@@ -188,7 +188,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         $page->drawText($userName, $leftPosInStr, $topPosInPage);
 
         $strWidth = $this->widthForStringUsingFontSize($signature, $this->font, self::BLOCK_TEXT_SIZE);
-        $leftPosInStr = $this->getLeftStartPos($signature, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_CENTER);
+        $leftPosInStr = $this->getLeftStartPos($signature, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_CENTER) - 20;
         $page->drawText($signature, $leftPosInStr - ($imageMaxWidth / 2), $topPosInPage);
 
         if (($signaturePath = $this->getImagePathByName(isset($userData['signature']) ? $userData['signature'] : '')) !== null) {
@@ -254,7 +254,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     $this->opts['style']['category_field_color'],
                     $this->lastTopPos,
                     self::TEXT_ALIGN_CENTER,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
                     $this->font,
                     $columnWidth
                 );
@@ -302,7 +302,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     ($field->type == 'group') ? $this->opts['style']['field_group_color'] : $this->opts['style']['field_color'],
                     $this->lastTopPos,
                     ($field->type == 'group') ? self::TEXT_ALIGN_CENTER : self::TEXT_ALIGN_LEFT,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
                     $this->font,
                     ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth
                 );
@@ -327,7 +327,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     $color,
                     ($startYPos - (count($lines) - 1) * (($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2)) / 2)),
                     self::TEXT_ALIGN_RIGHT,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + ($columnFieldTitleWidth),
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + ($columnFieldTitleWidth),
                     $this->font,
                     $columnFieldValueWidth
                 );
@@ -363,7 +363,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                 $this->opts['style']['category_field_color'],
                 $this->lastTopPos,
                 self::TEXT_ALIGN_CENTER,
-                ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
                 $this->font,
                 $columnWidth
             );
@@ -393,7 +393,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     $this->opts['style']['alert_description_color'],
                     $this->lastTopPos,
                     self::TEXT_ALIGN_CENTER,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
                     $this->font,
                     $columnWidth
                 );
@@ -419,7 +419,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     $this->opts['style']['alert_comment_color'],
                     $this->lastTopPos,
                     self::TEXT_ALIGN_LEFT,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
                     $this->font,
                     $columnWidth
                 );
@@ -431,19 +431,21 @@ class InspectionPdfPlugin extends AbstractPlugin
                 $imagePath = $this->getImagePathByName($imageHash);
                 if (!file_exists($imagePath)) continue;
                 $image = new \SafeStartApi\Model\ImageProcessor($imagePath);
+                $imageWidth = $columnWidth - $columnsPadding;
+                $imageHeight = round($imageWidth * (2/3));
                 $image->cover(array(
-                        'width' => $columnWidth,
-                        'height' => round($columnWidth * (2/3)),
+                        'width' => $imageWidth,
+                        'height' => $imageHeight,
                         'position' => 'centermiddle',
                     )
                 );
-                $newImagePath = $this->getUploadPath() . $imageHash . $columnWidth  ."x".  round($columnWidth * (2/3)) .".jpg";
+                $newImagePath = $this->getUploadPath() . $imageHash . $imageWidth  ."x". $imageHeight .".jpg";
                 $image->save($newImagePath);
 
                 $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
 
 
-                if (($this->lastTopPos - round($columnWidth * (2/3))) <= $this->opts['style']['page_padding_bottom']) {
+                if (($this->lastTopPos - $imageHeight) <= $this->opts['style']['page_padding_bottom']) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -456,9 +458,9 @@ class InspectionPdfPlugin extends AbstractPlugin
 
                 $this->document->pages[$this->pageIndex]->drawImage(
                     $alertImage,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding,
-                    $this->lastTopPos - round($columnWidth * (2/3)),
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $columnWidth,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - $columnsPadding/4,
+                    $this->lastTopPos - $imageHeight,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - $columnsPadding/4,
                     $this->lastTopPos
                 );
 
