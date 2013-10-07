@@ -111,7 +111,7 @@ class RestController extends AbstractActionController
         $ip = $servParam->get('REMOTE_ADDR', '');
         $browser = preg_replace('/\s+/', '', $servParam->get('HTTP_USER_AGENT', ''));
         $device = isset($this->data->device) ? $this->data->device : '';
-        $key =  $ip . '-' . $browser . '-' . $device;
+        $key = $ip . '-' . $browser . '-' . $device;
         $key = preg_replace('/[^a-z0-9_\+\-]/i', '', $key);
         return $key;
     }
@@ -138,13 +138,16 @@ class RestController extends AbstractActionController
         $this->authService = $this->getServiceLocator()->get('doctrine.authenticationservice.orm_default');
         // if session not started and X-Auth-Token set need restart session by id
         $this->authToken = isset($this->headers['X-Auth-Token']) ? $this->headers['X-Auth-Token'] : null;
-        if (!empty($this->authToken) && !$this->sessionManager->getId()/* && preg_match('/^[a-zA-Z0-9]$/', $this->authToken)*/) {
-            $this->sessionManager->setId($this->authToken);
-            $this->sessionManager->start();
-            $userInfo = $this->authService->getStorage()->read();
-        }
+        if (!empty($this->authToken) && !$this->sessionManager->getId()) {
+            try {
+                $this->sessionManager->setId($this->authToken);
+                $this->sessionManager->start();
+                $userInfo = $this->authService->getStorage()->read();
+            } catch (\Exception $e) {
+                throw new Rest403('Wrong request auth token');
+            }
 
-        //$this->_checkExpiryDate();
+        }
     }
 
     protected function _getJsonSchemaRequest($method = "index/ping")
@@ -211,6 +214,7 @@ class RestController extends AbstractActionController
         );
         return $this->AnswerPlugin()->format($this->answer, self::EMAIL_ALREADY_EXISTS_ERROR);
     }
+
     protected function _showKeyExists($msg = '')
     {
         $this->answer = array(
@@ -218,6 +222,7 @@ class RestController extends AbstractActionController
         );
         return $this->AnswerPlugin()->format($this->answer, self::KEY_ALREADY_EXISTS_ERROR);
     }
+
     protected function _showPassIsNotEqual($msg = '')
     {
         $this->answer = array(
