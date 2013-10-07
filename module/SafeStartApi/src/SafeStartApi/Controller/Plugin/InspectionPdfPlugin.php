@@ -321,6 +321,11 @@ class InspectionPdfPlugin extends AbstractPlugin
         return $currentColumn;
     }
 
+    public function drawAlerts()
+    {
+
+    }
+
 
     public function getFilePathByName($name = '')
     {

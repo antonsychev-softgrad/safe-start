@@ -86,7 +86,8 @@ class GetDataPlugin extends AbstractPlugin
                 }
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
                 $alertMassage = $field->getAlertTitle();
-                if (!empty($alertMassage) && empty($listField['items'])) {
+                $alertDescription = $field->getAlertDescription();
+                if ((!empty($alertMassage) || !empty($alertDescription)) && empty($listField['items'])) {
                     $listField['alerts'] = array(
                         array(
                             'alertMessage' => $field->getAlertTitle(),
@@ -134,7 +135,8 @@ class GetDataPlugin extends AbstractPlugin
                 if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
                 $alertMassage = $field->getAlertTitle();
-                if (!empty($alertMassage) && empty($listField['items'])) {
+                $alertDescription = $field->getAlertDescription();
+                if ((!empty($alertMassage) || !empty($alertDescription)) && empty($listField['items'])) {
                     $listField['alerts'] = array(
                         array(
                             'alertMessage' => $field->getAlertTitle(),
