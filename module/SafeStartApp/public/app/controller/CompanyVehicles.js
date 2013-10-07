@@ -72,14 +72,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = record.get('id');
 
-        var button = null;
-        if (Ext.os.deviceType !== 'Desktop') {
-            button = this.getMainToolbar().down('button[action=toggle-menu]');
-            if (button && button.config.isPressed && ! silent) {
-                button.getHandler().call(button, button);
-            }
-        }
-
         switch (record.get('action')) {
             case 'info':
                 this.getInfoPanel().setActiveItem(this.getVehicleInfoPanel());
