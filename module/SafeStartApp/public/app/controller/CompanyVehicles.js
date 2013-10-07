@@ -427,7 +427,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                     case 'datepickerfield':
                         fieldValues.push({
                             id: field.config.fieldId,
-                            value: field.getValue()
+                            value: parseInt(field.getValue().getTime()/1000, 10)
                         });
                         break;
                 }

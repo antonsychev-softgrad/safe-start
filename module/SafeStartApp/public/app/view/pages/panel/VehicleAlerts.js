@@ -56,7 +56,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                     name: 'refresh-alerts',
                     iconCls: 'refresh',
                     handler: function () {
-                        this.up('SafeStartVehicleAlertsPanel').getStore().loadData();
+                        this.up('SafeStartVehicleAlertsPanel').down('list[name=vehicle-alerts]').getStore().loadData();
                     }
                 }
 
