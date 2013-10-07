@@ -58,7 +58,7 @@ class User extends BaseEntity
     protected $email;
 
     /**
-     * @ORM\Column(type="string", unique=true, length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $signature;
 

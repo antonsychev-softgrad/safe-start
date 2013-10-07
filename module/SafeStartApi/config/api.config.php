@@ -84,12 +84,14 @@ $api = array(
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
             'title' => 'safe start inspection',
             'style' => array(
+                'signature_height' => 60,
+                'signature_width' => 120,
                 'content_width' => 2/3,
                 'content_columns' => 3,
                 'content_column_padding' => 20,
                 'page_padding_top' => 24,
                 'page_padding_right' => 10,
-                'page_padding_bottom' => 24,
+                'page_padding_bottom' => 50,
                 'page_padding_left' => 10,
                 'field_size' => 10,
                 'field_line_spacing' => 3,
@@ -101,7 +103,11 @@ $api = array(
                 'category_field_size' => 12,
                 'category_field_line_spacing' => 4,
                 'category_field_color' => '#0F5B8D',
-                'alerts_header' => 'Additional Comments'
+                'alerts_header' => 'Additional Comments',
+                'alert_description_size' => '10',
+                'alert_description_color' => '#ff0000',
+                'alert_comment_size' => '10',
+                'alert_comment_color' => '#333333',
             )
         )
 
