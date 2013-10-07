@@ -308,9 +308,10 @@ div.logo {
 
 .sfa-main-toolbar.x-toolbar.x-docked-top {
     position: relative;
-    z-index: 16;
+    z-index: 14;
     height: 60px;
     margin-bottom: 20px;
+    padding-right: 8px;
     border: none;
     background: url(/resources/img/log-form_bg.jpg) repeat;
     -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -450,11 +451,10 @@ font-size: 26px;
 }
 .sfa-info-container  .x-button {
     display: inline-block;
-    padding: 0 20px 2px;
+    padding: 0 20px 2px !important;
     margin: 0 5px;
     border: none !important;
     font-size: 22px;
-    height: 46px;
     background-position: 0 -1px !important;
 }
 .sfa-info-container  .x-button.x-button-pressing {
@@ -1309,7 +1309,7 @@ font-size: 26px;
     display: block !important;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .x-button-action {
-    margin-top: 17px;
+    margin-top: 21px;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .x-field-input {
     min-width: 1em;
@@ -1453,10 +1453,9 @@ span.sfa-comment-content {
     .sfa-info-container.sfa-statistic .sfa-top-toolbar > div .refresh {
         top: -1px;
     }
-}
-
-.sfa-add-inside .x-button-icon.x-shown.add:before {
-    top: 1px;
+    .sfa-add-inside .x-button-icon.x-shown.add:before {
+        top: 1px;
+    }
 }
 
 
