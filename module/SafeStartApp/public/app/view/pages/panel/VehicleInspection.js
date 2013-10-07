@@ -96,7 +96,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             this.vehicleId = vehicle.get('id');
             this.vehicleRecord = vehicle;
         }
-        this.vehicleRecord = vehicle;
         this.isNew = ! inspectionRecord;
         this.inspectionRecord = inspectionRecord;
 
