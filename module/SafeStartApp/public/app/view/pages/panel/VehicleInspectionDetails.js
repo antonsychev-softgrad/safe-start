@@ -100,7 +100,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createFields(
                 fieldGroup.fields, 
                 checklist.fieldsData, 
-                checklist.alerts, 
+                fieldGroup.triggerValue, 
                 fieldGroup.groupName, 
                 1
             );
@@ -200,24 +200,25 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
     },
 
-    createFields: function (fields, values, alerts, title, depth) {
+    createFields: function (fields, values, triggerValue, title, depth) {
         var items = [];
         Ext.each(fields, function (field) {
             var isAlert = false;
             switch (field.type) {
                 case 'group':
-                    items.push(this.createFields(field.items, values, alerts, field.fieldName, depth + 1));
+                    items.push(this.createFields(field.items, values, field.triggerValue, field.fieldName, depth + 1));
                     break;
                 case 'radio':
                 case 'text':
                 case 'checkbox':
-                    Ext.each(alerts, function (alert) {
-                        if (alert.field.id == field.fieldId) {
-                            isAlert = true;
-                        }
-                    }, this);
                     Ext.each(values, function (value) {
+                        isAlert = false;
                         if (value.id == field.fieldId) {
+                            if (field.triggerValue == value.value) {
+                                isAlert = true;
+                            }
+
+                            console.log(field.triggerValue, value.value);
                             if (RegExp(value.value, 'i').test('yes')) {
                                 value.value = 'Yes';
                             }

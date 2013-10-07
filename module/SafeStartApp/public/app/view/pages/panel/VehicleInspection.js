@@ -89,7 +89,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         this.clearChecklist();
 
-        if (Ext.isNumeric(vehicle) {
+        if (Ext.isNumeric(vehicle)) {
             this.vehicleId = vehicle;
             this.vehicleRecord = null;
         } else {
