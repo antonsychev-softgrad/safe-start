@@ -83,14 +83,16 @@ Ext.define('SafeStartApp.controller.Users', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this user account?", function(){
-            SafeStartApp.AJAX('user/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
-                self.getNavMain().getStore().loadData();
-                self.currentForm.reset();
-                self.currentForm.down('button[name=delete-data]').hide();
-                self.currentForm.down('button[name=send-credentials]').hide();
-                self.currentForm.down('button[name=reset-data]').show();
-            });
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this user account?", function(btn) {
+            if (btn == 'yes') {
+                SafeStartApp.AJAX('user/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                    self.getNavMain().getStore().loadData();
+                    self.currentForm.reset();
+                    self.currentForm.down('button[name=delete-data]').hide();
+                    self.currentForm.down('button[name=send-credentials]').hide();
+                    self.currentForm.down('button[name=reset-data]').show();
+                });
+            }
         });
     },
 

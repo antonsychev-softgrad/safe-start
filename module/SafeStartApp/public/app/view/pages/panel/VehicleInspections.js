@@ -38,8 +38,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
                         checkListId = vehicleInspectionDetails.checkListId,
                         vehicleId = vehicleInspectionDetails.vehicleId;
 
-                    Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this inspection?", function(){
-                        vehicleInspectionsPanel.fireEvent('deleteInspection', vehicleId, checkListId);
+                    Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this inspection?", function(btn) {
+                        if (btn == 'yes') {
+                            vehicleInspectionsPanel.fireEvent('deleteInspection', vehicleId, checkListId);
+                        }
                     });
                 }
             }]
