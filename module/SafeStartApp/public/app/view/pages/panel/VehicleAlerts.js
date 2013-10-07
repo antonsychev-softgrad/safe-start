@@ -21,12 +21,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                     placeHolder: 'Search...',
                     name: 'search-alert',
                     listeners: {
-                        scope: this,
                         clearicontap: function (field) {
-                            field.parent.parent.parent.down('list[name=vehicle-alerts]').getStore().clearFilter();
+                            this.up('SafeStartVehicleAlertsPanel').down('list[name=vehicle-alerts]').getStore().clearFilter();
                         },
                         keyup: function (field) {
-                            field.parent.parent.parent.filterStoreDataBySearchFiled(field.parent.parent.parent.down('list[name=vehicle-alerts]').getStore(), field, 'alert_title');
+                            var alertsPanel = this.up('SafeStartVehicleAlertsPanel');
+                            alertsPanel.filterStoreDataBySearchFiled(alertsPanel.down('list[name=vehicle-alerts]').getStore(), field, 'title');
                         }
                     }
                 },
@@ -44,8 +44,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                         ]
                     },
                     listeners: {
-                        change: function (obj, newValue, oldValue, eOpts) {
-                            obj.parent.parent.parent.filterStoreDataByFiled(obj.parent.parent.parent.down('list[name=vehicle-alerts]').getStore(), newValue, 'status');
+                        change: function (field, newValue, oldValue, eOpts) {
+                            var alertsPanel = this.up('SafeStartVehicleAlertsPanel');
+                            alertsPanel.filterStoreDataByFiled(alertsPanel.down('list[name=vehicle-alerts]').getStore(), newValue, 'status');
                         }
                     }
                 },
@@ -55,7 +56,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                     name: 'refresh-alerts',
                     iconCls: 'refresh',
                     handler: function () {
-                        this.parent.parent.parent.down('list[name=vehicle-alerts]').getStore().loadData();
+                        this.up('SafeStartVehicleAlertsPanel').getStore().loadData();
                     }
                 }
 
@@ -77,10 +78,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         this.callParent();
         this.alertsStore = Ext.create('SafeStartApp.store.Alerts');
         this.add(this.getListPanel());
-        this.alertsStore.addListener('load', function(store) {
-            //todo: hide load more if no data loaded
-            //this.down('list[name=vehicle-alerts]').getPlugins()[0].hide();
-        }, this)
     },
 
     getListPanel: function () {
