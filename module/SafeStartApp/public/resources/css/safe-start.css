@@ -2,11 +2,6 @@
 
 /* for All */
 
-/*@font-face {
-    font-family: HelveticaNeueLTStd;
-    src: url(/resources/fonts/helvetica-neue-regular.ttf);
-}*/
-
 html, body {
     font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
@@ -389,6 +384,24 @@ div.logo {
 .sfa-search-reload span.refresh {
     margin-bottom: 5px;
 }
+
+.sfa-alerts-topbar .x-button-icon.x-shown.refresh {
+    font-size: 22px;
+}
+.sfa-alerts-topbar .x-button-icon.x-shown.refresh:before {
+    font-size: 26px;
+}
+
+
+
+
+.sfa-left-container .x-button-icon.x-shown.refresh {
+    font-size: 19px;
+}
+.sfa-left-container .x-button-icon.x-shown.refresh:before {
+font-size: 26px;
+}
+
 .sfa-left-container .x-title {
     font-size: 26px;
     color: #558FAC;
@@ -479,17 +492,17 @@ div.logo {
 .sfa-info-container  {
     margin: 0 10px 10px;
     padding: 10px 20px 18px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px;
-    -o-border-radius: 10px;
-    border-radius: 10px;
-    background: #eaedef url(/resources/img/logotype-trans.png) no-repeat 50% 20%;
-    background-size: 65% auto;
-    -webkit-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
-    -moz-box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
-    box-shadow: 0 0.3em 0.4em rgba(100, 100, 100, 0.3) inset, -0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset, 0 -0.3em 0.4em rgba(100, 100, 100, 0.3) inset, 0.3em 0 0.4em rgba(100, 100, 100, 0.3) inset;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px inset, rgba(0, 0, 0, 0.3) 0 1px 0 inset, rgba(255, 255, 255, 0.1) 0 1px 0;
+    -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px inset, rgba(0, 0, 0, 0.3) 0 1px 0 inset, rgba(255, 255, 255, 0.1) 0 1px 0;
+    box-shadow: rgba(0, 0, 0, 0.3) 0 1px 4px inset, rgba(0, 0, 0, 0.3) 0 1px 0 inset, rgba(255, 255, 255, 0.1) 0 1px 0;
 }
+
 .sfa-info-container form {
     margin: 10px 20px 18px;
 }
@@ -534,7 +547,7 @@ div.logo {
     z-index: 999;
 }
 .sfa-info-container .x-tab .x-button-icon.add:before, .sfa-info-container .x-button .x-button-icon.add:before {
-    top: 2px;
+    /*top: 2px;*/
 }
 
 /* right column */
@@ -764,7 +777,7 @@ div.logo {
 }
 
 .sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button span {
-    top: 2px;
+    /*top: 2px;*/
 }
 .sfa-info-container.sfa-system-settings .x-dock.x-dock-vertical .x-button.x-button-back span {
     top: -1px;
@@ -886,11 +899,19 @@ div.logo {
 .sfa-checklist-form .x-container.x-field-radio.x-field.x-label-align-right.x-form-label-nowrap.x-field-labeled.x-layout-box-item.x-stretched .x-component-outer {
     left: -8px;
 }
+
+
 .sfa-checklist-form .x-dock.x-dock-vertical .x-field-radio .x-form-label {
     position: relative;
     left: -10px;
+    text-align: left;
 }
-
+@-moz-document url-prefix() {
+        .sfa-checklist-form .x-dock.x-dock-vertical .x-field-radio .x-form-label {
+            left: 10px;
+            text-align: right;
+        }
+    }
 
 
 /* Company -> Vehicle Users */
@@ -916,6 +937,13 @@ div.logo {
 .sfa-vehicle-inspection > div > form:last-child {
     min-height: 68px;
 }
+
+
+
+
+
+
+
 
 
 /* hack for chrome & safari -> button 'back' in left column, naprimer */
@@ -1363,6 +1391,10 @@ span.sfa-comment-content {
     white-space: nowrap;
 }
 
+.sfa-left-container .sfa-add-button .x-iconalign-left .x-button-label {
+    margin-left: 0.2em;
+}
+
 .x-msgbox-dark.x-msgbox .x-toolbar .x-button .x-button-label {
     font-size: 22px;
 }
@@ -1400,7 +1432,6 @@ span.sfa-comment-content {
     .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
         float: left;
         text-align: left;
-        /*width: 30%;*/
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer {
         display: inline-block;
@@ -1418,18 +1449,28 @@ span.sfa-comment-content {
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner .x-button.x-button-action {
         width: auto;
-        top: 5px;
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar > div .refresh {
-        top: 0;
+        top: -1px;
     }
 }
 
-/* кнопка обновить */
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .refresh {
-    top: -2px;
+.sfa-add-inside .x-button-icon.x-shown.add:before {
+    top: 1px;
 }
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {padding: 0 18px; height: 38px}
+
+
+/* кнопка обновить */
+
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+    padding: 0 18px;
+    height: 32px;
+    font-size: 17px;
+}
+.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action .x-button-icon.x-shown.refresh {
+    font-size: 20px;
+    top: -1px;
+}
 
 /* media Companies  toolbar responsive */
 
@@ -1498,7 +1539,13 @@ span.sfa-comment-content {
         width: 10.5em;
     }
     .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
-        top: 11px;
+        top: 14px;
+    }
+
+@-moz-document url-prefix() {
+        .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+            top: 1px;
+        }
     }
 }
 
