@@ -385,7 +385,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function getInspectionsAction()
     {
-        if (($vehicleId = (int)$this->params('id')) !== null) {
+        if (!($vehicleId = (int)$this->params('id'))) {
             $this->_showBadRequest();
             return;
         }
