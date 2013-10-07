@@ -451,14 +451,14 @@ font-size: 26px;
 }
 .sfa-info-container  .x-button {
     display: inline-block;
-    padding: 0 20px 2px !important;
+    padding: 0 15px 2px !important;
     margin: 0 5px;
     border: none !important;
     font-size: 22px;
     background-position: 0 -1px !important;
 }
 .sfa-info-container  .x-button.x-button-pressing {
-    background-position: 0 -40px !important;
+    /*background-position: 0 -32px !important;*/
 }
 
 .sfa-info-container   .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
@@ -892,6 +892,16 @@ font-size: 26px;
     background-image: -o-linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
     background-image: linear-gradient(top, #a2e306, #7eb105 3%, #5b7f03);
 }
+
+.page-company .sfa-info-container .sfa-checklist-form .x-button-normal.x-button.x-button-pressing {
+background-color: #628904;
+background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3e5702), color-stop(10%, #507003), color-stop(65%, #628904), color-stop(100%, #648c04));
+background-image: -webkit-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
+background-image: -moz-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
+background-image: -o-linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
+background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c04);
+}
+
 .sfa-checklist-form .x-input-radio:checked + .x-field-mask:after {
     background: #558FAC;
 }
@@ -943,22 +953,12 @@ font-size: 26px;
 }
 
 
-
-
-
-
-
-
-
 /* hack for chrome & safari -> button 'back' in left column, naprimer */
 
 @media all and (-webkit-min-device-pixel-ratio:0) {
     .sfa-left-container .x-button.x-button-back .x-button-label {
         position: relative;
         top: -18px;
-    }
-    .page-company .sfa-info-container .x-container.x-nested-list.x-layout-box-item.x-flexed.x-sized .x-button-action span {
-        top: -3px;
     }
     .page-company .sfa-info-container .x-container.x-toolbar.x-navigation-bar.x-dock-item.x-docked-top {
         padding: 3px 0 10px;
@@ -1461,7 +1461,9 @@ span.sfa-comment-content {
         top: 1px;
     }
 }
-
+.sfa-add-inside .x-button.x-button-action .x-button-label {
+    line-height: 1.5em;
+}
 
 /* кнопка обновить */
 
