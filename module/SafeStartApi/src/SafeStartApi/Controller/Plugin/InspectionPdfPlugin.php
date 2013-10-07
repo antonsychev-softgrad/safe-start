@@ -56,9 +56,9 @@ class InspectionPdfPlugin extends AbstractPlugin
         // add header
         $this->lastTopPos = $this->drawHeader();
         // add inspection fields
-        $this->drawInspection();
+        $currentColumn = $this->drawInspection();
         // add additional comments
-        $this->drawAlerts();
+        $this->drawAlerts($currentColumn);
         // save document
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();
@@ -253,6 +253,8 @@ class InspectionPdfPlugin extends AbstractPlugin
             }
 
         }
+
+        return $currentColumn;
     }
 
     private function drawInspectionFields($fields, $fieldsDataValues, $currentColumn = 1)
@@ -321,8 +323,32 @@ class InspectionPdfPlugin extends AbstractPlugin
         return $currentColumn;
     }
 
-    public function drawAlerts()
+    public function drawAlerts($currentColumn)
     {
+        $alerts = $this->checkList->getAlertsArray();
+        if (empty($alerts)) return;
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
+        $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
+
+        $lines = $this->getTextLines($this->opts['style']['alerts_header'], $this->opts['style']['category_field_size'], $columnWidth);
+        foreach ($lines as $line) {
+            if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                $currentColumn++;
+                if ($currentColumn > $columns) {
+                    $this->pageIndex++;
+                    $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                    $currentColumn = 1;
+                }
+                $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+            }
+            $this->drawText($line, $this->opts['style']['category_field_size'], $this->opts['style']['category_field_color'], $this->lastTopPos, self::TEXT_ALIGN_CENTER, ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth), $this->font, $columnWidth);
+
+            $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
+
+            $this->lastTopPos -= 10;
+        }
 
     }
 

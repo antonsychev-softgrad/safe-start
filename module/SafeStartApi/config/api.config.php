@@ -92,7 +92,7 @@ $api = array(
                 'page_padding_bottom' => 24,
                 'page_padding_left' => 10,
                 'field_size' => 10,
-                'field_line_spacing' => 2.5,
+                'field_line_spacing' => 3,
                 'field_color' => '#333333',
                 'field_group_color' => '#0F5B8D',
                 'field_ok_color' => '#0f5b8d',
@@ -101,6 +101,7 @@ $api = array(
                 'category_field_size' => 12,
                 'category_field_line_spacing' => 4,
                 'category_field_color' => '#0F5B8D',
+                'alerts_header' => 'Additional Comments'
             )
         )
 
