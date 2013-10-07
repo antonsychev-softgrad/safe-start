@@ -5,7 +5,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
     xtype: 'SafeStartCompaniesToolbar',
 
     getToolbarItems: function() {
-        return this.toolbarButtons = [{
+        this.toolbarButtons = [{
             ui: 'action',
             text: 'Companies'
         }, {
@@ -41,5 +41,6 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
             text: 'Logout',
             action: 'logout'
         }];
+        return this.toolbarButtons;
     }
 });
