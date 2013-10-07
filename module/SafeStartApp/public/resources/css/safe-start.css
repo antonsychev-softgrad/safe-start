@@ -308,7 +308,7 @@ div.logo {
 
 .sfa-main-toolbar.x-toolbar.x-docked-top {
     position: relative;
-    z-index: 14;
+    z-index: 3;
     height: 60px;
     margin-bottom: 20px;
     padding-right: 8px;
