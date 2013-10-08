@@ -83,12 +83,22 @@ class Vehicle extends BaseEntity
     /**
      * @ORM\Column(type="float", name="service_due_km")
      */
-    protected $serviceDueHours;
+    protected $serviceDueHours = 0;
 
     /**
      * @ORM\Column(type="float", name="service_due_hours")
      */
-    protected $serviceDueKm;
+    protected $serviceDueKm = 0;
+
+    /**
+     * @ORM\Column(type="float", name="current_odometer_hours")
+     */
+    protected $currentOdometerHours = 0;
+
+    /**
+     * @ORM\Column(type="float", name="current_odometer_kms")
+     */
+    protected $currentOdometerKms = 0;
 
     /**
      * @ORM\Column(type="datetime", name="creation_date")
@@ -177,7 +187,7 @@ class Vehicle extends BaseEntity
         if (!count($this->checkLists)) {
             if ($this->serviceDueHours) {
                 $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], time() + (int)$this->serviceDueHours * 60 * 60);
+                $date = date($config['params']['date_format'], time() + (int)$this->getNetServiceDueHours() * 60 * 60);
             }
         } else {
             $averageKms = array();
@@ -190,11 +200,11 @@ class Vehicle extends BaseEntity
                 $hours = $checkList->getCurrentOdometerHours() - $lastHour;
                 $period = $checkList->getUpdateDate()->getTimestamp() - $lastCheckListDate;
                 if ($hours) {
-                    $nextServiceSecHours = ($this->serviceDueHours * $period) / $hours;
+                    $nextServiceSecHours = ($this->getNetServiceDueHours() * $period) / $hours;
                     $averageHours[] = $nextServiceSecHours;
                 }
                 if ($km) {
-                    $nextServiceSecKm = ($this->serviceDueKm * $period) / $km;
+                    $nextServiceSecKm = ($this->getNetServiceDueKms() * $period) / $km;
                     $averageKms[] = $nextServiceSecKm;
                 }
                 $lastCheckListDate = $checkList->getUpdateDate()->getTimestamp();
@@ -217,6 +227,17 @@ class Vehicle extends BaseEntity
             }
         }
         return $date;
+    }
+
+    public function getNetServiceDueHours()
+    {
+        //todo: calculate next service km
+        return $this->serviceDueHours;
+    }
+
+    public function getNetServiceDueKms()
+    {
+        return $this->serviceDueKm;
     }
 
     /**
@@ -351,25 +372,6 @@ class Vehicle extends BaseEntity
         return $inspections;
     }
 
-    public function getCurrentOdometerKms()
-    {
-        $value = '-';
-        $lastInspection = $this->getLastInspection();
-        if ($lastInspection) {
-            $value = $lastInspection->getCurrentOdometer();
-        }
-        return $value;
-    }
-
-    public function getCurrentOdometerHours()
-    {
-        $value = '-';
-        $lastInspection = $this->getLastInspection();
-        if ($lastInspection) {
-            $value = $lastInspection->getCurrentOdometerHours();
-        }
-        return $value;
-    }
 
     public function getLastInspection()
     {
@@ -428,13 +430,36 @@ class Vehicle extends BaseEntity
         }
 
         return array(
-            'kms' => ((int)$kms <= 0) ? 'unknown' : $kms,
-            'hours' => ((int)$hours <= 0) ? 'unknown' : $hours,
+            'kms' => ((int)$kms <= 0) ? '-' : $kms,
+            'hours' => ((int)$hours <= 0) ? '-' : $hours,
             'inspections' => $inspections,
             'completed_alerts' => count($completed_alerts),
             'new_alerts' => count($new_alerts),
             'chart' => $chart
         );
+    }
+
+    public function getCurrentOdometerKms()
+    {
+        return $this->currentOdometerKms ? $this->currentOdometerKms : '0';
+    }
+
+    public function setCurrentOdometerKms($value)
+    {
+        $this->currentOdometerKms = $value;
+        return $this;
+    }
+
+
+    public function getCurrentOdometerHours()
+    {
+        return $this->currentOdometerHours ? $this->currentOdometerHours : '0';
+    }
+
+    public function setCurrentOdometerHours($value)
+    {
+        $this->currentOdometerHours = $value;
+        return $this;
     }
 
     /**

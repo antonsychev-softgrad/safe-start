@@ -119,6 +119,21 @@ $routes = array(
                     ),
                 ),
             ),
+            'print-vehicle-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/print-statistic/:from/:to',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                        'from' => '[0-9]*',
+                        'to' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'printStatistic'
+                    ),
+                ),
+            ),
             'complete-vehicle-checklist' => array(
                 'type' => 'Segment',
                 'options' => array(

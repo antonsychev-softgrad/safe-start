@@ -205,8 +205,19 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
-        $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
-        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours)) ? $this->data->odometer_hours : null);
+
+        if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
+            $checkList->setCurrentOdometer($this->data->odometer);
+            $vehicle->setCurrentOdometerKms($this->data->odometer);
+        } else {
+            $checkList->setCurrentOdometer($vehicle->getCurrentOdometerKms());
+        }
+        if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours))) {
+            $checkList->setCurrentOdometerHours($this->data->odometer_hours);
+            $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+        } else {
+            $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
+        }
 
         $this->em->persist($checkList);
         $this->em->flush();
@@ -563,5 +574,32 @@ class VehicleController extends RestrictedAccessRestController
         );
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function printStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if ((int) $this->params('from')) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->params('from'));
+        }
+
+        $to = null;
+        if ((int) $this->params('to')) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->params('to'));
+        }
+
+        $pdf = $this->vehicleReportPdfPlugin()->create($vehicle, $from, $to);
+
+        header("Content-Disposition: inline; filename={$pdf['name']}");
+        header("Content-type: application/x-pdf");
+        echo file_get_contents($pdf['path']);
     }
 }

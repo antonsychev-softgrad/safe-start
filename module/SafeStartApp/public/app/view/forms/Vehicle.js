@@ -98,13 +98,11 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 items: [
                     {
                         xtype: 'textfield',
-                        disabled: true,
                         name: 'currentOdometerHours',
                         label: 'Hours'
                     },
                     {
                         xtype: 'textfield',
-                        disabled: true,
                         name: 'currentOdometerKms',
                         label: 'Kilometres'
                     }

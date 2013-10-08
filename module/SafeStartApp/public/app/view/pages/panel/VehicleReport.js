@@ -53,6 +53,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         handler: function () {
                             this.up('SafeStartVehicleReportPanel').updateDataView();
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        name: 'print',
+                        text: 'Print',
+                        ui: 'confirm',
+                        handler: function () {
+                            this.up('SafeStartVehicleReportPanel').printDataView();
+                        }
                     }
                 ]
             },
@@ -118,6 +127,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                 }
             }
         });
+    },
+
+    printDataView: function() {
+        var from = Math.round(this.down('datepickerfield[name=from]').getValue().getTime() / 1000);
+        var to =  Math.round(this.down('datepickerfield[name=to]').getValue().getTime() / 1000);
+        window.open('/api/vehicle/' + this.record.get('id') + '/print-statistic/' + from + '/' + to, '_blank');
     },
 
     addChart: function () {

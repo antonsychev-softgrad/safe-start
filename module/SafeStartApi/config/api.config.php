@@ -79,16 +79,18 @@ $api = array(
     'defUsersPath' => '/data/users/',
     'pdf' => array(
         'inspection' => array(
-            'ext' => '.pdf',
+            'ext' => 'pdf',
             'output_name_title' => 'inspection',
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
             'title' => 'safe start inspection',
             'style' => array(
+                'footer_text_size' => 10,
+                'footer_text_color' => '#333333',
                 'signature_height' => 60,
                 'signature_width' => 120,
                 'content_width' => 1,
                 'content_height' => 1/3,
-                'content_columns' => 5,
+                'content_columns' => 3,
                 'content_column_padding' => 20,
                 'column_padding_left' => 0,
                 'page_padding_top' => 24,
@@ -110,6 +112,26 @@ $api = array(
                 'alert_description_color' => '#ff0000',
                 'alert_comment_size' => '10',
                 'alert_comment_color' => '#333333',
+            )
+        ),
+        'vehicleReport' => array(
+            'ext' => 'pdf',
+            'output_name_title' => 'vehicle_report',
+            'output_name_format' => '{name}_{user}_{vehicle}_at_{date}',
+            'title' => 'vehicle report',
+            'style' => array(
+                'footer_text_size' => 10,
+                'footer_text_color' => '#333333',
+                'signature_height' => 60,
+                'signature_width' => 120,
+                'page_padding_top' => 24,
+                'page_padding_right' => 10,
+                'page_padding_bottom' => 50,
+                'page_padding_left' => 10,
+                'field_size' => 12,
+                'field_line_spacing' => 4,
+                'field_color' => '#333333',
+                'field_value_color' => '#0F5B8D',
             )
         )
 

@@ -157,8 +157,10 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setRegistrationNumber($registration);
         $vehicle->setProjectName($this->data->projectName);
         $vehicle->setProjectNumber($this->data->projectNumber);
-        $vehicle->setServiceDueKm($this->data->serviceDueKm);
-        $vehicle->setServiceDueHours($this->data->serviceDueHours);
+        $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);
+        $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
+        $vehicle->setCurrentOdometerHours(isset($this->data->currentOdometerHours) ? (float)$this->data->currentOdometerHours : 0);
+        $vehicle->setCurrentOdometerKms(isset($this->data->currentOdometerKms) ? (float)$this->data->currentOdometerKms : 0);
         if (isset($this->data->warrantyStartOdometer)) $vehicle->setWarrantyStartOdometer($this->data->warrantyStartOdometer);
         if (isset($this->data->warrantyStartDate)) {
             $warrantyStartDate = new \DateTime();

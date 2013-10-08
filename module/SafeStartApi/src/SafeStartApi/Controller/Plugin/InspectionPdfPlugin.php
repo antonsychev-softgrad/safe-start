@@ -4,45 +4,11 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use ZendPdf;
 use SafeStartApi\Model\ImageProcessor;
 
-class InspectionPdfPlugin extends AbstractPlugin
+class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
-    const PAGE_HEADER_TITLE_SIZE = 12;
-
-    const BLOCK_PADDING_TOP = 25;
-    const BLOCK_PADDING_BOTTOM = 20;
-    const BLOCK_HEADER_SIZE = 19;
-
-    const BLOCK_SUBHEADER_SIZE = 10;
-    const BLOCK_SUBHEADER_COLOR_LINE_SIZE = 26;
-    const BLOCK_SUBHEADER_COLOR_LINE_PADDING_BOTTOM = 9;
-
-    const BLOCK_TEXT_SIZE = 12;
-    const BLOCK_TEXT_LINE_SPACING_BEFORE = 5;
-    const BLOCK_TEXT_LINE_SPACING_AFTER = 5;
-    const BLOCK_TEXT_LINE_SPACING_AT = 2;
-
-
-    //colors
-    const FOOTER_FONT_COLOR = '#333333';
-
-    const TEXT_ALIGN_LEFT = 'left';
-    const TEXT_ALIGN_RIGHT = 'right';
-    const TEXT_ALIGN_CENTER = 'center';
-    const TEXT_ALIGN_JUSTIFY = 'justify';
-
     const HEADER_EMPIRIC_HEIGHT = 90;
-
-    private $document;
-    private $currentPage;
-    private $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
-    private $font;
-    private $lastTopPos = 0;
-    private $pageIndex = 0;
+    protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
     private $checkList;
-    private $opts = array();
-    private $fileName;
-    private $filePath;
-
 
     public function create(\SafeStartApi\Entity\CheckList $checklist)
     {
@@ -63,6 +29,8 @@ class InspectionPdfPlugin extends AbstractPlugin
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();
         $this->saveDocument();
+        $this->checkList->setPdfLink($this->fileName);
+        $this->getController()->em->flush();
         return $this->filePath;
     }
 
@@ -165,7 +133,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         return $topPosInPage;
     }
 
-    private function drawFooter(\ZendPdf\Page $page)
+    protected function drawFooter(\ZendPdf\Page $page)
     {
         $maxHeight = $imageMaxHeight = $this->opts['style']['page_padding_bottom'] / 16 * 10;
         $imageMaxWidth = $imageMaxHeight / 3 * 4;
@@ -181,10 +149,10 @@ class InspectionPdfPlugin extends AbstractPlugin
         $date = "Date: " . ($this->checkList->getCreationDate()->format($this->getController()->moduleConfig['params']['date_format'] . ' ' . $this->getController()->moduleConfig['params']['time_format']));
         $signature = "Signature: ";
 
-        $color = ZendPdf\Color\Html::color(self::FOOTER_FONT_COLOR);
+        $color = ZendPdf\Color\Html::color($this->opts['style']['footer_text_color']);
         $style = new ZendPdf\Style();
         $style->setFillColor($color);
-        $style->setFont($this->font, self::BLOCK_TEXT_SIZE);
+        $style->setFont($this->font, $this->opts['style']['footer_text_size']);
         $page->setStyle($style);
 
         $leftPosInStr = $this->getLeftStartPos($userName, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_LEFT);
@@ -237,7 +205,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         $currentColumn = 1;
 
         foreach ($fieldsStructure as $groupBlock) {
-            if ($this->_isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
+            if ($this->isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
             $text = (isset($groupBlock->fieldDescription) && !empty($groupBlock->fieldDescription)) ? $groupBlock->fieldDescription : $groupBlock->groupName;
             $lines = $this->getTextLines($text, $this->opts['style']['category_field_size'], $columnWidth);
             foreach ($lines as $line) {
@@ -324,7 +292,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                 }
                 $value = strtoupper($value);
                 $this->drawText(
-                    $value,
+                    substr($value, 0, 12),
                     $this->opts['style']['field_size'],
                     $color,
                     ($startYPos - (count($lines) - 1) * (($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2)) / 2)),
@@ -475,68 +443,7 @@ class InspectionPdfPlugin extends AbstractPlugin
 
     }
 
-
-    public function getFilePathByName($name = '')
-    {
-        return $this->getPdfPath() . $name;
-    }
-
-    private function saveDocument()
-    {
-        foreach ($this->document->pages as $page) {
-            $this->drawFooter($page);
-        }
-        $this->document->save($this->filePath);
-        chmod($this->filePath, 0777);
-        $this->checkList->setPdfLink($this->fileName);
-        $this->getController()->em->flush();
-    }
-
-    private function getFileByDirAndName($dir, $tosearch)
-    {
-
-        if (file_exists($dir) && is_dir($dir)) {
-
-            $validFileExts = array(
-                "jpg",
-                "jpeg",
-                "png"
-            );
-
-            $path = $dir . $tosearch;
-            $ext = preg_replace('/.*\.([^\.]*)$/is', '$1', $tosearch);
-            if (file_exists($path) && is_file($path) && ($ext != $tosearch)) {
-                return (realpath($path));
-            } else {
-                foreach ($validFileExts as $validExt) {
-                    $filename = $path . "." . $validExt;
-                    if (file_exists($filename) && !is_dir($filename)) {
-                        return (realpath($filename));
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private function getImagePathByName($fileName)
-    {
-        $filePath = $this->getUploadPath();
-        if ($fileName !== null && is_string($fileName)) {
-            $fileName = "{$fileName}";
-            if (($file = self::getFileByDirAndName($filePath, $fileName)) !== null) {
-                $fileSizeInfo = @getimagesize($file);
-                if ($fileSizeInfo) { // it`s image
-                    return $file;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private function _isEmptyGroup($group, $fieldsDataValues)
+    private function isEmptyGroup($group, $fieldsDataValues)
     {
         if (isset($group->items) && is_array($group->items)) {
             $fields = $group->items;
@@ -547,7 +454,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         }
         foreach ($fields as $field) {
             if ($field->type == 'group') {
-                if (!$this->_isEmptyGroup($field, $fieldsDataValues)) return false;
+                if (!$this->isEmptyGroup($field, $fieldsDataValues)) return false;
             }
             if (!empty($fieldsDataValues[$field->id])) {
                 return false;
@@ -556,243 +463,10 @@ class InspectionPdfPlugin extends AbstractPlugin
         return true;
     }
 
-    private function getTextLines($text, $size, $maxStrWidth = null, $font = null)
-    {
-        if ($font === null) $font = $this->font;
-        $maxStrWidth = (int)$maxStrWidth;
-        if (!$maxStrWidth) $maxStrWidth = $this->getPageContentWidth();
-        if ($maxStrWidth > $this->getPageContentWidth()) $maxStrWidth = $this->getPageContentWidth();
-
-        $returnLines = array();
-        $textLines = explode("\n", ucwords(strip_tags($text)));
-        foreach ($textLines as $line) {
-            $newLine = "";
-            $tmpLine = "";
-            $tLine = trim(preg_replace("/\s+/is", " ", $line));
-            $tLineWordsArr = wordwrap($tLine, 1, "\n");
-            $tLineWordsArr = explode("\n", $tLineWordsArr);
-            foreach ($tLineWordsArr as $word) {
-                $tmpLine .= " " . $word;
-                $tmpLine = trim($tmpLine);
-                $strWidth = $this->widthForStringUsingFontSize($tmpLine, $font, $size);
-                if ($strWidth > $maxStrWidth) {
-                    $returnLines[] = $newLine;
-                    $newLine = $tmpLine = $word;
-                } else {
-                    $newLine = $tmpLine;
-                }
-            }
-            $returnLines[] = $newLine;
-        }
-
-        return $returnLines;
-    }
-
-    private function drawText($text, $size, $color, $topYPosition, $align = self::TEXT_ALIGN_LEFT, $xOffset = 0, $font = null, $maxWidth = 0, $forceDetect = false)
-    {
-        if ($font === null) $font = $this->font;
-        $color = ZendPdf\Color\Html::color($color);
-        $style = new ZendPdf\Style();
-        $style->setFillColor($color);
-        $style->setFont($font, $size);
-
-        if (!$maxWidth) $maxWidth = $this->getPageContentWidth();
-
-        if ($forceDetect) {
-            $topYPosition = $this->detectNewPage($topYPosition, $size);
-        }
-
-        if ($align !== self::TEXT_ALIGN_JUSTIFY) {
-            $leftPosInStr = $this->getLeftStartPos($text, $font, $size, $align, $maxWidth);
-            $this->document->pages[$this->pageIndex]->setStyle($style)->drawText($text, $leftPosInStr + $xOffset, $topYPosition);
-        } else {
-            $startPosInLine = $this->getLeftStartPos($text, $font, $size, self::TEXT_ALIGN_LEFT, $maxWidth);
-            $pageContentWidth = $this->getPageContentWidth();
-
-            $wordsArr = explode(" ", $text);
-            $wordsAmount = count($wordsArr);
-            $wordsTotalLength = 0;
-
-            foreach ($wordsArr as $word) {
-                $wordsTotalLength += $this->widthForStringUsingFontSize($word, $font, $size);
-            }
-
-            $space = ($pageContentWidth - $wordsTotalLength) / (($wordsAmount > 1 ? $wordsAmount : 2) - 1);
-            foreach ($wordsArr as $word) {
-                $this->document->pages[$this->pageIndex]->setStyle($style)->drawText($word, $startPosInLine, $topYPosition);
-                $startPosInLine += ($this->widthForStringUsingFontSize($word, $font, $size) + $space);
-            }
-        }
-
-        return $topYPosition;
-    }
-
-
-    private function detectNewPage($startYPosition, $yOffset = 0)
-    {
-        if ($startYPosition <= $this->opts['style']['page_padding_bottom']) {
-            $startYPosition = $this->createNewPage($yOffset);
-        }
-        return $startYPosition;
-    }
-
-    private function createNewPage($yOffset = 0)
-    {
-        $this->pageIndex++;
-        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
-        $pageYPosition = $this->getPageHeight();
-        $pageYPosition -= $this->opts['style']['page_padding_top'];
-        $pageYPosition -= $yOffset;
-        return $pageYPosition;
-    }
-
-    private function getLeftStartPos($string = '', $font, $fontSize = 12, $position = self::TEXT_ALIGN_LEFT, $pageContentWidth = 0)
-    {
-        if (!$pageContentWidth) $pageContentWidth = $this->getPageContentWidth();
-        $strWidth = $this->widthForStringUsingFontSize($string, $font, $fontSize);
-
-        switch ($position) {
-            case self::TEXT_ALIGN_RIGHT:
-                return $this->opts['style']['page_padding_left'] + $pageContentWidth - $strWidth;
-                break;
-            case self::TEXT_ALIGN_CENTER:
-                return $this->opts['style']['page_padding_left'] + (($pageContentWidth - $strWidth) / 2);
-                break;
-            case self::TEXT_ALIGN_LEFT:
-            default:
-                return $this->opts['style']['page_padding_left'];
-                break;
-        }
-    }
-
-    private function getPageWidth()
-    {
-
-        if (!empty($this->document->pages[$this->pageIndex])) {
-            return $this->document->pages[$this->pageIndex]->getWidth();
-        }
-
-        return 0;
-    }
-
-    private function getPageHeight()
-    {
-
-        if (!empty($this->document->pages[$this->pageIndex])) {
-            return $this->document->pages[$this->pageIndex]->getHeight();
-        }
-
-        return 0;
-    }
-
-    private function getPageContentWidth()
-    {
-        return $this->getPageWidth() - $this->opts['style']['page_padding_left'] - $this->opts['style']['page_padding_right'];
-    }
-
-    private function getPageContentHeight()
-    {
-        return $this->getPageHeight() - $this->opts['style']['page_padding_top'] - $this->opts['style']['page_padding_bottom'];
-    }
-
-    /**
-     * Returns the total width in points of the string using the specified font and
-     * size.
-     *
-     * This is not the most efficient way to perform this calculation. I'm
-     * concentrating optimization efforts on the upcoming layout manager class.
-     * Similar calculations exist inside the layout manager class, but widths are
-     * generally calculated only after determining line fragments.
-     *
-     * @param string $string
-     * @param Zend_Pdf_Resource_Font $font
-     * @param float|int $fontSize Font size in points
-     *
-     * @return float
-     */
-    private function widthForStringUsingFontSize($string = '', $font, $fontSize = 12)
-    {
-        $drawingString = iconv('UTF-8', 'UTF-16BE//IGNORE', $string);
-        $characters = array();
-        for ($i = 0; $i < strlen($drawingString); $i++) {
-            $characters[] = (ord($drawingString[$i++]) << 8) | ord($drawingString[$i]);
-        }
-        $glyphs = $font->glyphNumbersForCharacters($characters);
-        $widths = $font->widthsForGlyphs($glyphs);
-        $stringWidth = (array_sum($widths) / $font->getUnitsPerEm()) * $fontSize;
-
-        return $stringWidth;
-    }
-
-    private function get_filter_path($fEndPath = null)
-    {
-        if ($fEndPath === null || !is_string($fEndPath)) {
-            $fEndPath = $this->uploadPath;
-        }
-
-        $root = $this->getRootPath();
-        $fEndPath = str_replace("{$root}", '', $fEndPath);
-        $fEndPath = str_replace('\\', '/', $fEndPath);
-
-        if (preg_match('/^(\/|.\/).*/isU', $fEndPath, $match)) {
-            $fEndPath = preg_replace('/^(\/|.\/).*/isU', "", $fEndPath);
-        } else {
-            $fEndPath = preg_replace('/^(.*)$/isU', "$1", $fEndPath);
-        }
-
-        $returnFolder = '/' . $fEndPath;
-        if (!preg_match('/.*(\/)$/isU', $returnFolder, $match)) {
-            $returnFolder .= '/';
-        }
-
-        return $returnFolder;
-    }
-
-    private function check_dir($dir)
-    {
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        return $dir;
-    }
-
-    private function getServerVar($id)
-    {
-        return isset($_SERVER[$id]) ? $_SERVER[$id] : '';
-    }
-
-    private function getRootPath()
-    {
-        $root = $this->getServerVar('DOCUMENT_ROOT');
-        // check root
-        if (!file_exists($root . "/init_autoloader.php")) {
-            $root = dirname($root);
-        }
-
-        return $root;
-    }
-
-    private function getUploadPath()
-    {
-        return $this->check_dir($this->getRootPath() . $this->get_filter_path());
-    }
-
-
-    public function getPdfPath()
-    {
-        return $this->check_dir($this->getUploadPath() . 'pdf/');
-    }
-
-    private function getPdfTmpPath()
-    {
-        return $this->check_dir($this->getPdfPath() . 'tmp/');
-    }
-
-    private function getName()
+    protected function getName()
     {
         $name = $this->opts['output_name_title'];
-        $ext = !empty($this->opts['ext']) ? $this->opts['ext'] : '.pdf';
+        $ext = !empty($this->opts['ext']) ? $this->opts['ext'] : 'pdf';
 
         $checkList = "0";
         $user = "0";
@@ -825,11 +499,6 @@ class InspectionPdfPlugin extends AbstractPlugin
             }
         }
 
-        return $template . $ext;
-    }
-
-    private function getFullPath()
-    {
-        return $this->getPdfPath() . $this->getName();
+        return $template .'.'. $ext;
     }
 }
