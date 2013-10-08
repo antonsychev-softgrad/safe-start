@@ -308,6 +308,7 @@ div.logo {
 .sfa-main-toolbar.x-toolbar.x-docked-top {
     position: relative;
     z-index: 3;
+    padding-top: 0;
     height: 60px;
     margin-bottom: 20px;
     padding-right: 8px;
@@ -335,7 +336,7 @@ div.logo {
 .sfa-main-toolbar .x-toolbar-inner .x-button.x-button-action .x-button-icon.x-shown.more:before {
     content:']';
     font-size: 28px;
-    top: 4px;
+    top: 2px;
     left: 9px;
 }
 
@@ -396,7 +397,32 @@ div.logo {
 .sfa-alerts-topbar .x-title .x-innerhtml {
     font-weight: normal;
 }
+.sfa-alerts-topbar .x-field-search.x-field.sfa-alerts-searchbar {
+max-width: 200px;
+}
 
+.sfa-alerts-topbar .x-field-select.x-field {
+    max-width: 150px;
+}
+.sfa-alerts-topbar .x-field-select.x-field {
+    border: 1px solid #aaa;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+.sfa-alerts-topbar .x-field-select.x-field .x-component-outer input {
+    border: none;
+}
+.sfa-alerts-topbar .x-field-select.x-field .x-component-outer:after {
+    right: 5px;
+}
+.x-toolbar-sencha.sfa-alerts-topbar.x-dock-item.x-docked-top .x-title.x-floating .x-innerhtml {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 
 
 .sfa-left-container .x-button-icon.x-shown.refresh {
@@ -1488,7 +1514,7 @@ span.sfa-comment-content {
         font-size: 20px;
         line-height: 1.2;
     }
-    .x-toolbar .x-button .x-button-icon:before {line-height: 1.1em;}
+    /*.x-toolbar .x-button .x-button-icon:before {line-height: 1.1em;}*/
     .sfa-info-container .x-button {padding: 0 18px; height: 38px}
     .sfa-main-toolbar .x-iconalign-left .x-button-label, .x-iconalign-left .x-badge {margin-top: 0}
     .x-container.x-toolbar-dark.x-toolbar.sfa-main-toolbar .x-body.x-scroll-view .x-center {padding-right: 180px}
