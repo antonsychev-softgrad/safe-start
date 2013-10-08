@@ -44,6 +44,7 @@ Ext.define('SafeStartApp.controller.Auth', {
             SafeStartApp.loadedMainMenu = false;
             SafeStartApp.companyModel = SafeStartApp.model.Company.create({});
             SafeStartApp.AJAX('user/login', this.getLoginForm().getValues(), function (result) {
+                Ext.Viewport.fireEvent('userLogin');
                 SafeStartApp.loadMainMenu();
             });
         }
@@ -52,6 +53,7 @@ Ext.define('SafeStartApp.controller.Auth', {
     logoutAction: function() {
         window.location.replace('#');
         SafeStartApp.AJAX('user/logout', {}, function (result) {
+            Ext.Viewport.fireEvent('userLogout');
             SafeStartApp.currentUser = result.userInfo;
             Ext.Ajax.abortAll();
             SafeStartApp.loadMainMenu();
