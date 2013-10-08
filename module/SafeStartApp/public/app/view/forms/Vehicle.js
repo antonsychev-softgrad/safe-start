@@ -69,6 +69,16 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 name: 'projectNumber'
             },
             {
+                xtype: 'togglefield',
+                name: 'enabled',
+                label: 'Enabled',
+                listeners: {
+                    change: function (field, slider, thumb, newValue, oldValue) {
+
+                    }
+                }
+            },
+            {
                 xtype: 'fieldset',
                 title: 'Until next service due:',
                 items: [
@@ -109,14 +119,28 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 ]
             },
             {
-                xtype: 'togglefield',
-                name: 'enabled',
-                label: 'Enabled',
-                listeners: {
-                    change: function (field, slider, thumb, newValue, oldValue) {
-
+                xtype: 'fieldset',
+                title: 'Until next inspection due:',
+                items: [
+                    {
+                        xtype: 'spinnerfield',
+                        maxValue: 1000000,
+                        minValue: 0,
+                        stepValue: 24,
+                        name: 'inspectionDueHours',
+                        required: true,
+                        label: 'Hours'
+                    },
+                    {
+                        xtype: 'spinnerfield',
+                        maxValue: 1000000,
+                        minValue: 0,
+                        stepValue: 500,
+                        name: 'inspectionDueKms',
+                        required: true,
+                        label: 'Kilometres'
                     }
-                }
+                ]
             },
             {
                 xtype: 'toolbar',

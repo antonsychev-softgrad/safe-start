@@ -20,7 +20,9 @@ Ext.define('SafeStartApp.model.MenuVehicle', {
             {name: 'checkListId', type: 'int', defaultValue: 0},
             {name: 'enabled', defaultValue: 1},
             {name: 'checkListHash', type: 'string', defaultValue: ''},
-            {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()}
+            {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()},
+            {name: 'inspectionDueHours', type: 'int', defaultValue: 24},
+            {name: 'inspectionDueKms', type: 'int', defaultValue: 500}
         ],
         associations: [{
             type: 'hasMany',

@@ -101,6 +101,16 @@ class Vehicle extends BaseEntity
     protected $currentOdometerKms = 0;
 
     /**
+     * @ORM\Column(type="float", name="inspection_due_hours")
+     */
+    protected $inspectionDueHours = 24;
+
+    /**
+     * @ORM\Column(type="float", name="inspection_due_kms")
+     */
+    protected $inspectionDueKms = 500;
+
+    /**
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
@@ -178,6 +188,8 @@ class Vehicle extends BaseEntity
             "currentOdometerHours" => (!is_null($this->getCurrentOdometerHours())) ? $this->getCurrentOdometerHours() : 0,
             "nextServiceDay" => $this->getNextServiceDay(),
             "enabled" => $this->getEnabled(),
+            "inspectionDueKms" => $this->getInspectionDueKms(),
+            "inspectionDueHours" => $this->getInspectionDueHours(),
         );
     }
 
@@ -256,10 +268,11 @@ class Vehicle extends BaseEntity
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => $this->company->getExpiryDate(),
-            "warrantyStartDate" => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
+            "inspectionDueKms" => $this->getInspectionDueKms(),
+            "inspectionDueHours" => $this->getInspectionDueHours(),
+            "nextServiceDay" => $this->getNextServiceDay(),
         );
     }
 
@@ -441,7 +454,7 @@ class Vehicle extends BaseEntity
 
     public function getCurrentOdometerKms()
     {
-        return $this->currentOdometerKms ? $this->currentOdometerKms : '0';
+        return (float) ($this->currentOdometerKms ? $this->currentOdometerKms : 0);
     }
 
     public function setCurrentOdometerKms($value)
@@ -450,10 +463,9 @@ class Vehicle extends BaseEntity
         return $this;
     }
 
-
     public function getCurrentOdometerHours()
     {
-        return $this->currentOdometerHours ? $this->currentOdometerHours : '0';
+        return (float) ($this->currentOdometerHours ? $this->currentOdometerHours : 0);
     }
 
     public function setCurrentOdometerHours($value)
@@ -461,6 +473,30 @@ class Vehicle extends BaseEntity
         $this->currentOdometerHours = $value;
         return $this;
     }
+
+    public function getInspectionDueKms()
+    {
+        return (int) ($this->inspectionDueKms ? $this->inspectionDueKms : 500);
+    }
+
+    public function setInspectionDueKms($value)
+    {
+        $this->inspectionDueKms = $value;
+        return $this;
+    }
+
+    public function getInspectionDueHours()
+    {
+        return (int) ($this->inspectionDueHours ? $this->inspectionDueHours : 24);
+    }
+
+    public function setInspectionDueHours($value)
+    {
+        $this->inspectionDueHours = $value;
+        return $this;
+    }
+
+
 
     /**
      * Get id
