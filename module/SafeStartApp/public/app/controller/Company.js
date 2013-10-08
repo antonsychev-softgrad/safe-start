@@ -7,8 +7,13 @@ Ext.define('SafeStartApp.controller.Company', {
     ],
 
     init: function () {
-        var self = this;
-        setInterval(function(){ self.updateAlertsBadge(); }, 60000); // once a minute
+        this.startUpdateAlertsBadge();
+        Ext.Viewport.on('userLogin', function () {
+            this.startUpdateAlertsBadge();
+        }, this);
+        Ext.Viewport.on('userLogout', function () {
+            this.stopUpdateAlertsBadge();
+        }, this);
     },
 
     config: {
@@ -22,6 +27,21 @@ Ext.define('SafeStartApp.controller.Company', {
             alertsPage: 'SafeStartAlertsPage',
             vehicleInfoPanel: 'SafeStartCompanyPage > panel[name=vehicle-info]',
             addVehicleButton: 'SafeStartCompanyToolbar > button[action=add-vehicle]'
+        }
+    },
+
+    startUpdateAlertsBadge: function () {
+        var me = this;
+        this.stopUpdateAlertsBadge();
+        this.updateAlertsIntervalId = setInterval(function () {
+            me.updateAlertsBadge();
+        }, 4000);
+    },
+
+    stopUpdateAlertsBadge: function () {
+        if (this.hasOwnProperty('updateAlertsIntervalId')) {
+            clearInterval(this.updateAlertsIntervalId); 
+            delete this.updateAlertsIntervalId;
         }
     },
 
