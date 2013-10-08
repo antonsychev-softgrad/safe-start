@@ -30,7 +30,7 @@ class InspectionPdfPlugin extends AbstractPlugin
     const TEXT_ALIGN_CENTER = 'center';
     const TEXT_ALIGN_JUSTIFY = 'justify';
 
-    const HEADER_EMPIRIC_HEIGHT = 80;
+    const HEADER_EMPIRIC_HEIGHT = 90;
 
     private $document;
     private $currentPage;
@@ -56,7 +56,10 @@ class InspectionPdfPlugin extends AbstractPlugin
         // add header
         $this->lastTopPos = $this->drawHeader();
         // add inspection fields
-        $this->drawInspection();
+        $currentColumn = $this->drawInspection();
+        // add additional comments
+        $this->drawAlerts($currentColumn);
+        // save document
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();
         $this->saveDocument();
@@ -75,12 +78,16 @@ class InspectionPdfPlugin extends AbstractPlugin
             'Vehicle title' => $vehicleData['title'],
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
-            'Plant ID / Registration' => $vehicleData['plantId'] . ' / ' . $vehicleData['registration'],
+            'Plant ID' => $vehicleData['plantId'],
+            'Registration' => $vehicleData['registration'],
             'Type of vehicle' => $vehicleData['type'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
             'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
+
+        if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
+
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();
         $contentWidth = $this->getPageContentWidth();
@@ -168,7 +175,7 @@ class InspectionPdfPlugin extends AbstractPlugin
         $userData = array();
         $user = $this->checkList->getUser();
         if ($user) $userData = $user->toInfoArray();
-        else $userData = json_decode($this->checkList->getUserData(), true);
+        else $userData = (!is_array($this->checkList->getUserData())) ? json_decode((string)$this->checkList->getUserData(), true) : $this->checkList->getUserData();
 
         $userName = "Name: " . ((isset($userData['firstName']) ? $userData['firstName'] : '') . " " . (isset($userData['lastName']) ? $userData['lastName'] : ''));
         $date = "Date: " . ($this->checkList->getCreationDate()->format($this->getController()->moduleConfig['params']['date_format'] . ' ' . $this->getController()->moduleConfig['params']['time_format']));
@@ -184,23 +191,28 @@ class InspectionPdfPlugin extends AbstractPlugin
         $page->drawText($userName, $leftPosInStr, $topPosInPage);
 
         $strWidth = $this->widthForStringUsingFontSize($signature, $this->font, self::BLOCK_TEXT_SIZE);
-        $leftPosInStr = $this->getLeftStartPos($signature, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_CENTER);
+        $leftPosInStr = $this->getLeftStartPos($signature, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_CENTER) - 20;
         $page->drawText($signature, $leftPosInStr - ($imageMaxWidth / 2), $topPosInPage);
 
         if (($signaturePath = $this->getImagePathByName(isset($userData['signature']) ? $userData['signature'] : '')) !== null) {
-            $image = ZendPdf\Image::imageWithPath($signaturePath);
-            $imageWidth = $image->getPixelWidth();
-            $imageHeight = $image->getPixelHeight();
+            $image = new \SafeStartApi\Model\ImageProcessor($signaturePath);
+            $image->cover(array(
+                    'width' => $this->opts['style']['signature_width'],
+                    'height' => $this->opts['style']['signature_height'],
+                    'position' => 'centermiddle',
+                )
+            );
+            $newImagePath = $this->getUploadPath() . $userData['signature'] ."120x60.jpg";
+            $image->save($newImagePath);
 
-            $scale = min($imageMaxWidth / $imageWidth, $imageMaxHeight / $imageHeight);
-            $imageNewWidth = (int)($imageWidth * $scale);
-            $imageNewHeight = (int)($imageHeight * $scale);
+            $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
 
-            $page->drawImage($image,
-                $leftPosInStr - ($imageMaxWidth / 2) + $strWidth,
-                $topPosInPage + (($imageMaxHeight + self::BLOCK_TEXT_SIZE) / 2) - $imageNewHeight,
-                $leftPosInStr - ($imageMaxWidth / 2) + $strWidth + $imageNewWidth,
-                $topPosInPage + (($imageMaxHeight + self::BLOCK_TEXT_SIZE) / 2));
+            $page->drawImage($alertImage,
+                $leftPosInStr + 30,
+                $topPosInPage - 10,
+                $leftPosInStr + ($this->opts['style']['signature_width'] / 2) + 30,
+                $topPosInPage + ($this->opts['style']['signature_height'] / 2) - 10
+            );
         }
 
         $leftPosInStr = $this->getLeftStartPos($date, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_RIGHT);
@@ -218,17 +230,18 @@ class InspectionPdfPlugin extends AbstractPlugin
         $fieldsDataValues = array();
         foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
 
-        $columns = $this->opts['content_columns'];
-        $columnsPadding = $this->opts['content_column_padding'];
-        $contentWidth = $this->getPageContentWidth() * $this->opts['content_width'];
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $currentColumn = 1;
 
         foreach ($fieldsStructure as $groupBlock) {
             if ($this->_isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
-            $lines = $this->getTextLines(isset($groupBlock->groupName) ? $groupBlock->groupName : '', $this->opts['style']['category_field_size'], $columnWidth);
+            $text = (isset($groupBlock->fieldDescription) && !empty($groupBlock->fieldDescription)) ? $groupBlock->fieldDescription : $groupBlock->groupName;
+            $lines = $this->getTextLines($text, $this->opts['style']['category_field_size'], $columnWidth);
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -237,7 +250,16 @@ class InspectionPdfPlugin extends AbstractPlugin
                     }
                     $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
                 }
-                $this->drawText($line, $this->opts['style']['category_field_size'], $this->opts['style']['category_field_color'], $this->lastTopPos, self::TEXT_ALIGN_CENTER, ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth), $this->font, $columnWidth);
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['category_field_size'],
+                    $this->opts['style']['category_field_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_CENTER,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                    $this->font,
+                    $columnWidth
+                );
 
                 $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
 
@@ -247,23 +269,26 @@ class InspectionPdfPlugin extends AbstractPlugin
             }
 
         }
+
+        return $currentColumn;
     }
 
     private function drawInspectionFields($fields, $fieldsDataValues, $currentColumn = 1)
     {
-        $columns = $this->opts['content_columns'];
-        $columnsPadding = $this->opts['content_column_padding'];
-        $contentWidth = $this->getPageContentWidth() * $this->opts['content_width'];
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $columnFieldValueWidth = 50;
         $columnFieldTitleWidth = $columnWidth - $columnFieldValueWidth;
 
         foreach ($fields as $field) {
             // todo: check if additional field if triggered
-            $lines = array_filter($this->getTextLines(isset($field->fieldName) ? $field->fieldName : '', $this->opts['style']['field_size'], $columnFieldTitleWidth));
+            $text = (isset($field->fieldDescription) && !empty($field->fieldDescription)) ? $field->fieldDescription : (string)$field->fieldName;
+            $lines = array_filter($this->getTextLines($text, $this->opts['style']['field_size'], ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth));
             $startYPos = $this->lastTopPos;
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -276,12 +301,12 @@ class InspectionPdfPlugin extends AbstractPlugin
                 $this->drawText(
                     $line,
                     $this->opts['style']['field_size'],
-                    ($field->type == 'group') ? $this->opts['style']['field_group_color']: $this->opts['style']['field_color'] ,
+                    ($field->type == 'group') ? $this->opts['style']['field_group_color'] : $this->opts['style']['field_color'],
                     $this->lastTopPos,
-                    ($field->type == 'group') ? self::TEXT_ALIGN_CENTER : self::TEXT_ALIGN_LEFT ,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    ($field->type == 'group') ? self::TEXT_ALIGN_CENTER : self::TEXT_ALIGN_LEFT,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
                     $this->font,
-                    $columnFieldTitleWidth
+                    ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth
                 );
                 $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
             }
@@ -291,8 +316,8 @@ class InspectionPdfPlugin extends AbstractPlugin
                 } else {
                     $value = (isset($fieldsDataValues[$field->id]) && !empty($fieldsDataValues[$field->id])) ? $fieldsDataValues[$field->id] : '-';
                 }
-                if (!$field->additional && isset($field->alerts) && ($field->triggerValue == strtolower($value))) {
-                    $value =  $this->opts['style']['field_alert_text'];
+                if (!$field->additional && (strtolower($field->triggerValue) == strtolower($value))) {
+                    $value = $this->opts['style']['field_alert_text'];
                     $color = $this->opts['style']['field_alert_color'];
                 } else {
                     $color = $this->opts['style']['field_ok_color'];
@@ -304,7 +329,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                     $color,
                     ($startYPos - (count($lines) - 1) * (($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2)) / 2)),
                     self::TEXT_ALIGN_RIGHT,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + ($columnFieldTitleWidth),
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + ($columnFieldTitleWidth),
                     $this->font,
                     $columnFieldValueWidth
                 );
@@ -312,6 +337,142 @@ class InspectionPdfPlugin extends AbstractPlugin
             if (!empty($field->items)) $currentColumn = $this->drawInspectionFields($field->items, $fieldsDataValues, $currentColumn);
         }
         return $currentColumn;
+    }
+
+    public function drawAlerts($currentColumn)
+    {
+        $alerts = $this->checkList->getAlertsArray();
+        if (empty($alerts)) return;
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
+        $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
+
+        $lines = $this->getTextLines($this->opts['style']['alerts_header'], $this->opts['style']['category_field_size'], $columnWidth);
+        foreach ($lines as $line) {
+            if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                $currentColumn++;
+                if ($currentColumn > $columns) {
+                    $this->pageIndex++;
+                    $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                    $currentColumn = 1;
+                }
+                $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+            }
+            $this->drawText(
+                $line,
+                $this->opts['style']['category_field_size'],
+                $this->opts['style']['category_field_color'],
+                $this->lastTopPos,
+                self::TEXT_ALIGN_CENTER,
+                ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                $this->font,
+                $columnWidth
+            );
+
+            $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
+
+            $this->lastTopPos -= 10;
+        }
+
+        foreach ($alerts as $alert) {
+            // Description
+            $text = !empty($alert['field']['alert_description']) ? $alert['field']['alert_description'] : $alert['field']['alert_title'];
+            $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['alert_description_size'],
+                    $this->opts['style']['alert_description_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_CENTER,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+
+            // Comments
+            $text = !empty($alert['description']) ? $alert['description'] : '';
+            $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['alert_comment_size'],
+                    $this->opts['style']['alert_comment_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_LEFT,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+
+            if (empty($alert['images'])) continue;
+            foreach ($alert['images'] as $imageHash) {
+                $imagePath = $this->getImagePathByName($imageHash);
+                if (!file_exists($imagePath)) continue;
+                $image = new \SafeStartApi\Model\ImageProcessor($imagePath);
+                $imageWidth = $columnWidth - $columnsPadding;
+                $imageHeight = round($imageWidth * (2/3));
+                $image->cover(array(
+                        'width' => $imageWidth,
+                        'height' => $imageHeight,
+                        'position' => 'centermiddle',
+                    )
+                );
+                $newImagePath = $this->getUploadPath() . $imageHash . $imageWidth  ."x". $imageHeight .".jpg";
+                $image->save($newImagePath);
+
+                $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
+
+
+                if (($this->lastTopPos - $imageHeight) <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+
+
+                $this->document->pages[$this->pageIndex]->drawImage(
+                    $alertImage,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - $columnsPadding/4,
+                    $this->lastTopPos - $imageHeight,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - $columnsPadding/4,
+                    $this->lastTopPos
+                );
+
+                $this->lastTopPos = $this->lastTopPos - round($columnWidth * (2/3));
+                $this->lastTopPos -= 10;
+            }
+
+            $this->lastTopPos -= 10;
+        }
+
     }
 
 

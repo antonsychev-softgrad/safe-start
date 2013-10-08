@@ -61,7 +61,7 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ORM\Column(type="string", name="registration_number", unique=true, nullable=false)
+     * @ORM\Column(type="string", name="registration_number", nullable=false)
      **/
     protected $registrationNumber;
 
@@ -353,7 +353,7 @@ class Vehicle extends BaseEntity
 
     public function getCurrentOdometerKms()
     {
-        $value = 'unknown';
+        $value = '-';
         $lastInspection = $this->getLastInspection();
         if ($lastInspection) {
             $value = $lastInspection->getCurrentOdometer();
@@ -363,7 +363,7 @@ class Vehicle extends BaseEntity
 
     public function getCurrentOdometerHours()
     {
-        $value = 'unknown';
+        $value = '-';
         $lastInspection = $this->getLastInspection();
         if ($lastInspection) {
             $value = $lastInspection->getCurrentOdometerHours();

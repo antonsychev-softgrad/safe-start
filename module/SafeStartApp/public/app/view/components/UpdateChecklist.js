@@ -75,6 +75,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             {
                 xtype: 'toolbar',
                 docked: 'top',
+                cls:'sfa-add-inside',
                 items: [
                 {
                     xtype: 'button',

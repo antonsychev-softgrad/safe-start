@@ -404,7 +404,10 @@ $routes = array(
             'delete-vehicle-alert' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/deletealert',
+                    'route' => '/vehicle/alert/:alertId/delete',
+                    'constraints' => array(
+                        'alertId' => '[0-9]*',
+                    ),
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'deleteAlert',
@@ -415,6 +418,19 @@ $routes = array(
                 'type' => 'Segment',
                 'options' => array(
                     'route' => '/vehicle/inspection/delete',
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'deleteInspection',
+                    ),
+                ),
+            ),
+            'delete-vehicle-inspection-by-id' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/inspection/:inspectionId/delete',
+                    'constraints' => array(
+                        'inspectionId' => '[0-9]*',
+                    ),
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'deleteInspection',
