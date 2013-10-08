@@ -1198,6 +1198,7 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     height: 35px;
     color: #565555;
     background: #fff;
+    -webkit-text-fill-color: #565555;
 }
 .sfa-alerts-topbar .x-input-el.x-form-field.x-input-search {
     border: none;
