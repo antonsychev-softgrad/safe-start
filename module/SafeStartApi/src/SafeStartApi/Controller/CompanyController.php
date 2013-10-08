@@ -311,6 +311,8 @@ class CompanyController extends RestrictedAccessRestController
 
         $vehicle->removeResponsibleUsers();
         $vehicle->removeUsers();
+        $test1 = $vehicle->getResponsibleUsers();
+        $this->em->flush();
 
         foreach ((array)$this->data->value as $value) {
             $value = (array)$value;
@@ -327,7 +329,6 @@ class CompanyController extends RestrictedAccessRestController
             }
         }
 
-        $this->em->persist($vehicle);
         $this->em->flush();
 
         $this->answer = array('done' => true);

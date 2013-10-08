@@ -789,13 +789,17 @@ class Vehicle extends BaseEntity
      */
     public function removeResponsibleUsers()
     {
-        if (!empty($this->responsibleUsers)) return true;
+        if (empty($this->responsibleUsers)) return true;
         $cache = \SafeStartApi\Application::getCache();
-        foreach ($this->responsibleUsers as $user) {
+        $users = clone $this->responsibleUsers;
+        foreach ($users as $user) {
             $cashKey = "getUserVehiclesList" . $user->getId();
             if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+            $this->responsibleUsers->removeElement($user);
         }
-        return $this->responsibleUsers->clear();
+        $this->responsibleUsers->clear();
+        $this->responsibleUsers = null;
+        return true;
     }
 
     /**
@@ -836,13 +840,15 @@ class Vehicle extends BaseEntity
      */
     public function removeUsers()
     {
-        if (!empty($this->users)) return true;
+        if (empty($this->users)) return true;
         $cache = \SafeStartApi\Application::getCache();
         foreach ($this->users as $user) {
             $cashKey = "getUserVehiclesList" . $user->getId();
             if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         }
         $this->users->clear();
+        $this->users = null;
+        return true;
     }
 
     /**
