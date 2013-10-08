@@ -154,13 +154,12 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
 
     loadData: function () {
 
-        var from = new Date();
-        from.setYear(from.getFullYear() - 1);
-        this.down('datepickerfield[name=from]').setValue(from);
+        var now = new Date();
+        this.down('datepickerfield[name=to]').setValue(now);
 
-        var date = new Date();
-        date.setMonth(date.getMonth() + 1);
-        this.down('datepickerfield[name=to]').setValue(date);
+        var to = new Date();
+        to.setYear(to.getFullYear() - 1);
+        this.down('datepickerfield[name=to').setValue(to);
 
         this.updateDataView();
     },
