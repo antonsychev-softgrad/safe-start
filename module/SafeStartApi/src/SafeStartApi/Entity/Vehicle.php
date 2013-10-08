@@ -353,7 +353,7 @@ class Vehicle extends BaseEntity
 
     public function getCurrentOdometerKms()
     {
-        $value = 'unknown';
+        $value = '-';
         $lastInspection = $this->getLastInspection();
         if ($lastInspection) {
             $value = $lastInspection->getCurrentOdometer();
@@ -363,7 +363,7 @@ class Vehicle extends BaseEntity
 
     public function getCurrentOdometerHours()
     {
-        $value = 'unknown';
+        $value = '-';
         $lastInspection = $this->getLastInspection();
         if ($lastInspection) {
             $value = $lastInspection->getCurrentOdometerHours();

@@ -85,6 +85,9 @@ class InspectionPdfPlugin extends AbstractPlugin
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
             'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
+
+        if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
+
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();
         $contentWidth = $this->getPageContentWidth();
@@ -232,14 +235,13 @@ class InspectionPdfPlugin extends AbstractPlugin
         $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
         $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
         $currentColumn = 1;
-        $this->lastTopPos -= 10;
 
         foreach ($fieldsStructure as $groupBlock) {
             if ($this->_isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
             $text = (isset($groupBlock->fieldDescription) && !empty($groupBlock->fieldDescription)) ? $groupBlock->fieldDescription : $groupBlock->groupName;
             $lines = $this->getTextLines($text, $this->opts['style']['category_field_size'], $columnWidth);
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -286,7 +288,7 @@ class InspectionPdfPlugin extends AbstractPlugin
             $lines = array_filter($this->getTextLines($text, $this->opts['style']['field_size'], ($field->type == 'group') ? $columnWidth : $columnFieldTitleWidth));
             $startYPos = $this->lastTopPos;
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -348,7 +350,7 @@ class InspectionPdfPlugin extends AbstractPlugin
 
         $lines = $this->getTextLines($this->opts['style']['alerts_header'], $this->opts['style']['category_field_size'], $columnWidth);
         foreach ($lines as $line) {
-            if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+            if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                 $currentColumn++;
                 if ($currentColumn > $columns) {
                     $this->pageIndex++;
@@ -378,7 +380,7 @@ class InspectionPdfPlugin extends AbstractPlugin
             $text = !empty($alert['field']['alert_description']) ? $alert['field']['alert_description'] : $alert['field']['alert_title'];
             $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -404,7 +406,7 @@ class InspectionPdfPlugin extends AbstractPlugin
             $text = !empty($alert['description']) ? $alert['description'] : '';
             $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
             foreach ($lines as $line) {
-                if ($this->lastTopPos <= $this->opts['style']['page_padding_bottom']) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
@@ -445,7 +447,7 @@ class InspectionPdfPlugin extends AbstractPlugin
                 $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
 
 
-                if (($this->lastTopPos - $imageHeight) <= $this->opts['style']['page_padding_bottom']) {
+                if (($this->lastTopPos - $imageHeight) <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
