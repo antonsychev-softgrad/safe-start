@@ -157,9 +157,9 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         var now = new Date();
         this.down('datepickerfield[name=to]').setValue(now);
 
-        var to = new Date();
-        to.setYear(to.getFullYear() - 1);
-        this.down('datepickerfield[name=to').setValue(to);
+        var from = new Date();
+        from.setYear(from.getFullYear() - 1);
+        this.down('datepickerfield[name=from]').setValue(from);
 
         this.updateDataView();
     },
