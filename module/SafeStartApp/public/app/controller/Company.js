@@ -35,7 +35,7 @@ Ext.define('SafeStartApp.controller.Company', {
         this.stopUpdateAlertsBadge();
         this.updateAlertsIntervalId = setInterval(function () {
             me.updateAlertsBadge();
-        }, 4000);
+        }, 60000);
     },
 
     stopUpdateAlertsBadge: function () {
