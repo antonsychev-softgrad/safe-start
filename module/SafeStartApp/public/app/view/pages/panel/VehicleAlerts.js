@@ -10,16 +10,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         'SafeStartApp.view.pages.panel.VehicleAlert'
     ],
 
-    config: {cls:'sfa-container-padding',
+    config: {
+        cls:'sfa-container-padding',
         navigationBar: {cls:'sfa-alerts-topbar',
             ui: 'sencha',
             items: [
-                { xtype: 'spacer' },
                 {
                     xtype: 'searchfield',
                     cls:'sfa-alerts-searchbar',
                     placeHolder: 'Search...',
                     name: 'search-alert',
+                    flex: 1,
+                    minWidth: 80,
                     listeners: {
                         clearicontap: function (field) {
                             this.up('SafeStartVehicleAlertsPanel').down('list[name=vehicle-alerts]').getStore().clearFilter();
@@ -36,6 +38,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                     placeHolder: 'Status',
                     valueField: 'rank',
                     displayField: 'title',
+                    minWidth: 80,
+                    flex: 1,
                     store: {
                         data: [
                             { rank: '', title: 'All'},
@@ -58,7 +62,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                     handler: function () {
                         this.up('SafeStartVehicleAlertsPanel').down('list[name=vehicle-alerts]').getStore().loadData();
                     }
+                }, {
+                    xtype: 'title',
+                    title: 'Vehicle Alerts'
                 }
+
 
             ]
         },
@@ -85,7 +93,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         return {
             xtype: 'list',
             name: 'vehicle-alerts',
-            title: 'Vehicle Alerts',
             emptyText: 'No new Alerts',
             plugins: [{
                 xclass: 'Ext.plugin.ListPaging',

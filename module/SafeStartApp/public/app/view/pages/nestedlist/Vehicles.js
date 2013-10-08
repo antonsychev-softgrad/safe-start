@@ -28,19 +28,15 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         },
         listeners: {
             activeitemchange: function (nestedlist) {
-                var toolbar1 = this.down('toolbar[name=search]');
-                if (toolbar1) {
-                    toolbar1.hide();
-                }
-                var toolbar2 = this.down('toolbar[name=add]');
-                if (toolbar2) {
-                    toolbar2.hide();
-                }
+                Ext.each(this.down('toolbar'), function (toolbar) {
+                    toolbar.hide();
+                });
             },
             back: function () {
                 if(this._backButton._hidden) {
-                    this.down('toolbar[name=search]').show();
-                    this.down('toolbar[name=add]').show();
+                    Ext.each(this.down('toolbar'), function (toolbar) {
+                        toolbar.show();
+                    });
                 }
                 this._activeNode = this.getStore().getRoot();
             },
@@ -162,18 +158,24 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             });
         }, this);
 
-        this.vehiclesStore.on('load', function (store, records) {
-            this.setMasked(false);
-        }, this, {order: 'after'});
 
         this.vehiclesStore.on('load', function (store, records) {
             this.updateNestedListStore();
         }, this);
 
+        this.vehiclesStore.on('load', function (store, records) {
+            this.setMasked(false);
+            
+            Ext.each(this.down('toolbar'), function (toolbar) {
+                toolbar.show();
+            });
+        }, this, {order: 'after'});
+
         if (SafeStartApp.userModel.get('role') == 'companyUser') {
             this.setItems([
                 {
                     xtype: 'toolbar',
+                    name: 'search',
                     docked: 'top',
                     items: [{
                         xtype: 'searchfield',
