@@ -37,6 +37,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 editInspection: 'onEditInspectionAction',
                 deleteInspection: 'onDeleteInspectionAction'
             },
+            'SafeStartCompanyPage SafeStartVehicleUsersPanel': {
+                updateUsers: 'updateUsersAction'
+            },
             reviewCard: {
                 activate: 'onActivateReviewCard'
             },
@@ -122,10 +125,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         });
     },
 
-    updateUsersAction: function(value, id, obj) {
-        SafeStartApp.AJAX('vehicle/' + id + '/update-users', {value: value}, function (result) {
-
-        });
+    updateUsersAction: function(panel, users, vehicleId) {
+        SafeStartApp.AJAX('vehicle/' + vehicleId + '/update-users', {value: users}, Ext.emptyFn);
     },
 
     downloadVehicleInspectionDetailsPdf: function (btn) {
