@@ -111,7 +111,10 @@ Ext.define('SafeStartApp.controller.Companies', {
 
     deleteAction: function () {
         var self = this;
-        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function () {
+        Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this company account?", function (btn) {
+            if (btn != 'yes') {
+                return;
+            }
             SafeStartApp.AJAX('admin/company/' + self.currentCompanyForm.getValues().id + '/delete', {}, function (result) {
                 self.getNavMain().getStore().loadData();
                 self.currentCompanyForm.reset();
@@ -144,6 +147,9 @@ Ext.define('SafeStartApp.controller.Companies', {
             this.currentCompanyForm.addListener('reset-data', this.resetAction, this);
             this.currentCompanyForm.addListener('delete-data', this.deleteAction, this);
             this.currentCompanyForm.addListener('manage', this.openSelectedAction, this);
+            this.currentCompanyForm.addListener('remove', function () {
+                this.currentCompanyForm = null;
+            }, this);
         }
     },
 
