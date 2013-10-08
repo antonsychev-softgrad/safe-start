@@ -34,8 +34,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
         ],
 
         listeners: {
-            scope: this,
             activate: function (page) {
+                page.down('panel[cls=sfa-info-container]').setActiveItem(Number.POSITIVE_INFINITY);
                 page.loadData();
             }
         }
