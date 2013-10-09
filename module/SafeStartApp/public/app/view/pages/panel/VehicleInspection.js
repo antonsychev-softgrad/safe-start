@@ -379,7 +379,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                         additionalFields;
                     if (alert) {
                         if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
-                            if (alert.get('critical')) {
+                            if (alert.get('critical') && alert.get('alertMessage')) {
                                 Ext.Msg.alert('DANGER', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
