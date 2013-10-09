@@ -15,7 +15,7 @@ Ext.define('SafeStartApp.controller.Companies', {
                 tap: 'addAction'
             },
             companiesPage: {
-                activate: 'activateCompaniesPage'
+                // activate: 'activateCompaniesPage'
             }
         },
 
