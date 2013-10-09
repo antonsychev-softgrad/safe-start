@@ -339,26 +339,70 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     onReviewSubmitBtnTap: function (button) {
-        var submitMsgBox = Ext.create('Ext.MessageBox', {
-            cls: 'sfa-messagebox-confirm',
-            message: 'Please confirm your submission',
-            buttons: [
-                {
+        var inspectionPanel = this.getVehicleInspectionPanel(),
+            odometerKms = inspectionPanel.down('field[name=current-odometer-kms]').getValue(),
+            odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue(),
+            isOdometerCorrect = true,
+            odometerHoursInterval = odometerHours - currentOdometerHours,
+            currentOdometerHours,
+            currentOdometerKms,
+            submitMessage;
+
+        if (inspectionPanel.vehicleRecord) {
+            currentOdometerHours = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerHours'), 10);
+            currentOdometerKms = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerKms'), 10);
+        }
+
+        var inspectionInterval = 100000;
+
+        if (inspectionPanel.vehicleRecord && (
+                odometerKms < currentOdometerKms ||
+                odometerHours < currentOdometerHours ||
+                inspectionInterval < odometerHoursInterval 
+            )
+        ) {
+            submitMessage = Ext.create('Ext.MessageBox', {
+                cls: 'sfa-messagebox-confirm-warn',
+                message: 'Please make sure the data is correct',
+                buttons: [{
+                    ui: 'confirm',
+                    text: 'Ok',
+                    handler: function (btn) {
+                        submitMessage.setMessage('Please confirm your submission');
+                        btn.destroy();
+                        submitMessage.setButtons([{
+                            ui: 'confirm',
+                            action: 'confirm',
+                            text: 'Confirm'
+                        }, {
+                            ui: 'action',
+                            text: 'Cancel',
+                            handler: function (btn) {
+                                submitMessage.destroy();
+                            }
+                        }]);
+                    }
+                }]
+            });
+        } else {
+            submitMessage = Ext.create('Ext.MessageBox', {
+                cls: 'sfa-messagebox-confirm',
+                message: 'Please confirm your submission',
+                buttons: [{
                     ui: 'confirm',
                     action: 'confirm',
                     text: 'Confirm'
-                },
-                {
+                }, {
                     ui: 'action',
                     text: 'Cancel',
-                    handler: function (btn) {
+                    handler: function(btn) {
                         btn.up('sheet[cls=sfa-messagebox-confirm]').destroy();
                     }
-                }
-            ]
-        });
+                }]
+            });
+        }
 
-        this.getVehicleInspectionPanel().add(submitMsgBox);
+        this.getVehicleInspectionPanel().add(submitMessage);
     },
 
     onReviewConfirmBtnTap: function (button) {
@@ -400,7 +444,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 }
                 switch (field.xtype) {
                     case 'checkboxfield':
-                        //TODO: unhardcode field value
                         if (field.isChecked()) {
                             value = 'Yes';
                         } else {

@@ -575,18 +575,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 },
                 width: '100%',
                 items: [{
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-kms',
                     label: 'Kilometers',
-                    stepValue: 1000,
                     required: true,
                     value: odometerKms,
-                    minValue: 1000
+                    minValue: 0
                 }, {
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-hours',
                     label: 'Hours',
-                    stepValue: 24,
                     value: odometerHours,
                     minValue: 0
                 }]
