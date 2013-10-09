@@ -73,19 +73,17 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 title: 'Until next service due:',
                 items: [
                     {
-                        xtype: 'spinnerfield',
+                        xtype: 'numberfield',
                         maxValue: 1000000,
                         minValue: 24,
-                        stepValue: 24,
                         name: 'serviceDueHours',
                         required: true,
                         label: 'Hours'
                     },
                     {
-                        xtype: 'spinnerfield',
+                        xtype: 'numberfield',
                         maxValue: 1000000,
                         minValue: 1000,
-                        stepValue: 500,
                         name: 'serviceDueKm',
                         required: true,
                         label: 'Kilometres'
