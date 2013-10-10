@@ -138,7 +138,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     },
                     {
                         xtype: 'button',
-                        text: 'Send Credentials',
+                        text: 'Send Password to Company Owner',
                         name: 'send-credentials',
                         ui: 'action',
                         handler: function() {
