@@ -434,6 +434,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'datepickerfield',
             maxWidth: 900,
+            labelWidth: '',
             width: '100%',
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
