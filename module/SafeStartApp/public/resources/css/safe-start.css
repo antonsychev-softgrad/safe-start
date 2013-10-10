@@ -323,11 +323,11 @@ div.logo {
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view {
-    background: url(/resources/img/logo-top.png) no-repeat 0 7px;
+    background: url(/resources/img/logo-top.png) no-repeat 6px 7px;
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view .x-inner.x-toolbar-inner {
-    padding-left: 184px;
+    padding-left: 189px;
 }
 
 .sfa-main-toolbar .x-title {
@@ -515,7 +515,7 @@ font-size: 26px;
 }
 
 .sfa-info-container .x-form-fieldset-title .x-innerhtml {
-    padding: 4px 0 0 30%;
+    padding: 0 0 7px 30%;
     font-size: 24px;
 }
 
@@ -580,7 +580,14 @@ font-size: 26px;
     border-radius: 10px;
 }
 .sfa-info-container .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top {
-    margin: 0;
+    margin: 10px 0 0;
+}
+
+.sfa-company-settings .x-dock.x-dock-vertical .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top:first-child {
+    margin-top: 0;
+}
+.sfa-company-settings .sfa-limited-access {
+    margin: 10px 0 20px;
 }
 .sfa-info-container .x-container.x-unsized.x-form-fieldset {
     margin-bottom: 15px;
@@ -644,6 +651,7 @@ font-size: 26px;
 }
 .sfa-modal-form .x-container.x-form-fieldset {
     margin-bottom: 0;
+    margin-top: 20px;
 }
 .sfa-modal-form .x-form-fieldset-instructions.x-docked-bottom,
 .sfa-modal-form .x-form-fieldset-title.x-docked-top,
@@ -653,6 +661,7 @@ font-size: 26px;
 }
 .sfa-modal-form .x-form-label {
     background: none;
+    padding-bottom: 1px;
 }
 .sfa-modal-form .x-component-outer {
     border: 1px solid #cacaca;
@@ -680,9 +689,9 @@ font-size: 26px;
     margin-bottom: 6px !important;
 }
 .sfa-modal-form .x-form-fieldset-title.x-docked-top {
-    margin: 0 0 0.4em;
+    margin: 0;
     text-align: center;
-    font-size: 28px;
+    font-size: 24px;
 }
 .sfa-modal-form form .x-dock-body .x-container.x-field-text.x-field.x-field-labeled.x-form-label-nowrap {
     padding-right: 1px;
@@ -1001,7 +1010,12 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 .sfa-vehicle-inspection > div > form:last-child {
     min-height: 68px;
 }
-
+.checklist-alert-description {
+    position: relative;
+    top: 10px;
+    color: #c00;
+    font-size: 20px;
+}
 
 /* hack for chrome & safari -> button 'back' in left column, naprimer */
 
