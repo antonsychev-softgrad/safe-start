@@ -193,6 +193,7 @@ class VehicleController extends RestrictedAccessRestController
         if ($inspection) {
             $checkList = $inspection;
             $checkList->setPdfLink(NULL);
+            $checkList->setFaultPdfLink(NULL);
 
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
@@ -299,13 +300,22 @@ class VehicleController extends RestrictedAccessRestController
         $currentUser = \SafeStartApi\Application::getCurrentUser();
         $responsibleUsers = $vehicle->getResponsibleUsers();
         $vehicleUsers = $vehicle->getUsers();
+        $pushCriticalAlerts = false;
+        foreach ($alerts as $alert) {
+            if ($alert->getField()->getAlertCritical()) {
+                $pushCriticalAlerts = true;
+                break;
+            }
+        }
 
         foreach ($responsibleUsers as $responsibleUser) {
             if ($currentUser->getId() == $responsibleUser->getId()) continue;
             $responsibleUserInfo = $responsibleUser->toInfoArray();
+
+            if (!$pushCriticalAlerts) continue;
             // send email to responsible
             $checkList = $vehicle->getLastInspection();
-            $link = $checkList->getPdfLink();
+            $link = $checkList->getFaultPdfLink();
             $path = $this->inspectionFaultPdf()->getFilePathByName($link);
             if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
 
@@ -346,11 +356,12 @@ class VehicleController extends RestrictedAccessRestController
 
         $message = '';
         $badge = 0;
-        if (!empty($alerts)) {
+        if (!empty($alerts) && $pushCriticalAlerts) {
             $message =
                 "Vehicle Alert \n\r" .
                 "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
+                if ($alert->getField()->getAlertCritical()) continue;
                 $badge++;
                 $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }

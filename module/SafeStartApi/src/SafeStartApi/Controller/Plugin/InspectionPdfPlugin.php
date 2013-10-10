@@ -35,7 +35,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
     }
 
 
-    private function drawHeader()
+    protected function drawHeader()
     {
         $vehicle = $this->checkList->getVehicle();
         $company = $vehicle->getCompany();
@@ -309,6 +309,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
     public function drawAlerts($currentColumn)
     {
+        $this->lastTopPos -= 10;
         $alerts = $this->checkList->getAlertsArray();
         if (empty($alerts)) return;
         $columns = $this->opts['style']['content_columns'];
@@ -344,6 +345,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         }
 
         foreach ($alerts as $alert) {
+            if ($alert['status'] == \SafeStartApi\Entity\Alert::STATUS_CLOSED) continue;
             // Description
             $text = !empty($alert['field']['alert_description']) ? $alert['field']['alert_description'] : $alert['field']['alert_title'];
             $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
@@ -370,8 +372,43 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
             }
 
+            if (empty($alert['images']) && empty($alert['description']) && empty($alert['comments'])) continue;
+
+            // Additional Comments
+            $text = $this->opts['style']['alerts_comments_header'];
+            $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['alert_comment_size'],
+                    $this->opts['style']['field_group_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_CENTER,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+
             // Comments
-            $text = !empty($alert['description']) ? $alert['description'] : '';
+            $textArray = array();
+            if (!empty($alert['description'])) $textArray[] = $alert['description'];
+            if (!empty($alert['comments'])) {
+                foreach ($alert['comments'] as $comment) {
+                    $textArray[] = $comment['content'];
+                }
+            }
+            $text = implode(';', $textArray);
             $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
             foreach ($lines as $line) {
                 if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
@@ -402,14 +439,14 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 if (!file_exists($imagePath)) continue;
                 $image = new \SafeStartApi\Model\ImageProcessor($imagePath);
                 $imageWidth = $columnWidth - $columnsPadding;
-                $imageHeight = round($imageWidth * (2/3));
+                $imageHeight = round($imageWidth * (2 / 3));
                 $image->cover(array(
                         'width' => $imageWidth,
                         'height' => $imageHeight,
                         'position' => 'centermiddle',
                     )
                 );
-                $newImagePath = $this->getUploadPath() . $imageHash . $imageWidth  ."x". $imageHeight .".jpg";
+                $newImagePath = $this->getUploadPath() . $imageHash . $imageWidth . "x" . $imageHeight . ".jpg";
                 $image->save($newImagePath);
 
                 $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
@@ -428,13 +465,13 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
                 $this->document->pages[$this->pageIndex]->drawImage(
                     $alertImage,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - $columnsPadding/4,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - $columnsPadding / 4,
                     $this->lastTopPos - $imageHeight,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - $columnsPadding/4,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - $columnsPadding / 4,
                     $this->lastTopPos
                 );
 
-                $this->lastTopPos = $this->lastTopPos - round($columnWidth * (2/3));
+                $this->lastTopPos = $this->lastTopPos - round($columnWidth * (2 / 3));
                 $this->lastTopPos -= 10;
             }
 
