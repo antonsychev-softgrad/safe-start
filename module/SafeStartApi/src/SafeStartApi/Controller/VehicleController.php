@@ -303,6 +303,24 @@ class VehicleController extends RestrictedAccessRestController
         foreach ($responsibleUsers as $responsibleUser) {
             if ($currentUser->getId() == $responsibleUser->getId()) continue;
             $responsibleUserInfo = $responsibleUser->toInfoArray();
+            // send email to responsible
+            $checkList = $vehicle->getLastInspection();
+            $link = $checkList->getPdfLink();
+            $path = $this->inspectionFaultPdf()->getFilePathByName($link);
+            if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
+
+            if (file_exists($path)) {
+                $this->MailPlugin()->send(
+                    'New inspection fault report',
+                    $responsibleUserInfo['email'],
+                    'checklist_fault.phtml',
+                    array(
+                        'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
+                    ),
+                    $path
+                );
+            }
+
             switch (strtolower($responsibleUserInfo['device'])) {
                 case 'android':
                     $androidDevices[] = $responsibleUserInfo['deviceId'];
@@ -596,7 +614,7 @@ class VehicleController extends RestrictedAccessRestController
             $to->setTimestamp((int)$this->params('to'));
         }
 
-        $pdf = $this->vehicleReportPdfPlugin()->create($vehicle, $from, $to);
+        $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");
