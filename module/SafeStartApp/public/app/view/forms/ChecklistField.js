@@ -128,7 +128,13 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                         name: 'save-data',
                         ui: 'confirm',
                         handler: function () {
-                            this.up('SafeStartChecklistFieldForm').fireEvent('save-data', this.up('SafeStartChecklistFieldForm'));
+                            var form = this.up('SafeStartChecklistFieldForm');
+                            var values = form.getValues();
+                            if (values['alert_critical'] && ! values['alert_title']) {
+                                Ext.Msg.alert('Alert message is required');
+                            } else {
+                                this.up('SafeStartChecklistFieldForm').fireEvent('save-data', this.up('SafeStartChecklistFieldForm'));
+                            }
                         }
                     }
                 ]
