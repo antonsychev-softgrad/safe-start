@@ -190,6 +190,7 @@ class Vehicle extends BaseEntity
             "enabled" => $this->getEnabled(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
+            "lastInspectionDay" => $this->getLastInspectionDay(),
         );
     }
 
@@ -273,6 +274,7 @@ class Vehicle extends BaseEntity
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
+            "lastInspectionDay" => $this->getLastInspectionDay(),
         );
     }
 
@@ -375,7 +377,8 @@ class Vehicle extends BaseEntity
                 $checkListData['checkListId'] = $checkList->getId();
                 $checkListData['checkListHash'] = $checkList->getHash();
                 $checkListData['action'] = 'check-list';
-                $checkListData['text'] = $checkList->getCreationDate()->format("g:i A d/m/y");
+                $config = \SafeStartApi\Application::getConfig();
+                $checkListData['text'] = $checkList->getCreationDate()->format($config['params']['date_format'] ." ". $config['params']['time_format']);
                 $checkListData['leaf'] = true;
 
                 $inspections[] = $checkListData;
@@ -393,6 +396,15 @@ class Vehicle extends BaseEntity
         } else {
             return null;
         }
+    }
+
+    public function getLastInspectionDay()
+    {
+        $inspection = $this->getLastInspection();
+        if ($inspection) {
+            return $inspection->getUpdateDate()->getTimestamp();
+        }
+        return null;
     }
 
     public function getStatistic(\DateTime $from = null, \DateTime $to = null)

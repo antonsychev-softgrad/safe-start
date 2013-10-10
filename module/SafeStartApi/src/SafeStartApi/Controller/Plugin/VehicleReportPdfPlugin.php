@@ -44,7 +44,7 @@ class VehicleReportPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdf
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
             'Plant ID' => $vehicleData['plantId'],
-            'Registration' => $vehicleData['registration'],
+          //  'Registration' => $vehicleData['registration'],
             'Type of vehicle' => $vehicleData['type'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
