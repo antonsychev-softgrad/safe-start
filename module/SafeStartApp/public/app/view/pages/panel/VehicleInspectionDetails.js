@@ -214,7 +214,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     items.push(this.createFields(field.items, values, field.triggerValue, field.fieldName, depth + 1));
                     break;
                 case 'radio':
-                case 'text':
                 case 'checkbox':
                     Ext.each(values, function (value) {
                         isAlert = false;
@@ -236,6 +235,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                             items.push(this.createContainer(field.fieldName, value.value, isAlert));
                         }
                     }, this);
+                    break;
+                case 'text':
+                    items.push(this.createContainer(field.fieldName, field.value || '-'));
                     break;
                 case 'datePicker':
                     Ext.each(values, function (value) {
