@@ -62,7 +62,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         if (responsibleUser) {
             infoGroup.push(this.createContainer('Operators name', responsibleUser.getFullName()));
         }
-        infoGroup.push(this.createContainer('Date and Time', checklist.creationDate.date));
+        var inspectionDate = Ext.Date.format(
+            new Date(checklist.creationDate.date), 
+            SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat
+        );
+        infoGroup.push(this.createContainer('Date and Time', inspectionDate));
         if (checklist.gpsCoords) {
             cords = checklist.gpsCoords.split(';');
             if ((parseFloat(cords[0]) !== 0) || (parseFloat(cords[1]) !== 0)) {
@@ -195,7 +199,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         try {
             this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
         } catch (e) {
-            if (window['qbaka']) qbaka.reportException(e);
+            SafeStartApp.logException(e);
         }
 
     },
@@ -238,7 +242,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                             if (value.value) {
                                 var date = new Date(value.value * 1000);
                                 if (! isNaN( date.getTime() ) ) {
-                                    items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
+                                    items.push(this.createContainer(field.fieldName, Ext.Date.format(date, SafeStartApp.dateFormat)));
                                 } else {
                                     items.push(this.createContainer(field.fieldName, 'N/A'));
                                 }

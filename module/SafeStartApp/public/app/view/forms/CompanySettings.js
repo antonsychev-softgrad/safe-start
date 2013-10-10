@@ -91,6 +91,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 name: 'expiry_date',
                                 required: true,
                                 label: 'Expiry Date',
+                                dateFormat: SafeStartApp.dateFormat,
                                 value: new Date(),
                                 cls: 'sfa-datepicker',
                                 picker: {

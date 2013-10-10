@@ -12,18 +12,26 @@ SafeStartApp = SafeStartApp || {
     defMenu: [
         'Auth',
         'Contact'
-    ],
+    ]
 
-    dateFormat: 'd/m/Y',
-    timeFormat: 'H:i'
 };
+
+(function () {
+    var defaultConfig = {
+        dateFormat: 'd/m/Y',
+        timeFormat: 'H:i'
+    };
+    Ext.Object.each(defaultConfig, function (property, value) {
+        if (! SafeStartApp.hasOwnProperty(property)) {
+            SafeStartApp[property] = value;
+        }
+    });
+}());
 
 Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
     mainMenuLoaded: false,
-    dateFormat: 'm/d/Y',
-    timeFormat: 'H:i',
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
         var self = this;
         var meta = {
