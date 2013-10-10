@@ -22,12 +22,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
         items: [
             {
                 xtype: 'toolbar',
+                cls:'sfa-top-toolbar',
                 docked: 'top',
                 items: [
                     {
                         xtype: 'datepickerfield',
                         name: 'from',
                         label: 'From',
+                        labelWidth : '',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
                             yearTo: new Date().getFullYear()
@@ -38,6 +40,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         xtype: 'datepickerfield',
                         name: 'to',
                         label: 'To',
+                        labelWidth : '',
+                        cls:'sfa-label-to',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
                             yearTo: new Date().getFullYear()
