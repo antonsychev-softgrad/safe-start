@@ -1010,7 +1010,12 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 .sfa-vehicle-inspection > div > form:last-child {
     min-height: 68px;
 }
-
+.checklist-alert-description {
+    position: relative;
+    top: 10px;
+    color: #c00;
+    font-size: 20px;
+}
 
 /* hack for chrome & safari -> button 'back' in left column, naprimer */
 
