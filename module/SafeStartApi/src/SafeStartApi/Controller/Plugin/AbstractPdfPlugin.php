@@ -263,7 +263,7 @@ class AbstractPdfPlugin extends AbstractPlugin
     protected function get_filter_path($fEndPath = null)
     {
         if ($fEndPath === null || !is_string($fEndPath)) {
-            $fEndPath = $this->uploadPath;
+            $fEndPath = '';
         }
 
         $root = $this->getRootPath();
