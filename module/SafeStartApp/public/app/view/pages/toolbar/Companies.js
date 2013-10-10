@@ -12,17 +12,17 @@ Ext.define('SafeStartApp.view.pages.toolbar.Companies', {
             iconCls: 'more',
             ui: 'action',
             action: 'toggle-menu',
-            text: 'Collapse',
+            text: 'Collapse Menu',
             isPressed: true,
             handler: function (button) {
                 this.config.isPressed = ! this.config.isPressed;
                 if (this.config.isPressed) {
                     this.up('SafeStartCompaniesPage').down('list{config.cls == \'sfa-left-container\'}').show();
-                    this.setText('Collapse');
+                    this.setText('Collapse Menu');
                     this.addCls(this.getPressedCls());
                 } else {
                     this.up('SafeStartCompaniesPage').down('list{config.cls == \'sfa-left-container\'}').hide();
-                    this.setText('Expand');
+                    this.setText('Expand Menu');
                     this.removeCls(this.getPressedCls());
                 }
             }, 

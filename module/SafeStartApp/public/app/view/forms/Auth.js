@@ -12,7 +12,7 @@ Ext.define('SafeStartApp.view.forms.Auth', {
         items: [
             {
                 xtype: 'fieldset',
-                title: 'Auth',
+                title: 'Login',
                 instructions: 'If you do not have password please contact us',
                 items: [
 

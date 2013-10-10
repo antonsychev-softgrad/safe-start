@@ -40,12 +40,12 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 required: true,
                 name: 'plantId'
             },
-            {
+        /*   {
                 xtype: 'textfield',
                 label: 'Registration',
                 required: true,
                 name: 'registration'
-            },
+            },*/
             {
                 xtype: 'textfield',
                 label: 'Project Name',

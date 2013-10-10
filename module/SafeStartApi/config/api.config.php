@@ -3,7 +3,7 @@
 $api = array(
     'params' => array(
         'version' => '1.0-beta',
-        'date_format' => 'd/m/Y',
+        'date_format' => 'm/d/Y',
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',

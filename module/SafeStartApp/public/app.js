@@ -14,7 +14,7 @@ SafeStartApp = SafeStartApp || {
         'Contact'
     ],
 
-    dateFormat: 'm/d/Y',
+    dateFormat: 'd/m/Y',
     timeFormat: 'H:i'
 };
 
