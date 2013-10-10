@@ -268,7 +268,7 @@ class DefaultAlert extends BaseEntity
             'alert_description' => $this->default_field ? $this->default_field->getAlertDescription() : '',
             'field' => $this->default_field ? $this->default_field->toArray() : null,
             'vehicle' => $this->getVehicle()->toInfoArray(),
-            'user' => $this->check_list->getUser()->toInfoArray(),
+            'user' => $this->check_list->getUserData,
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
