@@ -321,6 +321,15 @@ div.logo {
     -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
+
+.sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view {
+    background: url(/resources/img/logo-top.png) no-repeat 0 7px;
+}
+
+.sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view .x-inner.x-toolbar-inner {
+    padding-left: 184px;
+}
+
 .sfa-main-toolbar .x-title {
     padding-top: 0;
     font-size: 40px;
@@ -358,8 +367,7 @@ div.logo {
     line-height: 1.1em;
 }
 
-.sfa-left-container .x-toolbar {
-    margin-bottom: 20px;
+.sfa-left-container .x-toolbar { /*  */
     border: none;
 }
 
@@ -468,11 +476,18 @@ font-size: 26px;
 .sfa-left-container .sfa-add-button .x-button.x-button-action .x-button-label {
     color: #558FAC;
 }
-.sfa-left-container .sfa-add-button {
-    position: relative;
+.sfa-left-container .sfa-add-button { /*  */
+    /*position: relative;
     top: -15px;
-    margin: 0;
+    margin: 0;*/
 }
+.sfa-left-container .x-toolbar.x-toolbar-light.x-navigation-bar.x-docked-top{
+    margin-bottom: 24px;
+}
+
+
+
+
 
 /* content */
 
@@ -501,7 +516,7 @@ font-size: 26px;
 
 .sfa-info-container .x-form-fieldset-title .x-innerhtml {
     padding: 4px 0 0 30%;
-    font-size: 28px;
+    font-size: 24px;
 }
 
 .sfa-info-container  input, .sfa-info-container textarea {
@@ -565,7 +580,10 @@ font-size: 26px;
     border-radius: 10px;
 }
 .sfa-info-container .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top {
-    margin: 0 0 10px;
+    margin: 0;
+}
+.sfa-info-container .x-container.x-unsized.x-form-fieldset {
+    margin-bottom: 15px;
 }
 .sfa-info-container .x-field-focused input {
     border: 3px solid #2E7FB7;
