@@ -5,6 +5,10 @@ Ext.define('SafeStartApp.model.Alert', {
             {name: 'id', type: 'int', defaultValue: 0},
             {name: 'title', type: 'string'},
             {name: 'description', type: 'string'},
+            {name: 'creationDate', mapping: 'creation_date', type: 'auto', convert: function (v, model) {
+                var date = new Date(v * 1000);
+                return Ext.Date.format(date, SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat);
+            }},
             {name: 'alert_description', type: 'string'},
             {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},

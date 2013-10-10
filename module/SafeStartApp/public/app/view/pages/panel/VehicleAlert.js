@@ -30,7 +30,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}/{vehicle.registration}</b>)</div>'+
                        '<div>Fault: <b>{alert_description}</b></div>'+
                        '<div>Description: {description} </div>'+
-                       '<div>Added by: {user.firstName} {user.lastName} at {title} </div>'+
+                       '<div>Added by: {user.firstName} {user.lastName} at {creationDate} </div>'+
                     '</div>'
                 ].join('')
             },
@@ -121,7 +121,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     updateRecord: function (newRecord) {
         if (!newRecord) return;
         this.record = newRecord;
-        this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(this.record.raw);
+        this.down('#SafeStartVehicleAlertContent' + this.uniqueId).setData(this.record.getData());
         this.setComments(this.record.raw['comments']);
         var images = newRecord.get('images');
         if (images.length) {

@@ -294,7 +294,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
-                    fields.push(this.createDatePickerFiled(fieldData));
+                    fields.push(this.createDatePickerField(fieldData));
                     break;
                 case 'group':
                     fields.push(this.createGroupField(fieldData));
@@ -430,11 +430,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createDatePickerFiled: function (fieldData) {
+    createDatePickerField: function (fieldData) {
         return {
             xtype: 'datepickerfield',
             maxWidth: 900,
             width: '100%',
+            dateFormat: SafeStartApp.dateFormat,
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
             value: new Date(fieldData.fieldValue * 1000 || Date.now())
