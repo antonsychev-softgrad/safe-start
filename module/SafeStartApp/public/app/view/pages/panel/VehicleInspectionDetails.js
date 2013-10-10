@@ -62,8 +62,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         if (responsibleUser) {
             infoGroup.push(this.createContainer('Operators name', responsibleUser.getFullName()));
         }
+
         var inspectionDate = Ext.Date.format(
-            new Date(checklist.creationDate.date), 
+            Ext.Date.parse(checklist.creationDate.date, 'Y-m-d H:i:s'), 
             SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat
         );
         infoGroup.push(this.createContainer('Date and Time', inspectionDate));
