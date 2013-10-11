@@ -1677,6 +1677,10 @@ span.sfa-comment-content {
     }
 }
 
+.x-webkit .x-button-back, .x-webkit .x-toolbar .x-button-back {
+    margin-left: 5px;
+}
+
 /* фиксим в mozilla полосу прокрутки */
 @-moz-document url-prefix() {
     .x-scroll-indicator.rounded.x-scroll-indicator-y > *:nth-child(2) {
