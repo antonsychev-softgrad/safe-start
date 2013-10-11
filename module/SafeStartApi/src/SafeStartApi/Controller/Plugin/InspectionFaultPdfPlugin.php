@@ -288,7 +288,7 @@ class InspectionFaultPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractP
                     $textArray[] = $comment['content'];
                 }
             }
-            $text = implode(';', $textArray);
+            $text = implode('; ', $textArray);
             $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
             foreach ($lines as $line) {
                 if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
