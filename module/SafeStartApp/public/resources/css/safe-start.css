@@ -1677,3 +1677,12 @@ span.sfa-comment-content {
     }
 }
 
+/* фиксим в mozilla полосу прокрутки */
+@-moz-document url-prefix() {
+    .x-scroll-indicator.rounded.x-scroll-indicator-y > *:nth-child(2) {
+        background: #333;
+        height: 280px;
+        border-bottom-right-radius: 3px;
+        border-bottom-left-radius: 3px;
+    }
+}
