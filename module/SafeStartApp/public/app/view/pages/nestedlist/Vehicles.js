@@ -28,13 +28,13 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         },
         listeners: {
             activeitemchange: function (nestedlist) {
-                Ext.each(this.down('toolbar'), function (toolbar) {
+                Ext.each(this.down('toolbar[name=first-level]'), function (toolbar) {
                     toolbar.hide();
                 });
             },
             back: function () {
                 if(this._backButton._hidden) {
-                    Ext.each(this.down('toolbar'), function (toolbar) {
+                    Ext.each(this.down('toolbar[name=first-level]'), function (toolbar) {
                         toolbar.show();
                     });
                 }
@@ -171,96 +171,58 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             });
         }, this, {order: 'after'});
 
-        if (SafeStartApp.userModel.get('role') == 'companyUser') {
-            this.setItems([
-                {
-                    xtype: 'toolbar',
-                    name: 'search',
-                    docked: 'top',
-                    items: [{
-                        xtype: 'searchfield',
-                        placeHolder: 'Search...',
-                        listeners: {
-                            clearicontap: function() {
-                                this.setFilterValue('');
-                                this.updateNestedListStore();
-                            },
-                            keyup: function(field, e) {
-                                this.setFilterValue(field.getValue());
-                                this.updateNestedListStore();
-                            },
-                            scope: this
-                        }
-                    }, {
-                        xtype: 'spacer'
-                    }, {
-                        xtype: 'button',
-                        name: 'reload',
-                        ui: 'action',
-                        action: 'refresh',
-                        iconCls: 'refresh',
-                        cls: 'sfa-search-reload',
-                        handler: function() {
-                            this.down('searchfield').setValue('');
-                            this.setFilterValue('');
-                            this.getVehiclesStore().loadData();
-                        },
-                        scope: this
-                    }]
+
+        this.callParent();
+
+
+        this.add([{
+            xtype: 'toolbar',
+            name: 'first-level',
+            docked: 'top',
+            items: [{
+                xtype: 'searchfield',
+                flex: 1,
+                placeHolder: 'Search...',
+                listeners: {
+                    clearicontap: function() {
+                        this.setFilterValue('');
+                        this.updateNestedListStore();
+                    },
+                    keyup: function(field, e) {
+                        this.setFilterValue(field.getValue());
+                        this.updateNestedListStore();
+                    },
+                    scope: this
                 }
-            ]);
-        } else {
-            this.setItems([
-                {
-                    xtype: 'toolbar',
-                    name: 'search',
-                    docked: 'top',
-                    items: [{
-                        xtype: 'searchfield',
-                        placeHolder: 'Search...',
-                        listeners: {
-                            clearicontap: function() {
-                                this.setFilterValue('');
-                                this.updateNestedListStore();
-                            },
-                            keyup: function(field, e) {
-                                this.setFilterValue(field.getValue());
-                                this.updateNestedListStore();
-                            },
-                            scope: this
-                        }
-                    }, {
-                        xtype: 'spacer'
-                    }, {
-                        xtype: 'button',
-                        name: 'reload',
-                        ui: 'action',
-                        action: 'refresh',
-                        iconCls: 'refresh',
-                        cls: 'sfa-search-reload',
-                        handler: function() {
-                            this.down('searchfield').setValue('');
-                            this.setFilterValue('');
-                            this.getVehiclesStore().loadData();
-                        },
-                        scope: this
-                    }]
+            }, {
+                xtype: 'button',
+                name: 'reload',
+                ui: 'action',
+                action: 'refresh',
+                iconCls: 'refresh',
+                cls: 'sfa-search-reload',
+                handler: function() {
+                    this.down('searchfield').setValue('');
+                    this.setFilterValue('');
+                    this.getVehiclesStore().loadData();
                 },
-                {
-                    xtype: 'toolbar',
-                    name: 'add',
-                    docked: 'top',
-                    cls: 'sfa-add-button',
-                    items: [
-                        {
-                            iconCls: 'add',
-                            ui: 'action',
-                            text: 'Add Vehicle',
-                            action: 'add-vehicle'
-                        }
-                    ]
-                }
-            ]);
+                scope: this
+            }]
+        }]);
+
+        if (SafeStartApp.userModel.get('role') != 'companyUser') {
+            this.add({
+                xtype: 'toolbar',
+                name: 'first-level',
+                docked: 'top',
+                cls: 'sfa-add-button',
+                items: [{
+                    iconCls: 'add',
+                    ui: 'action',
+                    text: 'Add Vehicle',
+                    action: 'add-vehicle'
+                }]
+            });
         }
     }
 });

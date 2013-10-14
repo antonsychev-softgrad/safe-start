@@ -218,7 +218,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     Ext.each(values, function (value) {
                         isAlert = false;
                         if (value.id == field.fieldId) {
-                            if (field.triggerValue == value.value) {
+                            if (field.triggerValie && field.triggerValue == value.value) {
                                 isAlert = true;
                             }
 
@@ -237,7 +237,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     }, this);
                     break;
                 case 'text':
-                    items.push(this.createContainer(field.fieldName, field.value || '-'));
+                    Ext.each(values, function (value) {
+                        if (value.id == field.fieldId) {
+                            items.push(this.createContainer(field.fieldName, value.value || '-'));
+                        }
+                    }, this);
                     break;
                 case 'datePicker':
                     Ext.each(values, function (value) {
