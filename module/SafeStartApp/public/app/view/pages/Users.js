@@ -4,7 +4,8 @@ Ext.define('SafeStartApp.view.pages.Users', {
     requires: [
         'SafeStartApp.view.pages.toolbar.Users',
         'SafeStartApp.model.Company',
-        'SafeStartApp.store.Users'
+        'SafeStartApp.store.Users',
+        'SafeStartApp.view.pages.panel.LeftContainer'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -31,7 +32,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
         }
     },
 
-    initialize: function () {
+    initialize: function() {
         var self = this;
         this.callParent();
 
@@ -53,69 +54,91 @@ Ext.define('SafeStartApp.view.pages.Users', {
     getUsersList: function() {
         var self = this;
         return {
-            xtype: 'list',
-            name: 'users',
-            itemTpl: '<div class="contact">{firstName} {lastName}</div>',
-            minWidth: 150,
-            maxWidth: 300,
-            showAnimation: {
-                type: 'pop'
-            },
-            hideAnimation: {
-                type: 'pop',
-                out: 'true'
-            },
+            xtype: 'SafeStartLeftContainer',
             flex: 1,
-            margin: '0 20 0 0',
-            cls: 'sfa-left-container',
-            store: this.usersStore,
-            items: [
-                {
-                    xtype: 'toolbar',
-                    docked: 'top',
-
-                    items: [
-                        { xtype: 'spacer' },
-                        {
-                            xtype: 'searchfield',
-                            placeHolder: 'Search...',
-                            listeners: {
-                                scope: this,
-                                clearicontap: function () {
-                                    self.usersStore.clearFilter();
-                                },
-                                keyup: function (field) {
-                                    self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
-                                }
-                            }
-                        },
-                        { xtype: 'spacer' },
-                        {
-                            xtype: 'button',
-                            name: 'reload',
-                            ui: 'action',
-                            iconCls: 'refresh',
-                            cls:'sfa-search-reload',
-                            handler: function() {
-                                this.up('list[name=users]').getStore().loadData();
-                            }
-                        }
-                    ]
-                },
-                {
-                    xtype: 'toolbar',
-                    docked: 'top',
-                    items: [
-                        {
+            items: [{
+                xtype: 'container',
+                layout: 'fit',
+                items: [{
+                    xtype: 'list',
+                    name: 'users',
+                    itemTpl: '<div class="contact">{firstName} {lastName}</div>',
+                    showAnimation: {
+                        type: 'pop'
+                    },
+                    hideAnimation: {
+                        type: 'pop',
+                        out: 'true'
+                    },
+                    margin: '0 20 0 0',
+                    cls: 'sfa-left-container',
+                    store: this.usersStore,
+                    items: [{
+                        xtype: 'toolbar',
+                        docked: 'top',
+                        items: [{
                             iconCls: 'add',
                             cls: 'sfa-add-button',
                             ui: 'action',
                             text: 'Add User',
                             action: 'add-user'
+                        }, {
+                            xtype: 'spacer',
+                            flex: 1
+                        }, {
+                            iconCls: 'arrow_left',
+                            height: 20,
+                            iconMask: true,
+                            handler: function (btn) {
+                                var panel = this.up('SafeStartLeftContainer');
+                                panel.toggleMenu();
+                            }
+                        }]
+                    }, {
+                        xtype: 'toolbar',
+                        docked: 'top',
+
+                        items: [{
+                            xtype: 'searchfield',
+                            placeHolder: 'Search...',
+                            flex: 1,
+                            listeners: {
+                                scope: this,
+                                clearicontap: function() {
+                                    self.usersStore.clearFilter();
+                                },
+                                keyup: function(field) {
+                                    self.filterStoreDataBySearchFiled(self.usersStore, field, 'firstName');
+                                }
+                            }
+                        }, {
+                            xtype: 'button',
+                            name: 'reload',
+                            ui: 'action',
+                            iconCls: 'refresh',
+                            cls: 'sfa-search-reload',
+                            handler: function() {
+                                this.up('list[name=users]').getStore().loadData();
+                            }
+                        }]
+                    }]
+                }]
+            }, {
+                xtype: 'panel',
+                cls: 'sfa-left-container',
+                items: [{
+                    xtype: 'toolbar',
+                    items: [{
+                        iconCls: 'arrow_right',
+                        height: 20,
+                        iconMask: true,
+                        handler: function() {
+                            var panel = this.up('SafeStartLeftContainer');
+                            panel.toggleMenu();
                         }
-                    ]
-                }
-            ]
+                    }]
+                }]
+            }]
         };
     },
 
@@ -135,12 +158,12 @@ Ext.define('SafeStartApp.view.pages.Users', {
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
         if (this.down('#SafeStartUsersToolbarTitle')) {
-            this.down('#SafeStartUsersToolbarTitle').setText( SafeStartApp.companyModel.get('title')+': '+'Users' );
+            this.down('#SafeStartUsersToolbarTitle').setText(SafeStartApp.companyModel.get('title') + ': ' + 'Users');
         } else {
             this.down('SafeStartUsersToolbar').add({
                 ui: 'action',
                 id: 'SafeStartUsersToolbarTitle',
-                text: SafeStartApp.companyModel.get('title')+': '+'Users'
+                text: SafeStartApp.companyModel.get('title') + ': ' + 'Users'
             });
         }
         this.usersStore.getProxy().setExtraParam('companyId', this.companyId);

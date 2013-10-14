@@ -12,6 +12,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
         'SafeStartApp.view.pages.panel.Vehicles',
+        'SafeStartApp.view.pages.panel.LeftContainer',
         'SafeStartApp.view.forms.Vehicle',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
@@ -74,42 +75,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
             });
         }
         this.add({
-            xtype: 'panel',
-            layout: 'card',
-            name: 'left-container',
+            xtype: 'SafeStartLeftContainer',
             flex: 1,
-            maxWidth: 300,
-            animation: 'fade',
-            listeners: {
-                initialize: function (panel) {
-                    Ext.apply(this, {
-                        _menuShown: true,
-                        toggleMenu: function() {
-                            if (this._menuShown) {
-                                this.hideMenu();
-                            } else {
-                                this.showMenu();
-                            }
-                        },
-                        getInfoContainer: function () {
-                            return this.up('SafeStartCompanyPage').down('panel[name=info-container]');
-                        },
-                        showMenu: function () {
-                            this._menuShown = true;
-                            this.setWidth();
-                            this.setFlex(1);
-                            this.setActiveItem(0);
-                        },
-                        hideMenu: function () {
-                            this._menuShown = false;
-                            this.setWidth(50);
-                            this.setFlex();
-                            this.element.setStyle('flex', '');
-                            this.setActiveItem(1);
-                        }
-                    });
-                }
-            },
             items: [{
                 xtype: 'panel',
                 cls: 'sfa-left-container',
@@ -127,7 +94,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                         height: 20,
                         iconMask: true,
                         handler: function (btn) {
-                            var panel = this.up('panel[name=left-container]');
+                            var panel = this.up('SafeStartLeftContainer');
                             panel.toggleMenu();
                         }
                     })
@@ -147,14 +114,13 @@ Ext.define('SafeStartApp.view.pages.Company', {
                         height: 20,
                         iconMask: true,
                         handler: function () {
-                            var panel = this.up('panel[name=left-container]');
+                            var panel = this.up('SafeStartLeftContainer');
                             panel.toggleMenu();
                         }
                     }]
                 }]
             }]
         });
-        this.down('panel[name=left-container]').setActiveItem(0);
 
         this.add(this.getInfoPanel());
 
@@ -163,12 +129,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     getInfoPanel: function () {
         return {
-            cls: 'sfa-info-container',
             xtype: 'panel',
+            cls: 'sfa-info-container',
             name: 'info-container',
             scrollable: null,
             layout: 'card',
-            minWidth: 150,
             flex: 2,
             items: [{
                 xtype: 'SafeStartVehicleForm'
