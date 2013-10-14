@@ -435,6 +435,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'datepickerfield',
             maxWidth: 900,
             width: '100%',
+            yearFrom: 2000,
+            picker: {
+                yearTo: new Date().getFullYear() + 10
+            },
             dateFormat: SafeStartApp.dateFormat,
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
