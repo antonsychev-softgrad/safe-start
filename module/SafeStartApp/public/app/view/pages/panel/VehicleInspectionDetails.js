@@ -78,7 +78,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
-            this.createContainer('Registration', vehicle.get('registration')),
             this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 

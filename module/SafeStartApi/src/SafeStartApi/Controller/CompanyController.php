@@ -121,8 +121,6 @@ class CompanyController extends RestrictedAccessRestController
 
         $vehicleId = (int)$this->params('id');
         $plantId = $this->data->plantId;
-        // TODO: why this field is not present in the form
-        $registration = isset($this->data->registration) ? $this->data->registration : '';
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
             $vehicle = $repository->find($vehicleId);
@@ -139,11 +137,6 @@ class CompanyController extends RestrictedAccessRestController
                 'deleted' => 0,
             ));
             if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
-            $vehicle = $repository->findOneBy(array(
-                'registrationNumber' => $registration,
-                'deleted' => 0,
-            ));
-            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Registration number already exists');
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
@@ -155,7 +148,6 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setTitle($this->data->title);
         $vehicle->setType($this->data->type);
         $vehicle->setEnabled((int)$this->data->enabled);
-        $vehicle->setRegistrationNumber($registration);
         $vehicle->setProjectName($this->data->projectName);
         $vehicle->setProjectNumber($this->data->projectNumber);
         $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);

@@ -61,11 +61,6 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ORM\Column(type="string", name="registration_number", nullable=false)
-     **/
-    protected $registrationNumber;
-
-    /**
      * @ORM\Column(type="string", length=255, name="title")
      */
     protected $title;
@@ -181,7 +176,6 @@ class Vehicle extends BaseEntity
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "warrantyStartDate" => $this->getWarrantyStartDate(),
             "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
             "currentOdometerKms" => (!is_null($this->getCurrentOdometerKms())) ? $this->getCurrentOdometerKms() : 0,
@@ -266,7 +260,6 @@ class Vehicle extends BaseEntity
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => $this->company->getExpiryDate(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
@@ -552,29 +545,6 @@ class Vehicle extends BaseEntity
     public function getPlantId()
     {
         return $this->plantId;
-    }
-
-    /**
-     * Set registrationNumber
-     *
-     * @param string $registrationNumber
-     * @return Vehicle
-     */
-    public function setRegistrationNumber($registrationNumber)
-    {
-        $this->registrationNumber = $registrationNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get registrationNumber
-     *
-     * @return string
-     */
-    public function getRegistrationNumber()
-    {
-        return $this->registrationNumber;
     }
 
     /**
