@@ -193,6 +193,7 @@ class VehicleController extends RestrictedAccessRestController
         if ($inspection) {
             $checkList = $inspection;
             $checkList->setPdfLink(NULL);
+            $checkList->setFaultPdfLink(NULL);
 
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
@@ -299,10 +300,37 @@ class VehicleController extends RestrictedAccessRestController
         $currentUser = \SafeStartApi\Application::getCurrentUser();
         $responsibleUsers = $vehicle->getResponsibleUsers();
         $vehicleUsers = $vehicle->getUsers();
+        $pushCriticalAlerts = false;
+        foreach ($alerts as $alert) {
+            if ($alert->getField()->getAlertCritical()) {
+                $pushCriticalAlerts = true;
+                break;
+            }
+        }
 
         foreach ($responsibleUsers as $responsibleUser) {
             if ($currentUser->getId() == $responsibleUser->getId()) continue;
             $responsibleUserInfo = $responsibleUser->toInfoArray();
+
+            if (!$pushCriticalAlerts) continue;
+            // send email to responsible
+            $checkList = $vehicle->getLastInspection();
+            $link = $checkList->getFaultPdfLink();
+            $path = $this->inspectionFaultPdf()->getFilePathByName($link);
+            if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
+
+            if (file_exists($path)) {
+                $this->MailPlugin()->send(
+                    'New inspection fault report',
+                    $responsibleUserInfo['email'],
+                    'checklist_fault.phtml',
+                    array(
+                        'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
+                    ),
+                    $path
+                );
+            }
+
             switch (strtolower($responsibleUserInfo['device'])) {
                 case 'android':
                     $androidDevices[] = $responsibleUserInfo['deviceId'];
@@ -328,11 +356,12 @@ class VehicleController extends RestrictedAccessRestController
 
         $message = '';
         $badge = 0;
-        if (!empty($alerts)) {
+        if (!empty($alerts) && $pushCriticalAlerts) {
             $message =
                 "Vehicle Alert \n\r" .
                 "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
+                if ($alert->getField()->getAlertCritical()) continue;
                 $badge++;
                 $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }
@@ -596,7 +625,7 @@ class VehicleController extends RestrictedAccessRestController
             $to->setTimestamp((int)$this->params('to'));
         }
 
-        $pdf = $this->vehicleReportPdfPlugin()->create($vehicle, $from, $to);
+        $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");

@@ -23,7 +23,8 @@ Ext.define('SafeStartApp.model.MenuVehicle', {
             {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()},
             {name: 'inspectionDueHours', type: 'int', defaultValue: 24},
             {name: 'inspectionDueKms', type: 'int', defaultValue: 500},
-            {name: 'lastInspectionDate', type: 'int', defaultValue: 0}
+            {name: 'lastInspectionDay', type: 'int', defaultValue: null},
+            {name: 'inspectionDueKms', type: 'int', defaultValue: 500}
         ],
         associations: [{
             type: 'hasMany',

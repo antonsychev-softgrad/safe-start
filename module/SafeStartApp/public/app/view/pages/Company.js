@@ -134,6 +134,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 }, {
                     xtype: 'SafeStartNestedListVehicles',
                     vehiclesStore: this.vehiclesStore,
+                    margin: '0 0 0 0',
                     store: this.listVehiclesStore
                 }]
             }, {

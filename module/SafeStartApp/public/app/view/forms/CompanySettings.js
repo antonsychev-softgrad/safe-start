@@ -10,6 +10,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
             {
                 xtype: 'fieldset',
                 title: 'Company Settings',
+                cls:'sfa-company-settings',
                 items: [
                     {
                         xtype: 'hiddenfield',
@@ -52,6 +53,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         xtype: 'togglefield',
                         name: 'restricted',
                         label: 'Limited Access',
+                        cls:'sfa-limited-access',
                         listeners: {
                             change: function(field, slider, thumb, newValue, oldValue) {
                                 if (newValue) {
@@ -139,7 +141,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     },
                     {
                         xtype: 'button',
-                        text: 'Send Credentials',
+                        text: 'Send Password to Company Owner',
                         name: 'send-credentials',
                         ui: 'action',
                         handler: function() {

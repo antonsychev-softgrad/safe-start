@@ -343,7 +343,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         if (inspectionPanel.vehicleRecord) {
             currentOdometerHours = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerHours'), 10);
             currentOdometerKms = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerKms'), 10);
-            lastInspectionDate = inspectionPanel.vehicleRecord.get('lastInspectionDate');
+            lastInspectionDate = inspectionPanel.vehicleRecord.get('lastInspectionDay');
             odometerHoursInterval = odometerHours - currentOdometerHours;
             inspectionInterval = (new Date().getTime() - lastInspectionDate) / 3600000;
         }

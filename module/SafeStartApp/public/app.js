@@ -160,7 +160,35 @@ Ext.application({
     name: 'SafeStartApp',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'Ext.ux.event.recognizer.MouseWheelDrag',
+        'Ext.event.recognizer.Drag',
+        'Ext.event.recognizer.Tap',
+        'Ext.event.recognizer.DoubleTap',
+        'Ext.event.recognizer.SingleTouch',
+        'Ext.event.recognizer.MultiTouch',
+        'Ext.event.recognizer.Touch',
+        'Ext.event.recognizer.LongPress',
+        'Ext.event.recognizer.Swipe',
+        'Ext.event.recognizer.Pinch',
+        'Ext.event.recognizer.Rotate',
+        'Ext.event.recognizer.EdgeSwipe',
+        'Ext.event.publisher.TouchGesture',
+        'Ext.event.publisher.ComponentDelegation',
+        'Ext.event.publisher.ComponentPaint',
+        'Ext.event.publisher.ElementPaint',
+        'Ext.event.publisher.ElementSize',
+        'Ext.util.PaintMonitor',
+        'Ext.util.paintmonitor.CssAnimation',
+        'Ext.util.paintmonitor.OverflowChange',
+        'Ext.util.paintmonitor.Abstract',
+        'Ext.util.SizeMonitor',
+        'Ext.util.sizemonitor.Default',
+        'Ext.util.sizemonitor.Scroll',
+        'Ext.util.sizemonitor.OverflowChange',
+        'Ext.util.sizemonitor.Abstract',
+        'Ext.mixin.Templatable',
+        'Ext.chart.series.ItemPublisher'
     ],
 
     views: [
@@ -275,7 +303,7 @@ Ext.application({
                         });
                     });
                     me.scrollView.showIndicators();
-                },
+                }
             });
         }
 

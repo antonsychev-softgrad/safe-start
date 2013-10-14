@@ -15,7 +15,6 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             out: 'true'
         },
         toolbar: {
-            ui: ''
         },
         filterValue: '',
         filterField: 'text',
