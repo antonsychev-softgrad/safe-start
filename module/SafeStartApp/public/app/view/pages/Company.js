@@ -70,7 +70,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 iconCls: 'add',
                 ui: 'action',
                 text: 'Add Vehicle',
-                height: 20,
                 action: 'add-vehicle'
             });
         }
@@ -112,9 +111,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
             },
             items: [{
                 xtype: 'panel',
+                cls: 'sfa-left-container',
                 layout: 'fit',
                 items: [{
                     xtype: 'toolbar',
+                    cls: 'sfa-menu-toggle',
                     docked: 'top',
                     items: additionalButton.concat({
                         xtype: 'spacer',
@@ -135,6 +136,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 }]
             }, {
                 xtype: 'panel',
+                cls: 'sfa-left-container',
                 items: [{
                     xtype: 'toolbar',
                     items: [{

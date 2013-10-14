@@ -363,6 +363,10 @@ div.logo {
     border: none;
 }
 
+.sfa-left-container .x-toolbar.sfa-menu-toggle {
+    margin-bottom: 0px;
+}
+
 .sfa-left-container .x-list-item,
 .x-list-item .x-innerhtml span {
     font-size: 18px;
@@ -467,17 +471,18 @@ font-size: 26px;
 .sfa-left-container .x-item-selected {
     color: #bfbfbf !important;
 }
-.sfa-left-container .sfa-add-button .x-button.x-button-action {
+.sfa-left-container .sfa-add-button.x-button.x-button-action {
     color: #558FAC;
     background: none;
 }
-.sfa-left-container .sfa-add-button .x-button.x-button-action .x-button-label {
+.sfa-left-container .sfa-add-button.x-button.x-button-action .x-button-label {
     color: #558FAC;
 }
-.sfa-left-container .sfa-add-button {
-    position: relative;
-    top: -15px;
-    margin: 0;
+.sfa-left-container .sfa-add-button.x-button:hover {
+    color: #75AFCC;
+}
+.sfa-left-container .sfa-add-button.x-button:hover .x-button-label{
+    color: #75AFCC;
 }
 
 /* content */
@@ -1464,7 +1469,7 @@ span.sfa-comment-content {
     white-space: nowrap;
 }
 
-.sfa-left-container .sfa-add-button .x-iconalign-left .x-button-label {
+.sfa-left-container .sfa-add-button.x-iconalign-left .x-button-label {
     margin-left: 0.2em;
 }
 

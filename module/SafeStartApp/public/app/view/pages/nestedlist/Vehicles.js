@@ -14,11 +14,13 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             type: 'pop',
             out: 'true'
         },
+        toolbar: {
+            ui: ''
+        },
         filterValue: '',
         filterField: 'text',
         title: 'Vehicles',
         displayField: 'text',
-        cls: 'sfa-left-container',
         flex: 1,
         getTitleTextTpl: function () {
             return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
@@ -179,6 +181,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             xtype: 'toolbar',
             name: 'first-level',
             docked: 'top',
+            ui: '',
             items: [{
                 xtype: 'searchfield',
                 flex: 1,
