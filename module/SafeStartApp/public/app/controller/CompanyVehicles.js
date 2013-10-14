@@ -305,7 +305,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     onActivateReviewCard: function (reviewCard, vehicleInspectionPanel) {
         var checklists = this.getChecklistForms();
         var passedCards = [];
-        var vehicleInspectionPanel = this.getVehicleInspectionPanel();
         var alertsStore = vehicleInspectionPanel.getAlertsStore();
         var alerts = [];
         Ext.each(checklists, function (checklist) {
@@ -334,18 +333,20 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var inspectionPanel = this.getVehicleInspectionPanel(),
             odometerKms = inspectionPanel.down('field[name=current-odometer-kms]').getValue(),
             odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue(),
-            isOdometerCorrect = true,
-            odometerHoursInterval = odometerHours - currentOdometerHours,
+            odometerHoursInterval = 0,
             currentOdometerHours,
             currentOdometerKms,
-            submitMessage;
+            lastInspectionDate = 0,
+            submitMessage,
+            inspectionInterval = 24;
 
         if (inspectionPanel.vehicleRecord) {
             currentOdometerHours = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerHours'), 10);
             currentOdometerKms = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerKms'), 10);
+            lastInspectionDate = inspectionPanel.vehicleRecord.get('lastInspectionDate');
+            odometerHoursInterval = odometerHours - currentOdometerHours;
+            inspectionInterval = (new Date().getTime() - lastInspectionDate) / 3600000;
         }
-
-        var inspectionInterval = 100000;
 
         if (inspectionPanel.vehicleRecord && (
                 odometerKms < currentOdometerKms ||

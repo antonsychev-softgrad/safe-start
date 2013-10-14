@@ -167,6 +167,11 @@ class Vehicle extends BaseEntity
      */
     public function toInfoArray()
     {
+        $lastInspection = $this->getLastInspection();
+        $lastInspectionDate = 0;
+        if ($lastInspection) {
+            $lastInspectionDate = $lastInspection->getCreationDate()->getTimestamp() * 1000;
+        }
         return array(
             'id' => (!is_null($this->id)) ? $this->id : '',
             'type' => (!is_null($this->type)) ? $this->getType() : '',
@@ -184,6 +189,7 @@ class Vehicle extends BaseEntity
             "enabled" => $this->getEnabled(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
+            "lastInspectionDate" => $lastInspectionDate,
         );
     }
 
