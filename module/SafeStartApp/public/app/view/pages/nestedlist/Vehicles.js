@@ -210,19 +210,5 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             }]
         }]);
 
-        if (SafeStartApp.userModel.get('role') != 'companyUser') {
-            this.add({
-                xtype: 'toolbar',
-                name: 'first-level',
-                docked: 'top',
-                cls: 'sfa-add-button',
-                items: [{
-                    iconCls: 'add',
-                    ui: 'action',
-                    text: 'Add Vehicle',
-                    action: 'add-vehicle'
-                }]
-            });
-        }
     }
 });

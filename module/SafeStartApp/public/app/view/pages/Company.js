@@ -60,6 +60,19 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 rootProperty: 'data'
             }
         });
+
+        var additionalButton = [];
+
+        if (SafeStartApp.userModel.get('role') != 'companyUser') {
+            additionalButton.push({
+                cls: 'sfa-add-button',
+                iconCls: 'add',
+                ui: 'action',
+                text: 'Add Vehicle',
+                height: 20,
+                action: 'add-vehicle'
+            });
+        }
         this.add({
             xtype: 'panel',
             layout: 'card',
@@ -102,7 +115,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 items: [{
                     xtype: 'toolbar',
                     docked: 'top',
-                    items: [{
+                    items: additionalButton.concat({
                         xtype: 'spacer',
                         flex: 1
                     }, {
@@ -112,9 +125,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
                         handler: function (btn) {
                             var panel = this.up('panel[name=left-container]');
                             panel.toggleMenu();
-                            // this.up('panel[name=left-container]').setActiveItem(1);
                         }
-                    }]
+                    })
                 }, {
                     xtype: 'SafeStartNestedListVehicles',
                     vehiclesStore: this.vehiclesStore,
