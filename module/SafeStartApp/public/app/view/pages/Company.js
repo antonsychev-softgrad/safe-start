@@ -12,6 +12,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
         'SafeStartApp.view.pages.panel.Vehicles',
+        'SafeStartApp.view.forms.Vehicle',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
     ],
@@ -164,37 +165,25 @@ Ext.define('SafeStartApp.view.pages.Company', {
             layout: 'card',
             minWidth: 150,
             flex: 2,
-            items: [
-                {
-                    xtype: 'panel',
-                    name: 'vehicle-info',
-                    layout: 'card'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspection'
-                },
-                {
-                    xtype: 'SafeStartVehicleAlertsPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspectionsPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleReportPanel'
-                },
-                {
-                    xtype: 'SafeStartUpdateVehicleChecklistPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleUsersPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspectionDetails'
-                },
-                {
-                    xtype: 'SafeStartVehiclesPanel'
-                }
-            ]
+            items: [{
+                xtype: 'SafeStartVehicleForm'
+            }, {
+                xtype: 'SafeStartVehicleInspection'
+            }, {
+                xtype: 'SafeStartVehicleAlertsPanel'
+            }, {
+                xtype: 'SafeStartVehicleInspectionsPanel'
+            }, {
+                xtype: 'SafeStartVehicleReportPanel'
+            }, {
+                xtype: 'SafeStartUpdateVehicleChecklistPanel'
+            }, {
+                xtype: 'SafeStartVehicleUsersPanel'
+            }, {
+                xtype: 'SafeStartVehicleInspectionDetails'
+            }, {
+                xtype: 'SafeStartVehiclesPanel'
+            }]
         };
     },
 

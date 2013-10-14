@@ -50,6 +50,11 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             },
             addButton: {
                 tap: 'addAction'
+            },
+            vehicleForm: {
+                'save-data': 'saveAction',
+                'reset-data': 'resetAction',
+                'delete-data': 'deleteAction'
             }
         },
 
@@ -57,7 +62,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             mainToolbar: 'SafeStartCompanyPage SafeStartCompanyToolbar',
             navMain: 'SafeStartCompanyPage SafeStartNestedListVehicles',
             infoPanel: 'SafeStartCompanyPage > panel[name=info-container]',
-            vehicleInfoPanel: 'SafeStartCompanyPage > panel[name=info-container] > panel[name=vehicle-info]',
+            vehicleForm: 'SafeStartCompanyPage > panel[name=info-container] > SafeStartVehicleForm',
             vehicleInspectionPanel: 'SafeStartCompanyPage SafeStartVehicleInspection',
             vehicleUsersPanel: 'SafeStartCompanyPage SafeStartVehicleUsersPanel',
             vehicleAlertsPanel: 'SafeStartCompanyPage SafeStartVehicleAlertsPanel',
@@ -77,7 +82,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
         switch (record.get('action')) {
             case 'info':
-                this.getInfoPanel().setActiveItem(this.getVehicleInfoPanel());
+                this.getInfoPanel().setActiveItem(this.getVehicleForm());
                 this.showUpdateForm(record.parentNode);
                 break;
             case 'fill-checklist':
@@ -157,48 +162,46 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     showUpdateForm: function (selectedRecord) {
-        if (!this.currentForm) {
-            this._createForm();
-        }
-        this.currentForm.setRecord(selectedRecord);
+        var vehicleForm = this.getVehicleForm();
+
+        vehicleForm.setRecord(selectedRecord);
         if (SafeStartApp.userModel.get('role') !== 'companyUser') {
-            this.currentForm.down('button[name=delete-data]').show();
+            vehicleForm.down('button[name=delete-data]').show();
         }
-        this.currentForm.down('button[name=reset-data]').hide();
+        vehicleForm.down('button[name=reset-data]').hide();
     },
 
     addAction: function () {
+        var vehicleForm = this.getVehicleForm();
+
         this.getInfoPanel().setActiveItem(0);
         this.getNavMain().goToNode(this.getNavMain().getStore().getRoot());
         this.selectedNodeId = 0;   
-        this._createForm();
-        if (this.vehicleModel) this.vehicleModel.destroy();
-        this.vehicleModel = new SafeStartApp.model.MenuVehicle();
-        this.currentForm.setRecord(this.vehicleModel);
-        this.currentForm.down('button[name=delete-data]').hide();
-        this.currentForm.down('button[name=reset-data]').show();
+
+        vehicleForm.setRecord(new SafeStartApp.model.MenuVehicle());
+
+        vehicleForm.down('button[name=delete-data]').hide();
+        vehicleForm.down('button[name=reset-data]').show();
     },
 
     saveAction: function () {
-        if (!this.vehicleModel) {
-            this.vehicleModel = Ext.create('SafeStartApp.model.MenuVehicle');
-        }
-        if (this.validateFormByModel(this.vehicleModel, this.currentForm)) {
+        var vehicleForm = this.getVehicleForm();
+        if (this.validateFormByModel(vehicleForm.getRecord(), vehicleForm)) {
             var self = this;
-            var formValues = this.currentForm.getValues();
+            var formValues = vehicleForm.getValues();
             if (SafeStartApp.companyModel) {
                 formValues.companyId = SafeStartApp.companyModel.get('id');
             } else {
                 formValues.companyId = SafeStartApp.userModel.get('companyId');
             }
-            SafeStartApp.AJAX('vehicle/' + this.currentForm.getValues().id + '/update', formValues, function (result) {
+            SafeStartApp.AJAX('vehicle/' + vehicleForm.getValues().id + '/update', formValues, function (result) {
                 if (result.vehicleId) {
                     self._reloadStore(result.vehicleId);
-                    self.currentForm.down('hiddenfield[name=id]').setValue(result.vehicleId);
+                    vehicleForm.down('hiddenfield[name=id]').setValue(result.vehicleId);
                     if (SafeStartApp.userModel.get('role') !== 'companyUser') {
-                        self.currentForm.down('button[name=delete-data]').show();
+                        vehicleForm.down('button[name=delete-data]').show();
                     }
-                    self.currentForm.down('button[name=reset-data]').hide();
+                    vehicleForm.down('button[name=reset-data]').hide();
                 }
             });
         }
@@ -206,13 +209,14 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
 
     deleteAction: function () {
         var self = this;
+        var vehicleForm = this.getVehicleForm();
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this vehicle?", function (buttonId) {
             if (buttonId === 'yes') {
-                SafeStartApp.AJAX('vehicle/' + self.currentForm.getValues().id + '/delete', {}, function (result) {
+                SafeStartApp.AJAX('vehicle/' + vehicleForm.getValues().id + '/delete', {}, function (result) {
                     self.getNavMain().getVehiclesStore().loadData();
-                    self.currentForm.reset();
-                    self.currentForm.down('button[name=delete-data]').hide();
-                    self.currentForm.down('button[name=reset-data]').show();
+                    vehicleForm.reset();
+                    vehicleForm.down('button[name=delete-data]').hide();
+                    vehicleForm.down('button[name=reset-data]').show();
                     self.getInfoPanel().setActiveItem(self.getVehiclesPanel());
                 });
             }
@@ -220,18 +224,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     resetAction: function () {
-        this.currentForm.reset();
-    },
-
-    _createForm: function () {
-        if (!this.currentForm) {
-            this.currentForm = Ext.create('SafeStartApp.view.forms.Vehicle');
-            this.getInfoPanel().getActiveItem().add(this.currentForm);
-            this.currentForm.addListener('save-data', this.saveAction, this);
-            this.currentForm.addListener('reset-data', this.resetAction, this);
-
-            this.currentForm.addListener('delete-data', this.deleteAction, this);
-        }
+        this.getVehicleForm().reset();
     },
 
     _reloadStore: function (vehicleId) {
@@ -239,13 +232,12 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             var vehicleNode = this.getNavMain().getStore().getRoot().findChild('id', vehicleId);
             if (vehicleNode) {
                 this.getNavMain().tapOnActionNode('info', vehicleId, true);
-                this.currentForm.setRecord(vehicleNode);
+                this.getVehicleForm().setRecord(vehicleNode);
             }
         }, this, {single: true, order: 'after'});
 
         this.getNavMain().getVehiclesStore().loadData();
     },
-
 
     loadChecklist: function (id) {
         var self = this;

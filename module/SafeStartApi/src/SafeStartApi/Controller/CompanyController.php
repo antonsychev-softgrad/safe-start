@@ -121,7 +121,8 @@ class CompanyController extends RestrictedAccessRestController
 
         $vehicleId = (int)$this->params('id');
         $plantId = $this->data->plantId;
-        $registration = $this->data->registration;
+        // TODO: why this field is not present in the form
+        $registration = isset($this->data->registration) ? $this->data->registration : '';
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
             $vehicle = $repository->find($vehicleId);
