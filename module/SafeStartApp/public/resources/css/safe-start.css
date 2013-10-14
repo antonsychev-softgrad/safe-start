@@ -369,8 +369,14 @@ div.logo {
     line-height: 1.2em;
     color: #558FAC;
 }
+.sfa-left-container .x-list .x-list-item:hover .x-innerhtml span {
+    color: #75afcc !important;
+}
+.sfa-left-container .x-list .x-item-selected .x-innerhtml span {
+    color: #75afcc !important;
+}
 .sfa-left-container .x-list-item:hover {
-    color: #75afcc;
+    color: #75afcc !important;
 }
 .sfa-left-container .x-list-item-first {
     border: none !important;
@@ -1645,3 +1651,6 @@ span.sfa-comment-content {
     }
 }
 
+.x-scroll-indicator {
+    opacity: 0.5 !important;
+}
