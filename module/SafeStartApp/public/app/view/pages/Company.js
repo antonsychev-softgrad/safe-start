@@ -104,6 +104,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                             this._menuShown = false;
                             this.setWidth(50);
                             this.setFlex();
+                            this.element.setStyle('flex', '');
                             this.setActiveItem(1);
                         }
                     });
@@ -112,6 +113,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             items: [{
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0 20 0 0',
                 layout: 'fit',
                 items: [{
                     xtype: 'toolbar',

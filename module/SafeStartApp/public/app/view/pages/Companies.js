@@ -61,6 +61,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                 },
                 flex: 1,
                 cls: 'sfa-left-container',
+                margin: '0 20 0 0',
                 store: this.companiesStore,
                 items: [
                 {

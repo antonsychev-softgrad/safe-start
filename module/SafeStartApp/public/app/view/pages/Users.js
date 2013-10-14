@@ -66,6 +66,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                 out: 'true'
             },
             flex: 1,
+            margin: '0 20 0 0',
             cls: 'sfa-left-container',
             store: this.usersStore,
             items: [
