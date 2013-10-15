@@ -260,50 +260,52 @@ Ext.application({
             Ext.Viewport.addWindowListener(clickEvent, Ext.Viewport.doBlurInput, false)
         }
 
-        Ext.override(Ext.scroll.View, {
-            doHideIndicators: function() {
-                return this.changeIndicatorsState();
-            },
+        if (Ext.os.deviceType == 'Desktop') {
+            Ext.override(Ext.scroll.View, {
+                doHideIndicators: function() {
+                    return this.changeIndicatorsState();
+                },
 
-            showIndicators: function () {
-                return this.changeIndicatorsState();
-            },
+                showIndicators: function () {
+                    return this.changeIndicatorsState();
+                },
 
-            changeIndicatorsState: function () {
-                var indicators = this.getIndicators();
+                changeIndicatorsState: function () {
+                    var indicators = this.getIndicators();
 
-                if (this.hasOwnProperty('indicatorsHidingTimer')) {
-                    clearTimeout(this.indicatorsHidingTimer);
-                    delete this.indicatorsHidingTimer;
-                }
-                if (this.isAxisEnabled('x')) {
-                    if (indicators.x._length != indicators.x.barLength) {
-                        indicators.x.show();
-                    } else {
-                        indicators.x.hide();
+                    if (this.hasOwnProperty('indicatorsHidingTimer')) {
+                        clearTimeout(this.indicatorsHidingTimer);
+                        delete this.indicatorsHidingTimer;
+                    }
+                    if (this.isAxisEnabled('x')) {
+                        if (indicators.x._length != indicators.x.barLength) {
+                            indicators.x.show();
+                        } else {
+                            indicators.x.hide();
+                        }
+                    }
+                    if (this.isAxisEnabled('y')) {
+                        if (indicators.y._length != indicators.y.barLength) {
+                            indicators.y.show();
+                        } else {
+                            indicators.y.hide();
+                        }
                     }
                 }
-                if (this.isAxisEnabled('y')) {
-                    if (indicators.y._length != indicators.y.barLength) {
-                        indicators.y.show();
-                    } else {
-                        indicators.y.hide();
-                    }
-                }
-            }
-        });
+            });
 
-        Ext.override(Ext.behavior.Scrollable, {
-            onComponentPainted: function (component) {
-                var me = this;
-                this.scrollView.getScroller().on('maxpositionchange', function () {
-                    setTimeout( function () {
-                        me.scrollView.showIndicators();
+            Ext.override(Ext.behavior.Scrollable, {
+                onComponentPainted: function (component) {
+                    var me = this;
+                    this.scrollView.getScroller().on('maxpositionchange', function () {
+                        setTimeout( function () {
+                            me.scrollView.showIndicators();
+                        });
                     });
-                });
-                me.scrollView.showIndicators();
-            }
-        });
+                    me.scrollView.showIndicators();
+                }
+            });
+        }
 
         // Destroy the #appLoadingIndicator element
         Ext.fly('appLoadingIndicator').destroy();

@@ -33,8 +33,8 @@ Ext.define('SafeStartApp.model.Vehicle', {
         }],
         validations: [
             {type: 'presence', name: 'title', message: "Vehicle title is required"},
-            {type: 'presence', name: 'plantId', message: "Vehicle plantId is required"},
-            {type: 'presence', name: 'registration', message: "Vehicle registration number is required"}
+            {type: 'presence', name: 'plantId', message: "Vehicle plantId is required"}
+            // {type: 'presence', name: 'registration', message: "Vehicle registration number is required"}
         ]
     }
 });

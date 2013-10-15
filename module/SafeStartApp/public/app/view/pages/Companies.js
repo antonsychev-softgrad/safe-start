@@ -5,7 +5,8 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         'SafeStartApp.view.pages.toolbar.Companies',
         'SafeStartApp.model.Company',
         'SafeStartApp.store.Companies',
-        'SafeStartApp.view.forms.CompanySettings'
+        'SafeStartApp.view.forms.CompanySettings',
+        'SafeStartApp.view.pages.panel.LeftContainer'
     ],
 
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
@@ -26,7 +27,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         ]
     },
 
-    initialize: function () {
+    initialize: function() {
         var self = this;
         this.callParent();
 
@@ -47,72 +48,94 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     getCompanyList: function() {
         var self = this;
         return {
-            xtype: 'list',
-                name: 'companies',
-                itemTpl: '<div class="contact">{title}</div>',
-                minWidth: 150,
-                maxWidth: 300,
-                showAnimation: {
-                    type: 'pop'
-                },
-                hideAnimation: {
-                    type: 'pop',
-                    out: 'true'
-                },
-                flex: 1,
-                cls: 'sfa-left-container',
-                store: this.companiesStore,
-                items: [
-                {
-                    xtype: 'toolbar',
-                    docked: 'top',
-                    items: [
-                        {
+            xtype: 'SafeStartLeftContainer',
+            flex: 1,
+            items: [{
+                xtype: 'container',
+                layout: 'fit',
+                items: [{
+                    xtype: 'list',
+                    name: 'companies',
+                    itemTpl: '<div class="contact">{title}</div>',
+                    showAnimation: {
+                        type: 'pop'
+                    },
+                    hideAnimation: {
+                        type: 'pop',
+                        out: 'true'
+                    },
+                    cls: 'sfa-left-container',
+                    margin: '0 20 0 0',
+                    store: this.companiesStore,
+                    items: [{
+                        xtype: 'toolbar',
+                        docked: 'top',
+                        items: [{
+                            iconCls: 'add',
+                            cls: 'sfa-add-button',
+                            ui: 'action',
+                            text: 'Add Company',
+                            action: 'add-company'
+                        }, {
+                            xtype: 'spacer',
+                            flex: 1
+                        }, {
+                            iconCls: 'arrow_left',
+                            height: 20,
+                            iconMask: true,
+                            handler: function (btn) {
+                                var panel = this.up('SafeStartLeftContainer');
+                                panel.toggleMenu();
+                            }
+                        }]
+                    }, {
+                        xtype: 'toolbar',
+                        docked: 'top',
+                        items: [{
                             xtype: 'searchfield',
+                            flex: 1,
                             placeHolder: 'Search...',
                             listeners: {
                                 scope: this,
-                                clearicontap: function () {
+                                clearicontap: function() {
                                     self.companiesStore.clearFilter();
                                 },
-                                keyup: function (field) {
+                                keyup: function(field) {
                                     self.filterStoreDataBySearchFiled(self.companiesStore, field, 'title');
                                 }
                             }
-                        },
-                        { xtype: 'spacer' },
-                        {
+                        }, {
                             xtype: 'button',
                             name: 'reload',
                             ui: 'action',
-                            cls:'sfa-search-reload',
+                            cls: 'sfa-search-reload',
                             iconCls: 'refresh',
                             handler: function() {
                                 this.up('list[name=companies]').getStore().loadData();
                             }
-                        }
-                    ]
-                },
-                {
+                        }]
+                    }]
+                }]
+            }, {
+                xtype: 'panel',
+                cls: 'sfa-left-container',
+                items: [{
                     xtype: 'toolbar',
-                    docked: 'top',
-                    cls: 'sfa-add-button',
-                    items: [
-                        {
-                            iconCls: 'add',
-                            ui: 'action',
-                            text: 'Add Company',
-                            action: 'add-company'
+                    items: [{
+                        iconCls: 'arrow_right',
+                        height: 20,
+                        iconMask: true,
+                        handler: function () {
+                            var panel = this.up('SafeStartLeftContainer');
+                            panel.toggleMenu();
                         }
-                    ]
-                }
-
-            ]
+                    }]
+                }]
+            }]
         };
     },
-
     getInfoPanel: function() {
-        return  {
+        return {
             cls: 'sfa-info-container',
             xtype: 'panel',
             layout: 'card',

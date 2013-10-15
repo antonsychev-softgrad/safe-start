@@ -130,11 +130,13 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                         handler: function () {
                             var form = this.up('SafeStartChecklistFieldForm');
                             var values = form.getValues();
-                            if (values['alert_critical'] && ! values['alert_title']) {
-                                Ext.Msg.alert('Alert message is required');
-                            } else {
-                                this.up('SafeStartChecklistFieldForm').fireEvent('save-data', this.up('SafeStartChecklistFieldForm'));
+                            if (values.type == 'radio' || values.type == 'checkbox') {
+                                if (values.alert_critical && ! values.alert_title) {
+                                    Ext.Msg.alert('Alert message is required');
+                                    return;
+                                }
                             }
+                            this.up('SafeStartChecklistFieldForm').fireEvent('save-data', this.up('SafeStartChecklistFieldForm'));
                         }
                     }
                 ]

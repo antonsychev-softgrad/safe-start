@@ -358,7 +358,7 @@ div.logo {
 
 /* left column */
 .sfa-left-container {
-    margin-right: 20px;
+    /*margin-right: 20px;*/
 }
 .sfa-left-container, .sfa-left-container .x-toolbar {
     background: none;
@@ -371,14 +371,24 @@ div.logo {
     border: none;
 }
 
+.sfa-left-container .x-toolbar.sfa-menu-toggle {
+    margin-bottom: 0px;
+}
+
 .sfa-left-container .x-list-item,
 .x-list-item .x-innerhtml span {
     font-size: 18px;
     line-height: 1.2em;
     color: #558FAC;
 }
+.sfa-left-container .x-list .x-list-item:hover .x-innerhtml span {
+    color: #75afcc !important;
+}
+.sfa-left-container .x-list .x-item-selected .x-innerhtml span {
+    color: #75afcc !important;
+}
 .sfa-left-container .x-list-item:hover {
-    color: #75afcc;
+    color: #75afcc !important;
 }
 .sfa-left-container .x-list-item-first {
     border: none !important;
@@ -469,17 +479,19 @@ font-size: 26px;
 .sfa-left-container .x-item-selected {
     color: #bfbfbf !important;
 }
-.sfa-left-container .sfa-add-button .x-button.x-button-action {
+.sfa-left-container .sfa-add-button.x-button.x-button-action {
     color: #558FAC;
     background: none;
 }
-.sfa-left-container .sfa-add-button .x-button.x-button-action .x-button-label {
+.sfa-left-container .sfa-add-button.x-button.x-button-action .x-button-label {
     color: #558FAC;
 }
-.sfa-left-container .sfa-add-button { /*  */
-    /*position: relative;
-    top: -15px;
-    margin: 0;*/
+.sfa-left-container .sfa-add-button.x-button:hover {
+    color: #75AFCC;
+}
+.sfa-left-container .sfa-add-button.x-button:hover .x-button-label{
+    color: #75AFCC;
+
 }
 .sfa-left-container .x-toolbar.x-toolbar-light.x-navigation-bar.x-docked-top{
     margin-bottom: 24px;
@@ -1490,7 +1502,7 @@ span.sfa-comment-content {
     white-space: nowrap;
 }
 
-.sfa-left-container .sfa-add-button .x-iconalign-left .x-button-label {
+.sfa-left-container .sfa-add-button.x-iconalign-left .x-button-label {
     margin-left: 0.2em;
 }
 
@@ -1677,6 +1689,9 @@ span.sfa-comment-content {
     }
 }
 
+.x-scroll-indicator {
+    opacity: 0.5 !important;
+}
 /* фиксим в mozilla полосу прокрутки */
 @-moz-document url-prefix() {
     .x-scroll-indicator.rounded.x-scroll-indicator-y > *:nth-child(2) {
