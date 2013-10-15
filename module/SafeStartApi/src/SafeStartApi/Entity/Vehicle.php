@@ -501,9 +501,10 @@ class Vehicle extends BaseEntity
         $start = new \DateTime(date('Y-m-d', $startDay));
         $to = new \DateTime(date('Y-m-d', $endOfDay));
 
-        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date < :from ORDER BY cl.update_date DESC');
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :start AND cl.update_date < :from ORDER BY cl.update_date DESC');
         $query->setParameter(1, $this)
             ->setParameter('from', $from)
+            ->setParameter('start', $start)
             ->setMaxResults(1);
         $items = $query->getResult();
 
@@ -511,37 +512,32 @@ class Vehicle extends BaseEntity
             $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
             $query->setParameter(1, $this)
                 ->setParameter('from', $from)
-                ->setParameter('to', $to)
-                ->setMaxResults(1);
+                ->setParameter('to', $to);
             $items = $query->getResult();
 
-            if (!count($items)) return $usage;
+            if (count($items) < 2) return $usage;
             $lastCheckList = $items[0];
-
-            $usage = array(
-                'kms' => $lastCheckList->getCurrentOdometer(),
-                'hours' => $lastCheckList->getCurrentOdometerHours(),
-            );
+            $firstCheckList = $items[count($items) - 1];
         } else {
             $firstCheckList = $items[0];
             $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
             $query->setParameter(1, $this)
                 ->setParameter('from', $from)
-                ->setParameter('to', $to)
-                ->setMaxResults(1);
+                ->setParameter('to', $to);
             $items = $query->getResult();
 
             if (!count($items)) return $usage;
             $lastCheckList = $items[0];
-            $kms2 = $lastCheckList->getCurrentOdometer();
-            $kms1 = $firstCheckList->getCurrentOdometer();
-            $h1 = $firstCheckList->getCurrentOdometerHours();
-            $h2 = $lastCheckList->getCurrentOdometerHours();
-            $usage = array(
-                'kms' => ($kms2 - $kms1),
-                'hours' => ($h2 - $h1),
-            );
         }
+
+        $kms2 = $lastCheckList->getCurrentOdometer();
+        $kms1 = $firstCheckList->getCurrentOdometer();
+        $h1 = $firstCheckList->getCurrentOdometerHours();
+        $h2 = $lastCheckList->getCurrentOdometerHours();
+        $usage = array(
+            'kms' => ($kms2 - $kms1),
+            'hours' => ($h2 - $h1),
+        );
 
         return $usage;
     }
