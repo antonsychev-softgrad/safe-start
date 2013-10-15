@@ -255,6 +255,7 @@ class VehicleController extends RestrictedAccessRestController
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
                             if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
+                            $filedAlert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_REFRESHED);
                             $newAlerts[] = $filedAlert;
                         }
                     }
@@ -492,7 +493,19 @@ class VehicleController extends RestrictedAccessRestController
         $vehicle = $alert->getVehicle();
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        if (isset($this->data->status)) $alert->setStatus($this->data->status);
+        if (isset($this->data->status)) {
+            if ($alert->getStatus() != $this->data->status) {
+                switch($this->data->status) {
+                    case \SafeStartApi\Entity\Alert::STATUS_NEW:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_NEW);
+                        break;
+                    case \SafeStartApi\Entity\Alert::STATUS_CLOSED:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_CLOSED);
+                        break;
+                }
+            }
+            $alert->setStatus($this->data->status);
+        }
         if (isset($this->data->new_comment) && !empty($this->data->new_comment)) $alert->addComment($this->data->new_comment);
         $this->em->persist($alert);
         $this->em->flush();
