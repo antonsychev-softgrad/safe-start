@@ -255,6 +255,7 @@ class VehicleController extends RestrictedAccessRestController
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
                             if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
+                            $filedAlert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_REFRESHED);
                             $newAlerts[] = $filedAlert;
                         }
                     }
@@ -320,15 +321,20 @@ class VehicleController extends RestrictedAccessRestController
             if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
 
             if (file_exists($path)) {
-                $this->MailPlugin()->send(
-                    'New inspection fault report',
-                    $responsibleUserInfo['email'],
-                    'checklist_fault.phtml',
-                    array(
-                        'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
-                    ),
-                    $path
-                );
+                try {
+                    $this->MailPlugin()->send(
+                        'New inspection fault report',
+                        $responsibleUserInfo['email'],
+                        'checklist_fault.phtml',
+                        array(
+                            'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
+                        ),
+                        $path
+                    );
+                } catch (\Exception $e) {
+                    $logger = \SafeStartApi\Application::getErrorLogger();
+                    if ($logger) $logger->debug(json_encode($e->getMessage()));
+                }
             }
 
             switch (strtolower($responsibleUserInfo['device'])) {
@@ -487,7 +493,19 @@ class VehicleController extends RestrictedAccessRestController
         $vehicle = $alert->getVehicle();
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        if (isset($this->data->status)) $alert->setStatus($this->data->status);
+        if (isset($this->data->status)) {
+            if ($alert->getStatus() != $this->data->status) {
+                switch($this->data->status) {
+                    case \SafeStartApi\Entity\Alert::STATUS_NEW:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_NEW);
+                        break;
+                    case \SafeStartApi\Entity\Alert::STATUS_CLOSED:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_CLOSED);
+                        break;
+                }
+            }
+            $alert->setStatus($this->data->status);
+        }
         if (isset($this->data->new_comment) && !empty($this->data->new_comment)) $alert->addComment($this->data->new_comment);
         $this->em->persist($alert);
         $this->em->flush();
