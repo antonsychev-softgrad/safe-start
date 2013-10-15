@@ -7,7 +7,7 @@ $api = array(
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
-        'emailForContacts' => 'test21141@gmail.com',
+        'emailForContacts' => 'ponomarenko.t@gmail.com',
     ),
     'fieldTypes' => array(
         'radio' => array(
@@ -69,8 +69,8 @@ $api = array(
                 'host' => 'smtp.gmail.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'test21141@gmail.com',
-                    'password' => 'test211411',
+                    'username' => 'webdev.group.ua@gmail.com',
+                    'password' => 'Ocsico!@',
                     'ssl' => 'tls'
                 ),
             ),
