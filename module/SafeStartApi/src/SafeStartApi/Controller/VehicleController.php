@@ -320,15 +320,20 @@ class VehicleController extends RestrictedAccessRestController
             if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
 
             if (file_exists($path)) {
-                $this->MailPlugin()->send(
-                    'New inspection fault report',
-                    $responsibleUserInfo['email'],
-                    'checklist_fault.phtml',
-                    array(
-                        'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
-                    ),
-                    $path
-                );
+                try {
+                    $this->MailPlugin()->send(
+                        'New inspection fault report',
+                        $responsibleUserInfo['email'],
+                        'checklist_fault.phtml',
+                        array(
+                            'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
+                        ),
+                        $path
+                    );
+                } catch (\Exception $e) {
+                    $logger = \SafeStartApi\Application::getErrorLogger();
+                    if ($logger) $logger->debug(json_encode($e->getMessage()));
+                }
             }
 
             switch (strtolower($responsibleUserInfo['device'])) {
