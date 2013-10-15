@@ -330,7 +330,8 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     onReviewSubmitBtnTap: function (button) {
-        var inspectionPanel = this.getVehicleInspectionPanel(),
+        var me = this,
+            inspectionPanel = this.getVehicleInspectionPanel(),
             odometerKms = inspectionPanel.down('field[name=current-odometer-kms]').getValue(),
             odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue(),
             odometerHoursInterval = 0,
@@ -348,6 +349,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             inspectionInterval = (new Date().getTime() - lastInspectionDate) / 3600000;
         }
 
+
         if (inspectionPanel.vehicleRecord && (
                 odometerKms < currentOdometerKms ||
                 odometerHours < currentOdometerHours ||
@@ -361,46 +363,39 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                     ui: 'confirm',
                     text: 'Ok',
                     handler: function (btn) {
-                        submitMessage.setMessage('Please confirm your submission');
-                        btn.destroy();
-                        submitMessage.setButtons([{
-                            ui: 'confirm',
-                            action: 'confirm',
-                            text: 'Confirm'
-                        }, {
-                            ui: 'action',
-                            text: 'Cancel',
-                            handler: function (btn) {
-                                submitMessage.destroy();
-                            }
-                        }]);
+                        me.showConfirmInspectionDialog();
+                        submitMessage.destroy();
                     }
                 }]
             });
+            this.getVehicleInspectionPanel().add(submitMessage);
         } else {
-            submitMessage = Ext.create('Ext.MessageBox', {
-                cls: 'sfa-messagebox-confirm',
-                message: 'Please confirm your submission',
-                buttons: [{
-                    ui: 'confirm',
-                    action: 'confirm',
-                    text: 'Confirm'
-                }, {
-                    ui: 'action',
-                    text: 'Cancel',
-                    handler: function(btn) {
-                        btn.up('sheet[cls=sfa-messagebox-confirm]').destroy();
-                    }
-                }]
-            });
+            me.showConfirmInspectionDialog();
         }
+    },
+
+    showConfirmInspectionDialog: function () {
+        var submitMessage = Ext.create('Ext.MessageBox', {
+            cls: 'sfa-messagebox-confirm',
+            message: 'Please confirm your submission',
+            buttons: [{
+                ui: 'confirm',
+                text: 'Confirm',
+                action: 'confirm'
+            }, {
+                ui: 'action',
+                text: 'Cancel',
+                handler: function(btn) {
+                    submitMessage.destroy();
+                }
+            }]
+        });
 
         this.getVehicleInspectionPanel().add(submitMessage);
     },
 
     onReviewConfirmBtnTap: function (button) {
-        var controller = this,
-            alerts = [],
+        var alerts = [],
             vehicleInspectionPanel = this.getVehicleInspectionPanel(),
             checklists = this.getChecklistForms(),
             fieldValues = [],
@@ -424,7 +419,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         Ext.each(vehicleInspectionPanel.query('container[name=alert-container]'), function (alertContaienr) {
             alert = alertContaienr.config.alertModel;
             alerts.push({
-                fieldId: parseInt(alert.get('fieldId')),
+                fieldId: parseInt(alert.get('fieldId'), 10),
                 comment: alert.get('comment'),
                 images: alert.get('photos')
             });
@@ -432,6 +427,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         Ext.each(checklists, function (checklist) {
             fields = checklist.query('field');
             Ext.each(fields, function (field) {
+                var value = '';
                 if (field.isHidden()) {
                     return;
                 }
