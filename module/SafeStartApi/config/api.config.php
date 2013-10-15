@@ -10,6 +10,10 @@ $api = array(
         'emailForContacts' => 'ponomarenko.t@gmail.com',
     ),
     'fieldTypes' => array(
+        'root' => array(
+           'id' => 0,
+            'default' => ''
+        ),
         'radio' => array(
             'id' => 1,
             'options' => array(
