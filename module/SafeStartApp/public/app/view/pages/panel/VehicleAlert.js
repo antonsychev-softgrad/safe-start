@@ -186,6 +186,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             }
         }
         alertContent.history.reverse();
+        this.alertContent = alertContent;
 
 
         this.down('container[name=alert-content]').setData(alertContent);
@@ -219,7 +220,23 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         var values = {};
         var vehicleId = this.record.raw.vehicle.id;
         var status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
+        var action = '';
         if (this.record.get('status') != status) {
+            switch (status) {
+                case 'new':
+                    action = 'Reopened';
+                    break;
+                case 'closed':
+                    action = 'Closed';
+                    break;
+            }
+            
+            this.alertContent.history.push({
+                username: SafeStartApp.userModel.getFullName(),
+                action: action,
+                date: Ext.Date.format(new Date(), SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat)
+            });
+            this.down('container[name=alert-content]').setData(this.alertContent);
         }
         values.status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
         values.new_comment = this.down('#SafeStartVehicleAlertNewComment' + this.uniqueId).getValue();
