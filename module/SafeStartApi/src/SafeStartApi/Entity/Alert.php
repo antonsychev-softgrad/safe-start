@@ -194,7 +194,7 @@ class Alert extends BaseEntity
         $count = 0;
         $currentHistory = $this->getHistory();
         foreach($currentHistory as $historyItem) {
-            if($historyItem['action'] == self::ACTION_REFRESHED) $count++;
+            if (isset($historyItem['action']) && $historyItem['action'] == self::ACTION_REFRESHED) $count++;
         }
         return $count;
     }
