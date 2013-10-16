@@ -1059,7 +1059,7 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     color: #565555;
     font-size: 17px;
 }
-.sfa-alert-comments .name {
+.sfa-alert-comments .name, .sfa-alert-comments .alert {
     font-size: 18px;
 }
 .sfa-alert-comments h3 {
@@ -1401,10 +1401,16 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     line-height: 27px;
     background: url(/resources/img/user-ic.gif) no-repeat;
 }
+.sfa-alert-comments .alert {
+    float: left;
+    padding: 0 0 0 67px;
+    line-height: 27px;
+    background: url(/resources/img/user-ic.gif) no-repeat;
+}
 .sfa-alert-comments .sfa-item:nth-child(even) {
     color: #99A899;
 }
-.sfa-alert-comments .sfa-item .name {
+.sfa-alert-comments .sfa-item .name, .sfa-alert-comments .sfa-item .alert {
     min-height: 49px;
 }
 span.sfa-comment-content {

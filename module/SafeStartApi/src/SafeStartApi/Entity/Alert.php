@@ -182,11 +182,11 @@ class Alert extends BaseEntity
 
     public function addHistoryItem($action = '')
     {
-        $this->setHistory(array(
+        $this->setHistory(array(array(
            'date' => time(),
            'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
            'action' => $action
-        ));
+        )));
     }
 
     public function getRefreshedTimes()
