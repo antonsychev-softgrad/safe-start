@@ -157,6 +157,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     },
 
     saveAction: function (form) {
+        // calculate order
         var record = form.getRecord();
         if (this.validateFormByModel(record, form)) {
             var self = this;

@@ -303,7 +303,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createCheckboxField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 default: 
-                    Ext.Logger.log('Unexpected field type:' + fieldData.type, 'warn');
+                    console.log(fieldData.type);
                     break;
             }
 

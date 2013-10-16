@@ -100,8 +100,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 noMoreRecordsText: ''
             }],
             itemTpl: [
-                '<div class="headshot" style="background-image:url({thumbnail});"></div>',
-                '<div class="sfa-alert-description">{alert_description}&nbsp</div>',
+                '<div class="headshot x-hasbadge" style="position: relative; background-image:url({thumbnail});">',
+                '<div style="position:absolute;" class="x-badge sfa-alert-badge">{refreshedTimes+1}</div></div>',
+                '<div class="sfa-alert-description">{alertDescription}&nbsp</div>',
                 '<span>{vehicle.title}(<b>{vehicle.plantId}/{vehicle.registration}</b>): {user.firstName} {user.lastName} at {creationDate}</span></div>'
             ].join(''),
             cls: 'sfa-alerts',

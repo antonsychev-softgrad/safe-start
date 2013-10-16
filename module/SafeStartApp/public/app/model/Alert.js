@@ -9,10 +9,17 @@ Ext.define('SafeStartApp.model.Alert', {
                 var date = new Date(v * 1000);
                 return Ext.Date.format(date, SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat);
             }},
-            {name: 'alert_description', type: 'string'},
+            {name: 'alertDescription', mapping: 'alert_description', type: 'string'},
             {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},
             {name: 'status', type: 'string', defaultValue: 'new'},
+            {name: 'refreshedTimes', mapping: 'refreshed_times', type: 'int', defaultValue: 'new'},
+            {name: 'history', type: 'auto',  convert: function (v, model) {
+                if (! (v && v.length)) {
+                    return [];
+                }
+                return v;
+            }},
             {name: 'vehicle'}
         ],
         associations: [
