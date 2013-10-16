@@ -16,6 +16,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'hiddenfield',
+                name: 'is_root'
+            },
+            {
+                xtype: 'hiddenfield',
                 name: 'vehicleId'
             },
             {
@@ -162,7 +166,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         this.show();
 
         this.changeFieldType(record.get('type'));
+
         this.callParent([record]);
+        
+        if (record.get('type') == 'root') {
+            fields.is_root.setValue(true);
+        }
     },
 
     changeFieldType: function (type) {
