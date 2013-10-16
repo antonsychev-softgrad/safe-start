@@ -194,7 +194,7 @@ class VehicleController extends RestrictedAccessRestController
             $checkList = $inspection;
             $checkList->setPdfLink(NULL);
             $checkList->setFaultPdfLink(NULL);
-
+            $checkList->clearWarnings();
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
             $uniqId = uniqid();
@@ -207,21 +207,61 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
+        if (!$inspection) $this->em->persist($checkList);
+        $this->em->flush();
+
+        // set current odometer data
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
+            $warningKms = false;
             $checkList->setCurrentOdometer($this->data->odometer);
-            $vehicle->setCurrentOdometerKms($this->data->odometer);
+            if ($this->data->odometer < $vehicle->getCurrentOdometerKms()) {
+                $warningKms = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_KMS);
+            }
+            if (!$warningKms) $vehicle->setCurrentOdometerKms($this->data->odometer);
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerKms());
         }
         if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours))) {
+            $warningHours = false;
             $checkList->setCurrentOdometerHours($this->data->odometer_hours);
-            $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+            if ($this->data->odometer_hours < $vehicle->getCurrentOdometerHours()) {
+                $warningHours = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
+            }
+            if (
+                !$warningHours
+                && $vehicle->getLastInspectionDay()
+                && (($this->data->odometer_hours - $vehicle->getCurrentOdometerHours()) < ($checkList->getCreationDate()->getTimestamp() - $vehicle->getLastInspectionDay()))
+            ) {
+                $warningHours = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
+            }
+            if (!$warningHours) $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
-        $this->em->persist($checkList);
         $this->em->flush();
+
+        // set usage warning
+        if ($vehicle->getInspectionDueKms() || $vehicle->getInspectionDueHours()) {
+            $currentDayOdometerUsage = $vehicle->getCurrentDayOdometerUsage();
+            if (
+                $currentDayOdometerUsage['kms'] && $vehicle->getInspectionDueKms()
+                && $currentDayOdometerUsage['kms'] > $vehicle->getInspectionDueKms()
+            ) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT_KMS);
+                $this->em->flush();
+            }
+            if (
+                $currentDayOdometerUsage['hours'] && $vehicle->getInspectionDueHours()
+                && $currentDayOdometerUsage['hours'] > $vehicle->getInspectionDueHours()
+            ) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT_HOURS);
+                $this->em->flush();
+            }
+        }
 
         // delete existing alerts
         if ($inspection) {
