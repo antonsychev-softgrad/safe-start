@@ -184,8 +184,7 @@ class Vehicle extends BaseEntity
             "enabled" => $this->getEnabled(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
-            "lastInspectionDay" => $this->getLastInspectionDay(),
-            "currentDayOdometerUsage" => $this->getCurrentDayOdometerUsage(),
+            "lastInspectionDay" => $this->getLastInspectionDay()
         );
     }
 
@@ -277,8 +276,7 @@ class Vehicle extends BaseEntity
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
-            "lastInspectionDay" => $this->getLastInspectionDay(),
-            "currentDayOdometerUsage" => $this->getCurrentDayOdometerUsage(),
+            "lastInspectionDay" => $this->getLastInspectionDay()
         );
     }
 
@@ -408,6 +406,11 @@ class Vehicle extends BaseEntity
         }
     }
 
+    public function getPrevInspectionDay() {
+        if (count($this->checkLists) < 2) return null;
+        return $this->checkLists[count($this->checkLists) - 2]->getCreationDate()->getTimestamp();
+    }
+
     /**
      * @return null
      */
@@ -415,7 +418,7 @@ class Vehicle extends BaseEntity
     {
         $inspection = $this->getLastInspection();
         if ($inspection) {
-            return $inspection->getUpdateDate()->getTimestamp();
+            return $inspection->getCreationDate()->getTimestamp();
         }
         return null;
     }
@@ -496,7 +499,7 @@ class Vehicle extends BaseEntity
 
         $beginOfDay = strtotime("midnight", time());
         $endOfDay = strtotime("tomorrow", $beginOfDay);
-        $startDay = strtotime("midnight", time()) - 24*60*60;
+        $startDay = strtotime("midnight", time()) - 24 * 60 * 60;
         $from = new \DateTime(date('Y-m-d', $beginOfDay));
         $start = new \DateTime(date('Y-m-d', $startDay));
         $to = new \DateTime(date('Y-m-d', $endOfDay));
@@ -516,6 +519,7 @@ class Vehicle extends BaseEntity
             $items = $query->getResult();
 
             if (count($items) < 2) return $usage;
+
             $lastCheckList = $items[0];
             $firstCheckList = $items[count($items) - 1];
         } else {

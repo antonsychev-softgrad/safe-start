@@ -207,8 +207,22 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
-        if (!$inspection) $this->em->persist($checkList);
-        $this->em->flush();
+        // set usage warning
+        if ($vehicle->getInspectionDueKms() && $vehicle->getInspectionDueHours() && (isset($this->data->odometer) && !empty($this->data->odometer))) {
+            if (!$inspection) $lastInspectionDay = $vehicle->getLastInspectionDay();
+            else $lastInspectionDay = $vehicle->getPrevInspectionDay();
+            if ($lastInspectionDay) {
+                $interval = time() - $vehicle->getLastInspectionDay();
+                $intervals =  ($interval / (60 * 60)) / $vehicle->getInspectionDueHours();
+            } else {
+                $intervals = 1;
+            }
+            $maxKms = $intervals * $vehicle->getInspectionDueKms();
+
+            if ( $maxKms < $this->data->odometer ) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT);
+            }
+        }
 
         // set current odometer data
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
@@ -242,26 +256,8 @@ class VehicleController extends RestrictedAccessRestController
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
+        if (!$inspection) $this->em->persist($checkList);
         $this->em->flush();
-
-        // set usage warning
-        if ($vehicle->getInspectionDueKms() || $vehicle->getInspectionDueHours()) {
-            $currentDayOdometerUsage = $vehicle->getCurrentDayOdometerUsage();
-            if (
-                $currentDayOdometerUsage['kms'] && $vehicle->getInspectionDueKms()
-                && $currentDayOdometerUsage['kms'] > $vehicle->getInspectionDueKms()
-            ) {
-                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT_KMS);
-                $this->em->flush();
-            }
-            if (
-                $currentDayOdometerUsage['hours'] && $vehicle->getInspectionDueHours()
-                && $currentDayOdometerUsage['hours'] > $vehicle->getInspectionDueHours()
-            ) {
-                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT_HOURS);
-                $this->em->flush();
-            }
-        }
 
         // delete existing alerts
         if ($inspection) {
@@ -367,7 +363,7 @@ class VehicleController extends RestrictedAccessRestController
                         $responsibleUserInfo['email'],
                         'checklist_fault.phtml',
                         array(
-                            'name' => $responsibleUserInfo['firstName'] .' '. $responsibleUserInfo['lastName']
+                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName']
                         ),
                         $path
                     );
@@ -535,7 +531,7 @@ class VehicleController extends RestrictedAccessRestController
 
         if (isset($this->data->status)) {
             if ($alert->getStatus() != $this->data->status) {
-                switch($this->data->status) {
+                switch ($this->data->status) {
                     case \SafeStartApi\Entity\Alert::STATUS_NEW:
                         $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_NEW);
                         break;
@@ -672,13 +668,13 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $from = null;
-        if ((int) $this->params('from')) {
+        if ((int)$this->params('from')) {
             $from = new \DateTime();
             $from->setTimestamp((int)$this->params('from'));
         }
 
         $to = null;
-        if ((int) $this->params('to')) {
+        if ((int)$this->params('to')) {
             $to = new \DateTime();
             $to->setTimestamp((int)$this->params('to'));
         }

@@ -18,8 +18,7 @@ class CheckList extends BaseEntity
     const WARNING_DATA_DISCREPANCY_HOURS = 'date_discrepancy_hours';
 
     // 24h/500km per day
-    const WARNING_DATA_INCORRECT_KMS = 'date_incorrect_kms';
-    const WARNING_DATA_INCORRECT_HOURS = 'date_incorrect_hours';
+    const WARNING_DATA_INCORRECT = 'date_incorrect';
 
     /**
      * @ORM\Id
