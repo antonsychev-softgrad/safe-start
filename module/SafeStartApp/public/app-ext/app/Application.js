@@ -4,7 +4,10 @@ Ext.define('SafeStartExt.Application', {
     extend: 'Ext.app.Application',
 
     controllers: [
-        'Main'
+        'Main',
+        'Auth',
+        'Contact',
+        'Vehicles'
     ],
 
     launch: function () {

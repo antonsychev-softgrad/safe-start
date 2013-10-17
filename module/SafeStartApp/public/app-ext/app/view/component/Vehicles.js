@@ -3,6 +3,7 @@ Ext.define('SafeStartExt.view.component.Vehicles', {
     requires: [
     ],
     xtype: 'SafeStartExtComponentVehicles',
+    hidden: true,
 
-    html: 'vehicles page'
+    html: 'vehicles'
 });

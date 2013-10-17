@@ -10,20 +10,13 @@ Ext.define('SafeStartExt.view.Main', {
     
     xtype: 'SafeStartExtMain',
 
-    layout: 'fit',
+    layout: 'card',
 
     items: [{
-        xtype: 'tabpanel',
-        items: [{
-            xtype: 'SafeStartExtComponentAuth',
-            title: 'Auth',
-            html: 'hello safestart'
-        }, {
-            xtype: 'SafeStartExtComponentContact',
-            title: 'Contact'
-        }, {
-            xtype: 'SafeStartExtComponentVehicles',
-            title: 'Vehicles'
-        }]
+        xtype: 'SafeStartExtComponentAuth'
+    }, {
+        xtype: 'SafeStartExtComponentContact'
+    }, {
+        xtype: 'SafeStartExtComponentVehicles'
     }]
 });

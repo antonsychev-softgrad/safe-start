@@ -1,15 +1,20 @@
 Ext.define('SafeStartExt.view.Viewport', {
     extend: 'Ext.container.Viewport',
     requires: [
-        'Ext.layout.container.Fit',
-        'SafeStartExt.view.Main'
+        'Ext.layout.container.Border',
+        'SafeStartExt.view.Main',
+        'SafeStartExt.view.BottomNav'
     ],
 
     layout: {
-        type: 'fit'
+        type: 'border'
     },
 
     items: [{
-        xtype: 'SafeStartExtMain'
+        xtype: 'SafeStartExtMain',
+        region: 'center'
+    }, {
+        xtype: 'SafeStartExtBottomNav',
+        region: 'south'
     }]
 });
