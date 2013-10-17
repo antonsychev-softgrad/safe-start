@@ -90,6 +90,11 @@ class CheckList extends BaseEntity
     protected $default_alerts;
 
     /**
+     * @ORM\OneToMany(targetEntity="InspectionBreakdown", mappedBy="check_list", cascade={"persist", "remove", "merge"})
+     */
+    protected $inspectionBreakdowns;
+
+    /**
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
