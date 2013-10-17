@@ -1719,3 +1719,18 @@ span.sfa-comment-content {
         border-bottom-left-radius: 3px;
     }
 }
+
+.x-webkit .x-button-forward:before, .x-webkit .x-button-forward:after, .x-webkit .x-button-back:before, .x-webkit .x-button-back:after {
+    content: none;
+}
+.x-toolbar {
+    overflow: visible;
+}
+.x-mask .x-mask-inner .x-mask-message {
+    bottom: 15px;
+    color: #FFFFFF;
+    font-weight: normal;
+}
+.x-mask .x-mask-inner .x-loading-spinner-outer {
+    height: 100px;
+}
