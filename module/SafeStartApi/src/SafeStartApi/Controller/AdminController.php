@@ -27,7 +27,6 @@ class AdminController extends AdminAccessRestController
     public function updateCompanyAction()
     {
         //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
-
         $companyId = (int)$this->params('id');
         if ($companyId) {
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
@@ -52,12 +51,6 @@ class AdminController extends AdminAccessRestController
             $user->setUsername($this->data->firstName);
             $user->setRole('companyAdmin');
             $this->em->persist($user);
-        } else {
-            $adminForCompany = $this->em->getRepository('SafeStartApi\Entity\Company')->findOneBy(array(
-                'admin' => $user,
-                'deleted' => 0,
-            ));
-            if(!is_null($adminForCompany)) return $this->_showAdminAlreadyInUse();
         }
 
         // set company data

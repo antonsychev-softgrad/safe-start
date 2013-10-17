@@ -117,6 +117,14 @@ $api = array(
                 'alert_description_color' => '#ff0000',
                 'alert_comment_size' => '10',
                 'alert_comment_color' => '#333333',
+                'warning_size' => '10',
+                'warning_color' => '#ff0000',
+                'warning_line_spacing' => '2',
+                'next_service_due' => 'Next service in %d days',
+                'subscription_ending' => 'Subscription expires in %d days',
+                'date_discrepancy_kms' => 'Discrepancy of current kms',
+                'date_discrepancy_hours' => 'Discrepancy of current hours',
+                'date_incorrect' => 'Inaccurate current hours or kms',
             )
         ),
         'inspection_fault' => array(

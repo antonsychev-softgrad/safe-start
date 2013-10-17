@@ -657,11 +657,11 @@ class CheckList extends BaseEntity
      */
     public function addWarning($warning = '')
     {
-        $this->setWarnings(array(
+        $this->setWarnings(array(array(
             'date' => time(),
             'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
             'action' => $warning
-        ));
+        )));
     }
 
 }

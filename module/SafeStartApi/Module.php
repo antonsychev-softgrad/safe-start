@@ -94,11 +94,11 @@ class Module
                     case 'SafeStartApi\Base\Exception\Rest403':
                         $viewModel->setTemplate('json/response');
                         $viewModel->setVariable('answer', array(
-                            'errorMessage' => 'Access denied: Not enough permissions.',
+                            'errorMessage' => 'Access denied: ' . $e->getParam('exception')->getMessage(),
                         ));
                         $viewModel->setVariable('errorCode', 403);
                         $viewModel->setVariable('statusCode', 403);
-                        $e->getResponse()->setStatusCode(403);
+                        $e->getResponse()->setStatusCode(201);
                         break;
                     default:
                         $viewModel->setTemplate('json/500');
