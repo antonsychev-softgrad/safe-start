@@ -19,8 +19,10 @@ Ext.define('SafeStartApp.view.Main', {
         Ext.each(this.query('tab'), function (tab) {
             tab.on({
                 tap: function (tab, e) {
-                    me.fireEvent('changeTab', tab.config.action);
-                    return false;
+                    if (tab.config.action) {
+                        me.fireEvent('changeTab', tab.config.action);
+                        return false;
+                    }
                 },
                 order: 'before'
             });
