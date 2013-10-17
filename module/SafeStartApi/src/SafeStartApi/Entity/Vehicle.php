@@ -406,7 +406,8 @@ class Vehicle extends BaseEntity
         }
     }
 
-    public function getPrevInspectionDay() {
+    public function getPrevInspectionDay()
+    {
         if (count($this->checkLists) < 2) return null;
         return $this->checkLists[count($this->checkLists) - 2]->getCreationDate()->getTimestamp();
     }

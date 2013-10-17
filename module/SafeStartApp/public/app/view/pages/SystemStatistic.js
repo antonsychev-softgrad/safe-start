@@ -17,7 +17,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         styleHtmlContent: true,
         layout: 'card',
         tab: {
-          action: 'system-statistic'
+            action: 'system-statistic'
         },
         items: [
 
@@ -41,22 +41,61 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
             docked: 'top'
         });
 
-        this.add(this.getInfoPanel());
+        this.add(this.getTabPanel());
 
     },
 
-    getInfoPanel: function () {
+    getTabPanel: function () {
+        return {
+            cls: 'sfa-info-container sfa-system-settings',
+            xtype: 'tabpanel',
+            defaults: {
+                styleHtmlContent: true
+            },
+            items: [
+                this.getFirstPanel(),
+                {
+                    xtype: 'panel',
+                    title: 'Inspection Breakdowns',
+                    name: 'breakdown',
+                    html: "Inspection Breakdowns",
+                    minHeight: 300,
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    }
+                },
+                {
+                    xtype: 'panel',
+                    title: 'CheckLists Changes',
+                    name: 'changes',
+                    html: "CheckLists Changes",
+                    minHeight: 300,
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    }
+                }
+            ],
+            listeners: {
+
+            }
+        };
+    },
+
+    getFirstPanel: function () {
         var self = this;
         var companiesStore = Ext.create(SafeStartApp.store.Companies);
         this.checkListTree = new SafeStartApp.view.components.UpdateChecklist({checkListStore: this.checklistDefaultStoreStore});
         companiesStore.loadData();
-        companiesStore.addListener('data-load-success', function(){
+        companiesStore.addListener('data-load-success', function () {
             companiesStore.add({id: 0, title: 'All companies'});
             self.down('selectfield[name=company]').setValue(0);
         });
         return {
             cls: 'sfa-info-container sfa-statistic',
             xtype: 'panel',
+            title: 'General',
             layout: {
                 type: 'vbox',
                 align: 'stretch'
@@ -131,19 +170,21 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     ]
                 },
                 {
-                    xtype: 'panel', 
-                    items: [{
-                        id: 'SafeStartSystemStatisticContent',
-                        docked: 'top',
-                        tpl: [
-                            '<div class="top">',
-                            '<div class="name">Period from {period.from} to {period.to}</div>',
-                            '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
-                            '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
-                            '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
-                            '</div>'
-                        ].join('')
-                    }]
+                    xtype: 'panel',
+                    items: [
+                        {
+                            id: 'SafeStartSystemStatisticContent',
+                            docked: 'top',
+                            tpl: [
+                                '<div class="top">',
+                                '<div class="name">Period from {period.from} to {period.to}</div>',
+                                '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
+                                '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
+                                '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
+                                '</div>'
+                            ].join('')
+                        }
+                    ]
                 }
             ],
             listeners: {
@@ -172,7 +213,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         if (this.down('datepickerfield[name=to]').getValue()) post.to = this.down('datepickerfield[name=to]').getValue().getTime() / 1000;
         post.range = this.down('selectfield[name=range]').getValue();
         if (this.down('selectfield[name=company]').getValue()) {
-            post.company =  this.down('selectfield[name=company]').getValue();
+            post.company = this.down('selectfield[name=company]').getValue();
         } else {
             post.company = 0;
         }

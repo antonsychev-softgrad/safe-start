@@ -136,7 +136,7 @@ class CompanyController extends RestrictedAccessRestController
                 'plantId' => $plantId,
                 'deleted' => 0,
             ));
-            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            if (!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
@@ -201,7 +201,7 @@ class CompanyController extends RestrictedAccessRestController
         $users = array_merge($users, $responsibleUsers);
 
         $cache = \SafeStartApi\Application::getCache();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $cashKey = "getUserVehiclesList" . $user->getId();
             $cache->removeItem($cashKey);
         }
@@ -240,7 +240,7 @@ class CompanyController extends RestrictedAccessRestController
 
         foreach ($items as $item) {
             if ($item->getId() == $this->authService->getIdentity()->getId()) continue;
-            if ($item->getId() ==  $company->getAdmin()->getId()) continue;
+            if ($item->getId() == $company->getAdmin()->getId()) continue;
             $this->answer[] = $item->toArray();
         }
 
@@ -376,6 +376,7 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
+        $action = 'create';
         $fieldId = (int)$this->params('id');
         if ($fieldId) {
             $field = $this->em->find('SafeStartApi\Entity\Field', $fieldId);
@@ -385,6 +386,7 @@ class CompanyController extends RestrictedAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            $action = 'update';
         } else {
             $field = new \SafeStartApi\Entity\Field();
         }
@@ -407,6 +409,9 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 401);
         }
 
+        $oldTitle = $field->getTitle();
+        $oldType = $field->getType();
+
         $field->setTitle($this->data->title);
         $field->setDescription($this->data->description);
         $field->setType($this->data->type);
@@ -419,7 +424,7 @@ class CompanyController extends RestrictedAccessRestController
         $field->setAlertCritical((int)$this->data->alert_critical);
         $field->setVehicle($vehicle);
 
-        $this->em->persist($field);
+        if (!$fieldId) $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());
 
         $this->em->flush();
@@ -427,8 +432,21 @@ class CompanyController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleChecklist" . $vehicle->getId();
         $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
+        $cashKey3 = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
+        if ($cache->hasItem($cashKey3)) $cache->removeItem($cashKey3);
+
+        if ($oldTitle != $this->data->title || $oldType != $this->data->type) {
+            $record = new \SafeStartApi\Entity\InspectionChanges();
+            $record->setAction($action);
+            $record->setKey($field->getTitle());
+            $record->setPrevKey($oldTitle);
+            $record->setType($field->getType());
+            $record->setFieldId($field->getId());
+            $this->em->persist($record);
+            $this->em->flush();
+        }
 
         $this->answer = array(
             'done' => true,
@@ -455,6 +473,14 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $field->setDeleted(1);
+        $this->em->flush();
+
+        $record = new \SafeStartApi\Entity\InspectionChanges();
+        $record->setAction('delete');
+        $record->setKey($field->getTitle());
+        $record->setType($field->getType());
+        $record->setFieldId($field->getId());
+        $this->em->persist($record);
         $this->em->flush();
 
         $this->answer = array(

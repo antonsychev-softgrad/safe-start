@@ -174,14 +174,18 @@ class VehicleController extends RestrictedAccessRestController
 
         $user = $this->authService->getStorage()->read();
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
 
-        $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
-
-        $fieldsStructure = json_encode($fieldsStructure);
-        $fieldsData = json_encode($this->data->fields);
+        if ($cache->hasItem($cashKey)) {
+            $fieldsStructure = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+            $query->setParameter(1, $vehicle);
+            $items = $query->getResult();
+            $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
+            $cache->setItem($cashKey, $fieldsStructure);
+        }
 
         $inspection = null;
         $checklistId = (int)$this->getRequest()->getQuery('checklistId'); //todo: also check by hash
@@ -203,8 +207,8 @@ class VehicleController extends RestrictedAccessRestController
 
         $checkList->setVehicle($vehicle);
         $checkList->setUser($user);
-        $checkList->setFieldsStructure($fieldsStructure);
-        $checkList->setFieldsData($fieldsData);
+        $checkList->setFieldsStructure(json_encode($fieldsStructure));
+        $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
         // set usage warning
@@ -213,13 +217,13 @@ class VehicleController extends RestrictedAccessRestController
             else $lastInspectionDay = $vehicle->getPrevInspectionDay();
             if ($lastInspectionDay) {
                 $interval = time() - $vehicle->getLastInspectionDay();
-                $intervals =  ($interval / (60 * 60)) / $vehicle->getInspectionDueHours();
+                $intervals = ($interval / (60 * 60)) / $vehicle->getInspectionDueHours();
             } else {
                 $intervals = 1;
             }
             $maxKms = $intervals * $vehicle->getInspectionDueKms();
 
-            if ( $maxKms < $this->data->odometer ) {
+            if ($maxKms < $this->data->odometer) {
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT);
             }
         }
@@ -325,9 +329,57 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
+        $this->_setInspectionStatistic($checkList);
         $this->_pushNewChecklistNotification($vehicle, $newAlerts);
 
+
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _setInspectionStatistic(\SafeStartApi\Entity\CheckList $checkList)
+    {
+        $fieldsDataValues = array();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData(), true);
+        foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
+
+        $query = $this->em->createQuery('DELETE FROM \SafeStartApi\Entity\InspectionBreakdown f WHERE f.check_list = ?1');
+        $query->setParameter(1, $checkList);
+        $query->getResult();
+
+        foreach ($fieldsStructure as $group) {
+            if ($this->_isEmptyGroup($group, $fieldsDataValues)) continue;
+            $record = new \SafeStartApi\Entity\InspectionBreakdown();
+
+            $record->setDefault(0);
+            $record->setAdditional((int)$group->additional);
+            $record->setKey($group->groupName);
+            $record->setFieldId($group->id);
+            $record->setCheckList($checkList);
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
+    }
+
+    private function _isEmptyGroup($group, $fieldsDataValues)
+    {
+        if (isset($group->items) && is_array($group->items)) {
+            $fields = $group->items;
+        } elseif (isset($group->fields) && is_array($group->fields)) {
+            $fields = $group->fields;
+        } else {
+            return true;
+        }
+        foreach ($fields as $field) {
+            if ($field->type == 'group') {
+                if (!$this->_isEmptyGroup($field, $fieldsDataValues)) return false;
+            }
+            if (!empty($fieldsDataValues[$field->id])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
