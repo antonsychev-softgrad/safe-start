@@ -13,7 +13,7 @@ Ext.define('SafeStartApp.model.Alert', {
             {name: 'thumbnail', type: 'string'},
             {name: 'images', type: 'auto', defaultValue: []},
             {name: 'status', type: 'string', defaultValue: 'new'},
-            {name: 'refreshedTimes', mapping: 'refreshed_times', type: 'int', defaultValue: 'new'},
+            {name: 'refreshedTimes', mapping: 'refreshed_times', type: 'int', defaultValue: 0},
             {name: 'history', type: 'auto',  convert: function (v, model) {
                 if (! (v && v.length)) {
                     return [];
