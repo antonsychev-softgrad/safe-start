@@ -337,28 +337,47 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             odometerHoursInterval = 0,
             currentOdometerHours,
             currentOdometerKms,
+            inspectionDueHours,
+            inspectionDueKms,
             lastInspectionDate = 0,
             submitMessage,
+            warningMessage,
+            intervals,
+            vehicleRecord = inspectionPanel.vehicleRecord,
             inspectionInterval = 24;
 
-        if (inspectionPanel.vehicleRecord) {
-            currentOdometerHours = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerHours'), 10);
-            currentOdometerKms = parseInt(inspectionPanel.vehicleRecord.get('currentOdometerKms'), 10);
-            lastInspectionDate = inspectionPanel.vehicleRecord.get('lastInspectionDay');
+        // TODO: warining message
+        if (vehicleRecord) {
+            currentOdometerHours = parseInt(vehicleRecord.get('currentOdometerHours'), 10);
+            currentOdometerKms = parseInt(vehicleRecord.get('currentOdometerKms'), 10);
+            lastInspectionDate = vehicleRecord.get('lastInspectionDay');
             odometerHoursInterval = odometerHours - currentOdometerHours;
-            inspectionInterval = (new Date().getTime() - lastInspectionDate) / 3600000;
+            inspectionDueHours = vehicleRecord.get('inspectionDueHours');
+            inspectionDueKms = vehicleRecord.get('inspectionDueKms');
+            if (lastInspectionDate) {
+                inspectionInterval = (new Date().getTime() - lastInspectionDate) / 60 / 60 / 1000;
+                if (inspectionInterval < odometerHoursInterval) {
+                    warningMessage = 'Please make sure the data is correct';
+                }
+                intervals = (inspectionInterval / inspectionDueHours);
+            } else {
+                intervals = 1;
+            }
+
+            if (intervals * inspectionDueKms < odometerKms) {
+                warningMessage = 'Please make sure the data is correct';
+            }
+
+            if (odometerKms < currentOdometerKms || odometerHours < currentOdometerHours) {
+                warningMessage = 'Please make sure the data is correct';
+            }
+
         }
 
-
-        if (inspectionPanel.vehicleRecord && (
-                odometerKms < currentOdometerKms ||
-                odometerHours < currentOdometerHours ||
-                inspectionInterval < odometerHoursInterval 
-            )
-        ) {
+        if (warningMessage) {
             submitMessage = Ext.create('Ext.MessageBox', {
                 cls: 'sfa-messagebox-confirm-warn',
-                message: 'Please make sure the data is correct',
+                message: warningMessage,
                 buttons: [{
                     ui: 'confirm',
                     text: 'Ok',
@@ -369,9 +388,10 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 }]
             });
             this.getVehicleInspectionPanel().add(submitMessage);
-        } else {
-            me.showConfirmInspectionDialog();
+            return;
         }
+        
+        this.showConfirmInspectionDialog();
     },
 
     showConfirmInspectionDialog: function () {
