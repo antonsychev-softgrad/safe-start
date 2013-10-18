@@ -624,7 +624,7 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
@@ -669,7 +669,7 @@ class VehicleController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
