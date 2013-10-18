@@ -1,0 +1,41 @@
+
+// panel with ui=form
+.#{$prefix}panel-form {
+    @include border-radius(10px, 10px);
+    @include box-shadow(rgba(0, 0, 0, 0.4) 0 .2em .6em);
+    border: 3px solid #FFFFFF;
+    padding: 24px 50px 34px 50px;
+    background: url(/resources/img/log-form_bg.jpg) repeat;
+}
+
+.#{$prefix}ie .#{$prefix}panel-form {
+    border: 1px solid #CCC;
+}
+
+.#{$prefix}panel-form .#{$prefix}panel-header-body-form span {
+    font-size: 33px;
+    color: #2E7FB7;
+}
+
+.#{$prefix}panel-form .#{$prefix}panel-body-form {
+    padding-top: 10px;
+}
+
+.#{$prefix}panel-form .#{$prefix}form-item-label {
+    font-size: 18px;
+    padding-bottom: 5px;
+    color: #565555;
+}
+
+.#{$prefix}panel-form .#{$prefix}form-field {
+    padding: 6px 7px 8px;
+    line-height: 1.2;
+    font-size: 18px;
+    color: #565555;
+    border: 1px solid #CACACA;
+    @include border-radius(10px, 10px);
+}
+
+.#{$prefix}panel-form .#{$prefix}form-field:focus {
+    border: 3px solid #2E7Fb7;
+}

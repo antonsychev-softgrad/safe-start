@@ -827,10 +827,17 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.window.Window": [
     "Ext.Window"
   ],
-  "app-ext.Application": [],
-  "app-ext.controller.Main": [],
-  "app-ext.view.Main": [],
-  "app-ext.view.Viewport": []
+  "SafeStartExt.Application": [],
+  "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Contact": [],
+  "SafeStartExt.controller.Main": [],
+  "SafeStartExt.controller.Vehicles": [],
+  "SafeStartExt.view.BottomNav": [],
+  "SafeStartExt.view.Main": [],
+  "SafeStartExt.view.Viewport": [],
+  "SafeStartExt.view.component.Auth": [],
+  "SafeStartExt.view.component.Contact": [],
+  "SafeStartExt.view.component.Vehicles": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1817,16 +1824,33 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.window.Window": [
     "widget.window"
   ],
-  "app-ext.Application": [],
-  "app-ext.controller.Main": [],
-  "app-ext.view.Main": [
-    "widget.app-main"
+  "SafeStartExt.Application": [],
+  "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Contact": [],
+  "SafeStartExt.controller.Main": [],
+  "SafeStartExt.controller.Vehicles": [],
+  "SafeStartExt.view.BottomNav": [
+    "widget.SafeStartExtBottomNav"
   ],
-  "app-ext.view.Viewport": []
+  "SafeStartExt.view.Main": [
+    "widget.SafeStartExtMain"
+  ],
+  "SafeStartExt.view.Viewport": [],
+  "SafeStartExt.view.component.Auth": [
+    "widget.SafeStartExtComponentAuth"
+  ],
+  "SafeStartExt.view.component.Contact": [
+    "widget.SafeStartExtComponentContact"
+  ],
+  "SafeStartExt.view.component.Vehicles": [
+    "widget.SafeStartExtComponentVehicles"
+  ]
 });
 Ext.setVersion("ext-theme-base", "4.2.1");
 Ext.setVersion("ext-theme-classic", "4.2.1");
+Ext.setVersion("ext-theme-gray", "4.2.1");
 Ext.setVersion("ext-theme-neutral", "4.2.1");
+Ext.setVersion("safe-start-theme", "1.0.0");
 /**
  * Sencha Blink - Development
  * @author Jacky Nguyen <jacky@sencha.com>

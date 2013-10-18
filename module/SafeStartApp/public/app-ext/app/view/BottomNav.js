@@ -14,6 +14,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
     },
 
     height: 50,
+    ui: 'dark',
 
     defaults: {
         xtype: 'button',

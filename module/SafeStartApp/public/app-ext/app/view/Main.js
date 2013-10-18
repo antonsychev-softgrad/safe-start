@@ -9,6 +9,7 @@ Ext.define('SafeStartExt.view.Main', {
     ],
     
     xtype: 'SafeStartExtMain',
+    cls: 'sfa-view-main',
 
     layout: 'card',
 
