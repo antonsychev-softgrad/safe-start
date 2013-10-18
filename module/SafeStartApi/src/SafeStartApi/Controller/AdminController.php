@@ -459,4 +459,49 @@ class AdminController extends AdminAccessRestController
 
     }
 
+    public function getCheckListsChangesStatisticAction()
+    {
+        $statistic = array();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        } else {
+            $from = new \DateTime();
+            $from->setTimestamp(time() - 366*24*60*60);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        } else {
+            $to = new \DateTime();
+        }
+
+        $query = $this->em->createQuery('SELECT COUNT(r.id) as counts, r.key, r.additional FROM SafeStartApi\Entity\InspectionBreakdown r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.key');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $items = $query->getResult();
+
+        if (!empty($items)) {
+            foreach( $items as $item) {
+                $statistic[] = array(
+                    'key' => $item['key'],
+                    'count' => $item['counts'],
+                    'additional' => $item['additional']
+                );
+            }
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $statistic
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
+
 }
