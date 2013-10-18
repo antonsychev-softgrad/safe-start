@@ -27,6 +27,7 @@ class AdminController extends AdminAccessRestController
     public function updateCompanyAction()
     {
         //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
+        $actionAdd = true;
         $companyId = (int)$this->params('id');
         if ($companyId) {
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
@@ -36,6 +37,7 @@ class AdminController extends AdminAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            $actionAdd = false;
         } else {
             $company = new \SafeStartApi\Entity\Company();
         }
@@ -48,10 +50,19 @@ class AdminController extends AdminAccessRestController
             $user = new \SafeStartApi\Entity\User();
             $user->setEmail($this->data->email);
             $user->setFirstName($this->data->firstName);
-            $user->setUsername($this->data->firstName);
+            $user->setUsername($this->data->email);
             $user->setRole('companyAdmin');
             $this->em->persist($user);
+        } else if ($actionAdd) {
+            $adminForCompany = $this->em->getRepository('SafeStartApi\Entity\Company')->findOneBy(array(
+                'admin' => $user,
+                'deleted' => 0,
+            ));
+            if(!is_null($adminForCompany)) return $this->_showAdminAlreadyInUse();
         }
+
+        $user->setEnabled(1);
+        $user->setDeleted(0);
 
         // set company data
         $company->setTitle($this->data->title);
@@ -153,7 +164,6 @@ class AdminController extends AdminAccessRestController
     {
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getForEditDefaultChecklist";
-        $checklist = array();
         if ($cache->hasItem($cashKey)) {
             $checklist = $cache->getItem($cashKey);
         } else {
