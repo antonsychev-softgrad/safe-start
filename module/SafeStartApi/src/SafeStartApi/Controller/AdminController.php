@@ -413,7 +413,7 @@ class AdminController extends AdminAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
-    public function getInspectionBreakdownsStatistic()
+    public function getInspectionBreakdownsStatisticAction()
     {
         $statistic = array();
 
@@ -433,6 +433,30 @@ class AdminController extends AdminAccessRestController
         } else {
             $to = new \DateTime();
         }
+
+        $query = $this->em->createQuery('SELECT COUNT(r.id) as counts, r.key, r.additional FROM SafeStartApi\Entity\InspectionBreakdown r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.key');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $items = $query->getResult();
+        $chart = array();
+        if (!empty($items)) {
+            foreach( $items as $item) {
+                $chart[] = array(
+                    'key' => $item['key'],
+                    'count' => $item['counts'],
+                    'additional' => $item['additional']
+                );
+            }
+        }
+
+        $statistic['chart'] = $chart;
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $statistic
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
     }
 
 }

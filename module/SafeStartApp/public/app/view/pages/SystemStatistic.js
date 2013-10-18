@@ -3,7 +3,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
 
     requires: [
         'SafeStartApp.view.pages.toolbar.Main',
-        'SafeStartApp.view.pages.panel.SystemGeneralReport'
+        'SafeStartApp.view.pages.panel.SystemGeneralReport',
+        'SafeStartApp.view.pages.panel.InspectionBreakdownsReport'
     ],
 
     xtype: 'SafeStartSystemStatisticPage',
@@ -54,15 +55,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     xtype: 'SafeStartSystemGeneralReportPanel'
                 },
                 {
-                    xtype: 'panel',
-                    title: 'Inspection Breakdowns',
-                    name: 'breakdown',
-                    html: "Inspection Breakdowns",
-                    minHeight: 300,
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    }
+                    xtype: 'SafeStartInspectionBreakdownsReportPanel'
                 },
                 {
                     xtype: 'panel',

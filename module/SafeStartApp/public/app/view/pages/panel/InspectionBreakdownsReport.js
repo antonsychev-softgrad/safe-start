@@ -107,7 +107,7 @@ Ext.define('SafeStartApp.view.pages.panel.InspectionBreakdownsReport', {
                 self.chartAdded = true;
             }
             if (result.statistic) {
-                if (result.statistic.chart && result.statistic.chart.length) {
+                if (result.statistic.chart) {
                     self.down('#SafeStartInspectionBreakdownsStatisticChart').show();
                     self.down('#SafeStartInspectionBreakdownsStatisticChart').getStore().setData(result.statistic.chart);
                     self.down('#SafeStartInspectionBreakdownsStatisticChart').getStore().sync();
@@ -124,13 +124,7 @@ Ext.define('SafeStartApp.view.pages.panel.InspectionBreakdownsReport', {
             flex: 1,
             animate: true,
             store: {
-                fields: ['date', 'value1', 'value2', 'value3'],
-                data: [
-                    {'date': 'y-m-d', 'value1': 0, 'value2': 0, 'value3': 0}
-                ]
-            },
-            legend: {
-                position: 'bottom'
+                fields: ['key', 'count', 'additional']
             },
             axes: [
                 {
@@ -140,15 +134,15 @@ Ext.define('SafeStartApp.view.pages.panel.InspectionBreakdownsReport', {
                         text: 'Quantity',
                         fontSize: 15
                     },
-                    fields: ['value1', 'value2', 'value3'],
+                    fields: ['count'],
                     minimum: 0
                 },
                 {
                     type: 'category',
                     position: 'bottom',
-                    fields: 'date',
+                    fields: 'key',
                     title: {
-                        text: 'Date',
+                        text: 'CheckLists',
                         fontSize: 15
                     },
                     label: {
@@ -160,57 +154,58 @@ Ext.define('SafeStartApp.view.pages.panel.InspectionBreakdownsReport', {
             ],
             series: [
                 {
-                    type: 'line',
-                    xField: 'date',
-                    yField: 'value1',
-                    labelField: 'value1',
-                    title: 'DateBase Inspections',
-                    style: {
-                        stroke: "#115fa6",
-                        miterLimit: 3,
-                        lineCap: 'miter',
-                        lineWidth: 2
+                    type: 'bar',
+                    xField: 'key',
+                    yField: ['count'],
+                    label: {
+                        field: 'key',
+                        display: 'insideEnd'
                     },
-                    marker: {
-                        type: 'circle',
-                        fill: "#115fa6",
-                        radius: 10
-                    }
-                },
-                {
-                    type: 'line',
-                    xField: 'date',
-                    yField: 'value2',
-                    labelField: 'value2',
-                    title: 'Email Inspections',
                     style: {
-                        stroke: "#94ae0a",
-                        miterLimit: 3,
-                        lineCap: 'miter',
-                        lineWidth: 2
+                        lineWidth: 2,
+                        maxBarWidth: 30,
+                        stroke: 'dodgerblue',
+                        fill: 'palegreen',
+                        opacity: 0.6
                     },
-                    marker: {
-                        type: 'circle',
-                        fill: "#94ae0a",
-                        radius: 10
-                    }
-                },
-                {
-                    type: 'line',
-                    xField: 'date',
-                    yField: 'value3',
-                    labelField: 'value3',
-                    title: 'DateBase Alerts',
-                    style: {
-                        stroke: "#A80000",
-                        miterLimit: 3,
-                        lineCap: 'miter',
-                        lineWidth: 2
-                    },
-                    marker: {
-                        type: 'circle',
-                        fill: "#A80000",
-                        radius: 10
+                    renderer: function(sprite, config, rendererData, index) {
+
+                        var store = rendererData.store,
+                            storeItems = store.getData().items,
+                            record = storeItems[index],
+                            last = storeItems.length - 1,
+                            surface = sprite.getParent(),
+                            changes = {},
+                            lineSprites, firstColumnConfig, firstData, lastData, growth, string;
+                        if (!record) {
+                            return;
+                        }
+
+                        if (record.get('additional') && record.get('count') > 0) {
+                            changes.fill = '#94ae0a';
+                         /*   lineSprites = surface.myLineSprites;
+                            if (!lineSprites) {
+                                lineSprites = surface.myLineSprites = [];
+                                lineSprites[0] = surface.add({type:'text'});
+                            }
+
+                            lineSprites[0].setAttributes({
+                                text: 'Additional',
+                                x: config.x - 8,
+                                y: config.y - 40,
+                                fill: '#000',
+                                fontSize: 14,
+                                zIndex: 10000,
+                                opacity: 0.6,
+                                scalingY: -1,
+                                textAlign: "center",
+                                rotate: -90
+                            });*/
+                        } else {
+                            changes.fill = "#115fa6";
+                        }
+
+                        return changes;
                     }
                 }
             ]
