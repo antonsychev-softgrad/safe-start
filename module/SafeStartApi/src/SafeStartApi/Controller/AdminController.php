@@ -413,4 +413,26 @@ class AdminController extends AdminAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getInspectionBreakdownsStatistic()
+    {
+        $statistic = array();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        } else {
+            $from = new \DateTime();
+            $from->setTimestamp(time() - 366*24*60*60);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        } else {
+            $to = new \DateTime();
+        }
+    }
+
 }
