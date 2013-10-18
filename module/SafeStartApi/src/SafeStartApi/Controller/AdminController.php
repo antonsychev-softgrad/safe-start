@@ -480,7 +480,7 @@ class AdminController extends AdminAccessRestController
             $to = new \DateTime();
         }
 
-        $query = $this->em->createQuery('SELECT COUNT(r.id) as counts, r.key, r.additional FROM SafeStartApi\Entity\InspectionBreakdown r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.key');
+        $query = $this->em->createQuery('SELECT r.key, r.prev_key, r.action, r.type, r.date, r.company_name FROM SafeStartApi\Entity\InspectionChanges r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.prev_key');
         $query->setParameter('from', $from)->setParameter('to', $to);
         $items = $query->getResult();
 
@@ -488,8 +488,11 @@ class AdminController extends AdminAccessRestController
             foreach( $items as $item) {
                 $statistic[] = array(
                     'key' => $item['key'],
-                    'count' => $item['counts'],
-                    'additional' => $item['additional']
+                    'prev_key' => $item['prev_key'],
+                    'action' => $item['action'],
+                    'type' => $item['type'],
+                    'company_name' => $item['company_name'],
+                    'date' => $item['date']->getTimestamp()
                 );
             }
         }

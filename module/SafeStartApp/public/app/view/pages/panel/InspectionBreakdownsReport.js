@@ -6,8 +6,7 @@ Ext.define('SafeStartApp.view.pages.panel.InspectionBreakdownsReport', {
     requires: [
         'Ext.chart.axis.Numeric',
         'Ext.chart.axis.Category',
-        'Ext.chart.series.Bar',
-        'SafeStartApp.store.Companies'
+        'Ext.chart.series.Bar'
     ],
 
     record: null,

@@ -444,6 +444,13 @@ class CompanyController extends RestrictedAccessRestController
             $record->setPrevKey($oldTitle);
             $record->setType($field->getType());
             $record->setFieldId($field->getId());
+
+            $user = \SafeStartApi\Application::getCurrentUser();
+            $record->setCompanyName($user->getCompany() ? $user->getCompany()->getTitle() : '');
+            $record->setCompanyId($user->getCompany() ? $user->getCompany()->getId() : '');
+            $record->setUserName($user->getFirstName() ." ". $user->getLastName());
+            $record->setUserId($user->getId());
+
             $this->em->persist($record);
             $this->em->flush();
         }
@@ -480,6 +487,13 @@ class CompanyController extends RestrictedAccessRestController
         $record->setKey($field->getTitle());
         $record->setType($field->getType());
         $record->setFieldId($field->getId());
+
+        $user = \SafeStartApi\Application::getCurrentUser();
+        $record->setCompanyName($user->getCompany() ? $user->getCompany()->getTitle() : '');
+        $record->setCompanyId($user->getCompany() ? $user->getCompany()->getId() : '');
+        $record->setUserName($user->getFirstName() ." ". $user->getLastName());
+        $record->setUserId($user->getId());
+
         $this->em->persist($record);
         $this->em->flush();
 

@@ -4,7 +4,8 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
     requires: [
         'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.view.pages.panel.SystemGeneralReport',
-        'SafeStartApp.view.pages.panel.InspectionBreakdownsReport'
+        'SafeStartApp.view.pages.panel.InspectionBreakdownsReport',
+        'SafeStartApp.view.pages.panel.CheckListsChangesReport'
     ],
 
     xtype: 'SafeStartSystemStatisticPage',
@@ -58,15 +59,7 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
                     xtype: 'SafeStartInspectionBreakdownsReportPanel'
                 },
                 {
-                    xtype: 'panel',
-                    title: 'CheckLists Changes',
-                    name: 'changes',
-                    html: "CheckLists Changes",
-                    minHeight: 300,
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    }
+                    xtype: 'SafeStartCheckListsChangesReportPanel'
                 }
             ],
             listeners: {
