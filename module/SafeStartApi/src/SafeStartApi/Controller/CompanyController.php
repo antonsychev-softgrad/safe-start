@@ -32,7 +32,7 @@ class CompanyController extends RestrictedAccessRestController
         $node = (int)$this->getRequest()->getQuery('node');
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList" . $node;
+        $cashKey = "getCompanyVehiclesList" . $companyId . $node;
 
         if ($cache->hasItem($cashKey)) {
             $this->answer = $cache->getItem($cashKey);
@@ -168,7 +168,7 @@ class CompanyController extends RestrictedAccessRestController
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehiclesList" . $company->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
