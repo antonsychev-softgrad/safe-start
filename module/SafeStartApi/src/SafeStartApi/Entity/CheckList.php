@@ -127,6 +127,7 @@ class CheckList extends BaseEntity
     public function __construct()
     {
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreationDate(new \DateTime());
     }
 
     /**
