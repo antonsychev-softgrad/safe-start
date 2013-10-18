@@ -9,5 +9,5 @@ Ext.application({
 
     extend: 'SafeStartExt.Application',
     
-    autoCreateViewport: true
+    autoCreateViewport: false
 });

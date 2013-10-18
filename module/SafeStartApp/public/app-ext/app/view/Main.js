@@ -5,19 +5,12 @@ Ext.define('SafeStartExt.view.Main', {
         'Ext.layout.container.Fit',
         'SafeStartExt.view.component.Auth',
         'SafeStartExt.view.component.Contact',
-        'SafeStartExt.view.component.Vehicles',
+        'SafeStartExt.view.component.Company'
     ],
     
     xtype: 'SafeStartExtMain',
     cls: 'sfa-view-main',
 
-    layout: 'card',
+    layout: 'card'
 
-    items: [{
-        xtype: 'SafeStartExtComponentAuth'
-    }, {
-        xtype: 'SafeStartExtComponentContact'
-    }, {
-        xtype: 'SafeStartExtComponentVehicles'
-    }]
 });

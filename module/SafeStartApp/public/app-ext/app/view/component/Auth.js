@@ -28,6 +28,10 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     text: 'Sign In',
                     scale: 'large',
                     handler: function () {
+                        var form = this.down('form');
+                        if (form.getForm().isValid()) {
+                            this.fireEvent('loginAction', form.getForm().getValues());
+                        }
                     },
                     scope: this
                 }],
@@ -35,6 +39,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     xtype: 'textfield',
                     height: 56,
                     labelAlign: 'top',
+                    name: 'username',
                     allowBlank: false,
                     fieldLabel: 'Username'
                 }, {
@@ -42,8 +47,8 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     inputType: 'password',
                     height: 56,
                     labelAlign: 'top',
+                    name: 'password',
                     allowBlank: false,
-                    vtype: 'email',
                     fieldLabel: 'Password'
                 }]
             }]

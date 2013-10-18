@@ -2,6 +2,9 @@ Ext.define('SafeStartExt.controller.Auth', {
     extend: 'Ext.app.Controller',
 
     refs: [{
+        selector: 'viewport',
+        ref: 'viewport'
+    }, {
         selector: 'viewport > SafeStartExtBottomNav',
         ref: 'bottomNavPanel'
     }, {
@@ -11,34 +14,54 @@ Ext.define('SafeStartExt.controller.Auth', {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAuth',
         ref: 'authPanel'
     }, {
-        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentVehicles',
-        ref: 'vehiclesPanel'
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompany',
+        ref: 'companyPanel'
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentContact',
         ref: 'contactPanel'
     }],
 
     init: function () {
+        this.callParent();
         this.control({
-            'viewport': {
-                userLoggedIn: this.userLoggedIn,
-                userLoggedOut: this.userLoggedOut
+            'SafeStartExtComponentAuth': {
+                loginAction: this.loginAction
+            },
+            'SafeStartExtContainerTopNav': {
+                logoutAction: this.logoutAction
             }
         });
     },
 
-    userLoggedIn: function () {
-        this.getMainPanel().getLayout().setActiveItem(this.getVehiclesPanel());
-        var bottomNavPanel = this.getBottomNavPanel();
-        bottomNavPanel.down('button[cls~=sfa-bottomnav-button-auth]').hide();
-        bottomNavPanel.down('button[cls~=sfa-bottomnav-button-vehicles]').show();
-    }, 
+    loginAction: function (data) {
+        this.getViewport().setLoading(true);
+        Ext.Ajax.request({
+            url: '/api/user/login',
+            params: Ext.encode({data: data}),
+            method: 'POST',
+            success: function () {
+                this.getViewport().fireEvent('reloadMainMenu');
+                this.getViewport().setLoading(false);
+            },
+            failure: function () {
+            },
+            scope: this
+        });
+    },
 
-    userLoggedOut: function () {
-        this.getMainPanel().getLayout().setActiveItem(this.getAuthPanel());
-        var bottomNavPanel = this.getBottomNavPanel();
-        bottomNavPanel.down('button[cls~=sfa-bottomnav-button-vehicles]').hide();
-        bottomNavPanel.down('button[cls~=sfa-bottomnav-button-auth]').show();
+    logoutAction: function() {
+        this.getViewport().setLoading(true);
+        Ext.Ajax.request({
+            url: '/api/user/logout',
+            method: 'GET',
+            success: function () {
+                this.getViewport().fireEvent('reloadMainMenu');
+                this.getViewport().setLoading(false);
+            },
+            failure: function () {
+            },
+            scope: this
+        });
     }
 
 });

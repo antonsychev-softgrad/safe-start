@@ -29,7 +29,9 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     text: 'Send',
                     scale: 'large',
                     handler: function () {
-                        if (!(this.down('form').getForm().isValid())) {
+                        var form = this.down('form').getForm();
+                        if (form.isValid()) {
+                            this.fireEvent('contactAction', form.getValues());
                         }
                     },
                     scope: this

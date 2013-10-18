@@ -3,7 +3,7 @@ Ext.define('SafeStartExt.controller.Main', {
 
     refs: [{
         selector: 'viewport > SafeStartExtBottomNav',
-        ref: 'bottomNavPanel'
+        ref: 'mainNavPanel'
     }, {
         selector: 'viewport > SafeStartExtMain',
         ref: 'mainPanel'
@@ -11,8 +11,8 @@ Ext.define('SafeStartExt.controller.Main', {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAuth',
         ref: 'authPanel'
     }, {
-        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentVehicles',
-        ref: 'vehiclesPanel'
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompany',
+        ref: 'companyPanel'
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentContact',
         ref: 'contactPanel'
@@ -21,23 +21,41 @@ Ext.define('SafeStartExt.controller.Main', {
     init: function () {
         this.control({
             'SafeStartExtBottomNav': {
-                showAuth: this.showAuth,
-                showVehicles: this.showVehicles,
-                showContact: this.showContact
+                showPage: this.showPage
+            },
+            'viewport': {
+                mainMenuLoaded: this.updateMainMenu
             }
         });   
     },
 
-    showAuth: function () {
-        this.getMainPanel().getLayout().setActiveItem(this.getAuthPanel());
+    updateMainMenu: function (menu) {
+        var mainNavPanel = this.getMainNavPanel();
+        Ext.each(mainNavPanel.query('button'), function (button, index) {
+            if (Ext.Array.contains(menu, button.menuItem)) {
+                button.show();
+            } else {
+                button.hide();
+            }
+        });
+        var firstBtn = mainNavPanel.down('button{isHidden() == false}');
+        this.showPage(firstBtn.menuItem);
     },
 
-    showVehicles: function () {
-        this.getMainPanel().getLayout().setActiveItem(this.getVehiclesPanel());
-    },
+    showPage: function (name) {
+        var pagePanel = null,
+            getter = 'get' + name + 'Panel',
+            alias;
 
-    showContact: function () {
-        this.getMainPanel().getLayout().setActiveItem(this.getContactPanel());
+        if (typeof this[getter] == 'function') {
+            pagePanel = this[getter]();
+            if (! pagePanel) {
+                alias = 'SafeStartExt.view.component.' + name;
+                pagePanel = Ext.create(alias);
+                this.getMainPanel().add(pagePanel);
+            }
+            this.getMainPanel().getLayout().setActiveItem(pagePanel);
+        }
     }
 
 });

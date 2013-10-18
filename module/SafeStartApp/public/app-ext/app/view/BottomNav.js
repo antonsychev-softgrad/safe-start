@@ -18,6 +18,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
 
     defaults: {
         xtype: 'button',
+        hidden: true,
         width: 60
     },
 
@@ -26,26 +27,28 @@ Ext.define('SafeStartExt.view.BottomNav', {
             items: [{
                 xtype: 'button',
                 text: 'Auth',
+                menuItem: 'Auth',
                 cls: 'sfa-bottomnav-button-auth',
                 handler: function () {
-                    this.fireEvent('showAuth');
+                    this.fireEvent('showPage', 'Auth');
                 },
                 scope: this
             }, {
                 xtype: 'button',
-                hidden: true,
                 text: 'Vehicles',
+                menuItem: 'Company',
                 cls: 'sfa-bottomnav-button-vehicles',
                 handler: function () {
-                    this.fireEvent('showVehicles');
+                    this.fireEvent('showPage', 'Company');
                 },
                 scope: this
             }, {
                 xtype: 'button',
                 text: 'Contact',
+                menuItem: 'Contact',
                 cls: 'sfa-bottomnav-button-contact',
                 handler: function () {
-                    this.fireEvent('showContact');
+                    this.fireEvent('showPage', 'Contact');
                 },
                 scope: this
             }]
