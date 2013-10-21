@@ -5,7 +5,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
     ],
     
     alias: 'widget.SafeStartExtContainerTopNav',
-    cls: 'sfa-topnav',
+    cls: 'sfa-top-nav',
 
     layout: { 
         type: 'hbox',
@@ -14,6 +14,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
 
     height: 60,
     padding: '6 10 6 10',
+    ui: 'dark',
 
     defaults: {
         xtype: 'button'
@@ -28,6 +29,11 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 width: 172,
                 height: 45,
                 src: '/resources/img/logo-top.png'
+            }, {
+                xtype: 'button',
+                ui: 'transparent',
+                scale: 'medium',
+                text: this.titleText
             }, {
                 xtype: 'box',
                 flex: 1
@@ -46,7 +52,6 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 ui: 'transparent',
                 scale: 'medium',
                 text: 'Logout',
-                //iconCls: 'logout',
                 handler: function () {
                     this.fireEvent('logoutAction');
                 },
