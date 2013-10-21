@@ -4,3 +4,18 @@ body {
     font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
     background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
 }
+
+.sfa-text-info {
+    text-align: center;
+    font-size: 18px;
+    color: #808080;
+}
+
+.logo img{
+    width: 381px;
+    height: 100px;
+    background: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)"; /* IE8 */   
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);   /* IE6 & 7 */      
+    zoom: 1;
+}

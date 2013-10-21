@@ -13,10 +13,20 @@ Ext.define('SafeStartExt.view.component.Auth', {
     initComponent: function () {
         Ext.apply(this, {
             items: [{
+                layout: 'absolute',
+                xtype: 'container',
+                items: [{
+                    xtype: 'image',
+                    src: '/resources/img/logo-small.png',
+                    width: 381,
+                    y: -104,
+                    cls: 'logo'
+                }]
+            }, {
                 xtype: 'form',
                 ui: 'form',
-                width: 450,
-                height: 360,
+                width: 480,
+                height: 372,
                 title: 'Login',
                 defaults: {
                     labelAlign: 'top',
@@ -50,6 +60,11 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     name: 'password',
                     allowBlank: false,
                     fieldLabel: 'Password'
+                }, {
+                    xtype: 'container',
+
+                    cls: 'sfa-text-info',
+                    html: 'If you do not have password please contact us'
                 }]
             }]
         });

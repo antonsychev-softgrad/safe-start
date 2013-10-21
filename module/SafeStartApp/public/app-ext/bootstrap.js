@@ -829,15 +829,17 @@ Ext.ClassManager.addNameAlternateMappings({
   ],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
-  "SafeStartExt.controller.Vehicles": [],
+  "SafeStartExt.model.User": [],
   "SafeStartExt.view.BottomNav": [],
   "SafeStartExt.view.Main": [],
   "SafeStartExt.view.Viewport": [],
   "SafeStartExt.view.component.Auth": [],
+  "SafeStartExt.view.component.Company": [],
   "SafeStartExt.view.component.Contact": [],
-  "SafeStartExt.view.component.Vehicles": []
+  "SafeStartExt.view.container.TopNav": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1826,9 +1828,10 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
-  "SafeStartExt.controller.Vehicles": [],
+  "SafeStartExt.model.User": [],
   "SafeStartExt.view.BottomNav": [
     "widget.SafeStartExtBottomNav"
   ],
@@ -1839,11 +1842,14 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.component.Auth": [
     "widget.SafeStartExtComponentAuth"
   ],
+  "SafeStartExt.view.component.Company": [
+    "widget.SafeStartExtComponentCompany"
+  ],
   "SafeStartExt.view.component.Contact": [
     "widget.SafeStartExtComponentContact"
   ],
-  "SafeStartExt.view.component.Vehicles": [
-    "widget.SafeStartExtComponentVehicles"
+  "SafeStartExt.view.container.TopNav": [
+    "widget.SafeStartExtContainerTopNav"
   ]
 });
 Ext.setVersion("ext-theme-base", "4.2.1");
