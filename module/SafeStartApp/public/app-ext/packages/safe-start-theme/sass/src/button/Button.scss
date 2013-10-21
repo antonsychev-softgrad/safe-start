@@ -1,0 +1,63 @@
+
+
+@include extjs-button-ui(
+    $ui: 'tab-large',
+
+    $border-radius: 3px,
+    $border-width: 2px,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: #27292C,
+    $border-color-disabled: transparent,
+
+    $padding: 20px 0 0 0,
+    $text-padding: 30px 0px 0px 0px,
+
+    $background-color: transparent,
+    $background-color-over: transparent,
+    $background-color-focus: transparent,
+    $background-color-pressed: #333539,
+    $background-color-disabled: transparent,
+
+    $background-gradient: $button-default-background-gradient,
+    $background-gradient-over: $button-default-background-gradient-over,
+    $background-gradient-focus: $button-default-background-gradient-focus,
+    $background-gradient-pressed: $button-default-background-gradient-pressed,
+    $background-gradient-disabled: $button-default-background-gradient-disabled,
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 9px,
+    $font-size-over: 9px,
+    $font-size-focus: 9px,
+    $font-size-pressed: 9px,
+    $font-size-disabled: 9px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);

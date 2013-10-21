@@ -827,6 +827,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.window.Window": [
     "Ext.Window"
   ],
+  "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
   "SafeStartExt.controller.Company": [],
@@ -1826,6 +1827,7 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.window.Window": [
     "widget.window"
   ],
+  "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
   "SafeStartExt.controller.Company": [],

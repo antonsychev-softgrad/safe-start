@@ -13,11 +13,13 @@ Ext.define('SafeStartExt.view.BottomNav', {
         align: 'stretch'
     },
 
-    height: 50,
+    height: 56,
     ui: 'dark',
 
     defaults: {
         xtype: 'button',
+        ui: 'tab',
+        scale: 'large',
         hidden: true,
         width: 60
     },

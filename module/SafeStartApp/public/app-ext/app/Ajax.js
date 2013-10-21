@@ -39,7 +39,7 @@ Ext.define('SafeStartExt.Ajax', {
             }
 
             if (result.meta && result.meta.status == 200 && !parseInt(result.meta.errorCode, 10)) {
-                if (successCallback && typeof successCallback == 'function') {
+                if (typeof successCallback === 'function') {
                     successCallback(result.data || {});
                 }
             } else {

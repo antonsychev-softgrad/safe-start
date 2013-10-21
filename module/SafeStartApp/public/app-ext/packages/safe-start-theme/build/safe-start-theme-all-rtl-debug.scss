@@ -547,6 +547,7 @@ $include-ext-window-window: true;
 @import '../sass/etc/all';
 /* including package safe-start-theme */
 @import '../sass/var/Component';
+@import '../sass/var/button/Button';
 /* including package ext-theme-gray */
 @import '../../../ext/packages/ext-theme-gray/sass/var/Component';
 @import '../../../ext/packages/ext-theme-gray/sass/var/ProgressBar';
@@ -797,3 +798,10 @@ $relative-image-path-for-uis: $ext-theme-classic-resource-path;
 @import '../../../ext/packages/ext-theme-classic/sass/src/resizer/Resizer';
 @import '../../../ext/packages/ext-theme-classic/sass/src/slider/Multi';
 @import '../../../ext/packages/ext-theme-classic/sass/src/tab/Panel';
+/* including package safe-start-theme */
+$safe-start-theme-resource-path: 'images' !default;
+$relative-image-path-for-uis: $safe-start-theme-resource-path;
+@import '../sass/src/Component';
+@import '../sass/src/container/Container';
+@import '../sass/src/button/Button';
+@import '../sass/src/panel/Panel';

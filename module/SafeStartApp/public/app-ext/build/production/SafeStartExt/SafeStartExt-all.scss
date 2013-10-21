@@ -534,6 +534,7 @@ $include-ext-view-tablelayout: false;
 $include-ext-view-view: false;
 $include-ext-window-messagebox: true;
 $include-ext-window-window: true;
+$include-safestartext-ajax: true;
 $include-safestartext-application: true;
 $include-safestartext-app-application: true;
 $include-safestartext-controller-auth: true;
@@ -560,6 +561,7 @@ $include-safestartext-view-container-topnav: true;
 @import '../../../packages/safe-start-theme/sass/etc/all';
 /* including package safe-start-theme */
 @import '../../../packages/safe-start-theme/sass/var/Component';
+@import '../../../packages/safe-start-theme/sass/var/button/Button';
 /* including package ext-theme-gray */
 @import '../../../ext/packages/ext-theme-gray/sass/var/Component';
 @import '../../../ext/packages/ext-theme-gray/sass/var/ProgressBar';
@@ -736,4 +738,5 @@ $safe-start-theme-resource-path: 'images' !default;
 $relative-image-path-for-uis: $safe-start-theme-resource-path;
 @import '../../../packages/safe-start-theme/sass/src/Component';
 @import '../../../packages/safe-start-theme/sass/src/container/Container';
+@import '../../../packages/safe-start-theme/sass/src/button/Button';
 @import '../../../packages/safe-start-theme/sass/src/panel/Panel';
