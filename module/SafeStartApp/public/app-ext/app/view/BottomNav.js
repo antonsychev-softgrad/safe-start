@@ -33,6 +33,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 cls: 'sfa-bottomnav-button-auth',
                 handler: function () {
                     this.fireEvent('showPage', 'Auth');
+                    return false;
                 },
                 scope: this
             }, {
@@ -42,6 +43,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 cls: 'sfa-bottomnav-button-vehicles',
                 handler: function () {
                     this.fireEvent('showPage', 'Company');
+                    return false;
                 },
                 scope: this
             }, {
@@ -51,10 +53,19 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 cls: 'sfa-bottomnav-button-contact',
                 handler: function () {
                     this.fireEvent('showPage', 'Contact');
+                    return false;
                 },
                 scope: this
             }]
         });
         this.callParent();
+    },
+
+    setActiveButton: function (name) {
+        Ext.each(this.query('button'), function (button) {
+            button.removeCls('x-btn-tab-large-pressed');
+        });
+        this.down('button[menuItem=' + name + ']').addCls('x-btn-tab-large-pressed');
     }
+
 });

@@ -37,7 +37,8 @@ Ext.define('SafeStartExt.view.component.Auth', {
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Sign In',
-                    scale: 'large',
+                    ui: 'green',
+                    scale: 'medium',
                     handler: function () {
                         var form = this.down('form');
                         if (form.getForm().isValid()) {

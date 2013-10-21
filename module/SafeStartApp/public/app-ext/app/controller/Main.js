@@ -55,6 +55,7 @@ Ext.define('SafeStartExt.controller.Main', {
                 this.getMainPanel().add(pagePanel);
             }
             this.getMainPanel().getLayout().setActiveItem(pagePanel);
+            this.getMainNavPanel().setActiveButton(name);
         }
     }
 

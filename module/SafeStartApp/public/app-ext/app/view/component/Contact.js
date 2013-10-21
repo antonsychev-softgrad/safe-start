@@ -27,7 +27,8 @@ Ext.define('SafeStartExt.view.component.Contact', {
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Send',
-                    scale: 'large',
+                    scale: 'medium',
+                    ui: 'green',
                     handler: function () {
                         var form = this.down('form').getForm();
                         if (form.isValid()) {
