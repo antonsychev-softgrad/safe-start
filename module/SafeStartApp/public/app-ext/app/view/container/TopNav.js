@@ -13,6 +13,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
     },
 
     height: 60,
+    padding: '6 10 6 10',
 
     defaults: {
         xtype: 'button',
@@ -22,6 +23,14 @@ Ext.define('SafeStartExt.view.container.TopNav', {
     initComponent: function () {
         Ext.apply(this, {
             items: [{
+                xtype: 'image',
+                width: 172,
+                height: 45,
+                src: '/resources/img/logo-top.png'
+            }, {
+                xtype: 'box',
+                flex: 1
+            }, {
                 xtype: 'button',
                 text: 'Logout',
                 handler: function () {

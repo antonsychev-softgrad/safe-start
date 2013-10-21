@@ -4,8 +4,14 @@ Ext.define('SafeStartExt.view.component.Company', {
         'SafeStartExt.view.container.TopNav'
     ],
     xtype: 'SafeStartExtComponentCompany',
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    width: '100%',
 
     items: [{
-        xtype: 'SafeStartExtContainerTopNav'
+        xtype: 'SafeStartExtContainerTopNav',
+        width: '100%'
     }]
 });
