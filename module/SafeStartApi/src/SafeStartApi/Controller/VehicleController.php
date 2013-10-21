@@ -541,6 +541,40 @@ class VehicleController extends RestrictedAccessRestController
                     $checkListData['checkListId'] = $checkList->getId();
                     $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
 
+                    $warnings = $checkList->getWarnings();
+                    $vehicle = $checkList->getVehicle();
+                    if ($vehicle->getNextServiceDay()) {
+                        $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                        if ($days < 1) {
+                            $warnings[] = array(
+                                'action' => 'next_service_due',
+                                'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                            );
+                        } else if ($days < 30) {
+                            $warnings[] = array(
+                              'action' => 'next_service_due',
+                              'text' => 'Next service In ' . ceil($days) . ' Days',
+                            );
+                        }
+                    }
+                    if ($vehicle->getCompany()) {
+                        if ($vehicle->getCompany()->getExpiryDate()) {
+                            $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                            if ($days < 1) {
+                                $warnings[] = array(
+                                    'action' => 'subscription_ending',
+                                    'text' => 'Your subscription has expired'
+                                );
+                            } else if ($days < 30) {
+                                $warnings[] = array(
+                                    'action' => 'subscription_ending',
+                                    'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
+                                );
+                            }
+                        }
+                    }
+                    $checkListData['warnings'] = $warnings;
+
                     $inspections[] = $checkListData;
                 }
             }
