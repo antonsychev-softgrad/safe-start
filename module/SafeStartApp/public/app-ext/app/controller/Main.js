@@ -31,6 +31,7 @@ Ext.define('SafeStartExt.controller.Main', {
 
     updateMainMenu: function (menu) {
         var mainNavPanel = this.getMainNavPanel();
+        this.getMainPanel().removeAll();
         Ext.each(mainNavPanel.query('button'), function (button, index) {
             if (Ext.Array.contains(menu, button.menuItem)) {
                 button.show();

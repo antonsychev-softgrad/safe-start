@@ -64,7 +64,6 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     fieldLabel: 'Password'
                 }, {
                     xtype: 'container',
-
                     cls: 'sfa-text-info',
                     html: 'If you do not have password please contact us'
                 }]
