@@ -5,7 +5,8 @@ Ext.define('SafeStartExt.Application', {
 
     requires: [
         'SafeStartExt.view.Viewport',
-        'SafeStartExt.model.User'
+        'SafeStartExt.model.User',
+        'SafeStartExt.Ajax'
     ],
 
     controllers: [
@@ -18,17 +19,11 @@ Ext.define('SafeStartExt.Application', {
 
     loadMainMenu: function () {
         var me = this;
-        Ext.Ajax.request({
-            url: '/api/web-panel/getMainMenu',
-            method: 'GET',
-            success: function (res) {
-                var result = Ext.decode(res.responseText),
-                    data = result.data || {};
-                me.setUserData(data.userInfo);
-                me.viewport.fireEvent('mainMenuLoaded', data.mainMenu || []);
-            },
-            failure: function () {
-
+        SafeStartExt.Ajax.request({
+            url: 'web-panel/getMainMenu',
+            success: function (result) {
+                me.setUserData(result.userInfo);
+                me.getViewport().fireEvent('mainMenuLoaded', result.mainMenu || {});
             }
         });
     },
@@ -49,5 +44,9 @@ Ext.define('SafeStartExt.Application', {
         this.viewport = SafeStartExt.view.Viewport.create({}); 
         this.viewport.on('reloadMainMenu', this.loadMainMenu, this);
         this.loadMainMenu();
+    },
+
+    getViewport: function () {
+        return this.viewport;
     }
 });

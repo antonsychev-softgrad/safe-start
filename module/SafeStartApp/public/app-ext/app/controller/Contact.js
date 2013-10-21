@@ -15,18 +15,12 @@ Ext.define('SafeStartExt.controller.Contact', {
     },
 
     contactAction: function (data) {
-        this.getViewport().setLoading(true);
-        Ext.Ajax.request({
-            url: '/api/info/contact',
-            params: Ext.encode({data: data}),
-            method: 'POST',
+        SafeStartExt.Ajax.request({
+            url: 'info/contact',
+            data: data,
             success: function () {
-                this.getViewport().setLoading(false);
                 Ext.Msg.alert('Message', 'Message send');
-            },
-            failure: function () {
-            },
-            scope: this
+            }
         });
     }
 });

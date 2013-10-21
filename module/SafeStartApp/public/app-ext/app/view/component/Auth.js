@@ -1,6 +1,7 @@
 Ext.define('SafeStartExt.view.component.Auth', {
     extend: 'Ext.container.Container',
     requires: [
+        'Ext.layout.container.Absolute'
     ],
     xtype: 'SafeStartExtComponentAuth',
 

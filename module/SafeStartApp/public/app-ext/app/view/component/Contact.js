@@ -41,6 +41,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     height: 56,
                     labelAlign: 'top',
                     allowBlank: false,
+                    name: 'name',
                     fieldLabel: 'Name'
                 }, {
                     xtype: 'textfield',
@@ -48,6 +49,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     labelAlign: 'top',
                     allowBlank: false,
                     vtype: 'email',
+                    name: 'email',
                     fieldLabel: 'Email'
                 }, {
                     xtype: 'textarea',
@@ -55,6 +57,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     labelAlign: 'top',
                     allowBlank: false,
                     required: true,
+                    name: 'message',
                     fieldLabel: 'Message'
                 }]
             }]
