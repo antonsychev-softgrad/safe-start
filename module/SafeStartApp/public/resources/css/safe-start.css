@@ -1108,6 +1108,8 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 
 .sfa-alerts .sfa-alert-description {
     position: relative;
+    font-weight: bold;
+    color: #FF0000;
     top: 8px;
 }
 .x-show-contact {
