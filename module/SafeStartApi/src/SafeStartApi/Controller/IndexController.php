@@ -16,6 +16,7 @@ class IndexController extends RestController
         $this->answer = array(
             'version' => $this->moduleConfig['params']['version'],
         );
+        $this->queues('test');
         return $this->AnswerPlugin()->format($this->answer);
     }
 }

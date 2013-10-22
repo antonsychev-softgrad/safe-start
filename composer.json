@@ -9,7 +9,7 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": ">2.2.0rc1",
+        "zendframework/zendframework": "2.*",
         "doctrine/doctrine-orm-module":"0.*",
         "zendframework/zend-developer-tools": "dev-master",
         "rwoverdijk/assetmanager": "*",
@@ -22,6 +22,6 @@
         "zendframework/zendpdf": "dev-develop",
         "zendframework/zendservice-apple-apns": "dev-master",
         "zendframework/zendservice-google-gcm": "dev-master",
-        "zendframework/zend-queue": "dev-master"
+        "chrisboulton/php-resque": "1.2.x"
     }
 }
