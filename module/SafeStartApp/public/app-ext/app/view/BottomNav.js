@@ -16,56 +16,75 @@ Ext.define('SafeStartExt.view.BottomNav', {
     height: 56,
     ui: 'tabmenu',
 
-    defaults: {
-        xtype: 'button',
-        ui: 'tab',
-        scale: 'large',
-        hidden: true,
-        width: 60
+    buttons: {
+        Auth: {
+            text: 'Auth',
+            cls: 'sfa-button-auth'
+        },
+        Companies: {
+            text: 'Companies',
+            cls: 'sfa-button-companies'
+        },
+        Company: {
+            text: 'Vehicles',
+            cls: 'sfa-button-vehicles'
+        },
+        Alerts: {
+            text: 'Alerts',
+            cls: 'sfa-button-alerts'
+        },
+        Users: {
+            text: 'Users',
+            cls: 'sfa-button-users'
+        },
+        SystemSettings: {
+            text: 'Settings',
+            cls: 'sfa-button-system-settings'
+        },
+        Contact: {
+            text: 'Contact',
+            cls: 'sfa-button-contact'
+        }
     },
 
     initComponent: function () {
+        var me = this;
         Ext.apply(this, {
-            items: [{
+            defaults: {
                 xtype: 'button',
-                text: 'Auth',
-                menuItem: 'Auth',
-                cls: 'sfa-bottomnav-button-auth',
+                ui: 'tab',
+                scale: 'large',
+                width: 60,
                 handler: function () {
-                    this.fireEvent('showPage', 'Auth');
-                    return false;
-                },
-                scope: this
-            }, {
-                xtype: 'button',
-                text: 'Vehicles',
-                menuItem: 'Company',
-                cls: 'sfa-bottomnav-button-vehicles',
-                handler: function () {
-                    this.fireEvent('showPage', 'Company');
-                    return false;
-                },
-                scope: this
-            }, {
-                xtype: 'button',
-                text: 'Contact',
-                menuItem: 'Contact',
-                cls: 'sfa-bottomnav-button-contact',
-                handler: function () {
-                    this.fireEvent('showPage', 'Contact');
-                    return false;
-                },
-                scope: this
-            }]
+                    me.fireEvent('showPage', this.componentClass);
+                }
+            }
         });
         this.callParent();
+    },
+
+    applyButtons: function (buttons) {
+        this.removeAll();
+        Ext.each(buttons, function (button) {
+            var config = this.buttons[button];
+            if (! config) {
+                config = {
+                    text: button
+                };
+            }
+            this.add({
+                cls: config.cls,
+                text: config.text,
+                componentClass: button
+            });
+        }, this);
     },
 
     setActiveButton: function (name) {
         Ext.each(this.query('button'), function (button) {
             button.removeCls('x-btn-tab-large-pressed');
         });
-        this.down('button[menuItem=' + name + ']').addCls('x-btn-tab-large-pressed');
+        this.down('button[componentClass=' + name + ']').addCls('x-btn-tab-large-pressed');
     }
 
 });

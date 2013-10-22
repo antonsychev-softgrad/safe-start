@@ -2,7 +2,8 @@ Ext.define('SafeStartExt.view.component.Company', {
     extend: 'Ext.panel.Panel',
     requires: [
         'SafeStartExt.view.container.TopNav',
-        'SafeStartExt.view.view.VehicleList'
+        'SafeStartExt.view.panel.VehicleList',
+        'SafeStartExt.view.panel.VehicleTabs'
     ],
     xtype: 'SafeStartExtComponentCompany',
     layout: {
@@ -15,14 +16,21 @@ Ext.define('SafeStartExt.view.component.Company', {
         Ext.apply(this, {
             items: [{
                 xtype: 'SafeStartExtContainerTopNav',
-                titleText: 'TODO: Company title'
+                titleText: 'Company'
             }, {
                 xtype: 'container',
-                layout: 'hbox',
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch'
+                },
                 flex: 1,
-                maxWidth: 250,
                 items: [{
-                    xtype: 'SafeStartExtViewVehicleList'
+                    xtype: 'SafeStartExtPanelVehicleList',
+                    flex: 1,
+                    maxWidth: 250
+                }, {
+                    xtype: 'SafeStartExtPanelVehicleTabs',
+                    flex: 2
                 }]
             }]
         });

@@ -4,7 +4,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
         'Ext.button.Button'
     ],
     
-    alias: 'widget.SafeStartExtContainerTopNav',
+    xtype: 'SafeStartExtContainerTopNav',
     cls: 'sfa-top-nav',
 
     layout: { 
@@ -33,7 +33,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 xtype: 'button',
                 ui: 'transparent',
                 scale: 'medium',
-                text: this.titleText
+                name: 'companyName'
             }, {
                 xtype: 'box',
                 flex: 1
@@ -63,5 +63,9 @@ Ext.define('SafeStartExt.view.container.TopNav', {
 
     setUsername: function (username) {
         this.down('button[name=user]').setText(username);
+    },
+
+    setCompanyName: function (companyName) {
+        this.down('button[name=companyName]').setText(companyName || 'Company');
     }
 });

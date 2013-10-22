@@ -23,8 +23,9 @@ Ext.define('SafeStartExt.controller.Main', {
             'SafeStartExtBottomNav': {
                 showPage: this.showPage
             },
-            'viewport': {
-                mainMenuLoaded: this.updateMainMenu
+            'SafeStartExtMain': {
+                mainMenuLoaded: this.updateMainMenu,
+                notSupportedAction: this.notSupportedAction
             }
         });   
     },
@@ -32,15 +33,25 @@ Ext.define('SafeStartExt.controller.Main', {
     updateMainMenu: function (menu) {
         var mainNavPanel = this.getMainNavPanel();
         this.getMainPanel().removeAll();
-        Ext.each(mainNavPanel.query('button'), function (button, index) {
-            if (Ext.Array.contains(menu, button.menuItem)) {
-                button.show();
-            } else {
-                button.hide();
+        mainNavPanel.applyButtons(menu);
+
+        var getter;
+        Ext.each(menu, function (name) {
+            getter = 'get' + name + 'Panel';
+            if (typeof this[getter] === 'function') {
+                this.showPage(name);
+                return false;
             }
+        }, this);
+    },
+
+    notSupportedAction: function () {
+        Ext.Msg.alert({
+            msg: 'Not supported by Internet Explorer 9 and older versions. ' +
+                'Please download one of modern browsers, like a Google Chrome, Safari or newest version of IE.',
+            width: 300,
+            buttons: Ext.Msg.OK        
         });
-        var firstBtn = mainNavPanel.down('button{isHidden() == false}');
-        this.showPage(firstBtn.menuItem);
     },
 
     showPage: function (name) {
@@ -57,6 +68,8 @@ Ext.define('SafeStartExt.controller.Main', {
             }
             this.getMainPanel().getLayout().setActiveItem(pagePanel);
             this.getMainNavPanel().setActiveButton(name);
+        } else {
+            this.notSupportedAction();
         }
     }
 
