@@ -211,6 +211,9 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
+        if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
+        else $checkList->setOperatorName($user->getFullName());
+
         // set usage warning
         if ($vehicle->getInspectionDueKms() && $vehicle->getInspectionDueHours() && (isset($this->data->odometer) && !empty($this->data->odometer))) {
             if (!$inspection) $lastInspectionDay = $vehicle->getLastInspectionDay();

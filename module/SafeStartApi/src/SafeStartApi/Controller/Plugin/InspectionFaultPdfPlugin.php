@@ -135,15 +135,13 @@ class InspectionFaultPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractP
     {
         $maxHeight = $imageMaxHeight = $this->opts['style']['page_padding_bottom'] / 16 * 10;
         $imageMaxWidth = $imageMaxHeight / 3 * 4;
-
         $topPosInPage = (($maxHeight) / 2);
 
-        $userData = array();
         $user = $this->checkList->getUser();
         if ($user) $userData = $user->toInfoArray();
         else $userData = (!is_array($this->checkList->getUserData())) ? json_decode((string)$this->checkList->getUserData(), true) : $this->checkList->getUserData();
 
-        $userName = "Name: " . ((isset($userData['firstName']) ? $userData['firstName'] : '') . " " . (isset($userData['lastName']) ? $userData['lastName'] : ''));
+        $userName = "Name: " . $this->checkList->getOperatorName();
         $date = "Date: " . ($this->checkList->getCreationDate()->format($this->getController()->moduleConfig['params']['date_format'] . ' ' . $this->getController()->moduleConfig['params']['time_format']));
         $signature = "Signature: ";
 

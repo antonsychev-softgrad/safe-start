@@ -98,6 +98,9 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
+        if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
+        else $checkList->setOperatorName($userData['firstName'] ." ". $userData['lastName']);
+
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
             $checkList->setCurrentOdometer($this->data->odometer);
             $vehicle->setCurrentOdometerKms($this->data->odometer);
