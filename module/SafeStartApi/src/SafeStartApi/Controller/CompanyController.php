@@ -120,7 +120,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
-        $plantId = $this->data->plantId;
+        $plantId = strtoupper($this->data->plantId);
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
             $vehicle = $repository->find($vehicleId);
@@ -131,6 +131,13 @@ class CompanyController extends RestrictedAccessRestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            if ($vehicle->getPlantId() != $plantId) {
+                $vehicleWithSentPlantId = $repository->findOneBy(array(
+                    'plantId' => $plantId,
+                    'deleted' => 0,
+                ));
+                if (!is_null($vehicleWithSentPlantId)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            }
         } else {
             $vehicle = $repository->findOneBy(array(
                 'plantId' => $plantId,

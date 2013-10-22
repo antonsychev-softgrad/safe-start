@@ -51,7 +51,7 @@ class PublicVehicleController extends PublicAccessRestController
         // save checklist
         $persist = false;
         if(!empty($this->data->plantId)) {
-            $plantId = $this->data->plantId;
+            $plantId = strtoupper($this->data->plantId);
             $vehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             if ($vehicle) {
                 $company = $vehicle->getCompany();

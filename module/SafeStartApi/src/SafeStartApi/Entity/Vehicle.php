@@ -661,7 +661,7 @@ class Vehicle extends BaseEntity
      */
     public function setPlantId($plantId)
     {
-        $this->plantId = $plantId;
+        $this->plantId = strtoupper($plantId);
 
         return $this;
     }
