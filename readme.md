@@ -1,5 +1,5 @@
-1. Test server access:
-
+#1. Test server access:
+##
     http://safe-start.dev2.ocsico.com/
     http://safe-start.dev2.ocsico.local/
     ftp://safe-start.dev2.ocsico.local/
@@ -8,34 +8,40 @@
     login: safe-start
     pass: Newpassw0rd
 
-2. GIT access
+#2. GIT access
+##
     git clone https://ocsico@bitbucket.org/ocsico/safe-start.git
 
     login: ocsico
     pass: Pass!@
 
-3. PHP vendors install:
+#3. PHP vendors install:
+##
+   php composer.phar update
 
-    php composer.phar update
-
-4. MySQL\Doctrine 2:
+#4. MySQL\Doctrine 2:
+     ##
      a) Update\Create:
         ./vendor/bin/doctrine-module orm:schema-tool:create
         ./vendor/bin/doctrine-module orm:schema-tool:update
         ./vendor/bin/doctrine-module orm:validate-schema
 
+     ##
      b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
 
+     ##
      c) own console command
         php ./public/index.php doctrine set-def-data
 
-5. Sencha
+#5. Sencha
+   ##
    a) Build JS
    cd ./module/SafeStartApp/public/
    sencha app build production
 
-6. Production
+#6. Production
+    ##
     https://console.aws.amazon.com
     Username: paul@safestartinspections.com
     Password: ssi2705
@@ -43,8 +49,8 @@
     54.200.211.55 OR http://ec2-54-200-211-55.us-west-2.compute.amazonaws.com/
 
 
-7. nginx ZF2 conf
-
+#7. nginx ZF2 conf
+    ##
     server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
