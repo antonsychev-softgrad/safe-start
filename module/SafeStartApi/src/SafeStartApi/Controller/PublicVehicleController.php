@@ -75,7 +75,6 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
         $vehicle->setProjectNumber($projectNumber);
-        $vehicle->setRegistrationNumber($registrationNumber);
         $vehicle->setServiceDueHours($serviceDueHours);
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
