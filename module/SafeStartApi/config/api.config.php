@@ -67,14 +67,14 @@ $api = array(
         ),
     ),
     'mail' => array(
-        'from' => 'admin@safe-start.dev',
+        'from' => 'admin@safestartinspections.com',
         'transport' => array(
             'options' => array(
-                'host' => 'smtp.gmail.com',
+                'host' => 'gator3046.hostgator.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'webdev.group.ua@gmail.com',
-                    'password' => 'Ocsico!@',
+                    'username' => 'admin@safestartinspections.com',
+                    'password' => 'GHHxEG1Tcr+s',
                     'ssl' => 'tls'
                 ),
             ),
