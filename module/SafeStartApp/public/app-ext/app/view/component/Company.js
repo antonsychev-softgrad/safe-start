@@ -11,6 +11,7 @@ Ext.define('SafeStartExt.view.component.Company', {
         align: 'stretch'
     },
     width: '100%',
+    ui: 'transparent',
 
     initComponent: function () {
         Ext.apply(this, {

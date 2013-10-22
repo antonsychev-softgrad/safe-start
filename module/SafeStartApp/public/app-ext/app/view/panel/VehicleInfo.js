@@ -6,6 +6,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInfo', {
     layout: {
         type: 'vbox'
     },
+    ui: 'light',
     itemSelector: 'table tr',
 
     initComponent: function () {

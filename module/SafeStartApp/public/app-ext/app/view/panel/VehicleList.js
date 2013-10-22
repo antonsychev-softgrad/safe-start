@@ -7,10 +7,14 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
     xtype: 'SafeStartExtPanelVehicleList',
 
     layout: 'fit',
+    ui: 'light-left',
     border: 0,
     title: 'Vehicles',
     tbar: [{
         xtype: 'textfield',
+        flex: 1,
+        margin: '0 5 0 5',
+        height: 22,
         placeHolder: 'Search...'
     }, {
         text: 'refresh'

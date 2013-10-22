@@ -9,7 +9,9 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     },
     border: 0,
 
-    tbar: [],
+    tbar: {
+        hidden: true
+    },
 
     initComponent: function () {
         Ext.apply(this, {
@@ -17,6 +19,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         });
         this.callParent();
     },
+    ui: 'light',
 
     applyTabs: function (pagesStore) {
         this.down('toolbar').removeAll();
@@ -70,6 +73,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
             });
         }
 
+        this.down('toolbar').show();
         this.down('toolbar').add(button);
     },
 
