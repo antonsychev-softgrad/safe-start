@@ -7,6 +7,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
     ],
 
+    warningMessages: {
+        date_discrepancy_kms: 'Discrepancy Of Current Kms',
+        date_discrepancy_hours: 'Discrepancy Of Current Hours'
+    },
+
     config: {
         layout: 'card',
         margin: 10,
@@ -51,7 +56,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
     createView: function (vehicle, checklist, inspection) {
         var infoGroup = [],
             responsibleUser = vehicle.responsibleUsers().first(),
-            cords;
+            cords,
+            warnings = inspection.get('warnings') || [];
 
         this.down('panel[cls=sfa-vehicle-inspection-details]').removeAll();
 
@@ -83,6 +89,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
         var odometerString = '';
+
         if (inspection.get('odometerKms')) {
             odometerString += inspection.get('odometerKms') + ' km';
         }
@@ -95,6 +102,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         ]);
 
         this.createButtons(checklist.id);
+
+        var warningsGroup = [];
+        Ext.each(warnings, function (warning) {
+            if (warning.text) {
+                warningsGroup.push(this.createMessage(warning.text));
+            } else if (this.warningMessages[warning.action]) {
+                warningsGroup.push(this.createMessage(this.warningMessages[warning.action]));
+            }
+        }, this);
+        if (warningsGroup.length) {
+            this.createGroup(warningsGroup);
+        }
 
         this.checkListId = checklist.id;
         this.vehicleId = vehicle.get('id');
@@ -134,6 +153,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                 xtype: 'container',
                 html: value
             }]
+        };
+    },
+
+    createMessage: function (text) {
+        return {
+            xtype: 'container',
+            cls: 'sfa-vehicle-details-container-alert',
+            width: '100%',
+            maxWidth: 700,
+            html: text
         };
     },
 

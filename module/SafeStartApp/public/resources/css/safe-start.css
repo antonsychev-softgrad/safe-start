@@ -1245,6 +1245,10 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     color: #f00;
 }
 
+.sfa-vehicle-inspection-details .x-container.x-layout-box-item .sfa-vehicle-details-container-alert .x-innerhtml {
+    color: #f00;
+}
+
 .sfa-vehicle-inspection-details .x-button.x-button-small .x-button-label {
     font-size: 20px;
     color: #fff;
