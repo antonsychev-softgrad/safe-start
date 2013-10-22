@@ -541,7 +541,11 @@ $include-safestartext-controller-auth: true;
 $include-safestartext-controller-company: true;
 $include-safestartext-controller-contact: true;
 $include-safestartext-controller-main: true;
+$include-safestartext-model-company: true;
+$include-safestartext-model-menuvehicle: true;
+$include-safestartext-model-menuvehiclepage: true;
 $include-safestartext-model-user: true;
+$include-safestartext-store-menuvehicles: true;
 $include-safestartext-view-bottomnav: true;
 $include-safestartext-view-main: true;
 $include-safestartext-view-viewport: true;
@@ -549,7 +553,9 @@ $include-safestartext-view-component-auth: true;
 $include-safestartext-view-component-company: true;
 $include-safestartext-view-component-contact: true;
 $include-safestartext-view-container-topnav: true;
-$include-safestartext-view-view-vehiclelist: true;
+$include-safestartext-view-panel-vehicleinfo: true;
+$include-safestartext-view-panel-vehiclelist: true;
+$include-safestartext-view-panel-vehicletabs: true;
 /* including package ext-theme-base */
 @import '../../../ext/packages/ext-theme-base/sass/etc/all';
 /* including package ext-theme-neutral */
