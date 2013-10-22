@@ -20,28 +20,28 @@
    php composer.phar update
 
 #4. MySQL\Doctrine 2:
-     ##
+##
      a) Update\Create:
         ./vendor/bin/doctrine-module orm:schema-tool:create
         ./vendor/bin/doctrine-module orm:schema-tool:update
         ./vendor/bin/doctrine-module orm:validate-schema
 
-     ##
+##
      b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
 
-     ##
+##
      c) own console command
         php ./public/index.php doctrine set-def-data
 
 #5. Sencha
-   ##
+##
    a) Build JS
    cd ./module/SafeStartApp/public/
    sencha app build production
 
 #6. Production
-    ##
+##
     https://console.aws.amazon.com
     Username: paul@safestartinspections.com
     Password: ssi2705
@@ -50,7 +50,7 @@
 
 
 #7. nginx ZF2 conf
-    ##
+##
     server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
