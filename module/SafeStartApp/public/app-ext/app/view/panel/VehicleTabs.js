@@ -1,5 +1,5 @@
 Ext.define('SafeStartExt.view.panel.VehicleTabs', {
-    extend: 'Ext.panel.Panel',
+    extend: 'Ext.tab.Panel',
     requires: [
         'SafeStartExt.view.panel.VehicleInfo'
     ],
@@ -14,77 +14,75 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     },
 
     initComponent: function () {
+        var tabs = this.getTabs();
         Ext.apply(this, {
-            items: []
+            items: tabs
         });
+
         this.callParent();
+
+        this.setActiveTab(this.items.first());
     },
-    
-    ui: 'light',
 
-    applyTabs: function (pagesStore) {
-        this.down('toolbar').removeAll();
-        this.removeAll();
-
-        pagesStore.each(function (page) {
+    getTabs: function (pagesStore) {
+        var tabs = [];
+        this.pagesStore.each(function (page) {
             switch (page.get('action')) {
                 case 'info': 
-                    this.initPage('SafeStartExtPanelVehicleInfo', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelVehicleInfo', page.get('text')));
                     break;
                 case 'fill-checklist':
-                    this.initPage('SafeStartExtPanelChecklist', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelChecklist', page.get('text')));
                     break;
                 case 'alerts':
-                    this.initPage('SafeStartExtPanelAlerts', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelAlerts', page.get('text')));
                     break;
                 case 'inspections':
-                    this.initPage('SafeStartExtPanelInspections', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelInspections', page.get('text')));
                     break;
                 case 'report':
-                    this.initPage('SafeStartExtPanelReport', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelReport', page.get('text')));
                     break;
                 case 'update-checklist':
-                    this.initPage('SafeStartExtPanelUpdateChecklist', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelUpdateChecklist', page.get('text')));
                     break;
                 case 'users':
-                    this.initPage('SafeStartExtPanelUsers', page.get('text'));
+                    tabs.push(this.initPage('SafeStartExtPanelUsers', page.get('text')));
                     break;
             }
         }, this);
+        return tabs;
     },
 
     initPage: function (alias, title) {
-        var button;
-
-        if (Ext.ClassManager.getNameByAlias('widget.' + alias) === '') {
-            button = Ext.widget('button', {
-                text: title,
-                handler: function () {
-                    this.up('SafeStartExtMain').fireEvent('notSupportedAction');
-                },
-                scope: this
-            });
-        } else {
-            button = Ext.widget('button', {
-                text: title,
-                handler: function () {
-                    this.activatePageByAlias(alias);
-                },
-                scope: this
-            });
+        if (Ext.ClassManager.getNameByAlias('widget.' + alias) !== '') {
+            return {xtype: alias, title: title};
         }
-
-        this.down('toolbar').show();
-        this.down('toolbar').add(button);
+        return {
+            xtype: 'panel',
+            title: title,
+            listeners: {
+                beforeactivate: function () {
+                    this.up('SafeStartExtMain').fireEvent('notSupportedAction');
+                    return false;
+                }
+            }
+        };
     },
 
     activatePageByAlias: function (alias) {
         var panel = this.down(alias);
-        if (! panel) {
-            panel = Ext.widget(alias);
-            this.add(panel);
+        console.log('activate: ' + alias);
+        if (panel.fireEvent('beforeActivatePage') !== false) {
+            this.setActiveTab(panel); 
         }
-        this.getLayout().setActiveItem(panel);
+        // this.setActiveTab(panel);
+        // this.getLayout().setActiveItem(panel);
+    },
+
+    onBeforeTabChange: function (tabPanel, newCard, oldCard) {
+        console.log(newCard.xtype);
+        return newCard.fireEvent('beforeActivatePage');
     }
 
 });

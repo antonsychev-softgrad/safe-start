@@ -20,6 +20,7 @@ Ext.define('SafeStartExt.view.component.Company', {
                 titleText: 'Company'
             }, {
                 xtype: 'container',
+                name: 'vehicle-container',
                 layout: {
                     type: 'hbox',
                     align: 'stretch'
@@ -29,12 +30,25 @@ Ext.define('SafeStartExt.view.component.Company', {
                     xtype: 'SafeStartExtPanelVehicleList',
                     flex: 1,
                     maxWidth: 250
-                }, {
-                    xtype: 'SafeStartExtPanelVehicleTabs',
-                    flex: 2
                 }]
             }]
         });
         this.callParent();
+    },
+
+    setVehicle: function (vehicle) {
+        this.unsetVehicle();
+        this.down('container[name=vehicle-container]').add({
+            xtype: 'SafeStartExtPanelVehicleTabs',
+            pagesStore: vehicle.pages(),
+            flex: 2
+        });
+    },
+
+    unsetVehicle: function () {
+        var panel = this.down('SafeStartExtPanelVehicleTabs');
+        if (panel) {
+            panel.destroy();
+        }
     }
 });

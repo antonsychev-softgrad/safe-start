@@ -11,6 +11,9 @@ Ext.define('SafeStartExt.controller.Company', {
         selector: 'SafeStartExtComponentCompany SafeStartExtContainerTopNav',
         ref: 'vehicleTopNav'
     }, {
+        selector: 'SafeStartExtComponentCompany',
+        ref: 'companyPage'
+    }, {
         selector: 'SafeStartExtMain',
         ref: 'mainPanel'
     }],
@@ -50,13 +53,14 @@ Ext.define('SafeStartExt.controller.Company', {
 
     changeVehicleAction: function (vehicle) {
         this.vehicle = vehicle;
-        this.getVehicleTabsView().applyTabs(vehicle.pages());
-        this.getVehicleTabsView().activatePageByAlias('SafeStartExtPanelVehicleInfo');
+        this.getCompanyPage().setVehicle(vehicle);
     },
 
     refreshPage: function () {
         if (this.needUpdate) {
             this.needUpdate = false;
+            this.getCompanyPage().unsetVehicle();
+
             var store = this.getVehicleListView().getListStore();
             this.getVehicleTopNav().setCompanyName(this.company.get('title'));
             store.getProxy().setExtraParam('companyId', this.company.get('id'));
