@@ -13,6 +13,9 @@ Ext.define('SafeStartExt.controller.Main', {
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompany',
         ref: 'companyPanel'
+    }, {        
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompanies',
+        ref: 'companiesPanel'
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentContact',
         ref: 'contactPanel'

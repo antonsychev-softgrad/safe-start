@@ -19,8 +19,9 @@ Ext.define('SafeStartExt.Application', {
     controllers: [
         'Main',
         'Auth',
-        'Contact',
-        'Company'
+        'Companies',
+        'Company',
+        'Contact'
     ],
     userRecord: null,
     companyRecord: null,

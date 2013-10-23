@@ -36,7 +36,7 @@ Ext.define('SafeStartExt.controller.Company', {
         this.company = company;
         this.needUpdate = true;
 
-        if (this.getVehicleListView()) {
+        if (this.getVehicleListView() && this.getVehicleListView().isVisible()) {
             this.refreshPage();
         }
     },
