@@ -42,7 +42,7 @@ Ext.define('SafeStartExt.controller.Company', {
         this.company = company;
         this.needUpdate = true;
 
-        if (this.getMainPanel().getLayout().getActiveItem() === this.getVehicleListView()) {
+        if (this.getMainPanel().getLayout().getActiveItem() === this.getCompanyPage()) {
             this.refreshPage();
         }
     },

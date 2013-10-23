@@ -21,6 +21,7 @@ Ext.define('SafeStartExt.Ajax', {
             this.getViewport().setLoading(true);
         }
         options.url = this.baseHref + url;
+        options.method = options.method || 'POST';
         options.params = Ext.encode({
             meta: meta,
             data: data

@@ -1,9 +1,7 @@
 Ext.ns('SafeStartExt');
 
-SafeStartExt = SafeStartExt || {
-    dateFormat: 'Y:m:d',
-    timeFormat: 'H:i'
-};
+SafeStartExt.dateFormat = SafeStartExt.dateFormat || 'Y/m/d';
+SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
 
 Ext.define('SafeStartExt.Application', {
     name: 'SafeStartExt',
@@ -34,6 +32,7 @@ Ext.define('SafeStartExt.Application', {
                 var mainView = me.getViewport().down('SafeStartExtMain');
                 me.setUserData(result.userInfo);
                 mainView.fireEvent('mainMenuLoaded', result.mainMenu || {});
+
 
                 if (me.getUserRecord().get('role') === 'companyUser') {
                     mainView.fireEvent('changeCompanyAction', me.getUserRecord().getCompany());

@@ -12,11 +12,11 @@ Ext.define('SafeStartExt.view.panel.CompanyInfo', {
     initComponent: function () {
         Ext.apply(this, {
             tpl: new Ext.XTemplate(
-                '<table style="min-width: 400px; font-size: 18px; color: #344; margin: 10px">',
+                '<table style="min-width: 600px; font-size: 18px; color: #344; margin: 10px">',
                 '<tpl for=".">',
-                '<tr">',
-                    '<td>{key}</td>',
-                    '<td>{value}</td>',
+                '<tr>',
+                    '<td width="200">{key}</td>',
+                    '<td width="400">{value}</td>',
                 '</tr>',
                 '</tpl>',
                 '</table>'
@@ -33,16 +33,15 @@ Ext.define('SafeStartExt.view.panel.CompanyInfo', {
 
     setCompanyInfo: function (company) {
         var expiryDate = Ext.Date.format(
-            company.get('expiry_date'), 
-            SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat
+            new Date(company.get('expiry_date') * 1000), 
+            SafeStartExt.dateFormat
         );
-
-        this.getStore().loadData([{
+        var data = [{
             key: 'Company Name:', 
             value: company.get('title')
         }, {
-            key: 'Responsible Name', 
-            value: company.get('name')
+            key: 'Responsible Name:', 
+            value: company.get('firstName')
         }, {
             key: 'Responsible Email:', 
             value: company.get('email')
@@ -58,15 +57,22 @@ Ext.define('SafeStartExt.view.panel.CompanyInfo', {
         }, {
             key: 'Limited Access', 
             value: company.get('restricted') ? 'Yes': 'No'
-        }, {
-            key: 'Number of users:', 
-            value: company.get('max_users') 
-        }, {
-            key: 'Number of vehicles:',
-            value: company.get('max_vehicles') 
-        }, {
-            key: 'Expiry Date:',
-            value: expiryDate 
-        }]);
+        }];
+
+        if (company.get('restricted')) {
+            data.push({
+                key: 'Number of users:', 
+                value: company.get('max_users') 
+            }, {
+                key: 'Number of vehicles:',
+                value: company.get('max_vehicles') 
+            }, {
+                key: 'Expiry Date:',
+                value: expiryDate 
+            });
+        }
+
+
+        this.getStore().loadData(data);
     }
 });

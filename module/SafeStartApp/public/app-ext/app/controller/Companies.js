@@ -15,16 +15,13 @@ Ext.define('SafeStartExt.controller.Companies', {
         ref: 'mainPanel'
     }],
 
-    needUpdate: true,
-
     init: function () {
         this.control({
             'SafeStartExtPanelCompaniesList': {
                 changeCompanyAction: this.changeCompanyAction
             },
-            'SafeStartExtComponentCompanies': {
-                activate: this.refreshPage,
-                afterrender: this.refreshPage
+            'SafeStartExtMain': {
+
             }
         });
     },
@@ -36,12 +33,6 @@ Ext.define('SafeStartExt.controller.Companies', {
 
     setCompanyInfo: function (company) {
         this.getCompanyInfoPanel().setCompanyInfo(company);
-    },
-
-    refreshPage: function () {
-        if (this.needUpdate) {
-            this.needUpdate = false;
-            this.getCompaniesListView().getListStore().load();
-        }
     }
+
 });

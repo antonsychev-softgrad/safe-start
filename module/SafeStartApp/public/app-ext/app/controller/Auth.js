@@ -48,7 +48,6 @@ Ext.define('SafeStartExt.controller.Auth', {
         var viewport = this.getViewport();
         SafeStartExt.Ajax.request({
             url: 'user/logout',
-            method: 'GET',
             success: function () {
                 viewport.fireEvent('reloadMainMenu');
             }
