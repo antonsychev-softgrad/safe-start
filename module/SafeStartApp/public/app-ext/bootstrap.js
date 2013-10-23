@@ -830,6 +830,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Companies": [],
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
@@ -837,14 +838,18 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.model.MenuVehicle": [],
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
+  "SafeStartExt.store.Companies": [],
   "SafeStartExt.store.MenuVehicles": [],
   "SafeStartExt.view.BottomNav": [],
   "SafeStartExt.view.Main": [],
   "SafeStartExt.view.Viewport": [],
   "SafeStartExt.view.component.Auth": [],
+  "SafeStartExt.view.component.Companies": [],
   "SafeStartExt.view.component.Company": [],
   "SafeStartExt.view.component.Contact": [],
   "SafeStartExt.view.container.TopNav": [],
+  "SafeStartExt.view.panel.CompaniesList": [],
+  "SafeStartExt.view.panel.CompanyInfo": [],
   "SafeStartExt.view.panel.VehicleInfo": [],
   "SafeStartExt.view.panel.VehicleList": [],
   "SafeStartExt.view.panel.VehicleTabs": []
@@ -1837,6 +1842,7 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Companies": [],
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
@@ -1844,6 +1850,7 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.model.MenuVehicle": [],
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
+  "SafeStartExt.store.Companies": [],
   "SafeStartExt.store.MenuVehicles": [],
   "SafeStartExt.view.BottomNav": [
     "widget.SafeStartExtBottomNav"
@@ -1855,6 +1862,9 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.component.Auth": [
     "widget.SafeStartExtComponentAuth"
   ],
+  "SafeStartExt.view.component.Companies": [
+    "widget.SafeStartExtComponentCompanies"
+  ],
   "SafeStartExt.view.component.Company": [
     "widget.SafeStartExtComponentCompany"
   ],
@@ -1863,6 +1873,12 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.view.container.TopNav": [
     "widget.SafeStartExtContainerTopNav"
+  ],
+  "SafeStartExt.view.panel.CompaniesList": [
+    "widget.SafeStartExtPanelCompaniesList"
+  ],
+  "SafeStartExt.view.panel.CompanyInfo": [
+    "widget.SafeStartExtPanelCompanyInfo"
   ],
   "SafeStartExt.view.panel.VehicleInfo": [
     "widget.SafeStartExtPanelVehicleInfo"
