@@ -9,6 +9,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
     warningMessages: {
         date_discrepancy_kms: 'Discrepancy Of Current Kms',
+        date_incorrect: 'Inaccurate Current Hours Or Kms',
         date_discrepancy_hours: 'Discrepancy Of Current Hours'
     },
 
@@ -65,8 +66,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createContainer('Project number', vehicle.get('projectNumber')),
             this.createContainer('Project name', vehicle.get('projectName'))
         );
-        if (responsibleUser) {
-            infoGroup.push(this.createContainer('Operators name', responsibleUser.getFullName()));
+        if (inspection.get('operator_name')) {
+            infoGroup.push(this.createContainer('Operator name', inspection.get('operator_name')));
         }
 
         var inspectionDate = Ext.Date.format(
@@ -87,6 +88,18 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 
+        var warningsGroup = [];
+        Ext.each(warnings, function (warning) {
+            if (warning.text) {
+                warningsGroup.push(this.createMessage(warning.text, 'sfa-alert-title'));
+            } else if (this.warningMessages[warning.action]) {
+                warningsGroup.push(this.createMessage(this.warningMessages[warning.action], 'sfa-alert-title'));
+            }
+        }, this);
+        if (warningsGroup.length) {
+            this.createGroup(warningsGroup);
+        }
+
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
         var odometerString = '';
 
@@ -102,18 +115,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         ]);
 
         this.createButtons(checklist.id);
-
-        var warningsGroup = [];
-        Ext.each(warnings, function (warning) {
-            if (warning.text) {
-                warningsGroup.push(this.createMessage(warning.text));
-            } else if (this.warningMessages[warning.action]) {
-                warningsGroup.push(this.createMessage(this.warningMessages[warning.action]));
-            }
-        }, this);
-        if (warningsGroup.length) {
-            this.createGroup(warningsGroup);
-        }
 
         this.checkListId = checklist.id;
         this.vehicleId = vehicle.get('id');
@@ -156,10 +157,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         };
     },
 
-    createMessage: function (text) {
+    createMessage: function (text, cls) {
         return {
             xtype: 'container',
-            cls: 'sfa-vehicle-details-container-alert',
+            cls: 'sfa-vehicle-details-container-alert' + (cls ? ' '+cls : ''),
             width: '100%',
             maxWidth: 700,
             html: text

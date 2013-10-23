@@ -45,7 +45,7 @@
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
         Password: ssi2705
-        54.200.117.161 OR http://ec2-54-200-211-55.us-west-2.compute.amazonaws.com/
+        54.200.117.161 OR ec2-54-200-117-161.us-west-2.compute.amazonaws.com
 
         ssh -i safe-start-root.pem ubuntu@54.200.117.161
 

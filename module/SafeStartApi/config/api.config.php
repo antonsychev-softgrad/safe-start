@@ -7,7 +7,7 @@ $api = array(
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
-        'emailForContacts' => 'ponomarenko.t@gmail.com',
+        'emailForContacts' => 'info@safestartinspections.com',
     ),
     'fieldTypes' => array(
         'root' => array(
@@ -67,7 +67,7 @@ $api = array(
         ),
     ),
     'mail' => array(
-        'from' => 'admin@safestartinspections.com',
+        'from' => 'info@safestartinspections.com',
         'transport' => array(
             'options' => array(
                 'host' => 'gator3046.hostgator.com',
@@ -169,6 +169,26 @@ $api = array(
             'output_name_title' => 'vehicle_report',
             'output_name_format' => '{name}_{user}_{vehicle}_at_{date}',
             'title' => 'vehicle report',
+            'style' => array(
+                'footer_text_size' => 10,
+                'footer_text_color' => '#333333',
+                'signature_height' => 60,
+                'signature_width' => 120,
+                'page_padding_top' => 24,
+                'page_padding_right' => 10,
+                'page_padding_bottom' => 50,
+                'page_padding_left' => 10,
+                'field_size' => 12,
+                'field_line_spacing' => 4,
+                'field_color' => '#333333',
+                'field_value_color' => '#0F5B8D',
+            )
+        ),
+        'vehicleActionList' => array(
+            'ext' => 'pdf',
+            'output_name_title' => 'action_list',
+            'output_name_format' => '{name}_{user}_at_{date}',
+            'title' => 'vehicle action list',
             'style' => array(
                 'footer_text_size' => 10,
                 'footer_text_color' => '#333333',

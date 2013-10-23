@@ -3,25 +3,27 @@
 use ZendPdf;
 use SafeStartApi\Model\ImageProcessor;
 
-class VehicleReportPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
+class VehicleActionListPdf extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
     const HEADER_EMPIRIC_HEIGHT = 90;
     protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
     private $vehicle;
 
-    public function create(\SafeStartApi\Entity\Vehicle $vehicle, \DateTime $from = null, \DateTime $to = null)
+    public function create($vehicles)
     {
-        $this->vehicle = $vehicle;
         $this->document = new ZendPdf\PdfDocument();
-        $this->opts = $this->getController()->moduleConfig['pdf']['vehicleReport'];
+        $this->opts = $this->getController()->moduleConfig['pdf']['vehicleActionList'];
         $this->uploadPath = $this->getController()->moduleConfig['defUsersPath'];
         $fontPath = dirname(__FILE__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
         $this->font = file_exists($fontPath) ? ZendPdf\Font::fontWithPath($fontPath) : ZendPdf\Font::fontWithName(ZendPdf\Font::FONT_HELVETICA);
-        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
-        // add header
-        $this->lastTopPos = $this->drawHeader();
-        // add report info
-        $this->drawReportInfo($from, $to);
+
+        foreach ($vehicles as $vehicle) {
+            if (!($vehicle instanceof \SafeStartApi\Entity\Vehicle)) continue;
+            $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+            $this->vehicle = $vehicle;
+            $this->lastTopPos = $this->drawHeader();
+            $this->pageIndex++;
+        }
         // save document
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();

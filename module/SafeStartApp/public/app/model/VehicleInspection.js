@@ -34,6 +34,9 @@ Ext.define('SafeStartApp.model.VehicleInspection', {
         }, {
             name: 'warnings',
             type: 'auto'
+        }, {
+            name: 'operator_name',
+            type: 'auto'
         }],
         associations: [{
             type: 'hasOne',

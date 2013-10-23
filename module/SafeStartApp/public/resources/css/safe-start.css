@@ -1740,3 +1740,8 @@ span.sfa-comment-content {
 .x-mask .x-mask-inner .x-loading-spinner-outer {
     height: 100px;
 }
+
+.sfa-alert-title {
+    color: #ff000;
+    text-align: center;
+}

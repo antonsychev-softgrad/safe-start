@@ -43,96 +43,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $company = $vehicle->getCompany();
         $vehicleData = $vehicle->toInfoArray();
         $companyData = $company ? $company->toArray() : array();
-        $data = array(
-            'Company name' => isset($companyData['title']) ? $companyData['title'] : '',
-            'Vehicle title' => $vehicleData['title'],
-            'Project number' => $vehicleData['projectNumber'],
-            'Project name' => $vehicleData['projectName'],
-            'Plant ID' => $vehicleData['plantId'],
-            //'Registration' => $vehicleData['registration'],
-            'Type of vehicle' => $vehicleData['type'],
-            'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
-            'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
-            'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
-        );
-
-        if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
-
-        $pageHeight = $this->getPageHeight();
-        $pageWidth = $this->getPageWidth();
-        $contentWidth = $this->getPageContentWidth();
-
-        // draw logo image >
-        $root = $this->getRootPath();
-
-        $logoMaxWidth = 130;
-        $logoMaxHeight = 115;
-        $logoPath = "{$root}/public/logo-pdf.png";
-
-        $logo = ZendPdf\Image::imageWithPath($logoPath);
-        $logoWidth = $logo->getPixelWidth();
-        $logoHeight = $logo->getPixelHeight();
-
-        $scale = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
-        $logoNewWidth = (int)($logoWidth * $scale);
-        $logoNewHeight = (int)($logoHeight * $scale);
-
-        $this->document->pages[$this->pageIndex]->drawImage($logo, $this->opts['style']['page_padding_left'], $pageHeight - 4 - $logoNewHeight, $this->opts['style']['page_padding_left'] + $logoNewWidth, $pageHeight - 4);
-        // > end draw logo image.
-
-        $headerTitlePaddingRight = 25;
-        $headerTitleXOffset = $logoMaxWidth + $headerTitlePaddingRight;
-        // draw header title >
-
-        $text = strtoupper($this->opts['title']);
-        $topPosInPage = $this->drawText($text, self::PAGE_HEADER_TITLE_SIZE, '#0F5B8D', $pageHeight - 16, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
-
-        if (!empty($data['Company name']) && is_string($data['Company name'])) {
-            $topPosInPage -= (self::PAGE_HEADER_TITLE_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
-            $topPosInPage = $this->drawText($data['Company name'], self::PAGE_HEADER_TITLE_SIZE, '#0F5B8D', $topPosInPage, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
-            unset($data['Company name']);
-        }
-
-        $columnsLeftXOffset = 290;
-        $columns = 2;
-        $columnsPadding = 15;
-        $total = count($data);
-        $inColumn = ceil($total / $columns);
-        $columnWidth = ($contentWidth - $columnsLeftXOffset - ($columnsPadding * ($columns - 1))) / $columns;
-        $keyWidth = $columnWidth - 50;
-        $currentYPos = $pageHeight - 15;
-        for ($i = 0; $i < $inColumn; $i++) {
-            $currentXPos = $columnsLeftXOffset;
-            for ($c = 0; $c < $columns; $c++) {
-                $navIndex = $i + ($inColumn * $c);
-                if ($navIndex >= $total) continue;
-                $tValue = array_slice($data, $navIndex, 1, true);
-                $tKeys = array_keys($tValue);
-                $tVals = array_values($tValue);
-
-                $title = $tKeys[0];
-                $value = (!empty($tVals[0]) && !is_null($tVals[0])) ? (string)$tVals[0] : '-';
-
-                $title = strip_tags($title);
-                $title = ucwords($title);
-                $fLinePos = $currentYPos;
-                $currentYPos = $this->drawText($title, self::BLOCK_SUBHEADER_SIZE, '#333333', $currentYPos, self::TEXT_ALIGN_LEFT, $currentXPos);
-
-                // draw status >
-                $color = "#0f5b8d";
-                $value = strtoupper($value);
-
-                $this->drawText($value, self::BLOCK_SUBHEADER_SIZE, $color, $fLinePos, self::TEXT_ALIGN_RIGHT, -(($columnWidth + $columnsPadding) * ($columns - $c - 1)));
-
-                $currentXPos += ($columnWidth + $columnsPadding);
-            }
-            $currentYPos -= (self::BLOCK_SUBHEADER_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
-        }
-
-        // > end draw header line.
-        $topPosInPage = $currentYPos;
-
-        return $topPosInPage;
+        return $this->drawVehicleHeader($vehicleData, $companyData);
     }
 
     protected function drawFooter(\ZendPdf\Page $page)
@@ -147,7 +58,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         if ($user) $userData = $user->toInfoArray();
         else $userData = (!is_array($this->checkList->getUserData())) ? json_decode((string)$this->checkList->getUserData(), true) : $this->checkList->getUserData();
 
-        $userName = "Name: " . $userName = "Name: " . $this->checkList->getOperatorName();
+        $userName = "Operator Name: " . $this->checkList->getOperatorName();
         $date = "Date: " . ($this->checkList->getCreationDate()->format($this->getController()->moduleConfig['params']['date_format'] . ' ' . $this->getController()->moduleConfig['params']['time_format']));
         $signature = "Signature: ";
 
