@@ -29,7 +29,8 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                     }
                 }
             }, {
-                text: 'refresh',
+                iconCls: 'sfa-icon-refresh',
+                scale: 'medium',
                 handler: function () {
                     this.up('toolbar').down('textfield').setValue('');
                     store.load();

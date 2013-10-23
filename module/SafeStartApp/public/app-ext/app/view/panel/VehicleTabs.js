@@ -5,6 +5,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
+    cls: 'sfa-vehicles-tabpanel',
 
     initComponent: function () {
         var tabs = this.getTabs();

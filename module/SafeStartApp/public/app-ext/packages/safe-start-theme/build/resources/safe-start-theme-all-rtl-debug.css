@@ -22623,7 +22623,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
   box-shadow: rgba(0, 0, 0, 0.4) 0 0.2em 0.6em;
   border: 3px solid #FFFFFF;
   padding: 22px 50px 34px 50px;
-  background: url(resources/img/log-form_bg.jpg) repeat;
+  background: url(img/log-form_bg.jpg) repeat;
 }
 
 /* line 10, ../../sass/src/panel/Panel.scss */
@@ -22668,7 +22668,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
 
 /* line 42, ../../sass/src/panel/Panel.scss */
 .x-panel-header-light-left {
-  background: url(resources/img/log-form_bg.jpg) repeat;
+  background: url(img/log-form_bg.jpg) repeat;
   border: 1px solid #CCD !important;
   font-size: 18px;
   padding: 5px;
@@ -22703,7 +22703,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
 
 /* line 72, ../../sass/src/panel/Panel.scss */
 .x-panel-light .x-toolbar-default {
-  background-image: url(resources/img/x-layout-card-item_bg.jpg);
+  background-image: url(img/x-layout-card-item_bg.jpg);
   background-color: transparent;
   border-top: none;
   border-left: none;
@@ -22712,6 +22712,6 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
 }
 
 /* line 82, ../../sass/src/panel/Panel.scss */
-.x-component-light {
-  background-image: url(resources/img/x-component-light_bg.jpg);
+.x-panel-body-light, .x-component-light {
+  background-image: url(img/x-component-light_bg.jpg);
 }
