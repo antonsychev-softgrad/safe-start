@@ -294,7 +294,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         return $currentColumn;
     }
 
-    public function drawAlerts($currentColumn)
+    protected function drawAlerts($currentColumn)
     {
         $this->lastTopPos -= 10;
         $alerts = $this->checkList->getAlertsArray();

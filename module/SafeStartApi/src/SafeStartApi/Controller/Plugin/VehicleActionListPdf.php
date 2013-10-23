@@ -16,13 +16,16 @@ class VehicleActionListPdf extends \SafeStartApi\Controller\Plugin\AbstractPdfPl
         $this->uploadPath = $this->getController()->moduleConfig['defUsersPath'];
         $fontPath = dirname(__FILE__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
         $this->font = file_exists($fontPath) ? ZendPdf\Font::fontWithPath($fontPath) : ZendPdf\Font::fontWithName(ZendPdf\Font::FONT_HELVETICA);
-
+        $this->pageIndex = -1;
         foreach ($vehicles as $vehicle) {
             if (!($vehicle instanceof \SafeStartApi\Entity\Vehicle)) continue;
+            if ($this->pageIndex < 0) $this->pageIndex = 0;
+            else $this->pageIndex++;
             $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
             $this->vehicle = $vehicle;
             $this->lastTopPos = $this->drawHeader();
-            $this->pageIndex++;
+            $currentColumn = $this->drawWarnings();
+            $currentColumn = $this->drawAlerts($currentColumn);
         }
         // save document
         $this->fileName = $this->getName();
@@ -41,6 +44,213 @@ class VehicleActionListPdf extends \SafeStartApi\Controller\Plugin\AbstractPdfPl
         $vehicleData = $this->vehicle->toInfoArray();
         $companyData = $company ? $company->toArray() : array();
         return $this->drawVehicleHeader($vehicleData, $companyData);
+    }
+
+    private function drawWarnings($currentColumn = 1)
+    {
+
+        $vehicle = $this->vehicle;
+        $warnings = array();
+        if ($this->vehicle->getLastInspection()) {
+            $warnings = $this->vehicle->getLastInspection()->getWarnings();
+        }
+
+        if ($vehicle->getCompany()) {
+            if ($vehicle->getCompany()->getExpiryDate()) {
+                $days = ($vehicle->getCompany()->getExpiryDate() - time()) / (60 * 60 * 24);
+                if ($days < 1) {
+                    $warnings[] = array(
+                        'action' => 'subscription_ending',
+                        'text' => 'Your subscription has expired'
+                    );
+                } else if ($days < 30) {
+                    $warnings[] = array(
+                        'action' => 'subscription_ending',
+                        'text' => sprintf($this->opts['style']['subscription_ending'], ceil($days))
+                    );
+                }
+            }
+        }
+
+        if ($vehicle->getNextServiceDay()) {
+            $days = (strtotime($vehicle->getNextServiceDay()) - time()) / (60 * 60 * 24);
+            if ($days < 1) {
+                $warnings[] = array(
+                    'action' => 'next_service_due',
+                    'text' => 'Next service day is ' . $vehicle->getNextServiceDay()
+                );
+            } else if ($days < 30) {
+                $warnings[] = array(
+                    'action' => 'next_service_due',
+                    'text' => sprintf($this->opts['style']['next_service_due'], ceil($days))
+                );
+            }
+        }
+
+        if (empty($warnings)) return $currentColumn;
+
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
+        $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
+        if (!$currentColumn) $currentColumn = 1;
+
+        $this->drawText(
+            $this->opts['style']['warnings_header'],
+            $this->opts['style']['category_field_size'],
+            $this->opts['style']['category_field_color'],
+            $this->lastTopPos,
+            self::TEXT_ALIGN_CENTER,
+            ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+            $this->font,
+            $columnWidth
+        );
+
+        $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
+
+        foreach ($warnings as $warning) {
+            if (!isset($warning['action'])) continue;
+            if (isset($this->opts['style'][$warning['action']])) {
+                $lines = $this->getTextLines(isset($warning['text']) ? $warning['text'] : $this->opts['style'][$warning['action']], $this->opts['style']['warning_size'], $columnWidth);
+                foreach ($lines as $line) {
+                    if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                        $currentColumn++;
+                        if ($currentColumn > $columns) {
+                            $this->pageIndex++;
+                            $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                            $currentColumn = 1;
+                        }
+                        $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                    }
+                    $this->drawText(
+                        $line,
+                        $this->opts['style']['warning_size'],
+                        $this->opts['style']['warning_color'],
+                        $this->lastTopPos,
+                        self::TEXT_ALIGN_LEFT,
+                        ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                        $this->font,
+                        $columnWidth
+                    );
+
+                    $this->lastTopPos -= ($this->opts['style']['warning_size'] + ($this->opts['style']['warning_line_spacing'] * 2));
+                }
+            }
+        }
+
+        $this->lastTopPos -= 10;
+
+        return $currentColumn;
+    }
+
+    protected function drawAlerts($currentColumn)
+    {
+        $this->lastTopPos -= 10;
+        $alerts = $this->vehicle->getAlerts();
+        if (empty($alerts)) return;
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
+        $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
+
+        $this->drawText(
+            'Critical Alerts',
+            $this->opts['style']['category_field_size'],
+            $this->opts['style']['category_field_color'],
+            $this->lastTopPos,
+            self::TEXT_ALIGN_CENTER,
+            ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+            $this->font,
+            $columnWidth
+        );
+
+        $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
+
+        foreach ($alerts as $alertObj) {
+            $alert = $alertObj->toArray();
+            if ($alert['status'] == \SafeStartApi\Entity\Alert::STATUS_CLOSED || !$alert['field']['alert_critical']) continue;
+            // Description
+            $text = !empty($alert['field']['alert_description']) ? $alert['field']['alert_description'] : $alert['field']['alert_title'];
+            $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['alert_description_size'],
+                    $this->opts['style']['alert_description_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_LEFT,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+        }
+
+        $this->lastTopPos -= 10;
+
+        if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+            $currentColumn++;
+            if ($currentColumn > $columns) {
+                $this->pageIndex++;
+                $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                $currentColumn = 1;
+            }
+            $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+        }
+
+        $this->drawText(
+            'Non-Critical Alerts',
+            $this->opts['style']['category_field_size'],
+            $this->opts['style']['category_field_color'],
+            $this->lastTopPos,
+            self::TEXT_ALIGN_CENTER,
+            ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+            $this->font,
+            $columnWidth
+        );
+
+        $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
+
+        foreach ($alerts as $alertObj) {
+            $alert = $alertObj->toArray();
+            if ($alert['status'] == \SafeStartApi\Entity\Alert::STATUS_CLOSED || $alert['field']['alert_critical']) continue;
+            // Description
+            $text = !empty($alert['field']['alert_description']) ? $alert['field']['alert_description'] : $alert['field']['alert_title'];
+            $lines = $this->getTextLines($text, $this->opts['style']['alert_description_size'], $columnWidth);
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['alert_description_size'],
+                    $this->opts['style']['alert_description_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_LEFT,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+        }
+
     }
 
     protected function drawFooter(\ZendPdf\Page $page)
