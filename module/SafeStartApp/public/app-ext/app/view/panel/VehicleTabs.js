@@ -19,6 +19,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         });
         this.callParent();
     },
+    
     ui: 'light',
 
     applyTabs: function (pagesStore) {

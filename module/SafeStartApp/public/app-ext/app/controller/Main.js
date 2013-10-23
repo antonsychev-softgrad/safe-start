@@ -28,7 +28,8 @@ Ext.define('SafeStartExt.controller.Main', {
             },
             'SafeStartExtMain': {
                 mainMenuLoaded: this.updateMainMenu,
-                notSupportedAction: this.notSupportedAction
+                notSupportedAction: this.notSupportedAction,
+                changeCompanyAction: this.changeCompanyAction
             }
         });   
     },
@@ -46,6 +47,12 @@ Ext.define('SafeStartExt.controller.Main', {
                 return false;
             }
         }, this);
+    },
+
+    changeCompanyAction: function (company) {
+        if (company) {
+            this.getMainNavPanel().enableAll();
+        }
     },
 
     notSupportedAction: function () {

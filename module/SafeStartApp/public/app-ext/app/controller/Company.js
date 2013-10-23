@@ -10,6 +10,9 @@ Ext.define('SafeStartExt.controller.Company', {
     }, {
         selector: 'SafeStartExtComponentCompany SafeStartExtContainerTopNav',
         ref: 'vehicleTopNav'
+    }, {
+        selector: 'SafeStartExtMain',
+        ref: 'mainPanel'
     }],
 
     needUpdate: false,
@@ -36,7 +39,7 @@ Ext.define('SafeStartExt.controller.Company', {
         this.company = company;
         this.needUpdate = true;
 
-        if (this.getVehicleListView() && this.getVehicleListView().isVisible()) {
+        if (this.getMainPanel().getLayout().getActiveItem() === this.getVehicleListView()) {
             this.refreshPage();
         }
     },

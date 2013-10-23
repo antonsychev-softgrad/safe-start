@@ -27,19 +27,26 @@ Ext.define('SafeStartExt.view.BottomNav', {
         },
         Company: {
             text: 'Vehicles',
+            disabled: true,
             cls: 'sfa-button-vehicles'
         },
         Alerts: {
             text: 'Alerts',
+            disabled: true,
             cls: 'sfa-button-alerts'
         },
         Users: {
             text: 'Users',
+            disabled: true,
             cls: 'sfa-button-users'
         },
         SystemSettings: {
             text: 'Settings',
             cls: 'sfa-button-system-settings'
+        },
+        SystemStatistic: {
+            text: 'Statistic',
+            cls: 'sfa-button-system-statistic'
         },
         Contact: {
             text: 'Contact',
@@ -63,6 +70,12 @@ Ext.define('SafeStartExt.view.BottomNav', {
         this.callParent();
     },
 
+    enableAll: function () {
+        this.items.each(function (button) {
+            button.enable();
+        });
+    },
+
     applyButtons: function (buttons) {
         this.removeAll();
         Ext.each(buttons, function (button) {
@@ -75,6 +88,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
             this.add({
                 cls: config.cls,
                 text: config.text,
+                disabled: config.disabled,
                 componentClass: button
             });
         }, this);

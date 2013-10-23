@@ -37,9 +37,6 @@ Ext.define('SafeStartExt.Application', {
 
                 if (me.getUserRecord().get('role') === 'companyUser') {
                     mainView.fireEvent('changeCompanyAction', me.getUserRecord().getCompany());
-                } else if (me.getUserRecord().get('role') !== 'guest') { //TODO: remove this section
-                    me.getCompanyRecord().set('id', 1);
-                    mainView.fireEvent('changeCompanyAction', me.getCompanyRecord());
                 }
             }
         });
