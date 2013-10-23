@@ -4,14 +4,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         'SafeStartExt.view.panel.VehicleInfo'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
-    layout: {
-        type: 'card'
-    },
     border: 0,
-
-    tbar: {
-        hidden: true
-    },
 
     initComponent: function () {
         var tabs = this.getTabs();
@@ -68,21 +61,6 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                 }
             }
         };
-    },
-
-    activatePageByAlias: function (alias) {
-        var panel = this.down(alias);
-        console.log('activate: ' + alias);
-        if (panel.fireEvent('beforeActivatePage') !== false) {
-            this.setActiveTab(panel); 
-        }
-        // this.setActiveTab(panel);
-        // this.getLayout().setActiveItem(panel);
-    },
-
-    onBeforeTabChange: function (tabPanel, newCard, oldCard) {
-        console.log(newCard.xtype);
-        return newCard.fireEvent('beforeActivatePage');
     }
 
 });

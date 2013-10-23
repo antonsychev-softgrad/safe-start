@@ -10,18 +10,31 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
     ui: 'light-left',
     border: 0,
     title: 'Vehicles',
-    tbar: [{
-        xtype: 'textfield',
-        flex: 1,
-        margin: '0 5 0 5',
-        height: 22,
-        placeHolder: 'Search...'
-    }, {
-        text: 'refresh'
-    }],
 
     initComponent: function () {
+        var store = SafeStartExt.store.MenuVehicles.create({});
+
         Ext.apply(this, {
+            tbar: [{
+                xtype: 'textfield',
+                flex: 1,
+                margin: '0 5 0 5',
+                height: 22,
+                listeners: {
+                    change: function (textfield, value) {
+                        store.clearFilter();
+                        if (value) {
+                            store.filter('title', value);
+                        }
+                    }
+                }
+            }, {
+                text: 'refresh',
+                handler: function () {
+                    this.up('toolbar').down('textfield').setValue('');
+                    store.load();
+                }
+            }],
             items: [{
                 xtype: 'dataview',
                 itemSelector: 'div.sfa-vehicle-item',
@@ -32,7 +45,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                     '</div>',
                     '</tpl>'
                 ),
-                store: SafeStartExt.store.MenuVehicles.create({}),
+                store: store,
                 listeners: {
                     itemclick: this.onVehicleClick,
                     scope: this

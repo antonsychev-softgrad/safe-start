@@ -10,18 +10,30 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     ui: 'light-left',
     border: 0,
     title: 'Companies',
-    tbar: [{
-        xtype: 'textfield',
-        flex: 1,
-        margin: '0 5 0 5',
-        height: 22,
-        placeHolder: 'Search...'
-    }, {
-        text: 'refresh'
-    }],
 
     initComponent: function () {
+        var store = SafeStartExt.store.Companies.create({});
         Ext.apply(this, {
+            tbar: [{
+                xtype: 'textfield',
+                flex: 1,
+                margin: '0 5 0 5',
+                height: 22,
+                listeners: {
+                    change: function (textfield, value) {
+                        store.clearFilter();
+                        if (value) {
+                            store.filter('title', value);
+                        }
+                    }
+                }
+            }, {
+                text: 'refresh',
+                handler: function () {
+                    this.up('toolbar').down('textfield').setValue('');
+                    store.load();
+                }
+            }],
             items: [{
                 xtype: 'dataview',
                 itemSelector: 'div.sfa-vehicle-item',
@@ -32,9 +44,9 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                     '</div>',
                     '</tpl>'
                 ),
-                store: SafeStartExt.store.Companies.create({}),
+                store: store,
                 listeners: {
-                    itemclick: this.onVehicleClick,
+                    itemclick: this.onCompanyClick,
                     scope: this
                 }
             }]
@@ -42,7 +54,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
         this.callParent();
     },
 
-    onVehicleClick: function (dataview, record) {
+    onCompanyClick: function (dataview, record) {
         this.fireEvent('changeCompanyAction', record);
     },
 
