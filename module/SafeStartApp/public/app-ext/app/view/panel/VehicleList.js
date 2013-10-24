@@ -5,7 +5,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
         'SafeStartExt.store.MenuVehicles'
     ],
     xtype: 'SafeStartExtPanelVehicleList',
-
+    cls:'sfa-vehicles-list-left-coll',
     layout: 'fit',
     ui: 'light-left',
     border: 0,

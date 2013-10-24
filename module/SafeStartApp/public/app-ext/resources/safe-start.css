@@ -135,7 +135,6 @@
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a.x-btn-green-medium-pressed {
     background: #628904;
 }
-
 /* END Login & Contact form */
 
 
@@ -157,7 +156,25 @@
 .sfa-companies-list-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
 }
-
-
-
 /* END page Companies */
+
+
+/* page Vehisles */
+
+.sfa-vehicles-list-left-coll .sfa-vehicle-item {
+    cursor: pointer;
+}
+.sfa-vehicles-list-left-coll .sfa-vehicle-item:last-child {
+    border: none;
+}
+.sfa-vehicles-list-left-coll .sfa-vehicle-item.x-item-selected,
+.sfa-vehicles-list-left-coll .sfa-vehicle-item:hover {
+    background: #e3edf1;
+}
+.sfa-vehicles-list-left-coll .x-component.x-fit-item.x-component-default {
+    padding-top: 5px;
+}
+.sfa-vehicles-list-left-coll input.x-form-field.x-form-text {
+    font-family: Arial, sans-serif;
+}
+/* END page Vehisles */
