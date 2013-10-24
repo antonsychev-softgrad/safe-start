@@ -93,6 +93,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                                 name: 'expiry_date',
                                 required: true,
                                 label: 'Expiry Date',
+                                dateFormat: SafeStartApp.dateFormat,
                                 value: new Date(),
                                 cls: 'sfa-datepicker',
                                 picker: {
@@ -140,7 +141,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     },
                     {
                         xtype: 'button',
-                        text: 'Send Credentials',
+                        text: 'Send Password to Company Owner',
                         name: 'send-credentials',
                         ui: 'action',
                         handler: function() {

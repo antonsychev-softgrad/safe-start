@@ -13,7 +13,6 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
     {
         $vehicle = new Vehicle();
         $vehicle->setPlantId('ACHJ-DJ34-A234');
-        $vehicle->setRegistrationNumber('REGNUMBER1');
         $vehicle->setTitle('Mitsubishi');
         $vehicle->setType('Crossover');
         $vehicle->setProjectName('Project name');
@@ -35,7 +34,6 @@ class Vehicles extends AbstractFixture implements OrderedFixtureInterface
 
         $vehicle = new Vehicle();
         $vehicle->setPlantId('BBDS-CHJDJ-1234');
-        $vehicle->setRegistrationNumber('REGNUMBER2');
         $vehicle->setTitle('Ford');
         $vehicle->setType('Utility truck');
         $vehicle->setProjectName('Project name');

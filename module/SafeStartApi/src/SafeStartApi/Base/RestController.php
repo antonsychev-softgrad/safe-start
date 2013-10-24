@@ -257,11 +257,7 @@ class RestController extends AbstractActionController
                 $user = $this->authService->getStorage()->read();
             }
         } else {
-            if (is_integer($userId) && $userId > 0) {
-                $user = $this->em->find('SafeStartApi\Entity\User', $userId);
-            } else {
-
-            }
+            $user = $this->em->find('SafeStartApi\Entity\User', (int)$userId);
         }
 
         if ($user !== null) {
@@ -285,13 +281,12 @@ class RestController extends AbstractActionController
                     }
 
                     if ($now >= $expiretyDate) {
-                        $this->answer = array(
-                            'errorMessage' => 'Date is Expired.',
-                        );
-                        return $this->AnswerPlugin()->format($this->answer, 400, 400);
+                       return true;
                     }
                 }
             }
         }
+
+        return false;
     }
 }

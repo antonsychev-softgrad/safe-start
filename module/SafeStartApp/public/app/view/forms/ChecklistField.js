@@ -16,6 +16,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'hiddenfield',
+                name: 'is_root'
+            },
+            {
+                xtype: 'hiddenfield',
                 name: 'vehicleId'
             },
             {
@@ -128,6 +132,14 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                         name: 'save-data',
                         ui: 'confirm',
                         handler: function () {
+                            var form = this.up('SafeStartChecklistFieldForm');
+                            var values = form.getValues();
+                            if (values.type == 'radio' || values.type == 'checkbox') {
+                                if (values.alert_critical && ! values.alert_title) {
+                                    Ext.Msg.alert('Alert message is required');
+                                    return;
+                                }
+                            }
                             this.up('SafeStartChecklistFieldForm').fireEvent('save-data', this.up('SafeStartChecklistFieldForm'));
                         }
                     }
@@ -154,7 +166,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         this.show();
 
         this.changeFieldType(record.get('type'));
+
         this.callParent([record]);
+        
+        if (record.get('type') == 'root') {
+            fields.is_root.setValue(true);
+        }
     },
 
     changeFieldType: function (type) {

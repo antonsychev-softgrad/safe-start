@@ -174,14 +174,18 @@ class VehicleController extends RestrictedAccessRestController
 
         $user = $this->authService->getStorage()->read();
 
-        $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
-        $query->setParameter(1, $vehicle);
-        $items = $query->getResult();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
 
-        $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
-
-        $fieldsStructure = json_encode($fieldsStructure);
-        $fieldsData = json_encode($this->data->fields);
+        if ($cache->hasItem($cashKey)) {
+            $fieldsStructure = $cache->getItem($cashKey);
+        } else {
+            $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+            $query->setParameter(1, $vehicle);
+            $items = $query->getResult();
+            $fieldsStructure = $this->GetDataPlugin()->getChecklistStructure($items);
+            $cache->setItem($cashKey, $fieldsStructure);
+        }
 
         $inspection = null;
         $checklistId = (int)$this->getRequest()->getQuery('checklistId'); //todo: also check by hash
@@ -193,7 +197,8 @@ class VehicleController extends RestrictedAccessRestController
         if ($inspection) {
             $checkList = $inspection;
             $checkList->setPdfLink(NULL);
-
+            $checkList->setFaultPdfLink(NULL);
+            $checkList->clearWarnings();
         } else {
             $checkList = new \SafeStartApi\Entity\CheckList();
             $uniqId = uniqid();
@@ -202,24 +207,60 @@ class VehicleController extends RestrictedAccessRestController
 
         $checkList->setVehicle($vehicle);
         $checkList->setUser($user);
-        $checkList->setFieldsStructure($fieldsStructure);
-        $checkList->setFieldsData($fieldsData);
+        $checkList->setFieldsStructure(json_encode($fieldsStructure));
+        $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
+        // set usage warning
+        if ($vehicle->getInspectionDueKms() && $vehicle->getInspectionDueHours() && (isset($this->data->odometer) && !empty($this->data->odometer))) {
+            if (!$inspection) $lastInspectionDay = $vehicle->getLastInspectionDay();
+            else $lastInspectionDay = $vehicle->getPrevInspectionDay();
+            if ($lastInspectionDay) {
+                $interval = time() - $vehicle->getLastInspectionDay();
+                $intervals = ($interval / (60 * 60)) / $vehicle->getInspectionDueHours();
+            } else {
+                $intervals = 1;
+            }
+            $maxKms = $intervals * $vehicle->getInspectionDueKms();
+
+            if ($maxKms < $this->data->odometer) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_INCORRECT);
+            }
+        }
+
+        // set current odometer data
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
+            $warningKms = false;
             $checkList->setCurrentOdometer($this->data->odometer);
-            $vehicle->setCurrentOdometerKms($this->data->odometer);
+            if ($this->data->odometer < $vehicle->getCurrentOdometerKms()) {
+                $warningKms = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_KMS);
+            }
+            if (!$warningKms) $vehicle->setCurrentOdometerKms($this->data->odometer);
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerKms());
         }
         if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours))) {
+            $warningHours = false;
             $checkList->setCurrentOdometerHours($this->data->odometer_hours);
-            $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+            if ($this->data->odometer_hours < $vehicle->getCurrentOdometerHours()) {
+                $warningHours = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
+            }
+            if (
+                !$warningHours
+                && $vehicle->getLastInspectionDay()
+                && (($this->data->odometer_hours - $vehicle->getCurrentOdometerHours()) < ($checkList->getCreationDate()->getTimestamp() - $vehicle->getLastInspectionDay()))
+            ) {
+                $warningHours = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
+            }
+            if (!$warningHours) $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
-        $this->em->persist($checkList);
+        if (!$inspection) $this->em->persist($checkList);
         $this->em->flush();
 
         // delete existing alerts
@@ -254,6 +295,7 @@ class VehicleController extends RestrictedAccessRestController
                             $filedAlert->setCheckList($checkList);
                             if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
                             if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
+                            $filedAlert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_REFRESHED);
                             $newAlerts[] = $filedAlert;
                         }
                     }
@@ -287,9 +329,57 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
+        $this->_setInspectionStatistic($checkList);
         $this->_pushNewChecklistNotification($vehicle, $newAlerts);
 
+
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _setInspectionStatistic(\SafeStartApi\Entity\CheckList $checkList)
+    {
+        $fieldsDataValues = array();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData(), true);
+        foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
+
+        $query = $this->em->createQuery('DELETE FROM \SafeStartApi\Entity\InspectionBreakdown f WHERE f.check_list = ?1');
+        $query->setParameter(1, $checkList);
+        $query->getResult();
+
+        foreach ($fieldsStructure as $group) {
+            if ($this->_isEmptyGroup($group, $fieldsDataValues)) continue;
+            $record = new \SafeStartApi\Entity\InspectionBreakdown();
+
+            $record->setDefault(0);
+            $record->setAdditional((int)$group->additional);
+            $record->setKey($group->groupName);
+            $record->setFieldId($group->id);
+            $record->setCheckList($checkList);
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
+    }
+
+    private function _isEmptyGroup($group, $fieldsDataValues)
+    {
+        if (isset($group->items) && is_array($group->items)) {
+            $fields = $group->items;
+        } elseif (isset($group->fields) && is_array($group->fields)) {
+            $fields = $group->fields;
+        } else {
+            return true;
+        }
+        foreach ($fields as $field) {
+            if ($field->type == 'group') {
+                if (!$this->_isEmptyGroup($field, $fieldsDataValues)) return false;
+            }
+            if (!empty($fieldsDataValues[$field->id])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private function _pushNewChecklistNotification(Vehicle $vehicle, $alerts = array())
@@ -299,10 +389,42 @@ class VehicleController extends RestrictedAccessRestController
         $currentUser = \SafeStartApi\Application::getCurrentUser();
         $responsibleUsers = $vehicle->getResponsibleUsers();
         $vehicleUsers = $vehicle->getUsers();
+        $pushCriticalAlerts = false;
+        foreach ($alerts as $alert) {
+            if ($alert->getField()->getAlertCritical()) {
+                $pushCriticalAlerts = true;
+                break;
+            }
+        }
 
         foreach ($responsibleUsers as $responsibleUser) {
             if ($currentUser->getId() == $responsibleUser->getId()) continue;
             $responsibleUserInfo = $responsibleUser->toInfoArray();
+
+            if (!$pushCriticalAlerts) continue;
+            // send email to responsible
+            $checkList = $vehicle->getLastInspection();
+            $link = $checkList->getFaultPdfLink();
+            $path = $this->inspectionFaultPdf()->getFilePathByName($link);
+            if (!$link || !file_exists($path)) $path = $this->inspectionFaultPdf()->create($checkList);
+
+            if (file_exists($path)) {
+                try {
+                    $this->MailPlugin()->send(
+                        'New inspection fault report',
+                        $responsibleUserInfo['email'],
+                        'checklist_fault.phtml',
+                        array(
+                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName']
+                        ),
+                        $path
+                    );
+                } catch (\Exception $e) {
+                    $logger = \SafeStartApi\Application::getErrorLogger();
+                    if ($logger) $logger->debug(json_encode($e->getMessage()));
+                }
+            }
+
             switch (strtolower($responsibleUserInfo['device'])) {
                 case 'android':
                     $androidDevices[] = $responsibleUserInfo['deviceId'];
@@ -328,11 +450,12 @@ class VehicleController extends RestrictedAccessRestController
 
         $message = '';
         $badge = 0;
-        if (!empty($alerts)) {
+        if (!empty($alerts) && $pushCriticalAlerts) {
             $message =
                 "Vehicle Alert \n\r" .
                 "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
+                if ($alert->getField()->getAlertCritical()) continue;
                 $badge++;
                 $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }
@@ -458,7 +581,19 @@ class VehicleController extends RestrictedAccessRestController
         $vehicle = $alert->getVehicle();
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        if (isset($this->data->status)) $alert->setStatus($this->data->status);
+        if (isset($this->data->status)) {
+            if ($alert->getStatus() != $this->data->status) {
+                switch ($this->data->status) {
+                    case \SafeStartApi\Entity\Alert::STATUS_NEW:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_NEW);
+                        break;
+                    case \SafeStartApi\Entity\Alert::STATUS_CLOSED:
+                        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_CLOSED);
+                        break;
+                }
+            }
+            $alert->setStatus($this->data->status);
+        }
         if (isset($this->data->new_comment) && !empty($this->data->new_comment)) $alert->addComment($this->data->new_comment);
         $this->em->persist($alert);
         $this->em->flush();
@@ -585,18 +720,18 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
         $from = null;
-        if ((int) $this->params('from')) {
+        if ((int)$this->params('from')) {
             $from = new \DateTime();
             $from->setTimestamp((int)$this->params('from'));
         }
 
         $to = null;
-        if ((int) $this->params('to')) {
+        if ((int)$this->params('to')) {
             $to = new \DateTime();
             $to->setTimestamp((int)$this->params('to'));
         }
 
-        $pdf = $this->vehicleReportPdfPlugin()->create($vehicle, $from, $to);
+        $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");

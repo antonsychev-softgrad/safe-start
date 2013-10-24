@@ -147,23 +147,25 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
         var form = this.getForm();
         var record = form.getRecord();
         form.down('button[name=delete-data]').hide();
-        record = Ext.create('SafeStartApp.model.ChecklistField');
-        record.set('parentId', this.selectedNodeId);
-        record.set('vehicleId', this.vehicleId);
-        if (this.selectedNodeId == 0) {
-            record.set('type', 'root');
-        } else {
-            record.set('type', 'text');
-        }
+        record = Ext.create('SafeStartApp.model.ChecklistField', {
+            parentId: this.selectedNodeId,
+            vehicleId: this.vehicleId,
+            is_root: this.selectedNodeId === 0,
+            type: this.selectedNodeId === 0 ? 'root' : 'text'
+        });
         form.setRecord(record);
     },
 
     saveAction: function (form) {
+        // calculate order
         var record = form.getRecord();
         if (this.validateFormByModel(record, form)) {
             var self = this;
             var formValues = form.getValues();
-            if (this.currentRecord && !parseInt(this.currentRecord.get('parentId'))) formValues['type'] = 'root';
+            
+            if (record.get('is_root')) {
+                formValues.type = 'root';
+            }
             SafeStartApp.AJAX(this._getUpdateUrl(), formValues, function (result) {
                 if (result.fieldId) {
                     self._reloadStore(result.fieldId);
@@ -211,6 +213,11 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             }
             else {
                 this.getNavMain().goToNode(node);
+            }
+            if (Ext.isNumeric(node.get('id'))) {
+                this.selectedNodeId = node.get('id');
+            } else {
+                this.selectedNodeId = 0;
             }
         }, this, {single: true});
         this.getNavMain().getStore().loadData();

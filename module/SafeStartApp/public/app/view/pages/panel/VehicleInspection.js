@@ -294,7 +294,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
-                    fields.push(this.createDatePickerFiled(fieldData));
+                    fields.push(this.createDatePickerField(fieldData));
                     break;
                 case 'group':
                     fields.push(this.createGroupField(fieldData));
@@ -303,7 +303,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createCheckboxField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 default: 
-                    Ext.Logger.log('Unexpected field type:' + fieldData.type, 'warn');
+                    console.log(fieldData.type);
                     break;
             }
 
@@ -379,7 +379,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                         additionalFields;
                     if (alert) {
                         if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
-                            if (alert.get('critical')) {
+                            if (alert.get('critical') && alert.get('alertMessage')) {
                                 Ext.Msg.alert('DANGER', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
@@ -430,12 +430,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createDatePickerFiled: function (fieldData) {
+    createDatePickerField: function (fieldData) {
         return {
             xtype: 'datepickerfield',
             maxWidth: 900,
             labelWidth: '',
             width: '100%',
+            yearFrom: 2000,
+            picker: {
+                yearTo: new Date().getFullYear() + 10
+            },
+            dateFormat: SafeStartApp.dateFormat,
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
             value: new Date(fieldData.fieldValue * 1000 || Date.now())
@@ -576,18 +581,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 },
                 width: '100%',
                 items: [{
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-kms',
                     label: 'Kilometers',
-                    stepValue: 1000,
                     required: true,
                     value: odometerKms,
-                    minValue: 1000
+                    minValue: 0
                 }, {
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-hours',
                     label: 'Hours',
-                    stepValue: 24,
                     value: odometerHours,
                     minValue: 0
                 }]

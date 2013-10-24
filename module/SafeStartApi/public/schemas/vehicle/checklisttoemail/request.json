@@ -58,7 +58,7 @@
                 "registrationNumber": {
                     "description": "Registration number of vehicle",
                     "type": "string",
-                    "required": true
+                    "required": false
                 },
                 "firstName": {
                     "description": "First name",

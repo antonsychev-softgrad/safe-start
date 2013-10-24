@@ -49,13 +49,12 @@ class Module
             },
             100);
 
-        register_shutdown_function(function ()
+        register_shutdown_function(function () use ($module)
         {
             if ($e = error_get_last()) {
-                //todo: log exception
+                $module->onCodeExecutionError($e);
             }
-        });
-
+        } );
     }
 
     /**
@@ -95,11 +94,11 @@ class Module
                     case 'SafeStartApi\Base\Exception\Rest403':
                         $viewModel->setTemplate('json/response');
                         $viewModel->setVariable('answer', array(
-                            'errorMessage' => 'Access denied: Not enough permissions.',
+                            'errorMessage' => 'Access denied: ' . $e->getParam('exception')->getMessage(),
                         ));
                         $viewModel->setVariable('errorCode', 403);
                         $viewModel->setVariable('statusCode', 403);
-                        $e->getResponse()->setStatusCode(403);
+                        $e->getResponse()->setStatusCode(201);
                         break;
                     default:
                         $viewModel->setTemplate('json/500');
@@ -114,6 +113,25 @@ class Module
                 $serviceManager->get('ErrorLogger')->err('api method not found');
             }
         }
+    }
+
+    public function onCodeExecutionError($e)
+    {
+        $logger = new \Zend\Log\Logger;
+        $dir = __DIR__ . '/../../';
+        if (!is_dir($dir . 'data/logs')) {
+            if (mkdir($dir . 'data/logs', 0777)) {
+
+            }
+        }
+        if (!is_dir($dir . 'data/logs/errors')) {
+            if (mkdir($dir . 'data/logs/errors', 0777)) {
+            }
+        }
+        $writer = new \Zend\Log\Writer\Stream($dir . 'data/logs/errors/' . date('Y-m-d') . '.log');
+        $logger->addWriter($writer);
+
+        $logger->debug(json_encode($e));
     }
 
     /**

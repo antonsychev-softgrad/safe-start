@@ -1,0 +1,39 @@
+
+
+body {
+    font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+    background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
+}
+
+.sfa-text-info {
+    text-align: center;
+    font-size: 18px;
+    color: #808080;
+}
+
+.logo img{
+    width: 381px;
+    height: 100px;
+    background: transparent;
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF)"; /* IE8 */   
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);   /* IE6 & 7 */      
+    zoom: 1;
+}
+
+
+.sfa-bottom-nav {
+    border-top: 1px solid #0B3C5E;
+}
+
+
+.sfa-top-nav {
+    border-bottom: 2px solid #ccd;
+}
+
+.sfa-vehicle-item {
+    color: #558FAC;
+    font-size: 18px;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 12px 15px 12px 15px;
+    width: 100%;
+}

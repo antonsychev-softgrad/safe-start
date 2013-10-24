@@ -49,13 +49,13 @@ Ext.define('SafeStartApp.store.AbstractTreeStore', {
         this.load({
             callback: function (records, operation, success) {
                 if (operation.getError() && operation.getError().statusText != 'transaction aborted') {
-                    SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ': ' + operation.getError().statusText);
+                    SafeStartApp.showFailureInfoMsg(operation.getError().statusText);
                     this.fireEvent('data-load-failure', this);
                 } else if (operation.getResponse() && operation.getResponse().responseText) {
                     var result = Ext.decode(operation.getResponse().responseText);
                     if (result.meta && parseInt(result.meta.errorCode)) {
-                        if (result.data && result.data.errorMessage) SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ': ' +result.data.errorMessage);
-                        else SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ':Operation filed');
+                        if (result.data && result.data.errorMessage) SafeStartApp.showFailureInfoMsg(result.data.errorMessage);
+                        else SafeStartApp.showFailureInfoMsg('Operation filed');
                         this.fireEvent('data-load-failure', this);
                     }
                 } else {

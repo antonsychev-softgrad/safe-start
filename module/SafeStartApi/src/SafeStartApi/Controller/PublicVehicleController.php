@@ -98,8 +98,23 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
-        $checkList->setCurrentOdometer((isset($this->data->odometer) && !empty($this->data->odometer)) ? $this->data->odometer : null);
-        $checkList->setCurrentOdometerHours((isset($this->data->odometer_hours) && !empty($this->data->oodometer_hours)) ? $this->data->odometer_hours : null);
+
+        if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
+            $checkList->setCurrentOdometer($this->data->odometer);
+            $vehicle->setCurrentOdometerKms($this->data->odometer);
+        } else {
+            $checkList->setCurrentOdometer(null);
+            $vehicle->setCurrentOdometerKms(null);
+        }
+
+        if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours))) {
+            $checkList->setCurrentOdometerHours($this->data->odometer_hours);
+            $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+        } else {
+            $checkList->setCurrentOdometer(null);
+            $vehicle->setCurrentOdometerKms(null);
+        }
+
         $checkList->setUserData($userData);
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
@@ -127,6 +142,8 @@ class PublicVehicleController extends PublicAccessRestController
         $this->em->flush();
 
         $pdf = $this->inspectionPdf()->create($checkList);
+
+        $this->_setInspectionStatistic($checkList);
 
         if (file_exists($pdf)) {
             foreach($emails as $email) {
@@ -176,6 +193,52 @@ class PublicVehicleController extends PublicAccessRestController
         );
 
         return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    private function _setInspectionStatistic(\SafeStartApi\Entity\CheckList $checkList)
+    {
+        $fieldsDataValues = array();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData(), true);
+        foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
+
+        $query = $this->em->createQuery('DELETE FROM \SafeStartApi\Entity\InspectionBreakdown f WHERE f.check_list = ?1');
+        $query->setParameter(1, $checkList);
+        $query->getResult();
+
+        foreach ($fieldsStructure as $group) {
+            if ($this->_isEmptyGroup($group, $fieldsDataValues)) continue;
+            $record = new \SafeStartApi\Entity\InspectionBreakdown();
+
+            $record->setDefault(0);
+            $record->setAdditional((int)$group->additional);
+            $record->setKey($group->groupName);
+            $record->setFieldId($group->id);
+            $record->setCheckList($checkList);
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
+    }
+
+    private function _isEmptyGroup($group, $fieldsDataValues)
+    {
+        if (isset($group->items) && is_array($group->items)) {
+            $fields = $group->items;
+        } elseif (isset($group->fields) && is_array($group->fields)) {
+            $fields = $group->fields;
+        } else {
+            return true;
+        }
+        foreach ($fields as $field) {
+            if ($field->type == 'group') {
+                if (!$this->_isEmptyGroup($field, $fieldsDataValues)) return false;
+            }
+            if (!empty($fieldsDataValues[$field->id])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function sendTestEmailAction() {

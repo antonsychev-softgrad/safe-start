@@ -98,7 +98,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                     },
                     {
                         xtype: 'button',
-                        text: 'Send Credentials',
+                        text: 'Send Password to User',
                         name: 'send-credentials',
                         ui: 'action',
                         handler: function() {

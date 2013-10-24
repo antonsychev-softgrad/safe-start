@@ -62,7 +62,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         if (responsibleUser) {
             infoGroup.push(this.createContainer('Operators name', responsibleUser.getFullName()));
         }
-        infoGroup.push(this.createContainer('Date and Time', checklist.creationDate.date));
+
+        var inspectionDate = Ext.Date.format(
+            Ext.Date.parse(checklist.creationDate.date, 'Y-m-d H:i:s'), 
+            SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat
+        );
+        infoGroup.push(this.createContainer('Date and Time', inspectionDate));
         if (checklist.gpsCoords) {
             cords = checklist.gpsCoords.split(';');
             if ((parseFloat(cords[0]) !== 0) || (parseFloat(cords[1]) !== 0)) {
@@ -73,7 +78,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
-            this.createContainer('Registration', vehicle.get('registration')),
             this.createContainer('Type of vehicle', vehicle.get('type'))
         ]);
 
@@ -195,7 +199,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         try {
             this.down('panel[cls=sfa-vehicle-inspection-details]').add(item);
         } catch (e) {
-            if (window['qbaka']) qbaka.reportException(e);
+            SafeStartApp.logException(e);
         }
 
     },
@@ -209,12 +213,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     items.push(this.createFields(field.items, values, field.triggerValue, field.fieldName, depth + 1));
                     break;
                 case 'radio':
-                case 'text':
                 case 'checkbox':
                     Ext.each(values, function (value) {
                         isAlert = false;
                         if (value.id == field.fieldId) {
-                            if (field.triggerValue == value.value) {
+                            if (field.triggerValie && field.triggerValue == value.value) {
                                 isAlert = true;
                             }
 
@@ -232,13 +235,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                         }
                     }, this);
                     break;
+                case 'text':
+                    Ext.each(values, function (value) {
+                        if (value.id == field.fieldId) {
+                            items.push(this.createContainer(field.fieldName, value.value || '-'));
+                        }
+                    }, this);
+                    break;
                 case 'datePicker':
                     Ext.each(values, function (value) {
                         if (value.id == field.fieldId) {
                             if (value.value) {
                                 var date = new Date(value.value * 1000);
                                 if (! isNaN( date.getTime() ) ) {
-                                    items.push(this.createContainer(field.fieldName, Ext.Date.format(date, 'Y-m-d')));
+                                    items.push(this.createContainer(field.fieldName, Ext.Date.format(date, SafeStartApp.dateFormat)));
                                 } else {
                                     items.push(this.createContainer(field.fieldName, 'N/A'));
                                 }

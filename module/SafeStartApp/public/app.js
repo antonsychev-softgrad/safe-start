@@ -12,18 +12,26 @@ SafeStartApp = SafeStartApp || {
     defMenu: [
         'Auth',
         'Contact'
-    ],
+    ]
 
-    dateFormat: 'm/d/Y',
-    timeFormat: 'H:i'
 };
+
+(function () {
+    var defaultConfig = {
+        dateFormat: 'd/m/Y',
+        timeFormat: 'H:i'
+    };
+    Ext.Object.each(defaultConfig, function (property, value) {
+        if (! SafeStartApp.hasOwnProperty(property)) {
+            SafeStartApp[property] = value;
+        }
+    });
+}());
 
 Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
     mainMenuLoaded: false,
-    dateFormat: 'm/d/Y',
-    timeFormat: 'H:i',
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
         var self = this;
         var meta = {
@@ -152,7 +160,35 @@ Ext.application({
     name: 'SafeStartApp',
 
     requires: [
-        'Ext.MessageBox'
+        'Ext.MessageBox',
+        'Ext.ux.event.recognizer.MouseWheelDrag',
+        'Ext.event.recognizer.Drag',
+        'Ext.event.recognizer.Tap',
+        'Ext.event.recognizer.DoubleTap',
+        'Ext.event.recognizer.SingleTouch',
+        'Ext.event.recognizer.MultiTouch',
+        'Ext.event.recognizer.Touch',
+        'Ext.event.recognizer.LongPress',
+        'Ext.event.recognizer.Swipe',
+        'Ext.event.recognizer.Pinch',
+        'Ext.event.recognizer.Rotate',
+        'Ext.event.recognizer.EdgeSwipe',
+        'Ext.event.publisher.TouchGesture',
+        'Ext.event.publisher.ComponentDelegation',
+        'Ext.event.publisher.ComponentPaint',
+        'Ext.event.publisher.ElementPaint',
+        'Ext.event.publisher.ElementSize',
+        'Ext.util.PaintMonitor',
+        'Ext.util.paintmonitor.CssAnimation',
+        'Ext.util.paintmonitor.OverflowChange',
+        'Ext.util.paintmonitor.Abstract',
+        'Ext.util.SizeMonitor',
+        'Ext.util.sizemonitor.Default',
+        'Ext.util.sizemonitor.Scroll',
+        'Ext.util.sizemonitor.OverflowChange',
+        'Ext.util.sizemonitor.Abstract',
+        'Ext.mixin.Templatable',
+        'Ext.chart.series.ItemPublisher'
     ],
 
     views: [
@@ -222,6 +258,53 @@ Ext.application({
             }, Ext.Viewport);
             var clickEvent = (Ext.feature.has.Touch) ? "touchstart" : "mousedown";
             Ext.Viewport.addWindowListener(clickEvent, Ext.Viewport.doBlurInput, false)
+        }
+
+        if (Ext.os.deviceType == 'Desktop') {
+            Ext.override(Ext.scroll.View, {
+                doHideIndicators: function() {
+                    return this.changeIndicatorsState();
+                },
+
+                showIndicators: function () {
+                    return this.changeIndicatorsState();
+                },
+
+                changeIndicatorsState: function () {
+                    var indicators = this.getIndicators();
+
+                    if (this.hasOwnProperty('indicatorsHidingTimer')) {
+                        clearTimeout(this.indicatorsHidingTimer);
+                        delete this.indicatorsHidingTimer;
+                    }
+                    if (this.isAxisEnabled('x')) {
+                        if (indicators.x._length != indicators.x.barLength) {
+                            indicators.x.show();
+                        } else {
+                            indicators.x.hide();
+                        }
+                    }
+                    if (this.isAxisEnabled('y')) {
+                        if (indicators.y._length != indicators.y.barLength) {
+                            indicators.y.show();
+                        } else {
+                            indicators.y.hide();
+                        }
+                    }
+                }
+            });
+
+            Ext.override(Ext.behavior.Scrollable, {
+                onComponentPainted: function (component) {
+                    var me = this;
+                    this.scrollView.getScroller().on('maxpositionchange', function () {
+                        setTimeout( function () {
+                            me.scrollView.showIndicators();
+                        });
+                    });
+                    me.scrollView.showIndicators();
+                }
+            });
         }
 
         // Destroy the #appLoadingIndicator element

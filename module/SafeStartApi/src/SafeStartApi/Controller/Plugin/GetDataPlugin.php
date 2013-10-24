@@ -71,7 +71,7 @@ class GetDataPlugin extends AbstractPlugin
                     'fieldOrder' => $field->getOrder(),
                     'fieldName' => $field->getTitle(),
                     'fieldDescription' => $field->getDescription(),
-                    'fieldType' => $fieldsConfig[$field->getType()]['id'],
+                    'fieldType' => isset($fieldsConfig[$field->getType()]) ? $fieldsConfig[$field->getType()]['id'] : 0,
                     'alertMessage' => $field->getAlertTitle(),
                     'alertDescription' => $field->getAlertDescription(),
                     'type' => $field->getType(),

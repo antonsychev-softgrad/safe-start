@@ -29,7 +29,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         xtype: 'datepickerfield',
                         name: 'from',
                         label: 'From',
-                        labelWidth : '',
+                        labelWidth: '',
+                        dateFormat: SafeStartApp.dateFormat, 
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
                             yearTo: new Date().getFullYear()
@@ -41,6 +42,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         name: 'to',
                         label: 'To',
                         labelWidth : '',
+                        dateFormat: SafeStartApp.dateFormat, 
                         cls:'sfa-label-to',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,

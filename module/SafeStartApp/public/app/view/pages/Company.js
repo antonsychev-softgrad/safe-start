@@ -12,6 +12,8 @@ Ext.define('SafeStartApp.view.pages.Company', {
         'SafeStartApp.view.pages.panel.VehicleInspections',
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails',
         'SafeStartApp.view.pages.panel.Vehicles',
+        'SafeStartApp.view.pages.panel.LeftContainer',
+        'SafeStartApp.view.forms.Vehicle',
         'SafeStartApp.store.MenuVehicles',
         'SafeStartApp.model.MenuVehicle'
     ],
@@ -60,10 +62,64 @@ Ext.define('SafeStartApp.view.pages.Company', {
                 rootProperty: 'data'
             }
         });
+
+        var additionalButton = [];
+
+        if (SafeStartApp.userModel.get('role') != 'companyUser') {
+            additionalButton.push({
+                cls: 'sfa-add-button',
+                iconCls: 'add',
+                ui: 'action',
+                text: 'Add Vehicle',
+                action: 'add-vehicle'
+            });
+        }
         this.add({
-            xtype: 'SafeStartNestedListVehicles',
-            vehiclesStore: this.vehiclesStore,
-            store: this.listVehiclesStore
+            xtype: 'SafeStartLeftContainer',
+            flex: 1,
+            items: [{
+                xtype: 'panel',
+                cls: 'sfa-left-container',
+                margin: '0 20 0 0',
+                layout: 'fit',
+                items: [{
+                    xtype: 'toolbar',
+                    cls: 'sfa-menu-toggle',
+                    docked: 'top',
+                    items: additionalButton.concat({
+                        xtype: 'spacer',
+                        flex: 1
+                    }, {
+                        iconCls: 'arrow_left',
+                        height: 20,
+                        iconMask: true,
+                        handler: function (btn) {
+                            var panel = this.up('SafeStartLeftContainer');
+                            panel.toggleMenu();
+                        }
+                    })
+                }, {
+                    xtype: 'SafeStartNestedListVehicles',
+                    vehiclesStore: this.vehiclesStore,
+                    margin: '0 0 0 0',
+                    store: this.listVehiclesStore
+                }]
+            }, {
+                xtype: 'panel',
+                cls: 'sfa-left-container',
+                items: [{
+                    xtype: 'toolbar',
+                    items: [{
+                        iconCls: 'arrow_right',
+                        height: 20,
+                        iconMask: true,
+                        handler: function () {
+                            var panel = this.up('SafeStartLeftContainer');
+                            panel.toggleMenu();
+                        }
+                    }]
+                }]
+            }]
         });
 
         this.add(this.getInfoPanel());
@@ -73,43 +129,31 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
     getInfoPanel: function () {
         return {
-            cls: 'sfa-info-container',
             xtype: 'panel',
+            cls: 'sfa-info-container',
             name: 'info-container',
+            scrollable: null,
             layout: 'card',
-            minWidth: 150,
             flex: 2,
-            items: [
-                {
-                    xtype: 'panel',
-                    name: 'vehicle-info',
-                    layout: 'card'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspection'
-                },
-                {
-                    xtype: 'SafeStartVehicleAlertsPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspectionsPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleReportPanel'
-                },
-                {
-                    xtype: 'SafeStartUpdateVehicleChecklistPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleUsersPanel'
-                },
-                {
-                    xtype: 'SafeStartVehicleInspectionDetails'
-                },
-                {
-                    xtype: 'SafeStartVehiclesPanel'
-                }
-            ]
+            items: [{
+                xtype: 'SafeStartVehicleForm'
+            }, {
+                xtype: 'SafeStartVehicleInspection'
+            }, {
+                xtype: 'SafeStartVehicleAlertsPanel'
+            }, {
+                xtype: 'SafeStartVehicleInspectionsPanel'
+            }, {
+                xtype: 'SafeStartVehicleReportPanel'
+            }, {
+                xtype: 'SafeStartUpdateVehicleChecklistPanel'
+            }, {
+                xtype: 'SafeStartVehicleUsersPanel'
+            }, {
+                xtype: 'SafeStartVehicleInspectionDetails'
+            }, {
+                xtype: 'SafeStartVehiclesPanel'
+            }]
         };
     },
 
