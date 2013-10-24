@@ -12,8 +12,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     title: 'Companies',
 
     initComponent: function () {
-        var store = SafeStartExt.store.Companies.create();
-		store.loadData();
+        var store = SafeStartExt.store.Companies.create({autoLoad: true});
         Ext.apply(this, {
             tbar: [{
                 xtype: 'textfield',
