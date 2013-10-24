@@ -73,7 +73,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Trigger filed value',
+                label: 'Trigger field value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
@@ -174,7 +174,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
         this.callParent([record]);
         if (record.get('type') === 'datePicker') {
-            this.down('field[name=default_value]').setValue(new Date(record.get('default_value') || Date.now()));
+            this.down('field[name=default_value]').setValue(new Date(record.get('default_value') * 1000 || Date.now()));
         }
         
         if (record.get('type') == 'root') {
@@ -223,15 +223,57 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     xtype: 'textfield'
                 };
         }
-
         field.name = 'default_value';
         field.label = 'Default value';
-
         this.insert(index, field);
+    },
+
+    switchTriggerValueField: function (type) {
+        var field = this.down('field[name=trigger_value]');
+        var index = this.items.indexOf(field);
+        this.remove(field);
+        switch (type) {
+            case 'datePicker':
+                field = {
+                    xtype: 'textfield',
+                    name: 'trigger_value',
+                    label: 'Trigger field value',
+                    step: 1,
+                    value: 30
+                };
+                break;
+            default: 
+                field = {
+                    xtype: 'selectfield',
+                    name: 'trigger_value',
+                    label: 'Trigger field value',
+                    valueField: 'rank',
+                    displayField: 'title',
+                    store: {
+                        data: [
+                            { rank: '', title: ''},
+                            { rank: 'yes', title: 'Yes'},
+                            { rank: 'no', title: 'No'}
+                        ]
+                    }
+                };
+                break;
+        }
+        this.insert(index, field);
+    },
+
+    switchAlertCriticalMessage: function (type) {
+        if (type == 'datePicker') {
+            this.down('field[name=alert_critical]').setLabel('PDF Output');
+        } else {
+            this.down('field[name=alert_critical]').setLabel('Alert critical?');
+        }
     },
 
     changeFieldType: function (type) {
         this.switchDefaultValueField(type);
+        this.switchAlertCriticalMessage(type);
+        this.switchTriggerValueField(type);
         var fields = this.getFields();
         switch (type) {
             case 'group':
@@ -242,6 +284,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             break;
             case 'radio':
             case 'checkbox':
+            case 'datePicker':
                 fields['alert_title'].show();
                 fields['alert_critical'].show();
                 fields['alert_description'].show();

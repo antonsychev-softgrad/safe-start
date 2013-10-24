@@ -79,6 +79,7 @@ class GetDataPlugin extends AbstractPlugin
                     'triggerValue' => $field->getTriggerValue(),
                 );
                 $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
+                $listField['defaultValue'] = $field->getDefaultValue();
                 if ($inspection) {
                     $listField['fieldValue'] = $inspection->getFieldValue($field);
                 } else if ($field->getDefaultValue()) {

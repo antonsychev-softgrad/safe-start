@@ -159,12 +159,16 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
     saveAction: function (form) {
         // calculate order
         var record = form.getRecord();
+        var defaultValue = form.down('field[name=default_value]').getValue();
         if (this.validateFormByModel(record, form)) {
             var self = this;
             var formValues = form.getValues();
-            
+
             if (record.get('is_root')) {
                 formValues.type = 'root';
+            }
+            if (record.get('type') == 'datePicker') {
+                formValues.default_value = defaultValue.getTime() / 1000;
             }
             SafeStartApp.AJAX(this._getUpdateUrl(), formValues, function (result) {
                 if (result.fieldId) {
