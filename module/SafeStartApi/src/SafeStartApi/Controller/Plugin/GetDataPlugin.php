@@ -81,6 +81,8 @@ class GetDataPlugin extends AbstractPlugin
                 $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
                 if ($inspection) {
                     $listField['fieldValue'] = $inspection->getFieldValue($field);
+                } else if ($field->getDefaultValue()) {
+                    $listField['fieldValue'] = $field->getDefaultValue();
                 } else {
                     if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 }

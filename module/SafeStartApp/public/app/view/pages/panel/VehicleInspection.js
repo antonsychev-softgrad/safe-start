@@ -303,7 +303,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createCheckboxField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 default: 
-                    console.log(fieldData.type);
                     break;
             }
 
@@ -443,7 +442,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             dateFormat: SafeStartApp.dateFormat,
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
-            value: new Date(fieldData.fieldValue * 1000 || Date.now())
+            value: new Date(fieldData.fieldValue || Date.now())
         };
     },
 
