@@ -16,6 +16,9 @@ Ext.define('SafeStartExt.controller.Company', {
     }, {
         selector: 'SafeStartExtMain',
         ref: 'mainPanel'
+    }, {
+        selector: 'SafeStartExtPanelInspectionInfo',
+        ref: 'inspectionInfoPanel'
     }],
 
     needUpdate: false,
@@ -34,6 +37,13 @@ Ext.define('SafeStartExt.controller.Company', {
             },
             'SafeStartExtPanelVehicleInfo': {
                 afterrender: this.setVehicleInfo
+            },
+            'SafeStartExtPanelInspections': {
+                afterrender: this.loadInspections
+                // setInspectionInfo: this.setInspectionInfo
+            },
+            'SafeStartExtPanelInspections dataview': {
+                itemclick: this.setInspectionInfo
             }
         });
     },
@@ -49,6 +59,20 @@ Ext.define('SafeStartExt.controller.Company', {
 
     setVehicleInfo: function (vehicleInfoPanel) {
         vehicleInfoPanel.setVehicleInfo(this.vehicle);
+    },
+
+    loadInspections: function (view) {
+        view.getListStore().load();
+    },
+
+    setInspectionInfo: function (view, inspection) {
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + inspection.get('id') + '/getchecklistdata',
+            success: function (data) {
+                me.getInspectionInfoPanel().setInspectionInfo(inspection, data);
+            }
+        });
     },
 
     changeVehicleAction: function (vehicle) {

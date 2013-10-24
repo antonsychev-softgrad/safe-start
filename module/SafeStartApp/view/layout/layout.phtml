@@ -14,11 +14,25 @@
             var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
         </script>
 
-        <?php
+         <?php
+            $ieVersion = null;
+            if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
+                preg_match_all('/MSIE (\d+)/', $_SERVER['HTTP_USER_AGENT'], $matches);
+                $ieVersion = $matches[0][0];
+            }
+
             switch($env) {
                 case 'dev':
-                    $microLoaderScript = 'development.js';
-                    echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    if ($ieVersion && $ieVersion <= 9) {
+                        echo $this->headLink()->prependStylesheet($this->basePath() . '/app-ext/bootstrap.css');
+                        echo $this->headScript()->prependFile($this->basePath() . '/app-ext/ext/ext-dev.js');
+                        echo $this->headScript()->prependFile($this->basePath() . '/app-ext/bootstrap.js');
+                        echo $this->headScript()->prependFile($this->basePath() . '/app-ext/app.js');
+                        echo $this->headLink()->prependStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
+                    } else {
+                        $microLoaderScript = 'development.js';
+                        echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    }
                     break;
                 case 'prod':
                     echo '<link href="/build/production/SafeStartApp/resources/css/app.css" media="screen" rel="stylesheet" type="text/css">';

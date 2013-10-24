@@ -18,43 +18,54 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         this.setActiveTab(this.items.first());
     },
 
-    getTabs: function (pagesStore) {
-        var tabs = [];
-        this.pagesStore.each(function (page) {
+    getTabs: function () {
+        var me = this, 
+            tabs = [];
+
+        this.vehicle.pages().each(function (page) {
             switch (page.get('action')) {
                 case 'info': 
-                    tabs.push(this.initPage('SafeStartExtPanelVehicleInfo', page.get('text')));
-                    break;
-                case 'fill-checklist':
-                    tabs.push(this.initPage('SafeStartExtPanelChecklist', page.get('text')));
-                    break;
-                case 'alerts':
-                    tabs.push(this.initPage('SafeStartExtPanelAlerts', page.get('text')));
+                    tabs.push({
+                        xtype: 'SafeStartExtPanelVehicleInfo', 
+                        title: page.get('text') 
+                    });
                     break;
                 case 'inspections':
-                    tabs.push(this.initPage('SafeStartExtPanelInspections', page.get('text')));
+                    tabs.push({
+                        xtype: 'SafeStartExtPanelInspections',
+                        title: page.get('text'),
+                        vehicle: this.vehicle
+                    });
                     break;
-                case 'report':
-                    tabs.push(this.initPage('SafeStartExtPanelReport', page.get('text')));
-                    break;
-                case 'update-checklist':
-                    tabs.push(this.initPage('SafeStartExtPanelUpdateChecklist', page.get('text')));
-                    break;
+                case 'fill-checklist':
+                case 'alerts':
                 case 'users':
-                    tabs.push(this.initPage('SafeStartExtPanelUsers', page.get('text')));
+                case 'report':
+                case 'update-checklist':
+                    tabs.push({
+                        xtype: 'container',
+                        title: page.get('text'),
+                        listeners: {
+                            beforeactivate: function () {
+                                this.up('SafeStartExtMain').fireEvent('notSupportedAction');
+                                return false;
+                            }
+                        }
+                    });
                     break;
             }
         }, this);
         return tabs;
     },
 
-    initPage: function (alias, title) {
+    initPage: function (alias, config) {
         if (Ext.ClassManager.getNameByAlias('widget.' + alias) !== '') {
             return {xtype: alias, title: title};
         }
+
         return {
             xtype: 'panel',
-            title: title,
+            title: config.title,
             listeners: {
                 beforeactivate: function () {
                     this.up('SafeStartExtMain').fireEvent('notSupportedAction');
