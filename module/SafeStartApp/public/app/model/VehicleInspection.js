@@ -31,6 +31,12 @@ Ext.define('SafeStartApp.model.VehicleInspection', {
             name: 'odometerKms',
             type: 'integer',
             mapping: 'odometer_kms'
+        }, {
+            name: 'warnings',
+            type: 'auto'
+        }, {
+            name: 'operator_name',
+            type: 'auto'
         }],
         associations: [{
             type: 'hasOne',

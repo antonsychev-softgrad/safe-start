@@ -30,7 +30,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                         '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}</b>)</div>',
                         '<div>Fault: <b>{alertDescription}</b></div>',
                         '<div>Description: {description} </div>',
-                        '<div>Added by: {user.firstName} at {user.lastName} </div>',
+                        '<div>Added by: {user.firstName} {user.lastName} at {creationDate}</div>',
                         '<tpl for="history">',
                             '<div>{action} by: {username} at {date} </div>',
                         '</tpl>',
@@ -47,7 +47,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                 store: {
                     data: [
                         { rank: 'new', title: 'New'},
-                        { rank: 'closed', title: 'Closed'}
+                        { rank: 'closed', title: 'Completed'}
                     ]
                 }
             },
@@ -57,7 +57,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     { xtype: 'spacer' },
                     {
                         xtype: 'button',
-                        text: 'Save',
+                        text: 'Update',
                         name: 'save-data',
                         ui: 'confirm',
                         handler: function () {
@@ -179,7 +179,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                         alert.action = 'Reopened';
                         break;
                     case 'alert_closed':
-                        alert.action = 'Closed';
+                        alert.action = 'Completed';
                         break;
                 }
                 alertContent.history.push(alert);
@@ -227,7 +227,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     action = 'Reopened';
                     break;
                 case 'closed':
-                    action = 'Closed';
+                    action = 'Completed';
                     break;
             }
             

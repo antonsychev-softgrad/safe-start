@@ -194,6 +194,9 @@ class UserController extends RestController
             return $this->AnswerPlugin()->format($this->answer, 404);
         }
 
+        $user->setUsername(time() ." ". $user->getUsername());
+        $user->setEmail(time() ." ". $user->getEmail());
+
         $user->setDeleted(1);
         $this->em->flush();
 
@@ -229,7 +232,7 @@ class UserController extends RestController
             $user->getEmail(),
             'creds.phtml',
             array(
-                'username' => $user->getUsername(),
+                'username' => $user->getEmail(),
                 'firstName' => $user->getFirstName(),
                 'password' => $password,
                 'siteUrl' => $config['safe-start-app']['siteUrl']

@@ -51,7 +51,7 @@ class PublicVehicleController extends PublicAccessRestController
         // save checklist
         $persist = false;
         if(!empty($this->data->plantId)) {
-            $plantId = $this->data->plantId;
+            $plantId = strtoupper($this->data->plantId);
             $vehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             if ($vehicle) {
                 $company = $vehicle->getCompany();
@@ -75,7 +75,6 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
         $vehicle->setProjectNumber($projectNumber);
-        $vehicle->setRegistrationNumber($registrationNumber);
         $vehicle->setServiceDueHours($serviceDueHours);
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
@@ -98,6 +97,9 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+
+        if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
+        else $checkList->setOperatorName($userData['firstName'] ." ". $userData['lastName']);
 
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
             $checkList->setCurrentOdometer($this->data->odometer);

@@ -77,6 +77,11 @@
                     "type": "string",
                     "required": false
                 },
+                "operator_name": {
+                    "description": "Current User Name",
+                    "type": "string",
+                    "required": false
+                },
                 "odometer": {
                     "description": "Current Odometer Kms",
                     "type": "integer",

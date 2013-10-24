@@ -211,6 +211,9 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
 
+        if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
+        else $checkList->setOperatorName($user->getFullName());
+
         // set usage warning
         if ($vehicle->getInspectionDueKms() && $vehicle->getInspectionDueHours() && (isset($this->data->odometer) && !empty($this->data->odometer))) {
             if (!$inspection) $lastInspectionDay = $vehicle->getLastInspectionDay();
@@ -322,7 +325,7 @@ class VehicleController extends RestrictedAccessRestController
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
@@ -541,6 +544,40 @@ class VehicleController extends RestrictedAccessRestController
                     $checkListData['checkListId'] = $checkList->getId();
                     $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
 
+                    $warnings = $checkList->getWarnings();
+                    $vehicle = $checkList->getVehicle();
+                    if ($vehicle->getNextServiceDay()) {
+                        $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                        if ($days < 1) {
+                            $warnings[] = array(
+                                'action' => 'next_service_due',
+                                'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                            );
+                        } else if ($days < 30) {
+                            $warnings[] = array(
+                              'action' => 'next_service_due',
+                              'text' => 'Next service In ' . ceil($days) . ' Days',
+                            );
+                        }
+                    }
+                    if ($vehicle->getCompany()) {
+                        if ($vehicle->getCompany()->getExpiryDate()) {
+                            $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                            if ($days < 1) {
+                                $warnings[] = array(
+                                    'action' => 'subscription_ending',
+                                    'text' => 'Your subscription has expired'
+                                );
+                            } else if ($days < 30) {
+                                $warnings[] = array(
+                                    'action' => 'subscription_ending',
+                                    'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
+                                );
+                            }
+                        }
+                    }
+                    $checkListData['warnings'] = $warnings;
+
                     $inspections[] = $checkListData;
                 }
             }
@@ -624,7 +661,7 @@ class VehicleController extends RestrictedAccessRestController
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
@@ -669,7 +706,7 @@ class VehicleController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
@@ -736,5 +773,37 @@ class VehicleController extends RestrictedAccessRestController
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($pdf['path']);
+    }
+
+    public function printActionListAction()
+    {
+        $vehicles = array();
+        $vehicleId = (int)$this->params('id');
+        if (!$vehicleId) {
+            $user = $this->authService->getIdentity();
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            if ($responsibleVehicles) foreach($responsibleVehicles as $vehicle)  $vehicles[] = $vehicle;
+            $operatorVehicles = $user->getVehicles();
+            if ($operatorVehicles) foreach($operatorVehicles as $vehicle)  $vehicles[] = $vehicle;
+        } else {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $vehicles[] = $vehicle;
+        }
+
+        if (empty($vehicles)) {
+            $this->answer = array(
+                'errorMessage' => 'No vehicles available for getting Action List',
+            );
+            return $this->AnswerPlugin()->format($this->answer, 204);
+        }
+
+        $pdf = $this->vehicleActionListPdf()->create($vehicles);
+
+        header("Content-Disposition: inline; filename={$pdf['name']}");
+        header("Content-type: application/x-pdf");
+        echo file_get_contents($pdf['path']);
+
     }
 }

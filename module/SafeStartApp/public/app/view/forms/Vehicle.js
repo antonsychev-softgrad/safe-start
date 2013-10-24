@@ -116,7 +116,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     }
                 ]
             },
-            {
+           /* {
                 xtype: 'fieldset',
                 title: 'Until next inspection due:',
                 items: [
@@ -139,7 +139,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         label: 'Kilometres'
                     }
                 ]
-            },
+            },*/
             {
                 xtype: 'toolbar',
                 docked: 'bottom',

@@ -134,6 +134,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'print-vehicle-action-list' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/print-action-list',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'printActionList'
+                    ),
+                ),
+            ),
             'complete-vehicle-checklist' => array(
                 'type' => 'Segment',
                 'options' => array(

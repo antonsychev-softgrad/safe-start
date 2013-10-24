@@ -1108,6 +1108,8 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 
 .sfa-alerts .sfa-alert-description {
     position: relative;
+    font-weight: bold;
+    color: #FF0000;
     top: 8px;
 }
 .x-show-contact {
@@ -1243,6 +1245,10 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     color: #f00;
 }
 
+.sfa-vehicle-inspection-details .x-container.x-layout-box-item .sfa-vehicle-details-container-alert .x-innerhtml {
+    color: #f00;
+}
+
 .sfa-vehicle-inspection-details .x-button.x-button-small .x-button-label {
     font-size: 20px;
     color: #fff;
@@ -1349,26 +1355,26 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 .sfa-vehicle-inspection.sfa-vehicle-report .x-inner.x-toolbar-inner.x-horizontal.x-align-center.x-pack-start.x-layout-box div,
 .sfa-vehicle-inspection.sfa-vehicle-report .x-component-outer:before,
 .sfa-vehicle-inspection.sfa-vehicle-report input, .sfa-vehicle-inspection.sfa-vehicle-report textarea,
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer,
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer input,
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer:before {
+.sfa-statistic .sfa-top-toolbar .x-component-outer,
+.sfa-statistic .sfa-top-toolbar .x-component-outer input,
+.sfa-statistic .sfa-top-toolbar .x-component-outer:before {
     border: none;
 }
-.sfa-info-container.sfa-statistic .top {
+.sfa-statistic .top {
     font-size: 18px;
 }
-.sfa-info-container.sfa-statistic .sfa-top-toolbar {
+.sfa-statistic .sfa-top-toolbar {
     padding-bottom: 10px;
     margin-bottom: 10px;
     margin-top: 15px;
     border-bottom-color: #acacac;
 }
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-form-label {
+.sfa-statistic .sfa-top-toolbar .x-form-label {
     text-align: right;
     padding-right: 7px;
     width: auto !important;
 }
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-form-label span {
+.sfa-statistic .sfa-top-toolbar .x-form-label span {
     display: inline-block;
     padding-top: 5px;
 }
@@ -1531,44 +1537,44 @@ span.sfa-comment-content {
 /* hack for mozilla on statistic page */
 
 @-moz-document url-prefix() {
-  .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner {
+  .sfa-statistic .sfa-top-toolbar > div.x-inner {
     display: block;
   }
-  .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div {
+  .sfa-statistic .sfa-top-toolbar > div.x-inner > div {
         display: inline-block !important;
         width: 218px;
     }
-   .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) {
+   .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) {
         width: 180px;
     }
-   .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(3) {
+   .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(3) {
         width: 206px;
     }
-   .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(4) {
+   .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(4) {
         width: 185px;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
         float: left;
         text-align: left;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer {
         display: inline-block;
         width: 155px;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) > div.x-component-outer {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) > div.x-component-outer {
         width: 110px;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-component-outer:before {
+    .sfa-statistic .sfa-top-toolbar .x-component-outer:before {
         background: url(/resources/img/arr.png) no-repeat 50% 50%;
         width: 30px;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer > div {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer > div {
         padding-right: 25px !important;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner .x-button.x-button-action {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner .x-button.x-button-action {
         width: auto;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div .refresh {
+    .sfa-statistic .sfa-top-toolbar > div .refresh {
         top: -1px;
     }
     .sfa-add-inside .x-button-icon.x-shown.add:before {
@@ -1581,12 +1587,12 @@ span.sfa-comment-content {
 
 /* кнопка обновить */
 
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
     padding: 0 18px;
     height: 32px;
     font-size: 17px;
 }
-.sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action .x-button-icon.x-shown.refresh {
+.sfa-statistic .sfa-top-toolbar .x-button.x-button-action .x-button-icon.x-shown.refresh {
     font-size: 20px;
     top: -1px;
 }
@@ -1621,23 +1627,23 @@ span.sfa-comment-content {
 @media screen and (max-width: 980px) {
 
 @-moz-document url-prefix() {
-        .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
+        .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label {
             float: none;
         }
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div {
         width: 22%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(2) {
         width: 17%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(3) {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(3) {
         width: 21%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(4) {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(4) {
         width: 22%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(5) {
+    .sfa-statistic .sfa-top-toolbar > div.x-inner > div:nth-child(5) {
         width: auto;
     }
 }
@@ -1648,18 +1654,18 @@ span.sfa-comment-content {
         -ms-flex-direction: column !important;
         flex-direction: column !important;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-form-label {
+    .sfa-statistic .sfa-top-toolbar .x-form-label {
         text-align: left;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-field-select.x-field {
+    .sfa-statistic .sfa-top-toolbar .x-field-select.x-field {
         width: 10.5em;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+    .sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
         top: 14px;
     }
 
 @-moz-document url-prefix() {
-        .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+        .sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
             top: 1px;
         }
     }
@@ -1670,13 +1676,13 @@ span.sfa-comment-content {
 }
 
 @media screen and (max-width: 768px) {
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-field-select.x-field {
+    .sfa-statistic .sfa-top-toolbar .x-field-select.x-field {
         width: 20.5%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
+    .sfa-statistic .sfa-top-toolbar .x-button.x-button-action {
         width: 9%;
     }
-    .sfa-info-container.sfa-statistic .sfa-top-toolbar .x-button-icon.x-shown.refresh {
+    .sfa-statistic .sfa-top-toolbar .x-button-icon.x-shown.refresh {
         position: static;
         margin: 0 auto;
     }
@@ -1733,4 +1739,9 @@ span.sfa-comment-content {
 }
 .x-mask .x-mask-inner .x-loading-spinner-outer {
     height: 100px;
+}
+
+.sfa-alert-title {
+    color: #ff000;
+    text-align: center;
 }

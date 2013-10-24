@@ -106,7 +106,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                 '</tpl>',
                 '</div>',
                 '<div class="sfa-alert-description">{alertDescription}&nbsp</div>',
-                '<span>{vehicle.title}(<b>{vehicle.plantId}/{vehicle.registration}</b>): {user.firstName} {user.lastName} at {creationDate}</span></div>'
+                '<span>{vehicle.title} <b>{vehicle.plantId}</b> added by {user.firstName} {user.lastName} at {creationDate}</span></div>'
             ].join(''),
             cls: 'sfa-alerts',
             store: this.alertsStore,
