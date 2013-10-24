@@ -41,7 +41,7 @@
    sencha app build production
 
 #6. Production
-    ##a) Console:
+##a) Console:
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
         Password: ssi2705
@@ -49,14 +49,14 @@
 
         ssh -i safe-start-root.pem ubuntu@54.200.117.161
 
-    ##b) MySql:
+##b) MySql:
         user: root
         Password: SafeStart!@
 
         user: safe-start
         Password: J27k187lq1tJ80K
 
-    ##c) Email
+##c) Email
         user: admin@safestartinspections.com
         Password: GHHxEG1Tcr+s
 
