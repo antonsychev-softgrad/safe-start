@@ -21,17 +21,17 @@
 
 #4. MySQL\Doctrine 2:
 
-     ##a) Update\Create:
+##a) Update\Create:
         ./vendor/bin/doctrine-module orm:schema-tool:create
         ./vendor/bin/doctrine-module orm:schema-tool:update
         ./vendor/bin/doctrine-module orm:validate-schema
 
 
-     ##b) Generate setters:
+##b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
 
 
-     ##c) own console command
+##c) own console command
         php ./public/index.php doctrine set-def-data
 
 #5. Sencha
