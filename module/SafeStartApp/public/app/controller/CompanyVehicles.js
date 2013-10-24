@@ -346,10 +346,26 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             vehicleRecord = inspectionPanel.vehicleRecord,
             inspectionInterval = 24;
 
-        // TODO: warining message
         if (vehicleRecord) {
             currentOdometerHours = parseInt(vehicleRecord.get('currentOdometerHours'), 10);
             currentOdometerKms = parseInt(vehicleRecord.get('currentOdometerKms'), 10);
+
+            if (odometerKms == currentOdometerKms && odometerHours == currentOdometerHours) {
+                warningMessage = 'Current odometer should be changed';
+                var message = Ext.create('Ext.MessageBox', {
+                    cls: 'sfa-messagebox-confirm-warn',
+                    message: warningMessage,
+                    buttons: [{
+                        ui: 'confirm',
+                        text: 'OK',
+                        handler: function (btn) {
+                            message.destroy();
+                        }
+                    }]
+                });
+                this.getVehicleInspectionPanel().add(message);
+                return;
+            }
             lastInspectionDate = vehicleRecord.get('lastInspectionDay');
             odometerHoursInterval = odometerHours - currentOdometerHours;
             inspectionDueHours = vehicleRecord.get('inspectionDueHours');
