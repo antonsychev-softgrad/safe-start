@@ -12,7 +12,8 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     title: 'Companies',
 
     initComponent: function () {
-        var store = SafeStartExt.store.Companies.create({autoLoad: true});
+        var store = SafeStartExt.store.Companies.create();
+		store.loadData();
         Ext.apply(this, {
             tbar: [{
                 xtype: 'textfield',
@@ -32,7 +33,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                 scale: 'medium',
                 handler: function () {
                     this.up('toolbar').down('textfield').setValue('');
-                    store.load();
+                    store.loadData();
                 }
             }],
             items: [{
