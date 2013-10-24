@@ -213,6 +213,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
             }
         );
     },
+    
 
     printActionList: function()
     {

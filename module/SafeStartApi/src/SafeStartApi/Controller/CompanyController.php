@@ -213,6 +213,7 @@ class CompanyController extends RestrictedAccessRestController
             $cache->removeItem($cashKey);
         }
 
+        $vehicle->setPlantId(time() ." ".$vehicle->getPlantId());
         $vehicle->setDeleted(1);
 
         $this->em->flush();
