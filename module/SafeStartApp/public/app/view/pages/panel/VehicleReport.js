@@ -71,7 +71,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     },
                     {
                         xtype: 'button',
-                        name: 'print',
+                        name: 'print-action-list',
                         text: 'Print Action List',
                         ui: 'confirm',
                         handler: function () {
