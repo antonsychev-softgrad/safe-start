@@ -827,19 +827,37 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.window.Window": [
     "Ext.Window"
   ],
+  "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Companies": [],
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
+  "SafeStartExt.model.Company": [],
+  "SafeStartExt.model.Inspection": [],
+  "SafeStartExt.model.MenuVehicle": [],
+  "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
+  "SafeStartExt.store.AbstractStore": [],
+  "SafeStartExt.store.Companies": [],
+  "SafeStartExt.store.Inspections": [],
+  "SafeStartExt.store.MenuVehicles": [],
   "SafeStartExt.view.BottomNav": [],
   "SafeStartExt.view.Main": [],
   "SafeStartExt.view.Viewport": [],
   "SafeStartExt.view.component.Auth": [],
+  "SafeStartExt.view.component.Companies": [],
   "SafeStartExt.view.component.Company": [],
   "SafeStartExt.view.component.Contact": [],
-  "SafeStartExt.view.container.TopNav": []
+  "SafeStartExt.view.container.TopNav": [],
+  "SafeStartExt.view.panel.CompaniesList": [],
+  "SafeStartExt.view.panel.CompanyInfo": [],
+  "SafeStartExt.view.panel.InspectionInfo": [],
+  "SafeStartExt.view.panel.Inspections": [],
+  "SafeStartExt.view.panel.VehicleInfo": [],
+  "SafeStartExt.view.panel.VehicleList": [],
+  "SafeStartExt.view.panel.VehicleTabs": []
 });
 Ext.ClassManager.addNameAliasMappings({
   "Ext.AbstractComponent": [],
@@ -1826,12 +1844,22 @@ Ext.ClassManager.addNameAliasMappings({
   "Ext.window.Window": [
     "widget.window"
   ],
+  "SafeStartExt.Ajax": [],
   "SafeStartExt.Application": [],
   "SafeStartExt.controller.Auth": [],
+  "SafeStartExt.controller.Companies": [],
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
+  "SafeStartExt.model.Company": [],
+  "SafeStartExt.model.Inspection": [],
+  "SafeStartExt.model.MenuVehicle": [],
+  "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
+  "SafeStartExt.store.AbstractStore": [],
+  "SafeStartExt.store.Companies": [],
+  "SafeStartExt.store.Inspections": [],
+  "SafeStartExt.store.MenuVehicles": [],
   "SafeStartExt.view.BottomNav": [
     "widget.SafeStartExtBottomNav"
   ],
@@ -1842,6 +1870,9 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.component.Auth": [
     "widget.SafeStartExtComponentAuth"
   ],
+  "SafeStartExt.view.component.Companies": [
+    "widget.SafeStartExtComponentCompanies"
+  ],
   "SafeStartExt.view.component.Company": [
     "widget.SafeStartExtComponentCompany"
   ],
@@ -1850,6 +1881,27 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.view.container.TopNav": [
     "widget.SafeStartExtContainerTopNav"
+  ],
+  "SafeStartExt.view.panel.CompaniesList": [
+    "widget.SafeStartExtPanelCompaniesList"
+  ],
+  "SafeStartExt.view.panel.CompanyInfo": [
+    "widget.SafeStartExtPanelCompanyInfo"
+  ],
+  "SafeStartExt.view.panel.InspectionInfo": [
+    "widget.SafeStartExtPanelInspectionInfo"
+  ],
+  "SafeStartExt.view.panel.Inspections": [
+    "widget.SafeStartExtPanelInspections"
+  ],
+  "SafeStartExt.view.panel.VehicleInfo": [
+    "widget.SafeStartExtPanelVehicleInfo"
+  ],
+  "SafeStartExt.view.panel.VehicleList": [
+    "widget.SafeStartExtPanelVehicleList"
+  ],
+  "SafeStartExt.view.panel.VehicleTabs": [
+    "widget.SafeStartExtPanelVehicleTabs"
   ]
 });
 Ext.setVersion("ext-theme-base", "4.2.1");

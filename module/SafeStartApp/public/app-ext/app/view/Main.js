@@ -4,8 +4,9 @@ Ext.define('SafeStartExt.view.Main', {
         'Ext.tab.Panel',
         'Ext.layout.container.Fit',
         'SafeStartExt.view.component.Auth',
-        'SafeStartExt.view.component.Contact',
-        'SafeStartExt.view.component.Company'
+        'SafeStartExt.view.component.Companies',
+        'SafeStartExt.view.component.Company',
+        'SafeStartExt.view.component.Contact'
     ],
     
     xtype: 'SafeStartExtMain',

@@ -4,8 +4,8 @@ Ext.define('SafeStartExt.view.container.TopNav', {
         'Ext.button.Button'
     ],
     
-    alias: 'widget.SafeStartExtContainerTopNav',
-    cls: 'sfa-topnav',
+    xtype: 'SafeStartExtContainerTopNav',
+    cls: 'sfa-top-nav',
 
     layout: { 
         type: 'hbox',
@@ -14,13 +14,15 @@ Ext.define('SafeStartExt.view.container.TopNav', {
 
     height: 60,
     padding: '6 10 6 10',
+    ui: 'dark',
 
     defaults: {
-        xtype: 'button',
-        width: 60
+        xtype: 'button'
     },
 
     initComponent: function () {
+        var user = SafeStartExt.getApplication().getUserRecord();
+        var username = user.get('firstName') + ' ' + user.get('lastName');
         Ext.apply(this, {
             items: [{
                 xtype: 'image',
@@ -28,10 +30,27 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 height: 45,
                 src: '/resources/img/logo-top.png'
             }, {
+                xtype: 'button',
+                ui: 'transparent',
+                scale: 'medium',
+                name: 'companyName'
+            }, {
                 xtype: 'box',
                 flex: 1
             }, {
                 xtype: 'button',
+                ui: 'transparent',
+                scale: 'medium',
+                name: 'user',
+                text: username,
+                handler: function () {
+                    this.fireEvent('showProfileAction');
+                },
+                scope: this
+            }, {
+                xtype: 'button',
+                ui: 'transparent',
+                scale: 'medium',
                 text: 'Logout',
                 handler: function () {
                     this.fireEvent('logoutAction');
@@ -40,5 +59,13 @@ Ext.define('SafeStartExt.view.container.TopNav', {
             }]
         });
         this.callParent();
+    },
+
+    setUsername: function (username) {
+        this.down('button[name=user]').setText(username);
+    },
+
+    setCompanyName: function (companyName) {
+        this.down('button[name=companyName]').setText(companyName || 'Company');
     }
 });

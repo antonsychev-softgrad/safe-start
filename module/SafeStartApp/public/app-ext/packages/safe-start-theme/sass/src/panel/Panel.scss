@@ -1,11 +1,10 @@
-
 // panel with ui=form
 .#{$prefix}panel-form {
     @include border-radius(10px, 10px);
     @include box-shadow(rgba(0, 0, 0, 0.4) 0 .2em .6em);
     border: 3px solid #FFFFFF;
     padding: 22px 50px 34px 50px;
-    background: url(/resources/img/log-form_bg.jpg) repeat;
+    background: url(img/log-form_bg.jpg) repeat;
 }
 
 .#{$prefix}ie .#{$prefix}panel-form {
@@ -38,4 +37,48 @@
 
 .#{$prefix}panel-form .#{$prefix}form-field:focus {
     border: 3px solid #2E7Fb7;
+}
+
+.#{$prefix}panel-header-light-left {
+    background: url(img/log-form_bg.jpg) repeat;
+    border: 1px solid #CCD !important;
+    font-size: 18px;
+    padding: 5px;
+    text-align: center;
+    color: #558FAC;
+    margin: 5px;
+}
+
+.#{$prefix}panel-light-left {
+    border-right: 1px solid #CCD;
+    background: transparent;
+}
+
+.#{$prefix}panel-light-left .#{$prefix}toolbar-default {
+    background-image: none; 
+    background-color: transparent;
+    border: none;
+}
+
+.#{$prefix}panel-light-left .#{$prefix}toolbar-default input{
+    width: 22px;
+}
+
+.#{$prefix}panel-transparent {
+    background-image: none; 
+    background-color: transparent;
+}
+
+.#{$prefix}panel-light .#{$prefix}toolbar-default {
+    background-image: url(img/x-layout-card-item_bg.jpg);
+    background-color: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #CCD !important;
+}
+
+
+.#{$prefix}panel-body-light, .#{$prefix}component-light {
+    background-image: url(img/x-component-light_bg.jpg);
 }

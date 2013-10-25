@@ -1,9 +1,10 @@
 Ext.define('SafeStartExt.view.component.Auth', {
     extend: 'Ext.container.Container',
     requires: [
+        'Ext.layout.container.Absolute'
     ],
     xtype: 'SafeStartExtComponentAuth',
-
+    cls:'sfa-form-auth',
     layout: {
         type: 'vbox',
         pack: 'center',
@@ -36,7 +37,8 @@ Ext.define('SafeStartExt.view.component.Auth', {
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Sign In',
-                    scale: 'large',
+                    ui: 'green',
+                    scale: 'medium',
                     handler: function () {
                         var form = this.down('form');
                         if (form.getForm().isValid()) {
@@ -62,7 +64,6 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     fieldLabel: 'Password'
                 }, {
                     xtype: 'container',
-
                     cls: 'sfa-text-info',
                     html: 'If you do not have password please contact us'
                 }]

@@ -4,7 +4,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
         'Ext.form.Panel' 
     ],
     xtype: 'SafeStartExtComponentContact',
-
+    cls:'sfa-form-contact',
     layout: {
         type: 'vbox',
         pack: 'center',
@@ -18,7 +18,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                 ui: 'form',
                 width: 450,
                 height: 500,
-                title: 'Contanct Us',
+                title: 'Contact Us',
                 defaults: {
                     labelAlign: 'top',
                     margin: '0 0 20 0',
@@ -27,7 +27,8 @@ Ext.define('SafeStartExt.view.component.Contact', {
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Send',
-                    scale: 'large',
+                    scale: 'medium',
+                    ui: 'green',
                     handler: function () {
                         var form = this.down('form').getForm();
                         if (form.isValid()) {
@@ -41,6 +42,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     height: 56,
                     labelAlign: 'top',
                     allowBlank: false,
+                    name: 'name',
                     fieldLabel: 'Name'
                 }, {
                     xtype: 'textfield',
@@ -48,6 +50,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     labelAlign: 'top',
                     allowBlank: false,
                     vtype: 'email',
+                    name: 'email',
                     fieldLabel: 'Email'
                 }, {
                     xtype: 'textarea',
@@ -55,6 +58,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                     labelAlign: 'top',
                     allowBlank: false,
                     required: true,
+                    name: 'message',
                     fieldLabel: 'Message'
                 }]
             }]

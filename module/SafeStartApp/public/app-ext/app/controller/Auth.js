@@ -34,33 +34,23 @@ Ext.define('SafeStartExt.controller.Auth', {
     },
 
     loginAction: function (data) {
-        this.getViewport().setLoading(true);
-        Ext.Ajax.request({
-            url: '/api/user/login',
-            params: Ext.encode({data: data}),
-            method: 'POST',
+        var viewport = this.getViewport();
+        SafeStartExt.Ajax.request({
+            url: 'user/login',
+            data: data,
             success: function () {
-                this.getViewport().fireEvent('reloadMainMenu');
-                this.getViewport().setLoading(false);
-            },
-            failure: function () {
-            },
-            scope: this
+                viewport.fireEvent('reloadMainMenu');
+            }
         });
     },
 
     logoutAction: function() {
-        this.getViewport().setLoading(true);
-        Ext.Ajax.request({
-            url: '/api/user/logout',
-            method: 'GET',
+        var viewport = this.getViewport();
+        SafeStartExt.Ajax.request({
+            url: 'user/logout',
             success: function () {
-                this.getViewport().fireEvent('reloadMainMenu');
-                this.getViewport().setLoading(false);
-            },
-            failure: function () {
-            },
-            scope: this
+                viewport.fireEvent('reloadMainMenu');
+            }
         });
     }
 

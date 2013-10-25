@@ -1,53 +1,88 @@
+Ext.ns('SafeStartExt');
+
+SafeStartExt.dateFormat = SafeStartExt.dateFormat || 'Y/m/d';
+SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
+
 Ext.define('SafeStartExt.Application', {
     name: 'SafeStartExt',
 
     extend: 'Ext.app.Application',
 
+    appFolder: '/app-ext/app',
+
     requires: [
+
         'SafeStartExt.view.Viewport',
-        'SafeStartExt.model.User'
+        'SafeStartExt.model.User',
+        'SafeStartExt.Ajax'
     ],
 
     controllers: [
         'Main',
         'Auth',
-        'Contact',
-        'Company'
+        'Companies',
+        'Company',
+        'Contact'
     ],
     userRecord: null,
+    companyRecord: null,
 
     loadMainMenu: function () {
         var me = this;
-        Ext.Ajax.request({
-            url: '/api/web-panel/getMainMenu',
-            method: 'GET',
-            success: function (res) {
-                var result = Ext.decode(res.responseText),
-                    data = result.data || {};
-                me.setUserData(data.userInfo);
-                me.viewport.fireEvent('mainMenuLoaded', data.mainMenu || []);
-            },
-            failure: function () {
+        SafeStartExt.Ajax.request({
+            url: 'web-panel/getMainMenu',
+            success: function (result) {
+                var mainView = me.getViewport().down('SafeStartExtMain');
+                me.setUserData(result.userInfo);
+                mainView.fireEvent('mainMenuLoaded', result.mainMenu || {});
 
+
+                if (me.getUserRecord().get('role') === 'companyUser') {
+                    mainView.fireEvent('changeCompanyAction', me.getUserRecord().getCompany());
+                }
             }
         });
     },
 
     setUserData: function (data) {
         data = data || {};
-        if (this.userRecord) {
-            this.userRecord.destroy();
-        }
+
         this.userRecord = SafeStartExt.model.User.create(data);
+        if (data.company) {
+            this.companyRecord = SafeStartExt.model.Company.create(data.company);
+        } else {
+            this.companyRecord = SafeStartExt.model.Company.create({});
+        }
+        this.userRecord.setCompany(this.companyRecord);
     },
 
     getUserRecord: function () {
         return this.userRecord;
     },
 
+    getCompanyRecord: function () {
+        return this.companyRecord;
+    },
+
     launch: function () {
+        var loadingEl = Ext.get('appLoadingIndicator');
+        if (loadingEl) {
+            loadingEl.remove();
+        }
         this.viewport = SafeStartExt.view.Viewport.create({}); 
         this.viewport.on('reloadMainMenu', this.loadMainMenu, this);
         this.loadMainMenu();
+    },
+
+    getViewport: function () {
+        return this.viewport;
     }
+	
+	// showRequestFailureInfoMsg: function (result, failureCalBack) {
+ //        var func = Ext.emptyFn();
+ //        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
+ //        var errorMessage = '';
+ //        if (result.data && result.data.errorMessage) errorMessage = result.data.errorMessage;
+ //        this.showFailureInfoMsg(errorMessage, func);
+ //    }
 });
