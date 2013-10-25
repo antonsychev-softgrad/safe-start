@@ -156,6 +156,9 @@
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item:hover {
     background: #e3edf1;
 }
+.sfa-previous-inspection .sfa-previous-inspections-left-coll {
+  border-right: none;
+}
 .sfa-companies-list-left-coll .x-component.x-fit-item.x-component-default {
     padding-top: 5px;
 }
@@ -180,9 +183,11 @@
 
     /* page Vehisles -> inspections-info */
     .sfa-previous-inspections-info {
-        padding: 10px 15px;
         border-left: 1px dotted #ccc;
         font-size: 16px;
+    }
+    .sfa-previous-inspections-info .x-panel-body .x-component{
+        padding: 10px 15px;
     }
     .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
         padding-top: 15px;

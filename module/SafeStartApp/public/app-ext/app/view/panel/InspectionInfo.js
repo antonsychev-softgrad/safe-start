@@ -5,7 +5,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     xtype: 'SafeStartExtPanelInspectionInfo',
     cls:'sfa-previous-inspections-info',
     ui: 'light',
-    scrollable: true,
     layout: 'fit',
 
     initComponent: function () {
