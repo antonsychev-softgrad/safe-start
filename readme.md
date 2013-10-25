@@ -61,7 +61,10 @@
         Password: GHHxEG1Tcr+s
 
 
-#7. nginx ZF2 conf
+#7 PHP RESQUE
+    php ./public/index.php resque start --verbose
+
+#8. nginx ZF2 conf
 ##
     server {
         listen 80 default_server;

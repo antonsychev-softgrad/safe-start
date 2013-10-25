@@ -3,9 +3,28 @@
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
-$env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
 
-if ($env == 'dev') {
+/**
+ *  Nginx environment settings
+ */
+
+defined('APP_ENV')
+|| define('APP_ENV', 'dev');
+
+defined('APP_DEBUG')
+|| define('APP_DEBUG', true);
+
+defined('APP_RESQUE')
+|| define('APP_RESQUE', true);
+
+defined('APP_LOGS')
+|| define('APP_LOGS', true);
+
+defined('APP_CACHE')
+|| define('APP_CACHE', false);
+
+
+if (APP_DEBUG) {
     ini_set('display_errors', true);
     error_reporting(E_ALL | E_STRICT);
 }

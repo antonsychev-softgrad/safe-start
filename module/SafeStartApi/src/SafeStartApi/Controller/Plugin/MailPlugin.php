@@ -8,6 +8,8 @@ use Zend\Mail\Message;
 use Zend\Mime\Part as MimePart;
 use Zend\Mime\Message as MimeMessage;
 use Zend\Mime\Mime as Mime;
+use Zend\View\Renderer\PhpRenderer;
+use Zend\View\Resolver;
 
 class MailPlugin extends AbstractPlugin
 {
@@ -19,17 +21,27 @@ class MailPlugin extends AbstractPlugin
 
         $viewModel = new ViewModel($params);
         $viewModel->setTemplate('mail/' . $template);
-
-        $html = $this->getController()->getServiceLocator()
-            ->get('viewrenderer')
-            ->render($viewModel);
-
+        $renderer = new PhpRenderer();
+        $resolver = new Resolver\AggregateResolver();
+        $renderer->setResolver($resolver);
+        $viewsDir = __DIR__ . '/../../../../view/';
+        /* $map = new Resolver\TemplateMapResolver(array(
+             'layout'      => __DIR__ . '/view/layout.phtml',
+             'index/index' => __DIR__ . '/view/index/index.phtml',
+         ));*/
+        $stack = new Resolver\TemplatePathStack(array(
+            'script_paths' => array(
+                $viewsDir
+            )
+        ));
+        $resolver->attach($stack);
+        $html = $renderer->render($viewModel);
         $message = new Message();
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
-        if(!empty($pdfFileName) && file_exists($pdfFileName)) {
+        if (!empty($pdfFileName) && file_exists($pdfFileName)) {
 
-            $content  = new MimeMessage();
+            $content = new MimeMessage();
             $htmlPart = new MimePart($html);
             $htmlPart->type = 'text/html';
             $content->setParts(array($htmlPart));
@@ -40,7 +52,7 @@ class MailPlugin extends AbstractPlugin
 
             $attachment = new MimePart(fopen($pdfFileName, 'r'));
             $attachment->type = 'application/pdf';
-            $attachment->encoding    = Mime::ENCODING_BASE64;
+            $attachment->encoding = Mime::ENCODING_BASE64;
             $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
             $attachment->filename = basename($pdfFileName);
             $bodyParts[] = $attachment;

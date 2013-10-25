@@ -63,23 +63,22 @@ class AbstractPdfPlugin extends AbstractPlugin
         $pageWidth = $this->getPageWidth();
         $contentWidth = $this->getPageContentWidth();
 
-        // draw logo image >
-        $root = $this->getRootPath();
 
         $logoMaxWidth = 130;
         $logoMaxHeight = 115;
-        $logoPath = "{$root}/public/logo-pdf.png";
+        $logoPath = $this->getRootPath() . "public/logo-pdf.png";
 
-        $logo = ZendPdf\Image::imageWithPath($logoPath);
-        $logoWidth = $logo->getPixelWidth();
-        $logoHeight = $logo->getPixelHeight();
+        if (file_exists($logoPath)) {
+            $logo = ZendPdf\Image::imageWithPath($logoPath);
+            $logoWidth = $logo->getPixelWidth();
+            $logoHeight = $logo->getPixelHeight();
 
-        $scale = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
-        $logoNewWidth = (int)($logoWidth * $scale);
-        $logoNewHeight = (int)($logoHeight * $scale);
+            $scale = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
+            $logoNewWidth = (int)($logoWidth * $scale);
+            $logoNewHeight = (int)($logoHeight * $scale);
 
-        $this->document->pages[$this->pageIndex]->drawImage($logo, $this->opts['style']['page_padding_left'], $pageHeight - 4 - $logoNewHeight, $this->opts['style']['page_padding_left'] + $logoNewWidth, $pageHeight - 4);
-        // > end draw logo image.
+            $this->document->pages[$this->pageIndex]->drawImage($logo, $this->opts['style']['page_padding_left'], $pageHeight - 4 - $logoNewHeight, $this->opts['style']['page_padding_left'] + $logoNewWidth, $pageHeight - 4);
+        }
 
         $headerTitlePaddingRight = 25;
         $headerTitleXOffset = $logoMaxWidth + $headerTitlePaddingRight;
@@ -356,8 +355,8 @@ class AbstractPdfPlugin extends AbstractPlugin
     protected function get_filter_path($fEndPath = null)
     {
         if ($fEndPath === null || !is_string($fEndPath)) {
-            $moduleConfig     = $this->getController()->getServiceLocator()->get('Config');
-            $fEndPath =  $moduleConfig['defUsersPath'];
+            $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+            $fEndPath = $moduleConfig['defUsersPath'];
         }
 
         $root = $this->getRootPath();
@@ -394,13 +393,8 @@ class AbstractPdfPlugin extends AbstractPlugin
 
     protected function getRootPath()
     {
-        $root = $this->getServerVar('DOCUMENT_ROOT');
-        // check root
-        if (!file_exists($root . "/init_autoloader.php")) {
-            $root = dirname($root);
-        }
-
-        return $root;
+        $APP_PATH = __DIR__ . '/../../../../../../';
+        return $APP_PATH;
     }
 
     protected function getUploadPath()

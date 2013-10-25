@@ -88,8 +88,7 @@ class Application
             }
 
         }
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
-        self::$cache->setCaching($env == 'prod');
+        self::$cache->setCaching(APP_CACHE);
         return self::$cache;
     }
 

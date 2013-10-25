@@ -72,6 +72,11 @@ class Field extends BaseEntity
     protected $order;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $default_value;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="fields")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id", onDelete="SET NULL")
      **/
@@ -148,6 +153,7 @@ class Field extends BaseEntity
             'enabled' => (int)$this->enabled,
             'alert_critical' => (int)$this->alert_critical,
             'additional' => (int)$this->additional,
+            'default_value' => $this->default_value,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
             'vehicleId' => $this->getVehicle() ? $this->getVehicle()->getId() : null
         );

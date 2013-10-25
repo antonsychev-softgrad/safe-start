@@ -36,6 +36,8 @@ $general = array(
             'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
             'SafeStartApi\Controller\PublicVehicle' => 'SafeStartApi\Controller\PublicVehicleController',
             'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
+            'SafeStartApi\Controller\Resque' => 'SafeStartApi\Controller\ResqueController',
+            'SafeStartApi\Controller\Jobs' => 'SafeStartApi\Controller\JobsController',
             'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
             'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
             'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
@@ -71,6 +73,33 @@ $general = array(
                         'defaults' => array(
                             'controller' => 'SafeStartApi\Controller\Doctrine',
                             'action' => 'setDefData'
+                        )
+                    )
+                ),
+                'run-php-resque' => array(
+                    'options' => array(
+                        'route' => 'resque start [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Resque',
+                            'action' => 'start'
+                        )
+                    )
+                ),
+                'run-new-db-checklist-uploaded' => array(
+                    'options' => array(
+                        'route' => 'resque run new-db-checklist-uploaded --checkListId=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processNewDbCheckList'
+                        )
+                    )
+                ),
+                'run-new-email-checklist-uploaded' => array(
+                    'options' => array(
+                        'route' => 'resque run new-email-checklist-uploaded --checkListId= --emails=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processNewEmailCheckList'
                         )
                     )
                 ),
@@ -119,7 +148,8 @@ $general = array(
             'inspectionPdf' => 'SafeStartApi\Controller\Plugin\InspectionPdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
             'queues' => 'SafeStartApi\Controller\Plugin\QueuePlugin',
-            'PushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
+            'pushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
+            'processChecklistPlugin' => 'SafeStartApi\Controller\Plugin\ProcessChecklistPlugin',
         )
     ),
     'session' => array(
