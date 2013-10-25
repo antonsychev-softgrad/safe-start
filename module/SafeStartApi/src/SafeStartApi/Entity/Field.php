@@ -108,6 +108,11 @@ class Field extends BaseEntity
     protected $additional;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $default_value;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false, onDelete="SET NULL")
      */
@@ -152,6 +157,7 @@ class Field extends BaseEntity
             'alert_description' => (!is_null($this->getAlertDescription())) ? $this->getAlertDescription() : '',
             'enabled' => (int)$this->enabled,
             'alert_critical' => (int)$this->alert_critical,
+            'default_value' => (!is_null($this->getDefaultValue())) ? $this->getDefaultValue() : '',
             'additional' => (int)$this->additional,
             'default_value' => $this->default_value,
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
@@ -453,6 +459,29 @@ class Field extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set default_value
+     *
+     * @param string $defaultValue
+     * @return Field
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->default_value = $defaultValue;
+
+        return $this;
+    }
+
+    /**
+     * Get default_value
+     *
+     * @return string
+     */
+    public function getDefaultValue()
+    {
+        return $this->default_value;
     }
 
     /**
