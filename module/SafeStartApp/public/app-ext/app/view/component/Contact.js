@@ -18,7 +18,7 @@ Ext.define('SafeStartExt.view.component.Contact', {
                 ui: 'form',
                 width: 450,
                 height: 500,
-                title: 'Contanct Us',
+                title: 'Contact Us',
                 defaults: {
                     labelAlign: 'top',
                     margin: '0 0 20 0',
