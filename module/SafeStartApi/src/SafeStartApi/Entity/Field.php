@@ -108,11 +108,6 @@ class Field extends BaseEntity
     protected $additional;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $default_value;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", unique=false, onDelete="SET NULL")
      */

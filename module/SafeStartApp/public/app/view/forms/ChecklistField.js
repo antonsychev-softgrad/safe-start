@@ -58,7 +58,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'textfield',
                 name: 'default_value',
-                label: 'Default value'
+                label: 'Default Value'
             },
             {
                 xtype: 'togglefield',
@@ -73,7 +73,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Trigger field value',
+                label: 'Alert Trigger Value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
@@ -98,7 +98,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'textfield',
-                label: 'Alert description',
+                label: 'Alert Description',
                 required: false,
                 name: 'alert_description'
             },
@@ -237,7 +237,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 field = {
                     xtype: 'textfield',
                     name: 'trigger_value',
-                    label: 'Trigger field value',
+                    label: 'Alert Trigger Value',
                     step: 1,
                     value: 30
                 };
@@ -246,7 +246,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 field = {
                     xtype: 'selectfield',
                     name: 'trigger_value',
-                    label: 'Trigger field value',
+                    label: 'Alert Trigger Value',
                     valueField: 'rank',
                     displayField: 'title',
                     store: {
@@ -264,9 +264,11 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
     switchAlertCriticalMessage: function (type) {
         if (type == 'datePicker') {
-            this.down('field[name=alert_critical]').setLabel('PDF Output');
+            this.down('field[name=alert_critical]').setLabel('Show Alert In PDF');
+            this.down('field[name=trigger_value]').setLabel('Remind Days');
         } else {
-            this.down('field[name=alert_critical]').setLabel('Alert critical?');
+            this.down('field[name=alert_critical]').setLabel('Alert Critical?');
+            this.down('field[name=trigger_value]').setLabel('Alert Trigger Value');
         }
     },
 
@@ -284,8 +286,12 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             break;
             case 'radio':
             case 'checkbox':
-            case 'datePicker':
                 fields['alert_title'].show();
+                fields['alert_critical'].show();
+                fields['alert_description'].show();
+                fields['trigger_value'].show();
+                break;
+            case 'datePicker':
                 fields['alert_critical'].show();
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
