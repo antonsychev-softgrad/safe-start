@@ -106,9 +106,9 @@
 .x-ie7p .sfa-form-contact .x-panel-form input.x-form-field.x-form-text {
     height: 20px !important;
 }
-.x-ie7p .sfa-form-auth .x-panel-form .x-form-field.x-form-text[type="password"],
-.x-ie8p .sfa-form-auth .x-panel-form .x-form-field.x-form-text[type="password"]{
-    font-family: Arial sans-serif;
+.x-ie7p .sfa-form-auth .x-panel-form input[type="password"],
+.x-ie8p .sfa-form-auth .x-panel-form input[type="password"]{
+    font-family: Arial, sans-serif;
 }
 .x-ie8p .sfa-form-auth .x-panel-form .x-form-field.x-form-text,
 .x-ie8p .sfa-form-contact .x-panel-form input.x-form-field.x-form-text{
