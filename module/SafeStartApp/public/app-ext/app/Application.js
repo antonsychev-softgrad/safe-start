@@ -9,6 +9,7 @@ Ext.define('SafeStartExt.Application', {
     extend: 'Ext.app.Application',
 
     requires: [
+
         'SafeStartExt.view.Viewport',
         'SafeStartExt.model.User',
         'SafeStartExt.Ajax'
@@ -69,13 +70,13 @@ Ext.define('SafeStartExt.Application', {
 
     getViewport: function () {
         return this.viewport;
-    },
+    }
 	
-	showRequestFailureInfoMsg: function (result, failureCalBack) {
-        var func = Ext.emptyFn();
-        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
-        var errorMessage = '';
-        if (result.data && result.data.errorMessage) errorMessage = result.data.errorMessage;
-        this.showFailureInfoMsg(errorMessage, func);
-    },
+	// showRequestFailureInfoMsg: function (result, failureCalBack) {
+ //        var func = Ext.emptyFn();
+ //        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
+ //        var errorMessage = '';
+ //        if (result.data && result.data.errorMessage) errorMessage = result.data.errorMessage;
+ //        this.showFailureInfoMsg(errorMessage, func);
+ //    }
 });
