@@ -8,6 +8,8 @@ Ext.define('SafeStartExt.Application', {
 
     extend: 'Ext.app.Application',
 
+    appFolder: '/app-ext/app',
+
     requires: [
 
         'SafeStartExt.view.Viewport',
