@@ -6,7 +6,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         'SafeStartExt.view.panel.InspectionInfo'
     ],
     xtype: 'SafeStartExtPanelInspections',
-
+    cls:'sfa-previous-inspection',
     // layout: 'fit',
     border: 0,
     layout: {
@@ -32,6 +32,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                 flex: 1,
                 border: 0,
                 maxWidth: 250,
+                cls:'sfa-previous-inspections-left-coll',
                 tbar: {
                     xtype: 'pagingtoolbar',
                     pageSize: 5,

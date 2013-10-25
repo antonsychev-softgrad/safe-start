@@ -140,14 +140,20 @@
 
 /* page Companies */
 
-.sfa-companies-list-left-coll .sfa-vehicle-item {
+.sfa-companies-list-left-coll .sfa-vehicle-item,
+.sfa-vehicles-list-left-coll .sfa-vehicle-item,  /* page Vehisles */
+.sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item {   /* page Vehisles -> previous inspections */
     cursor: pointer;
 }
 .sfa-companies-list-left-coll .sfa-vehicle-item:last-child {
     border: none;
 }
 .sfa-companies-list-left-coll .sfa-vehicle-item.x-item-selected,
-.sfa-companies-list-left-coll .sfa-vehicle-item:hover {
+.sfa-companies-list-left-coll .sfa-vehicle-item:hover,
+.sfa-vehicles-list-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
+.sfa-vehicles-list-left-coll .sfa-vehicle-item:hover,
+.sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item.x-item-selected,
+.sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item:hover {
     background: #e3edf1;
 }
 .sfa-companies-list-left-coll .x-component.x-fit-item.x-component-default {
@@ -161,20 +167,22 @@
 
 /* page Vehisles */
 
-.sfa-vehicles-list-left-coll .sfa-vehicle-item {
-    cursor: pointer;
-}
 .sfa-vehicles-list-left-coll .sfa-vehicle-item:last-child {
     border: none;
 }
-.sfa-vehicles-list-left-coll .sfa-vehicle-item.x-item-selected,
-.sfa-vehicles-list-left-coll .sfa-vehicle-item:hover {
-    background: #e3edf1;
-}
+
 .sfa-vehicles-list-left-coll .x-component.x-fit-item.x-component-default {
     padding-top: 5px;
 }
 .sfa-vehicles-list-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
 }
+
+    /* page Vehisles -> inspections-info */
+    .sfa-previous-inspections-info {
+        border-left: 1px dotted #ccc;
+    }
+
+
+
 /* END page Vehisles */

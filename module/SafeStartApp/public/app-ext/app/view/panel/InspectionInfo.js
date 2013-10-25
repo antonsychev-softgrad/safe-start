@@ -3,6 +3,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     requires: [
     ],
     xtype: 'SafeStartExtPanelInspectionInfo',
+    cls:'sfa-previous-inspections-info',
     ui: 'light',
     hidden: true,
     html: 'Inspection details',
