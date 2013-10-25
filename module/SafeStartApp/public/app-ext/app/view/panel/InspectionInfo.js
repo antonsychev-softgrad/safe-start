@@ -72,7 +72,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
             autoScroll:true,            
             tpl: new Ext.XTemplate(
                 '<tpl for=".">',
-                    '<div class="sfa-group">',
+                    '<div class="sfa-group" style="max-width: 700px;">',
                         '<div class="sfa-group-title sfa-group-title-{type}" style="margin-top: 5px; text-align: center">',
                             '{title}',
                         '</div>',
