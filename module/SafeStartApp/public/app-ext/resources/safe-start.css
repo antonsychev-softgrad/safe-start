@@ -180,9 +180,33 @@
 
     /* page Vehisles -> inspections-info */
     .sfa-previous-inspections-info {
+        padding: 10px 15px;
         border-left: 1px dotted #ccc;
+        font-size: 16px;
+    }
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
+        padding-top: 15px;
+        font-size: 28px;
+        color: #558fac;
+    }
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-sub {
+        font-size: 20px;
+        color: #558fac;
+    }
+    .sfa-previous-inspections-info .sfa-group-item {
+        padding-bottom: 5px;
+    }
+    .sfa-previous-inspections-info .sfa-group-item.sfa-group-item-normal .sfa-group-item-key:first-child,
+    .sfa-previous-inspections-info .sfa-group-item.sfa-group-item-warning .sfa-group-item-key:first-child{
+        color: #000;
+    }
+    .sfa-previous-inspections-info .sfa-group-item.sfa-group-item-normal .sfa-group-item-key {
+        color: #558fac;
     }
 
+    .sfa-previous-inspections-info .sfa-group-item.sfa-group-item-warning .sfa-group-item-key {
+        color: #f00;
+    }
 
 
 /* END page Vehisles */
