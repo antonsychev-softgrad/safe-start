@@ -13,5 +13,16 @@ Ext.define('SafeStartExt.store.Inspections', {
         }
     },
 
-    model: 'SafeStartExt.model.Inspection'
+    pageSize: 5,
+
+    model: 'SafeStartExt.model.Inspection',
+
+    constructor: function (config) {
+        this.setVehicleId(config.vehicleId || 0);
+        this.callParent([config]);
+    },
+
+    setVehicleId: function (vehicleId) {
+        this.getProxy().url = SafeStartExt.Ajax.baseHref + 'vehicle/' + vehicleId + '/getinspections';
+    }
 });
