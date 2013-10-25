@@ -65,6 +65,10 @@ Ext.define('SafeStartExt.Application', {
     },
 
     launch: function () {
+        var loadingEl = Ext.get('appLoadingIndicator');
+        if (loadingEl) {
+            loadingEl.remove();
+        }
         this.viewport = SafeStartExt.view.Viewport.create({}); 
         this.viewport.on('reloadMainMenu', this.loadMainMenu, this);
         this.loadMainMenu();
