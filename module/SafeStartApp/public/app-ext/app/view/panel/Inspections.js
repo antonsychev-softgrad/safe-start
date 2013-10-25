@@ -21,15 +21,17 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         Ext.apply(this, {
             items: [{
                 xtype: 'panel',
+                title: 'Previous Inspections',
+                ui: 'light-left',
                 flex: 1,
                 border: 0,
                 maxWidth: 250,
-                cls:'sfa-previous-inspections-left-coll',
-                tbar: {
-                    xtype: 'pagingtoolbar',
-                    pageSize: 5,
-                    store: store
-                },
+                cls: 'sfa-previous-inspections-left-coll',
+                // tbar: {
+                //     xtype: 'pagingtoolbar',
+                //     pageSize: 5,
+                //     store: store
+                // },
                 items: [{
                     xtype: 'dataview',
                     itemSelector: 'div.sfa-vehicle-item',

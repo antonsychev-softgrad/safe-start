@@ -13,7 +13,7 @@ Ext.define('SafeStartExt.store.Inspections', {
         }
     },
 
-    pageSize: 5,
+    pageSize: 25,
 
     model: 'SafeStartExt.model.Inspection',
 
