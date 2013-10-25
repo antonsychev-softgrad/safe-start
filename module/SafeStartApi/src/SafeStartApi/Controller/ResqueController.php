@@ -38,7 +38,7 @@ class ResqueController extends AbstractActionController
         // Check if the user used --verbose or -v flag
         $verbose = $request->getParam('verbose');
         $command = array();
-        $command[] = 'QUEUE=' . $this->QUEUES;
+        $command[] = 'nohup sudo -u www-data QUEUE=' . $this->QUEUES;
         if ($verbose) $command[] = 'VVERBOSE=1';
         $command[] = 'APP_INCLUDE=' . $APP_PATH . 'module/SafeStartApi/jobs_classes_autoloader.php';
         $command[] = 'php ' . $APP_PATH . 'vendor/chrisboulton/php-resque/resque.php';
