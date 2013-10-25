@@ -49,7 +49,7 @@
                 $ieVersion = null;
                 if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
                     preg_match_all('/MSIE (\d+)/', $_SERVER['HTTP_USER_AGENT'], $matches);
-                    $ieVersion = $matches[0][0];
+                    $ieVersion = $matches[1][0];
                 }
                 return $ieVersion && $ieVersion <= 9;
             }
