@@ -86,6 +86,7 @@ Ext.define('SafeStartExt.Ajax', {
         }
         return randomString;
     }, 
+    
     getViewport: function () {
         return SafeStartExt.getApplication().getViewport();        
     }

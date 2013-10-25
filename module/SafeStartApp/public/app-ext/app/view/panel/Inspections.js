@@ -16,15 +16,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
 
     initComponent: function () {
         var store = SafeStartExt.store.Inspections.create({
-            pageSize: 5,
-            proxy: {
-                url: '/api/vehicle/' + this.vehicle.get('id') + '/getinspections',
-                type: 'ajax',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            }
+            vehicleId: this.vehicle.get('id')
         });
         Ext.apply(this, {
             items: [{
@@ -52,6 +44,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                 }]
             }, {
                 xtype: 'SafeStartExtPanelInspectionInfo',
+                vehicle: this.vehicle,
                 flex: 2
             }]
         });
