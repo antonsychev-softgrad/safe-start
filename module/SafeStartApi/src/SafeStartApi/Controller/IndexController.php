@@ -16,6 +16,9 @@ class IndexController extends RestController
         $this->answer = array(
             'version' => $this->moduleConfig['params']['version'],
         );
+        \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewDbCheckListUploaded', array(
+            'checkListId' => 1
+        ));
         return $this->AnswerPlugin()->format($this->answer);
     }
 }
