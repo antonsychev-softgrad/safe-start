@@ -215,3 +215,51 @@
 
 
 /* END page Vehisles */
+
+
+.sfa-bottomnav .x-btn.sfa-button-companies {
+    background-image: url(img/ic1.png);
+    background-position: 50% 10px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn.sfa-button-vehicles {
+    background-image: url(img/ic2.png);
+    background-position: 50% 15px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn.sfa-button-alerts {
+    background-image: url(img/ic3.png);
+    background-position: 50% 4px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn.sfa-button-users {
+    background-image: url(img/ic4.png);
+    background-position: 50% 6px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn.sfa-button-system-settings {
+    background-image: url(img/ic5.png);
+    background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn.sfa-button-system-statistic {
+    background-image: url(img/ic6.png);
+    background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .sfa-button-auth {
+    background-image: url(img/ic7.png);
+    background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .sfa-button-contact {
+    background-image: url(img/ic8.png);
+    background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+.sfa-bottomnav .x-btn-inner.x-btn-inner-center {
+    position: relative;
+    top: 5px;
+}
+
+
