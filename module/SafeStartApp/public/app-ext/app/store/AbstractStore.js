@@ -1,6 +1,6 @@
 Ext.define('SafeStartExt.store.AbstractStore', {
     extend: 'Ext.data.Store',
-    mixins: ['Ext.mixin.Observable'],
+    // mixins: ['Ext.mixin.Observable'],
 
     config: {
         autoLoad: false,
