@@ -247,7 +247,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     Ext.each(values, function (value) {
                         isAlert = false;
                         if (value.id == field.fieldId) {
-                            if (field.triggerValie && field.triggerValue == value.value) {
+                            if (field.triggerValue && field.triggerValue == value.value) {
                                 isAlert = true;
                             }
 
