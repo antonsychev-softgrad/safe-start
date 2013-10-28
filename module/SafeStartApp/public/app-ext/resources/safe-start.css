@@ -1,3 +1,9 @@
+.sfa-bottomnav {
+  background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
+  height: 59px;
+}
+
+
 .sfa-vehicles-tabpanel .x-panel-body {
   background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');
 }
@@ -129,27 +135,27 @@
     height: 40px !important;
 }
 /* button */
-.sfa-form-auth .x-panel-form .x-btn-inner {
+/*.sfa-form-auth .x-panel-form .x-btn-inner {
     padding-bottom: 2px;
 }
 .sfa-form-auth .x-panel-form .x-btn-button {
     height: 18px;
 }
-
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
+*/
+/*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
     background: #6C9804;
     display: block;
 }
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a span,
+*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a span,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a span{
     background: none;
 }
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a.x-btn-green-medium-pressed,
+*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a.x-btn-green-medium-pressed,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a.x-btn-green-medium-pressed {
     background: #628904;
 }
-/* END Login & Contact form */
+*//* END Login & Contact form */
 
 /* TOP panel */
 .sfa-top-nav .x-btn-inner {
@@ -319,47 +325,95 @@
 
 .sfa-bottomnav .x-btn.sfa-button-companies {
     background-image: url(img/ic1.png);
-    background-position: 50% 10px;
+    background-position: 50% 11px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-companies.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic1.png);
+    background-position: 50% 6px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-vehicles {
     background-image: url(img/ic2.png);
     background-position: 50% 15px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-vehicles.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic2.png);
+    background-position: 50% 10px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-alerts {
     background-image: url(img/ic3.png);
     background-position: 50% 4px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-alerts.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic3.png);
+    background-position: 50% 0px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-users {
     background-image: url(img/ic4.png);
     background-position: 50% 6px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-users.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic4.png);
+    background-position: 50% 1px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-system-settings {
     background-image: url(img/ic5.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-system-settings.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic5.png);
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-system-statistic {
     background-image: url(img/ic6.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-system-statistic.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic6.png);
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .sfa-button-auth {
     background-image: url(img/ic7.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-auth.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic7.png);
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .sfa-button-contact {
     background-image: url(img/ic8.png);
     background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic8.png);
+    background-position: 50% 0;
     background-repeat: no-repeat;
 }
 .sfa-bottomnav .x-btn-inner.x-btn-inner-center {
     position: relative;
     top: 5px;
 }
+
 
 
