@@ -64,7 +64,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 margin: '7 2 4 2',
                 width: 60,
                 handler: function () {
-                    me.fireEvent('showPage', this.componentClass);
+                    me.fireEvent('redirectTo', this.componentClass)
                 }
             }
         });
