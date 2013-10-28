@@ -1,0 +1,83 @@
+/*
+Syntax error: Undefined variable: "$images-path".
+        on line 2 of /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/BottomNav.scss
+        from line 1 of /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/all.scss
+
+1: /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/all.scss
+
+Backtrace:
+/home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/BottomNav.scss:2
+/home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/all.scss:1
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/variable.rb:49:in `_perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/node.rb:40:in `perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/operation.rb:74:in `_perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/node.rb:40:in `perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/funcall.rb:99:in `block in _perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/funcall.rb:99:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/funcall.rb:99:in `_perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/script/node.rb:40:in `perform'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:298:in `visit_prop'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:109:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:121:in `with_environment'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:108:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `block in visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:320:in `visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:227:in `block in visit_import'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:227:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:227:in `visit_import'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:109:in `block in visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:121:in `with_environment'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:108:in `visit_children'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `block in visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:128:in `visit_root'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:100:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/visitors/perform.rb:7:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/tree/root_node.rb:20:in `render'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/engine.rb:315:in `_render'
+/var/lib/gems/1.9.1/gems/sass-3.2.10/lib/sass/engine.rb:262:in `render'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:146:in `block (2 levels) in compile'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:132:in `timed'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:145:in `block in compile'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/logger.rb:46:in `red'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:144:in `compile'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:124:in `compile_if_required'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:109:in `block (2 levels) in run'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:107:in `each'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:107:in `block in run'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:132:in `timed'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/compiler.rb:106:in `run'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/compiler.rb:24:in `compile'
+/usr/lib/ruby/1.9.1/forwardable.rb:201:in `compile'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:97:in `sass_added'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:86:in `sass_callback'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/watch.rb:17:in `call'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/watch.rb:17:in `run_callback'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:78:in `block (2 levels) in listen_callback'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:77:in `each'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:77:in `block in listen_callback'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:76:in `each'
+/var/lib/gems/1.9.1/gems/compass-0.13.alpha.4/lib/compass/watcher/project_watcher.rb:76:in `listen_callback'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/listener.rb:212:in `call'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/listener.rb:212:in `on_change'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/listener.rb:221:in `block in initialize_adapter'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/adapters/polling.rb:56:in `call'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/adapters/polling.rb:56:in `poll'
+/var/lib/gems/1.9.1/gems/listen-0.7.3/lib/listen/adapters/polling.rb:32:in `block in start'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Undefined variable: \"$images-path\".\A         on line 2 of /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/BottomNav.scss\A         from line 1 of /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/all.scss\A \A 1: /home/ryakoltsevich/workspace/www/safe-start/module/SafeStartApp/public/app-ext/sass/src/all.scss"; }
