@@ -307,7 +307,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
     resetRecord: function () {
         try {
-            this.reset();
+            //this.reset();
         } catch (ignore) {
         }
         this.hide();
