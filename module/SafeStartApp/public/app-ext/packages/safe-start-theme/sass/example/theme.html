@@ -7,10 +7,12 @@
     <title>Ext JS Theme Harness</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+    <script type="text/javascript" src="slicer.js"></script>
     <!--
     Load all required links and scripts
     -->
     <link rel="stylesheet" type="text/css" href="example.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../resources/safe-start.css" />
     <script type="text/javascript" src="../../../../ext/ext-debug.js"></script>
     <script type="text/javascript" src="bootstrap.js"></script>
 
@@ -22,11 +24,14 @@
     <!--
     Load all manifests and shortcuts
     -->
-    <script type="text/javascript" src="../../../ext-theme-base/sass/example/manifest.js"></script>
-    <script type="text/javascript" src="../../../ext-theme-base/sass/example/shortcuts.js"></script>
+    <script type="text/javascript" src="../../../../ext/packages/ext-theme-base/sass/example/manifest.js"></script>
+    <script type="text/javascript" src="../../../../ext/packages/ext-theme-base/sass/example/shortcuts.js"></script>
     <script type="text/javascript" src="custom.js"></script>
 
     <style>
+        .dark-bg {
+            background: #000;
+        }
         .widget-container {
             margin: 10px;
             width: 400px;

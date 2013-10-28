@@ -5,7 +5,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
         'SafeStartExt.store.MenuVehicles'
     ],
     xtype: 'SafeStartExtPanelVehicleList',
-    cls:'sfa-vehicles-list-left-coll',
+    cls:'sfa-left-coll',
     layout: 'fit',
     ui: 'light-left',
     border: 0,
@@ -17,6 +17,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
         Ext.apply(this, {
             tbar: [{
                 xtype: 'textfield',
+                cls:'search',
                 flex: 1,
                 margin: '0 5 0 5',
                 height: 22,

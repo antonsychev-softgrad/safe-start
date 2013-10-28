@@ -64,20 +64,20 @@
 /* including package ext-theme-classic */
 /* including package ext-theme-gray */
 /* including package safe-start-theme */
-/* line 3, ../../sass/etc/all.scss */
+/* line 1, ../../sass/etc/all.scss */
 body {
   font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
 }
 
-/* line 8, ../../sass/etc/all.scss */
+/* line 6, ../../sass/etc/all.scss */
 .sfa-text-info {
   text-align: center;
   font-size: 18px;
   color: #808080;
 }
 
-/* line 14, ../../sass/etc/all.scss */
+/* line 12, ../../sass/etc/all.scss */
 .logo img {
   width: 381px;
   height: 100px;
@@ -89,17 +89,7 @@ body {
   zoom: 1;
 }
 
-/* line 24, ../../sass/etc/all.scss */
-.sfa-bottom-nav {
-  border-top: 1px solid #0B3C5E;
-}
-
-/* line 29, ../../sass/etc/all.scss */
-.sfa-top-nav {
-  border-bottom: 2px solid #ccd;
-}
-
-/* line 33, ../../sass/etc/all.scss */
+/* line 21, ../../sass/etc/all.scss */
 .sfa-vehicle-item {
   color: #558FAC;
   font-size: 18px;
@@ -19592,29 +19582,20 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  padding: 20px 1px 1px 1px;
-  border-width: 2px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+  padding: 18px 5px 5px 5px;
+  border-width: 0;
   border-style: solid;
-  background-image: none;
   background-color: transparent;
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-mc {
-  background-image: url(images/btn/btn-tab-large-fbg.gif);
-  background-position: 0 top;
   background-color: transparent;
-}
-
-/* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-nlg .x-btn-tab-large {
-  background-image: url(images/btn/btn-tab-large-bg.gif);
-  background-position: 0 top;
 }
 
 /* line 235, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19627,32 +19608,31 @@ body.x-nbr .x-tab-default-right-frameInfo {
   -o-border-radius: 0px;
   border-radius: 0px;
   background-color: transparent;
-  background-image: none;
 }
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-tab-large-frameInfo {
-  font-family: th-3-3-3-3-2-2-2-2-20-1-1-1;
+  font-family: th-5-5-5-5-0-0-0-0-18-5-5-5;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tl {
-  background-position: 0 -6px;
+  background-position: 0 -10px;
 }
 
 /* line 326, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tr {
-  background-position: right -9px;
+  background-position: right -15px;
 }
 
 /* line 330, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bl {
-  background-position: 0 -12px;
+  background-position: 0 -20px;
 }
 
 /* line 334, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-br {
-  background-position: right -15px;
+  background-position: right -25px;
 }
 
 /* line 338, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19672,31 +19652,31 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 350, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bc {
-  background-position: 0 -3px;
+  background-position: 0 -5px;
 }
 
 /* line 357, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tr,
 .x-btn-tab-large-br,
 .x-btn-tab-large-mr {
-  padding-right: 3px;
+  padding-right: 5px;
 }
 
 /* line 363, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tl,
 .x-btn-tab-large-bl,
 .x-btn-tab-large-ml {
-  padding-left: 3px;
+  padding-left: 5px;
 }
 
 /* line 367, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tc {
-  height: 3px;
+  height: 5px;
 }
 
 /* line 370, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bc {
-  height: 3px;
+  height: 5px;
 }
 
 /* line 381, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19719,7 +19699,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-mc {
-  padding: 19px 0px 0px 0px;
+  padding: 13px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19729,15 +19709,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   right: 0;
 }
 
-/*<if slicer>*/
-/* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
-.x-btn-tab-large:after {
-  display: none;
-  content: "x-slicer:stretch:bottom, frame-bg:url(images/btn/btn-tab-large-fbg.gif), bg:url(images/btn/btn-tab-large-bg.gif)";
-}
-
-/*</if slicer>*/
-/* */
 /* line 253, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-inner {
   font-size: 12px;
@@ -19886,14 +19857,8 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 541, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-menu-active,
 .x-btn-tab-large-pressed {
-  border-color: #27292c;
   background-image: none;
-  background-color: #333539;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #252629), color-stop(100%, #3d3f44));
-  background-image: -webkit-linear-gradient(top, #252629, #3d3f44);
-  background-image: -moz-linear-gradient(top, #252629, #3d3f44);
-  background-image: -o-linear-gradient(top, #252629, #3d3f44);
-  background-image: linear-gradient(top, #252629, #3d3f44);
+  background-color: #292a2d;
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19913,7 +19878,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 580, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-over .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-over-fbg.gif);
 }
 
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19933,7 +19897,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 602, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-focus-fbg.gif);
 }
 
 /* line 618, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19961,8 +19924,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 625, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-menu-active .x-frame-mc,
 .x-btn-tab-large-pressed .x-frame-mc {
-  background-color: #333539;
-  background-image: url(images/btn/btn-tab-large-pressed-fbg.gif);
+  background-color: #292a2d;
 }
 
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19982,28 +19944,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 647, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-disabled-fbg.gif);
-}
-
-/* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-over {
-  background-image: url(images/btn/btn-tab-large-over-bg.gif);
-}
-
-/* line 667, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-focus {
-  background-image: url(images/btn/btn-tab-large-focus-bg.gif);
-}
-
-/* line 676, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-menu-active,
-.x-nlg .x-btn-tab-large-pressed {
-  background-image: url(images/btn/btn-tab-large-pressed-bg.gif);
-}
-
-/* line 684, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-disabled {
-  background-image: url(images/btn/btn-tab-large-disabled-bg.gif);
 }
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -20042,7 +19982,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-over:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-over-corners.gif), sides:url(images/btn/btn-tab-large-over-sides.gif), frame-bg:url(images/btn/btn-tab-large-over-fbg.gif), bg:url(images/btn/btn-tab-large-over-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-over-corners.gif), sides:url(images/btn/btn-tab-large-over-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -20051,7 +19991,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-focus:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-focus-corners.gif), sides:url(images/btn/btn-tab-large-focus-sides.gif), frame-bg:url(images/btn/btn-tab-large-focus-fbg.gif), bg:url(images/btn/btn-tab-large-focus-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-focus-corners.gif), sides:url(images/btn/btn-tab-large-focus-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -20060,7 +20000,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-pressed:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-pressed-corners.gif), sides:url(images/btn/btn-tab-large-pressed-sides.gif), frame-bg:url(images/btn/btn-tab-large-pressed-fbg.gif), bg:url(images/btn/btn-tab-large-pressed-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-pressed-corners.gif), sides:url(images/btn/btn-tab-large-pressed-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -20069,11 +20009,24 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-disabled:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-disabled-corners.gif), sides:url(images/btn/btn-tab-large-disabled-sides.gif), frame-bg:url(images/btn/btn-tab-large-disabled-fbg.gif), bg:url(images/btn/btn-tab-large-disabled-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-disabled-corners.gif), sides:url(images/btn/btn-tab-large-disabled-sides.gif)";
 }
 
 /*</if slicer>*/
 /* */
+/* line 65, ../../sass/src/button/Button.scss */
+.x-btn-tab-large {
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+/* line 70, ../../sass/src/button/Button.scss */
+.x-btn-tab-large-pressed {
+  -webkit-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+  -moz-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+  box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+}
+
 /* line 246, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium {
   border-color: transparent;
