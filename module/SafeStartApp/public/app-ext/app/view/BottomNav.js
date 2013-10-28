@@ -13,7 +13,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
         align: 'stretch'
     },
 
-    height: 56,
+    height: 59,
     ui: 'tabmenu',
 
     buttons: {
@@ -61,6 +61,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 xtype: 'button',
                 ui: 'tab',
                 scale: 'large',
+                margin: '7 2 4 2',
                 width: 60,
                 handler: function () {
                     me.fireEvent('showPage', this.componentClass);
