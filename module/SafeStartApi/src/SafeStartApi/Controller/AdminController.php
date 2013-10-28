@@ -210,13 +210,14 @@ class AdminController extends AdminAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 401);
         }
 
+        if ($this->data->type == 'root' && $this->data->parentId) $this->data->type = 'text';
         $field->setTitle($this->data->title);
         $field->setDescription($this->data->description);
         $field->setType($this->data->type);
         $field->setOrder((int)$this->data->sort_order);
         $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
-        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_title : '');
-        $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_description : '');
+        $field->setAlertTitle(isset($this->data->alert_title) ? $this->data->alert_title : '');
+        $field->setAlertDescription(isset($this->data->alert_description) ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
         $field->setAlertCritical((int)$this->data->alert_critical);

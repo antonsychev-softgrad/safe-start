@@ -263,6 +263,9 @@ class VehicleController extends RestrictedAccessRestController
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
+        $warnings = $this->processChecklistPlugin()->getWarningsFromInspectionFields($checkList);
+        if (!empty($warnings)) $checkList->setWarnings($warnings);
+
         if (!$inspection) $this->em->persist($checkList);
         $this->em->flush();
 
@@ -331,6 +334,8 @@ class VehicleController extends RestrictedAccessRestController
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
+
+        if (empty($newAlerts) && $inspection) return $this->AnswerPlugin()->format($this->answer);
 
         if (APP_RESQUE) {
             \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewDbCheckListUploaded', array(
