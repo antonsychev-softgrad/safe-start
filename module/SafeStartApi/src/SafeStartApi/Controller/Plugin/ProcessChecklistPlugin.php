@@ -105,7 +105,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
         $query->setParameter(1, $checkList);
         $query->getResult();
 
-        foreach ($fieldsStructure as $group) {
+        foreach ((array)$fieldsStructure as $group) {
             if ($this->isEmptyGroup($group, $fieldsDataValues)) continue;
             $record = new \SafeStartApi\Entity\InspectionBreakdown();
 
@@ -127,7 +127,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
         $fieldsData = json_decode($checkList->getFieldsData(), true);
         $fieldsDataValues = array();
         foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
-        foreach ($fieldsStructure as $groupBlock) {
+        foreach ((array)$fieldsStructure as $groupBlock) {
             if ($this->isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
             if (isset($groupBlock->fields)) {
                 $groupWarnings = $this->_getWarningsFromInspectionFields($groupBlock->fields, $fieldsDataValues);
