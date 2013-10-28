@@ -28,7 +28,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 xtype: 'image',
                 width: 172,
                 height: 45,
-                src: '/resources/img/logo-top.png'
+                src: 'resources/img/logo-top.png'
             }, {
                 xtype: 'button',
                 ui: 'transparent',
@@ -42,6 +42,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 ui: 'transparent',
                 scale: 'medium',
                 name: 'user',
+                cls:'sfa-user',
                 text: username,
                 handler: function () {
                     this.fireEvent('showProfileAction');
@@ -51,6 +52,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 xtype: 'button',
                 ui: 'transparent',
                 scale: 'medium',
+                cls:'sfa-logout',
                 text: 'Logout',
                 handler: function () {
                     this.fireEvent('logoutAction');

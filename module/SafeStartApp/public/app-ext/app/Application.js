@@ -3,6 +3,13 @@ Ext.ns('SafeStartExt');
 SafeStartExt.dateFormat = SafeStartExt.dateFormat || 'Y/m/d';
 SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
 
+Ext.Loader.setConfig({
+    enabled: true,
+    paths: {
+        'Ext.ux.Router': '/app-ext/lib/Router.js'
+    }
+});
+
 Ext.define('SafeStartExt.Application', {
     name: 'SafeStartExt',
 
@@ -11,7 +18,7 @@ Ext.define('SafeStartExt.Application', {
     appFolder: '/app-ext/app',
 
     requires: [
-
+        'Ext.ux.Router',
         'SafeStartExt.view.Viewport',
         'SafeStartExt.model.User',
         'SafeStartExt.Ajax'
@@ -24,8 +31,17 @@ Ext.define('SafeStartExt.Application', {
         'Company',
         'Contact'
     ],
+
+    routes: {
+        'Auth': 'main#showPage',
+        'Contact': 'main#showPage',
+        'Companies': 'main#showPage',
+        'Company': 'main#showPage',
+    },
+
     userRecord: null,
     companyRecord: null,
+    mainMenuLoaded: false,
 
     loadMainMenu: function () {
         var me = this;
@@ -35,7 +51,10 @@ Ext.define('SafeStartExt.Application', {
                 var mainView = me.getViewport().down('SafeStartExtMain');
                 me.setUserData(result.userInfo);
                 mainView.fireEvent('mainMenuLoaded', result.mainMenu || {});
-
+                if (!me.mainMenuLoaded) {
+                    me.mainMenuLoaded = true;
+                    Ext.ux.Router.parse(Ext.History.getHash());
+                }
 
                 if (me.getUserRecord().get('role') === 'companyUser') {
                     mainView.fireEvent('changeCompanyAction', me.getUserRecord().getCompany());
@@ -69,6 +88,14 @@ Ext.define('SafeStartExt.Application', {
         if (loadingEl) {
             loadingEl.remove();
         }
+
+        var me = this;
+        Ext.ux.Router.on({
+            beforedispatch: function(token, match, params) {
+                return me.mainMenuLoaded;
+            },
+        });
+        
         this.viewport = SafeStartExt.view.Viewport.create({}); 
         this.viewport.on('reloadMainMenu', this.loadMainMenu, this);
         this.loadMainMenu();
