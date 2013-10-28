@@ -11,6 +11,7 @@ abstract class ResqueTask
     {
         $APP_PATH = __DIR__ . '/../../../../../';
         $command = 'php ' . $APP_PATH . 'public/index.php ' . $command;
+        echo "\r\n" . $command . "\r\n";
         $output = null;
 
         if (function_exists('system')) {

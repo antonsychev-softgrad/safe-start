@@ -63,10 +63,14 @@
 
 #7 PHP RESQUE
 ##
-    Run: php ./public/index.php resque start --verbose
-    Check system process: ps u | grep resque.php
-    Soft stopping workers: kill -QUIT YOUR-WORKER-PID
+    a) Run:
+    php ./public/index.php resque start --verbose
 
+    b) Check system process:
+    ps u | grep resque.php
+
+    c)Soft stopping workers:
+    kill -QUIT YOUR-WORKER-PID
 
 
 #8. nginx ZF2 conf
