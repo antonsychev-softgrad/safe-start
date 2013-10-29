@@ -3,7 +3,6 @@
   height: 59px;
 }
 
-
 .sfa-vehicles-tabpanel .x-panel-body {
   background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');
 }
@@ -28,17 +27,33 @@
 
 .sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default .x-tab-inner {
   border-bottom: 0;
-  font-size: 14px;
+  font-size: 18px;
+  color: #b8d3e4;
   padding-top: 1px;
-  padding-bottom: 1px;
+  padding-bottom: 5px;
   font-weight: normal;
 }
-
-.sfa-vehicles-tabpanel .x-tab-bar-default-top {
-  padding-top: 7px;
+.sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default.x-top-over .x-tab-inner {
+    color: #fff;
 }
 
-.sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-left, 
+.sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-top-active.x-tab-default .x-tab-inner {
+    color: #fff;
+    text-shadow: 0px -1px 0px #004466;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    padding: 14px 15px 15px;
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
+    background: url(img/tab-active_bg.png) no-repeat 50% 100%;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-left,
 .sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-right {
 }
 
@@ -52,7 +67,7 @@
 
 
 .sfa-icon-refresh {
-  background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png); 
+  background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png);
 }
 
 .x-btn-default-toolbar-medium-focus {
@@ -92,9 +107,10 @@
   border-bottom: 0 !important;
 }
 
-.sfa-top-nav {
-    border-bottom: 1px solid #CCD !important;
-    background: url(img/top_bg.png) repeat-x;
+.sfa-top-nav.x-box-item {
+    border-bottom: 1px solid #000 !important;
+    height: 62px !important;
+    background: #1673b5 url(img/top_bg.png) repeat-x;
 }
 .sfa-top-nav {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
@@ -128,13 +144,18 @@
     height: 40px !important;
 }
 /* button */
-/*.sfa-form-auth .x-panel-form .x-btn-inner {
+.sfa-form-auth .x-panel-form .x-btn-inner {
     padding-bottom: 2px;
 }
 .sfa-form-auth .x-panel-form .x-btn-button {
     height: 18px;
 }
-*/
+
+.sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
+    padding-left: 0;
+}
+
+
 /*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
     background: #6C9804;
@@ -148,7 +169,9 @@
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a.x-btn-green-medium-pressed {
     background: #628904;
 }
-*//* END Login & Contact form */
+*/
+
+/* END Login & Contact form */
 
 /* TOP panel */
 .sfa-top-nav .x-btn-inner {
@@ -163,8 +186,12 @@
     margin-left: 20px;
     background: url(img/logout-ic.png) no-repeat 0 15px;
 }
-
-
+.sfa-top-nav .sfa-company-name {
+    left: 270px !important;
+}
+.sfa-top-nav .sfa-company-name .x-btn-inner {
+font-size: 24px;
+}
 
 
 /* END TOP panel */
@@ -184,7 +211,12 @@
     -khtml-border-radius: 6px;
     -o-border-radius: 6px;
     border-radius: 6px;
-    border: 1px inset #999;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    box-shadow: 0px 1px 0px #fff, 1px 0px 0px #fbfbfb, -1px 0px 0px #fbfbfb;
+}
+.x-ie7p .sfa-left-coll .search input.x-form-text {
+    width: 92% !important;
 }
 .sfa-left-coll > div .x-box-inner {
     height: 42px !important;
@@ -221,11 +253,66 @@
 .x-panel-body-light, .x-component-light, .sfa-vehicles-tabpanel,
 .sfa-vehicles-tabpanel .x-panel-body {
     padding: 20px 25px;
-    background-image: url("img/content_bg.png");
+    background: none;
 }
 .sfa-vehicles-tabpanel, .sfa-vehicles-tabpanel .x-panel-body {
     padding: 0;
 }
+.sfa-vehicles-tabpanel > span > div .x-panel-body-default {
+    border: none;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 49px;
+    background: red;
+    border-top: 1px solid #005a87;
+    border-right: 1px solid #0071a9;
+    border-left: 1px solid #0071a9;
+    background: url(img/tab_bg.png) repeat-x;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    -khtml-border-radius: 6px 6px 0 0;
+    -o-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.sfa-vehicles-tabpanel > span {
+    padding: 24px 26px;
+}
+.sfa-vehicles-tabpanel > span > div {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #c0c0c0;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    background: #e8e8e8 url(img/tab-left_bg.png) repeat-y;
+    overflow: hidden;
+}
+
+.sfa-vehicles-tabpanel > span > div > .x-panel-default {
+    height: 100% !important;
+    background: url(img/tab-right_bg.png) repeat-y 100% 0;
+}
+
+.sfa-vehicles-tabpanel > span > div .x-panel-default > div {
+    padding: 0 3px;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll span.x-header-text {
+    font-size: 20px;
+}
+
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .x-panel-header {
+    border: none !important;
+    background: none;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item {
+    border-top: 1px solid #DEDEDE;
+}
+
 
 /* END CONTENT */
 

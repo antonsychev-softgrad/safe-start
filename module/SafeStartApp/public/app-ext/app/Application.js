@@ -6,7 +6,7 @@ SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext.ux': 'lib/ux'
+        'Ext.ux': '/app-ext/lib/ux'
     }
 });
 
@@ -93,7 +93,7 @@ Ext.define('SafeStartExt.Application', {
         Ext.ux.Router.on({
             beforedispatch: function(token, match, params) {
                 return me.mainMenuLoaded;
-            },
+            }
         });
         
         this.viewport = SafeStartExt.view.Viewport.create({}); 
