@@ -62,9 +62,11 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 ui: 'tab',
                 scale: 'large',
                 margin: '5 2 3 2',
+                enableToggle: true,
                 width: 60,
                 handler: function () {
-                    me.fireEvent('redirectTo', this.componentClass)
+                    me.fireEvent('redirectTo', this.componentClass);
+                    return false;
                 }
             }
         });
@@ -99,9 +101,10 @@ Ext.define('SafeStartExt.view.BottomNav', {
 
     setActiveButton: function (name) {
         Ext.each(this.query('button'), function (button) {
-            button.removeCls('x-btn-tab-large-pressed');
+            button.toggle(false);
+            console.log(button);
         });
-        this.down('button[componentClass=' + name + ']').addCls('x-btn-tab-large-pressed');
+        this.down('button[componentClass=' + name + ']').toggle(true);
     }
 
 });
