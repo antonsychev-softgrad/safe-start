@@ -5,7 +5,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
         'SafeStartExt.store.Companies'
     ],
     xtype: 'SafeStartExtPanelCompaniesList',
-    cls:'sfa-companies-list-left-coll',
+    cls:'sfa-left-coll',
     layout: 'fit',
     ui: 'light-left',
     border: 0,
@@ -16,6 +16,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
         Ext.apply(this, {
             tbar: [{
                 xtype: 'textfield',
+                cls:'search',
                 flex: 1,
                 margin: '0 5 0 5',
                 height: 22,

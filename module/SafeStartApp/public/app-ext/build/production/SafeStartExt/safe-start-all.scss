@@ -449,7 +449,7 @@ $include-ext-util-filter: true;
 $include-ext-util-floating: true;
 $include-ext-util-grouper: true;
 $include-ext-util-hashmap: true;
-$include-ext-util-history: false;
+$include-ext-util-history: true;
 $include-ext-util-inflector: true;
 $include-ext-util-keymap: true;
 $include-ext-util-keynav: true;
@@ -484,6 +484,7 @@ $include-ext-ux-iframe: false;
 $include-ext-ux-livesearchgridpanel: false;
 $include-ext-ux-previewplugin: false;
 $include-ext-ux-progressbarpager: false;
+$include-ext-ux-router: true;
 $include-ext-ux-rowexpander: false;
 $include-ext-ux-slidingpager: false;
 $include-ext-ux-spotlight: false;
@@ -576,8 +577,6 @@ $include-safestartext-view-panel-vehicletabs: true;
 @import '../../../ext/packages/ext-theme-gray/sass/etc/all';
 /* including package safe-start-theme */
 @import '../../../packages/safe-start-theme/sass/etc/all';
-/* including package SafeStartExt */
-@import '../../../sass/etc/all';
 /* including package safe-start-theme */
 @import '../../../packages/safe-start-theme/sass/var/Component';
 @import '../../../packages/safe-start-theme/sass/var/button/Button';

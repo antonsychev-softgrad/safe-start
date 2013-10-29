@@ -64,20 +64,20 @@
 /* including package ext-theme-classic */
 /* including package ext-theme-gray */
 /* including package safe-start-theme */
-/* line 3, ../../sass/etc/all.scss */
+/* line 1, ../../sass/etc/all.scss */
 body {
   font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
 }
 
-/* line 8, ../../sass/etc/all.scss */
+/* line 6, ../../sass/etc/all.scss */
 .sfa-text-info {
   text-align: center;
   font-size: 18px;
   color: #808080;
 }
 
-/* line 14, ../../sass/etc/all.scss */
+/* line 12, ../../sass/etc/all.scss */
 .logo img {
   width: 381px;
   height: 100px;
@@ -89,17 +89,7 @@ body {
   zoom: 1;
 }
 
-/* line 24, ../../sass/etc/all.scss */
-.sfa-bottom-nav {
-  border-top: 1px solid #0B3C5E;
-}
-
-/* line 29, ../../sass/etc/all.scss */
-.sfa-top-nav {
-  border-bottom: 2px solid #ccd;
-}
-
-/* line 33, ../../sass/etc/all.scss */
+/* line 21, ../../sass/etc/all.scss */
 .sfa-vehicle-item {
   color: #558FAC;
   font-size: 18px;
@@ -20997,24 +20987,15 @@ body.x-nbr .x-tab-default-right-frameInfo {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 20px 1px 1px 1px;
-  border-width: 2px;
+  padding: 3px 3px 3px 3px;
+  border-width: 0;
   border-style: solid;
-  background-image: none;
   background-color: transparent;
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-mc {
-  background-image: url(images/btn/btn-tab-large-fbg.gif);
-  background-position: 0 top;
   background-color: transparent;
-}
-
-/* line 212, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
-.x-nlg .x-btn-tab-large {
-  background-image: url(images/btn/btn-tab-large-bg.gif);
-  background-position: 0 top;
 }
 
 /* line 235, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -21027,12 +21008,11 @@ body.x-nbr .x-tab-default-right-frameInfo {
   -o-border-radius: 0px;
   border-radius: 0px;
   background-color: transparent;
-  background-image: none;
 }
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-tab-large-frameInfo {
-  font-family: th-3-3-3-3-2-2-2-2-20-1-1-1;
+  font-family: th-3-3-3-3-0-0-0-0-3-3-3-3;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -21119,7 +21099,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-mc {
-  padding: 19px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -21129,22 +21109,13 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   right: 0;
 }
 
-/*<if slicer>*/
-/* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
-.x-btn-tab-large:after {
-  display: none;
-  content: "x-slicer:stretch:bottom, frame-bg:url(images/btn/btn-tab-large-fbg.gif), bg:url(images/btn/btn-tab-large-bg.gif)";
-}
-
-/*</if slicer>*/
-/* */
 /* line 253, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-inner {
   font-size: 12px;
   font-weight: normal;
   font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   color: white;
-  padding: 0 30px 0px 0px 0px;
+  padding: 0 0px 0px 0px 0px;
 }
 /* line 261, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-arrow {
@@ -21165,8 +21136,8 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 }
 /* line 284, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-glyph {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 32px;
+  line-height: 32px;
   color: #333333;
   opacity: 0.5;
 }
@@ -21184,12 +21155,12 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-button,
 .x-btn-tab-large-noicon .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-inner,
 .x-btn-tab-large-noicon .x-btn-inner {
-  line-height: 16px;
+  line-height: 32px;
 }
 
 /* line 349, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21202,47 +21173,47 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 .x-btn-tab-large-icon .x-btn-arrow-right .x-rtl.x-btn-inner,
 .x-btn-tab-large-noicon .x-btn-arrow-right .x-rtl.x-btn-inner,
 .x-btn-tab-large-icon-text-left .x-btn-arrow-right .x-rtl.x-btn-inner {
-  padding-right: 30px 0px 0px 0px;
+  padding-right: 0px 0px 0px 0px;
   padding-left: 0;
 }
 
 /* line 364, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-inner {
-  width: 16px;
+  width: 32px;
   padding: 0;
 }
 /* line 370, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-icon-el {
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
 }
 
 /* line 377, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 382, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-inner {
-  line-height: 16px;
-  padding-left: 20px;
+  line-height: 32px;
+  padding-left: 36px;
 }
 /* line 388, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-rtl.x-btn-inner {
-  padding-left: 30px 0px 0px 0px;
-  padding-right: 20px;
+  padding-left: 0px 0px 0px 0px;
+  padding-right: 36px;
 }
 /* line 393, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-arrow-right .x-rtl.x-btn-inner {
-  padding-right: 20px;
+  padding-right: 36px;
 }
 /* line 398, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-icon-el {
-  width: 16px;
+  width: 32px;
   right: auto;
 }
 /* line 403, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-tab-large-icon-text-left .x-btn-icon-el, .x-quirks .x-btn-tab-large-icon-text-left .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
 }
 /* line 409, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-rtl.x-btn-icon-el {
@@ -21252,26 +21223,26 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 417, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 422, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-inner {
-  line-height: 16px;
-  padding-right: 20px;
+  line-height: 32px;
+  padding-right: 36px;
 }
 /* line 428, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-rtl.x-btn-inner {
-  padding-right: 30px 0px 0px 0px;
-  padding-left: 20px;
+  padding-right: 0px 0px 0px 0px;
+  padding-left: 36px;
 }
 /* line 434, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-icon-el {
-  width: 16px;
+  width: 32px;
   left: auto;
 }
 /* line 439, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-tab-large-icon-text-right .x-btn-icon-el, .x-quirks .x-btn-tab-large-icon-text-right .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
 }
 /* line 445, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-rtl.x-btn-icon-el {
@@ -21281,11 +21252,11 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 453, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-top .x-btn-inner {
-  padding-top: 20px;
+  padding-top: 36px;
 }
 /* line 457, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-top .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
   bottom: auto;
 }
 /* line 465, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21295,11 +21266,11 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-bottom .x-btn-inner {
-  padding-bottom: 20px;
+  padding-bottom: 36px;
 }
 /* line 477, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-bottom .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
   top: auto;
 }
 /* line 485, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21322,14 +21293,8 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 541, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-menu-active,
 .x-btn-tab-large-pressed {
-  border-color: #27292c;
   background-image: none;
-  background-color: #333539;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #252629), color-stop(100%, #3d3f44));
-  background-image: -webkit-linear-gradient(top, #252629, #3d3f44);
-  background-image: -moz-linear-gradient(top, #252629, #3d3f44);
-  background-image: -o-linear-gradient(top, #252629, #3d3f44);
-  background-image: linear-gradient(top, #252629, #3d3f44);
+  background-color: #292a2d;
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21349,7 +21314,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 580, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-over .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-over-fbg.gif);
 }
 
 /* line 595, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21369,7 +21333,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 602, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-focus .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-focus-fbg.gif);
 }
 
 /* line 618, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21397,8 +21360,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 625, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-menu-active .x-frame-mc,
 .x-btn-tab-large-pressed .x-frame-mc {
-  background-color: #333539;
-  background-image: url(images/btn/btn-tab-large-pressed-fbg.gif);
+  background-color: #292a2d;
 }
 
 /* line 640, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21418,28 +21380,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 647, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-disabled .x-frame-mc {
   background-color: transparent;
-  background-image: url(images/btn/btn-tab-large-disabled-fbg.gif);
-}
-
-/* line 659, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-over {
-  background-image: url(images/btn/btn-tab-large-over-bg.gif);
-}
-
-/* line 667, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-focus {
-  background-image: url(images/btn/btn-tab-large-focus-bg.gif);
-}
-
-/* line 676, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-menu-active,
-.x-nlg .x-btn-tab-large-pressed {
-  background-image: url(images/btn/btn-tab-large-pressed-bg.gif);
-}
-
-/* line 684, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
-.x-nlg .x-btn-tab-large-disabled {
-  background-image: url(images/btn/btn-tab-large-disabled-bg.gif);
 }
 
 /* line 691, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -21488,7 +21428,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-over:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-over-corners.gif), sides:url(images/btn/btn-tab-large-over-sides.gif), frame-bg:url(images/btn/btn-tab-large-over-fbg.gif), bg:url(images/btn/btn-tab-large-over-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-over-corners.gif), sides:url(images/btn/btn-tab-large-over-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -21497,7 +21437,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-focus:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-focus-corners.gif), sides:url(images/btn/btn-tab-large-focus-sides.gif), frame-bg:url(images/btn/btn-tab-large-focus-fbg.gif), bg:url(images/btn/btn-tab-large-focus-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-focus-corners.gif), sides:url(images/btn/btn-tab-large-focus-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -21506,7 +21446,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-pressed:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-pressed-corners.gif), sides:url(images/btn/btn-tab-large-pressed-sides.gif), frame-bg:url(images/btn/btn-tab-large-pressed-fbg.gif), bg:url(images/btn/btn-tab-large-pressed-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-pressed-corners.gif), sides:url(images/btn/btn-tab-large-pressed-sides.gif)";
 }
 
 /*</if slicer>*/
@@ -21515,11 +21455,18 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 78, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/slicer.scss */
 .x-btn-tab-large-disabled:after {
   display: none;
-  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-disabled-corners.gif), sides:url(images/btn/btn-tab-large-disabled-sides.gif), frame-bg:url(images/btn/btn-tab-large-disabled-fbg.gif), bg:url(images/btn/btn-tab-large-disabled-bg.gif)";
+  content: "x-slicer:stretch:bottom, corners:url(images/btn/btn-tab-large-disabled-corners.gif), sides:url(images/btn/btn-tab-large-disabled-sides.gif)";
 }
 
 /*</if slicer>*/
 /* */
+/* line 65, ../../sass/src/button/Button.scss */
+.x-btn-tab-large-pressed {
+  -webkit-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+  -moz-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+  box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
+}
+
 /* line 246, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium {
   border-color: transparent;

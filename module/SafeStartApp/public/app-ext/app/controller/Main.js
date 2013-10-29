@@ -1,6 +1,6 @@
 Ext.define('SafeStartExt.controller.Main', {
     extend: 'Ext.app.Controller',
-
+    require: [ 'Ext.ux.Router' ],
     refs: [{
         selector: 'viewport > SafeStartExtBottomNav',
         ref: 'mainNavPanel'
@@ -24,14 +24,24 @@ Ext.define('SafeStartExt.controller.Main', {
     init: function () {
         this.control({
             'SafeStartExtBottomNav': {
-                showPage: this.showPage
+                redirectTo: this.redirectTo
             },
             'SafeStartExtMain': {
                 mainMenuLoaded: this.updateMainMenu,
                 notSupportedAction: this.notSupportedAction,
                 changeCompanyAction: this.changeCompanyAction
             }
-        });   
+        });
+        
+
+        var me = this;
+        Ext.ux.Router.on({
+            routemissed: function(token, match, params) {
+                if (token && !me.getApplication().routes[token]) {
+                    me.notSupportedAction();
+                }
+            }
+        });
     },
 
     updateMainMenu: function (menu) {
@@ -39,14 +49,18 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainPanel().removeAll();
         mainNavPanel.applyButtons(menu);
 
-        var getter;
-        Ext.each(menu, function (name) {
-            getter = 'get' + name + 'Panel';
-            if (typeof this[getter] === 'function') {
-                this.showPage(name);
-                return false;
-            }
-        }, this);
+        var currentHash = Ext.History.getHash();
+
+        if (!currentHash || !Ext.Array.contains(menu, currentHash)) {
+            var getter;
+            Ext.each(menu, function (name) {
+                getter = 'get' + name + 'Panel';
+                if (typeof this[getter] === 'function') {
+                    this.redirectTo(name);
+                    return false;
+                }
+            }, this);
+        }
     },
 
     changeCompanyAction: function (company) {
@@ -64,7 +78,7 @@ Ext.define('SafeStartExt.controller.Main', {
         });
     },
 
-    showPage: function (name) {
+    showPage: function (obj, name) {
         var pagePanel = null,
             getter = 'get' + name + 'Panel',
             alias;
@@ -76,11 +90,15 @@ Ext.define('SafeStartExt.controller.Main', {
                 pagePanel = Ext.create(alias);
                 this.getMainPanel().add(pagePanel);
             }
-            this.getMainPanel().getLayout().setActiveItem(pagePanel);
             this.getMainNavPanel().setActiveButton(name);
+            this.getMainPanel().getLayout().setActiveItem(pagePanel);
         } else {
             this.notSupportedAction();
         }
+    },
+
+    redirectTo: function(name) {
+        Ext.History.add(name);
     }
 
 });

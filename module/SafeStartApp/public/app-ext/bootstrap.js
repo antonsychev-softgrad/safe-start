@@ -8,6 +8,7 @@ Ext.Loader.addClassPathMappings({
   "Ext": "ext/src",
   "Ext.Msg": "ext/src/window/MessageBox.js",
   "Ext.rtl.EventObjectImpl": "ext/src/rtl/EventObject.js",
+  "Ext.ux.Router": "lib/ux/Router.js",
   "SafeStartExt": "app"
 });
 Ext.ClassManager.addNameAlternateMappings({
@@ -763,6 +764,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "Ext.ux.LiveSearchGridPanel": [],
   "Ext.ux.PreviewPlugin": [],
   "Ext.ux.ProgressBarPager": [],
+  "Ext.ux.Router": [
+    "Ext.Router"
+  ],
   "Ext.ux.RowExpander": [],
   "Ext.ux.SlidingPager": [],
   "Ext.ux.Spotlight": [],
@@ -1740,6 +1744,7 @@ Ext.ClassManager.addNameAliasMappings({
     "plugin.preview"
   ],
   "Ext.ux.ProgressBarPager": [],
+  "Ext.ux.Router": [],
   "Ext.ux.RowExpander": [],
   "Ext.ux.SlidingPager": [],
   "Ext.ux.Spotlight": [],

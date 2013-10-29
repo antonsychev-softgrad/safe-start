@@ -1,3 +1,8 @@
+.sfa-bottomnav {
+  background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
+  height: 59px;
+}
+
 .sfa-vehicles-tabpanel .x-panel-body {
   background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');
 }
@@ -22,17 +27,33 @@
 
 .sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default .x-tab-inner {
   border-bottom: 0;
-  font-size: 14px;
+  font-size: 18px;
+  color: #b8d3e4;
   padding-top: 1px;
-  padding-bottom: 1px;
+  padding-bottom: 5px;
   font-weight: normal;
 }
-
-.sfa-vehicles-tabpanel .x-tab-bar-default-top {
-  padding-top: 7px;
+.sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default.x-top-over .x-tab-inner {
+    color: #fff;
 }
 
-.sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-left, 
+.sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-top-active.x-tab-default .x-tab-inner {
+    color: #fff;
+    text-shadow: 0px -1px 0px #004466;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    padding: 14px 30px 15px;
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
+    background: url(img/tab-active_bg.png) no-repeat 50% 100%;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-left,
 .sfa-vehicles-tabpanel .x-tab-bar-default .x-tabbar-scroll-right {
 }
 
@@ -46,7 +67,7 @@
 
 
 .sfa-icon-refresh {
-  background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png); 
+  background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png);
 }
 
 .x-btn-default-toolbar-medium-focus {
@@ -86,10 +107,18 @@
   border-bottom: 0 !important;
 }
 
-.sfa-top-nav {
-  border-bottom: 1px solid #CCD !important;
+.sfa-top-nav.x-box-item {
+    border-bottom: 1px solid #000 !important;
+    height: 62px !important;
+    background: #fde000 url(img/top_bg.png) repeat-x;
 }
-
+.sfa-top-nav {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    z-index: 9;
+}
+.sfa-top-nav .x-btn-transparent-medium .x-btn-inner {
+    color: #fff;
+}
 .x-ie .x-panel-light-left .x-toolbar-default {
   background-image: none !important;
 }
@@ -122,36 +151,185 @@
     height: 18px;
 }
 
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
+/*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
     background: #6C9804;
     display: block;
 }
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a span,
+*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a span,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a span{
     background: none;
 }
-.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a.x-btn-green-medium-pressed,
+*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a.x-btn-green-medium-pressed,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a.x-btn-green-medium-pressed {
     background: #628904;
 }
+*/
+
 /* END Login & Contact form */
 
+/* TOP panel */
+.sfa-top-nav .x-btn-inner {
+    font-size: 18px;
+}
+.sfa-top-nav .sfa-user {
+    padding-left: 22px;
+    background: url(img/user-ic.png) no-repeat 0 15px;
+}
+.sfa-top-nav .sfa-logout {
+    padding-left: 27px;
+    margin-left: 20px;
+    background: url(img/logout-ic.png) no-repeat 0 15px;
+}
+
+/* END TOP panel */
+
+/* LEFT column */
+.sfa-left-coll .x-header-text.x-panel-header-text.x-panel-header-text-light-left {
+    font-size: 24px;
+    display: block;
+    padding-bottom: 7px;
+}
+.sfa-left-coll .search input.x-form-text {
+    padding: 7px 14% 8px 3%;
+    height: auto !important;
+    background: url(img/search-ic.png) no-repeat 96% 50%;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    box-shadow: 0px 1px 0px #fff, 1px 0px 0px #fbfbfb, -1px 0px 0px #fbfbfb;
+}
+.x-ie7p .sfa-left-coll .search input.x-form-text {
+    width: 92% !important;
+}
+.sfa-left-coll > div .x-box-inner {
+    height: 42px !important;
+}
+.sfa-left-coll .x-panel-header-light-left {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none !important;
+}
+.sfa-left-coll {
+    background: #f7f7f7;
+}
+.sfa-left-coll .sfa-icon-refresh {
+    height: 18px;
+    width: 22px;
+    background: url(img/reload-ic.png) no-repeat;
+}
+.sfa-left-coll a.x-btn span {
+    width: 22px;
+    height: 18px;
+    line-height: 18px;
+}
+.sfa-left-coll a.x-btn {
+    top: 5px !important;
+}
+.sfa-left-coll .x-btn-default-toolbar-medium-over {
+    border-color: #fff;
+    background: none;
+}
+/* END LEFt column */
+
+/* CONTENT */
+.x-panel-body-light, .x-component-light, .sfa-vehicles-tabpanel,
+.sfa-vehicles-tabpanel .x-panel-body {
+    padding: 20px 25px;
+    background: none;
+}
+.sfa-vehicles-tabpanel, .sfa-vehicles-tabpanel .x-panel-body {
+    padding: 0;
+}
+.sfa-vehicles-tabpanel > span > div .x-panel-body-default {
+    border: none;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 49px;
+    background: red;
+    border-top: 1px solid #005a87;
+    border-right: 1px solid #0071a9;
+    border-left: 1px solid #0071a9;
+    background: url(img/tab_bg.png) repeat-x;
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    -khtml-border-radius: 6px 6px 0 0;
+    -o-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.sfa-vehicles-tabpanel > span {
+    padding: 24px 26px;
+}
+.sfa-vehicles-tabpanel > span > div {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #c0c0c0;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    background: #e8e8e8 url(img/tab-left_bg.png) repeat-y;
+    overflow: hidden;
+}
+
+.sfa-vehicles-tabpanel > span > div > .x-panel-default {
+    height: 100% !important;
+    background: url(img/tab-right_bg.png) repeat-y 100% 0;
+}
+
+
+
+
+
+
+
+
+.sfa-vehicles-tabpanel > span > div .x-panel-default > div {
+    padding: 0 3px;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll span.x-header-text {
+    font-size: 20px;
+}
+
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .x-panel-header {
+    border: none !important;
+    background: none;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item {
+    border-top: 1px solid #DEDEDE;
+}
+
+
+/* END CONTENT */
 
 /* page Companies */
 
-.sfa-companies-list-left-coll .sfa-vehicle-item,
-.sfa-vehicles-list-left-coll .sfa-vehicle-item,  /* page Vehisles */
+.sfa-left-coll .sfa-vehicle-item,
+.sfa-left-coll .sfa-vehicle-item,  /* page Vehisles */
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item {   /* page Vehisles -> previous inspections */
     cursor: pointer;
 }
-.sfa-companies-list-left-coll .sfa-vehicle-item:last-child {
-    border: none;
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item {
+    border-bottom: 1px solid #DEDEDE;
+    box-shadow: 0 1px 0 #FFFFFF;
 }
-.sfa-companies-list-left-coll .sfa-vehicle-item.x-item-selected,
-.sfa-companies-list-left-coll .sfa-vehicle-item:hover,
-.sfa-vehicles-list-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
-.sfa-vehicles-list-left-coll .sfa-vehicle-item:hover,
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child {
+    border-top: 1px solid #dedede;
+    box-shadow: 0 -1px 0 #FFFFFF, 0 1px 0 #FFFFFF;
+}
+.sfa-left-coll .sfa-vehicle-item.x-item-selected,
+.sfa-left-coll .sfa-vehicle-item:hover,
+.sfa-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
+.sfa-left-coll .sfa-vehicle-item:hover,
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item.x-item-selected,
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item:hover {
     background: #e3edf1;
@@ -159,25 +337,28 @@
 .sfa-previous-inspection .sfa-previous-inspections-left-coll {
   border-right: none;
 }
-.sfa-companies-list-left-coll .x-component.x-fit-item.x-component-default {
-    padding-top: 5px;
+.sfa-left-coll .x-component.x-fit-item.x-component-default {
+    padding-top: 30px;
 }
-.sfa-companies-list-left-coll input.x-form-field.x-form-text {
+.sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
+}
+.sfa-left-coll {
+    padding-top: 15px;
 }
 /* END page Companies */
 
 
 /* page Vehisles */
 
-.sfa-vehicles-list-left-coll .sfa-vehicle-item:last-child {
+.sfa-left-coll .sfa-vehicle-item:last-child {
     border: none;
 }
 
-.sfa-vehicles-list-left-coll .x-component.x-fit-item.x-component-default {
-    padding-top: 5px;
+.sfa-left-coll .x-component.x-fit-item.x-component-default {
+    padding-top: 30px;
 }
-.sfa-vehicles-list-left-coll input.x-form-field.x-form-text {
+.sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
 }
 
@@ -217,49 +398,135 @@
 /* END page Vehisles */
 
 
-.sfa-bottomnav .x-btn.sfa-button-companies {
-    background-image: url(img/ic1.png);
-    background-position: 50% 10px;
+/*.x-nlg .sfa-bottomnav .x-btn {
+    background-image: none;
+}
+*/
+/*.sfa-bottomnav .x-btn.sfa-button-companies {
+    background-image: url(img/sfa-icon-1.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-companies.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/sfa-icon-1.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-vehicles {
-    background-image: url(img/ic2.png);
-    background-position: 50% 15px;
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-vehicles.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
+.sfa-bottomnav .x-btn-disabled.sfa-button-vehicles {
+    background-image: url(img/sfa-icon-disabled-3.png);
+    background-position: 50% 2px;
+    background-repeat: no-repeat;
+}
+.x-nlg .sfa-bottomnav .sfa-button-vehicles.x-btn-tab-large-disabled .x-frame-mc {
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-alerts {
-    background-image: url(img/ic3.png);
-    background-position: 50% 4px;
+    background-image: url(img/sfa-icon-2.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-alerts.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/sfa-icon-2.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-users {
-    background-image: url(img/ic4.png);
-    background-position: 50% 6px;
+    background-image: url(img/sfa-icon-4.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-users.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/sfa-icon-4.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-system-settings {
-    background-image: url(img/ic5.png);
-    background-position: 50% 5px;
+    background-image: url(img/sfa-icon-5.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-system-settings.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/sfa-icon-5.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .x-btn.sfa-button-system-statistic {
     background-image: url(img/ic6.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
+.x-nlg .sfa-bottomnav .sfa-button-system-statistic.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic6.png);
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+
 .sfa-bottomnav .sfa-button-auth {
     background-image: url(img/ic7.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
-.sfa-bottomnav .sfa-button-contact {
+.x-nlg .sfa-bottomnav .sfa-button-auth.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic7.png);
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+}
+*/
+/*.sfa-bottomnav .sfa-button-contact {
     background-image: url(img/ic8.png);
     background-position: 50% 5px;
+    background-repeat: no-repeat;
+}
+/*.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
+    background-image: url(img/ic8.png);
+    background-position: 50% 0;
     background-repeat: no-repeat;
 }
 .sfa-bottomnav .x-btn-inner.x-btn-inner-center {
     position: relative;
     top: 5px;
 }
-
+*/
+.sfa-icon-auth {
+    background-image: url(img/sfa-icon-auth.png);
+}
+.sfa-icon-companies {
+    background-image: url(img/sfa-icon-companies.png);
+}
+.sfa-icon-vehicles {
+    background-image: url(img/sfa-icon-vehicles.png);
+}
+.sfa-icon-alerts {
+    background-image: url(img/sfa-icon-alerts.png);
+}
+.sfa-icon-users {
+    background-image: url(img/sfa-icon-users.png);
+}
+.sfa-icon-settings {
+    background-image: url(img/sfa-icon-settings.png);
+}
+.sfa-icon-statistic {
+    background-image: url(img/sfa-icon-statistic.png);
+}
+.sfa-icon-contact {
+    background-image: url(img/sfa-icon-contact.png);
+}
 
