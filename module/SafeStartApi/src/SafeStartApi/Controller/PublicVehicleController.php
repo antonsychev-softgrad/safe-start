@@ -51,7 +51,7 @@ class PublicVehicleController extends PublicAccessRestController
         // save checklist
         $persist = false;
         if(!empty($this->data->plantId)) {
-            $plantId = $this->data->plantId;
+            $plantId = strtoupper($this->data->plantId);
             $vehicle = $vehicleRepository->findOneBy(array('plantId' => $plantId));
             if ($vehicle) {
                 $company = $vehicle->getCompany();
@@ -75,7 +75,6 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setPlantId($plantId);
         $vehicle->setProjectName($projectName);
         $vehicle->setProjectNumber($projectNumber);
-        $vehicle->setRegistrationNumber($registrationNumber);
         $vehicle->setServiceDueHours($serviceDueHours);
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
@@ -98,6 +97,9 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+
+        if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
+        else $checkList->setOperatorName($userData['firstName'] ." ". $userData['lastName']);
 
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
             $checkList->setCurrentOdometer($this->data->odometer);
@@ -141,32 +143,39 @@ class PublicVehicleController extends PublicAccessRestController
         }
         $this->em->flush();
 
-        $pdf = $this->inspectionPdf()->create($checkList);
+        $this->answer = array(
+            'checklist' => $checkList->getHash(),
+        );
 
-        $this->_setInspectionStatistic($checkList);
-
-        if (file_exists($pdf)) {
-            foreach($emails as $email) {
-                $email = (array) $email;
-                $this->MailPlugin()->send(
-                    'New inspection report',
-                    $email['email'],
-                    'checklist.phtml',
-                    array(
-                        'name' => isset($email['name']) ? $email['name'] : 'friend'
-                    ),
-                    $pdf
-                );
-            }
-            $this->answer = array(
-                'checklist' => $checkList->getHash(),
-            );
+        if (APP_RESQUE) {
+            \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewEmailCheckListUploaded', array(
+                'checkListId' => $checkList->getId(),
+                'emails' => $emails
+            ));
             return $this->AnswerPlugin()->format($this->answer);
         } else {
-            $this->answer = array(
-                'errorMessage' => 'PDF document was not generated'
-            );
-            return $this->AnswerPlugin()->format($this->answer, 500, 500);
+            $pdf = $this->inspectionPdf()->create($checkList);
+            $this->processChecklistPlugin()->setInspectionStatistic($checkList);
+            if (file_exists($pdf)) {
+                foreach($emails as $email) {
+                    $email = (array) $email;
+                    $this->MailPlugin()->send(
+                        'New inspection report',
+                        $email['email'],
+                        'checklist.phtml',
+                        array(
+                            'name' => isset($email['name']) ? $email['name'] : 'friend'
+                        ),
+                        $pdf
+                    );
+                }
+                return $this->AnswerPlugin()->format($this->answer);
+            } else {
+                $this->answer = array(
+                    'errorMessage' => 'PDF document was not generated'
+                );
+                return $this->AnswerPlugin()->format($this->answer, 500, 500);
+            }
         }
     }
 

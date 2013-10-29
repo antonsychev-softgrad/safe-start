@@ -34,7 +34,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 });
             },
             back: function () {
-                if(this._backButton._hidden) {
+                if (this._backButton._hidden) {
                     Ext.each(this.down('toolbar[name=first-level]'), function (toolbar) {
                         toolbar.show();
                     });
@@ -48,7 +48,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 } else if (record.get('depth') == 2) {
                     this.fireEvent('selectAction', record, false);
                 }
-            } 
+            }
         }
     },
 
@@ -61,10 +61,15 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
 
         this._activeNode = this.getStore().getRoot();
         records = [];
+
+        store.each(function (record) {
+            record.destroy();
+        });
         store.removeAll();
+
         var nodes = vehiclesStore.getRoot().childNodes;
         for (var i = 0, len = nodes.length; i < len; i++) {
-            records.push(function parseNode (node) {
+            records.push(function parseNode(node) {
                 var childNodes = node.childNodes;
                 var data = Ext.clone(node.getData());
                 delete data.internalId;
@@ -102,7 +107,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         var activeNode = this._activeNode,
             actionNode = null;
 
-        if (! activeNode) {
+        if (!activeNode) {
             return false;
         }
 
@@ -147,7 +152,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.fireEvent('selectAction', actionNode, silent);
     },
 
-    initialize: function() {
+    initialize: function () {
         var me = this;
         this.filters = {};
         this.vehiclesStore = this.config.vehiclesStore;
@@ -166,7 +171,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
 
         this.vehiclesStore.on('load', function (store, records) {
             this.setMasked(false);
-            
+
             Ext.each(this.down('toolbar'), function (toolbar) {
                 toolbar.show();
             });
@@ -176,41 +181,76 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         this.callParent();
 
 
-        this.add([{
-            xtype: 'toolbar',
-            name: 'first-level',
-            docked: 'top',
-            ui: '',
-            items: [{
-                xtype: 'searchfield',
-                flex: 1,
-                placeHolder: 'Search...',
-                listeners: {
-                    clearicontap: function() {
-                        this.setFilterValue('');
-                        this.updateNestedListStore();
+        this.add([
+            {
+                xtype: 'toolbar',
+                name: 'first-level',
+                docked: 'top',
+                ui: '',
+                items: [
+                    {
+                        xtype: 'searchfield',
+                        flex: 1,
+                        placeHolder: 'Search...',
+                        listeners: {
+                            clearicontap: function () {
+                                this.setFilterValue('');
+                                this.updateNestedListStore();
+                            },
+                            keyup: function (field, e) {
+                                this.setFilterValue(field.getValue());
+                                this.updateNestedListStore();
+                            },
+                            scope: this
+                        }
                     },
-                    keyup: function(field, e) {
-                        this.setFilterValue(field.getValue());
-                        this.updateNestedListStore();
+                    {
+                        xtype: 'button',
+                        name: 'reload',
+                        ui: 'action',
+                        action: 'refresh',
+                        iconCls: 'refresh',
+                        cls: 'sfa-search-reload',
+                        handler: function () {
+                            this.down('searchfield').setValue('');
+                            this.setFilterValue('');
+                            this.getVehiclesStore().loadData();
+                        },
+                        scope: this
+                    }
+                ]
+            }
+        ]);
+
+        this.add([
+            {
+                xtype: 'toolbar',
+                name: 'first-level-bottom',
+                docked: 'bottom',
+                ui: '',
+                items: [
+                    {
+                        xtype: 'spacer'
                     },
-                    scope: this
-                }
-            }, {
-                xtype: 'button',
-                name: 'reload',
-                ui: 'action',
-                action: 'refresh',
-                iconCls: 'refresh',
-                cls: 'sfa-search-reload',
-                handler: function() {
-                    this.down('searchfield').setValue('');
-                    this.setFilterValue('');
-                    this.getVehiclesStore().loadData();
-                },
-                scope: this
-            }]
-        }]);
+                    {
+                        xtype: 'button',
+                        cls: 'sfa-add-button',
+                        name: 'print-action-lists',
+                        ui: 'action',
+                        iconCls: 'organize',
+                        action: 'print-action-lists',
+                        text: 'Print Action List',
+                        handler: function () {
+                            window.open('/api/vehicle/0/print-action-list', '_blank');
+                        },
+                        scope: this
+                    },
+                    {
+                        xtype: 'spacer'
+                    }
+                ]
+            }
+        ]);
 
     }
 });

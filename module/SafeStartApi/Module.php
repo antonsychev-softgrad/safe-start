@@ -187,6 +187,8 @@ class Module
             'ping api [--verbose|-v]' => 'Return current api version',
             'doctrine set-def-data [--verbose|-v]' => 'Update database with fixtures data',
             array('--verbose|-v', '(optional) turn on verbose mode'),
+            'resque start [--verbose|-v]' => 'Update database with fixtures data',
+            array('--verbose|-v', '(optional) turn on verbose mode'),
         );
     }
 
@@ -236,7 +238,7 @@ class Module
                     return $sessionManager;
                 },
                 'RequestLogger' => function ($sm) {
-                    $logger = new \Zend\Log\Logger;
+                    $logger = new \SafeStartApi\Base\Logger;
                     if (!is_dir('./data/logs')) {
                         if (mkdir('./data/logs', 0777)) {
 
@@ -250,6 +252,21 @@ class Module
                     $logger->addWriter($writer);
                     return $logger;
                 },
+                'ResqueLogger' => function ($sm) {
+                        $logger = new \SafeStartApi\Base\Logger;
+                        if (!is_dir('./data/logs')) {
+                            if (mkdir('./data/logs', 0777)) {
+
+                            }
+                        }
+                        if (!is_dir('./data/logs/resque')) {
+                            if (mkdir('./data/logs/resque', 0777)) {
+                            }
+                        }
+                        $writer = new \Zend\Log\Writer\Stream('./data/logs/resque/' . date('Y-m-d') . '.log');
+                        $logger->addWriter($writer);
+                        return $logger;
+                    },
                 'ErrorLogger' => function ($sm) {
                     $logger = new \Zend\Log\Logger;
                     if (!is_dir('./data/logs/')) {

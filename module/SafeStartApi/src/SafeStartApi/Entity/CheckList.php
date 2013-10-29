@@ -52,6 +52,11 @@ class CheckList extends BaseEntity
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    protected $operator_name;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     protected $fault_pdf_link;
 
     /**
@@ -127,6 +132,7 @@ class CheckList extends BaseEntity
     public function __construct()
     {
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreationDate(new \DateTime());
     }
 
     /**
@@ -576,6 +582,7 @@ class CheckList extends BaseEntity
             'id' => $this->getId(),
             'hash' => $this->getHash(),
             'gps' => $this->getGpsCoords(),
+            'operator_name' => $this->getOperatorName(),
             'odometer_kms' => $this->getCurrentOdometer(),
             'odometer_hours' => $this->getCurrentOdometerHours(),
             'creation_date' => $this->getCreationDate()->getTimestamp(),
@@ -667,6 +674,29 @@ class CheckList extends BaseEntity
             'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
             'action' => $warning
         )));
+    }
+
+    /**
+     * Get operator_name
+     *
+     * @return string
+     */
+    public function getOperatorName()
+    {
+        return $this->operator_name;
+    }
+
+    /**
+     * Set operator_name
+     *
+     * @param string $value
+     * @return CheckList
+     */
+    public function setOperatorName($value)
+    {
+        $this->operator_name = $value;
+
+        return $this;
     }
 
 }

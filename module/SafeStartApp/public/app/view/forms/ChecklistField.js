@@ -56,6 +56,11 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 }
             },
             {
+                xtype: 'textfield',
+                name: 'default_value',
+                label: 'Default Value'
+            },
+            {
                 xtype: 'togglefield',
                 name: 'additional',
                 label: 'Additional',
@@ -68,7 +73,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             {
                 xtype: 'selectfield',
                 name: 'trigger_value',
-                label: 'Trigger filed value',
+                label: 'Alert Trigger Value',
                 valueField: 'rank',
                 displayField: 'title',
                 store: {
@@ -93,7 +98,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'textfield',
-                label: 'Alert description',
+                label: 'Alert Description',
                 required: false,
                 name: 'alert_description'
             },
@@ -168,13 +173,109 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         this.changeFieldType(record.get('type'));
 
         this.callParent([record]);
+        if (record.get('type') === 'datePicker') {
+            this.down('field[name=default_value]').setValue(new Date(record.get('default_value') * 1000 || Date.now()));
+        }
         
         if (record.get('type') == 'root') {
             fields.is_root.setValue(true);
         }
     },
 
+    switchDefaultValueField: function (type) {
+        var field = this.down('field[name=default_value]');
+        var index = this.items.indexOf(field);
+        this.remove(field);
+        switch (type) {
+            case 'group': 
+            case 'root':
+                field = {
+                    xtype: 'hiddenfield'
+                };
+            break;
+            case 'radio':
+            case 'checkbox':
+                field = {
+                    xtype: 'selectfield',
+                    valueField: 'rank',
+                    displayField: 'title',
+                    store: {
+                        data: [
+                            { rank: '', title: ''},
+                            { rank: 'yes', title: 'Yes'},
+                            { rank: 'no', title: 'No'}
+                        ]
+                    }
+                };
+                break;
+            case 'datePicker':
+                field = {
+                    xtype: 'datepickerfield',
+                    value: new Date(),
+                    picker: {
+                        yearTo: 2024
+                    },
+                    dateFormat: SafeStartApp.dateFormat
+                };
+            break;
+            default:
+                field = {
+                    xtype: 'textfield'
+                };
+        }
+        field.name = 'default_value';
+        field.label = 'Default value';
+        this.insert(index, field);
+    },
+
+    switchTriggerValueField: function (type) {
+        var field = this.down('field[name=trigger_value]');
+        var index = this.items.indexOf(field);
+        this.remove(field);
+        switch (type) {
+            case 'datePicker':
+                field = {
+                    xtype: 'textfield',
+                    name: 'trigger_value',
+                    label: 'Alert Trigger Value',
+                    step: 1,
+                    value: 30
+                };
+                break;
+            default: 
+                field = {
+                    xtype: 'selectfield',
+                    name: 'trigger_value',
+                    label: 'Alert Trigger Value',
+                    valueField: 'rank',
+                    displayField: 'title',
+                    store: {
+                        data: [
+                            { rank: '', title: ''},
+                            { rank: 'yes', title: 'Yes'},
+                            { rank: 'no', title: 'No'}
+                        ]
+                    }
+                };
+                break;
+        }
+        this.insert(index, field);
+    },
+
+    switchAlertCriticalMessage: function (type) {
+        if (type == 'datePicker') {
+            this.down('field[name=alert_critical]').setLabel('Show Alert In PDF');
+            this.down('field[name=trigger_value]').setLabel('Remind Days');
+        } else {
+            this.down('field[name=alert_critical]').setLabel('Alert Critical?');
+            this.down('field[name=trigger_value]').setLabel('Alert Trigger Value');
+        }
+    },
+
     changeFieldType: function (type) {
+        this.switchDefaultValueField(type);
+        this.switchAlertCriticalMessage(type);
+        this.switchTriggerValueField(type);
         var fields = this.getFields();
         switch (type) {
             case 'group':
@@ -190,6 +291,11 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
                 break;
+            case 'datePicker':
+                fields['alert_critical'].show();
+                fields['alert_description'].show();
+                fields['trigger_value'].show();
+                break;
             default:
                 fields['alert_title'].hide();
                 fields['alert_critical'].hide();
@@ -200,7 +306,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     },
 
     resetRecord: function () {
-        this.reset();
+        try {
+            //this.reset();
+        } catch (ignore) {
+        }
         this.hide();
     }
 

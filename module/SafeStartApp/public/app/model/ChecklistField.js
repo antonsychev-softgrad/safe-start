@@ -9,6 +9,7 @@ Ext.define('SafeStartApp.model.ChecklistField', {
             {name: 'additional', type: 'int', defaultValue: 0},
             {name: 'title', type: 'string'},
             {name: 'description', type: 'string'},
+            {name: 'default_value', type: 'string'},
             {name: 'text', type: 'string'},
             {name: 'type', type: 'string', defaultValue: ''},
             {name: 'sort_order', type: 'int', defaultValue: 1},

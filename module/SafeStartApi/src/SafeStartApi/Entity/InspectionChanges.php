@@ -26,22 +26,42 @@ class InspectionChanges extends BaseEntity
     protected $field_id;
 
     /**
-     * @ORM\Column(name="`key`", type="string", length=1000)
+ * @ORM\Column(type="integer", nullable=true)
+ **/
+    protected $company_id;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     **/
+    protected $user_id;
+
+    /**
+     * @ORM\Column(name="`company_name`", type="string", length=1000, nullable=true)
+     */
+    protected $company_name;
+
+    /**
+     * @ORM\Column(name="`user_name`", type="string", length=1000, nullable=true)
+     */
+    protected $user_name;
+
+    /**
+     * @ORM\Column(name="`key`", type="string", length=1000, nullable=true)
      */
     protected $key;
 
     /**
-     * @ORM\Column(name="`prev_key`", type="string", length=1000)
+     * @ORM\Column(name="`prev_key`", type="string", length=1000, nullable=true)
      */
     protected $prev_key = '';
 
     /**
-     * @ORM\Column(name="`action`", type="string", length=256)
+     * @ORM\Column(name="`action`", type="string", length=256, nullable=true)
      */
     protected $action;
 
     /**
-     * @ORM\Column(name="`type`", type="string", length=256)
+     * @ORM\Column(name="`type`", type="string", length=256, nullable=true)
      */
     protected $type;
 
@@ -115,6 +135,34 @@ class InspectionChanges extends BaseEntity
         return $this;
     }
 
+    public function setCompanyId($val)
+    {
+        $this->company_id = $val;
+
+        return $this;
+    }
+
+    public function setCompanyName($val)
+    {
+        $this->company_name = $val;
+
+        return $this;
+    }
+
+    public function setUserId($val)
+    {
+        $this->user_id = $val;
+
+        return $this;
+    }
+
+    public function setUserName($val)
+    {
+        $this->user_name = $val;
+
+        return $this;
+    }
+
     /**
      * @return array
      */
@@ -123,6 +171,10 @@ class InspectionChanges extends BaseEntity
             'key' => $this->key,
             'prev_key' => $this->prev_key,
             'field_id' => $this->field_id,
+            'user_id' => $this->user_id,
+            'user_name' => $this->user_name,
+            'company_id' => $this->company_id,
+            'company_name' => $this->company_name,
             'action' => $this->action,
             'type' => $this->type,
             'date' => $this->date->getTimestamp()

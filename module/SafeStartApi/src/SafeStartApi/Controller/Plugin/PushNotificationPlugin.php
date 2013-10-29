@@ -34,11 +34,10 @@ class PushNotificationPlugin extends AbstractPlugin
         $config = $this->getController()->getServiceLocator()->get('Config');
         $this->googleClient->setApiKey($config['externalApi']['google']['key']);
 
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
-        if ($env == 'dev') $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
-        if ($env == 'dev') $logger->debug("\n\n\n============ Android Push Notification ==================\n");
+        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger->debug("\n\n\n============ Android Push Notification ==================\n");
         if (!$this->googleClient) {
-            if ($env == 'dev') $logger->debug("Failure client not initialised ");
+            $logger->debug("Failure client not initialised ");
             return false;
         }
 
@@ -52,12 +51,12 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setDelayWhileIdle(false);
 
         try {
-            if ($env == 'dev') $logger->debug("IDs: " . json_encode($ids));
+            $logger->debug("IDs: " . json_encode($ids));
             $response = $this->googleClient->send($message);
-            if ($env == 'dev') $logger->debug("Success Count: " . $response->getSuccessCount());
+            $logger->debug("Success Count: " . $response->getSuccessCount());
             return $response->getSuccessCount();
         } catch (GoogleGcmRuntimeException $e) {
-            if ($env == 'dev') $logger->debug("Exception: " . $e->getMessage());
+            $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
     }
@@ -67,11 +66,10 @@ class PushNotificationPlugin extends AbstractPlugin
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
         $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['externalApi']['apple']['key'], $config['externalApi']['apple']['password']);
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
-        if ($env == 'dev') $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
-        if ($env == 'dev') $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
+        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
         if (!$this->appleClient) {
-            if ($env == 'dev') $logger->debug("Failure client not initialised");
+            $logger->debug("Failure client not initialised");
             return false;
         }
 
@@ -96,48 +94,47 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setToken($token);
         $message->setBadge($badge);
         $message->setAlert($msg);
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
         try {
-            if ($env == 'dev') $logger->debug("Device Token: " . $token);
+            $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
         } catch (RuntimeException $e) {
-            if ($env == 'dev') $logger->debug("Exception: " . $e->getMessage());
+            $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
 
         if ($response->getCode() != AppleApnsResponse::RESULT_OK) {
             switch ($response->getCode()) {
                 case AppleApnsResponse::RESULT_PROCESSING_ERROR:
-                    if ($env == 'dev') $logger->debug("Error: you may want to retry");
+                    $logger->debug("Error: you may want to retry");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_TOKEN:
-                    if ($env == 'dev') $logger->debug("Error: you were missing a token");
+                    $logger->debug("Error: you were missing a token");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_TOPIC:
-                    if ($env == 'dev') $logger->debug("Error: you are missing a message id");
+                    $logger->debug("Error: you are missing a message id");
                     break;
                 case AppleApnsResponse::RESULT_MISSING_PAYLOAD:
-                    if ($env == 'dev') $logger->debug("Error: you need to send a payload");
+                    $logger->debug("Error: you need to send a payload");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOKEN_SIZE:
-                    if ($env == 'dev') $logger->debug("Error: the token provided was not of the proper size");
+                    $logger->debug("Error: the token provided was not of the proper size");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOPIC_SIZE:
-                    if ($env == 'dev') $logger->debug("Error: the topic was too long");
+                    $logger->debug("Error: the topic was too long");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_PAYLOAD_SIZE:
-                    if ($env == 'dev') $logger->debug("Error: the payload was too large");
+                    $logger->debug("Error: the payload was too large");
                     break;
                 case AppleApnsResponse::RESULT_INVALID_TOKEN:
-                    if ($env == 'dev') $logger->debug("Error: the token was invalid; remove it from your system");
+                    $logger->debug("Error: the token was invalid; remove it from your system");
                     break;
                 case AppleApnsResponse::RESULT_UNKNOWN_ERROR:
-                    if ($env == 'dev') $logger->debug("Error: apple didn't tell us what happened");
+                    $logger->debug("Error: apple didn't tell us what happened");
                     break;
             }
             return false;
         } else {
-            if ($env == 'dev') $logger->debug("Success: " . $response->getCode() + 1);
+            $logger->debug("Success: " . $response->getCode() + 1);
             return true;
         }
     }

@@ -55,8 +55,6 @@ class RequestLogger extends AbstractHelper
      */
     public function __invoke($value)
     {
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
-        if ($env == 'prod') return;
         $logger = $this->serviceLocator->get('RequestLogger');
         $request = $this->serviceLocator->get('Request');
         $this->requestJson = $request->getContent() ? $request->getContent() : json_encode($request->getPost());

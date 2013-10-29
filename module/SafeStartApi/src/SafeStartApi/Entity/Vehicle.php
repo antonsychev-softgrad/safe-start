@@ -61,52 +61,52 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ORM\Column(type="string", length=255, name="title")
+     * @ORM\Column(type="string", length=255, name="title", nullable=true)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=255, name="project_name")
+     * @ORM\Column(type="string", length=255, name="project_name", nullable=true)
      */
     protected $projectName;
 
     /**
-     * @ORM\Column(type="integer", name="project_number")
+     * @ORM\Column(type="integer", name="project_number", nullable=true)
      */
     protected $projectNumber;
 
     /**
-     * @ORM\Column(type="float", name="service_due_km")
+     * @ORM\Column(type="float", name="service_due_km", nullable=true)
      */
     protected $serviceDueHours = 0;
 
     /**
-     * @ORM\Column(type="float", name="service_due_hours")
+     * @ORM\Column(type="float", name="service_due_hours", nullable=true)
      */
     protected $serviceDueKm = 0;
 
     /**
-     * @ORM\Column(type="float", name="current_odometer_hours")
+     * @ORM\Column(type="float", name="current_odometer_hours", nullable=true)
      */
     protected $currentOdometerHours = 0;
 
     /**
-     * @ORM\Column(type="float", name="current_odometer_kms")
+     * @ORM\Column(type="float", name="current_odometer_kms", nullable=true)
      */
     protected $currentOdometerKms = 0;
 
     /**
-     * @ORM\Column(type="float", name="inspection_due_hours")
+     * @ORM\Column(type="float", name="inspection_due_hours", nullable=true)
      */
     protected $inspectionDueHours = 24;
 
     /**
-     * @ORM\Column(type="float", name="inspection_due_kms")
+     * @ORM\Column(type="float", name="inspection_due_kms", nullable=true)
      */
     protected $inspectionDueKms = 500;
 
     /**
-     * @ORM\Column(type="datetime", name="creation_date")
+     * @ORM\Column(type="datetime", name="creation_date", nullable=true)
      */
     protected $creation_date;
 
@@ -661,7 +661,7 @@ class Vehicle extends BaseEntity
      */
     public function setPlantId($plantId)
     {
-        $this->plantId = $plantId;
+        $this->plantId = strtoupper($plantId);
 
         return $this;
     }

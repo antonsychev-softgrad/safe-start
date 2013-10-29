@@ -7,7 +7,7 @@ $api = array(
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
-        'emailForContacts' => 'ponomarenko.t@gmail.com',
+        'emailForContacts' => 'info@safestartinspections.com',
     ),
     'fieldTypes' => array(
         'root' => array(
@@ -67,14 +67,14 @@ $api = array(
         ),
     ),
     'mail' => array(
-        'from' => 'admin@safe-start.dev',
+        'from' => 'info@safestartinspections.com',
         'transport' => array(
             'options' => array(
-                'host' => 'smtp.gmail.com',
+                'host' => 'gator3046.hostgator.com',
                 'connection_class' => 'plain',
                 'connection_config' => array(
-                    'username' => 'webdev.group.ua@gmail.com',
-                    'password' => 'Ocsico!@',
+                    'username' => 'admin@safestartinspections.com',
+                    'password' => 'GHHxEG1Tcr+s',
                     'ssl' => 'tls'
                 ),
             ),
@@ -182,6 +182,52 @@ $api = array(
                 'field_line_spacing' => 4,
                 'field_color' => '#333333',
                 'field_value_color' => '#0F5B8D',
+            )
+        ),
+        'vehicleActionList' => array(
+            'ext' => 'pdf',
+            'output_name_title' => 'action_list',
+            'output_name_format' => '{name}_{user}_at_{date}',
+            'title' => 'vehicle action list',
+            'style' => array(
+                'footer_text_size' => 10,
+                'footer_text_color' => '#333333',
+                'signature_height' => 60,
+                'signature_width' => 120,
+                'content_width' => 1,
+                'content_height' => 1/3,
+                'content_columns' => 5,
+                'content_column_padding' => 20,
+                'column_padding_left' => 0,
+                'page_padding_top' => 24,
+                'page_padding_right' => 10,
+                'page_padding_bottom' => 50,
+                'page_padding_left' => 10,
+                'field_size' => 10,
+                'field_line_spacing' => 3,
+                'field_color' => '#333333',
+                'field_group_color' => '#0F5B8D',
+                'field_ok_color' => '#0f5b8d',
+                'field_alert_text' => 'alert',
+                'field_alert_color' => '#ff0000',
+                'category_field_size' => 12,
+                'category_field_line_spacing' => 4,
+                'category_field_color' => '#0F5B8D',
+                'alerts_header' => 'Faults',
+                'alerts_comments_header' => 'Additional Comments',
+                'alert_description_size' => '10',
+                'alert_description_color' => '#ff0000',
+                'alert_comment_size' => '10',
+                'alert_comment_color' => '#333333',
+                'warnings_header' => 'Upcoming Items',
+                'warning_size' => '10',
+                'warning_color' => '#ff0000',
+                'warning_line_spacing' => '2',
+                'next_service_due' => 'Next service in %d days',
+                'subscription_ending' => 'Subscription expires in %d days',
+                'date_discrepancy_kms' => 'Discrepancy of current kms',
+                'date_discrepancy_hours' => 'Discrepancy of current hours',
+                'date_incorrect' => 'Inaccurate current hours or kms',
             )
         )
 

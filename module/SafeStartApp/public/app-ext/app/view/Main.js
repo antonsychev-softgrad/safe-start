@@ -13,5 +13,4 @@ Ext.define('SafeStartExt.view.Main', {
     cls: 'sfa-view-main',
 
     layout: 'card'
-
 });

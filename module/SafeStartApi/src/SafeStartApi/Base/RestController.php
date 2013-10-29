@@ -264,7 +264,7 @@ class RestController extends AbstractActionController
             if (($company = $user->getCompany()) !== null) {
                 $now = new \DateTime();
                 $expiretyDate = $company->getExpiryDate();
-                if ($expiretyDate !== null) {
+                if ($expiretyDate !== null && $user->getCompany()->getRestricted()) {
                     if (is_integer($expiretyDate)) {
                         $now = $now->getTimestamp();
                     } elseif ($expiretyDate instanceof \DateTime) {
