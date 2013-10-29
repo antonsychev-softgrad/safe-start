@@ -315,13 +315,15 @@ class CompanyController extends RestrictedAccessRestController
 
         $vehicle->removeResponsibleUsers();
         $vehicle->removeUsers();
-        $test1 = $vehicle->getResponsibleUsers();
         $this->em->flush();
 
         foreach ((array)$this->data->value as $value) {
             $value = (array)$value;
             $user = $this->em->find('SafeStartApi\Entity\User', (int)$value['userId']);
             if ($user) {
+                $cache = \SafeStartApi\Application::getCache();
+                $cashKey = "getUserVehiclesList" . $user->getId();
+                $cache->removeItem($cashKey);
                 switch ($value['assigned']) {
                     case 'responsible':
                         $vehicle->addResponsibleUser($user);
@@ -587,17 +589,17 @@ class CompanyController extends RestrictedAccessRestController
 
         $data = array();
 
-        if ($cache->hasItem($cashKey)) {
+     /*   if ($cache->hasItem($cashKey)) {
             $data = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $checkLists = $vehicle->getCheckLists();
             if (!empty($checkLists)) {
                 foreach ($checkLists as $checkList) {
                     $data = array_merge($data, $checkList->getAlertsArray($filters));
                 }
             }
-            $cache->setItem($cashKey, $data);
-        }
+      /*      $cache->setItem($cashKey, $data);
+        }*/
 
         return $data;
     }
@@ -614,9 +616,9 @@ class CompanyController extends RestrictedAccessRestController
 
         $data = array();
 
-        if ($cache->hasItem($cashKey)) {
+      /*  if ($cache->hasItem($cashKey)) {
             $data = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
             $query->setParameter(1, $company);
             $vehicles = $query->getResult();
@@ -628,8 +630,8 @@ class CompanyController extends RestrictedAccessRestController
                 }
             }
 
-            $cache->setItem($cashKey, $data);
-        }
+     /*       $cache->setItem($cashKey, $data);
+        }*/
 
         return $data;
     }
