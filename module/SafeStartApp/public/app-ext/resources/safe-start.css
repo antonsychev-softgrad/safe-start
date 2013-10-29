@@ -316,11 +316,11 @@
 /* END page Vehisles */
 
 
-.x-nlg .sfa-bottomnav .x-btn {
+/*.x-nlg .sfa-bottomnav .x-btn {
     background-image: none;
 }
-
-.sfa-bottomnav .x-btn.sfa-button-companies {
+*/
+/*.sfa-bottomnav .x-btn.sfa-button-companies {
     background-image: url(img/sfa-icon-1.png);
     background-position: 50% 2px;
     background-repeat: no-repeat;
@@ -407,13 +407,13 @@
     background-position: 50% 0;
     background-repeat: no-repeat;
 }
-
-.sfa-bottomnav .sfa-button-contact {
+*/
+/*.sfa-bottomnav .sfa-button-contact {
     background-image: url(img/ic8.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
-.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
+/*.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
     background-image: url(img/ic8.png);
     background-position: 50% 0;
     background-repeat: no-repeat;
@@ -422,6 +422,29 @@
     position: relative;
     top: 5px;
 }
-
-
+*/
+.sfa-icon-auth {
+    background-image: url(img/sfa-icon-auth.png);
+}
+.sfa-icon-companies {
+    background-image: url(img/sfa-icon-companies.png);
+}
+.sfa-icon-vehicles {
+    background-image: url(img/sfa-icon-vehicles.png);
+}
+.sfa-icon-alerts {
+    background-image: url(img/sfa-icon-alerts.png);
+}
+.sfa-icon-users {
+    background-image: url(img/sfa-icon-users.png);
+}
+.sfa-icon-settings {
+    background-image: url(img/sfa-icon-settings.png);
+}
+.sfa-icon-statistic {
+    background-image: url(img/sfa-icon-statistic.png);
+}
+.sfa-icon-contact {
+    background-image: url(img/sfa-icon-contact.png);
+}
 
