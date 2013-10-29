@@ -33,6 +33,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                 xtype: 'button',
                 ui: 'transparent',
                 scale: 'medium',
+                cls:'sfa-company-name',
                 name: 'companyName'
             }, {
                 xtype: 'box',
