@@ -81,10 +81,13 @@ class CompanyController extends RestrictedAccessRestController
             $newField->setParent($parent);
             $newField->setVehicle($vehicle);
             $newField->setTitle($defField->getTitle());
+            $newField->setDescription($defField->getDescription());
             $newField->setType($defField->getType());
             $newField->setAdditional($defField->getAdditional());
             $newField->setTriggerValue($defField->getTriggerValue());
             $newField->setAlertTitle($defField->getAlertTitle());
+            $newField->setAlertDescription($defField->getAlertDescription());
+            $newField->setAlertCritical($defField->getAlertCritical());
             $newField->setOrder($defField->getOrder());
             $newField->setEnabled($defField->getEnabled());
             $newField->setDeleted($defField->getDeleted());
