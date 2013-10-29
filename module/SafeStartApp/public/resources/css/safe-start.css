@@ -142,11 +142,13 @@ html, body {
     content: " ";
     background: url(/resources/img/user-ic.png) no-repeat 80% 50%;
 }
-/*
-.sfa-main-toolbar .x-tab .x-button-icon.action:before, .x-button .x-button-icon.action:before {
+.sfa-main-toolbar .x-button .x-button-icon.action {
+    margin-left: 10px;
+}
+.sfa-main-toolbar .x-button .x-button-icon.action:before {
     content: " ";
     background: url(/resources/img/logout-ic.png) no-repeat 50% 50%;
-}*/
+}
 
 .x-panel.x-floating, .x-msgbox, .x-form.x-floating {
     background: #fff;
@@ -294,6 +296,67 @@ div.logo {
     padding-right: 10%;
 }
 
+.x-tab .x-button-icon.home:before {
+    content: " ";
+}
+.x-tab .x-button-icon.home {
+    background: url(/resources/img/sfa-icon-auth.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.team:before {
+    content: " ";
+}
+.x-tab .x-button-icon.team {
+    background: url(/resources/img/sfa-icon-companies.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.more:before {
+    content: " ";
+}
+.x-tab .x-button-icon.more {
+    background: url(/resources/img/sfa-icon-vehicles.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.favorites:before {
+    content: " ";
+}
+.x-tab .x-button-icon.favorites {
+    background: url(/resources/img/sfa-icon-alerts.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.user:before {
+    content: " ";
+}
+.x-tab .x-button-icon.user {
+    background: url(/resources/img/sfa-icon-users.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.settings:before {
+    content: " ";
+}
+.x-tab .x-button-icon.settings {
+    background: url(/resources/img/sfa-icon-settings.png) no-repeat 50% 0;
+}
+
+.x-tab .x-button-icon.info:before {
+    content: " ";
+}
+
+.x-tab .x-button-icon.info:before {
+    background: url(/resources/img/sfa-icon-statistic.png) no-repeat 50% 0;
+}
+
+.x-tabbar.x-docked-bottom .x-tab .x-button-icon {
+    width: 2.65em;
+}
+
+/*
+
+d-image: url(img/);
+
+
+
+*/
 
 
 
@@ -318,7 +381,6 @@ div.logo {
     z-index: 3;
     padding-top: 0;
     height: 62px;
-    margin-bottom: 20px;
     padding-right: 8px;
     border-bottom: 1px solid #000;
     background: url(/resources/img/top_bg.png) repeat-x;
@@ -364,7 +426,7 @@ div.logo {
 
 /* left column */
 .sfa-left-container {
-    /*margin-right: 20px;*/
+    border-right: 1px solid #000;
 }
 .sfa-left-container, .sfa-left-container .x-toolbar {
     background: none;
@@ -417,6 +479,21 @@ div.logo {
     font-size: 1.2em;
 }
 
+ .x-toolbar-dark .x-button.sfa-collapse {
+    background: url(/resources/img/collapse-ic.png) no-repeat;
+}
+
+.x-toolbar-dark .x-button, .x-toolbar .x-toolbar-dark .x-button {
+    background: url(/resources/img/expand-ic.png) no-repeat;
+}
+
+.x-button .x-button-icon.arrow_left:before {
+    content: " ";
+}
+.x-button .x-button-icon.arrow_right:before {
+    content: " ";
+}
+
 .sfa-alerts-topbar .x-button-icon.x-shown.refresh {
     font-size: 18px;
     top: -2px;
@@ -455,7 +532,9 @@ max-width: 200px;
     white-space: nowrap;
 }
 
-
+.sfa-left-container > div {
+    padding-top: 15px;
+}
 .sfa-left-container .x-button-icon.x-shown.refresh {
     font-size: 22px;
 }
@@ -488,6 +567,7 @@ font-size: 26px;
 .sfa-left-container .sfa-add-button.x-button.x-button-action {
     color: #558FAC;
     background: none;
+    border: 1px dotted #a6a6a6 !important;
 }
 .sfa-left-container .sfa-add-button.x-button.x-button-action .x-button-label {
     color: #558FAC;
@@ -502,9 +582,6 @@ font-size: 26px;
 .sfa-left-container .x-toolbar.x-toolbar-light.x-navigation-bar.x-docked-top{
     margin-bottom: 24px;
 }
-
-
-
 
 
 /* content */
