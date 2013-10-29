@@ -93,9 +93,16 @@
 }
 
 .sfa-top-nav {
-  border-bottom: 1px solid #CCD !important;
+    border-bottom: 1px solid #CCD !important;
+    background: url(img/top_bg.png) repeat-x;
 }
-
+.sfa-top-nav {
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+    z-index: 9;
+}
+.sfa-top-nav .x-btn-transparent-medium .x-btn-inner {
+    color: #fff;
+}
 .x-ie .x-panel-light-left .x-toolbar-default {
   background-image: none !important;
 }
@@ -143,21 +150,104 @@
 }
 *//* END Login & Contact form */
 
+/* TOP panel */
+.sfa-top-nav .x-btn-inner {
+    font-size: 18px;
+}
+.sfa-top-nav .sfa-user {
+    padding-left: 22px;
+    background: url(img/user-ic.png) no-repeat 0 15px;
+}
+.sfa-top-nav .sfa-logout {
+    padding-left: 27px;
+    margin-left: 20px;
+    background: url(img/logout-ic.png) no-repeat 0 15px;
+}
+
+
+
+
+/* END TOP panel */
+
+/* LEFT column */
+.sfa-left-coll .x-header-text.x-panel-header-text.x-panel-header-text-light-left {
+    font-size: 24px;
+    display: block;
+    padding-bottom: 7px;
+}
+.sfa-left-coll .search input.x-form-text {
+    padding: 7px 14% 8px 3%;
+    height: auto !important;
+    background: url(img/search-ic.png) no-repeat 96% 50%;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px inset #999;
+}
+.sfa-left-coll > div .x-box-inner {
+    height: 42px !important;
+}
+.sfa-left-coll .x-panel-header-light-left {
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none !important;
+}
+.sfa-left-coll {
+    background: #f7f7f7;
+}
+.sfa-left-coll .sfa-icon-refresh {
+    height: 18px;
+    width: 22px;
+    background: url(img/reload-ic.png) no-repeat;
+}
+.sfa-left-coll a.x-btn span {
+    width: 22px;
+    height: 18px;
+    line-height: 18px;
+}
+.sfa-left-coll a.x-btn {
+    top: 5px !important;
+}
+.sfa-left-coll .x-btn-default-toolbar-medium-over {
+    border-color: #fff;
+    background: none;
+}
+/* END LEFt column */
+
+/* CONTENT */
+.x-panel-body-light, .x-component-light, .sfa-vehicles-tabpanel,
+.sfa-vehicles-tabpanel .x-panel-body {
+    padding: 20px 25px;
+    background-image: url("img/content_bg.png");
+}
+.sfa-vehicles-tabpanel, .sfa-vehicles-tabpanel .x-panel-body {
+    padding: 0;
+}
+
+/* END CONTENT */
 
 /* page Companies */
 
-.sfa-companies-list-left-coll .sfa-vehicle-item,
-.sfa-vehicles-list-left-coll .sfa-vehicle-item,  /* page Vehisles */
+.sfa-left-coll .sfa-vehicle-item,
+.sfa-left-coll .sfa-vehicle-item,  /* page Vehisles */
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item {   /* page Vehisles -> previous inspections */
     cursor: pointer;
 }
-.sfa-companies-list-left-coll .sfa-vehicle-item:last-child {
-    border: none;
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item {
+    border-bottom: 1px solid #DEDEDE;
+    box-shadow: 0 1px 0 #FFFFFF;
 }
-.sfa-companies-list-left-coll .sfa-vehicle-item.x-item-selected,
-.sfa-companies-list-left-coll .sfa-vehicle-item:hover,
-.sfa-vehicles-list-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
-.sfa-vehicles-list-left-coll .sfa-vehicle-item:hover,
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child {
+    border-top: 1px solid #dedede;
+    box-shadow: 0 -1px 0 #FFFFFF, 0 1px 0 #FFFFFF;
+}
+.sfa-left-coll .sfa-vehicle-item.x-item-selected,
+.sfa-left-coll .sfa-vehicle-item:hover,
+.sfa-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
+.sfa-left-coll .sfa-vehicle-item:hover,
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item.x-item-selected,
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item:hover {
     background: #e3edf1;
@@ -165,25 +255,28 @@
 .sfa-previous-inspection .sfa-previous-inspections-left-coll {
   border-right: none;
 }
-.sfa-companies-list-left-coll .x-component.x-fit-item.x-component-default {
-    padding-top: 5px;
+.sfa-left-coll .x-component.x-fit-item.x-component-default {
+    padding-top: 30px;
 }
-.sfa-companies-list-left-coll input.x-form-field.x-form-text {
+.sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
+}
+.sfa-left-coll {
+    padding-top: 15px;
 }
 /* END page Companies */
 
 
 /* page Vehisles */
 
-.sfa-vehicles-list-left-coll .sfa-vehicle-item:last-child {
+.sfa-left-coll .sfa-vehicle-item:last-child {
     border: none;
 }
 
-.sfa-vehicles-list-left-coll .x-component.x-fit-item.x-component-default {
-    padding-top: 5px;
+.sfa-left-coll .x-component.x-fit-item.x-component-default {
+    padding-top: 30px;
 }
-.sfa-vehicles-list-left-coll input.x-form-field.x-form-text {
+.sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
 }
 
@@ -223,58 +316,73 @@
 /* END page Vehisles */
 
 
-.sfa-bottomnav .x-btn.sfa-button-companies {
-    background-image: url(img/ic1.png);
-    background-position: 50% 11px;
+/*.x-nlg .sfa-bottomnav .x-btn {
+    background-image: none;
+}
+*/
+/*.sfa-bottomnav .x-btn.sfa-button-companies {
+    background-image: url(img/sfa-icon-1.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
 .x-nlg .sfa-bottomnav .sfa-button-companies.x-btn-tab-large .x-frame-mc {
-    background-image: url(img/ic1.png);
-    background-position: 50% 6px;
+    background-image: url(img/sfa-icon-1.png);
+    background-position: 50% -3px;
     background-repeat: no-repeat;
 }
 
 .sfa-bottomnav .x-btn.sfa-button-vehicles {
-    background-image: url(img/ic2.png);
-    background-position: 50% 15px;
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
 .x-nlg .sfa-bottomnav .sfa-button-vehicles.x-btn-tab-large .x-frame-mc {
-    background-image: url(img/ic2.png);
-    background-position: 50% 10px;
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% -3px;
+    background-repeat: no-repeat;
+}
+
+.sfa-bottomnav .x-btn-disabled.sfa-button-vehicles {
+    background-image: url(img/sfa-icon-disabled-3.png);
+    background-position: 50% 2px;
+    background-repeat: no-repeat;
+}
+.x-nlg .sfa-bottomnav .sfa-button-vehicles.x-btn-tab-large-disabled .x-frame-mc {
+    background-image: url(img/sfa-icon-3.png);
+    background-position: 50% -3px;
     background-repeat: no-repeat;
 }
 
 .sfa-bottomnav .x-btn.sfa-button-alerts {
-    background-image: url(img/ic3.png);
-    background-position: 50% 4px;
+    background-image: url(img/sfa-icon-2.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
 .x-nlg .sfa-bottomnav .sfa-button-alerts.x-btn-tab-large .x-frame-mc {
-    background-image: url(img/ic3.png);
-    background-position: 50% 0px;
+    background-image: url(img/sfa-icon-2.png);
+    background-position: 50% -3px;
     background-repeat: no-repeat;
 }
 
 .sfa-bottomnav .x-btn.sfa-button-users {
-    background-image: url(img/ic4.png);
-    background-position: 50% 6px;
+    background-image: url(img/sfa-icon-4.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
 .x-nlg .sfa-bottomnav .sfa-button-users.x-btn-tab-large .x-frame-mc {
-    background-image: url(img/ic4.png);
-    background-position: 50% 1px;
+    background-image: url(img/sfa-icon-4.png);
+    background-position: 50% -3px;
     background-repeat: no-repeat;
 }
 
 .sfa-bottomnav .x-btn.sfa-button-system-settings {
-    background-image: url(img/ic5.png);
-    background-position: 50% 5px;
+    background-image: url(img/sfa-icon-5.png);
+    background-position: 50% 2px;
     background-repeat: no-repeat;
 }
 .x-nlg .sfa-bottomnav .sfa-button-system-settings.x-btn-tab-large .x-frame-mc {
-    background-image: url(img/ic5.png);
-    background-position: 50% 0;
+    background-image: url(img/sfa-icon-5.png);
+    background-position: 50% -3px;
     background-repeat: no-repeat;
 }
 
@@ -299,13 +407,13 @@
     background-position: 50% 0;
     background-repeat: no-repeat;
 }
-
-.sfa-bottomnav .sfa-button-contact {
+*/
+/*.sfa-bottomnav .sfa-button-contact {
     background-image: url(img/ic8.png);
     background-position: 50% 5px;
     background-repeat: no-repeat;
 }
-.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
+/*.x-nlg .sfa-bottomnav .sfa-button-contact.x-btn-tab-large .x-frame-mc {
     background-image: url(img/ic8.png);
     background-position: 50% 0;
     background-repeat: no-repeat;
@@ -314,6 +422,29 @@
     position: relative;
     top: 5px;
 }
-
-
+*/
+.sfa-icon-auth {
+    background-image: url(img/sfa-icon-auth.png);
+}
+.sfa-icon-companies {
+    background-image: url(img/sfa-icon-companies.png);
+}
+.sfa-icon-vehicles {
+    background-image: url(img/sfa-icon-vehicles.png);
+}
+.sfa-icon-alerts {
+    background-image: url(img/sfa-icon-alerts.png);
+}
+.sfa-icon-users {
+    background-image: url(img/sfa-icon-users.png);
+}
+.sfa-icon-settings {
+    background-image: url(img/sfa-icon-settings.png);
+}
+.sfa-icon-statistic {
+    background-image: url(img/sfa-icon-statistic.png);
+}
+.sfa-icon-contact {
+    background-image: url(img/sfa-icon-contact.png);
+}
 

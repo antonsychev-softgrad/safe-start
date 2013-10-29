@@ -41,9 +41,9 @@
                 // el.addCls(Ext.baseCSSPrefix + 'column-header-align-' + me.align).addClsOnOver(me.overCls);
                 // el.up('.widget-container').setStyle({
                 // });
-                el.up('.widget-container').addCls('sfa-bottomnav');
-                el.setStyle('margin-top', '12px');
-                el.setStyle('margin-bottom', '3px');
+                el.up('.widget-container').setStyle('background-color', '#383838');
+                // el.setStyle('margin-top', '12px');
+                // el.setStyle('margin-bottom', '3px');
 
             }
         }
