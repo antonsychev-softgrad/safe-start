@@ -61,7 +61,12 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
 
         this._activeNode = this.getStore().getRoot();
         records = [];
+
+        store.each(function (record) {
+            record.destroy();
+        });
         store.removeAll();
+
         var nodes = vehiclesStore.getRoot().childNodes;
         for (var i = 0, len = nodes.length; i < len; i++) {
             records.push(function parseNode(node) {
