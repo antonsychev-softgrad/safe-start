@@ -3,7 +3,7 @@
 @include extjs-button-ui(
     $ui: 'tab-large',
 
-    $border-radius: 5px,
+    $border-radius: 3px,
     $border-width: 0,
 
     $border-color: transparent,
@@ -12,8 +12,8 @@
     $border-color-pressed: transparent,
     $border-color-disabled: transparent,
 
-    $padding: 18px 0 0 0,
-    $text-padding: 30px 0px 0px 0px,
+    $padding: 0 0 0 0,
+    $text-padding: 0px 0px 0px 0px,
 
     $background-color: transparent,
     $background-color-over: transparent,
@@ -51,7 +51,7 @@
     $font-family-pressed: $button-small-font-family-pressed,
     $font-family-disabled: $button-small-font-family-disabled,
 
-    $icon-size: $button-small-icon-size,
+    $icon-size: 32px,
     $glyph-color: $button-default-glyph-color,
     $glyph-opacity: $button-default-glyph-opacity,
     $arrow-width: $button-small-arrow-width,
@@ -61,11 +61,6 @@
     $opacity-disabled: $button-opacity-disabled,
     $inner-opacity-disabled: $button-inner-opacity-disabled
 );
-
-.x-btn-tab-large {
-    margin-top: 6px;
-    margin-bottom: 4px;
-}
 
 .x-btn-tab-large-pressed {
     @include box-shadow(inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44));

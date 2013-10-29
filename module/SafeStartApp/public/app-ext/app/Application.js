@@ -6,7 +6,7 @@ SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext.ux.Router': '/app-ext/lib/Router.js'
+        'Ext.ux': 'lib/ux'
     }
 });
 
@@ -36,7 +36,7 @@ Ext.define('SafeStartExt.Application', {
         'Auth': 'main#showPage',
         'Contact': 'main#showPage',
         'Companies': 'main#showPage',
-        'Company': 'main#showPage',
+        'Company': 'main#showPage'
     },
 
     userRecord: null,

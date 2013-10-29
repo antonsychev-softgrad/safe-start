@@ -117,8 +117,8 @@ Ext.define('Ext.ux.Router', {
         );
         
         history.init();
-		history.on('change', me.parse, me);
-		
+        history.on('change', me.parse, me);
+        
         Ext.onReady(function() {
             me.parse(history.getToken());
         });
