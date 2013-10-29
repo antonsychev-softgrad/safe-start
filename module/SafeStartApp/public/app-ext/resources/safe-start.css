@@ -43,7 +43,7 @@
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding: 14px 30px 15px;
+    padding: 14px 15px 15px;
     background: none;
     box-shadow: none;
     border: none;
@@ -110,7 +110,7 @@
 .sfa-top-nav.x-box-item {
     border-bottom: 1px solid #000 !important;
     height: 62px !important;
-    background: #fde000 url(img/top_bg.png) repeat-x;
+    background: #1673b5 url(img/top_bg.png) repeat-x;
 }
 .sfa-top-nav {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
@@ -151,6 +151,11 @@
     height: 18px;
 }
 
+.sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
+    padding-left: 0;
+}
+
+
 /*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
     background: #6C9804;
@@ -181,6 +186,13 @@
     margin-left: 20px;
     background: url(img/logout-ic.png) no-repeat 0 15px;
 }
+.sfa-top-nav .sfa-company-name {
+    left: 270px !important;
+}
+.sfa-top-nav .sfa-company-name .x-btn-inner {
+font-size: 24px;
+}
+
 
 /* END TOP panel */
 
@@ -285,13 +297,6 @@
     height: 100% !important;
     background: url(img/tab-right_bg.png) repeat-y 100% 0;
 }
-
-
-
-
-
-
-
 
 .sfa-vehicles-tabpanel > span > div .x-panel-default > div {
     padding: 0 3px;

@@ -102,7 +102,6 @@ Ext.define('SafeStartExt.view.BottomNav', {
     setActiveButton: function (name) {
         Ext.each(this.query('button'), function (button) {
             button.toggle(false);
-            console.log(button);
         });
         this.down('button[componentClass=' + name + ']').toggle(true);
     }

@@ -22,8 +22,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     },
 
     getTabs: function () {
-        var me = this, 
-            tabs = [];
+        var tabs = [];
 
         this.vehicle.pages().each(function (page) {
             switch (page.get('action')) {
@@ -63,7 +62,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
 
     initPage: function (alias, config) {
         if (Ext.ClassManager.getNameByAlias('widget.' + alias) !== '') {
-            return {xtype: alias, title: title};
+            return {xtype: alias, title: config.title};
         }
 
         return {

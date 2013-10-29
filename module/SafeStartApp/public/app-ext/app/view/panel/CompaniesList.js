@@ -8,6 +8,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     cls:'sfa-left-coll',
     layout: 'fit',
     ui: 'light-left',
+    minWidth: 250,
     border: 0,
     title: 'Companies',
 
