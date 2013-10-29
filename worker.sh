@@ -6,7 +6,12 @@ basedir=`dirname $0`
 cd $basedir
 
 project_dir=$basedir
+DATE=`date +%Y-%m-%d`-worker-uotput.log
 
-nohup QUEUE=$queues VVERBOSE=1 COUNT=5 APP_INCLUDE=$project_dir/module/SafeStartApi/jobs_classes_autoloader.php php $project_dir/vendor/chrisboulton/php-resque/resque.php &
+nohup sudo -u www-data QUEUE=$queues \
+        COUNT=5 \
+        VVERBOSE=1 \
+        APP_INCLUDE=$project_dir/module/SafeStartApi/jobs_classes_autoloader.php \
+        php $project_dir/vendor/chrisboulton/php-resque/resque.php \
+        >> $project_dir/data/logs/resque/$DATE 2>&1 &
 
-exit
