@@ -90,8 +90,8 @@ Ext.define('SafeStartExt.controller.Main', {
                 pagePanel = Ext.create(alias);
                 this.getMainPanel().add(pagePanel);
             }
-            this.getMainPanel().getLayout().setActiveItem(pagePanel);
             this.getMainNavPanel().setActiveButton(name);
+            this.getMainPanel().getLayout().setActiveItem(pagePanel);
         } else {
             this.notSupportedAction();
         }
