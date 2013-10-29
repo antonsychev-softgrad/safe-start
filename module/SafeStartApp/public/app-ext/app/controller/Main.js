@@ -34,11 +34,11 @@ Ext.define('SafeStartExt.controller.Main', {
         });
         
 
-        var controller = this;
+        var me = this;
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
-                if (!controller.getApplication().routes[token]) {
-                    controller.notSupportedAction();
+                if (token && !me.getApplication().routes[token]) {
+                    me.notSupportedAction();
                 }
             }
         });

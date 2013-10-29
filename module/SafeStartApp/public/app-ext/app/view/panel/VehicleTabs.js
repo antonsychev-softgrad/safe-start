@@ -1,5 +1,5 @@
 Ext.define('SafeStartExt.view.panel.VehicleTabs', {
-    extend: 'Ext.tab.Panel',
+    extend: 'Ext.container.Container',
     requires: [
         'SafeStartExt.view.panel.VehicleInfo'
     ],
@@ -10,12 +10,15 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     initComponent: function () {
         var tabs = this.getTabs();
         Ext.apply(this, {
-            items: tabs
+            items: [{
+                xtype: 'tabpanel',
+                items: tabs
+            }]
         });
 
         this.callParent();
 
-        this.setActiveTab(this.items.first());
+        this.down('tabpanel').setActiveTab(this.items.first());
     },
 
     getTabs: function () {
