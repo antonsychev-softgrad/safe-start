@@ -13,7 +13,7 @@ class ResqueController extends AbstractActionController
     protected $console;
     protected $logger;
 
-    private $QUEUES = 'default,new_checklist_uploaded';
+    private $QUEUES = 'default,new_checklist_uploaded,new_email_checklist_uploaded';
 
 
     public function onDispatch(MvcEvent $e)

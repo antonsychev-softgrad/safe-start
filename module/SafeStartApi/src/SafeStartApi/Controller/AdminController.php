@@ -507,5 +507,13 @@ class AdminController extends AdminAccessRestController
 
     }
 
+    public function resquePingEmailAction()
+    {
+        \Resque::enqueue('default', '\SafeStartApi\Jobs\PingEmail', array(
+
+        ));
+        return $this->AnswerPlugin()->format(array('done' => true));
+    }
+
 
 }

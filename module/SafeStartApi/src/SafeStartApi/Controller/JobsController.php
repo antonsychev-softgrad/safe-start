@@ -83,4 +83,16 @@ class JobsController extends AbstractActionController
         }
         $this->logger->info("Success Process New Email CheckList Action with checkListId = $checkListId \r\n");
     }
+
+    public function pingEmailAction()
+    {
+        $this->MailPlugin()->send(
+            'New ping email',
+            'ponomarenko.t@gmail.com',
+            'test.phtml',
+            array(
+                'name' => 'Test User'
+            )
+        );
+    }
 }
