@@ -43,7 +43,7 @@
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding: 14px 30px 15px;
+    padding: 14px 15px 15px;
     background: none;
     box-shadow: none;
     border: none;
@@ -150,6 +150,11 @@
 .sfa-form-auth .x-panel-form .x-btn-button {
     height: 18px;
 }
+
+.sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
+    padding-left: 0;
+}
+
 
 /*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
@@ -285,13 +290,6 @@
     height: 100% !important;
     background: url(img/tab-right_bg.png) repeat-y 100% 0;
 }
-
-
-
-
-
-
-
 
 .sfa-vehicles-tabpanel > span > div .x-panel-default > div {
     padding: 0 3px;
