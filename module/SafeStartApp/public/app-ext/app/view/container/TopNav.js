@@ -13,52 +13,67 @@ Ext.define('SafeStartExt.view.container.TopNav', {
     },
 
     height: 60,
-    padding: '6 10 6 10',
-    ui: 'dark',
-
-    defaults: {
-        xtype: 'button'
-    },
 
     initComponent: function () {
         var user = SafeStartExt.getApplication().getUserRecord();
         var username = user.get('firstName') + ' ' + user.get('lastName');
         Ext.apply(this, {
             items: [{
-                xtype: 'image',
-                width: 172,
-                height: 45,
-                src: 'resources/img/logo-top.png'
+                xtype: 'container',
+                padding: '6 10 6 10',
+                width: 250,
+                cls: 'sfa-topmenu-logo',
+                items: [{
+                    xtype: 'image',
+                    width: 172,
+                    height: 45,
+                    src: 'resources/img/logo-top.png'
+                }]
             }, {
-                xtype: 'button',
-                ui: 'transparent',
-                scale: 'medium',
-                cls:'sfa-company-name',
-                name: 'companyName'
-            }, {
-                xtype: 'box',
-                flex: 1
-            }, {
-                xtype: 'button',
-                ui: 'transparent',
-                scale: 'medium',
-                name: 'user',
-                cls:'sfa-user',
-                text: username,
-                handler: function () {
-                    this.fireEvent('showProfileAction');
+                xtype: 'container',
+                padding: '6 10 6 10',
+                flex: 1,
+                defaults: {
+                    xtype: 'button'
                 },
-                scope: this
-            }, {
-                xtype: 'button',
-                ui: 'transparent',
-                scale: 'medium',
-                cls:'sfa-logout',
-                text: 'Logout',
-                handler: function () {
-                    this.fireEvent('logoutAction');
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch'
                 },
-                scope: this
+                items: [{
+                    xtype: 'box',
+                    flex: 1
+                }, {
+                    xtype: 'button',
+                    ui: 'transparent',
+                    scale: 'medium',
+                    name: 'companyName',
+                    text: this.titleText || '' 
+                }, {
+                    xtype: 'box',
+                    flex: 1
+                }, {
+                    xtype: 'button',
+                    ui: 'transparent',
+                    scale: 'medium',
+                    name: 'user',
+                    cls:'sfa-user',
+                    text: username,
+                    handler: function () {
+                        this.fireEvent('showProfileAction');
+                    },
+                    scope: this
+                }, {
+                    xtype: 'button',
+                    ui: 'transparent',
+                    scale: 'medium',
+                    cls:'sfa-logout',
+                    text: 'Logout',
+                    handler: function () {
+                        this.fireEvent('logoutAction');
+                    },
+                    scope: this
+                }]
             }]
         });
         this.callParent();
