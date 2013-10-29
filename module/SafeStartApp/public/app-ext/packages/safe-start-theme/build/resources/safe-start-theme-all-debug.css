@@ -19582,12 +19582,12 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 /* line 137, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large {
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
-  border-radius: 5px;
-  padding: 18px 5px 5px 5px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px 3px 3px 3px;
   border-width: 0;
   border-style: solid;
   background-color: transparent;
@@ -19612,27 +19612,27 @@ body.x-nbr .x-tab-default-right-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-tab-large-frameInfo {
-  font-family: th-5-5-5-5-0-0-0-0-18-5-5-5;
+  font-family: th-3-3-3-3-0-0-0-0-3-3-3-3;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tl {
-  background-position: 0 -10px;
+  background-position: 0 -6px;
 }
 
 /* line 326, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tr {
-  background-position: right -15px;
+  background-position: right -9px;
 }
 
 /* line 330, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bl {
-  background-position: 0 -20px;
+  background-position: 0 -12px;
 }
 
 /* line 334, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-br {
-  background-position: right -25px;
+  background-position: right -15px;
 }
 
 /* line 338, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19652,31 +19652,31 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 350, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bc {
-  background-position: 0 -5px;
+  background-position: 0 -3px;
 }
 
 /* line 357, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tr,
 .x-btn-tab-large-br,
 .x-btn-tab-large-mr {
-  padding-right: 5px;
+  padding-right: 3px;
 }
 
 /* line 363, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tl,
 .x-btn-tab-large-bl,
 .x-btn-tab-large-ml {
-  padding-left: 5px;
+  padding-left: 3px;
 }
 
 /* line 367, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-tc {
-  height: 5px;
+  height: 3px;
 }
 
 /* line 370, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-bc {
-  height: 5px;
+  height: 3px;
 }
 
 /* line 381, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19699,7 +19699,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-tab-large-mc {
-  padding: 13px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19715,7 +19715,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   font-weight: normal;
   font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   color: white;
-  padding: 0 30px 0px 0px 0px;
+  padding: 0 0px 0px 0px 0px;
 }
 /* line 261, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-arrow {
@@ -19731,8 +19731,8 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 }
 /* line 284, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large .x-btn-glyph {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 32px;
+  line-height: 32px;
   color: #333333;
   opacity: 0.5;
 }
@@ -19750,12 +19750,12 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-button,
 .x-btn-tab-large-noicon .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-inner,
 .x-btn-tab-large-noicon .x-btn-inner {
-  line-height: 16px;
+  line-height: 32px;
 }
 
 /* line 349, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19767,60 +19767,60 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 364, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-inner {
-  width: 16px;
+  width: 32px;
   padding: 0;
 }
 /* line 370, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon .x-btn-icon-el {
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
 }
 
 /* line 377, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 382, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-inner {
-  line-height: 16px;
-  padding-left: 20px;
+  line-height: 32px;
+  padding-left: 36px;
 }
 /* line 398, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-left .x-btn-icon-el {
-  width: 16px;
+  width: 32px;
   right: auto;
 }
 /* line 403, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-tab-large-icon-text-left .x-btn-icon-el, .x-quirks .x-btn-tab-large-icon-text-left .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
 }
 
 /* line 417, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-button {
-  height: 16px;
+  height: 32px;
 }
 /* line 422, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-inner {
-  line-height: 16px;
-  padding-right: 20px;
+  line-height: 32px;
+  padding-right: 36px;
 }
 /* line 434, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-right .x-btn-icon-el {
-  width: 16px;
+  width: 32px;
   left: auto;
 }
 /* line 439, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-tab-large-icon-text-right .x-btn-icon-el, .x-quirks .x-btn-tab-large-icon-text-right .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
 }
 
 /* line 453, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-top .x-btn-inner {
-  padding-top: 20px;
+  padding-top: 36px;
 }
 /* line 457, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-top .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
   bottom: auto;
 }
 /* line 465, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19830,11 +19830,11 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-bottom .x-btn-inner {
-  padding-bottom: 20px;
+  padding-bottom: 36px;
 }
 /* line 477, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-tab-large-icon-text-bottom .x-btn-icon-el {
-  height: 16px;
+  height: 32px;
   top: auto;
 }
 /* line 485, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -20015,12 +20015,6 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 /*</if slicer>*/
 /* */
 /* line 65, ../../sass/src/button/Button.scss */
-.x-btn-tab-large {
-  margin-top: 6px;
-  margin-bottom: 4px;
-}
-
-/* line 70, ../../sass/src/button/Button.scss */
 .x-btn-tab-large-pressed {
   -webkit-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);
   -moz-box-shadow: inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44);

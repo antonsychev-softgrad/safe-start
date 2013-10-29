@@ -19,38 +19,38 @@ Ext.define('SafeStartExt.view.BottomNav', {
     buttons: {
         Auth: {
             text: 'Auth',
-            cls: 'sfa-button-auth'
+            iconCls: 'sfa-icon-auth'
         },
         Companies: {
             text: 'Companies',
-            cls: 'sfa-button-companies'
+            iconCls: 'sfa-icon-companies'
         },
         Company: {
             text: 'Vehicles',
             disabled: true,
-            cls: 'sfa-button-vehicles'
+            iconCls: 'sfa-icon-vehicles'
         },
         Alerts: {
             text: 'Alerts',
             disabled: true,
-            cls: 'sfa-button-alerts'
+            iconCls: 'sfa-icon-alerts'
         },
         Users: {
             text: 'Users',
             disabled: true,
-            cls: 'sfa-button-users'
+            iconCls: 'sfa-icon-users'
         },
         SystemSettings: {
             text: 'Settings',
-            cls: 'sfa-button-system-settings'
+            iconCls: 'sfa-icon-settings'
         },
         SystemStatistic: {
             text: 'Statistic',
-            cls: 'sfa-button-system-statistic'
+            iconCls: 'sfa-icon-statistic'
         },
         Contact: {
             text: 'Contact',
-            cls: 'sfa-button-contact'
+            iconCls: 'sfa-icon-contact'
         }
     },
 
@@ -61,10 +61,12 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 xtype: 'button',
                 ui: 'tab',
                 scale: 'large',
-                margin: '7 2 4 2',
+                margin: '5 2 3 2',
+                enableToggle: true,
                 width: 60,
                 handler: function () {
-                    me.fireEvent('showPage', this.componentClass);
+                    me.fireEvent('redirectTo', this.componentClass);
+                    return false;
                 }
             }
         });
@@ -88,6 +90,8 @@ Ext.define('SafeStartExt.view.BottomNav', {
             }
             this.add({
                 cls: config.cls,
+                iconCls: config.iconCls,
+                iconAlign: 'top',
                 text: config.text,
                 disabled: config.disabled,
                 componentClass: button
@@ -97,9 +101,10 @@ Ext.define('SafeStartExt.view.BottomNav', {
 
     setActiveButton: function (name) {
         Ext.each(this.query('button'), function (button) {
-            button.removeCls('x-btn-tab-large-pressed');
+            button.toggle(false);
+            console.log(button);
         });
-        this.down('button[componentClass=' + name + ']').addCls('x-btn-tab-large-pressed');
+        this.down('button[componentClass=' + name + ']').toggle(true);
     }
 
 });
