@@ -335,7 +335,7 @@ class VehicleController extends RestrictedAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        if (empty($newAlerts) && $inspection) return $this->AnswerPlugin()->format($this->answer);
+     //   if (empty($newAlerts) && $inspection) return $this->AnswerPlugin()->format($this->answer);
 
         if (APP_RESQUE) {
             \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewDbCheckListUploaded', array(
