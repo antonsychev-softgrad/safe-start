@@ -216,10 +216,12 @@ font-size: 24px;
     box-shadow: 0px 1px 0px #fff, 1px 0px 0px #fbfbfb, -1px 0px 0px #fbfbfb;
 }
 .x-ie7p .sfa-left-coll .search input.x-form-text {
-    width: 92% !important;
+    /*TODO*/
+    /*width: 92% !important;*/
 }
 .sfa-left-coll > div .x-box-inner {
-    height: 42px !important;
+    /*TODO*/
+    /*height: 42px !important;*/
 }
 .sfa-left-coll .x-panel-header-light-left {
     padding: 0;
@@ -236,12 +238,14 @@ font-size: 24px;
     background: url(img/reload-ic.png) no-repeat;
 }
 .sfa-left-coll a.x-btn span {
-    width: 22px;
-    height: 18px;
-    line-height: 18px;
+    /*TODO*/
+    /*width: 22px;*/
+    /*height: 18px;*/
+    /*line-height: 18px;*/
 }
 .sfa-left-coll a.x-btn {
-    top: 5px !important;
+    /*TODO*/
+    /*top: 5px !important;*/
 }
 .sfa-left-coll .x-btn-default-toolbar-medium-over {
     border-color: #fff;

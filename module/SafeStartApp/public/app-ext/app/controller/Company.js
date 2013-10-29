@@ -19,6 +19,9 @@ Ext.define('SafeStartExt.controller.Company', {
     }, {
         selector: 'SafeStartExtPanelInspectionInfo',
         ref: 'inspectionInfoPanel'
+    }, {
+        selector: 'SafeStartExtComponentCompany SafeStartExtFormVehicle',
+        ref: 'vehicleForm'
     }],
 
     needUpdate: false,
@@ -29,14 +32,17 @@ Ext.define('SafeStartExt.controller.Company', {
                 changeCompanyAction: this.changeCompanyAction
             },
             'SafeStartExtPanelVehicleList': {
-                changeVehicleAction: this.changeVehicleAction
+                changeVehicleAction: this.changeVehicleAction,
+                addVehicleAction: this.addVehicle
             },
             'SafeStartExtComponentCompany': {
                 activate: this.refreshPage,
                 afterrender: this.refreshPage
             },
-            'SafeStartExtPanelVehicleInfo': {
-                afterrender: this.setVehicleInfo
+            'SafeStartExtFormVehicle': {
+                afterrender: this.fillForm,
+                updateVehicleAction: this.updateVehicle,
+                deleteVehicleAction: this.deleteVehicle
             },
             'SafeStartExtPanelInspections': {
                 afterrender: this.loadInspections
@@ -48,6 +54,78 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
+    addVehicle: function () {
+        var vehicle = SafeStartExt.model.MenuVehicle.create({});
+        vehicle.pages().add([{
+            action: 'info',
+            text: 'Current Information'
+        }]);
+        this.deselectVehicle();
+        this.changeVehicleAction(vehicle);
+    },
+
+    updateVehicle: function (vehicle, data) {
+        var me = this;
+        data.companyId = this.company.get('id');
+        Ext.applyIf(data, {
+            enabled: false
+        });
+
+
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + vehicle.get('id') + '/update',
+            data: data,
+            success: function (res) {
+                if (res.done) {
+                    me.reloadVehicles(res.vehicleId);
+                }
+            }
+        });
+    },
+
+    deleteVehicle: function (vehicle) {
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + vehicle.get('id') + '/delete',
+            success: function (res) {
+                if (res.done) {
+                    me.reloadVehicles();
+                }
+            }
+        });
+    },
+
+    reloadVehicles: function (vehicleId) {
+        var me = this, 
+            store = this.getVehicleListView().getListStore();
+
+        store.load({
+            callback: function (records) {
+                var record;
+                if (vehicleId) {
+                    record = this.findRecord('id', vehicleId);
+                }
+                if (record) {
+                    me.selectVehicle(record);
+                } else {
+                    me.deselectVehicle();
+                }
+            }
+        });
+    },
+
+    selectVehicle: function (vehicle) {
+        this.getVehicleListView().getList().select(vehicle);
+        this.changeVehicleAction(vehicle);
+    },
+
+    deselectVehicle: function () {
+        if (this.vehicle) {
+            this.getVehicleListView().getList().deselect(this.vehicle);
+        }
+        this.getCompanyPage().unsetVehicle();
+    },
+
     changeCompanyAction: function (company) {
         this.company = company;
         this.needUpdate = true;
@@ -57,8 +135,8 @@ Ext.define('SafeStartExt.controller.Company', {
         }
     },
 
-    setVehicleInfo: function (vehicleInfoPanel) {
-        vehicleInfoPanel.setVehicleInfo(this.vehicle);
+    fillForm: function (form) {
+        form.loadRecord(this.vehicle);
     },
 
     loadInspections: function (view) {
