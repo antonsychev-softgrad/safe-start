@@ -19,6 +19,7 @@
                 case 'dev':
                     if (isIe9()) {
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/bootstrap.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css');
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/ext/ext-all.js');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/app.js');
@@ -32,6 +33,7 @@
                         $pathToApp = '/app-ext/build/production/SafeStartExt';
                         $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js');
                         $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css');
                     } else {
                         $this->headLink()->appendStylesheet($this->basePath() . '/build/production/SafeStartApp/resources/css/app.css');
                         $this->headLink()->appendStylesheet($this->basePath() . 'build/production/SafeStartApp/resources/css/safe-start.css');
