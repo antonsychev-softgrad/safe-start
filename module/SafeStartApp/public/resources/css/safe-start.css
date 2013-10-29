@@ -315,7 +315,7 @@ div.logo {
     margin-bottom: 20px;
     padding-right: 8px;
     border: none;
-    background: url(/resources/img/log-form_bg.jpg) repeat;
+    background: url(/resources/img/top_bg.png) repeat-x;
     -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
