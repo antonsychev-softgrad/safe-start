@@ -7,6 +7,7 @@ use SafeStartApi\Model\ImageProcessor;
 class AbstractPdfPlugin extends AbstractPlugin
 {
     const PAGE_HEADER_TITLE_SIZE = 12;
+    const PAGE_SUB_HEADER_TITLE_SIZE = 10;
 
     const BLOCK_SUBHEADER_SIZE = 10;
 
@@ -63,10 +64,31 @@ class AbstractPdfPlugin extends AbstractPlugin
         $pageWidth = $this->getPageWidth();
         $contentWidth = $this->getPageContentWidth();
 
-
-        $logoMaxWidth = 130;
-        $logoMaxHeight = 115;
-        $logoPath = $this->getRootPath() . "public/logo-pdf.png";
+        $logoMaxWidth = 140;
+        $logoMaxHeight = 60;
+        $logoPath = '';
+        if (isset($companyData['logo'])) {
+            $searchDir = $this->getController()->moduleConfig['defUsersPath'];
+            $filePath = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo']);
+            if ($filePath) {
+                $filePathLogo = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight);
+                if (!$filePathLogo) {
+                    $image = new \SafeStartApi\Model\ImageProcessor($filePath);
+                    $image->cover(array(
+                            'width' => $logoMaxWidth,
+                            'height' => $logoMaxHeight,
+                            'position' => 'centermiddle',
+                        )
+                    );
+                    $newImagePath = $this->getUploadPath() . $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight. ".jpg";
+                    $image->save($newImagePath);
+                    $logoPath = $newImagePath;
+                } else {
+                    $logoPath = $filePathLogo;
+                }
+            }
+        }
+        if (empty($logoPath))$logoPath = $this->getRootPath() . "public/logo-pdf.png";
 
         if (file_exists($logoPath)) {
             $logo = ZendPdf\Image::imageWithPath($logoPath);
@@ -83,7 +105,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         $headerTitlePaddingRight = 25;
         $headerTitleXOffset = $logoMaxWidth + $headerTitlePaddingRight;
         // draw header title >
-
+        $topPosInPage = $pageHeight - 16;
         $text = strtoupper($this->opts['title']);
         $topPosInPage = $this->drawText($text, self::PAGE_HEADER_TITLE_SIZE, '#0F5B8D', $pageHeight - 16, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
 
@@ -93,7 +115,18 @@ class AbstractPdfPlugin extends AbstractPlugin
             unset($data['Company name']);
         }
 
-        $columnsLeftXOffset = 290;
+        if (isset($companyData['description'])) {
+            $lines = $this->getTextLines($companyData['description'], self::PAGE_SUB_HEADER_TITLE_SIZE, 140);
+            $k = 0;
+            foreach ($lines as $line) {
+                $k++;
+                if ($k == 4) break;
+                $topPosInPage -= (self::PAGE_SUB_HEADER_TITLE_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
+                $topPosInPage = $this->drawText($line, self::PAGE_SUB_HEADER_TITLE_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
+            }
+        }
+
+        $columnsLeftXOffset = 320;
         $columns = 2;
         $columnsPadding = 15;
         $total = count($data);
@@ -132,7 +165,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         // > end draw header line.
         $topPosInPage = $currentYPos;
 
-        return $topPosInPage;
+        return $topPosInPage - 15;
     }
 
     protected function drawFooter(\ZendPdf\Page $page)
