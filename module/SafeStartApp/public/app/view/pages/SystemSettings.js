@@ -22,8 +22,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
         ],
 
         listeners: {
-            scope: this,
-            activate: function (page) {
+            afterrender: function (page) {
                 page.loadData();
             }
         }
