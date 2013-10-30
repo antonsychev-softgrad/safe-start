@@ -21,13 +21,48 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                 label: 'Company Name',
                 name: 'title'
             }, {
-                xtype: 'readonlyfield',
-                label: 'Responsible Name',
-                name: 'firstName'
-            }, {
-                xtype: 'readonlyfield',
-                label: 'Responsible Email',
-                name: 'email'
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    align: 'middle'
+                },
+                items: [{
+                    xtype: 'container',
+                    flex: 1,
+                    height: 90,
+                    margin: '0 0 10 0',
+                    items: [{
+                        xtype: 'image',
+                        height: 70,
+                        width: 70
+                    }]
+                }, {
+                    xtype: 'container',
+                    flex: 2.3,
+                    padding: '30 0 0 0',
+                    items: [{
+                        xtype: 'imageupload',
+                        autoUpload: true,
+                        url: 'api/upload-images',
+                        height: 40,
+                        name: 'image',
+                        states: {
+                            browse: {
+                                text: 'Change company logo'
+                            },
+                            uploading: {
+                                loading: false
+                            }
+                        },
+                        listeners: {
+                            success: function(btn, data) {
+                                var form = btn.up('SafeStartCompanySettingsForm');
+                                form.down('image').setSrc('api/image/' + data.hash + '/70x70');
+                                form.down('field[name=logo]').setValue(data.hash);
+                            }
+                        }
+                    }]
+                }]
             }, {
                 xtype: 'textfield',
                 label: 'Company Address',
@@ -40,22 +75,6 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                 xtype: 'textareafield',
                 label: 'Company Info',
                 name: 'description'
-            }, {
-                xtype: 'togglefield',
-                name: 'restricted',
-                label: 'Limited Access',
-                disabled: true,
-
-                cls: 'sfa-limited-access',
-                listeners: {
-                    change: function(field, slider) {
-                        if (slider) {
-                            this.up('SafeStartCompanySettingsForm').down('fieldset[cls~=subscription-fieldset]').show();
-                        } else {
-                            this.up('SafeStartCompanySettingsForm').down('fieldset[cls~=subscription-fieldset]').hide();
-                        }
-                    }
-                }
             }, {
                 xtype: 'fieldset',
                 title: 'Subscription:',
@@ -76,46 +95,6 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                     label: 'Expiry Date',
                     formatFn: function(date) {
                         return Ext.Date.format(new Date(date * 1000), SafeStartApp.dateFormat);
-                    }
-                }]
-            }, {
-                xtype: 'container',
-                layout: {
-                    type: 'hbox',
-                    align: 'middle'
-                },
-                items: [{
-                    xtype: 'spacer',
-                    flex: 1
-                }, {
-                    xtype: 'container',
-                    width: 90,
-                    items: [{
-                        xtype: 'image',
-                        height: 70,
-                        width: 70
-                    }]
-                }, {
-                    xtype: 'imageupload',
-                    autoUpload: true,
-                    url: 'api/upload-images',
-                    margin: '10 0 0 0',
-                    height: 40,
-                    name: 'image',
-                    states: {
-                        browse: {
-                            text: 'Change company logo'
-                        },
-                        uploading: {
-                            loading: false
-                        }
-                    },
-                    listeners: {
-                        success: function(btn, data) {
-                            var form = btn.up('SafeStartCompanySettingsForm');
-                            form.down('image').setSrc('api/image/' + data.hash + '/70x70');
-                            form.down('field[name=logo]').setValue(data.hash);
-                        }
                     }
                 }]
             }]
@@ -140,6 +119,13 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
         if (! record) {
             return;
         }
+
+        if (record.get('enabled')) {
+            this.down('fieldset[cls~=subscription-fieldset]').show();
+        } else {
+            this.down('fieldset[cls~=subscription-fieldset]').hide();
+        }
+
         if (record.get('logo')) {
             this.down('image').setSrc('api/image/' + record.get('logo') + '/70x70');
         }
