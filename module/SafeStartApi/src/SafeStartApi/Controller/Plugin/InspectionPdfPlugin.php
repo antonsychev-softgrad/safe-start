@@ -33,6 +33,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->saveDocument();
         $this->checkList->setPdfLink($this->fileName);
         $this->getController()->em->flush();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $this->fileName;
+        $cache->setItem($cashKey, true);
+
         return $this->filePath;
     }
 

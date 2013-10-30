@@ -105,6 +105,7 @@ class Application
             }
 
         }
+        defined('APP_CACHE') || define('APP_CACHE', false);
         self::$cache->setCaching(APP_CACHE);
         return self::$cache;
     }
