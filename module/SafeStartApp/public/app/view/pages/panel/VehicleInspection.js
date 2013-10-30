@@ -81,9 +81,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         });
     },
 
-    loadChecklist: function (checklists, vehicle, inspectionRecord) {
+    loadChecklist: function (data, vehicle, inspectionRecord) {
         var me = this;
-        var checklistForms = [],
+        var checklists = data.checklist,
+            previousAlerts = data.alerts || [],
+            checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
@@ -136,6 +138,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add(checklistAdditionalForms);
 
         this.add(this.createReviewCard());
+
+
+        var alertsData = [];
+        Ext.each(previousAlerts, function (alert) {
+            var message = alert.alert_description || alert.alert_message;
+            if (message) {
+                alertsData.push({
+                    message: message
+                });
+            }
+        });
+
+        if (alertsData.length) {
+            this.getAlertsListView(alertsData).show();
+        }
     },
 
     createChoiseAdditionalCard: function (fields) {
@@ -708,5 +725,28 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 }]
             }].concat(images)
         };
+    },
+
+    getAlertsListView: function (alerts) {
+        return Ext.MessageBox.create({
+            title: 'Alerts in inspection:',
+            tpl: new Ext.XTemplate(
+                '<div class="sfa-alerts">',
+                '<tpl for=".">',
+                    '<div class="sfa-alert-description">',
+                    '{message}',
+                    '</div>',
+                '</tpl>',
+                '</div>'
+            ),
+            buttons: [{
+                text: 'OK',
+                ui: 'action',
+                handler: function () {
+                    this.up('sheet').destroy();
+                }
+            }],
+            data: alerts
+        });
     }
 });
