@@ -115,8 +115,29 @@ class VehicleController extends RestrictedAccessRestController
             if (!$inspection) $cache->setItem($cashKey, $checklist);
         }
 
+        $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
+        $alerts = array();
+        $filters = array();
+
+        $filters['status'] = \SafeStartApi\Entity\Alert::STATUS_NEW;
+
+        if ($cache->hasItem($cashKey)) {
+            $alerts = $cache->getItem($cashKey);
+        } else {
+            $checkLists = $vehicle->getCheckLists();
+            if (!empty($checkLists)) {
+                foreach ($checkLists as $checkList) {
+                    $alerts = array_merge($alerts, $checkList->getAlertsArray($filters));
+                }
+            }
+            $cache->setItem($cashKey, $alerts);
+        }
+
+        $alerts = array_reverse($alerts);
+
         $this->answer = array(
             'checklist' => $checklist,
+            'alerts' => $alerts
         );
 
         return $this->AnswerPlugin()->format($this->answer);

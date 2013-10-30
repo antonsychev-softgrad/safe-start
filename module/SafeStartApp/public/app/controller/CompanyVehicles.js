@@ -142,7 +142,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var me = this;
         this.getInfoPanel().setActiveItem(this.getVehicleInspectionPanel());
         SafeStartApp.AJAX('vehicle/' + vehicleId + '/getchecklist?checklistId=' + checkListId, {}, function (result) {
-            me.getVehicleInspectionPanel().loadChecklist(result.checklist, vehicleId, inspectionRecord);
+            me.getVehicleInspectionPanel().loadChecklist(result, vehicleId, inspectionRecord);
             me.loadAlerts(checkListId);
         });
     },
@@ -244,7 +244,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var vehicle = this.getNavMain().getVehiclesStore().getRoot().findChild('id', id);
 
         SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
-            self.getVehicleInspectionPanel().loadChecklist(result.checklist, vehicle);
+            self.getVehicleInspectionPanel().loadChecklist(result, vehicle);
         });
     },
 
