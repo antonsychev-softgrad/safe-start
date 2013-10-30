@@ -21,8 +21,7 @@ Ext.define('SafeStartExt.model.MenuVehicle', {
         {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()},
         {name: 'inspectionDueHours', type: 'int', defaultValue: 24},
         {name: 'inspectionDueKms', type: 'int', defaultValue: 500},
-        {name: 'lastInspectionDay', type: 'int', defaultValue: null},
-        {name: 'inspectionDueKms', type: 'int', defaultValue: 500}
+        {name: 'lastInspectionDay', type: 'int', defaultValue: null}
     ],
 
     proxy: {
@@ -37,7 +36,6 @@ Ext.define('SafeStartExt.model.MenuVehicle', {
     hasMany: [{
         model: 'SafeStartExt.model.MenuVehiclePage',
         associationKey: 'data',
-        getter: 'getPages',
         name: 'pages'
     }]
 });

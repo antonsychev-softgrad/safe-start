@@ -82,6 +82,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                         }, {
                             iconCls: 'arrow_left',
                             height: 20,
+                            cls: 'sfa-collapse',
                             iconMask: true,
                             handler: function (btn) {
                                 var panel = this.up('SafeStartLeftContainer');
@@ -94,6 +95,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                         items: [{
                             xtype: 'searchfield',
                             flex: 1,
+                            cls:'sfa-search',
                             placeHolder: 'Search...',
                             listeners: {
                                 scope: this,

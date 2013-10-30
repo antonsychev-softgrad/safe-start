@@ -6,6 +6,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     cls:'sfa-previous-inspections-info',
     ui: 'light',
     layout: 'fit',
+    autoScroll: true,
 
     initComponent: function () {
         this.callParent();
@@ -69,7 +70,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
         this.removeAll();
         this.add({
             xtype: 'component',
-            autoScroll:true,            
+            layout: 'fit',
             tpl: new Ext.XTemplate(
                 '<tpl for=".">',
                     '<div class="sfa-group" style="max-width: 700px;">',
