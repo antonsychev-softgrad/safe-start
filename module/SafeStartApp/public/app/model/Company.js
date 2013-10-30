@@ -7,6 +7,7 @@ Ext.define('SafeStartApp.model.Company', {
             {name: 'email', type: 'string'},
             {name: 'firstName', type: 'string'},
             {name: 'description', type: 'string'},
+            {name: 'logo', type: 'string'}, //image hash
             {name: 'address', type: 'string'},
             {name: 'phone', type: 'string'},
             {name: 'restricted', type: 'boolean', defaultValue: false},
