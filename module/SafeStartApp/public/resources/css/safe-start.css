@@ -549,6 +549,19 @@ font-size: 26px;
     border-radius: 10px;
 }
 
+.sfa-info-container .x-form-field-readonly .x-innerhtml{
+    font-size: 18px;
+    padding: 5px 5px 5px 7px;
+    margin: 3px 0;
+    color: #565555;
+    border: 1px solid #cacaca;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+
 .sfa-info-container   .x-field-clearable .x-field-input {
     padding-right: 0;
 }

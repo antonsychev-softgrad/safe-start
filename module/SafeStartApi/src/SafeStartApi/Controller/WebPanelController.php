@@ -24,6 +24,8 @@ class WebPanelController extends RestController
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewUsersPage')) $mainMenu[] = 'Users';
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewSystemSettingsPage')) $mainMenu[] = 'SystemSettings';
 
+        if($this->AclPlugin()->isAllowed('adminPanel', 'viewCompanySettingsPage')) $mainMenu[] = 'CompanySettings';
+
         // super admin see statistic instead of contact us form
         if($this->AclPlugin()->isAllowed('adminPanel', 'viewSystemStatisticPage')) $mainMenu[] = 'SystemStatistic';
         else $mainMenu[] = 'Contact';
