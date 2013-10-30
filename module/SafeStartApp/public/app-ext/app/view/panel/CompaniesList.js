@@ -34,7 +34,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                 scale: 'medium',
                 handler: function () {
                     this.up('toolbar').down('textfield').setValue('');
-                    store.loadData();
+                    store.load();
                 }
             }],
             items: [{
