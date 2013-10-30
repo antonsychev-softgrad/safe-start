@@ -5,7 +5,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         'SafeStartApp.view.pages.toolbar.Companies',
         'SafeStartApp.model.Company',
         'SafeStartApp.store.Companies',
-        'SafeStartApp.view.forms.CompanySettings',
+        'SafeStartApp.view.forms.Company',
         'SafeStartApp.view.pages.panel.LeftContainer'
     ],
 

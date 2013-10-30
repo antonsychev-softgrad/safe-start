@@ -1,164 +1,148 @@
 Ext.define('SafeStartApp.view.forms.CompanySettings', {
     extend: 'Ext.form.Panel',
     mixins: ['Ext.mixin.Observable'],
+    requires: ['SafeStartApp.view.field.ReadOnly'],
     xtype: 'SafeStartCompanySettingsForm',
     config: {
         minHeight: 400,
-        //maxWidth: 600,
         cls: 'comp-settings',
-        items: [
-            {
+        items: [{
+            xtype: 'fieldset',
+            title: 'Company Settings',
+            cls: 'sfa-company-settings',
+            items: [{
+                xtype: 'hiddenfield',
+                name: 'id'
+            }, {
+                xtype: 'hiddenfield',
+                name: 'logo'
+            }, {
+                xtype: 'readonlyfield',
+                label: 'Company Name',
+                name: 'title'
+            }, {
+                xtype: 'readonlyfield',
+                label: 'Responsible Name',
+                name: 'firstName'
+            }, {
+                xtype: 'readonlyfield',
+                label: 'Responsible Email',
+                name: 'email'
+            }, {
+                xtype: 'textfield',
+                label: 'Company Address',
+                name: 'address'
+            }, {
+                xtype: 'textfield',
+                label: 'Company Phone',
+                name: 'phone'
+            }, {
+                xtype: 'textareafield',
+                label: 'Company Info',
+                name: 'description'
+            }, {
+                xtype: 'togglefield',
+                name: 'restricted',
+                label: 'Limited Access',
+                disabled: true,
+
+                cls: 'sfa-limited-access',
+                listeners: {
+                    change: function(field, slider) {
+                        if (slider) {
+                            this.up('SafeStartCompanySettingsForm').down('fieldset[cls~=subscription-fieldset]').show();
+                        } else {
+                            this.up('SafeStartCompanySettingsForm').down('fieldset[cls~=subscription-fieldset]').hide();
+                        }
+                    }
+                }
+            }, {
                 xtype: 'fieldset',
-                title: 'Company Settings',
-                cls:'sfa-company-settings',
-                items: [
-                    {
-                        xtype: 'hiddenfield',
-                        name: 'id'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Company Name',
-                        required: true,
-                        name: 'title'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Responsible Name',
-                        required: true,
-                        name: 'firstName'
-                    },
-                    {
-                        xtype: 'emailfield',
-                        label: 'Responsible Email',
-                        required: true,
-                        name: 'email'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Company Address',
-                        name: 'address'
-                    },
-                    {
-                        xtype: 'textfield',
-                        label: 'Company Phone',
-                        name: 'phone'
-                    },
-                    {
-                        xtype: 'textareafield',
-                        label: 'Company Info',
-                        name: 'description'
-                    },
-                    {
-                        xtype: 'togglefield',
-                        name: 'restricted',
-                        label: 'Limited Access',
-                        cls:'sfa-limited-access',
-                        listeners: {
-                            change: function(field, slider, thumb, newValue, oldValue) {
-                                if (newValue) {
-                                    this.up('SafeStartCompanySettingsForm').down('fieldset').down('fieldset').enable();
-                                } else {
-                                    this.up('SafeStartCompanySettingsForm').down('fieldset').down('fieldset').disable();
-                                }
-                            }
-                        }
-                    },
-                    {
-                        xtype: 'fieldset',
-                        title: 'Subscription:',
-                        id: 'subscription',
-                        cls: 'subscription-fieldset',
-                        items: [
-                            {
-                                xtype: 'spinnerfield',
-                                maxValue: 1000,
-                                minValue: 1,
-                                stepValue: 1,
-                                name: 'max_users',
-                                required: true,
-                                label: 'Number of users'
-                            },
-                            {
-                                xtype: 'spinnerfield',
-                                maxValue: 1000,
-                                minValue: 1,
-                                stepValue: 1,
-                                name: 'max_vehicles',
-                                required: true,
-                                label: 'Number of vehicles'
-                            },
-                            {
-                                xtype: 'datepickerfield',
-                                name: 'expiry_date',
-                                required: true,
-                                label: 'Expiry Date',
-                                dateFormat: SafeStartApp.dateFormat,
-                                value: new Date(),
-                                cls: 'sfa-datepicker',
-                                picker: {
-                                    yearFrom: new Date().getFullYear(),
-                                    yearTo: new Date().getFullYear() + 10
-                                }
-                            }
-                        ]
+                title: 'Subscription:',
+                hidden: true,
+                disabled: true,
+                cls: 'subscription-fieldset',
+                items: [{
+                    xtype: 'readonlyfield',
+                    name: 'max_users',
+                    label: 'Number of users'
+                }, {
+                    xtype: 'readonlyfield',
+                    name: 'max_vehicles',
+                    label: 'Number of vehicles'
+                }, {
+                    xtype: 'readonlyfield',
+                    name: 'expiry_date',
+                    label: 'Expiry Date',
+                    formatFn: function(date) {
+                        return Ext.Date.format(new Date(date * 1000), SafeStartApp.dateFormat);
                     }
-                ]
-            },
-            {
-                xtype: 'toolbar',
-                docked: 'bottom',
-                items: [
-                    {
-                        xtype: 'button',
-                        name: 'delete-data',
-                        text: 'Delete',
-                        ui: 'decline',
-                        iconCls: 'delete',
-                        handler: function() {
-                            this.up('SafeStartCompanySettingsForm').fireEvent('delete-data', this.up('SafeStartCompanySettingsForm'));
+                }]
+            }, {
+                xtype: 'container',
+                layout: {
+                    type: 'hbox',
+                    align: 'middle'
+                },
+                items: [{
+                    xtype: 'spacer',
+                    flex: 1
+                }, {
+                    xtype: 'container',
+                    width: 90,
+                    items: [{
+                        xtype: 'image',
+                        height: 70,
+                        width: 70
+                    }]
+                }, {
+                    xtype: 'imageupload',
+                    autoUpload: true,
+                    url: 'api/upload-images',
+                    margin: '10 0 0 0',
+                    height: 40,
+                    name: 'image',
+                    states: {
+                        browse: {
+                            text: 'Change company logo'
+                        },
+                        uploading: {
+                            loading: false
                         }
                     },
-                    { xtype: 'spacer' },
-                    {
-                        xtype: 'button',
-                        name: 'manage',
-                        text: 'Manage',
-                        ui: 'action',
-                        iconCls: 'compose',
-                        handler: function() {
-                            this.up('SafeStartCompanySettingsForm').fireEvent('manage', this.up('SafeStartCompanySettingsForm'));
-                        }
-                    },
-                    { xtype: 'spacer' },
-                    {
-                        xtype: 'button',
-                        text: 'Reset',
-                        name: 'reset-data',
-                        handler: function() {
-                            this.up('SafeStartCompanySettingsForm').fireEvent('reset-data', this.up('SafeStartCompanySettingsForm'));
-                        }
-                    },
-                    {
-                        xtype: 'button',
-                        text: 'Send Password to Company Owner',
-                        name: 'send-credentials',
-                        ui: 'action',
-                        handler: function() {
-                            this.up('SafeStartCompanySettingsForm').fireEvent('send-credentials', this.up('SafeStartCompanySettingsForm'));
-                        }
-                    },
-                    {
-                        xtype: 'button',
-                        text: 'Save',
-                        name: 'save-data',
-                        ui: 'confirm',
-                        handler: function() {
-                            this.up('SafeStartCompanySettingsForm').fireEvent('save-data', this.up('SafeStartCompanySettingsForm'));
+                    listeners: {
+                        success: function(btn, data) {
+                            var form = btn.up('SafeStartCompanySettingsForm');
+                            form.down('image').setSrc('api/image/' + data.hash + '/70x70');
+                            form.down('field[name=logo]').setValue(data.hash);
                         }
                     }
-                ]
-            }
-        ]
+                }]
+            }]
+        }, {
+            xtype: 'toolbar',
+            docked: 'bottom',
+            items: [{
+                xtype: 'spacer'
+            }, {
+                xtype: 'button',
+                text: 'Save',
+                name: 'save-data',
+                ui: 'confirm',
+                handler: function() {
+                    this.up('SafeStartCompanySettingsForm').fireEvent('save-data', this.up('SafeStartCompanySettingsForm'));
+                }
+            }]
+        }]
+    },
+
+    setRecord: function (record) {
+        if (! record) {
+            return;
+        }
+        if (record.get('logo')) {
+            this.down('image').setSrc('api/image/' + record.get('logo') + '/70x70');
+        }
+        this.callParent([record]);
     }
 });
