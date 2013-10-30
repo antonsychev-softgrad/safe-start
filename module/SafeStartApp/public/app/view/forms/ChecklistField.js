@@ -188,7 +188,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     switchDefaultValueField: function (type) {
         var field = this.down('field[name=default_value]');
         var index = this.items.indexOf(field);
-        this.remove(field);
+        if (field) this.remove(field);
         switch (type) {
             case 'group': 
             case 'root':

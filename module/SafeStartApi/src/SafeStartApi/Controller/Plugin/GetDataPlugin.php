@@ -74,11 +74,11 @@ class GetDataPlugin extends AbstractPlugin
                     'fieldType' => isset($fieldsConfig[$field->getType()]) ? $fieldsConfig[$field->getType()]['id'] : 0,
                     'alertMessage' => $field->getAlertTitle(),
                     'alertDescription' => $field->getAlertDescription(),
+                    'alertCritical' => $field->getAlertCritical(),
                     'type' => $field->getType(),
                     'additional' => $field->getAdditional(),
                     'triggerValue' => $field->getTriggerValue(),
                 );
-                $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
                 $listField['defaultValue'] = $field->getDefaultValue();
                 if ($inspection) {
                     $listField['fieldValue'] = $inspection->getFieldValue($field);
@@ -87,6 +87,7 @@ class GetDataPlugin extends AbstractPlugin
                 } else {
                     if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 }
+                $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
                 $alertMassage = $field->getAlertTitle();
                 $alertDescription = $field->getAlertDescription();
@@ -100,9 +101,9 @@ class GetDataPlugin extends AbstractPlugin
                         )
                     );
                 } else if (!empty($listField['items']) && $field->getType() != 'group') {
-                    $listField['additional']  = true;
+                    $listField['additional'] = true;
                 } else {
-                    $listField['additional']  = false;
+                    $listField['additional'] = false;
                 }
 
                 $checklist[] = $listField;
@@ -127,6 +128,7 @@ class GetDataPlugin extends AbstractPlugin
                     'fieldDescription' => $field->getDescription(),
                     'alertMessage' => $field->getAlertTitle(),
                     'alertDescription' => $field->getAlertDescription(),
+                    'alertCritical' => $field->getAlertCritical(),
                     'fieldType' => $fieldsConfig[$field->getType()]['id'],
                     'type' => $field->getType(),
                     'additional' => $field->getAdditional(),
@@ -134,6 +136,12 @@ class GetDataPlugin extends AbstractPlugin
                     'alertTitle' => $field->getAlertDescription(),
                     'alertMessage' => $field->getAlertTitle(),
                 );
+                $listField['defaultValue'] = $field->getDefaultValue();
+                if ($field->getDefaultValue()) {
+                    $listField['fieldValue'] = $field->getDefaultValue();
+                } else {
+                    if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
+                }
                 $listField['items'] = $this->_buildChecklistStructure($fields, $field->getId());
                 if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
@@ -149,9 +157,9 @@ class GetDataPlugin extends AbstractPlugin
                         )
                     );
                 } else if (!empty($listField['items']) && $field->getType() != 'group') {
-                    $listField['additional']  = true;
+                    $listField['additional'] = true;
                 } else {
-                    $listField['additional']  = false;
+                    $listField['additional'] = false;
                 }
 
                 $checklist[] = $listField;

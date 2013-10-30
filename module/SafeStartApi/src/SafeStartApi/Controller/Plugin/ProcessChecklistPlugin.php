@@ -105,7 +105,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
         $query->setParameter(1, $checkList);
         $query->getResult();
 
-        foreach ($fieldsStructure as $group) {
+        foreach ((array)$fieldsStructure as $group) {
             if ($this->isEmptyGroup($group, $fieldsDataValues)) continue;
             $record = new \SafeStartApi\Entity\InspectionBreakdown();
 
@@ -118,6 +118,46 @@ class ProcessChecklistPlugin extends AbstractPlugin
             $this->getController()->em->persist($record);
             $this->getController()->em->flush();
         }
+    }
+
+    public function getWarningsFromInspectionFields(\SafeStartApi\Entity\CheckList $checkList)
+    {
+        $warnings = array();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData(), true);
+        $fieldsDataValues = array();
+        foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
+        foreach ((array)$fieldsStructure as $groupBlock) {
+            if ($this->isEmptyGroup($groupBlock, $fieldsDataValues)) continue;
+            if (isset($groupBlock->fields)) {
+                $groupWarnings = $this->_getWarningsFromInspectionFields($groupBlock->fields, $fieldsDataValues);
+                if (!empty($groupWarnings)) $warnings = array_merge($warnings, $groupWarnings);
+            }
+        }
+
+        return $warnings;
+    }
+
+    private function _getWarningsFromInspectionFields($fields, $fieldsDataValues, $warnings = array())
+    {
+        foreach ($fields as $field) {
+            if ($field->type == 'datePicker') {
+                if ($field->defaultValue && $field->alertCritical && $field->triggerValue) {
+                    $delta = ((int) $field->defaultValue - time()) / (60 * 60 * 24);
+                    if ($delta <= (int) $field->triggerValue) {
+                        $warnings[] = array(
+                            'action' => 'custom_checklist_warning',
+                            'text' => ($delta > 0) ? sprintf($field->alertDescription, round($delta)) : (($field->fieldDescription ? $field->fieldDescriptio : $field->fieldName) . ' has expired')
+                        );
+                    }
+                }
+            }
+            if (!empty($field->items)) {
+                $this->_getWarningsFromInspectionFields($field->items, $fieldsDataValues, $warnings);
+            }
+        }
+
+        return $warnings;
     }
 
     private function isEmptyGroup($group, $fieldsDataValues)

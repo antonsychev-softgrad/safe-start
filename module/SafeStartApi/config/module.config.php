@@ -103,6 +103,15 @@ $general = array(
                         )
                     )
                 ),
+                'run-ping-email' => array(
+                    'options' => array(
+                        'route' => 'resque run ping-email',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => ' pingEmail'
+                        )
+                    )
+                ),
             ),
         ),
     ),

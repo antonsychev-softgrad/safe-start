@@ -28,9 +28,38 @@ class ProcessDataController extends PublicAccessRestController
                 "errorMessage" => trim(implode("\n", $errors))
             );
         } else {
+            $return = (array) $return;
+            $fileHash = $return['hash'];
+            $defUsersPath = $this->moduleConfig['defUsersPath'];
+            $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
+            $filePath = $this->getFileByDirAndName($searchDir, $fileHash);
+            if (file_exists($filePath)) chmod($filePath, 0777);
             $this->answer = $return;
         }
         return $this->AnswerPlugin()->format($this->answer, !empty($errors) ? 400 : 0);
+    }
+
+    protected function getFileByDirAndName($dir, $tosearch) {
+        if(file_exists($dir) && is_dir($dir)) {
+
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+                return (realpath($path));
+            } else {
+                foreach($validFileExts as $validExt) {
+                    $filename = $path . "." . $validExt;
+                    if(file_exists($filename) && !is_dir($filename)) {
+                        return (realpath($filename));
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public function generatePdfAction()
