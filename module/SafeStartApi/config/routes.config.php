@@ -492,6 +492,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'company-update-info' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/company/:id/update',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'update'
+                    ),
+                ),
+            ),
         ),
     ),
 );

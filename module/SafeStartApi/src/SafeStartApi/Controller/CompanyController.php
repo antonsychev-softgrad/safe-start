@@ -12,6 +12,38 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CompanyController extends RestrictedAccessRestController
 {
+
+    public function updateAction()
+    {
+        $companyId = (int)$this->params('id');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        // set company data
+        $company->setTitle($this->data->title);
+        $company->setAddress($this->data->address);
+        $company->setPhone($this->data->phone);
+        $company->setDescription($this->data->description);
+        $company->setLogo(isset($this->data->logo) ? $this->data->logo : '');
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'companyId' => $company->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
     /**
      * @return mixed
      */
