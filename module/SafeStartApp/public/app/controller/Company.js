@@ -60,19 +60,17 @@ Ext.define('SafeStartApp.controller.Company', {
     },
 
     updateCompanySettings: function (form) {
-        if (this.validateFormByModel(form.getRecord(), form)) {
-            var me = this;
-            var formValues = form.getValues();
-            var data = {
-                address: formValues.address,
-                phone: formValues.phone,
-                description: formValues.description,
-                logo: formValues.logo
-            };
+        var me = this;
+        var formValues = form.getValues();
+        var data = {
+            address: formValues.address,
+            phone: formValues.phone,
+            description: formValues.description,
+            logo: formValues.logo
+        };
 
-            SafeStartApp.AJAX('company/' + SafeStartApp.userModel.get('companyId') + '/update', formValues, function (result) {
-            });
-        }
+        SafeStartApp.AJAX('company/' + SafeStartApp.userModel.get('companyId') + '/update', formValues, function (result) {
+        });
     }
 
 });
