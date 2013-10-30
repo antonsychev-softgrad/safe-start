@@ -294,7 +294,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
-                    fields.push(this.createDatePickerField(fieldData, alertRecord));
+                    fields.push(this.createDatePickerField(fieldData));
                     break;
                 case 'group':
                     fields.push(this.createGroupField(fieldData));
@@ -430,35 +430,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createDatePickerField: function (fieldData, alertRecord) {
-        return {
-            xtype: 'datepickerfield',
-            maxWidth: 900,
-            labelWidth: '',
-            width: '100%',
-            yearFrom: 2000,
-            triggerable: true,
-            picker: {
-                yearTo: new Date().getFullYear() + 10
-            },
-            dateFormat: SafeStartApp.dateFormat,
-            label: fieldData.fieldName,
-            fieldId: fieldData.fieldId,
-            value: new Date(fieldData.fieldValue * 1000 || Date.now()),
-            defaultValue: fieldData.defaultValue,
-            alertRecord: alertRecord,
-            listeners: {
-                change: function (view, date) {
-                    var alert = this.config.alertRecord;
-                    if (alert) {
-                        if ((new Date(this.config.defaultValue).getTime() - alert.get('triggerValue') * 24 * 60 * 60 * 1000) < date.getTime()) {
-                            alert.set('active', true);
-                        } else {
-                            alert.set('active', false);
-                        }
-                    }
-                }
-            }
-        };
+        var value = fieldData.fieldValue * 1000,
+            field = {
+                xtype: 'datepickerfield',
+                maxWidth: 900,
+                labelWidth: '',
+                width: '100%',
+                yearFrom: 2000,
+                triggerable: true,
+                picker: {
+                    yearTo: new Date().getFullYear() + 10
+                },
+                dateFormat: SafeStartApp.dateFormat,
+                label: fieldData.fieldName,
+                fieldId: fieldData.fieldId,
+                value: new Date(fieldData.fieldValue * 1000 || Date.now()),
+                defaultValue: fieldData.defaultValue
+            };
+        if (value) {
+            field.value = value;
+        }
+        return field;
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {

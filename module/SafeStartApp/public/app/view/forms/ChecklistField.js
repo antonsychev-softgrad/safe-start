@@ -174,7 +174,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
         this.callParent([record]);
         if (record.get('type') === 'datePicker') {
-            this.down('field[name=default_value]').setValue(new Date(record.get('default_value') * 1000 || Date.now()));
+            var date = new Date(record.get('default_value') * 1000);
+            if (date) {
+                this.down('field[name=default_value]').setValue(date);
+            }
         }
         
         if (record.get('type') == 'root') {
