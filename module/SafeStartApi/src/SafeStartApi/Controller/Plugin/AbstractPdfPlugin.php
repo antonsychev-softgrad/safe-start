@@ -7,7 +7,7 @@ use SafeStartApi\Model\ImageProcessor;
 class AbstractPdfPlugin extends AbstractPlugin
 {
     const PAGE_HEADER_TITLE_SIZE = 12;
-    const PAGE_SUB_HEADER_TITLE_SIZE = 10;
+    const PAGE_SUB_HEADER_TITLE_SIZE = 8;
 
     const BLOCK_SUBHEADER_SIZE = 10;
 
@@ -46,8 +46,10 @@ class AbstractPdfPlugin extends AbstractPlugin
 
     protected function drawVehicleHeader($vehicleData = array(), $companyData = array())
     {
+        if (isset($companyData['description'])) $this->opts['style']['content_height'] = 0;
+
         $data = array(
-            'Company name' => isset($companyData['title']) ? $companyData['title'] : '',
+            'Company name' => isset($companyData['title']) ? $companyData['title'] : 'Safe Start',
             'Vehicle title' => $vehicleData['title'],
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
@@ -116,7 +118,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         }
 
         if (isset($companyData['description'])) {
-            $lines = $this->getTextLines($companyData['description'], self::PAGE_SUB_HEADER_TITLE_SIZE, 140);
+            $lines = $this->getTextLines($companyData['description'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
             $k = 0;
             foreach ($lines as $line) {
                 $k++;
