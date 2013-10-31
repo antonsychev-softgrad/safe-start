@@ -855,6 +855,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.view.component.Company": [],
   "SafeStartExt.view.component.Contact": [],
   "SafeStartExt.view.container.TopNav": [],
+  "SafeStartExt.view.form.Vehicle": [],
   "SafeStartExt.view.panel.CompaniesList": [],
   "SafeStartExt.view.panel.CompanyInfo": [],
   "SafeStartExt.view.panel.InspectionInfo": [],
@@ -1886,6 +1887,9 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.view.container.TopNav": [
     "widget.SafeStartExtContainerTopNav"
+  ],
+  "SafeStartExt.view.form.Vehicle": [
+    "widget.SafeStartExtFormVehicle"
   ],
   "SafeStartExt.view.panel.CompaniesList": [
     "widget.SafeStartExtPanelCompaniesList"

@@ -3,7 +3,8 @@ Ext.define('SafeStartExt.view.component.Companies', {
     requires: [
         'SafeStartExt.view.container.TopNav',
         'SafeStartExt.view.panel.CompaniesList',
-        'SafeStartExt.view.panel.CompanyInfo'
+        'SafeStartExt.view.panel.CompanyInfo',
+        'SafeStartExt.view.form.Company'
     ],
     xtype: 'SafeStartExtComponentCompanies',
     layout: {
@@ -30,8 +31,12 @@ Ext.define('SafeStartExt.view.component.Companies', {
                     flex: 1,
                     maxWidth: 250
                 }, {
-                    xtype: 'SafeStartExtPanelCompanyInfo',
-                    flex: 2
+                    cls: 'sfa-info-container',
+                    xtype: 'panel',
+                    type: 'vbox',
+                    flex: 2,
+                    ui: 'transparent',
+                    name: 'company-info'
                 }]
             }]
         });

@@ -1,11 +1,12 @@
 Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     extend: 'Ext.container.Container',
     requires: [
-        'SafeStartExt.view.panel.VehicleInfo'
+        'SafeStartExt.view.form.Vehicle'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
     cls: 'sfa-vehicles-tabpanel',
+    layout: 'fit',
 
     initComponent: function () {
         var tabs = this.getTabs();
@@ -28,7 +29,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
             switch (page.get('action')) {
                 case 'info': 
                     tabs.push({
-                        xtype: 'SafeStartExtPanelVehicleInfo', 
+                        xtype: 'SafeStartExtFormVehicle', 
                         title: page.get('text') 
                     });
                     break;
