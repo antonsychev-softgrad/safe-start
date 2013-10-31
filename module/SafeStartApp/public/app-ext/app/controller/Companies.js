@@ -63,12 +63,14 @@ Ext.define('SafeStartExt.controller.Companies', {
     _hideFormButtons: function() {
         this.getCompanyFormPanel().down('button[name=delete-data]').hide();
         this.getCompanyFormPanel().down('button[name=manage-data]').hide();
+        this.getCompanyFormPanel().down('button[name=send-password]').hide();
 
     },
 
     _showFormButtons: function() {
         this.getCompanyFormPanel().down('button[name=delete-data]').show();
         this.getCompanyFormPanel().down('button[name=manage-data]').show();
+        this.getCompanyFormPanel().down('button[name=send-password]').show();
     },
 
     _showForm: function() {
@@ -115,7 +117,7 @@ Ext.define('SafeStartExt.controller.Companies', {
         SafeStartExt.Ajax.request({
             url: 'admin/company/' + company.getId() + '/send-credentials',
             success: function (res) {
-                debugger;
+
             }
         });
     },
