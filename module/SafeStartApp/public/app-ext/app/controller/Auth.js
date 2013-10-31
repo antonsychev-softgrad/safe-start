@@ -39,8 +39,10 @@ Ext.define('SafeStartExt.controller.Auth', {
             url: 'user/login',
             data: data,
             success: function () {
-                Ext.History.setHash('');
                 viewport.fireEvent('reloadMainMenu');
+                viewport.down('SafeStartExtMain').on('mainMenuLoaded', function () {
+                    Ext.History.setHash('');
+                }, this, {single: true});
             }
         });
     },
@@ -50,8 +52,10 @@ Ext.define('SafeStartExt.controller.Auth', {
         SafeStartExt.Ajax.request({
             url: 'user/logout',
             success: function () {
-                Ext.History.setHash('');
                 viewport.fireEvent('reloadMainMenu');
+                viewport.down('SafeStartExtMain').on('mainMenuLoaded', function () {
+                    Ext.History.setHash('auth');
+                }, this, {single: true});
             }
         });
     }

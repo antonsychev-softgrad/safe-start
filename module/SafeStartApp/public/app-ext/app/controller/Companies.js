@@ -19,18 +19,28 @@ Ext.define('SafeStartExt.controller.Companies', {
     }, {
         selector: 'SafeStartExtMain',
         ref: 'mainPanel'
+    }, {
+        selector: 'SafeStartExtComponentCompanies',
+        ref: 'companiesPanel'
     }],
 
     init: function () {
         this.control({
+            'SafeStartExtMain': {
+                setCompanyByIdAction: this.setCompanyByIdAction
+            },
             'SafeStartExtPanelCompaniesList': {
                 changeCompanyAction: this.changeCompanyAction,
                 addCompanyAction: this.addCompanyAction
             },
             'SafeStartExtFormCompany': {
                 updateCompanyAction: this.updateCompany,
-                deleteCompanyAction: this.deleteCompany,
+                deleteCompanyAction: this.deleteCompany
             },
+            'SafeStartExtComponentCompanies': {
+                companyNotFoundAction: this.companyNotFoundAction,
+                changeCompanyAction: this.changeCompanyAction
+            }
         });
     },
 
@@ -42,6 +52,7 @@ Ext.define('SafeStartExt.controller.Companies', {
     },
 
     changeCompanyAction: function (company) {
+        console.log(company);
         this.getMainPanel().fireEvent('changeCompanyAction', company);
         this.setCompanyInfo(company);
     },
@@ -56,6 +67,19 @@ Ext.define('SafeStartExt.controller.Companies', {
         } else {
             this.getCompanyFormPanel().down('[name=subscription]').disable();
         }
+    },
+
+    setCompanyByIdAction: function (companyId) {
+        var companiesPage = this.getCompaniesPanel();
+        if (! companiesPage) {
+            companiesPage = Ext.create('SafeStartExt.view.component.Companies');
+            this.getMainPanel().add(companiesPage);
+        }
+        companiesPage.setCompanyId(companyId);
+    },
+
+    companyNotFoundAction: function (companyId) {
+        this.renderTo(this.getApplication().getDefaultPage());
     },
 
     _hideFormButtons: function() {
@@ -140,6 +164,10 @@ Ext.define('SafeStartExt.controller.Companies', {
 
     _createCompanyForm: function() {
         this.getCompanyInfoPanel().add(Ext.create('SafeStartExt.view.form.Company'));
+    },
+
+    renderTo: function (hash) {
+        Ext.History.add(hash);
     }
 
 });
