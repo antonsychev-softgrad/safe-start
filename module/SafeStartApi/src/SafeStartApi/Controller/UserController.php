@@ -126,15 +126,40 @@ class UserController extends RestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            if (isset($this->data->email) && $this->data->email != $user->getEmail()) {
+                $checkUser = $this->em->getRepository('SafeStartApi\Entity\User')->findOneBy(array(
+                    'email' => $this->data->email
+                ));
+                if (!is_null($checkUser)) return $this->_showUserAlreadyInUse();
+            }
+            if (isset($this->data->username) && $this->data->username != $user->getUsername()) {
+                $checkUser = $this->em->getRepository('SafeStartApi\Entity\User')->findOneBy(array(
+                    'username' => $this->data->username
+                ));
+                if (!is_null($checkUser)) return $this->_showUserAlreadyInUse();
+            }
         } else {
             $user = new \SafeStartApi\Entity\User();
-        }
+            if (!isset($this->data->email)) $this->data->email = uniqid() . '@safestartinspections.com';
+            if (isset($this->data->email)) {
+                $checkUser = $this->em->getRepository('SafeStartApi\Entity\User')->findOneBy(array(
+                    'email' => $this->data->email
+                ));
 
-        // todo: check if unique email if user deleted = 1 and username
+                if (!is_null($checkUser)) return $this->_showUserAlreadyInUse();
+            }
+            if (isset($this->data->username)) {
+                $checkUser = $this->em->getRepository('SafeStartApi\Entity\User')->findOneBy(array(
+                    'username' => $this->data->username
+                ));
+
+                if (!is_null($checkUser)) return $this->_showUserAlreadyInUse();
+            }
+            $user->setDeleted(0);
+        }
 
         if (isset($this->data->email)) $user->setEmail($this->data->email);
         $user->setUsername(isset($this->data->username) ? $this->data->username : $this->data->email);
-        $user->setDeleted(0);
         $user->setFirstName($this->data->firstName);
         $user->setLastName($this->data->lastName);
         $user->setPosition($this->data->position);

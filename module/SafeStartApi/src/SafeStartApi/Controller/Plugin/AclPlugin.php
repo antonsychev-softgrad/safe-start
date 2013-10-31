@@ -61,6 +61,11 @@ class AclPlugin extends AbstractPlugin
                     'action' => 'viewUsersPage',
                     'access' => 'allow'
                 ),
+                array(
+                    'resource' => 'adminPanel',
+                    'action' => 'viewCompanySettingsPage',
+                    'access' => 'allow'
+                ),
             ),
             'superAdmin' => array(
                 array(
@@ -83,7 +88,11 @@ class AclPlugin extends AbstractPlugin
                     'action' => 'viewSystemStatisticPage',
                     'access' => 'allow'
                 ),
-
+                array(
+                    'resource' => 'adminPanel',
+                    'action' => 'viewCompanySettingsPage',
+                    'access' => 'deny'
+                ),
             )
         ));
     }

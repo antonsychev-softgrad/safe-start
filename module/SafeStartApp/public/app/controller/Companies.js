@@ -138,7 +138,7 @@ Ext.define('SafeStartApp.controller.Companies', {
 
     _createForm: function () {
         if (!this.currentCompanyForm) {
-            this.currentCompanyForm = Ext.create('SafeStartApp.view.forms.CompanySettings');
+            this.currentCompanyForm = Ext.create('SafeStartApp.view.forms.Company');
             this.getCompanyInfoPanel().removeAll(true);
             this.getCompanyInfoPanel().setHtml('');
             this.getCompanyInfoPanel().add(this.currentCompanyForm);

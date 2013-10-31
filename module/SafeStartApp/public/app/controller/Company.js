@@ -18,7 +18,9 @@ Ext.define('SafeStartApp.controller.Company', {
 
     config: {
         control: {
-
+            'SafeStartCompanySettingsForm': {
+                'save-data': 'updateCompanySettings'
+            }
         },
 
         refs: {
@@ -55,6 +57,20 @@ Ext.define('SafeStartApp.controller.Company', {
                 self.getPages().getTabBar().getComponent(1).setBadgeText(result.alerts);
             }
         }, function() {}, true);
+    },
+
+    updateCompanySettings: function (form) {
+        var me = this;
+        var formValues = form.getValues();
+        var data = {
+            address: formValues.address,
+            phone: formValues.phone,
+            description: formValues.description,
+            logo: formValues.logo
+        };
+
+        SafeStartApp.AJAX('company/' + SafeStartApp.userModel.get('companyId') + '/update', formValues, function (result) {
+        });
     }
 
 });

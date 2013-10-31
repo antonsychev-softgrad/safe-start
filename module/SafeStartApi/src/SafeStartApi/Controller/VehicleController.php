@@ -115,8 +115,29 @@ class VehicleController extends RestrictedAccessRestController
             if (!$inspection) $cache->setItem($cashKey, $checklist);
         }
 
+        $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
+        $alerts = array();
+        $filters = array();
+
+        $filters['status'] = \SafeStartApi\Entity\Alert::STATUS_NEW;
+
+        if ($cache->hasItem($cashKey)) {
+            $alerts = $cache->getItem($cashKey);
+        } else {
+            $checkLists = $vehicle->getCheckLists();
+            if (!empty($checkLists)) {
+                foreach ($checkLists as $checkList) {
+                    $alerts = array_merge($alerts, $checkList->getAlertsArray($filters));
+                }
+            }
+            $cache->setItem($cashKey, $alerts);
+        }
+
+        $alerts = array_reverse($alerts);
+
         $this->answer = array(
             'checklist' => $checklist,
+            'alerts' => $alerts
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -263,6 +284,9 @@ class VehicleController extends RestrictedAccessRestController
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
+        $warnings = $this->processChecklistPlugin()->getWarningsFromInspectionFields($checkList);
+        if (!empty($warnings)) $checkList->setWarnings($warnings);
+
         if (!$inspection) $this->em->persist($checkList);
         $this->em->flush();
 
@@ -331,6 +355,8 @@ class VehicleController extends RestrictedAccessRestController
         $this->answer = array(
             'checklist' => $checkList->getHash(),
         );
+
+        if (empty($newAlerts) && $inspection) return $this->AnswerPlugin()->format($this->answer);
 
         if (APP_RESQUE) {
             \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewDbCheckListUploaded', array(
@@ -403,9 +429,9 @@ class VehicleController extends RestrictedAccessRestController
         $inspections = array();
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
-        if ($cache->hasItem($cashKey)) {
+       /* if ($cache->hasItem($cashKey)) {
             $inspections = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
             $query->setParameters(array('id' => $vehicle));
             $items = $query->getResult();
@@ -454,8 +480,8 @@ class VehicleController extends RestrictedAccessRestController
                     $inspections[] = $checkListData;
                 }
             }
-            $cache->setItem($cashKey, $inspections);
-        }
+   /*         $cache->setItem($cashKey, $inspections);
+        }*/
         $page = (int)$this->getRequest()->getQuery('page');
         $limit = (int)$this->getRequest()->getQuery('limit');
         $inspections = array_reverse($inspections);

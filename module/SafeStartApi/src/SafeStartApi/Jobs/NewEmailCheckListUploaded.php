@@ -11,10 +11,10 @@ class NewEmailCheckListUploaded extends ResqueTask
     public function perform()
     {
         $emails = array();
-        foreach((array)$this->args['checkListId'] as $email) {
+        foreach((array)$this->args['emails'] as $email) {
             $emails[] = $email['email'] .':'. (isset($email['name']) ? $email['name'] : 'friend');
         }
-        $command = 'resque run ' . self::COMMAND_NAME  .' --checkListId='. $this->args['checkListId'] . '--emails='.implode(',', $emails);
+        $command = 'resque run ' . self::COMMAND_NAME  .' --checkListId='. $this->args['checkListId'] . ' --emails='.implode(',', $emails);
         $this->executeShelCommand($command);
     }
 }

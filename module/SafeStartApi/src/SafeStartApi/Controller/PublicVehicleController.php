@@ -148,7 +148,7 @@ class PublicVehicleController extends PublicAccessRestController
         );
 
         if (APP_RESQUE) {
-            \Resque::enqueue('new_checklist_uploaded', '\SafeStartApi\Jobs\NewEmailCheckListUploaded', array(
+            \Resque::enqueue('new_email_checklist_uploaded', '\SafeStartApi\Jobs\NewEmailCheckListUploaded', array(
                 'checkListId' => $checkList->getId(),
                 'emails' => $emails
             ));

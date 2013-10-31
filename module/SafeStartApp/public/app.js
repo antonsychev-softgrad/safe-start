@@ -200,6 +200,7 @@ Ext.application({
         'pages.Users',
         'pages.Alerts',
         'pages.SystemSettings',
+        'pages.CompanySettings',
         'pages.SystemStatistic'
     ],
 

@@ -6,7 +6,7 @@ use SafeStartApi\Model\ImageProcessor;
 
 class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
-    const HEADER_EMPIRIC_HEIGHT = 90;
+    const HEADER_EMPIRIC_HEIGHT = 100;
     protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
     private $checkList;
 
@@ -33,6 +33,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->saveDocument();
         $this->checkList->setPdfLink($this->fileName);
         $this->getController()->em->flush();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $this->fileName;
+        $cache->setItem($cashKey, true);
+
         return $this->filePath;
     }
 

@@ -104,6 +104,11 @@ class Company extends BaseEntity
     protected $deleted = 0;
 
     /**
+     * @ORM\Column(type="text", name="logo", nullable = true)
+     */
+    protected $logo;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -191,6 +196,30 @@ class Company extends BaseEntity
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param $val
+     * @return Company
+     */
+    public function setLogo($val)
+    {
+        $this->logo = $val;
 
         return $this;
     }
@@ -457,6 +486,7 @@ class Company extends BaseEntity
         $company['restricted'] = $this->restricted;
         $company['phone'] = $this->phone;
         $company['description'] = $this->description;
+        $company['logo'] = $this->logo;
         $company['max_users'] = $this->getMaxUsers();
         $company['max_vehicles'] = $this->getMaxVehicles();
         $company['expiry_date'] = $this->getExpiryDate();
