@@ -272,7 +272,34 @@ class AdminController extends AdminAccessRestController
             if (!$company) return $this->_showNotFound("Company not found.");
             $vehicles = $company->getVehicles();
             $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+            $statistic['total']['database_vehicles'] = count($vehicles);
+            $users = $company->getUsers();
+            $users = !empty($users) ? $users->toArray() : array();
+            $statistic['total']['database_users'] = count($users);
+            $responsibleUsers = $company->getResponsibleUsers();
+            $responsibleUsers = !empty($responsibleUsers) ? $responsibleUsers->toArray() : array();
+            $statistic['total']['database_responsible_users'] = count($responsibleUsers) + 1;
+            $statistic['total']['database_vehicle_users'] = $statistic['total']['database_users'] - $statistic['total']['database_responsible_users'];
         } else {
+            $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null';
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_users'] = $query->getSingleScalarResult();
+            $dql = 'SELECT COUNT(v.id) FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0';
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_vehicles'] = $query->getSingleScalarResult();
+            $statistic['total']['database_responsible_users']  = 0;
+            $statistic['total']['database_vehicle_users'] = 0;
+            $dql = 'SELECT c FROM SafeStartApi\Entity\Company c WHERE c.deleted = 0';
+            $query = $this->em->createQuery($dql);
+            $companies = $query->getResult();
+            if (!empty($companies)) {
+                foreach ($companies as $company) {
+                    $responsibleUsers = $company->getResponsibleUsers();
+                    $responsibleUsers = !empty($responsibleUsers) ? $responsibleUsers->toArray() : array();
+                    $statistic['total']['database_responsible_users'] += count($responsibleUsers) + count($companies);
+                }
+                $statistic['total']['database_vehicle_users'] = $statistic['total']['database_users'] - $statistic['total']['database_responsible_users'];
+            }
             $company = null;
             $vehicles = array();
         }
@@ -323,7 +350,7 @@ class AdminController extends AdminAccessRestController
             $statistic['total']['database_inspections'] = $query->getSingleScalarResult();
         }
 
-        if($company && count($vehicles) <= 0) {
+        if($company && count($vehicles) == 0) {
             $statistic['total']['database_alerts'] = 0;
         } else {
             $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\Alert cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to';
