@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Users',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.model.Company',
         'SafeStartApp.store.Users',
         'SafeStartApp.view.pages.panel.LeftContainer'
@@ -36,9 +36,8 @@ Ext.define('SafeStartApp.view.pages.Users', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Users');
         this.add({
-            xtype: 'SafeStartUsersToolbar',
+            xtype: 'SafeStartMainToolbar',
             docked: 'top'
         });
 
@@ -157,15 +156,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
-        if (this.down('#SafeStartUsersToolbarTitle')) {
-            this.down('#SafeStartUsersToolbarTitle').setText(SafeStartApp.companyModel.get('title') + ': ' + 'Users');
-        } else {
-            this.down('SafeStartUsersToolbar').add({
-                ui: 'action',
-                id: 'SafeStartUsersToolbarTitle',
-                text: SafeStartApp.companyModel.get('title') + ': ' + 'Users'
-            });
-        }
+        this.down('SafeStartMainToolbar').setBtnTitle(SafeStartApp.companyModel.get('title') + ': ' + 'Users');
         this.usersStore.getProxy().setExtraParam('companyId', this.companyId);
         this.usersStore.loadData();
     }

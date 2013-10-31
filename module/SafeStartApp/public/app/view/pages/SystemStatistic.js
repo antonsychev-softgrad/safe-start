@@ -34,7 +34,6 @@ Ext.define('SafeStartApp.view.pages.SystemStatistic', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Main');
         this.add({
             xtype: 'SafeStartMainToolbar',
             docked: 'top'

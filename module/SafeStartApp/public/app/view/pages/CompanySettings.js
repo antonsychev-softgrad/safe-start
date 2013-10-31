@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.pages.CompanySettings', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.CompanySettings',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.view.forms.CompanySettings'
     ],
 
@@ -28,7 +28,7 @@ Ext.define('SafeStartApp.view.pages.CompanySettings', {
         this.callParent();
 
         this.add({
-            xtype: 'SafeStartCompanySettingsToolbar',
+            xtype: 'SafeStartMainToolbar',
             docked: 'top'
         });
 

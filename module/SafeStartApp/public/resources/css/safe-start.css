@@ -329,11 +329,11 @@ div.logo {
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view {
-    background: url(../img/logo-top.png) no-repeat 6px 7px;
+    /*background: url(../img/logo-top.png) no-repeat 6px 7px;*/
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view .x-inner.x-toolbar-inner {
-    padding-left: 189px;
+    /*padding-left: 189px;*/
 }
 
 .sfa-main-toolbar .x-title {

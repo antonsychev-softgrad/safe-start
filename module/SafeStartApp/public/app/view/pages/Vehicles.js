@@ -1,7 +1,7 @@
 Ext.define('SafeStartApp.view.pages.Vehicles', {
     extend: 'Ext.Container',
     requires: [
-        'SafeStartApp.view.pages.toolbar.Vehicles',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
         'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.store.MenuVehicles'
@@ -20,7 +20,7 @@ Ext.define('SafeStartApp.view.pages.Vehicles', {
 
     initialize: function () {
         this.setItems([{
-            xtype: 'SafeStartToolbarVehicles',
+            xtype: 'SafeStartToolbarMain',
             docked: 'top'
         }, {
             xtype: 'SafeStartNestedListVehicles',

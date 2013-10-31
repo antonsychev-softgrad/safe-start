@@ -8,25 +8,62 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
 
     config: {
         cls: 'sfa-main-toolbar',
+        btnTitle: '',
         scrollable: {
             direction: 'horizontal',
-            indicators: false
+            indicators: false            
         }
     },
 
     initialize: function () {
+        this.setItems([{
+            xtype: 'container',
+            width: 250,
+            layout: {
+                type: 'hbox',
+                align: 'middle'
+            },
+            items: [{
+                xtype: 'image',
+                margin: '0 0 0 16',
+                height: 45,
+                width: 172,
+                src: 'resources/img/logo-top.png',
+                cls: 'sfa-logo-top',
+                listeners: {
+                    tap: function () {
+                        window.location.href = SafeStartApp.logoRedirectUrl;
+                    }
+                }
+            }]
+        }, {
+            xtype: 'spacer'
+        }, {
+            name: 'btn-title',
+            ui: 'action',
+            text: this.config.btnTitle || ''
+        }, {
+            xtype: 'spacer'
+        }, {
+            iconCls: 'user',
+            ui: 'action',
+            action: 'update_profile',
+            text: SafeStartApp.userModel.getFullName()
+        }, {
+            iconCls: 'action',
+            ui: 'action',
+            text: 'Logout',
+            action: 'logout'
+        }]);
+
         this.callParent();
-        this.addListener('resize', function () {
-            if (!this.toolbarButtons)  this.add(this.getToolbarItems());
-        }, this);
     },
 
-    getToolbarItems: function () {
-        return this.toolbarButtons = [
-            { xtype: 'spacer' },
-            { iconCls: 'user', ui: 'action', text: SafeStartApp.userModel.get('firstName') + ' ' + SafeStartApp.userModel.get('lastName'), action: 'update_profile'},
-            { iconCls: 'action', ui: 'action', text: 'Logout', action: 'logout' }
-        ]
+    applyBtnTitle: function (title) {
+        var btn = this.down('button[name=btn-title]');
+        if (btn) {
+            btn.setText(title);
+        }
     }
 
 });

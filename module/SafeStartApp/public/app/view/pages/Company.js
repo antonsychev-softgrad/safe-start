@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Company',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.view.pages.nestedlist.Vehicles',
         'SafeStartApp.view.pages.panel.VehicleInspection',
         'SafeStartApp.view.pages.panel.VehicleAlerts',
@@ -47,10 +47,10 @@ Ext.define('SafeStartApp.view.pages.Company', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Company');
         this.add({
-            xtype: 'SafeStartCompanyToolbar',
-            docked: 'top'
+            xtype: 'SafeStartMainToolbar',
+            docked: 'top',
+            titleBtn: 'Vehicles'
         });
 
         this.vehiclesStore = new SafeStartApp.store.MenuVehicles({
@@ -185,15 +185,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
         this.vehiclesStore.getProxy().setExtraParam('companyId', this.companyId);
-        if (this.down('#SafeStartCompanyToolbarTitle')) {
-            this.down('#SafeStartCompanyToolbarTitle').setText( SafeStartApp.companyModel.get('title') );
-        } else {
-            this.down('SafeStartCompanyToolbar').add({
-                ui: 'action',
-                id: 'SafeStartCompanyToolbarTitle',
-                text: SafeStartApp.companyModel.get('title')
-            });
-        }
+        this.down('SafeStartMainToolbar').setBtnTitle(SafeStartApp.companyModel.get('title'));
         this.vehiclesStore.loadData();
     }
 

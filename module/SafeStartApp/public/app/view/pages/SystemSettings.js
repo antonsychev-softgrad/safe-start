@@ -2,7 +2,7 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.SystemSettings',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.view.pages.panel.UpdateChecklist',
         'SafeStartApp.store.ChecklistDefault'
     ],
@@ -31,9 +31,8 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
     initialize: function () {
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.SystemSettings');
         this.add({
-            xtype: 'SafeStartSystemSettingsToolbar',
+            xtype: 'SafeStartMainToolbar',
             docked: 'top'
         });
 
