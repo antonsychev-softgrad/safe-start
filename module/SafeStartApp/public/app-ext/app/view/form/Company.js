@@ -8,7 +8,6 @@ Ext.define('SafeStartExt.view.form.Company', {
         'Ext.form.FieldContainer'
     ],
     xtype: 'SafeStartExtFormCompany',
-    padding: 20,
 
     initComponent: function () {
         var me = this;
@@ -48,9 +47,9 @@ Ext.define('SafeStartExt.view.form.Company', {
             }],
             items: [
                 {
-                    xtype: 'fieldset',
-                    title: 'Company Settings',
-                    cls:'sfa-company-settings',
+                    xtype: 'fieldcontainer',
+                    fieldLabel: 'Company Settings',
+                    labelAlign: 'top',
                     items: [
                         {
                             xtype: 'hiddenfield',
@@ -97,19 +96,19 @@ Ext.define('SafeStartExt.view.form.Company', {
                             cls:'sfa-limited-access',
                             handler: function() {
                                 if (this.checked) {
-                                    this.up('form').down('fieldset[id=subscription]').enable();
+                                    this.up('form').down('[name=subscription]').enable();
                                 } else {
-                                    this.up('form').down('fieldset[id=subscription]').disable();
+                                    this.up('form').down('[name=subscription]').disable();
                                 }
                             }
                         }
                     ]
                 },
                 {
-                    xtype: 'fieldset',
-                    title: 'Subscription:',
-                    id: 'subscription',
-                    cls: 'subscription-fieldset',
+                    xtype: 'fieldcontainer',
+                    fieldLabel: 'Subscription',
+                    name: 'subscription',
+                    labelAlign: 'top',
                     items: [
                         {
                             xtype: 'numberfield',

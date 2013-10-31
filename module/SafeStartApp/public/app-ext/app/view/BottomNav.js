@@ -65,7 +65,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
                 enableToggle: true,
                 width: 60,
                 handler: function () {
-                    me.fireEvent('redirectTo', this.componentClass);
+                    me.fireEvent('changeTab', this.componentClass);
                     return false;
                 }
             }

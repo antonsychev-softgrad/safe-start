@@ -36,7 +36,8 @@ Ext.define('SafeStartExt.Application', {
         'Auth': 'main#showPage',
         'Contact': 'main#showPage',
         'Companies': 'main#showPage',
-        'Company': 'main#showPage'
+        'Company': 'main#showCompany',
+        'Company/:id': 'main#showCompanyById'
     },
 
     userRecord: null,
