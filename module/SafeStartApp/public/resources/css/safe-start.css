@@ -6,6 +6,9 @@ html, body {
     font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
+.x-field-search .x-field-input:before {
+    content: ' ';
+}
 .x-list .x-list-item .x-list-item-body, .x-list .x-list-item.x-list-item-tpl .x-innerhtml {
     padding: 13px 15px;
 }
