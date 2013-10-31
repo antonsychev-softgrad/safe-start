@@ -70,7 +70,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                         type: 'pop',
                         out: 'true'
                     },
-                    margin: '0 20 0 0',
+                    margin: '0',
                     cls: 'sfa-left-container',
                     store: this.usersStore,
                     items: [{
@@ -88,6 +88,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                         }, {
                             iconCls: 'arrow_left',
                             height: 20,
+                            cls: 'sfa-collapse',
                             iconMask: true,
                             handler: function (btn) {
                                 var panel = this.up('SafeStartLeftContainer');
@@ -126,6 +127,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
                     items: [{

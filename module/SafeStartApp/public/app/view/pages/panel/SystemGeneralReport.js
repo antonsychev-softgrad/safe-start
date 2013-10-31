@@ -47,7 +47,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             name: 'company',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-atatus',
+                            cls: 'sfa-status',
                             valueField: 'id',
                             displayField: 'title',
                             value: 0,
@@ -58,7 +58,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             name: 'range',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-atatus',
+                            cls: 'sfa-status',
                             valueField: 'rank',
                             displayField: 'title',
                             value: 'monthly',
@@ -72,6 +72,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                         {
                             xtype: 'datepickerfield',
                             name: 'from',
+                            cls: 'sfa-data',
                             label: 'From',
                             labelWidth: '',
                             picker: {
@@ -82,6 +83,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                         {
                             xtype: 'datepickerfield',
                             name: 'to',
+                            cls: 'sfa-data',
                             label: 'To',
                             labelWidth: '',
                             picker: {
