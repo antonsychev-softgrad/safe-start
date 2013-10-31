@@ -2,6 +2,9 @@ Ext.define('SafeStartExt.controller.Companies', {
     extend: 'Ext.app.Controller',
 
     refs: [{
+        selector: 'viewport > SafeStartExtBottomNav',
+        ref: 'mainNavPanel'
+    }, {
         selector: 'SafeStartExtComponentCompanies SafeStartExtPanelCompaniesList',
         ref: 'companiesListView'
     }, {
@@ -24,13 +27,10 @@ Ext.define('SafeStartExt.controller.Companies', {
                 changeCompanyAction: this.changeCompanyAction,
                 addCompanyAction: this.addCompanyAction
             },
-            'SafeStartExtMain': {
-
-            },
             'SafeStartExtFormCompany': {
                 updateCompanyAction: this.updateCompany,
                 deleteCompanyAction: this.deleteCompany,
-            }
+            },
         });
     },
 
@@ -52,9 +52,9 @@ Ext.define('SafeStartExt.controller.Companies', {
         this.getCompanyFormPanel().getForm().loadRecord(company);
 
         if (company.get('restricted')) {
-            this.getCompanyFormPanel().down('fieldset[id=subscription]').enable();
+            this.getCompanyFormPanel().down('[name=subscription]').enable();
         } else {
-            this.getCompanyFormPanel().down('fieldset[id=subscription]').disable();
+            this.getCompanyFormPanel().down('[name=subscription]').disable();
         }
     },
 

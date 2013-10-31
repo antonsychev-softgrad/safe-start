@@ -39,6 +39,7 @@ Ext.define('SafeStartExt.controller.Auth', {
             url: 'user/login',
             data: data,
             success: function () {
+                Ext.History.setHash('');
                 viewport.fireEvent('reloadMainMenu');
             }
         });
@@ -49,6 +50,7 @@ Ext.define('SafeStartExt.controller.Auth', {
         SafeStartExt.Ajax.request({
             url: 'user/logout',
             success: function () {
+                Ext.History.setHash('');
                 viewport.fireEvent('reloadMainMenu');
             }
         });

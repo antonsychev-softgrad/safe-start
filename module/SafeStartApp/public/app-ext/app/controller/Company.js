@@ -29,6 +29,7 @@ Ext.define('SafeStartExt.controller.Company', {
     init: function () {
         this.control({
             'SafeStartExtMain': {
+                setCompanyAction: this.setCompanyAction,
                 changeCompanyAction: this.changeCompanyAction
             },
             'SafeStartExtPanelVehicleList': {
@@ -126,7 +127,13 @@ Ext.define('SafeStartExt.controller.Company', {
         this.getCompanyPage().unsetVehicle();
     },
 
-    changeCompanyAction: function (company) {
+    changeCompanyAction: function() {
+        if (this.getVehicleListView()) {
+            this.getVehicleListView().getListStore().loadData([], false);
+        }
+    },
+
+    setCompanyAction: function (company) {
         this.company = company;
         this.needUpdate = true;
 

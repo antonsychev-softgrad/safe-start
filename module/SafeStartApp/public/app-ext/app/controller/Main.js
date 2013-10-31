@@ -24,7 +24,8 @@ Ext.define('SafeStartExt.controller.Main', {
     init: function () {
         this.control({
             'SafeStartExtBottomNav': {
-                redirectTo: this.redirectTo
+                redirectTo: this.redirectTo,
+                changeTab: this.changeTab
             },
             'SafeStartExtMain': {
                 mainMenuLoaded: this.updateMainMenu,
@@ -37,8 +38,13 @@ Ext.define('SafeStartExt.controller.Main', {
         var me = this;
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
-                if (token && !me.getApplication().routes[token]) {
-                    me.notSupportedAction();
+                switch(token) {
+                    case 'SystemStatistic':
+                    case 'SystemSettings':
+                    case 'Alerts':
+                    case 'Users':
+                        me.notSupportedAction();
+                        break;
                 }
             }
         });
@@ -50,8 +56,7 @@ Ext.define('SafeStartExt.controller.Main', {
         mainNavPanel.applyButtons(menu);
 
         var currentHash = Ext.History.getHash();
-
-        if (!currentHash || !Ext.Array.contains(menu, currentHash)) {
+        if (!currentHash) {
             var getter;
             Ext.each(menu, function (name) {
                 getter = 'get' + name + 'Panel';
@@ -65,6 +70,7 @@ Ext.define('SafeStartExt.controller.Main', {
 
     changeCompanyAction: function (company) {
         if (company) {
+            SafeStartExt.companyRecord = company;
             this.getMainNavPanel().enableAll();
         }
     },
@@ -99,6 +105,43 @@ Ext.define('SafeStartExt.controller.Main', {
 
     redirectTo: function(name) {
         Ext.History.add(name);
+    },
+
+    changeTab: function(name) {
+        switch(name) {
+            case 'Company':
+                this.redirectTo('Company/' + SafeStartExt.companyRecord.getId());
+                break;
+            default:
+                this.redirectTo(name);
+        }
+    },
+
+    showCompanyById: function(params) {
+        var store = Ext.create('SafeStartExt.view.panel.CompaniesList').getListStore(),
+            company,
+            me = this;
+
+        this.showPage({}, 'Company');
+
+        store.on('load', function() {
+            company = this.getById(parseInt(params.id));
+            if (company) {
+                me.getMainPanel().fireEvent('setCompanyAction', company);
+                me.getMainNavPanel().enableAll();
+            }
+        });
+        store.load();
+    },
+
+    showCompany: function() {
+        var company = this.getApplication().companyRecord;
+
+        if (company.getId()) {
+            this.showPage({}, 'Company');
+            this.getMainPanel().fireEvent('setCompanyAction', company);
+            this.getMainNavPanel().enableAll();
+        }
     }
 
 });

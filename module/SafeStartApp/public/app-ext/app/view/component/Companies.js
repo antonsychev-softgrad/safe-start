@@ -35,6 +35,7 @@ Ext.define('SafeStartExt.view.component.Companies', {
                     xtype: 'panel',
                     type: 'vbox',
                     flex: 2,
+                    padding: 20,
                     ui: 'transparent',
                     name: 'company-info'
                 }]
