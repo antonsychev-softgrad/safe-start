@@ -311,7 +311,7 @@ class AdminController extends AdminAccessRestController
             $from->setTimestamp((int)$this->data->from);
         } else {
             $from = new \DateTime();
-            $from->setTimestamp(time() - 366*24*60*60);
+            $from->setTimestamp(time() - 6*30*24*60*60);
         }
 
         $fromFirstMonthDay = date('1-m-Y', $from->getTimestamp());
