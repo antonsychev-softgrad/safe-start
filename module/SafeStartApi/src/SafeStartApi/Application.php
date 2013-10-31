@@ -29,6 +29,11 @@ class Application
         return self::$serviceLocator ? self::$serviceLocator->get('Zend\Session\SessionManager') : null;
     }
 
+    public static function getErrorLogger()
+    {
+        return self::$serviceLocator ? self::$serviceLocator->get('ErrorLogger') : null;
+    }
+
     public static function getAuthService()
     {
         return self::$serviceLocator ? self::$serviceLocator->get('doctrine.authenticationservice.orm_default') : null;
@@ -83,8 +88,7 @@ class Application
             }
 
         }
-        $env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
-        self::$cache->setCaching($env == 'prod');
+        self::$cache->setCaching(APP_CACHE);
         return self::$cache;
     }
 

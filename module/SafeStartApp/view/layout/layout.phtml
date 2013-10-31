@@ -1,6 +1,6 @@
 <?php echo $this->doctype(); ?>
 
-<?php $env = getenv('APP_ENV') ?: 'dev'; ?>
+<?php $env = APP_ENV; ?>
 
 <html lang="en">
     <head>
@@ -14,22 +14,50 @@
             var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
         </script>
 
-        <?php
+         <?php
             switch($env) {
                 case 'dev':
-                    $microLoaderScript = 'development.js';
-                    echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    if (isIe9()) {
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/bootstrap.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
+                        $this->headScript()->appendFile($this->basePath() . '/app-ext/ext/ext-all.js');
+                        $this->headScript()->appendFile($this->basePath() . '/app-ext/app.js');
+                    } else {
+                        $microLoaderScript = 'development.js';
+                        $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    }
                     break;
                 case 'prod':
-                    echo '<link href="/build/SafeStartApp/production/resources/css/app.css" media="screen" rel="stylesheet" type="text/css">';
-                    echo '<link href="/build/SafeStartApp/production/resources/css/safe-start.css" media="screen" rel="stylesheet" type="text/css">';
-                    echo '<script type="text/javascript" src="/build/SafeStartApp/production/app.js"></script>';
+                    if (isIe9()) {
+                        $pathToApp = '/app-ext/build/production/SafeStartExt';
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css');
+                    } else {
+                        $this->headLink()->appendStylesheet($this->basePath() . '/build/production/SafeStartApp/resources/css/app.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . 'build/production/SafeStartApp/resources/css/safe-start.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . '/build/production/SafeStartApp/resources/css/safe-start.css');
+                        $this->headScript()->appendFile($this->basePath() . '/build/production/SafeStartApp/app.js');
+                    }
                     break;
                 case 'testing':
                     $microLoaderScript = 'testing.js';
-                    echo $this->headScript()->prependFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
                     break;
             }
+
+            function isIe9() {
+                $ieVersion = null;
+                if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
+                    preg_match_all('/MSIE (\d+)/', $_SERVER['HTTP_USER_AGENT'], $matches);
+                    $ieVersion = $matches[1][0];
+                }
+                return $ieVersion && $ieVersion <= 9;
+            }
+
+            echo $this->headScript();
+            echo $this->headLink();
         ?>
         <link href='http://fonts.googleapis.com/css?family=Archivo+Narrow' rel='stylesheet' type='text/css'>
     </head>

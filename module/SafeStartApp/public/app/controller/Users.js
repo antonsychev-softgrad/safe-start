@@ -21,10 +21,10 @@ Ext.define('SafeStartApp.controller.Users', {
         },
 
         refs: {
-            navMain: 'SafeStartUsersPage > list[name=users]',
-            mainToolbar: 'SafeStartUsersPage > SafeStartMainToolbar',
-            infoPanel: 'SafeStartUsersPage > panel[name=user-info]',
-            addButton: 'SafeStartUsersPage  button[action=add-user]'
+            navMain: 'SafeStartUsersPage list[name=users]',
+            mainToolbar: 'SafeStartUsersPage SafeStartMainToolbar',
+            infoPanel: 'SafeStartUsersPage panel[name=user-info]',
+            addButton: 'SafeStartUsersPage button[action=add-user]'
         }
     },
 

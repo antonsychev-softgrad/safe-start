@@ -16,6 +16,7 @@ Ext.define('SafeStartApp.model.Vehicle', {
             {name: 'nextServiceDay', defaultValue: 'unknown'},
             {name: 'inspectionDueHours', type: 'int', defaultValue: 24},
             {name: 'inspectionDueKms', type: 'int', defaultValue: 500},
+            {name: 'lastInspectionDay', type: 'int', defaultValue: null},
             {name: 'enabled', defaultValue: 1},
             {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()}
         ],
@@ -32,8 +33,8 @@ Ext.define('SafeStartApp.model.Vehicle', {
         }],
         validations: [
             {type: 'presence', name: 'title', message: "Vehicle title is required"},
-            {type: 'presence', name: 'plantId', message: "Vehicle plantId is required"},
-            {type: 'presence', name: 'registration', message: "Vehicle registration number is required"}
+            {type: 'presence', name: 'plantId', message: "Vehicle plantId is required"}
+            // {type: 'presence', name: 'registration', message: "Vehicle registration number is required"}
         ]
     }
 });

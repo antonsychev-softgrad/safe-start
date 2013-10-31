@@ -61,57 +61,52 @@ class Vehicle extends BaseEntity
     protected $plantId;
 
     /**
-     * @ORM\Column(type="string", name="registration_number", nullable=false)
-     **/
-    protected $registrationNumber;
-
-    /**
-     * @ORM\Column(type="string", length=255, name="title")
+     * @ORM\Column(type="string", length=255, name="title", nullable=true)
      */
     protected $title;
 
     /**
-     * @ORM\Column(type="string", length=255, name="project_name")
+     * @ORM\Column(type="string", length=255, name="project_name", nullable=true)
      */
     protected $projectName;
 
     /**
-     * @ORM\Column(type="integer", name="project_number")
+     * @ORM\Column(type="integer", name="project_number", nullable=true)
      */
     protected $projectNumber;
 
     /**
-     * @ORM\Column(type="float", name="service_due_km")
+     * @ORM\Column(type="float", name="service_due_km", nullable=true)
      */
     protected $serviceDueHours = 0;
 
     /**
-     * @ORM\Column(type="float", name="service_due_hours")
+     * @ORM\Column(type="float", name="service_due_hours", nullable=true)
      */
     protected $serviceDueKm = 0;
 
     /**
-     * @ORM\Column(type="float", name="current_odometer_hours")
+     * @ORM\Column(type="float", name="current_odometer_hours", nullable=true)
      */
     protected $currentOdometerHours = 0;
 
     /**
-     * @ORM\Column(type="float", name="current_odometer_kms")
+     * @ORM\Column(type="float", name="current_odometer_kms", nullable=true)
      */
     protected $currentOdometerKms = 0;
 
     /**
-     * @ORM\Column(type="float", name="inspection_due_hours")
+     * @ORM\Column(type="float", name="inspection_due_hours", nullable=true)
      */
     protected $inspectionDueHours = 24;
 
     /**
-     * @ORM\Column(type="float", name="inspection_due_kms")
+     * @ORM\Column(type="float", name="inspection_due_kms", nullable=true)
      */
     protected $inspectionDueKms = 500;
 
     /**
-     * @ORM\Column(type="datetime", name="creation_date")
+     * @ORM\Column(type="datetime", name="creation_date", nullable=true)
      */
     protected $creation_date;
 
@@ -181,7 +176,6 @@ class Vehicle extends BaseEntity
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "warrantyStartDate" => $this->getWarrantyStartDate(),
             "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
             "currentOdometerKms" => (!is_null($this->getCurrentOdometerKms())) ? $this->getCurrentOdometerKms() : 0,
@@ -190,9 +184,13 @@ class Vehicle extends BaseEntity
             "enabled" => $this->getEnabled(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
+            "lastInspectionDay" => $this->getLastInspectionDay()
         );
     }
 
+    /**
+     * @return bool|string
+     */
     public function getNextServiceDay()
     {
         $date = 'unknown';
@@ -241,12 +239,18 @@ class Vehicle extends BaseEntity
         return $date;
     }
 
+    /**
+     * @return int
+     */
     public function getNetServiceDueHours()
     {
         //todo: calculate next service km
         return $this->serviceDueHours;
     }
 
+    /**
+     * @return int
+     */
     public function getNetServiceDueKms()
     {
         return $this->serviceDueKm;
@@ -266,13 +270,13 @@ class Vehicle extends BaseEntity
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "registration" => (!is_null($this->getRegistrationNumber())) ? $this->getRegistrationNumber() : '',
             "expiryDate" => $this->company->getExpiryDate(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
+            "lastInspectionDay" => $this->getLastInspectionDay()
         );
     }
 
@@ -282,13 +286,16 @@ class Vehicle extends BaseEntity
     public function toMenuArray()
     {
         $vehicleData = $this->toInfoArray();
-        $vehicleData['text'] = $vehicleData['plantId'] .' '. $vehicleData['title'];
+        $vehicleData['text'] = $vehicleData['plantId'] . ' ' . $vehicleData['title'];
         $menuItems = $this->getMenuItems();
         if (empty($menuItems)) $vehicleData['leaf'] = true;
         else $vehicleData['data'] = $menuItems;
         return $vehicleData;
     }
 
+    /**
+     * @return array
+     */
     public function getMenuItems()
     {
         $menuItems = array();
@@ -375,7 +382,8 @@ class Vehicle extends BaseEntity
                 $checkListData['checkListId'] = $checkList->getId();
                 $checkListData['checkListHash'] = $checkList->getHash();
                 $checkListData['action'] = 'check-list';
-                $checkListData['text'] = $checkList->getCreationDate()->format("g:i A d/m/y");
+                $config = \SafeStartApi\Application::getConfig();
+                $checkListData['text'] = $checkList->getCreationDate()->format($config['params']['date_format'] . " " . $config['params']['time_format']);
                 $checkListData['leaf'] = true;
 
                 $inspections[] = $checkListData;
@@ -386,6 +394,9 @@ class Vehicle extends BaseEntity
     }
 
 
+    /**
+     * @return mixed|null
+     */
     public function getLastInspection()
     {
         if (!empty($this->checkLists)) {
@@ -395,6 +406,29 @@ class Vehicle extends BaseEntity
         }
     }
 
+    public function getPrevInspectionDay()
+    {
+        if (count($this->checkLists) < 2) return null;
+        return $this->checkLists[count($this->checkLists) - 2]->getCreationDate()->getTimestamp();
+    }
+
+    /**
+     * @return null
+     */
+    public function getLastInspectionDay()
+    {
+        $inspection = $this->getLastInspection();
+        if ($inspection) {
+            return $inspection->getCreationDate()->getTimestamp();
+        }
+        return null;
+    }
+
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array
+     */
     public function getStatistic(\DateTime $from = null, \DateTime $to = null)
     {
         if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
@@ -434,7 +468,7 @@ class Vehicle extends BaseEntity
                 $hour = $item->getCurrentOdometerHours();
                 if (!empty($km) && !empty($hour)) {
                     $chart[] = array(
-                        'value' => round($km/$hour),
+                        'value' => round($km / $hour),
                         'formattedDate' => date('Y-m-d', $item->getCreationDate()->getTimestamp()),
                         'date' => $item->getCreationDate()->getTimestamp() * 1000,
                     );
@@ -452,50 +486,138 @@ class Vehicle extends BaseEntity
         );
     }
 
-    public function getCurrentOdometerKms()
+    /**
+     * @return array
+     */
+    public function getCurrentDayOdometerUsage()
     {
-        return (float) ($this->currentOdometerKms ? $this->currentOdometerKms : 0);
+        $usage = array(
+            'kms' => 0,
+            'hours' => 0,
+        );
+
+        $em = \SafeStartApi\Application::getEntityManager();
+
+        $beginOfDay = strtotime("midnight", time());
+        $endOfDay = strtotime("tomorrow", $beginOfDay);
+        $startDay = strtotime("midnight", time()) - 24 * 60 * 60;
+        $from = new \DateTime(date('Y-m-d', $beginOfDay));
+        $start = new \DateTime(date('Y-m-d', $startDay));
+        $to = new \DateTime(date('Y-m-d', $endOfDay));
+
+        $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :start AND cl.update_date < :from ORDER BY cl.update_date DESC');
+        $query->setParameter(1, $this)
+            ->setParameter('from', $from)
+            ->setParameter('start', $start)
+            ->setMaxResults(1);
+        $items = $query->getResult();
+
+        if (!count($items)) {
+            $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
+            $query->setParameter(1, $this)
+                ->setParameter('from', $from)
+                ->setParameter('to', $to);
+            $items = $query->getResult();
+
+            if (count($items) < 2) return $usage;
+
+            $lastCheckList = $items[0];
+            $firstCheckList = $items[count($items) - 1];
+        } else {
+            $firstCheckList = $items[0];
+            $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
+            $query->setParameter(1, $this)
+                ->setParameter('from', $from)
+                ->setParameter('to', $to);
+            $items = $query->getResult();
+
+            if (!count($items)) return $usage;
+            $lastCheckList = $items[0];
+        }
+
+        $kms2 = $lastCheckList->getCurrentOdometer();
+        $kms1 = $firstCheckList->getCurrentOdometer();
+        $h1 = $firstCheckList->getCurrentOdometerHours();
+        $h2 = $lastCheckList->getCurrentOdometerHours();
+        $usage = array(
+            'kms' => ($kms2 - $kms1),
+            'hours' => ($h2 - $h1),
+        );
+
+        return $usage;
     }
 
+    /**
+     * @return float
+     */
+    public function getCurrentOdometerKms()
+    {
+        return (float)($this->currentOdometerKms ? $this->currentOdometerKms : 0);
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setCurrentOdometerKms($value)
     {
         $this->currentOdometerKms = $value;
         return $this;
     }
 
+    /**
+     * @return float
+     */
     public function getCurrentOdometerHours()
     {
-        return (float) ($this->currentOdometerHours ? $this->currentOdometerHours : 0);
+        return (float)($this->currentOdometerHours ? $this->currentOdometerHours : 0);
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setCurrentOdometerHours($value)
     {
         $this->currentOdometerHours = $value;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getInspectionDueKms()
     {
-        return (int) ($this->inspectionDueKms ? $this->inspectionDueKms : 500);
+        return (int)($this->inspectionDueKms ? $this->inspectionDueKms : 500);
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setInspectionDueKms($value)
     {
         $this->inspectionDueKms = $value;
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getInspectionDueHours()
     {
-        return (int) ($this->inspectionDueHours ? $this->inspectionDueHours : 24);
+        return (int)($this->inspectionDueHours ? $this->inspectionDueHours : 24);
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setInspectionDueHours($value)
     {
         $this->inspectionDueHours = $value;
         return $this;
     }
-
 
 
     /**
@@ -539,7 +661,7 @@ class Vehicle extends BaseEntity
      */
     public function setPlantId($plantId)
     {
-        $this->plantId = $plantId;
+        $this->plantId = strtoupper($plantId);
 
         return $this;
     }
@@ -552,29 +674,6 @@ class Vehicle extends BaseEntity
     public function getPlantId()
     {
         return $this->plantId;
-    }
-
-    /**
-     * Set registrationNumber
-     *
-     * @param string $registrationNumber
-     * @return Vehicle
-     */
-    public function setRegistrationNumber($registrationNumber)
-    {
-        $this->registrationNumber = $registrationNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get registrationNumber
-     *
-     * @return string
-     */
-    public function getRegistrationNumber()
-    {
-        return $this->registrationNumber;
     }
 
     /**

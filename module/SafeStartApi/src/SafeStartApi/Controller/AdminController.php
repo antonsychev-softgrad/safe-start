@@ -27,7 +27,7 @@ class AdminController extends AdminAccessRestController
     public function updateCompanyAction()
     {
         //  if (!$this->_requestIsValid('admin/updatecompany')) return $this->_showBadRequest();
-
+        $actionAdd = true;
         $companyId = (int)$this->params('id');
         if ($companyId) {
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
@@ -37,6 +37,7 @@ class AdminController extends AdminAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            $actionAdd = false;
         } else {
             $company = new \SafeStartApi\Entity\Company();
         }
@@ -49,16 +50,19 @@ class AdminController extends AdminAccessRestController
             $user = new \SafeStartApi\Entity\User();
             $user->setEmail($this->data->email);
             $user->setFirstName($this->data->firstName);
-            $user->setUsername($this->data->firstName);
+            $user->setUsername($this->data->email);
             $user->setRole('companyAdmin');
             $this->em->persist($user);
-        } else {
+        } else if ($actionAdd) {
             $adminForCompany = $this->em->getRepository('SafeStartApi\Entity\Company')->findOneBy(array(
                 'admin' => $user,
                 'deleted' => 0,
             ));
             if(!is_null($adminForCompany)) return $this->_showAdminAlreadyInUse();
         }
+
+        $user->setEnabled(1);
+        $user->setDeleted(0);
 
         // set company data
         $company->setTitle($this->data->title);
@@ -160,7 +164,6 @@ class AdminController extends AdminAccessRestController
     {
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getForEditDefaultChecklist";
-        $checklist = array();
         if ($cache->hasItem($cashKey)) {
             $checklist = $cache->getItem($cashKey);
         } else {
@@ -409,5 +412,99 @@ class AdminController extends AdminAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function getInspectionBreakdownsStatisticAction()
+    {
+        $statistic = array();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        } else {
+            $from = new \DateTime();
+            $from->setTimestamp(time() - 366*24*60*60);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        } else {
+            $to = new \DateTime();
+        }
+
+        $query = $this->em->createQuery('SELECT COUNT(r.id) as counts, r.key, r.additional FROM SafeStartApi\Entity\InspectionBreakdown r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.key');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $items = $query->getResult();
+        $chart = array();
+        if (!empty($items)) {
+            foreach( $items as $item) {
+                $chart[] = array(
+                    'key' => $item['key'],
+                    'count' => $item['counts'],
+                    'additional' => $item['additional']
+                );
+            }
+        }
+
+        $statistic['chart'] = $chart;
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $statistic
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
+    public function getCheckListsChangesStatisticAction()
+    {
+        $statistic = array();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        } else {
+            $from = new \DateTime();
+            $from->setTimestamp(time() - 366*24*60*60);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        } else {
+            $to = new \DateTime();
+        }
+
+        $query = $this->em->createQuery('SELECT r.key, r.prev_key, r.action, r.type, r.date, r.company_name FROM SafeStartApi\Entity\InspectionChanges r WHERE r.date >= :from AND  r.date <= :to GROUP BY r.prev_key');
+        $query->setParameter('from', $from)->setParameter('to', $to);
+        $items = $query->getResult();
+
+        if (!empty($items)) {
+            foreach( $items as $item) {
+                $statistic[] = array(
+                    'key' => $item['key'],
+                    'prev_key' => $item['prev_key'],
+                    'action' => $item['action'],
+                    'type' => $item['type'],
+                    'company_name' => $item['company_name'],
+                    'date' => $item['date']->getTimestamp()
+                );
+            }
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'statistic' => $statistic
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
 
 }

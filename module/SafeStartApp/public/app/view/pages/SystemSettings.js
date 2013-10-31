@@ -54,14 +54,14 @@ Ext.define('SafeStartApp.view.pages.SystemSettings', {
                 {
                     xtype: 'SafeStartUpdateChecklistPanel',
                     checklistStore: this.checklistDefaultStoreStore
-                },
+                }/*,
                 {
                     xtype: 'panel',
                     title: 'System',
                     name: 'system',
                     html: "System",
                     layout: 'card'
-                }
+                }*/
             ],
             listeners: {
 

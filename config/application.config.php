@@ -1,6 +1,6 @@
 <?php
-
-$env = getenv('APP_ENV') ? getenv('APP_ENV') : 'dev';
+defined('APP_ENV') || define('APP_ENV', 'dev');
+$env = APP_ENV;
 
 $modules =  array(
     'DoctrineModule',

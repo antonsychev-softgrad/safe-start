@@ -14,8 +14,14 @@ use SafeStartApi\Entity\Vehicle;
  */
 class Alert extends BaseEntity
 {
+    // statuses
     const STATUS_NEW = 'new';
     const STATUS_CLOSED = 'closed';
+
+    //actions
+    const ACTION_STATUS_CHANGED_CLOSED = 'alert_closed';
+    const ACTION_STATUS_CHANGED_NEW = 'alert_reopened';
+    const ACTION_REFRESHED = 'alert_refreshed';
 
     /**
      * Constructor
@@ -88,6 +94,13 @@ class Alert extends BaseEntity
     protected $deleted = 0;
 
     /**
+     * @ORM\Column(type="json_array", nullable=true)
+     *
+     * PHP array using json_encode() and json_decode()
+     */
+    protected $history = '';
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -151,6 +164,49 @@ class Alert extends BaseEntity
     public function getImages()
     {
         return $this->images ? json_decode($this->images, true) : array();
+    }
+
+    /**
+     * Set images
+     *
+     * @param array $history
+     * @return Alert
+     */
+    public function setHistory($history)
+    {
+        $currentHistory = $this->getHistory();
+        $currentHistory = array_merge($currentHistory, $history);
+        $this->history = json_encode($currentHistory);
+        return $this;
+    }
+
+    public function addHistoryItem($action = '')
+    {
+        $this->setHistory(array(array(
+           'date' => time(),
+           'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
+           'action' => $action
+        )));
+    }
+
+    public function getRefreshedTimes()
+    {
+        $count = 0;
+        $currentHistory = $this->getHistory();
+        foreach($currentHistory as $historyItem) {
+            if (isset($historyItem['action']) && $historyItem['action'] == self::ACTION_REFRESHED) $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * Get history
+     *
+     * @return array
+     */
+    public function getHistory()
+    {
+        return $this->history ? json_decode($this->history, true) : array();
     }
 
     /**
@@ -234,6 +290,7 @@ class Alert extends BaseEntity
         if (!in_array($status, array(self::STATUS_NEW, self::STATUS_CLOSED))) {
             throw new \InvalidArgumentException("Invalid alert status");
         }
+
         $this->status = $status;
 
         return $this;
@@ -269,6 +326,9 @@ class Alert extends BaseEntity
             'thumbnail' => $this->getThumbnail(),
             'comments' => $this->getComments(),
             'creation_date' => time($this->getCreationDate()),
+            'update_date' => time($this->getUpdateDate()),
+            'history' => $this->getHistory(),
+            'refreshed_times' => $this->getRefreshedTimes()
         );
         return $data;
     }

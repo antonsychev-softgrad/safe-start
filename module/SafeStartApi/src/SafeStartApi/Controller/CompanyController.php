@@ -32,9 +32,9 @@ class CompanyController extends RestrictedAccessRestController
         $node = (int)$this->getRequest()->getQuery('node');
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList" . $node;
+        $cashKey = "getCompanyVehicles" . $companyId;
 
-        if ($cache->hasItem($cashKey)) {
+        if ($cache->hasItem($cashKey) && !$node) {
             $this->answer = $cache->getItem($cashKey);
         } else {
             if (!$node) {
@@ -120,8 +120,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
-        $plantId = $this->data->plantId;
-        $registration = $this->data->registration;
+        $plantId = strtoupper($this->data->plantId);
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
             $vehicle = $repository->find($vehicleId);
@@ -132,17 +131,19 @@ class CompanyController extends RestrictedAccessRestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
             if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            if ($vehicle->getPlantId() != $plantId) {
+                $vehicleWithSentPlantId = $repository->findOneBy(array(
+                    'plantId' => $plantId,
+                    'deleted' => 0,
+                ));
+                if (!is_null($vehicleWithSentPlantId)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            }
         } else {
             $vehicle = $repository->findOneBy(array(
                 'plantId' => $plantId,
                 'deleted' => 0,
             ));
-            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
-            $vehicle = $repository->findOneBy(array(
-                'registrationNumber' => $registration,
-                'deleted' => 0,
-            ));
-            if(!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Registration number already exists');
+            if (!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
@@ -154,7 +155,6 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setTitle($this->data->title);
         $vehicle->setType($this->data->type);
         $vehicle->setEnabled((int)$this->data->enabled);
-        $vehicle->setRegistrationNumber($registration);
         $vehicle->setProjectName($this->data->projectName);
         $vehicle->setProjectNumber($this->data->projectNumber);
         $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);
@@ -175,7 +175,7 @@ class CompanyController extends RestrictedAccessRestController
         $this->em->flush();
 
         $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehiclesList";
+        $cashKey = "getCompanyVehicles" . $company->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
@@ -208,11 +208,12 @@ class CompanyController extends RestrictedAccessRestController
         $users = array_merge($users, $responsibleUsers);
 
         $cache = \SafeStartApi\Application::getCache();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $cashKey = "getUserVehiclesList" . $user->getId();
             $cache->removeItem($cashKey);
         }
 
+        $vehicle->setPlantId(time() ." ".$vehicle->getPlantId());
         $vehicle->setDeleted(1);
 
         $this->em->flush();
@@ -247,7 +248,7 @@ class CompanyController extends RestrictedAccessRestController
 
         foreach ($items as $item) {
             if ($item->getId() == $this->authService->getIdentity()->getId()) continue;
-            if ($item->getId() ==  $company->getAdmin()->getId()) continue;
+            if ($item->getId() == $company->getAdmin()->getId()) continue;
             $this->answer[] = $item->toArray();
         }
 
@@ -383,6 +384,7 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
+        $action = 'create';
         $fieldId = (int)$this->params('id');
         if ($fieldId) {
             $field = $this->em->find('SafeStartApi\Entity\Field', $fieldId);
@@ -392,6 +394,7 @@ class CompanyController extends RestrictedAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
+            $action = 'update';
         } else {
             $field = new \SafeStartApi\Entity\Field();
         }
@@ -414,19 +417,23 @@ class CompanyController extends RestrictedAccessRestController
             return $this->AnswerPlugin()->format($this->answer, 401);
         }
 
+        $oldTitle = $field->getTitle();
+        $oldType = $field->getType();
+
         $field->setTitle($this->data->title);
         $field->setDescription($this->data->description);
         $field->setType($this->data->type);
         $field->setOrder((int)$this->data->sort_order);
         $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
-        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_title : '');
-        $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox') ? $this->data->alert_description : '');
+        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox' || $this->data->type == 'datePicker') ? $this->data->alert_title : '');
+        $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox' || $this->data->type == 'datePicker') ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
+        $field->setDefaultValue($this->data->default_value);
         $field->setAlertCritical((int)$this->data->alert_critical);
         $field->setVehicle($vehicle);
 
-        $this->em->persist($field);
+        if (!$fieldId) $this->em->persist($field);
         $field->setAuthor($this->authService->getStorage()->read());
 
         $this->em->flush();
@@ -434,8 +441,28 @@ class CompanyController extends RestrictedAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleChecklist" . $vehicle->getId();
         $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
+        $cashKey3 = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
+        if ($cache->hasItem($cashKey3)) $cache->removeItem($cashKey3);
+
+        if ($oldTitle != $this->data->title || $oldType != $this->data->type) {
+            $record = new \SafeStartApi\Entity\InspectionChanges();
+            $record->setAction($action);
+            $record->setKey($field->getTitle());
+            $record->setPrevKey($oldTitle);
+            $record->setType($field->getType());
+            $record->setFieldId($field->getId());
+
+            $user = \SafeStartApi\Application::getCurrentUser();
+            $record->setCompanyName($user->getCompany() ? $user->getCompany()->getTitle() : '');
+            $record->setCompanyId($user->getCompany() ? $user->getCompany()->getId() : '');
+            $record->setUserName($user->getFirstName() ." ". $user->getLastName());
+            $record->setUserId($user->getId());
+
+            $this->em->persist($record);
+            $this->em->flush();
+        }
 
         $this->answer = array(
             'done' => true,
@@ -462,6 +489,21 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $field->setDeleted(1);
+        $this->em->flush();
+
+        $record = new \SafeStartApi\Entity\InspectionChanges();
+        $record->setAction('delete');
+        $record->setKey($field->getTitle());
+        $record->setType($field->getType());
+        $record->setFieldId($field->getId());
+
+        $user = \SafeStartApi\Application::getCurrentUser();
+        $record->setCompanyName($user->getCompany() ? $user->getCompany()->getTitle() : '');
+        $record->setCompanyId($user->getCompany() ? $user->getCompany()->getId() : '');
+        $record->setUserName($user->getFirstName() ." ". $user->getLastName());
+        $record->setUserId($user->getId());
+
+        $this->em->persist($record);
         $this->em->flush();
 
         $this->answer = array(

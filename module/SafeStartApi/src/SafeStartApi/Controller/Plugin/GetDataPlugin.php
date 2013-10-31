@@ -71,7 +71,7 @@ class GetDataPlugin extends AbstractPlugin
                     'fieldOrder' => $field->getOrder(),
                     'fieldName' => $field->getTitle(),
                     'fieldDescription' => $field->getDescription(),
-                    'fieldType' => $fieldsConfig[$field->getType()]['id'],
+                    'fieldType' => isset($fieldsConfig[$field->getType()]) ? $fieldsConfig[$field->getType()]['id'] : 0,
                     'alertMessage' => $field->getAlertTitle(),
                     'alertDescription' => $field->getAlertDescription(),
                     'type' => $field->getType(),
@@ -79,8 +79,11 @@ class GetDataPlugin extends AbstractPlugin
                     'triggerValue' => $field->getTriggerValue(),
                 );
                 $listField['items'] = $this->_buildChecklist($fields, $field->getId(), $inspection);
+                $listField['defaultValue'] = $field->getDefaultValue();
                 if ($inspection) {
                     $listField['fieldValue'] = $inspection->getFieldValue($field);
+                } else if ($field->getDefaultValue()) {
+                    $listField['fieldValue'] = $field->getDefaultValue();
                 } else {
                     if (isset($fieldsConfig[$field->getType()]['default'])) $listField['fieldValue'] = $fieldsConfig[$field->getType()]['default'];
                 }

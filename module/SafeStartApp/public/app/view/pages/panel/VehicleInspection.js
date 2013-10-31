@@ -294,7 +294,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
-                    fields.push(this.createDatePickerFiled(fieldData));
+                    fields.push(this.createDatePickerField(fieldData, alertRecord));
                     break;
                 case 'group':
                     fields.push(this.createGroupField(fieldData));
@@ -303,7 +303,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createCheckboxField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 default: 
-                    Ext.Logger.log('Unexpected field type:' + fieldData.type, 'warn');
                     break;
             }
 
@@ -379,7 +378,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                         additionalFields;
                     if (alert) {
                         if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
-                            if (alert.get('critical')) {
+                            if (alert.get('critical') && alert.get('alertMessage')) {
                                 Ext.Msg.alert('DANGER', alert.get('alertMessage'));
                             }
                             alert.set('active', true);
@@ -430,15 +429,35 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createDatePickerFiled: function (fieldData) {
+    createDatePickerField: function (fieldData, alertRecord) {
         return {
             xtype: 'datepickerfield',
             maxWidth: 900,
             labelWidth: '',
             width: '100%',
+            yearFrom: 2000,
+            triggerable: true,
+            picker: {
+                yearTo: new Date().getFullYear() + 10
+            },
+            dateFormat: SafeStartApp.dateFormat,
             label: fieldData.fieldName,
             fieldId: fieldData.fieldId,
-            value: new Date(fieldData.fieldValue * 1000 || Date.now())
+            value: new Date(fieldData.fieldValue * 1000 || Date.now()),
+            defaultValue: fieldData.defaultValue,
+            alertRecord: alertRecord,
+            listeners: {
+                change: function (view, date) {
+                    var alert = this.config.alertRecord;
+                    if (alert) {
+                        if ((new Date(this.config.defaultValue).getTime() - alert.get('triggerValue') * 24 * 60 * 60 * 1000) < date.getTime()) {
+                            alert.set('active', true);
+                        } else {
+                            alert.set('active', false);
+                        }
+                    }
+                }
+            }
         };
     },
 
@@ -576,18 +595,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 },
                 width: '100%',
                 items: [{
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-kms',
                     label: 'Kilometers',
-                    stepValue: 1000,
                     required: true,
                     value: odometerKms,
-                    minValue: 1000
+                    minValue: 0
                 }, {
-                    xtype: 'spinnerfield',
+                    xtype: 'numberfield',
                     name: 'current-odometer-hours',
                     label: 'Hours',
-                    stepValue: 24,
                     value: odometerHours,
                     minValue: 0
                 }]

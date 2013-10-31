@@ -15,20 +15,20 @@ Ext.define('SafeStartApp.controller.Companies', {
                 tap: 'addAction'
             },
             companiesPage: {
-                activate: 'activateCompaniesPage'
+                // activate: 'activateCompaniesPage'
             }
         },
 
         refs: {
             main: 'SafeStartCompaniesPage',
             pages: 'SafeStartMainView',
-            mainToolbar: 'SafeStartCompaniesPage > SafeStartMainToolbar',
+            mainToolbar: 'SafeStartCompaniesPage SafeStartMainToolbar',
             companiesPage: 'SafeStartCompaniesPage',
             companyPage: 'SafeStartCompanyPage',
             usersPage: 'SafeStartUsersPage',
             alertsPage: 'SafeStartAlertsPage',
-            navMain: 'SafeStartCompaniesPage > list[name=companies]',
-            companyInfoPanel: 'SafeStartCompaniesPage > panel[name=company-info]',
+            navMain: 'SafeStartCompaniesPage list[name=companies]',
+            companyInfoPanel: 'SafeStartCompaniesPage panel[name=company-info]',
             addCompanyButton: 'SafeStartCompaniesPage button[action=add-company]'
         }
     },

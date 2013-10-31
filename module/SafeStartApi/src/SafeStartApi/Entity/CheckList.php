@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CheckList extends BaseEntity
 {
+    // reduced odometer data
+    const WARNING_DATA_DISCREPANCY_KMS = 'date_discrepancy_kms';
+    const WARNING_DATA_DISCREPANCY_HOURS = 'date_discrepancy_hours';
+
+    // 24h/500km per day
+    const WARNING_DATA_INCORRECT = 'date_incorrect';
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -41,6 +48,16 @@ class CheckList extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $pdf_link;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $operator_name;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $fault_pdf_link;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -78,6 +95,11 @@ class CheckList extends BaseEntity
     protected $default_alerts;
 
     /**
+     * @ORM\OneToMany(targetEntity="InspectionBreakdown", mappedBy="check_list", cascade={"persist", "remove", "merge"})
+     */
+    protected $inspectionBreakdowns;
+
+    /**
      * @ORM\Column(type="datetime", name="creation_date")
      */
     protected $creation_date;
@@ -98,11 +120,19 @@ class CheckList extends BaseEntity
     protected $user_data;
 
     /**
+     * @ORM\Column(type="json_array", nullable=true)
+     *
+     * PHP array using json_encode() and json_decode()
+     */
+    protected $warnings = '';
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setCreationDate(new \DateTime());
     }
 
     /**
@@ -156,6 +186,29 @@ class CheckList extends BaseEntity
     public function setPdfLink($pdf_link)
     {
         $this->pdf_link = $pdf_link;
+
+        return $this;
+    }
+
+    /**
+     * Get pdf_link
+     *
+     * @return string
+     */
+    public function getFaultPdfLink()
+    {
+        return $this->fault_pdf_link;
+    }
+
+    /**
+     * Set pdf_link
+     *
+     * @param string $pdf_link
+     * @return CheckList
+     */
+    public function setFaultPdfLink($pdf_link)
+    {
+        $this->fault_pdf_link = $pdf_link;
 
         return $this;
     }
@@ -374,7 +427,7 @@ class CheckList extends BaseEntity
      */
     public function getCurrentOdometer()
     {
-        return $this->current_odometer;
+        return $this->current_odometer ? $this->current_odometer : 0;
     }
 
     /**
@@ -384,7 +437,7 @@ class CheckList extends BaseEntity
      */
     public function getCurrentOdometerHours()
     {
-        return $this->current_odometer_hours;
+        return $this->current_odometer_hours ? $this->current_odometer_hours : 0;
     }
 
     /**
@@ -445,7 +498,7 @@ class CheckList extends BaseEntity
     /**
      * Add alerts
      *
-     * @param \SafeStartApi\Entity\Alert $alerts
+     * @param \SafeStartApi\Entity\Alert|\SafeStartApi\Entity\DefaultAlert $alerts
      * @return CheckList
      */
     public function addDefaultAlert(\SafeStartApi\Entity\DefaultAlert $alerts)
@@ -482,6 +535,10 @@ class CheckList extends BaseEntity
         return $alerts;
     }
 
+    /**
+     * @param array $filters
+     * @return array
+     */
     public function getAlertsArray($filters = array())
     {
         $alerts = array();
@@ -525,15 +582,21 @@ class CheckList extends BaseEntity
             'id' => $this->getId(),
             'hash' => $this->getHash(),
             'gps' => $this->getGpsCoords(),
+            'operator_name' => $this->getOperatorName(),
             'odometer_kms' => $this->getCurrentOdometer(),
             'odometer_hours' => $this->getCurrentOdometerHours(),
             'creation_date' => $this->getCreationDate()->getTimestamp(),
             'update_date' => $this->getUpdateDate()->getTimestamp(),
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'data' => json_decode($this->getFieldsData(), true),
+            'warnings' => $this->getWarnings()
         );
     }
 
+    /**
+     * @param $field
+     * @return null
+     */
     public function getFieldValue($field)
     {
         $value = null;
@@ -571,4 +634,69 @@ class CheckList extends BaseEntity
     {
         return $this->deleted;
     }
+
+    /**
+     * Set warnings
+     *
+     * @param array $warnings
+     * @return CheckList
+     */
+    public function setWarnings($warnings)
+    {
+        $currentWarnings = $this->getWarnings();
+        $currentWarnings = array_merge($currentWarnings, $warnings);
+        $this->warnings = json_encode($currentWarnings);
+        return $this;
+    }
+
+    public function clearWarnings() {
+        $this->warnings = null;
+        return $this;
+    }
+
+    /**
+     * Get warnings
+     *
+     * @return array
+     */
+    public function getWarnings()
+    {
+        return $this->warnings ? json_decode($this->warnings, true) : array();
+    }
+
+    /**
+     * @param string $warning
+     */
+    public function addWarning($warning = '')
+    {
+        $this->setWarnings(array(array(
+            'date' => time(),
+            'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
+            'action' => $warning
+        )));
+    }
+
+    /**
+     * Get operator_name
+     *
+     * @return string
+     */
+    public function getOperatorName()
+    {
+        return $this->operator_name;
+    }
+
+    /**
+     * Set operator_name
+     *
+     * @param string $value
+     * @return CheckList
+     */
+    public function setOperatorName($value)
+    {
+        $this->operator_name = $value;
+
+        return $this;
+    }
+
 }

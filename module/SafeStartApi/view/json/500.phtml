@@ -1,8 +1,7 @@
 <?php
 
 $data = isset($this->answer) ? $this->answer : array('done' => false, 'error' => '500 api exception occurred');
-$env = getenv('APP_ENV') ? : 'dev';
-if ($env == 'dev') {
+if (APP_DEBUG) {
     if (isset($this->exception) && $this->exception instanceof Exception) {
         $data['trace'] = array(
             'file' => $this->exception->getFile() . ':' . $this->exception->getLine(),

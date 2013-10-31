@@ -21,13 +21,13 @@ Ext.define('SafeStartApp.store.AbstractStore', {
         this.load({
             callback: function (records, operation, success) {
                 if (operation.getError() && operation.getError().statusText != 'transaction aborted') {
-                    SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ': ' + operation.getError().statusText);
+                    SafeStartApp.showFailureInfoMsg(Ext.getClass(operation.getError().statusText));
                     this.fireEvent('data-load-failure', this);
                 } else if (operation.getResponse() && operation.getResponse().responseText) {
                     var result = Ext.decode(operation.getResponse().responseText);
                     if (result.meta && (parseInt(result.meta.errorCode) != 0)) {
-                        if (result.data && result.data.errorMessage) SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ': ' +result.data.errorMessage);
-                        else SafeStartApp.showFailureInfoMsg(Ext.getClass(this).getName() + ':Operation filed');
+                        if (result.data && result.data.errorMessage) SafeStartApp.showFailureInfoMsg(result.data.errorMessage);
+                        else SafeStartApp.showFailureInfoMsg('Operation filed');
                         this.fireEvent( 'data-load-failure', this);
                     } else {
                         this.fireEvent('data-load-success', this);

@@ -2,12 +2,13 @@ Ext.define('SafeStartApp.view.forms.UserProfile', {
     extend: 'Ext.form.Panel',
     xtype: 'SafeStartUserProfileForm',
     config: {
-        height: 450,
+        height: 430,
+        scrollable: false,
         items: [
             {
                 xtype: 'fieldset',
                 title: 'Personal Info',
-                instructions: 'You chan change your info above.',
+            /*    instructions: 'You can change your info above.',*/
                 items: [
                     {
                         xtype: 'textfield',

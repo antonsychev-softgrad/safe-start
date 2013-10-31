@@ -29,7 +29,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         xtype: 'datepickerfield',
                         name: 'from',
                         label: 'From',
-                        labelWidth : '',
+                        labelWidth: '',
+                        dateFormat: SafeStartApp.dateFormat, 
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
                             yearTo: new Date().getFullYear()
@@ -41,6 +42,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         name: 'to',
                         label: 'To',
                         labelWidth : '',
+                        dateFormat: SafeStartApp.dateFormat, 
                         cls:'sfa-label-to',
                         picker: {
                             yearFrom: new Date().getFullYear() - 10,
@@ -61,10 +63,19 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     {
                         xtype: 'button',
                         name: 'print',
-                        text: 'Print',
+                        text: 'Print Report',
                         ui: 'confirm',
                         handler: function () {
                             this.up('SafeStartVehicleReportPanel').printDataView();
+                        }
+                    },
+                    {
+                        xtype: 'button',
+                        name: 'print-action-list',
+                        text: 'Print Action List',
+                        ui: 'confirm',
+                        handler: function () {
+                            this.up('SafeStartVehicleReportPanel').printActionList();
                         }
                     }
                 ]
@@ -201,5 +212,12 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                 ]
             }
         );
+    },
+    
+
+    printActionList: function()
+    {
+        window.open('/api/vehicle/' + this.record.get('id') + '/print-action-list', '_blank');
     }
+
 });
