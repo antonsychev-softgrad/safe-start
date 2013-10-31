@@ -272,14 +272,22 @@ class AdminController extends AdminAccessRestController
             if (!$company) return $this->_showNotFound("Company not found.");
             $vehicles = $company->getVehicles();
             $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
-            $statistic['total']['database_vehicles'] = count($vehicles);
-            $users = $company->getUsers();
-            $users = !empty($users) ? $users->toArray() : array();
-            $statistic['total']['database_users'] = count($users);
-            $responsibleUsers = $company->getResponsibleUsers();
-            $responsibleUsers = !empty($responsibleUsers) ? $responsibleUsers->toArray() : array();
-            $statistic['total']['database_responsible_users'] = count($responsibleUsers) + 1;
-            $statistic['total']['database_vehicle_users'] = $statistic['total']['database_users'] - $statistic['total']['database_responsible_users'];
+            $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company)';
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_users'] = $query->getSingleScalarResult();
+            $dql = 'SELECT COUNT(v.id) FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = (:company)';
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_vehicles'] = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company) AND u.role = 'companyUser'";
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_vehicle_users']  = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company) AND (u.role = 'companyManager' OR u.role = 'companyAdmin')";
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_responsible_users']  = $query->getSingleScalarResult();
         } else {
             $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null';
             $query = $this->em->createQuery($dql);
@@ -287,19 +295,12 @@ class AdminController extends AdminAccessRestController
             $dql = 'SELECT COUNT(v.id) FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0';
             $query = $this->em->createQuery($dql);
             $statistic['total']['database_vehicles'] = $query->getSingleScalarResult();
-            $statistic['total']['database_responsible_users']  = 0;
-            $statistic['total']['database_vehicle_users'] = 0;
-            $dql = 'SELECT c FROM SafeStartApi\Entity\Company c WHERE c.deleted = 0';
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null AND u.role = 'companyUser'";
             $query = $this->em->createQuery($dql);
-            $companies = $query->getResult();
-            if (!empty($companies)) {
-                foreach ($companies as $company) {
-                    $responsibleUsers = $company->getResponsibleUsers();
-                    $responsibleUsers = !empty($responsibleUsers) ? $responsibleUsers->toArray() : array();
-                    $statistic['total']['database_responsible_users'] += count($responsibleUsers) + count($companies);
-                }
-                $statistic['total']['database_vehicle_users'] = $statistic['total']['database_users'] - $statistic['total']['database_responsible_users'];
-            }
+            $statistic['total']['database_vehicle_users']  = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null AND (u.role = 'companyManager' OR u.role = 'companyAdmin')";
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_responsible_users']  = $query->getSingleScalarResult();
             $company = null;
             $vehicles = array();
         }
