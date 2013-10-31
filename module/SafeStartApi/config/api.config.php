@@ -70,6 +70,10 @@ $api = array(
         'group' => array(
             'id' => 6,
         ),
+        'label' => array(
+            'id' => 8,
+            'default' => ''
+        ),
     ),
     'mail' => array(
         'from' => 'info@safestartinspections.com',

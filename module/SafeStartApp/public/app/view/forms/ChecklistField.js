@@ -45,6 +45,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                         { rank: 'group', title: 'Questions Group'},
                         { rank: 'radio', title: 'Radio Buttons Yes|No|N\A'},
                         { rank: 'checkbox', title: 'Checkbox Yes|No'},
+                        { rank: 'label', title: 'Label'},
                         { rank: 'text', title: 'Text'},
                         { rank: 'datePicker', title: 'Date Picker'}
                     ]

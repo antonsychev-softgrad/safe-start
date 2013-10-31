@@ -112,7 +112,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             docked: 'top',
                             tpl: [
                                 '<div class="top">',
-                                '<table style="max-width: 650px;"><tr>',
+                                '<table style="max-width: 700px;"><tr>',
                                /* '<tr><td><div class="name"><b>Period from {period.from} to {period.to}</b></div></td></tr>',*/
                                 '<td>',
                                     '<div class="name">Total amount of database <b>inspections</b>: <span style="color:#0F5B8D;">{total.database_inspections}</span></div>',

@@ -117,8 +117,19 @@ class AbstractPdfPlugin extends AbstractPlugin
             unset($data['Company name']);
         }
 
-        if (isset($companyData['description'])) {
-            $lines = $this->getTextLines($companyData['description'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
+        if (isset($companyData['address']) && !empty($companyData['address'])) {
+            $lines = $this->getTextLines('Address: ' . $companyData['address'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
+            $k = 0;
+            foreach ($lines as $line) {
+                $k++;
+                if ($k == 4) break;
+                $topPosInPage -= (self::PAGE_SUB_HEADER_TITLE_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
+                $topPosInPage = $this->drawText($line, self::PAGE_SUB_HEADER_TITLE_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
+            }
+        }
+
+        if (isset($companyData['phone']) && !empty($companyData['phone'])) {
+            $lines = $this->getTextLines('Phone number: ' . $companyData['phone'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
             $k = 0;
             foreach ($lines as $line) {
                 $k++;

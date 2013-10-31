@@ -25,6 +25,8 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $currentColumn = $this->drawWarnings();
         // add inspection fields
         $currentColumn = $this->drawInspection($currentColumn);
+        // add location
+        $currentColumn = $this->drawLocation($currentColumn);
         // add additional comments
         $this->drawAlerts($currentColumn);
         // save document
@@ -180,6 +182,11 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->lastTopPos -= 10;
 
         return $currentColumn;
+    }
+
+    private function drawLocation()
+    {
+
     }
 
     private function drawInspection($currentColumn = 1)
