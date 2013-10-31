@@ -6,13 +6,36 @@ html, body {
     font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
+.sfa-alerts .sfa-alert-description {
+    font-size: 14px;
+}
+.sfa-checklist-form .x-form-fieldset .x-field-checkbox {
+    position: relative;
+    width: 70%;
+    margin: 0 auto;
+}
+.sfa-checklist-form .x-form-fieldset .x-field-checkbox .x-field-mask {
+    height: 36px;
+    width: 38px;
+    border: 1px solid #999;
+    font-size: 14px;
+}
+.sfa-checklist-form .x-form-fieldset .x-field-checkbox .x-component-outer {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: 0;
+    top: 0;
+}
 .x-field-search .x-field-input:before {
     content: ' ';
 }
 .x-list .x-list-item .x-list-item-body, .x-list .x-list-item.x-list-item-tpl .x-innerhtml {
     padding: 13px 15px;
 }
-
+.x-tabbar.x-docked-bottom .x-tab .x-button-icon {
+    height: 32px;
+}
 .x-inner.x-layout-card > .x-container.x-tabpanel.x-layout-card-item {
     background: #2A2C30 url(../img/sfa-info-container_bg.gif) repeat;
 }
@@ -240,7 +263,7 @@ div.logo {
     padding: 0
 }
 .sfa-auth-form .x-form-inner.x-size-monitored.x-paint-monitored.x-scroll-scroller {
-    background: #e8e8e8;
+    background: #fff;
 }
 
 .sfa-auth-form  .logo img {
@@ -549,6 +572,7 @@ border-bottom: 1px solid #dedede;
 
 .sfa-left-container .x-toolbar-dark .x-button.sfa-collapse {
     width: 26px;
+    height: 25px;
     border-radius: 0;
     background: url(../img/collapse-ic.png) no-repeat;
 }
@@ -627,13 +651,17 @@ max-width: 200px;
     max-width: 150px;
 }
 .sfa-alerts-topbar .x-field-select.x-field {
-    border: 1px solid #aaa;
     margin-right: 15px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -khtml-border-radius: 10px;
-    -o-border-radius: 10px;
-    border-radius: 10px;
+    padding: 2px 5px 1px;
+    background: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    box-shadow: 0px 1px 0px #fff, 1px 0px 0px #fbfbfb, -1px 0px 0px #fbfbfb;
 }
 .sfa-alerts-topbar .x-field-select.x-field .x-component-outer input {
     border: none;
@@ -756,7 +784,9 @@ font-size: 26px;
 .sfa-info-container   .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
     font-size: 16px;
 }
-
+.sfa-info-container .sfa-checklist-form .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
+    line-height: 36px;
+}
 .sfa-info-container .x-form-fieldset-title .x-innerhtml {
     padding: 0 0 7px 30%;
     font-size: 20px;
@@ -1140,7 +1170,7 @@ font-size: 26px;
 .page-company .sfa-info-container .x-unsized.x-title.x-floating {
     color: #558FAC;
     text-shadow: none;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
     line-height: 1.5em;
 }
@@ -1310,7 +1340,7 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     display: block;
     line-height: 25px;
     padding-top: 7px;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: normal;
     color: #666
 }
@@ -1526,6 +1556,9 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     font-size: 18px;
     color: #558FAC;
 }
+.sfa-alerts-topbar .x-title {
+    font-size: 22px;
+}
 .sfa-alerts-searchbar > .x-component-outer > .x-unsized.x-field-input:before {
     top: 0;
 }
@@ -1685,7 +1718,7 @@ span.sfa-comment-content {
 .sfa-alert-info {
     padding: 15px 0 5px;
     color: #565555;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .sfa-vehicle-inspection.sfa-vehicle-report .x-layout-box > .x-layout-box-item {
@@ -1847,13 +1880,6 @@ span.sfa-comment-content {
     }
 
 
-
-
-
-
-
-
-
 .sfa-add-inside .x-button.x-button-action .x-button-label {
     line-height: 1.5em;
 }
@@ -1925,6 +1951,10 @@ span.sfa-comment-content {
         position: static;
         margin: 0 auto;
     }
+
+    .sfa-info-container .x-form.comp-settings .x-docked-bottom .x-button {
+        padding: 0 8px 2px !important;
+    }
 }
 /*  toolbar  */
 @media screen and (max-width: 700px) {
@@ -1981,6 +2011,6 @@ span.sfa-comment-content {
 }
 
 .sfa-alert-title {
-    color: #ff000;
+    color: #f00;
     text-align: center;
 }
