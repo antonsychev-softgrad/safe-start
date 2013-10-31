@@ -103,6 +103,15 @@ $general = array(
                         )
                     )
                 ),
+                'run-checklist-resend' => array(
+                    'options' => array(
+                        'route' => 'resque run checklist-resend --checkListId= --emails=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processCheckListResend'
+                        )
+                    )
+                ),
                 'run-ping-email' => array(
                     'options' => array(
                         'route' => 'resque run ping-email',

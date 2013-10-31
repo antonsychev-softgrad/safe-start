@@ -78,7 +78,7 @@ class ProcessDataController extends PublicAccessRestController
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = $link;
         $path = '';
-        if ($cache->hasItem($cashKey)) {
+        if ($cashKey && $cache->hasItem($cashKey)) {
             $path = $this->inspectionPdf()->getFilePathByName($link);
         }
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);

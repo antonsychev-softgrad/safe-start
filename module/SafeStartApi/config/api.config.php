@@ -8,6 +8,11 @@ $api = array(
         'output' => 'json',
         'href' => '/api/',
         'emailForContacts' => 'info@safestartinspections.com',
+        'emailSubjects' => array(
+            'vehicle_fail_notification' => 'New Critical Alerts for Vehicle',
+            'new_vehicle_inspection' => 'New Vehicle Inspection',
+            'welcome' => 'Welcome To Safe Start Inspections!',
+        )
     ),
     'fieldTypes' => array(
         'root' => array(

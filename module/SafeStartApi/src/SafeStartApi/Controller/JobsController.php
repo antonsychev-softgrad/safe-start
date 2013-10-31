@@ -54,7 +54,10 @@ class JobsController extends AbstractActionController
         }
         $emails = array();
         $emailsString = $request->getParam('emails');
-        if (empty($emailsString)) return 'Mo emails for send to';
+        if (empty($emailsString)) {
+            $this->logger->info("No emails for send to \r\n");
+            return 'No emails for send to';
+        }
         $emailsStringArray = explode(',', $emailsString);
         foreach ($emailsStringArray as $emailsStringArrayItem) {
             $emailsStringArrayItem = explode(':', $emailsStringArrayItem);
@@ -70,8 +73,9 @@ class JobsController extends AbstractActionController
             foreach ($emails as $email) {
                 if (empty($email)) continue;
                 $email = (array)$email;
+                $this->logger->info("Send email to ".$email['email']."\r\n");
                 $this->MailPlugin()->send(
-                    'New inspection report',
+                    $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
                     $email['email'],
                     'checklist.phtml',
                     array(
@@ -82,6 +86,60 @@ class JobsController extends AbstractActionController
             }
         }
         $this->logger->info("Success Process New Email CheckList Action with checkListId = $checkListId \r\n");
+    }
+
+    public function processCheckListResend()
+    {
+        $request = $this->getRequest();
+        $checkListId = $request->getParam('checkListId');
+        $this->logger->info("Run Process CheckList Re-send Action with checkListId = $checkListId \r\n");
+        $checkList = $this->em->find('SafeStartApi\Entity\CheckList', $checkListId);
+        if (!$checkList) {
+            $this->logger->info("CheckList with checkListId = $checkListId not found \r\n");
+            return "CheckList with checkListId = $checkListId not found \r\n";
+        }
+        $emails = array();
+        $emailsString = $request->getParam('emails');
+        if (empty($emailsString)) {
+            $this->logger->info("No emails for send to \r\n");
+            return 'No emails for send to';
+        }
+        $emailsStringArray = explode(',', $emailsString);
+        foreach ($emailsStringArray as $emailsStringArrayItem) {
+            $emailsStringArrayItem = explode(':', $emailsStringArrayItem);
+            $emails[] = array(
+                'email' => $emailsStringArrayItem[0],
+                'name' => isset($emailsStringArrayItem[1]) ? $emailsStringArrayItem[1] : 'friend',
+            );
+        }
+
+        $link = $checkList->getPdfLink();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $link;
+        $path = '';
+        if ($cashKey && $cache->hasItem($cashKey)) {
+            $path = $this->inspectionPdf()->getFilePathByName($link);
+        }
+        if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
+        if (file_exists($path)) {
+            foreach($emails as $email) {
+                $email = (array) $email;
+                $this->MailPlugin()->send(
+                    $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                    $email['email'],
+                    'checklist.phtml',
+                    array(
+                        'name' => isset($email['name']) ? $email['name'] : 'friend'
+                    ),
+                    $path
+                );
+            }
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            $this->logger->info("PDF document was not generated");
+        }
+
+        $this->logger->info("Success Process CheckList Re-send Action with checkListId = $checkListId \r\n");
     }
 
     public function pingEmailAction()

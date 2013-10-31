@@ -37,7 +37,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
             if (file_exists($path)) {
                 try {
                     $this->getController()->MailPlugin()->send(
-                        'New inspection fault report',
+                        $this->getController()->moduleConfig['params']['emailSubjects']['vehicle_fail_notification'],
                         $responsibleUserInfo['email'],
                         'checklist_fault.phtml',
                         array(

@@ -97,6 +97,7 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+        $checkList->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
 
         if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
         else $checkList->setOperatorName($userData['firstName'] ." ". $userData['lastName']);
@@ -203,6 +204,67 @@ class PublicVehicleController extends PublicAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function sendCheckListToEmailsAction()
+    {
+        if (!$this->_requestIsValid('vehicle/sendCheckListToEmails')) return $this->_showBadRequest();
+
+        $hash = $this->data->hash;
+        $inspection = $this->em->getRepository('SafeStartApi\Entity\Checklist')->findOneBy(array(
+            'hash' => $hash,
+            'deleted' => 0,
+        ));
+        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+
+        if (!$this->_requestIsValid('vehicle/checklisttoemail')) return $this->_showBadRequest();
+        $emails = $this->data->emails;
+
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        if (APP_RESQUE) {
+            \Resque::enqueue('default', '\SafeStartApi\Jobs\CheckListResend', array(
+                'checkListId' => $inspection->getId(),
+                'emails' => $emails
+            ));
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            $link = $inspection->getPdfLink();
+            $cache = \SafeStartApi\Application::getCache();
+            $cashKey = $link;
+            $path = '';
+            if ($cashKey && $cache->hasItem($cashKey)) {
+                $path = $this->inspectionPdf()->getFilePathByName($link);
+            }
+            if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($inspection);
+
+            if (file_exists($path)) {
+                foreach($emails as $email) {
+                    $email = (array) $email;
+                    $this->MailPlugin()->send(
+                        $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                        $email['email'],
+                        'checklist.phtml',
+                        array(
+                            'name' => isset($email['name']) ? $email['name'] : 'friend'
+                        ),
+                        $path
+                    );
+                }
+                return $this->AnswerPlugin()->format($this->answer);
+            } else {
+                $this->answer = array(
+                    'errorMessage' => 'PDF document was not generated'
+                );
+                return $this->AnswerPlugin()->format($this->answer, 500, 500);
+            }
+        }
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
 
     private function _setInspectionStatistic(\SafeStartApi\Entity\CheckList $checkList)
     {
