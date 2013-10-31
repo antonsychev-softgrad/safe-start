@@ -65,7 +65,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                         out: 'true'
                     },
                     cls: 'sfa-left-container',
-                    margin: '0 20 0 0',
+                    margin: '',
                     store: this.companiesStore,
                     items: [{
                         xtype: 'toolbar',
@@ -121,6 +121,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
                     items: [{
