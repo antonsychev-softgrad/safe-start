@@ -41,9 +41,28 @@ Ext.define('SafeStartExt.view.form.Company', {
                         me.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
                     }
                 }
-            },{
-                xtype: 'box',
-                flex: 1
+            },
+            {
+                text: 'Send Password to Company Owner',
+                ui: 'blue',
+                name: 'send-password',
+                scale: 'medium',
+                handler: function () {
+                    if (me.isValid()) {
+                        me.fireEvent('sendPasswordAction', me.getRecord());
+                    }
+                }
+            },
+            {
+                text: 'Manage',
+                ui: 'blue',
+                name: 'manage-data',
+                scale: 'medium',
+                handler: function () {
+                    if (me.isValid()) {
+                        me.fireEvent('manageCompanyAction', me.getRecord());
+                    }
+                }
             }],
             items: [
                 {
