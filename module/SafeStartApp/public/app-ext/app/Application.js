@@ -33,13 +33,49 @@ Ext.define('SafeStartExt.Application', {
         'Users'
     ],
 
+    enableRouter: false,
+
     routes: {
-        'Auth': 'main#showPage',
-        'Contact': 'main#showPage',
-        'Companies': 'main#showPage',
-        'Users': 'main#showPage',
-        'Company': 'main#showCompany',
-        'Company/:id': 'main#showCompanyById'
+        '/': 'main#showDefaultPage',
+        'auth': 'main#showAuthPage',
+        'companies': 'main#showCompaniesPage',
+        'company': 'main#showCompanyPage',
+        'company/:id': 'main#showCompanyPageById',
+        'contact': 'main#showContactPage',
+        'users': 'main#showUsersPage',
+    },
+
+    acl: {
+        'guest': [
+            'showAuthPage',
+            'showContactPage'
+        ],
+        'companyUser': [
+            'showCompanyPage',
+            'showAlertsPage',
+            'showContactPage'
+        ],
+        'companyManager': [
+            'showCompanyPage',
+            'showAlertsPage',
+            'showUsersPage',
+            'showCompanySettingsPage',
+            'showContactPage'
+        ],
+        'superAdmin': [
+            'showCompaniesPage',
+            'showCompanyPageById',
+            'showAlertsPageById',
+            'showUsersPage',
+            'showUsersPageById',
+            'showSystemSettingsPage',
+            'showSystemStatisticPage'
+        ]
+    },
+
+    isAllowed: function (action) {
+        var role = this.getUserRecord().get('role');
+        return Ext.isArray(this.acl[role]) && Ext.Array.contains(this.acl[role], action);
     },
 
     userRecord: null,
@@ -53,17 +89,28 @@ Ext.define('SafeStartExt.Application', {
             success: function (result) {
                 var mainView = me.getViewport().down('SafeStartExtMain');
                 me.setUserData(result.userInfo);
-                mainView.fireEvent('mainMenuLoaded', result.mainMenu || {});
                 if (!me.mainMenuLoaded) {
                     me.mainMenuLoaded = true;
-                    Ext.ux.Router.parse(Ext.History.getHash());
                 }
+                mainView.fireEvent('mainMenuLoaded', result.mainMenu || {});
 
                 if (me.getUserRecord().get('role') === 'companyUser') {
                     mainView.fireEvent('changeCompanyAction', me.getUserRecord().getCompany());
                 }
             }
         });
+    },
+
+    getDefaultPage: function () {
+        switch (this.getUserRecord().get('role')) {
+            case 'guest':
+                return 'auth';
+            case 'companyUser':
+            case 'companyManager':
+                return 'company';
+            default:
+                return 'companies';
+        }
     },
 
     setUserData: function (data) {
@@ -86,21 +133,27 @@ Ext.define('SafeStartExt.Application', {
         return this.companyRecord;
     },
 
+    onBeforeDispatch: function (token, match, params) {
+        return this.isAllowed(match.action);
+    },
+
     launch: function () {
         var loadingEl = Ext.get('appLoadingIndicator');
         if (loadingEl) {
             loadingEl.remove();
         }
 
-        var me = this;
         Ext.ux.Router.on({
-            beforedispatch: function(token, match, params) {
-                return me.mainMenuLoaded;
-            }
+            beforedispatch: this.onBeforeDispatch,
+            scope: this
         });
-        
+
         this.viewport = SafeStartExt.view.Viewport.create({}); 
-        this.viewport.on('reloadMainMenu', this.loadMainMenu, this);
+        this.viewport.down('SafeStartExtMain').addListener('mainMenuLoaded', function () {
+            Ext.ux.Router.init(this);
+        }, this, {single: true, order: 'after', delay: 1});
+
+        this.viewport.addListener('reloadMainMenu', this.loadMainMenu, this);
         this.loadMainMenu();
     },
 
@@ -108,11 +161,4 @@ Ext.define('SafeStartExt.Application', {
         return this.viewport;
     }
 	
-	// showRequestFailureInfoMsg: function (result, failureCalBack) {
- //        var func = Ext.emptyFn();
- //        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
- //        var errorMessage = '';
- //        if (result.data && result.data.errorMessage) errorMessage = result.data.errorMessage;
- //        this.showFailureInfoMsg(errorMessage, func);
- //    }
 });

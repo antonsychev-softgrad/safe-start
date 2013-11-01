@@ -139,7 +139,8 @@ Ext.define('SafeStartExt.controller.Users', {
             companyId = this.company.getId();
 
         store.getProxy().setExtraParam('companyId', companyId);
-        store.load();        
+        store.load();
+        
     }
 
 

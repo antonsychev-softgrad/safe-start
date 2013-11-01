@@ -77,7 +77,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         infoGroup.push(this.createContainer('Date and Time', inspectionDate));
         if (checklist.gpsCoords) {
             cords = checklist.gpsCoords.split(';');
-            if ((parseFloat(cords[0]) !== 0) || (parseFloat(cords[1]) !== 0)) {
+            if ((parseFloat(cords[0]) && parseFloat(cords[1]))) {
                 infoGroup.push(this.createMapsContainer('Location', parseFloat(cords[0]), parseFloat(cords[1])));
             }
         }

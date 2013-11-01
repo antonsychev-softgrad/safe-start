@@ -2,10 +2,10 @@ Ext.define('SafeStartApp.view.pages.Companies', {
     extend: 'Ext.Container',
 
     requires: [
-        'SafeStartApp.view.pages.toolbar.Companies',
+        'SafeStartApp.view.pages.toolbar.Main',
         'SafeStartApp.model.Company',
         'SafeStartApp.store.Companies',
-        'SafeStartApp.view.forms.CompanySettings',
+        'SafeStartApp.view.forms.Company',
         'SafeStartApp.view.pages.panel.LeftContainer'
     ],
 
@@ -31,10 +31,10 @@ Ext.define('SafeStartApp.view.pages.Companies', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Companies');
         this.add({
-            xtype: 'SafeStartCompaniesToolbar',
-            docked: 'top'
+            xtype: 'SafeStartMainToolbar',
+            docked: 'top',
+            btnTitle: 'Companies'
         });
 
         this.companiesStore = Ext.create('SafeStartApp.store.Companies');

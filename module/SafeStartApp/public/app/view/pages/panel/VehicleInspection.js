@@ -81,9 +81,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         });
     },
 
-    loadChecklist: function (checklists, vehicle, inspectionRecord) {
+    loadChecklist: function (data, vehicle, inspectionRecord) {
         var me = this;
-        var checklistForms = [],
+        var checklists = data.checklist,
+            previousAlerts = data.alerts || [],
+            checklistForms = [],
             checklistAdditionalForms = [],
             choiseAdditionalFields = [];
 
@@ -136,6 +138,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         this.add(checklistAdditionalForms);
 
         this.add(this.createReviewCard());
+
+
+        var alertsData = [];
+        Ext.each(previousAlerts, function (alert) {
+            var message = alert.alert_description || alert.alert_message;
+            if (message) {
+                alertsData.push({
+                    message: message
+                });
+            }
+        });
+
+        if (alertsData.length) {
+            this.getAlertsListView(alertsData).show();
+        }
     },
 
     createChoiseAdditionalCard: function (fields) {
@@ -294,7 +311,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
                     break;
                 case 'datePicker':
-                    fields.push(this.createDatePickerField(fieldData, alertRecord));
+                    fields.push(this.createDatePickerField(fieldData));
                     break;
                 case 'group':
                     fields.push(this.createGroupField(fieldData));
@@ -430,35 +447,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createDatePickerField: function (fieldData, alertRecord) {
-        return {
-            xtype: 'datepickerfield',
-            maxWidth: 900,
-            labelWidth: '',
-            width: '100%',
-            yearFrom: 2000,
-            triggerable: true,
-            picker: {
-                yearTo: new Date().getFullYear() + 10
-            },
-            dateFormat: SafeStartApp.dateFormat,
-            label: fieldData.fieldName,
-            fieldId: fieldData.fieldId,
-            value: new Date(fieldData.fieldValue * 1000 || Date.now()),
-            defaultValue: fieldData.defaultValue,
-            alertRecord: alertRecord,
-            listeners: {
-                change: function (view, date) {
-                    var alert = this.config.alertRecord;
-                    if (alert) {
-                        if ((new Date(this.config.defaultValue).getTime() - alert.get('triggerValue') * 24 * 60 * 60 * 1000) < date.getTime()) {
-                            alert.set('active', true);
-                        } else {
-                            alert.set('active', false);
-                        }
-                    }
-                }
-            }
-        };
+        var value = fieldData.fieldValue * 1000,
+            field = {
+                xtype: 'datepickerfield',
+                maxWidth: 900,
+                labelWidth: '',
+                width: '100%',
+                yearFrom: 2000,
+                triggerable: true,
+                picker: {
+                    yearTo: new Date().getFullYear() + 10
+                },
+                dateFormat: SafeStartApp.dateFormat,
+                label: fieldData.fieldName,
+                fieldId: fieldData.fieldId,
+                value: new Date(fieldData.fieldValue * 1000 || Date.now()),
+                defaultValue: fieldData.defaultValue
+            };
+        if (value) {
+            field.value = value;
+        }
+        return field;
     },
 
     createCheckboxField: function (fieldData, alertRecord, additionalFieldsConfig) {
@@ -716,5 +725,28 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 }]
             }].concat(images)
         };
+    },
+
+    getAlertsListView: function (alerts) {
+        return Ext.MessageBox.create({
+            title: 'Alerts in inspection:',
+            tpl: new Ext.XTemplate(
+                '<div class="sfa-alerts">',
+                '<tpl for=".">',
+                    '<div class="sfa-alert-description">',
+                    '{message}',
+                    '</div>',
+                '</tpl>',
+                '</div>'
+            ),
+            buttons: [{
+                text: 'OK',
+                ui: 'action',
+                handler: function () {
+                    this.up('sheet').destroy();
+                }
+            }],
+            data: alerts
+        });
     }
 });

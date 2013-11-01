@@ -14,7 +14,7 @@ Ext.define('SafeStartExt.view.panel.UsersList', {
 
     initComponent: function () {
         var store = SafeStartExt.store.Users.create();
-
+        window.store = store;
         Ext.apply(this, {
             tbar: {
                 xtype: 'toolbar',

@@ -44,6 +44,10 @@ Ext.define('SafeStartExt.view.BottomNav', {
             text: 'Settings',
             iconCls: 'sfa-icon-settings'
         },
+        CompanySettings: {
+            text: 'Settings',
+            iconCls: 'sfa-icon-settings'
+        },
         SystemStatistic: {
             text: 'Statistic',
             iconCls: 'sfa-icon-statistic'

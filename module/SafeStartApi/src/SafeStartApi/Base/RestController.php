@@ -239,6 +239,14 @@ class RestController extends AbstractActionController
         return $this->AnswerPlugin()->format($this->answer, self::ALREADY_ADMIN_ERROR);
     }
 
+    protected function _showUserAlreadyInUse()
+    {
+        $this->answer = array(
+            'errorMessage' => 'User with provided email or username already in use',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::ALREADY_ADMIN_ERROR);
+    }
+
     protected function _showEmailInvalid()
     {
         $this->answer = array(

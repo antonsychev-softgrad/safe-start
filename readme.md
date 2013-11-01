@@ -45,7 +45,7 @@
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
         Password: ssi2705
-        54.200.117.161 OR ec2-54-200-117-161.us-west-2.compute.amazonaws.com
+        54.200.245.179 OR ec2-54-200-245-179.us-west-2.compute.amazonaws.com
 
         ssh -i safe-start-root.pem ubuntu@54.200.117.161
 
@@ -62,7 +62,16 @@
 
 
 #7 PHP RESQUE
+##
+    a) Run:
     php ./public/index.php resque start --verbose
+
+    b) Check system process:
+    ps u | grep resque.php
+
+    c)Soft stopping workers:
+    kill -QUIT YOUR-WORKER-PID
+
 
 #8. nginx ZF2 conf
 ##

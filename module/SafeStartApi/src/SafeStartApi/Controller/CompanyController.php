@@ -12,6 +12,38 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class CompanyController extends RestrictedAccessRestController
 {
+
+    public function updateAction()
+    {
+        $companyId = (int)$this->params('id');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        // set company data
+        $company->setTitle($this->data->title);
+        $company->setAddress($this->data->address);
+        $company->setPhone($this->data->phone);
+        $company->setDescription($this->data->description);
+        $company->setLogo(isset($this->data->logo) ? $this->data->logo : '');
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'companyId' => $company->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+
+    }
+
     /**
      * @return mixed
      */
@@ -81,10 +113,13 @@ class CompanyController extends RestrictedAccessRestController
             $newField->setParent($parent);
             $newField->setVehicle($vehicle);
             $newField->setTitle($defField->getTitle());
+            $newField->setDescription($defField->getDescription());
             $newField->setType($defField->getType());
             $newField->setAdditional($defField->getAdditional());
             $newField->setTriggerValue($defField->getTriggerValue());
             $newField->setAlertTitle($defField->getAlertTitle());
+            $newField->setAlertDescription($defField->getAlertDescription());
+            $newField->setAlertCritical($defField->getAlertCritical());
             $newField->setOrder($defField->getOrder());
             $newField->setEnabled($defField->getEnabled());
             $newField->setDeleted($defField->getDeleted());
@@ -312,13 +347,15 @@ class CompanyController extends RestrictedAccessRestController
 
         $vehicle->removeResponsibleUsers();
         $vehicle->removeUsers();
-        $test1 = $vehicle->getResponsibleUsers();
         $this->em->flush();
 
         foreach ((array)$this->data->value as $value) {
             $value = (array)$value;
             $user = $this->em->find('SafeStartApi\Entity\User', (int)$value['userId']);
             if ($user) {
+                $cache = \SafeStartApi\Application::getCache();
+                $cashKey = "getUserVehiclesList" . $user->getId();
+                $cache->removeItem($cashKey);
                 switch ($value['assigned']) {
                     case 'responsible':
                         $vehicle->addResponsibleUser($user);
@@ -419,14 +456,15 @@ class CompanyController extends RestrictedAccessRestController
 
         $oldTitle = $field->getTitle();
         $oldType = $field->getType();
+        if ($this->data->type == 'root' && $this->data->parentId) $this->data->type = 'text';
 
         $field->setTitle($this->data->title);
         $field->setDescription($this->data->description);
         $field->setType($this->data->type);
         $field->setOrder((int)$this->data->sort_order);
         $field->setAdditional($this->data->type == 'root' ? (int)$this->data->additional : 0);
-        $field->setAlertTitle(($this->data->type == 'radio' || $this->data->type == 'checkbox' || $this->data->type == 'datePicker') ? $this->data->alert_title : '');
-        $field->setAlertDescription(($this->data->type == 'radio' || $this->data->type == 'checkbox' || $this->data->type == 'datePicker') ? $this->data->alert_description : '');
+        $field->setAlertTitle(isset($this->data->alert_title) ? $this->data->alert_title : '');
+        $field->setAlertDescription(isset($this->data->alert_description) ? $this->data->alert_description : '');
         $field->setTriggerValue($this->data->trigger_value);
         $field->setEnabled((int)$this->data->enabled);
         $field->setDefaultValue($this->data->default_value);
@@ -583,17 +621,17 @@ class CompanyController extends RestrictedAccessRestController
 
         $data = array();
 
-        if ($cache->hasItem($cashKey)) {
+     /*   if ($cache->hasItem($cashKey)) {
             $data = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $checkLists = $vehicle->getCheckLists();
             if (!empty($checkLists)) {
                 foreach ($checkLists as $checkList) {
                     $data = array_merge($data, $checkList->getAlertsArray($filters));
                 }
             }
-            $cache->setItem($cashKey, $data);
-        }
+      /*      $cache->setItem($cashKey, $data);
+        }*/
 
         return $data;
     }
@@ -610,9 +648,9 @@ class CompanyController extends RestrictedAccessRestController
 
         $data = array();
 
-        if ($cache->hasItem($cashKey)) {
+      /*  if ($cache->hasItem($cashKey)) {
             $data = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
             $query->setParameter(1, $company);
             $vehicles = $query->getResult();
@@ -624,8 +662,8 @@ class CompanyController extends RestrictedAccessRestController
                 }
             }
 
-            $cache->setItem($cashKey, $data);
-        }
+     /*       $cache->setItem($cashKey, $data);
+        }*/
 
         return $data;
     }

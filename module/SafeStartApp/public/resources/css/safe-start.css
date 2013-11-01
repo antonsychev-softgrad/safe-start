@@ -129,6 +129,9 @@ sfa-info-container .x-toolbar .x-field {
     -moz-box-shadow: rgba(0, 0, 0, 0.5) 0 0.1em 0 inset, rgba(0, 0, 0, 0.5) 0 -0.1em 0 inset, rgba(0, 0, 0, 0.5) 0.1em 0 0 inset, rgba(0, 0, 0, 0.5) -0.1em 0 0 inset, rgba(0, 0, 0, 0.5) 0 0.15em 0.4em inset;
     box-shadow: rgba(100, 100, 100, 0.5) 0 0.1em 0 inset, rgba(100, 100, 100, 0.5) 0 -0.1em 0 inset, rgba(100, 100, 100, 0.5) 0.1em 0 0 inset, rgba(100, 100, 100, 0.5) -0.1em 0 0 inset, rgba(100, 100, 100, 0.5) 0 0.15em 0.4em inset;
 }
+.x-layout-card-item {
+    background: url(../img/x-layout-card-item_bg.jpg) repeat;
+}
 .x-toolbar .x-field-search .x-component-outer {
     border-radius: 6px;
     -moz-border-radius: 6px;
@@ -152,7 +155,7 @@ sfa-info-container .x-toolbar .x-field {
     color: #565555;
 }
 .x-tabbar-dark {
-    background: #2A2C30 url(/resources/img/foot_bg.jpg) repeat-x;
+    background: #2A2C30 url(../img/foot_bg.jpg) repeat-x;
 }
 .x-tabbar-dark.x-docked-bottom .x-tab-active {
     background-color: #333539;
@@ -175,14 +178,14 @@ sfa-info-container .x-toolbar .x-field {
 }
 .sfa-main-toolbar .x-button .x-button-icon.user:before {
     content: " ";
-    background: url(/resources/img/user-ic.png) no-repeat 80% 50%;
+    background: url(../img/user-ic.png) no-repeat 80% 50%;
 }
 .sfa-main-toolbar .x-button .x-button-icon.action {
     margin-left: 20px;
 }
 .sfa-main-toolbar .x-button .x-button-icon.action:before {
     content: " ";
-    background: url(/resources/img/logout-ic.png) no-repeat 50% 50%;
+    background: url(../img/logout-ic.png) no-repeat 50% 50%;
 }
 
 .x-panel.x-floating, .x-msgbox, .x-form.x-floating {
@@ -240,7 +243,8 @@ div.logo {
     padding: 0
 }
 .sfa-auth-form .x-form-inner.x-size-monitored.x-paint-monitored.x-scroll-scroller {
-    background: #e8e8e8;
+    background: url(../img/log-form_bg.jpg) repeat;
+    /*background: #e8e8e8;*/
 }
 
 .sfa-auth-form  .logo img {
@@ -255,7 +259,7 @@ div.logo {
 }
 
 .sfa-auth-form .x-scroll-container.x-paint-monitored {
-    background: url(/resources/img/x-layout-card-item_bg.jpg) repeat;
+    background: url(../img/x-layout-card-item_bg.jpg) repeat;
 }
 
 .sfa-auth-form .x-form-fieldset-instructions {
@@ -418,7 +422,7 @@ d-image: url(img/);
     height: 62px;
     padding-right: 8px;
     border-bottom: 1px solid #000;
-    background: url(/resources/img/top_bg.png) repeat-x;
+    background: url(../img/top_bg.png) repeat-x;
     -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -426,11 +430,11 @@ d-image: url(img/);
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view {
-    background: url(/resources/img/logo-top.png) no-repeat 6px 7px;
+    /*background: url(../img/logo-top.png) no-repeat 6px 7px;*/
 }
 
 .sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view .x-inner.x-toolbar-inner {
-    padding-left: 189px;
+    /*padding-left: 189px;*/
 }
 
 .sfa-main-toolbar .x-title {
@@ -629,6 +633,14 @@ font-size: 26px;
     text-shadow: none;
     font-weight: normal;
 }
+.sfa-left-container .x-body .x-center, .sfa-system-settings .x-center {
+    height: 44px;
+    background: url(../img/log-form_bg.jpg) repeat;
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
 
 .sfa-left-container .x-container.x-toolbar.x-stretched.x-toolbar-light.x-paint-monitored.x-navigation-bar.x-dock-item.x-docked-top {
     padding-bottom: 10px;
@@ -731,6 +743,19 @@ font-size: 26px;
 .sfa-info-container  input, .sfa-info-container textarea {
     font-size: 16px;
     padding: 8px 30px 8px 7px;
+    color: #565555;
+    border: 1px solid #cacaca;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.sfa-info-container .x-form-field-readonly .x-innerhtml{
+    font-size: 18px;
+    padding: 5px 5px 5px 7px;
+    margin: 3px 0;
     color: #565555;
     border: 1px solid #cacaca;
     -moz-border-radius: 10px;
@@ -913,27 +938,27 @@ font-size: 26px;
 .sfa-icon-home {
     width: 33px;
     height: 31px;
-    background: url(/resources/img/icons.png) no-repeat 50% 0;
+    background: url(../img/icons.png) no-repeat 50% 0;
 }
 .sfa-icon-docs {
     width: 27px;
     height: 32px;
-    background: url(/resources/img/icons.png) no-repeat 50% -71px;
+    background: url(../img/icons.png) no-repeat 50% -71px;
 }
 .sfa-icon-alert {
     width: 37px;
     height: 35px;
-    background: url(/resources/img/icons.png) no-repeat 50% -145px;
+    background: url(../img/icons.png) no-repeat 50% -145px;
 }
 .sfa-icon-safe {
     width: 26px;
     height: 35px;
-    background: url(/resources/img/icons.png) no-repeat 50% -227px;
+    background: url(../img/icons.png) no-repeat 50% -227px;
 }
 .sfa-icon-preferenses {
     width: 35px;
     height: 35px;
-    background: url(/resources/img/icons.png) no-repeat 50% -308px;
+    background: url(../img/icons.png) no-repeat 50% -308px;
 }
 .sfa-datepicker .x-component-outer:before, .sfa-info-container form .x-field-select .x-component-outer:before {
     background-image: none;
@@ -1019,7 +1044,7 @@ font-size: 26px;
     padding: 0.8em 0.9em 1.2em;
 }
 .sfa-system-settings .x-tabbar-dark.x-docked-top .x-tab-active {
-    background: url(/resources/img/x-tab-active_bg.png) no-repeat 50% 105%;
+    background: url(../img/x-tab-active_bg.png) no-repeat 50% 105%;
 }
 .sfa-system-settings .sfa-left-container .x-toolbar.x-docked-top {
     border: none;
@@ -1115,6 +1140,11 @@ font-size: 26px;
 .page-company .sfa-info-container .x-container.x-toolbar.x-navigation-bar.x-dock-item.x-docked-top {
     margin: 12px 0 5px;
     height: 42px;
+    background: url(../img/log-form_bg.jpg) repeat;
+    -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .page-company .sfa-info-container .x-container.x-nested-list.x-layout-box-item.x-flexed.x-sized .x-list-item-first.x-list-item {
@@ -1599,14 +1629,14 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     width: 40%;
     padding: 0 0 0 67px;
     line-height: 27px;
-    background: url(/resources/img/user-ic.gif) no-repeat;
+    background: url(../img/user-ic.gif) no-repeat;
 }
 .sfa-alert-comments .alert {
     float: left;
     width: 100%;
     padding: 0 0 0 67px;
     line-height: 27px;
-    background: url(/resources/img/user-ic.gif) no-repeat;
+    background: url(../img/user-ic.gif) no-repeat;
 }
 .sfa-alert-comments .sfa-item:nth-child(even) {
     color: #99A899;
@@ -1763,7 +1793,7 @@ span.sfa-comment-content {
         width: 110px;
     }
     .sfa-statistic .sfa-top-toolbar .x-component-outer:before {
-        background: url(/resources/img/arr.png) no-repeat 50% 50%;
+        background: url(../img/arr.png) no-repeat 50% 50%;
         width: 30px;
     }
     .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-component-outer > div {

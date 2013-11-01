@@ -19,7 +19,8 @@ SafeStartApp = SafeStartApp || {
 (function () {
     var defaultConfig = {
         dateFormat: 'd/m/Y',
-        timeFormat: 'H:i'
+        timeFormat: 'H:i',
+        logoRedirectUrl: 'http://safestartinspections.com/'
     };
     Ext.Object.each(defaultConfig, function (property, value) {
         if (! SafeStartApp.hasOwnProperty(property)) {
@@ -200,6 +201,7 @@ Ext.application({
         'pages.Users',
         'pages.Alerts',
         'pages.SystemSettings',
+        'pages.CompanySettings',
         'pages.SystemStatistic'
     ],
 

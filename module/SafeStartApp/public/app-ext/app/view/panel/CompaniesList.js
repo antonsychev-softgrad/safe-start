@@ -12,6 +12,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     border: 0,
     title: 'Companies',
 
+
     initComponent: function () {
         var store = SafeStartExt.store.Companies.create({autoLoad: true});
         Ext.apply(this, {
@@ -52,7 +53,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                             store.load();
                         }
                     }]
-                }],
+                }]
             },
                 items: [{
                     xtype: 'dataview',
