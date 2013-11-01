@@ -39,7 +39,7 @@
                             "name": {
                                 "description": "User name",
                                 "type": "string",
-                                "required": true
+                                "required": false
                             }
                         }
                     }
