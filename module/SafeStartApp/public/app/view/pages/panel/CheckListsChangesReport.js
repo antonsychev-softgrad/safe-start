@@ -12,7 +12,7 @@ Ext.define('SafeStartApp.view.pages.panel.CheckListsChangesReport', {
     config: {
         cls: 'sfa-statistic',
         xtype: 'panel',
-        title: 'CheckLists Changes',
+        title: 'Checklist Changes',
         layout: {
             type: 'vbox',
             align: 'stretch'

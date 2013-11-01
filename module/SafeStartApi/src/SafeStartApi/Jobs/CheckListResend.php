@@ -12,7 +12,9 @@ class CheckListResend extends ResqueTask
     {
         $emails = array();
         foreach((array)$this->args['emails'] as $email) {
-            $emails[] = $email['email'] .':'. (isset($email['name']) ? $email['name'] : 'friend');
+            if (isset($email['email']) && !empty($email['email'])) {
+                $emails[] = $email['email'] .':'. (isset($email['name']) ? $email['name'] : 'friend');
+            }
         }
         $command = 'resque run ' . self::COMMAND_NAME  .' --checkListId='. $this->args['checkListId'] . ' --emails='.implode(',', $emails);
         $this->executeShelCommand($command);

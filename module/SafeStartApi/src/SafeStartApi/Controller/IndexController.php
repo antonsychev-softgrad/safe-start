@@ -16,6 +16,15 @@ class IndexController extends RestController
         $this->answer = array(
             'version' => $this->moduleConfig['params']['version'],
         );
+
+      /*  \Resque::enqueue('default', '\SafeStartApi\Jobs\CheckListResend', array(
+            'checkListId' => 19,
+            'emails' => array(array(
+                'email' => "ponomarenko.t@gmail.com",
+                'name' => 'Artem'
+            ))
+        ));*/
+
         return $this->AnswerPlugin()->format($this->answer);
     }
 }

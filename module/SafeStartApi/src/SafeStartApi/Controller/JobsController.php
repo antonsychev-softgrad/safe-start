@@ -88,7 +88,7 @@ class JobsController extends AbstractActionController
         $this->logger->info("Success Process New Email CheckList Action with checkListId = $checkListId \r\n");
     }
 
-    public function processCheckListResend()
+    public function processCheckListResendAction()
     {
         $request = $this->getRequest();
         $checkListId = $request->getParam('checkListId');
@@ -134,7 +134,6 @@ class JobsController extends AbstractActionController
                     $path
                 );
             }
-            return $this->AnswerPlugin()->format($this->answer);
         } else {
             $this->logger->info("PDF document was not generated");
         }
