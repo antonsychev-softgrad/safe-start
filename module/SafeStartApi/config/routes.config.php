@@ -119,6 +119,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-vehicle-inspections-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/inspections-statistic',
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getInspectionBreakdownsStatistic'
+                    ),
+                ),
+            ),
             'print-vehicle-statistic' => array(
                 'type' => 'Segment',
                 'options' => array(

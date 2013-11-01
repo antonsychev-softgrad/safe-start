@@ -1186,4 +1186,39 @@ class Vehicle extends BaseEntity
 
         return false;
     }
+
+    public function getInspectionBreakdowns($from = null, $to = null, $range = 'monthly')
+    {
+        $chart = array();
+        if ( $range == 'monthly' ) $delta = 30 * 24 * 60 * 60;
+        else $delta = 7 * 24 * 60 * 60;
+        if (!$from) $from = new \DateTime(date('Y-m-d', time() - $delta * 6));
+        if (!$to) $to = new \DateTime();
+
+        $em = \SafeStartApi\Application::getEntityManager();
+
+        $fromTime = $from->getTimestamp();
+        $toTime = $to->getTimestamp();
+
+        while ($fromTime < $toTime) {
+            if ( $range == 'monthly' ) $date = date('m/Y', $fromTime);
+            else  $date = date('W/Y', $fromTime);
+
+            $toTimeParam = new \DateTime();
+            $toTimeParam->setTimestamp($fromTime + $delta);
+            $fromTimeParam = new \DateTime();
+            $fromTimeParam->setTimestamp($fromTime);
+
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null AND cl.vehicle = (:vehicle)';
+            $query = $em->createQuery($dql);
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam)->setParameter('vehicle', $this);
+            $value1 = $query->getSingleScalarResult();
+            $fromTime = $fromTime + $delta;
+            $chart[] = array(
+                'date' => $date,
+                'value1' => $value1,
+            );
+        }
+        return $chart;
+    }
 }

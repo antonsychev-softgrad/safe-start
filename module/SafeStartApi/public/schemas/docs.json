@@ -321,6 +321,22 @@
                     }
                 }
             }
+        },
+        "api/publicvehicle/sendCheckListToEmails": {
+            "description": "Send CheckList To Emails",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/sendCheckListToEmails/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/sendCheckListToEmails/response.json"
+                    }
+                }
+            }
         }
     }
 }

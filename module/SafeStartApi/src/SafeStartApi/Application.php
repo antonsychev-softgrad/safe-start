@@ -105,6 +105,7 @@ class Application
             }
 
         }
+        defined('APP_CACHE') || define('APP_CACHE', false);
         self::$cache->setCaching(APP_CACHE);
         return self::$cache;
     }
@@ -136,6 +137,29 @@ class Application
         }
 
         return $returnFolder;
+    }
+
+    public static function getImageFileByDirAndName($dir, $tosearch) {
+        if(file_exists($dir) && is_dir($dir)) {
+
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+                return (realpath($path));
+            } else {
+                foreach($validFileExts as $validExt) {
+                    $filename = $path . "." . $validExt;
+                    if(file_exists($filename) && !is_dir($filename)) {
+                        return (realpath($filename));
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private function __construct()

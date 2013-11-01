@@ -154,6 +154,11 @@
                     "type": "string",
                     "required": false
                 },
+                "location": {
+                    "description":"Some predefined place",
+                    "type": "string",
+                    "required": false
+                },
                 "odometer": {
                     "description": "Current Odometer",
                     "type": "integer",

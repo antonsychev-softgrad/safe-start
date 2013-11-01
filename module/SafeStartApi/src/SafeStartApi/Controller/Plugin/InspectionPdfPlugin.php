@@ -6,7 +6,7 @@ use SafeStartApi\Model\ImageProcessor;
 
 class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
-    const HEADER_EMPIRIC_HEIGHT = 90;
+    const HEADER_EMPIRIC_HEIGHT = 100;
     protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
     private $checkList;
 
@@ -23,6 +23,8 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->lastTopPos = $this->drawHeader();
         // add warnings
         $currentColumn = $this->drawWarnings();
+        // add location
+        $currentColumn = $this->drawLocation($currentColumn);
         // add inspection fields
         $currentColumn = $this->drawInspection($currentColumn);
         // add additional comments
@@ -33,6 +35,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->saveDocument();
         $this->checkList->setPdfLink($this->fileName);
         $this->getController()->em->flush();
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = $this->fileName;
+        $cache->setItem($cashKey, true);
+
         return $this->filePath;
     }
 
@@ -176,6 +182,54 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->lastTopPos -= 10;
 
         return $currentColumn;
+    }
+
+    private function drawLocation($currentColumn = 1)
+    {
+        $columns = $this->opts['style']['content_columns'];
+        $columnsPadding = $this->opts['style']['content_column_padding'];
+        $contentWidth = $this->getPageContentWidth() * $this->opts['style']['content_width'];
+        $columnWidth = round(($contentWidth - ($columnsPadding * ($columns - 1))) / $columns);
+        if (!$currentColumn) $currentColumn = 1;
+
+        $location = $this->checkList->getLocation();
+        if (!empty($location)) {
+            $this->drawText(
+                "Location",
+                $this->opts['style']['category_field_size'],
+                $this->opts['style']['category_field_color'],
+                $this->lastTopPos,
+                self::TEXT_ALIGN_CENTER,
+                ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth),
+                $this->font,
+                $columnWidth
+            );
+            $this->lastTopPos -= 10;
+            $lines = array_filter($this->getTextLines($location, $this->opts['style']['field_size'], $columnWidth));
+            foreach ($lines as $line) {
+                if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+                    $currentColumn++;
+                    if ($currentColumn > $columns) {
+                        $this->pageIndex++;
+                        $this->document->pages[$this->pageIndex] = new ZendPdf\Page($this->pageSize);
+                        $currentColumn = 1;
+                    }
+                    $this->lastTopPos = ($this->pageIndex) ? $this->getPageHeight() - $this->opts['style']['page_padding_top'] : $this->getPageHeight() - self::HEADER_EMPIRIC_HEIGHT;
+                }
+                $this->drawText(
+                    $line,
+                    $this->opts['style']['field_size'],
+                    $this->opts['style']['field_color'],
+                    $this->lastTopPos,
+                    self::TEXT_ALIGN_LEFT,
+                    ($this->opts['style']['column_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding / 2,
+                    $this->font,
+                    $columnWidth
+                );
+                $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
+            }
+            $this->lastTopPos -= 10;
+        }
     }
 
     private function drawInspection($currentColumn = 1)

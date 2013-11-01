@@ -8,6 +8,11 @@ $api = array(
         'output' => 'json',
         'href' => '/api/',
         'emailForContacts' => 'info@safestartinspections.com',
+        'emailSubjects' => array(
+            'vehicle_fail_notification' => 'New Critical Alerts for Vehicle',
+            'new_vehicle_inspection' => 'New Vehicle Inspection',
+            'welcome' => 'Welcome To Safe Start Inspections!',
+        )
     ),
     'fieldTypes' => array(
         'root' => array(
@@ -65,6 +70,10 @@ $api = array(
         'group' => array(
             'id' => 6,
         ),
+        'label' => array(
+            'id' => 8,
+            'default' => ''
+        ),
     ),
     'mail' => array(
         'from' => 'info@safestartinspections.com',
@@ -86,7 +95,7 @@ $api = array(
             'ext' => 'pdf',
             'output_name_title' => 'inspection',
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
-            'title' => 'safe start inspection',
+            'title' => 'daily inspection',
             'style' => array(
                 'footer_text_size' => 10,
                 'footer_text_color' => '#333333',
@@ -132,7 +141,7 @@ $api = array(
             'ext' => 'pdf',
             'output_name_title' => 'inspection_fault',
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
-            'title' => 'safe start inspection',
+            'title' => 'fault notification',
             'style' => array(
                 'footer_text_size' => 10,
                 'footer_text_color' => '#333333',

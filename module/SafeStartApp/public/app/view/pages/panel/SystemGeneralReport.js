@@ -47,7 +47,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             name: 'company',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-atatus',
+                            cls: 'sfa-status',
                             valueField: 'id',
                             displayField: 'title',
                             value: 0,
@@ -58,7 +58,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             name: 'range',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-atatus',
+                            cls: 'sfa-status',
                             valueField: 'rank',
                             displayField: 'title',
                             value: 'monthly',
@@ -72,6 +72,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                         {
                             xtype: 'datepickerfield',
                             name: 'from',
+                            cls: 'sfa-data',
                             label: 'From',
                             labelWidth: '',
                             picker: {
@@ -82,6 +83,7 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                         {
                             xtype: 'datepickerfield',
                             name: 'to',
+                            cls: 'sfa-data',
                             label: 'To',
                             labelWidth: '',
                             picker: {
@@ -110,10 +112,19 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
                             docked: 'top',
                             tpl: [
                                 '<div class="top">',
-                                '<div class="name">Period from {period.from} to {period.to}</div>',
-                                '<div class="name">Total amount of database inspections: {total.database_inspections} </div>',
-                                '<div class="name">Total amount of database alerts: {total.database_alerts} </div>',
-                                '<div class="name">Total amount of email inspections: {total.email_inspections} </div>',
+                                '<table style="max-width: 700px;"><tr>',
+                               /* '<tr><td><div class="name"><b>Period from {period.from} to {period.to}</b></div></td></tr>',*/
+                                '<td>',
+                                    '<div class="name">Total amount of database <b>inspections</b>: <span style="color:#0F5B8D;">{total.database_inspections}</span></div>',
+                                    '<div class="name">Total amount of database <b>alerts</b>: <span style="color:#0F5B8D;">{total.database_alerts}</span> </div>',
+                                    '<div class="name">Total amount of <b>email inspections</b>: <span style="color:#0F5B8D;">{total.email_inspections}</span> </div>',
+                                '</td>',
+                                '<td>',
+                                    '<div class="name">Total amount of database <b>users</b>: <span style="color:#0F5B8D;">{total.database_users}</span>  </div>',
+                                    '<div class="name">Total amount of database <b>subscription managers</b>: <span style="color:#0F5B8D;">{total.database_responsible_users}</span> </div>',
+                                    '<div class="name">Total amount of database <b>vehicles</b>: <span style="color:#0F5B8D;">{total.database_vehicles}</span> </div>',
+                                '</td>',
+                                '</tr></table>',
                                 '</div>'
                             ].join('')
                         }

@@ -80,7 +80,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
             items: [{
                 xtype: 'panel',
                 cls: 'sfa-left-container',
-                margin: '0 20 0 0',
+                margin: '0',
                 layout: 'fit',
                 items: [{
                     xtype: 'toolbar',
@@ -96,11 +96,12 @@ Ext.define('SafeStartApp.view.pages.Company', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
                     items: [{
                         iconCls: 'arrow_right',
-                        height: 20,
+                        //height: 22,
                         iconMask: true,
                         handler: function () {
                             var panel = this.up('SafeStartLeftContainer');

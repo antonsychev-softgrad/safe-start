@@ -231,6 +231,7 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsStructure(json_encode($fieldsStructure));
         $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+        $checkList->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
 
         if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
         else $checkList->setOperatorName($user->getFullName());
@@ -429,59 +430,59 @@ class VehicleController extends RestrictedAccessRestController
         $inspections = array();
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
-       /* if ($cache->hasItem($cashKey)) {
-            $inspections = $cache->getItem($cashKey);
-        } else {*/
-            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
-            $query->setParameters(array('id' => $vehicle));
-            $items = $query->getResult();
+        /* if ($cache->hasItem($cashKey)) {
+             $inspections = $cache->getItem($cashKey);
+         } else {*/
+        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
+        $query->setParameters(array('id' => $vehicle));
+        $items = $query->getResult();
 
-            if (is_array($items) && !empty($items)) {
-                foreach ($items as $checkList) {
-                    $checkListData = $checkList->toArray();
+        if (is_array($items) && !empty($items)) {
+            foreach ($items as $checkList) {
+                $checkListData = $checkList->toArray();
 
-                    $checkListData['checkListId'] = $checkList->getId();
-                    $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
+                $checkListData['checkListId'] = $checkList->getId();
+                $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
 
-                    $warnings = $checkList->getWarnings();
-                    $vehicle = $checkList->getVehicle();
-                    if ($vehicle->getNextServiceDay()) {
-                        $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                $warnings = $checkList->getWarnings();
+                $vehicle = $checkList->getVehicle();
+                if ($vehicle->getNextServiceDay()) {
+                    $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                    if ($days < 1) {
+                        $warnings[] = array(
+                            'action' => 'next_service_due',
+                            'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                        );
+                    } else if ($days < 30) {
+                        $warnings[] = array(
+                            'action' => 'next_service_due',
+                            'text' => 'Next service In ' . ceil($days) . ' Days',
+                        );
+                    }
+                }
+                if ($vehicle->getCompany()) {
+                    if ($vehicle->getCompany()->getExpiryDate()) {
+                        $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
                         if ($days < 1) {
                             $warnings[] = array(
-                                'action' => 'next_service_due',
-                                'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                                'action' => 'subscription_ending',
+                                'text' => 'Your subscription has expired'
                             );
                         } else if ($days < 30) {
                             $warnings[] = array(
-                              'action' => 'next_service_due',
-                              'text' => 'Next service In ' . ceil($days) . ' Days',
+                                'action' => 'subscription_ending',
+                                'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
                             );
                         }
                     }
-                    if ($vehicle->getCompany()) {
-                        if ($vehicle->getCompany()->getExpiryDate()) {
-                            $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
-                            if ($days < 1) {
-                                $warnings[] = array(
-                                    'action' => 'subscription_ending',
-                                    'text' => 'Your subscription has expired'
-                                );
-                            } else if ($days < 30) {
-                                $warnings[] = array(
-                                    'action' => 'subscription_ending',
-                                    'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
-                                );
-                            }
-                        }
-                    }
-                    $checkListData['warnings'] = $warnings;
-
-                    $inspections[] = $checkListData;
                 }
+                $checkListData['warnings'] = $warnings;
+
+                $inspections[] = $checkListData;
             }
-   /*         $cache->setItem($cashKey, $inspections);
-        }*/
+        }
+        /*         $cache->setItem($cashKey, $inspections);
+             }*/
         $page = (int)$this->getRequest()->getQuery('page');
         $limit = (int)$this->getRequest()->getQuery('limit');
         $inspections = array_reverse($inspections);
@@ -647,6 +648,39 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getInspectionBreakdownsStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $range = 'monthly';
+        if (isset($this->data->range) && !empty($this->data->range)) {
+            $range = $this->data->range;
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'chart' => $vehicle->getInspectionBreakdowns($from, $to, $range)
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function printStatisticAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -681,9 +715,9 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicleId) {
             $user = $this->authService->getIdentity();
             $responsibleVehicles = $user->getResponsibleForVehicles();
-            if ($responsibleVehicles) foreach($responsibleVehicles as $vehicle)  $vehicles[] = $vehicle;
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
             $operatorVehicles = $user->getVehicles();
-            if ($operatorVehicles) foreach($operatorVehicles as $vehicle)  $vehicles[] = $vehicle;
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
         } else {
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
             if (!$vehicle) return $this->_showNotFound("Vehicle not found.");

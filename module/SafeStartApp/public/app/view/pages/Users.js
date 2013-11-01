@@ -69,7 +69,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                         type: 'pop',
                         out: 'true'
                     },
-                    margin: '0 20 0 0',
+                    margin: '0',
                     cls: 'sfa-left-container',
                     store: this.usersStore,
                     items: [{
@@ -114,6 +114,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
                     items: []
