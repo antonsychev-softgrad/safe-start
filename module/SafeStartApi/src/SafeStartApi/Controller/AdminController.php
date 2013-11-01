@@ -203,7 +203,7 @@ class AdminController extends AdminAccessRestController
             $field->setParent($parentField);
         }
 
-        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker'))) {
+        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker', 'label'))) {
             $this->answer = array(
                 "errorMessage" => "Wrong field type."
             );
