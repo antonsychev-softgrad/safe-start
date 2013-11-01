@@ -142,7 +142,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         var alertsData = [];
         Ext.each(previousAlerts, function (alert) {
-            console.log(alert);
             var message = alert.alert_description || alert.alert_message;
             if (message) {
                 alertsData.push({
@@ -307,6 +306,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             switch(fieldData.type) {
                 case 'text':
                     fields.push(this.createTextField(fieldData));
+                    break;
+                case 'label':
+                    fields.push(this.createLabelField(fieldData));
                     break;
                 case 'radio':
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
@@ -755,5 +757,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 }
             }]
         });
+    },
+
+    createLabelField: function (fieldData) {
+        return {
+            xtype: 'container',
+            cls: 'sfa-field-label',
+            html: fieldData.fieldName
+        };
     }
+
 });

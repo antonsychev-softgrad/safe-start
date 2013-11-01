@@ -43,10 +43,11 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 store: {
                     data: [
                         { rank: 'group', title: 'Questions Group'},
-                        { rank: 'radio', title: 'Radio Buttons Yes|No|N\A'},
+                        { rank: 'radio', title: 'Radio Buttons Yes|No|N\\A'},
                         { rank: 'checkbox', title: 'Checkbox Yes|No'},
                         { rank: 'text', title: 'Text'},
-                        { rank: 'datePicker', title: 'Date Picker'}
+                        { rank: 'datePicker', title: 'Date Picker'},
+                        { rank: 'label', title: 'Label'}
                     ]
                 },
                 listeners: {
@@ -280,12 +281,16 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         this.switchAlertCriticalMessage(type);
         this.switchTriggerValueField(type);
         var fields = this.getFields();
+
         switch (type) {
             case 'group':
                 fields['alert_title'].hide();
                 fields['alert_critical'].hide();
                 fields['alert_description'].hide();
                 fields['trigger_value'].hide();
+                fields['description'].show();
+                fields['default_value'].show();
+                fields['title'].setLabel('Question');
             break;
             case 'radio':
             case 'checkbox':
@@ -293,17 +298,35 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['alert_critical'].show();
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
+                fields['description'].show();
+                fields['default_value'].show();
+                fields['title'].setLabel('Question');
                 break;
             case 'datePicker':
                 fields['alert_critical'].show();
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
+                fields['description'].show();
+                fields['default_value'].show();
+                fields['title'].setLabel('Question');
+                break;
+            case 'label':
+                fields['alert_title'].hide();
+                fields['alert_critical'].hide();
+                fields['alert_description'].hide();
+                fields['trigger_value'].hide();
+                fields['description'].hide();
+                fields['default_value'].hide();
+                fields['title'].setLabel('Label');
                 break;
             default:
                 fields['alert_title'].hide();
                 fields['alert_critical'].hide();
                 fields['alert_description'].hide();
                 fields['trigger_value'].hide();
+                fields['description'].show();
+                fields['default_value'].show();
+                fields['title'].setLabel('Question');
                 break;
         }
     },
