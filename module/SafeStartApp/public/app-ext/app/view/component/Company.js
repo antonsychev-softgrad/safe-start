@@ -29,6 +29,7 @@ Ext.define('SafeStartExt.view.component.Company', {
                 flex: 1,
                 items: [{
                     xtype: 'SafeStartExtPanelVehicleList',
+                    companyId: this.config.companyId || 0,
                     flex: 1,
                     maxWidth: 250
                 }]

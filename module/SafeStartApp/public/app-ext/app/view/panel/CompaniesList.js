@@ -15,44 +15,61 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     initComponent: function () {
         var store = SafeStartExt.store.Companies.create({autoLoad: true});
         Ext.apply(this, {
-            tbar: [{
-                xtype: 'textfield',
-                cls:'search',
-                flex: 1,
-                margin: '0 5 0 5',
-                height: 22,
-                listeners: {
-                    change: function (textfield, value) {
-                        store.clearFilter();
-                        if (value) {
-                            store.filter('title', value);
-                        }
+            tbar: {
+                xtype: 'toolbar',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                items: [{
+                    text: 'Add company',
+                    handler: function () {
+                        this.up('SafeStartExtPanelCompaniesList').fireEvent('addCompanyAction');
                     }
-                }
-            }, {
-                iconCls: 'sfa-icon-refresh',
-                scale: 'medium',
-                handler: function () {
-                    this.up('toolbar').down('textfield').setValue('');
-                    store.loadData();
-                }
-            }],
-            items: [{
-                xtype: 'dataview',
-                itemSelector: 'div.sfa-vehicle-item',
-                tpl: new Ext.XTemplate(
-                    '<tpl for=".">',
-                    '<div class=sfa-vehicle-item>',
-                    '{title}',
-                    '</div>',
-                    '</tpl>'
-                ),
-                store: store,
-                listeners: {
-                    itemclick: this.onCompanyClick,
-                    scope: this
-                }
-            }]
+                    }, {
+                        xtype: 'container',
+                        layout: 'hbox',
+                        items: [{
+                        xtype: 'textfield',
+                        cls:'search',
+                        flex: 1,
+                        margin: '0 5 0 5',
+                        height: 22,
+                        listeners: {
+                            change: function (textfield, value) {
+                                store.clearFilter();
+                                if (value) {
+                                    store.filter('title', value);
+                                }
+                            }
+                        }
+                    }, {
+                        xtype: 'button',
+                        iconCls: 'sfa-icon-refresh',
+                        scale: 'medium',
+                        handler: function () {
+                            this.up('toolbar').down('textfield').setValue('');
+                            store.load();
+                        }
+                    }]
+                }],
+            },
+                items: [{
+                    xtype: 'dataview',
+                    itemSelector: 'div.sfa-vehicle-item',
+                    tpl: new Ext.XTemplate(
+                        '<tpl for=".">',
+                        '<div class=sfa-vehicle-item>',
+                        '{title}',
+                        '</div>',
+                        '</tpl>'
+                    ),
+                    store: store,
+                    listeners: {
+                        itemclick: this.onCompanyClick,
+                        scope: this
+                    }
+                }]
         });
         this.callParent();
     },

@@ -40,6 +40,9 @@ Ext.define('SafeStartExt.controller.Auth', {
             data: data,
             success: function () {
                 viewport.fireEvent('reloadMainMenu');
+                viewport.down('SafeStartExtMain').on('mainMenuLoaded', function () {
+                    Ext.History.setHash('');
+                }, this, {single: true});
             }
         });
     },
@@ -50,6 +53,9 @@ Ext.define('SafeStartExt.controller.Auth', {
             url: 'user/logout',
             success: function () {
                 viewport.fireEvent('reloadMainMenu');
+                viewport.down('SafeStartExtMain').on('mainMenuLoaded', function () {
+                    Ext.History.setHash('auth');
+                }, this, {single: true});
             }
         });
     }

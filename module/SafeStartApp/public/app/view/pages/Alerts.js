@@ -35,10 +35,10 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
         var self = this;
         this.callParent();
 
-        this.mainToolbar = Ext.create('SafeStartApp.view.pages.toolbar.Main');
         this.add({
             xtype: 'SafeStartMainToolbar',
-            docked: 'top'
+            docked: 'top',
+            btnTitle: 'Outstanding Alerts'
         });
 
         this.add(this.getInfoPanel());
@@ -71,15 +71,9 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         if (SafeStartApp.companyModel.get('id') == this.companyId) return;
         this.companyId = SafeStartApp.companyModel.get('id');
-        if (this.down('#SafeStartMainToolbarTitle')) {
-            this.down('#SafeStartMainToolbarTitle').setText( SafeStartApp.companyModel.get('title')+': '+'Outstanding Alerts' );
-        } else {
-            this.down('SafeStartMainToolbar').add({
-                ui: 'action',
-                id: 'SafeStartMainToolbarTitle',
-                text: SafeStartApp.companyModel.get('title')+': '+'Outstanding Alerts'
-            });
-        }
+
+        this.down('SafeStartMainToolbar').setBtnTitle(SafeStartApp.companyModel.get('title') + ': ' + 'Outstanding Alerts');
+
         // we need only new alerts
         this.down('SafeStartVehicleAlertsPanel').loadCompanyList(this.companyId, 'new');
     }
