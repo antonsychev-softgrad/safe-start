@@ -25,12 +25,6 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'textfield',
-                disabled: true,
-                name: 'nextServiceDay',
-                label: 'Next Service Day'
-            },
-            {
-                xtype: 'textfield',
                 label: 'Make',
                 name: 'type'
             },
@@ -115,6 +109,12 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                         label: 'Kilometres'
                     }
                 ]
+            },
+            {
+                xtype: 'textfield',
+                disabled: true,
+                name: 'nextServiceDay',
+                label: 'Next Service Day'
             },
            /* {
                 xtype: 'fieldset',
