@@ -142,6 +142,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
         var alertsData = [];
         Ext.each(previousAlerts, function (alert) {
+            console.log(alert);
             var message = alert.alert_description || alert.alert_message;
             if (message) {
                 alertsData.push({
@@ -729,24 +730,30 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     getAlertsListView: function (alerts) {
         return Ext.MessageBox.create({
-            title: 'Alerts in inspection:',
-            tpl: new Ext.XTemplate(
-                '<div class="sfa-alerts">',
-                '<tpl for=".">',
-                    '<div class="sfa-alert-description">',
-                    '{message}',
-                    '</div>',
-                '</tpl>',
-                '</div>'
-            ),
+            layout: 'fit',
+            items: [{
+                xtype: 'panel',
+                scrollable: true,
+                height: alerts.length > 20 ? 600 : alerts.length * 25 + 30,
+                title: 'Alerts in inspection:',
+                tpl: new Ext.XTemplate(
+                    '<div class="sfa-alerts">',
+                    '<tpl for=".">',
+                        '<div class="sfa-alert-description">',
+                        '{message}',
+                        '</div>',
+                    '</tpl>',
+                    '</div>'
+                ),
+                data: alerts
+            }],
             buttons: [{
                 text: 'OK',
                 ui: 'action',
                 handler: function () {
                     this.up('sheet').destroy();
                 }
-            }],
-            data: alerts
+            }]
         });
     }
 });
