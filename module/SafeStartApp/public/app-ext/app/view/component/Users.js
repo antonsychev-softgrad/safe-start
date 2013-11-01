@@ -3,7 +3,6 @@ Ext.define('SafeStartExt.view.component.Users', {
     requires: [
         'SafeStartExt.view.container.TopNav',
         'SafeStartExt.view.panel.UsersList',
-        'SafeStartExt.view.form.User'
     ],
     xtype: 'SafeStartExtComponentUsers',
     layout: {
@@ -25,18 +24,20 @@ Ext.define('SafeStartExt.view.component.Users', {
                     align: 'stretch'
                 },
                 flex: 1,
-                items: [{
+                items: [
+                {
                     xtype: 'SafeStartExtPanelUsersList',
                     flex: 1,
                     maxWidth: 250
-                }, {
+                },
+                 {
                     cls: 'sfa-info-container',
                     xtype: 'panel',
                     type: 'vbox',
                     flex: 2,
                     padding: 20,
                     ui: 'transparent',
-                    name: 'company-info'
+                    name: 'user-info'
                 }]
             }]
         });

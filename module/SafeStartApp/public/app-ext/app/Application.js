@@ -29,13 +29,15 @@ Ext.define('SafeStartExt.Application', {
         'Auth',
         'Companies',
         'Company',
-        'Contact'
+        'Contact',
+        'Users'
     ],
 
     routes: {
         'Auth': 'main#showPage',
         'Contact': 'main#showPage',
         'Companies': 'main#showPage',
+        'Users': 'main#showPage',
         'Company': 'main#showCompany',
         'Company/:id': 'main#showCompanyById'
     },

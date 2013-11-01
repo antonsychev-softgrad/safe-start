@@ -11,6 +11,9 @@ Ext.define('SafeStartExt.controller.Main', {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAuth',
         ref: 'authPanel'
     }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentUsers',
+        ref: 'usersPanel'
+    }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompany',
         ref: 'companyPanel'
     }, {        
@@ -43,7 +46,6 @@ Ext.define('SafeStartExt.controller.Main', {
                     case 'SystemStatistic':
                     case 'SystemSettings':
                     case 'Alerts':
-                    case 'Users':
                         me.notSupportedAction();
                         break;
                 }
