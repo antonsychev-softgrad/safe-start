@@ -291,6 +291,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             }
         }, this);
 
+        if (depth == 1) {
+            title = title.toUpperCase();
+        }
+
         if (items.length) {
             return this.createGroup(items, title, depth);
         }
