@@ -30,7 +30,8 @@ Ext.define('SafeStartExt.controller.Main', {
             'SafeStartExtMain': {
                 mainMenuLoaded: this.updateMainMenu,
                 notSupportedAction: this.notSupportedAction,
-                changeCompanyAction: this.changeCompanyAction
+                changeCompanyAction: this.changeCompanyAction,
+                changeTab: this.changeTab
             }
         });
         
