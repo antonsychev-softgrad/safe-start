@@ -737,7 +737,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'panel',
                 scrollable: true,
                 height: alerts.length > 20 ? 600 : alerts.length * 25 + 30,
-                title: 'Alerts in inspection:',
+                title: 'Outstanding Alerts:',
                 tpl: new Ext.XTemplate(
                     '<div class="sfa-alerts">',
                     '<tpl for=".">',

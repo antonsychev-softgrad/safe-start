@@ -322,7 +322,7 @@
                 }
             }
         },
-        "api/vehicle/sendCheckListToEmails": {
+        "api/publicvehicle/sendCheckListToEmails": {
             "description": "Send CheckList To Emails",
             "type": "object",
             "properties": {
