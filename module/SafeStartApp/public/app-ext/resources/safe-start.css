@@ -538,8 +538,3 @@ font-size: 24px;
 .sfa-icon-contact {
     background-image: url(img/sfa-icon-contact.png);
 }
-
-.x-ie .sfa-vehicles-tabpanel .x-panel .x-panel-body{
-    padding-top: 20px;
-
-}
