@@ -52,6 +52,7 @@ Ext.define('SafeStartExt.view.form.User', {
             queryMode: 'local',
             displayField: 'title',
             valueField: 'rank',
+            allowBlank: false,
             store: Ext.create('Ext.data.Store', {
                 fields: ['rank', 'title'],
                 data : [
