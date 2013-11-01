@@ -81,17 +81,6 @@ Ext.define('SafeStartApp.view.pages.Users', {
                             ui: 'action',
                             text: 'Add User',
                             action: 'add-user'
-                        }, {
-                            xtype: 'spacer',
-                            flex: 1
-                        }, {
-                            iconCls: 'arrow_left',
-                            height: 20,
-                            iconMask: true,
-                            handler: function (btn) {
-                                var panel = this.up('SafeStartLeftContainer');
-                                panel.toggleMenu();
-                            }
                         }]
                     }, {
                         xtype: 'toolbar',
@@ -127,15 +116,7 @@ Ext.define('SafeStartApp.view.pages.Users', {
                 cls: 'sfa-left-container',
                 items: [{
                     xtype: 'toolbar',
-                    items: [{
-                        iconCls: 'arrow_right',
-                        height: 20,
-                        iconMask: true,
-                        handler: function() {
-                            var panel = this.up('SafeStartLeftContainer');
-                            panel.toggleMenu();
-                        }
-                    }]
+                    items: []
                 }]
             }]
         };

@@ -86,18 +86,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     xtype: 'toolbar',
                     cls: 'sfa-menu-toggle',
                     docked: 'top',
-                    items: additionalButton.concat({
-                        xtype: 'spacer',
-                        flex: 1
-                    }, {
-                        iconCls: 'arrow_left',
-                        height: 20,
-                        iconMask: true,
-                        handler: function (btn) {
-                            var panel = this.up('SafeStartLeftContainer');
-                            panel.toggleMenu();
-                        }
-                    })
+                    items: additionalButton
                 }, {
                     xtype: 'SafeStartNestedListVehicles',
                     vehiclesStore: this.vehiclesStore,
