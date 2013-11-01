@@ -4,6 +4,7 @@ Ext.define('SafeStartExt.view.form.Company', {
         'Ext.form.field.Date',
         'Ext.form.field.Checkbox',
         'Ext.form.field.Text',
+        'Ext.form.field.Hidden',
         'Ext.form.FieldSet',
         'Ext.form.FieldContainer'
     ],
