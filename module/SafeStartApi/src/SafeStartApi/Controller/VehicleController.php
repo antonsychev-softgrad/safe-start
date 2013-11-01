@@ -650,7 +650,7 @@ class VehicleController extends RestrictedAccessRestController
 
     public function getInspectionBreakdownsStatisticAction()
     {
-        $vehicleId = 1;//(int)$this->params('id');
+        $vehicleId = (int)$this->params('id');
 
         $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
         if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
