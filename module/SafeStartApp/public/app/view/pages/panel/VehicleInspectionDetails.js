@@ -114,7 +114,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createContainer('Current odometer', odometerString)
         ]);
 
-        this.createButtons(checklist.id);
+        this.up('SafeStartVehicleInspectionsPanel').down('button[action=print]').checklistId = checklist.id;
 
         this.checkListId = checklist.id;
         this.vehicleId = vehicle.get('id');

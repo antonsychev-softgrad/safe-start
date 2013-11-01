@@ -30,7 +30,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection sheet[cls=sfa-messagebox-confirm] button[action=confirm]': {
                 tap: 'onReviewConfirmBtnTap'
             },
-            'SafeStartCompanyPage SafeStartVehicleInspectionDetails button[action=print]': {
+            'SafeStartCompanyPage SafeStartVehicleInspectionsPanel button[action=print]': {
                 tap: 'downloadVehicleInspectionDetailsPdf'
             },
             'SafeStartCompanyPage SafeStartVehicleInspectionsPanel': {
@@ -135,7 +135,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     downloadVehicleInspectionDetailsPdf: function (btn) {
-        window.open('/api/checklist/' + btn.config.checkListId + '/generate-pdf', '_blank');
+        window.open('/api/checklist/' + btn.checklistId + '/generate-pdf', '_blank');
     },
 
     onEditInspectionAction: function (vehicleId, checkListId, inspectionRecord) {

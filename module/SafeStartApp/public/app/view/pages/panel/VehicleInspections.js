@@ -10,9 +10,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
         'SafeStartApp.view.pages.panel.VehicleInspectionDetails'
     ],
 
-    config: {cls:'sfa-container-padding',
+    config: {
+        cls:'sfa-container-padding',
         navigationBar: {cls:'sfa-inspection-toolbar',
             items: [{
+                ui: 'confirm',
+                action: 'print',
+                text: 'Print',
+                name: 'print-inspection',
+                align: 'right',
+                hidden: true
+            }, {
                 name: 'edit-inspection',
                 align: 'right',
                 text: 'Edit',
@@ -175,6 +183,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
             case 'SafeStartVehicleInspectionsPanel':
                 break;
             case 'SafeStartVehicleInspectionDetails':
+                this.down('button[name=print-inspection]').show(true);
                 this.down('button[name=edit-inspection]').show(true);
                 this.down('button[name=delete-inspection]').show(true);
                 break;
@@ -186,6 +195,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspections', {
     hideButtons: function () {
         this.down('button[name=edit-inspection]').hide();
         this.down('button[name=delete-inspection]').hide();
+        this.down('button[name=print-inspection]').hide();
     }
 
 });
