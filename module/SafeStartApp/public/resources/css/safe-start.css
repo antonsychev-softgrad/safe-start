@@ -61,7 +61,7 @@ sfa-info-container .x-toolbar .x-field {
     text-shadow: none;
 }
 .x-toolbar .x-button .x-button-label, .x-toolbar .x-button .x-badge {
-    font-size: 18px;
+    font-size: 16px;
 }
 .x-button.x-button-action, .x-button.x-button-action.x-button-back:after, .x-button.x-button-action.x-button-forward:after,
 .x-toolbar .x-button.x-button-action, .x-toolbar .x-button.x-button-action.x-button-back:after, .x-toolbar .x-button.x-button-action.x-button-forward:after,
@@ -446,14 +446,10 @@ d-image: url(img/);
     -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     -o-box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    padding-left: 0;
 }
-
-.sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view {
-    background: url(../img/logo-top.png) no-repeat 6px 7px;
-}
-
-.sfa-main-toolbar.x-toolbar.x-docked-top .x-body.x-scroll-view .x-inner.x-toolbar-inner {
-    padding-left: 189px;
+.x-img.sfa-logo-top.x-img-image {
+    cursor: pointer;
 }
 
 .sfa-main-toolbar .x-title {
@@ -588,8 +584,14 @@ border-bottom: 1px solid #dedede;
 
 .sfa-left-container .sfa-menu-toggle .x-button-normal.x-button.x-iconalign-center {
     width: 26px;
+    height: 26px;
     border-radius: 0;
     background: url(../img/collapse-ic.png) no-repeat;
+    -moz-border-radius: 6px 0 0 6px;
+    -webkit-border-radius: 6px 0 0 6px;
+    -khtml-border-radius: 6px 0 0 6px;
+    -o-border-radius: 6px 0 0 6px;
+    border-radius: 6px 0 0 6px;
 }
 
 .x-button .x-button-icon.arrow_left:before {
@@ -1516,8 +1518,8 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 }
 
 .sfa-vehicle-inspection-details .x-button.x-button-small .x-button-label {
-    font-size: 20px;
-    color: #fff;
+    font-size: 18px;
+    line-height: 30px;
 }
 
 .sfa-container-padding .x-container.x-toolbar.x-toolbar-dark.x-stretched.x-paint-monitored.x-navigation-bar.x-dock-item.x-docked-top {
@@ -1625,7 +1627,7 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     border: none;
 }
 .sfa-statistic .top {
-    font-size: 18px;
+    font-size: 16px;
 }
 .sfa-statistic .sfa-top-toolbar {
     padding-bottom: 10px;
@@ -1740,7 +1742,7 @@ span.sfa-comment-content {
 
 .sfa-vehicle-inspection.sfa-vehicle-report .sfa-top-toolbar .x-field .x-form-label {
     float: left;
-    padding-top: 6px;
+    padding-top: 3px;
     text-align: right;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .sfa-top-toolbar .x-field .x-form-label span {
@@ -1760,12 +1762,19 @@ span.sfa-comment-content {
     line-height: 1.8em;
 }
 
-.sfa-vehicle-inspection.sfa-vehicle-report .sfa-top-toolbar .x-field.x-field-select:first-child {
+.sfa-vehicle-inspection.sfa-vehicle-report .sfa-top-toolbar .x-field.x-field-select:nth-child(1) {
     width: 190px;
 }
 .sfa-vehicle-inspection.sfa-vehicle-report .sfa-top-toolbar .x-field.x-field-select:nth-child(2) {
     margin-right: 25px;
-    width: 175px;
+    width: 150px;
+}
+
+.sfa-top-logo-bg {
+    background: red;
+    height: 61px;
+    border-right: 1px solid #000;
+    background: url(../img/sfa-top-logo-bg.png) repeat-x;
 }
 
 .x-chart-watermark {
