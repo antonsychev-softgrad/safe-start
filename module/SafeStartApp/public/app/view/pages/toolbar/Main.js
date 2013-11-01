@@ -18,7 +18,8 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
     initialize: function () {
         this.setItems([{
             xtype: 'container',
-            width: 250,
+            width: 300,
+            cls:'sfa-top-logo-bg',
             layout: {
                 type: 'hbox',
                 align: 'middle'
