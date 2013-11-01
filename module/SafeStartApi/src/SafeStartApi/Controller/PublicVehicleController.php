@@ -215,8 +215,6 @@ class PublicVehicleController extends PublicAccessRestController
             'deleted' => 0,
         ));
         if (!$inspection) return $this->_showNotFound("Inspection not found.");
-
-        if (!$this->_requestIsValid('vehicle/checklisttoemail')) return $this->_showBadRequest();
         $emails = $this->data->emails;
 
 
