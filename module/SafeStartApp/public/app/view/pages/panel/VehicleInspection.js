@@ -166,7 +166,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             },
             items: [{
                 xtype: 'fieldset',
-                maxWidth: 900,
+                maxWidth: 700,
                 width: '100%',
                 defaults: {
                     labelWidth: '80%'
@@ -762,6 +762,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     createLabelField: function (fieldData) {
         return {
             xtype: 'container',
+            style: {
+                fontSize: '20px'
+            },
             cls: 'sfa-field-label',
             html: fieldData.fieldName
         };
