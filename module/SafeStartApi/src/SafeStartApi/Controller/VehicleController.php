@@ -20,9 +20,9 @@ class VehicleController extends RestrictedAccessRestController
 
         $vehiclesList = array();
 
-        if ($cache->hasItem($cashKey)) {
+       /* if ($cache->hasItem($cashKey)) {
             $vehiclesList = $cache->getItem($cashKey);
-        } else {
+        } else {*/
             $vehicles = $user->getVehicles();
 
             foreach ($vehicles as $vehicle) {
@@ -56,7 +56,7 @@ class VehicleController extends RestrictedAccessRestController
                 );
             }
             $cache->setItem($cashKey, $vehiclesList);
-        }
+       /* }*/
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
