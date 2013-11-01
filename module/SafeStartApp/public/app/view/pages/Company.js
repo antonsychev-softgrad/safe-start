@@ -91,7 +91,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                         flex: 1
                     }, {
                         iconCls: 'arrow_left',
-                        height: 20,
+                        //height: 22,
                         iconMask: true,
                         handler: function (btn) {
                             var panel = this.up('SafeStartLeftContainer');
@@ -112,7 +112,7 @@ Ext.define('SafeStartApp.view.pages.Company', {
                     xtype: 'toolbar',
                     items: [{
                         iconCls: 'arrow_right',
-                        height: 20,
+                        //height: 22,
                         iconMask: true,
                         handler: function () {
                             var panel = this.up('SafeStartLeftContainer');
