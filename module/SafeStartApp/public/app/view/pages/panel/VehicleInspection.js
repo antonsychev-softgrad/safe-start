@@ -338,7 +338,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'textfield',
             label: fieldData.fieldName,
-            maxWidth: 900,
+            maxWidth: 420,
             width: '100%',
             value: fieldData.fieldValue,
             fieldId: fieldData.fieldId
@@ -574,7 +574,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'container',
             width: '100%',
             cls: 'sfa-vehicle-inspection-gps',
-            maxWidth: 900,
+            maxWidth: 520,
             items: [{
                 xtype: 'togglefield',
                 label: 'GPS',
@@ -597,7 +597,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'container',
             name: 'vehicle-inspection-additional-fields',
             width: '100%',
-            maxWidth: 900,
+            maxWidth: 520,
             height: 'auto',
             items: [{
                 xtype: 'fieldset',
@@ -638,7 +638,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'fieldset',
             width: '100%',
-            maxWidth: 900,
+            maxWidth: 520,
             items: items
         };
     },
