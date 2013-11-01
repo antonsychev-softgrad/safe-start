@@ -26,7 +26,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
             },
             items: [{
                 xtype: 'image',
-                margin: '0 0 0 16',
+                margin: '0 auto',
                 height: 45,
                 width: 172,
                 src: 'resources/img/logo-top.png',
