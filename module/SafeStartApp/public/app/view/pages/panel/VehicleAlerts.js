@@ -14,6 +14,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
         cls:'sfa-container-padding',
         navigationBar: {cls:'sfa-alerts-topbar',
             ui: 'sencha',
+            maxWidth: 600,
             items: [
                 {
                     xtype: 'searchfield',

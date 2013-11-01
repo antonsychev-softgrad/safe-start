@@ -63,7 +63,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.down('panel[cls=sfa-vehicle-inspection-details]').removeAll();
 
         infoGroup.push(
-            this.createContainer('Project number', vehicle.get('projectNumber')),
+            this.createContainer('Project number', vehicle.get('projectNumber') == '0' ? '-': vehicle.get('projectNumber')),
             this.createContainer('Project name', vehicle.get('projectName'))
         );
         if (inspection.get('operator_name')) {
