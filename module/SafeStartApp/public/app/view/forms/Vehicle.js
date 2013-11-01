@@ -19,7 +19,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'textfield',
-                label: 'Title',
+                label: 'Model',
                 required: true,
                 name: 'title'
             },
@@ -31,7 +31,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'textfield',
-                label: 'Type',
+                label: 'Make',
                 name: 'type'
             },
             {
