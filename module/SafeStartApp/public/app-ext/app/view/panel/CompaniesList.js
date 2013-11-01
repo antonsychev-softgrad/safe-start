@@ -52,7 +52,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                             store.load();
                         }
                     }]
-                }],
+                }]
             },
                 items: [{
                     xtype: 'dataview',

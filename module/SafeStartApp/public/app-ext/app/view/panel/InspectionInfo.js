@@ -5,7 +5,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     xtype: 'SafeStartExtPanelInspectionInfo',
     cls:'sfa-previous-inspections-info',
     ui: 'light',
-    layout: 'fit',
     autoScroll: true,
 
     initComponent: function () {
@@ -178,6 +177,10 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
                     break;
             }
         }, this);
+
+        if (depth == 1) {
+            title = title.toUpperCase();
+        }
 
         if (items.length) {
             return this.createGroup(items, title, depth);

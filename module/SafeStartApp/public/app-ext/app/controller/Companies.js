@@ -52,7 +52,6 @@ Ext.define('SafeStartExt.controller.Companies', {
     },
 
     changeCompanyAction: function (company) {
-        console.log(company);
         this.getMainPanel().fireEvent('changeCompanyAction', company);
         this.setCompanyInfo(company);
     },
