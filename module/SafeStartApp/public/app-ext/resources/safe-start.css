@@ -192,7 +192,13 @@
 .sfa-top-nav .sfa-company-name .x-btn-inner {
 font-size: 24px;
 }
-
+.sfa-top-nav .sfa-topmenu-logo img {
+    cursor: pointer;
+}
+.sfa-top-nav .sfa-topmenu-logo > span {
+    background: url(img/sfa-top-logo-bg.png) repeat-x;
+    border-right: 1px solid #000;
+}
 
 /* END TOP panel */
 
@@ -203,9 +209,9 @@ font-size: 24px;
     padding-bottom: 7px;
 }
 .sfa-left-coll .search input.x-form-text {
-    padding: 7px 14% 8px 3%;
+    padding: 7px 3% 8px 14%;
     height: auto !important;
-    background: url(img/search-ic.png) no-repeat 96% 50%;
+    background: url(img/search-ic.png) no-repeat 4% 50%;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
@@ -235,6 +241,9 @@ font-size: 24px;
 .sfa-left-coll .sfa-icon-refresh {
     height: 18px;
     width: 22px;
+    top: 3px;
+    bottom: auto;
+    right: auto;
     background: url(img/reload-ic.png) no-repeat;
 }
 .sfa-left-coll a.x-btn span {
@@ -251,6 +260,15 @@ font-size: 24px;
     border-color: #fff;
     background: none;
 }
+.sfa-left-coll.x-panel-light-left {
+    border-color: #000;
+}
+/* buttoon rewiev to the right from search */
+.sfa-left-coll .x-btn.x-unselectable.x-box-item.x-btn-default-medium.x-icon.x-btn-icon.x-btn-default-medium-icon {
+    border: none;
+    background: none;
+}
+
 /* END LEFt column */
 
 /* CONTENT */
@@ -369,6 +387,7 @@ font-size: 24px;
 }
 .sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
+    background: #fff;
 }
 
     /* page Vehisles -> inspections-info */
