@@ -64,30 +64,25 @@ class ProcessDataController extends PublicAccessRestController
 
     public function generatePdfAction()
     {
-        $checkListId = $this->params('id');
+        $checkListId = $this->params('id'); // todo: get only by hash
 
         $checkList = null;
         $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
-        $query->setParameters(array('id' => $checkListId, 'hash' => $checkListId));
+        $query->setParameters(array('id' => (int)$checkListId, 'hash' => $checkListId));
         $queryResult = $query->getResult();
         if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0]))  $checkList = $queryResult[0];
 
         if (!$checkList) return $this->getController()->_showNotFound('Requested inspection not found.');
 
         $link = $checkList->getPdfLink();
-        $logger = $this->getServiceLocator()->get('RequestLogger');
         $cache = \SafeStartApi\Application::getCache();
-        $logger->debug("*********************************************************");
         $cashKey = $link;
-        $logger->debug($checkListId);
-        $logger->debug($link);
         $path = '';
         if ($cashKey && $cache->hasItem($cashKey)) {
             $path = $this->inspectionPdf()->getFilePathByName($link);
         }
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
-        $logger->debug($path);
-        $logger->debug("*********************************************************");
+
         header("Content-Disposition: inline; filename={$link}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($path);
