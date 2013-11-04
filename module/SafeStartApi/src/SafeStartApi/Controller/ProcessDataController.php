@@ -64,7 +64,7 @@ class ProcessDataController extends PublicAccessRestController
 
     public function generatePdfAction()
     {
-        $checkListId = (int)$this->params('id');
+        $checkListId = $this->params('id');
 
         $checkList = null;
         $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
