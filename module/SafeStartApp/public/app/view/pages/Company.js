@@ -126,7 +126,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
             xtype: 'panel',
             cls: 'sfa-info-container',
             name: 'info-container',
-            scrollable: null,
             layout: 'card',
             flex: 2,
             items: [{

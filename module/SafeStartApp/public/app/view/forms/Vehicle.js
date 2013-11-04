@@ -3,9 +3,15 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartVehicleForm',
     config: {
-        minHeight: 400,
-        //maxWidth: 600,
         cls: 'sfa-form-no-title',
+        layout: {
+            type: 'vbox',
+            align: 'center'
+        },
+        defaults: {
+            width: '100%',
+            maxWidth: 600
+        },
         items: [
 
 
@@ -143,6 +149,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             {
                 xtype: 'toolbar',
                 docked: 'bottom',
+                maxWidth: '',
                 items: [
                     {
                         xtype: 'button',
