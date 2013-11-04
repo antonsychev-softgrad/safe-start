@@ -27,7 +27,7 @@ class VehicleController extends RestrictedAccessRestController
 
             foreach ($vehicles as $vehicle) {
                 $vehicleData = $vehicle->toResponseArray();
-                $vehiclesList[] = array(
+                $vehicleInfo = array(
                     'vehicleId' => $vehicleData['vehicleId'],
                     'type' => $vehicleData['type'],
                     'vehicleName' => $vehicleData['vehicleName'],
@@ -38,12 +38,13 @@ class VehicleController extends RestrictedAccessRestController
                     'hoursUntilNext' => $vehicleData['hoursUntilNext'],
                     'role' => 'user'
                 );
+                $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
             }
 
             $responsibleVehicles = $user->getResponsibleForVehicles();
             foreach ($responsibleVehicles as $vehicle) {
                 $vehicleData = $vehicle->toResponseArray();
-                $vehiclesList[] = array(
+                $vehicleInfo = array(
                     'vehicleId' => $vehicleData['vehicleId'],
                     'type' => $vehicleData['type'],
                     'vehicleName' => $vehicleData['vehicleName'],
@@ -54,6 +55,7 @@ class VehicleController extends RestrictedAccessRestController
                     'hoursUntilNext' => $vehicleData['hoursUntilNext'],
                     'role' => 'responsible'
                 );
+                $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
             }
             $cache->setItem($cashKey, $vehiclesList);
        /* }*/
