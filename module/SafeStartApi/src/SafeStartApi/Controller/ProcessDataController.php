@@ -75,15 +75,20 @@ class ProcessDataController extends PublicAccessRestController
         if (!$checkList) return $this->getController()->_showNotFound('Requested inspection not found.');
 
         $link = $checkList->getPdfLink();
+        $logger = $this->getServiceLocator()->get('RequestLogger');
         $cache = \SafeStartApi\Application::getCache();
+        $logger->debug("*********************************************************");
         $cashKey = $link;
+        $logger->debug($checkListId);
+        $logger->debug($link);
         $path = '';
         if ($cashKey && $cache->hasItem($cashKey)) {
             $path = $this->inspectionPdf()->getFilePathByName($link);
         }
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
-
-        header("Content-Disposition: inline; filename={$checkList->getPdfLink()}");
+        $logger->debug($path);
+        $logger->debug("*********************************************************");
+        header("Content-Disposition: inline; filename={$link}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($path);
         return true;
