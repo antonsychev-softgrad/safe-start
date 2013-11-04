@@ -61,7 +61,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                 tpl: new Ext.XTemplate(
                     '<tpl for=".">',
                     '<div class=sfa-vehicle-item>',
-                    '{title}',
+                    '{text}',
                     '</div>',
                     '</tpl>'
                 ),
