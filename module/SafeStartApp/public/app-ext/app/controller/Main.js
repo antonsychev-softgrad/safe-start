@@ -11,9 +11,12 @@ Ext.define('SafeStartExt.controller.Main', {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAuth',
         ref: 'authPanel'
     }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentUsers',
+        ref: 'usersPanel'
+    }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompany',
         ref: 'companyPanel'
-    }, {        
+    }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompanies',
         ref: 'companiesPanel'
     }, {
@@ -44,7 +47,6 @@ Ext.define('SafeStartExt.controller.Main', {
                     case 'system-settings':
                     case 'company-settings':
                     case 'alerts':
-                    case 'users':
                         me.notSupportedAction();
                         break;
                 }
@@ -150,6 +152,18 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainNavPanel().enableAll();
     },
 
+    showUsersPage: function () {
+        var page = this.getUsersPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Users');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Users');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
     redirectTo: function(name) {
         Ext.History.add(name);
     },
@@ -174,6 +188,9 @@ Ext.define('SafeStartExt.controller.Main', {
                 break;
             case 'SystemStatistic':
                 this.redirectTo('system-statistic');
+                break;
+            case 'Users':
+                this.redirectTo('users');
                 break;
             default:
                 this.redirectTo(name.toLowerCase());
