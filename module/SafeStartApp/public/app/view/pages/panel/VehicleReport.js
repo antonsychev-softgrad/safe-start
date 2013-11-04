@@ -26,7 +26,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
             minHeight: 300,
             items: [
                 {
-                    cls: 'sfa-statistic',
+                    cls: 'sfa-statistic vehicles-reporting',
                     xtype: 'panel',
                     title: 'General',
                     layout: {

@@ -408,15 +408,6 @@ div.logo {
     width: 2.65em;
 }
 
-/*
-
-d-image: url(img/);
-
-
-
-*/
-
-
 
 /* message for Auth page */
 .x-msgbox {
@@ -790,8 +781,19 @@ font-size: 26px;
     line-height: 36px;
 }
 .sfa-info-container .x-form-fieldset-title .x-innerhtml {
-    padding: 0 0 7px 30%;
+    padding: 0 0 10px 0;
     font-size: 20px;
+}
+
+.sfa-info-container .sfa-company-settings .x-form-fieldset-title .x-innerhtml {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1368a4;
+}
+
+.sfa-info-container .sfa-checklist-form .x-form-fieldset-title .x-innerhtml {
+    padding-bottom: 0;
+    margin-top: 5px;
 }
 
 .sfa-info-container  input, .sfa-info-container textarea {
@@ -1261,6 +1263,7 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 .sfa-checklist-form .x-dock.x-dock-vertical .x-field-radio .x-form-label {
     position: relative;
     left: -10px;
+    top: 3px;
     text-align: left;
 }
 @-moz-document url-prefix() {
@@ -1653,6 +1656,54 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     width: 16px;
     height: 20px;
 }
+
+.x-firefox .sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-field-select.x-field-labeled:first-child {
+    width: 160px;
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-field-select.x-field-labeled:first-child .x-component-outer {
+width: 102px;
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar.x-toolbar .x-field {
+width: 155px;
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar .sfa-label-to.x-field-select.x-field div.x-component-outer {
+    width: 102px;
+}
+
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar .sfa-label-to.x-field-select.x-field {
+    width: 140px;
+}
+
+.x-firefox .sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-button-action.x-button.x-layout-box-item.x-iconalign-center.x-stretched {
+    top: 5px;
+    margin-right: 15px;
+}
+
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-button.x-button-confirm.x-layout-box-item {
+    width: auto;
+    height: auto;
+}
+.x-firefox .sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-button.x-button-confirm.x-layout-box-item {
+    top: 5px;
+}
+.x-firefox .sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-button.x-button-confirm.x-layout-box-item span {
+    position: relative;
+    top: 3px;
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-field-select.x-field .x-form-label {
+    position: relative;
+    top: -2px;
+}
+.x-firefox .sfa-statistic.vehicles-reporting .sfa-top-toolbar .x-field-select.x-field .x-form-label {
+    top: 0;
+}
+
+
+
+
+
+
+
 .x-container.sfa-data.x-field-labeled {
     width: 150px;
 }
@@ -1858,7 +1909,7 @@ span.sfa-comment-content {
 .x-firefox .sfa-statistic .sfa-top-toolbar > div.x-inner > div > div.x-form-label span {
         padding-top: 2px;
     }
-    .sfa-statistic .sfa-top-toolbar div.x-inner div.x-component-outer .x-field-mask {
+.x-firefox .sfa-statistic .sfa-top-toolbar div.x-inner div.x-component-outer .x-field-mask {
         background: url(../img/arr.png) no-repeat 91% 7px;
     }
 
