@@ -14,15 +14,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         cls:'sfa-alert-information',
         title: 'Alert Information',
         baseCls: 'x-show-contact',
-        layout: {
-            type: 'vbox',
-            align: 'center'
-        },
         scrollable: true,
         record: null,
         defaults: {
             width: '100%',
-            maxWidth: 600
+            maxWidth: 900
         }
     },
 

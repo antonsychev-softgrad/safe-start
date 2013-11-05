@@ -5,14 +5,6 @@ Ext.define('SafeStartApp.view.forms.Company', {
     config: {
         minHeight: 400,
         //maxWidth: 600,
-        layout: {
-            type: 'vbox',
-            align: 'center'
-        },
-        defaults: {
-            maxWidth: 600,
-            width: '100%'
-        },
         cls: 'comp-settings',
         items: [
             {
@@ -118,7 +110,6 @@ Ext.define('SafeStartApp.view.forms.Company', {
             {
                 xtype: 'toolbar',
                 docked: 'bottom',
-                maxWidth: '',
                 items: [
                     {
                         xtype: 'button',
