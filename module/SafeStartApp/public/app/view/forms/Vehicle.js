@@ -4,14 +4,6 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
     xtype: 'SafeStartVehicleForm',
     config: {
         cls: 'sfa-form-no-title',
-        layout: {
-            type: 'vbox',
-            align: 'center'
-        },
-        defaults: {
-            width: '100%',
-            maxWidth: 600
-        },
         items: [
 
 

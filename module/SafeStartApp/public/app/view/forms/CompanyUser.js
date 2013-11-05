@@ -5,14 +5,6 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
     scrollable: false,
     config: {
         minHeight: 400,
-        layout: {
-            type: 'vbox',
-            align: 'middle'
-        },
-        defaults: {
-            width: '100%',
-            maxWidth: 600
-        },
         items: [{
                 xtype: 'fieldset',
                 title: 'User Info',
