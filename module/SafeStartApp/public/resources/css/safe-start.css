@@ -1892,7 +1892,9 @@ span.sfa-comment-content {
 .sfa-main-toolbar .x-button-action {
     padding: 0;
 }
-
+.sfa-info-container .x-form.comp-settings {
+    max-width: 700px;
+}
 
 /*  for mozilla on statistic page */
 
