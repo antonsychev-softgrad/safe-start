@@ -157,6 +157,7 @@ class VehicleController extends RestrictedAccessRestController
                 if (isset($queryResult[0])) {
                     $checklist = array(
                         'id' => $queryResult[0]->getid(),
+                        'hash' => $queryResult[0]->getHash(),
                         'gpsCoords' => $queryResult[0]->getGpsCoords(),
                         'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
                         'fieldsData' => json_decode($queryResult[0]->getFieldsData()),

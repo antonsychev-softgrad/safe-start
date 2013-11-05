@@ -64,11 +64,11 @@ class ProcessDataController extends PublicAccessRestController
 
     public function generatePdfAction()
     {
-        $checkListId = $this->params('id'); // todo: get only by hash
+        $checkListId = $this->params('id');
 
         $checkList = null;
-        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
-        $query->setParameters(array('id' => (int)$checkListId, 'hash' => $checkListId));
+        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.hash = :hash");
+        $query->setParameters(array('hash' => $checkListId));
         $queryResult = $query->getResult();
         if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0]))  $checkList = $queryResult[0];
 
@@ -83,7 +83,7 @@ class ProcessDataController extends PublicAccessRestController
         }
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
 
-        header("Content-Disposition: inline; filename={$link}");
+        header("Content-Disposition: inline; filename={$checkList->getPdfLink()}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($path);
         return true;
