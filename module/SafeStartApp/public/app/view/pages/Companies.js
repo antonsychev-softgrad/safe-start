@@ -70,16 +70,12 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                     items: [{
                         xtype: 'toolbar',
                         docked: 'top',
-                        items: [{ 
-                            xtype: 'spacer'
-                        }, {
+                        items: [{
                             iconCls: 'add',
                             cls: 'sfa-add-button',
                             ui: 'action',
                             text: 'Add Company',
                             action: 'add-company'
-                        }, {
-                            xtype: 'spacer'
                         }]
                     }, {
                         xtype: 'toolbar',

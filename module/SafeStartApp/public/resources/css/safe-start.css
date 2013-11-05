@@ -207,6 +207,12 @@ sfa-info-container .x-toolbar .x-field {
     content: " ";
     background: url(../img/logout-ic.png) no-repeat 50% 50%;
 }
+.sfa-main-toolbar .sfa-title {
+    text-transform: uppercase;
+}
+.sfa-main-toolbar .sfa-title span.x-button-label {
+    font-size: 22px !important;
+}
 
 .x-panel.x-floating, .x-msgbox, .x-form.x-floating {
     background: #fff;
@@ -551,7 +557,7 @@ border-bottom: 1px solid #dedede;
 .sfa-left-container .x-field-search.x-field {
     width: 90%;
     padding: 16px 0 35px;
-    margin: 0 0 0 3px;
+    margin: 0 0 0 18px;
 }
 .sfa-left-container .sfa-search-reload {
     font-size: 1.2em;
@@ -584,7 +590,9 @@ border-bottom: 1px solid #dedede;
     -o-border-radius: 6px 0 0 6px;
     border-radius: 6px 0 0 6px;
 }
-
+.sfa-left-container .x-toolbar {
+    padding-left: 0;
+}
 .x-button .x-button-icon.arrow_left:before {
     content: " ";
 }
@@ -726,8 +734,9 @@ font-size: 26px;
 }
 
 .sfa-left-container .sfa-add-button {
-    width: 85%;
     padding: 3px 8px;
+    margin-left: 18px;
+    width: 81%;
 }
 .sfa-left-container .sfa-add-button .x-button-label {
     text-align: left;
@@ -864,11 +873,17 @@ font-size: 26px;
 .sfa-company-settings .x-dock.x-dock-vertical .x-unsized.x-form-fieldset-title.x-dock-item.x-docked-top:first-child {
     margin-top: 0;
 }
-.sfa-company-settings .sfa-limited-access {
+
+
+
+
+
+
+.sfa-info-container .sfa-limited-access, .sfa-info-container .x-toggle-field {
     margin: 10px 0 20px;
 }
 
-.sfa-company-settings .sfa-limited-access .x-thumb:after {
+.sfa-info-container .sfa-limited-access .x-thumb:after, .sfa-info-container .x-toggle-field .x-thumb:after {
     background: url(../img/round-button.png) no-repeat 50% 50%;
     border: none;
     border-radius: 16px;
@@ -878,12 +893,14 @@ font-size: 26px;
     top: 0;
 }
 
-.sfa-company-settings .sfa-limited-access .x-toggle-on {
+.sfa-info-container .sfa-limited-access .x-toggle-on, .sfa-info-container .x-toggle-field .x-toggle-on {
     background: #ccc url(../img/on.png) no-repeat 20% 50%;
 }
-.sfa-company-settings .sfa-limited-access .x-toggle-off {
+.sfa-info-container .sfa-limited-access .x-toggle-off, .sfa-info-container .x-toggle-field .x-toggle-off {
     background: #ccc url(../img/off.png) no-repeat 80% 50%;
 }
+
+
 
 
 .sfa-info-container .x-container.x-unsized.x-form-fieldset {
@@ -2109,7 +2126,7 @@ span.sfa-comment-content {
 .sfa-info-container .x-docked-bottom .sfa-last .x-button-label {
     color: #1368a4;
 }
-.sfa-info-container .sfa-company-settings .sfa-datepicker .x-input-el.x-input-text {
+.sfa-info-container .sfa-datepicker .x-input-el.x-input-text {
     width: 93%;
     background: #fff;
 }
@@ -2159,7 +2176,7 @@ span.sfa-comment-content {
     bottom: 4px;
 }
 .x-firefox .sfa-info-container .sfa-company-settings .sfa-datepicker .x-field-mask {
-    background: url(../img/arr.png) no-repeat 87% 50%;
+    background: url(../img/arr.png) no-repeat 90% 50%;
     z-index: 999;
 }
 

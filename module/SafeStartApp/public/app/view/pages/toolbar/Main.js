@@ -42,6 +42,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
         }, {
             name: 'btn-title',
             ui: 'action',
+            cls:'sfa-title',
             text: this.config.btnTitle || ''
         }, {
             xtype: 'spacer'
