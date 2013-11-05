@@ -733,11 +733,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     getAlertsListView: function (alerts) {
         return Ext.MessageBox.create({
             layout: 'fit',
+            title: 'Outstanding Alerts:',
+            scrollable: true,
+            listeners: {
+                resize: function (view) {
+                    var maxHeight = this.element.dom.offsetHeight || 320;
+                    var height = alerts.length * 16 + 130;
+
+                    view.setHeight(height < maxHeight ? height : maxHeight);
+                },
+                scope: this
+            },
             items: [{
                 xtype: 'panel',
-                scrollable: true,
-                height: alerts.length > 20 ? 600 : alerts.length * 25 + 30,
-                title: 'Outstanding Alerts:',
+                scroll: 'vertical',
                 tpl: new Ext.XTemplate(
                     '<div class="sfa-alerts">',
                     '<tpl for=".">',
