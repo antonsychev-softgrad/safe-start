@@ -127,6 +127,10 @@
 /* changes by Sergey Chigh */
 
 /* Login & Contact form */
+
+.sfa-form-auth .x-panel-form {
+    background: #fff;
+}
 .sfa-form-auth .x-panel-form .x-form-field.x-form-text,
 .sfa-form-contact .x-panel-form input.x-form-field.x-form-text {
     height: 38px !important;
@@ -154,6 +158,11 @@
 .sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
     padding-left: 0;
 }
+
+.sfa-form-auth img {
+    top: -110px !important;
+}
+
 
 
 /*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
@@ -268,6 +277,28 @@ font-size: 24px;
     border: none;
     background: none;
 }
+.sfa-left-coll .sfa-add-company span.x-btn-inner.x-btn-inner-center {
+    font-size: 16px;
+    color: #2D7FB8;
+    text-align: left;
+    padding-left: 12px;
+}
+.sfa-left-coll .sfa-add-company.x-btn-default-toolbar-small {
+    margin: 0 18px 25px 16px;
+    padding: 8px;
+    border: none;
+    background: url(img/add_bg.png) no-repeat;
+}
+.sfa-left-coll .sfa-add-company.x-btn-default-toolbar-small-over {
+    background: none;
+    border: none;
+    background: url(img/add_bg.png) no-repeat;
+}
+
+.sfa-left-coll .search.x-table-plain {
+    margin-left: 10px !important;
+    width: 195px !important;
+}
 
 /* END LEFt column */
 
@@ -335,11 +366,41 @@ font-size: 24px;
     border-top: 1px solid #DEDEDE;
 }
 
+.sfa-info-container > div {
+    border: 1px solid red;
+    padding: 10px 20px 18px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #dbdbdb;
+    border-left-color: #c0c0c0;
+    border-right-color: #c0c0c0;
+    background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
+    box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
+}
+
+.sfa-info-container .x-panel-body.x-panel-body-default.x-panel-body-default {
+    background: none;
+    border: none;
+}
+
+.sfa-info-container .x-form-item-label, .sfa-info-container input.x-form-field.x-form-text,
+.sfa-info-container textarea {
+    font-size: 16px;
+    color: #565555;
+}
+
 
 /* END CONTENT */
 
 /* page Companies */
-
+.sfa-info-container .x-form-item-label.x-unselectable.x-form-item-label-top {
+    font-size: 18px;
+    color: #1368a4;
+    padding: 10px 0 15px;
+}
 .sfa-left-coll .sfa-vehicle-item,
 .sfa-left-coll .sfa-vehicle-item,  /* page Vehisles */
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item {   /* page Vehisles -> previous inspections */
@@ -373,6 +434,19 @@ font-size: 24px;
 .sfa-left-coll {
     padding-top: 15px;
 }
+.sfa-company-settings tr td {
+    padding: 8px 0;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text {
+    width: 700px;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td:first-child {
+    width: 30%;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td label {
+    width: 100% !important;
+}
+
 /* END page Companies */
 
 

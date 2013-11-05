@@ -69,6 +69,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                 {
                     xtype: 'fieldcontainer',
                     fieldLabel: 'Company Settings',
+                    cls:'sfa-company-settings',
                     labelAlign: 'top',
                     items: [
                         {
