@@ -339,7 +339,7 @@ class AdminController extends AdminAccessRestController
         if($company && count($vehicles) <= 0) {
             $statistic['total']['database_inspections'] = 0;
         } else {
-            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 0';
             if($company) {
                 $dql .= ' AND cl.vehicle in (:vehicles)';
             }
@@ -367,7 +367,7 @@ class AdminController extends AdminAccessRestController
         }
 
         if(!$company) {
-            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
             $query->setParameter('from', $from)->setParameter('to', $to);
             $statistic['total']['email_inspections'] = $query->getSingleScalarResult();
         } else {
@@ -377,7 +377,8 @@ class AdminController extends AdminAccessRestController
         $chart = array();
 
         while ($fromTime < $toTime) {
-            $date = date('Y-m-d', $fromTime);
+            if ( $range == 'monthly' ) $date = date('m/Y', $fromTime);
+            else  $date = date('W/Y', $fromTime);
 
             $toTimeParam = new \DateTime();
             $toTimeParam->setTimestamp($fromTime + $delta);
@@ -387,7 +388,7 @@ class AdminController extends AdminAccessRestController
             if($company && count($vehicles) <= 0) {
                 $value1 = 0;
             } else {
-                $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+                $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 0';
                 if($company) {
                     $dql .= ' AND cl.vehicle in (:vehicles)';
                 }
@@ -399,13 +400,11 @@ class AdminController extends AdminAccessRestController
                 $value1 = $query->getSingleScalarResult();
             }
 
-            if($company && count($vehicles) <= 0 || !$company) {
-                $value2 = 0;
-            } else {
-                $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
-                $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
-                $value2 = $query->getSingleScalarResult();
-            }
+
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+            $value2 = $query->getSingleScalarResult();
+
 
             if($company && count($vehicles) <= 0) {
                 $value3 = 0;
