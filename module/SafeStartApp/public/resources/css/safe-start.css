@@ -2104,6 +2104,22 @@ span.sfa-comment-content {
     background: none;
 }
 
+.comp-settings .sfa-last {
+    background: none !important;
+}
+
+.comp-settings .sfa-last input {
+    cursor: pointer;
+}
+
+.comp-settings .sfa-last .x-button-label {
+    color: #1368a4 !important;
+}
+
+.comp-settings .sfa-last:hover .x-button-label {
+    color: #3388c4 !important;
+}
+
 .sfa-info-container .x-docked-bottom .sfa-last .x-button-label {
     color: #1368a4;
 }

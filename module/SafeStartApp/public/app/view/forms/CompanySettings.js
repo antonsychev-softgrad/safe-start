@@ -17,7 +17,7 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                 xtype: 'hiddenfield',
                 name: 'logo'
             }, {
-                xtype: 'readonlyfield',
+                xtype: 'textfield',
                 label: 'Company Name',
                 name: 'title'
             }, {
@@ -45,10 +45,14 @@ Ext.define('SafeStartApp.view.forms.CompanySettings', {
                         autoUpload: true,
                         url: 'api/upload-images',
                         height: 40,
+                        padding: 0,
                         name: 'image',
+                        maxWidth: 160,
                         states: {
                             browse: {
-                                text: 'Change company logo'
+                                text: 'Change company logo',
+                                ui: 'action',
+                                cls: 'sfa-last'
                             },
                             uploading: {
                                 loading: false
