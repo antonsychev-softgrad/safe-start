@@ -67,7 +67,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         $contentWidth = $this->getPageContentWidth();
 
         $logoMaxWidth = 140;
-        $logoMaxHeight = 60;
+        $logoMaxHeight = 140;
         $logoPath = '';
         if (isset($companyData['logo'])) {
             $searchDir = $this->getController()->moduleConfig['defUsersPath'];
@@ -97,6 +97,9 @@ class AbstractPdfPlugin extends AbstractPlugin
             $logoWidth = $logo->getPixelWidth();
             $logoHeight = $logo->getPixelHeight();
 
+            $logoMaxWidth = 140;
+            $logoMaxHeight = 80;
+
             $scale = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
             $logoNewWidth = (int)($logoWidth * $scale);
             $logoNewHeight = (int)($logoHeight * $scale);
@@ -105,7 +108,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         }
 
         $headerTitlePaddingRight = 25;
-        $headerTitleXOffset = $logoMaxWidth + $headerTitlePaddingRight;
+        $headerTitleXOffset = $logoNewWidth + $headerTitlePaddingRight;
         // draw header title >
         $topPosInPage = $pageHeight - 16;
         $text = strtoupper($this->opts['title']);
@@ -139,7 +142,7 @@ class AbstractPdfPlugin extends AbstractPlugin
             }
         }
 
-        $columnsLeftXOffset = 320;
+        $columnsLeftXOffset = $headerTitleXOffset + 170;
         $columns = 2;
         $columnsPadding = 15;
         $total = count($data);
