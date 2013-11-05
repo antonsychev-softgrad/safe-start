@@ -74,6 +74,7 @@ Ext.define('SafeStartApp.view.forms.Company', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
+                                cls:'sfa-number-of',
                                 stepValue: 1,
                                 name: 'max_users',
                                 required: true,
@@ -83,6 +84,7 @@ Ext.define('SafeStartApp.view.forms.Company', {
                                 xtype: 'spinnerfield',
                                 maxValue: 1000,
                                 minValue: 1,
+                                cls:'sfa-number-of',
                                 stepValue: 1,
                                 name: 'max_vehicles',
                                 required: true,
@@ -119,7 +121,7 @@ Ext.define('SafeStartApp.view.forms.Company', {
                             this.up('SafeStartCompanyForm').fireEvent('delete-data', this.up('SafeStartCompanyForm'));
                         }
                     },
-                    { xtype: 'spacer' },
+
                     {
                         xtype: 'button',
                         name: 'manage',
@@ -130,7 +132,7 @@ Ext.define('SafeStartApp.view.forms.Company', {
                             this.up('SafeStartCompanyForm').fireEvent('manage', this.up('SafeStartCompanyForm'));
                         }
                     },
-                    { xtype: 'spacer' },
+
                     {
                         xtype: 'button',
                         text: 'Reset',
@@ -141,22 +143,24 @@ Ext.define('SafeStartApp.view.forms.Company', {
                     },
                     {
                         xtype: 'button',
-                        text: 'Send Password to Company Owner',
-                        name: 'send-credentials',
-                        ui: 'action',
-                        handler: function() {
-                            this.up('SafeStartCompanyForm').fireEvent('send-credentials', this.up('SafeStartCompanyForm'));
-                        }
-                    },
-                    {
-                        xtype: 'button',
                         text: 'Save',
                         name: 'save-data',
                         ui: 'confirm',
                         handler: function() {
                             this.up('SafeStartCompanyForm').fireEvent('save-data', this.up('SafeStartCompanyForm'));
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        cls:'sfa-last',
+                        text: 'Send Password to Company Owner',
+                        name: 'send-credentials',
+                        ui: 'action',
+                        handler: function() {
+                            this.up('SafeStartCompanyForm').fireEvent('send-credentials', this.up('SafeStartCompanyForm'));
+                        }
                     }
+
                 ]
             }
         ]
