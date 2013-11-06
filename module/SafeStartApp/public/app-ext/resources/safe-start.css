@@ -398,7 +398,7 @@ font-size: 24px;
     font-size: 16px;
     color: #565555;
 }
-.sfa-info-container input.x-form-text {
+.sfa-info-container input.x-form-text, .sfa-info-container .x-form-textarea {
     padding: 0 30px 0 7px;
     height: 32px;
     -moz-border-radius: 6px;
@@ -410,6 +410,10 @@ font-size: 24px;
     border-top-color: #a9acaf;
     border-bottom-color: #fbfbfb;
     box-shadow: 0 1px 0 #f3f4f4;
+    background: #fff;
+}
+.sfa-info-container .x-form-textarea {
+    height: 84px;
 }
 
 /* END CONTENT */
