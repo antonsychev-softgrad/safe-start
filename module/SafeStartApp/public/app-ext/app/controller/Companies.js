@@ -35,7 +35,9 @@ Ext.define('SafeStartExt.controller.Companies', {
             },
             'SafeStartExtFormCompany': {
                 updateCompanyAction: this.updateCompany,
-                deleteCompanyAction: this.deleteCompany
+                deleteCompanyAction: this.deleteCompany,
+                manageCompanyAction: this.manageCompany,
+                sendPasswordAction: this.sendPassword
             },
             'SafeStartExtComponentCompanies': {
                 companyNotFoundAction: this.companyNotFoundAction,
@@ -83,10 +85,15 @@ Ext.define('SafeStartExt.controller.Companies', {
 
     _hideFormButtons: function() {
         this.getCompanyFormPanel().down('button[name=delete-data]').hide();
+        this.getCompanyFormPanel().down('button[name=manage-data]').hide();
+        this.getCompanyFormPanel().down('button[name=send-password]').hide();
+
     },
 
     _showFormButtons: function() {
         this.getCompanyFormPanel().down('button[name=delete-data]').show();
+        this.getCompanyFormPanel().down('button[name=manage-data]').show();
+        this.getCompanyFormPanel().down('button[name=send-password]').show();
     },
 
     _showForm: function() {
@@ -121,6 +128,19 @@ Ext.define('SafeStartExt.controller.Companies', {
                     me.getCompaniesListView().getListStore().load();
                     me.getCompanyInfoPanel().hide();
                 }
+            }
+        });
+    },
+
+    manageCompany: function(company) {
+        this.getMainPanel().fireEvent('changeTab', 'Company');
+    },
+
+    sendPassword: function(company) {
+        SafeStartExt.Ajax.request({
+            url: 'admin/company/' + company.getId() + '/send-credentials',
+            success: function (res) {
+
             }
         });
     },

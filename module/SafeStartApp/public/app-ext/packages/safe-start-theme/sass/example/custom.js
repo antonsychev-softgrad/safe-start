@@ -15,3 +15,15 @@ Ext.theme.addManifest({
     ui: 'green',
     scale: 'medium'
 });
+
+Ext.theme.addManifest({
+    xtype: 'widget.button',
+    ui: 'red',
+    scale: 'medium'
+});
+
+Ext.theme.addManifest({
+    xtype: 'widget.button',
+    ui: 'blue',
+    scale: 'medium'
+});

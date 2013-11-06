@@ -10,7 +10,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     ui: 'light-left',
     minWidth: 250,
     border: 0,
-    title: 'Companies',
+
 
     initComponent: function () {
         var store = SafeStartExt.store.Companies.create({autoLoad: true});
@@ -23,6 +23,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                 },
                 items: [{
                     text: 'Add company',
+                    cls: 'sfa-add-button',
                     handler: function () {
                         this.up('SafeStartExtPanelCompaniesList').fireEvent('addCompanyAction');
                     }

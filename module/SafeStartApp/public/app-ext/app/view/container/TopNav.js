@@ -48,6 +48,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                     ui: 'transparent',
                     scale: 'medium',
                     name: 'companyName',
+                    cls:'sfa-title',
                     text: this.titleText || '' 
                 }, {
                     xtype: 'box',
@@ -68,7 +69,7 @@ Ext.define('SafeStartExt.view.container.TopNav', {
                     ui: 'transparent',
                     scale: 'medium',
                     cls:'sfa-logout',
-                    text: 'Logout',
+                    text: ' ',
                     handler: function () {
                         this.fireEvent('logoutAction');
                     },

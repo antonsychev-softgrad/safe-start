@@ -10,6 +10,14 @@ Ext.define('SafeStartExt.view.form.Company', {
     ],
     xtype: 'SafeStartExtFormCompany',
 
+    border: 0,
+    ui: 'transparent',
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    // autoScroll: true,
+
     initComponent: function () {
         var me = this;
         Ext.apply(this, {
@@ -31,10 +39,19 @@ Ext.define('SafeStartExt.view.form.Company', {
                         }
                     });
                 }
-            },
-            {
+            }, {
+                text: 'Manage',
+                ui: 'blue',
+                name: 'manage-data',
+                scale: 'medium',
+                handler: function () {
+                    if (me.isValid()) {
+                        me.fireEvent('manageCompanyAction', me.getRecord());
+                    }
+                }
+            }, {
                 text: 'Save',
-                ui: 'green',
+                ui: 'blue',
                 name: 'save-data',
                 scale: 'medium',
                 handler: function () {
@@ -42,7 +59,17 @@ Ext.define('SafeStartExt.view.form.Company', {
                         me.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
                     }
                 }
-            },{
+            }, {
+                text: 'Send Password to Company Owner',
+                ui: 'blue',
+                name: 'send-password',
+                scale: 'medium',
+                handler: function () {
+                    if (me.isValid()) {
+                        me.fireEvent('sendPasswordAction', me.getRecord());
+                    }
+                }
+            }, {
                 xtype: 'box',
                 flex: 1
             }],
@@ -50,6 +77,14 @@ Ext.define('SafeStartExt.view.form.Company', {
                 {
                     xtype: 'fieldcontainer',
                     fieldLabel: 'Company Settings',
+                    maxWidth: 400,
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    //cls:'sfa-company-settings',
                     labelAlign: 'top',
                     items: [
                         {
@@ -59,6 +94,8 @@ Ext.define('SafeStartExt.view.form.Company', {
                         {
                             xtype: 'textfield',
                             fieldLabel: 'Company Name',
+                            labelWidth: 130,
+                            labelSeparator: '*',
                             allowBlank: false,
                             name: 'title'
                         },
@@ -66,34 +103,47 @@ Ext.define('SafeStartExt.view.form.Company', {
                             xtype: 'textfield',
                             fieldLabel: 'Responsible Name',
                             allowBlank: false,
+                            labelWidth: 130,
+                            labelSeparator: '*',
                             name: 'firstName'
                         },
                         {
                             xtype: 'textfield',
                             fieldLabel: 'Responsible Email',
                             vtype: 'email',
+                            labelWidth: 130,
+                            labelSeparator: '*',
                             allowBlank: false,
                             name: 'email'
                         },
                         {
                             xtype: 'textfield',
                             fieldLabel: 'Company Address',
+                            labelWidth: 130,
+                            labelSeparator: '',
                             name: 'address'
                         },
                         {
                             xtype: 'textfield',
                             fieldLabel: 'Company Phone',
+                            labelWidth: 130,
+                            labelSeparator: '',
                             name: 'phone'
                         },
                         {
                             xtype: 'textareafield',
                             fieldLabel: 'Company Info',
+                            labelWidth: 130,
+                            height: 80,
+                            labelSeparator: '',
                             name: 'description'
                         },
                         {
                             xtype: 'checkboxfield',
                             name: 'restricted',
                             fieldLabel: 'Limited Access',
+                            labelWidth: 130,
+                            labelSeparator: '',
                             cls:'sfa-limited-access',
                             handler: function() {
                                 if (this.checked) {
@@ -109,11 +159,20 @@ Ext.define('SafeStartExt.view.form.Company', {
                     xtype: 'fieldcontainer',
                     fieldLabel: 'Subscription',
                     name: 'subscription',
+                    maxWidth: 400,
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
                     labelAlign: 'top',
                     items: [
                         {
                             xtype: 'numberfield',
+                            hideTrigger: true,
                             maxValue: 1000,
+                            labelWidth: 130,
                             minValue: 1,
                             stepValue: 1,
                             value: 1,
@@ -123,7 +182,9 @@ Ext.define('SafeStartExt.view.form.Company', {
                         },
                         {
                             xtype: 'numberfield',
+                            hideTrigger: true,
                             maxValue: 1000,
+                            labelWidth: 130,
                             minValue: 1,
                             value: 1,
                             stepValue: 1,
@@ -135,6 +196,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                             xtype: 'datefield',
                             name: 'expiry_date',
                             required: true,
+                            labelWidth: 130,
                             altFormats: 'U',
                             format: SafeStartExt.dateFormat,
                             fieldLabel: 'Expiry Date',

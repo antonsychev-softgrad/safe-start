@@ -4,7 +4,8 @@
 }
 
 .sfa-vehicles-tabpanel .x-panel-body {
-  background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');
+  /*background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');*/
+  background-color: #FFF;
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar {
@@ -127,6 +128,17 @@
 /* changes by Sergey Chigh */
 
 /* Login & Contact form */
+
+.sfa-form-auth .x-form-field.x-form-text {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+}
+.sfa-form-auth .x-panel-form {
+    background: #fff;
+}
 .sfa-form-auth .x-panel-form .x-form-field.x-form-text,
 .sfa-form-contact .x-panel-form input.x-form-field.x-form-text {
     height: 38px !important;
@@ -155,6 +167,11 @@
     padding-left: 0;
 }
 
+.sfa-form-auth img {
+    top: -110px !important;
+}
+
+
 
 /*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
 .x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
@@ -177,6 +194,20 @@
 .sfa-top-nav .x-btn-inner {
     font-size: 18px;
 }
+.sfa-top-nav .sfa-title {
+    font-size: 22px;
+    text-transform: uppercase;
+}
+
+/*
+.sfa-top-nav .sfa-logout .x-btn-icon-el {
+    display: none;
+}
+*/
+.sfa-top-nav .sfa-logout {
+    margin-right: 40px;
+}
+
 .sfa-top-nav .sfa-user {
     padding-left: 22px;
     background: url(img/user-ic.png) no-repeat 0 15px;
@@ -192,7 +223,13 @@
 .sfa-top-nav .sfa-company-name .x-btn-inner {
 font-size: 24px;
 }
-
+.sfa-top-nav .sfa-topmenu-logo img {
+    cursor: pointer;
+}
+.sfa-top-nav .sfa-topmenu-logo > span {
+    background: url(img/sfa-top-logo-bg.png) repeat-x;
+    border-right: 1px solid #000;
+}
 
 /* END TOP panel */
 
@@ -203,9 +240,9 @@ font-size: 24px;
     padding-bottom: 7px;
 }
 .sfa-left-coll .search input.x-form-text {
-    padding: 7px 14% 8px 3%;
+    padding: 7px 3% 8px 14%;
     height: auto !important;
-    background: url(img/search-ic.png) no-repeat 96% 50%;
+    background: url(img/search-ic.png) no-repeat 4% 50%;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
@@ -235,6 +272,9 @@ font-size: 24px;
 .sfa-left-coll .sfa-icon-refresh {
     height: 18px;
     width: 22px;
+    top: 3px;
+    bottom: auto;
+    right: auto;
     background: url(img/reload-ic.png) no-repeat;
 }
 .sfa-left-coll a.x-btn span {
@@ -251,6 +291,135 @@ font-size: 24px;
     border-color: #fff;
     background: none;
 }
+.sfa-left-coll.x-panel-light-left {
+    border-color: #000;
+}
+/* buttoon rewiev to the right from search */
+.sfa-left-coll .x-btn.x-unselectable.x-box-item.x-btn-default-medium.x-icon.x-btn-icon.x-btn-default-medium-icon {
+    border: none;
+    background: none;
+}
+.sfa-left-coll .sfa-add-company span.x-btn-inner.x-btn-inner-center {
+    font-size: 16px;
+    color: #2D7FB8;
+    text-align: left;
+    padding-left: 12px;
+}
+.sfa-left-coll .sfa-add-company.x-btn-default-toolbar-small {
+    margin: 0 18px 25px 16px;
+    padding: 8px;
+    border: none;
+    background: url(img/add_bg.png) no-repeat;
+}
+.sfa-left-coll .sfa-add-company.x-btn-default-toolbar-small-over {
+    background: none;
+    border: none;
+    background: url(img/add_bg.png) no-repeat;
+}
+
+.sfa-left-coll .search.x-table-plain {
+    margin-left: 10px !important;
+    width: 195px !important;
+}
+
+.sfa-left-coll .sfa-add-button {
+    border: none;
+    margin-bottom: 24px;
+    margin-left: 15px;
+    padding: 8px 5px 9px 21px;
+    text-align: left;
+    display: block;
+    background: url(img/sfa-add-button_bg.png) no-repeat;
+}
+
+.sfa-left-coll .sfa-add-button span.x-btn-inner {
+    color: #2D7FB8;
+    font-size: 16px;
+    display: inline-block;
+}
+/*
+
+
+
+
+
+
+/* for ie7 ie8 */
+
+*:first-child+html .sfa-vehicles-tabpanel .x-table-plain,
+*:first-child+html .sfa-vehicles-tabpanel .x-table-plain * {
+    /*background: none !important;*/
+}
+.sfa-vehicles-tabpanel .x-table-plain,
+.sfa-vehicles-tabpanel .x-table-plain * {
+    /*background: none\0/ !important;*/
+}
+
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-ml,
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-mc,
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-mr,
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-tl,
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-tc,
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-tr
+{
+    background: none !important;
+}
+
+.sfa-vehicles-tabpanel .x-table-plain .x-tab-mc {
+    height: 41px;
+}
+
+.sfa-vehicles-tabpanel .x-table-plain {
+    /*height: 50px\0/;*/
+}
+
+*:first-child+html .sfa-previous-inspections-info .sfa-group-item {
+    width: 100%;
+    overflow: hidden;
+}
+*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div:first-child {
+    float: left;
+}
+*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div {
+    float: right;
+}
+
+.sfa-previous-inspections-info .sfa-group-item {
+    width: 100%;
+    overflow: hidden\0/;
+}
+.sfa-previous-inspections-info .sfa-group-item > div:first-child {
+    float: left\0/;
+}
+.sfa-previous-inspections-info .sfa-group-item > div {
+    float: right\0/;
+}
+
+
+
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tl, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tr, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tc, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bl, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-br, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bc {
+    background: none !important;
+}
+
+.sfa-left-coll .sfa-add-button .x-table-plain {
+    height: 35px;
+}
+/*.sfa-left-coll .sfa-add-button .x-table-plain td .x-btn-inner {
+    padding: 30px;
+}
+*/
+
+
+
+
 /* END LEFt column */
 
 /* CONTENT */
@@ -317,11 +486,57 @@ font-size: 24px;
     border-top: 1px solid #DEDEDE;
 }
 
+.sfa-info-container > div {
+    border: 1px solid red;
+    padding: 10px 20px 18px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #dbdbdb;
+    border-left-color: #c0c0c0;
+    border-right-color: #c0c0c0;
+    background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
+    box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
+}
+
+.sfa-info-container .x-panel-body.x-panel-body-default.x-panel-body-default {
+    background: none;
+    border: none;
+}
+
+.sfa-info-container .x-form-item-label, .sfa-info-container input.x-form-field.x-form-text,
+.sfa-info-container textarea {
+    font-size: 16px;
+    color: #565555;
+}
+.sfa-info-container input.x-form-text, .sfa-info-container .x-form-textarea {
+    padding: 0 30px 0 7px;
+    height: 32px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    border-bottom-color: #fbfbfb;
+    box-shadow: 0 1px 0 #f3f4f4;
+    background: #fff;
+}
+.sfa-info-container .x-form-textarea {
+    height: 84px;
+}
 
 /* END CONTENT */
 
 /* page Companies */
-
+.sfa-info-container .x-form-item-label.x-unselectable.x-form-item-label-top {
+    font-size: 18px;
+    color: #1368a4;
+    padding: 10px 0 15px;
+}
 .sfa-left-coll .sfa-vehicle-item,
 .sfa-left-coll .sfa-vehicle-item,  /* page Vehisles */
 .sfa-previous-inspection .sfa-previous-inspections-left-coll .sfa-vehicle-item {   /* page Vehisles -> previous inspections */
@@ -355,6 +570,19 @@ font-size: 24px;
 .sfa-left-coll {
     padding-top: 15px;
 }
+.sfa-company-settings tr td {
+    padding: 8px 0;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text {
+    width: 700px;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td:first-child {
+    width: 30%;
+}
+.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td label {
+    width: 100% !important;
+}
+
 /* END page Companies */
 
 
@@ -369,6 +597,7 @@ font-size: 24px;
 }
 .sfa-left-coll input.x-form-field.x-form-text {
     font-family: Arial, sans-serif;
+    background: #fff;
 }
 
     /* page Vehisles -> inspections-info */
@@ -540,6 +769,35 @@ font-size: 24px;
 }
 
 .x-ie .sfa-vehicles-tabpanel .x-panel .x-panel-body{
-    padding-top: 20px;
+    /*padding-top: 20px;*/
 
+}
+
+.x-form-item-label {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+.x-form-text {
+    font-size: 16px;
+    height: 30px;
+    padding: 6px 3px;
+    color: #333;
+}
+
+.sfa-field-group .sfa-field-group-label {
+    font-size: 18px;
+    color: #1368a4;
+    margin: 15px 0;
+    display: block;
+}
+
+.sfa-field-group.x-item-disabled .sfa-field-group-label {
+    color: #79CEFF;
+}
+
+.x-form-checkbox {
+    margin-top: 8px;
 }

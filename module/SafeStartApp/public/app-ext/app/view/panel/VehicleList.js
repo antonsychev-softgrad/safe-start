@@ -23,6 +23,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                 },
                 items: [{
                     text: 'Add vehicle',
+                    cls:'sfa-add-button',
                     handler: function () {
                         this.up('SafeStartExtPanelVehicleList').fireEvent('addVehicleAction');
                     }
@@ -61,7 +62,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                 tpl: new Ext.XTemplate(
                     '<tpl for=".">',
                     '<div class=sfa-vehicle-item>',
-                    '{title}',
+                    '{text}',
                     '</div>',
                     '</tpl>'
                 ),

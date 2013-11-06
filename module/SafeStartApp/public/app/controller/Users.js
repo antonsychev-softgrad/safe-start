@@ -59,6 +59,7 @@ Ext.define('SafeStartApp.controller.Users', {
     },
 
     saveAction: function () {
+        
         if (!this.userModel) this.userModel = Ext.create('SafeStartApp.model.User');
         if (this.validateFormByModel(this.userModel, this.currentForm)) {
             var self = this;

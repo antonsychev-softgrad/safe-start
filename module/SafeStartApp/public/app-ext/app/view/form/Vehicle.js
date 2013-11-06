@@ -8,10 +8,12 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
         'Ext.form.FieldContainer'
     ],
     xtype: 'SafeStartExtFormVehicle',
-    // layout: {
-    //     type: 'vbox'
-    // },
-    padding: 5,
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    padding: 30,
+    scrollable: true,
 
     initComponent: function () {
         var me = this;
@@ -34,50 +36,61 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     });
                 }
             }, {
-                xtype: 'box',
-                flex: 1
-            }, {
                 text: 'Save',
-                ui: 'green',
+                ui: 'blue',
                 scale: 'medium',
                 handler: function () {
                     if (me.isValid()) {
                         me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
                     }
                 }
+            }, {
+                xtype: 'box',
+                flex: 1
             }],
             items: [{
                 xtype: 'textfield',
-                fieldLabel: 'Title',
+                fieldLabel: 'Model',
+                // width: '100%',
+                maxWidth: 400,
+                labelWidth: 130,
+                labelSeparator: '*',
                 allowBlank: false,
                 name: 'title'
             }, {                
-                xtype: 'fieldcontainer',
-                fieldLabel: 'Next Service Day',
-                items: [{
-                    xtype: 'datefield',
-                    disabled: true,
-                    name: 'nextServiceDay'
-                }]
-            }, {
                 xtype: 'textfield',
-                fieldLabel: 'Type',
+                labelWidth: 130,
+                maxWidth: 400,
+                fieldLabel: 'Make',
+                labelSeparator: '',
                 name: 'type'
             }, {
                 xtype: 'textfield',
+                labelWidth: 130,
+                maxWidth: 400,
                 fieldLabel: 'Plan ID',
+                labelSeparator: '*',
                 allowBlank: false,
                 name: 'plantId'
             }, {
                 xtype: 'textfield',
+                labelWidth: 130,
+                maxWidth: 400,
                 fieldLabel: 'Project Name',
+                labelSeparator: '',
                 name: 'projectName'
             }, {
                 xtype: 'textfield',
+                labelWidth: 130,
+                maxWidth: 400,
                 fieldLabel: 'Project Number',
+                labelSeparator: '',
                 name: 'projectNumber'
             }, {
                 xtype: 'fieldcontainer',
+                labelWidth: 130,
+                maxWidth: 400,
+                labelSeparator: '',
                 fieldLabel: 'Enabled',
                 items: [{
                     xtype: 'checkboxfield',
@@ -87,28 +100,67 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             }, {
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Until next service due',
+                maxWidth: 400,
+                cls: 'sfa-field-group',
+                labelCls: 'sfa-field-group-label',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
                 labelAlign: 'top',
                 items: [{
                     xtype: 'numberfield',
+                    hideTrigger: true,
+                    maxWidth: 400,
+                    labelWidth: 130,
+                    labelSeparator: '*',
                     fieldLabel: 'Hours',
                     name: 'serviceDueHours'
                 }, {
                     xtype: 'numberfield',
+                    hideTrigger: true,
+                    maxWidth: 400,
+                    labelWidth: 130,
+                    labelSeparator: '*',
                     fieldLabel: 'Kilometers',
                     name: 'serviceDueKm'
                 }]
             }, {
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Current Odometer',
+                cls: 'sfa-field-group',
+                labelCls: 'sfa-field-group-label',
                 labelAlign: 'top',
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                maxWidth: 400,
                 items: [{
                     xtype: 'numberfield',
+                    hideTrigger: true,
                     fieldLabel: 'Hours',
+                    labelWidth: 130,
+                    labelSeparator: '',
                     name: 'currentOdometerHours'
                 }, {
                     xtype: 'numberfield',
+                    hideTrigger: true,
+                    labelWidth: 130,
                     fieldLabel: 'Kilometers',
+                    labelSeparator: '',
                     name: 'currentOdometerKms'
+                }]
+            }, {
+                xtype: 'fieldcontainer',
+                labelWidth: 130,
+                maxWidth: 400,
+                labelSeparator: '',
+                fieldLabel: 'Next Service Day',
+                items: [{
+                    xtype: 'datefield',
+                    disabled: true,
+                    name: 'nextServiceDay'
                 }]
             }]
         });

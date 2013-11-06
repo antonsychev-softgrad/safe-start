@@ -1,7 +1,8 @@
 Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     extend: 'Ext.container.Container',
     requires: [
-        'SafeStartExt.view.form.Vehicle'
+        'SafeStartExt.view.form.Vehicle',
+        'SafeStartExt.view.panel.VehicleInspection'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
@@ -40,6 +41,13 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                         vehicle: this.vehicle
                     });
                     break;
+                //case 'fill-checklist':
+                //    tabs.push({
+                //        xtype: 'SafeStartExtPanelVehicleInspection',
+                //        title: page.get('text'),
+                //        vehicle: this.vehicle
+                //    });
+                //    break;
                 case 'fill-checklist':
                 case 'alerts':
                 case 'users':
@@ -59,23 +67,6 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
             }
         }, this);
         return tabs;
-    },
-
-    initPage: function (alias, config) {
-        if (Ext.ClassManager.getNameByAlias('widget.' + alias) !== '') {
-            return {xtype: alias, title: config.title};
-        }
-
-        return {
-            xtype: 'panel',
-            title: config.title,
-            listeners: {
-                beforeactivate: function () {
-                    this.up('SafeStartExtMain').fireEvent('notSupportedAction');
-                    return false;
-                }
-            }
-        };
     }
 
 });

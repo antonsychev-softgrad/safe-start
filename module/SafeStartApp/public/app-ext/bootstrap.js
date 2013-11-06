@@ -838,15 +838,21 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
+  "SafeStartExt.controller.Users": [],
   "SafeStartExt.model.Company": [],
   "SafeStartExt.model.Inspection": [],
+  "SafeStartExt.model.InspectionAlert": [],
+  "SafeStartExt.model.InspectionChecklist": [],
+  "SafeStartExt.model.InspectionField": [],
   "SafeStartExt.model.MenuVehicle": [],
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
   "SafeStartExt.store.AbstractStore": [],
   "SafeStartExt.store.Companies": [],
+  "SafeStartExt.store.InspectionChecklists": [],
   "SafeStartExt.store.Inspections": [],
   "SafeStartExt.store.MenuVehicles": [],
+  "SafeStartExt.store.Users": [],
   "SafeStartExt.view.BottomNav": [],
   "SafeStartExt.view.Main": [],
   "SafeStartExt.view.Viewport": [],
@@ -854,14 +860,20 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.view.component.Companies": [],
   "SafeStartExt.view.component.Company": [],
   "SafeStartExt.view.component.Contact": [],
+  "SafeStartExt.view.component.Users": [],
   "SafeStartExt.view.container.TopNav": [],
   "SafeStartExt.view.form.Company": [],
+  "SafeStartExt.view.form.User": [],
+  "SafeStartExt.view.form.UserProfile": [],
   "SafeStartExt.view.form.Vehicle": [],
   "SafeStartExt.view.panel.CompaniesList": [],
   "SafeStartExt.view.panel.CompanyInfo": [],
   "SafeStartExt.view.panel.InspectionInfo": [],
   "SafeStartExt.view.panel.Inspections": [],
+  "SafeStartExt.view.panel.UserProfile": [],
+  "SafeStartExt.view.panel.UsersList": [],
   "SafeStartExt.view.panel.VehicleInfo": [],
+  "SafeStartExt.view.panel.VehicleInspection": [],
   "SafeStartExt.view.panel.VehicleList": [],
   "SafeStartExt.view.panel.VehicleTabs": []
 });
@@ -1858,15 +1870,21 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.controller.Company": [],
   "SafeStartExt.controller.Contact": [],
   "SafeStartExt.controller.Main": [],
+  "SafeStartExt.controller.Users": [],
   "SafeStartExt.model.Company": [],
   "SafeStartExt.model.Inspection": [],
+  "SafeStartExt.model.InspectionAlert": [],
+  "SafeStartExt.model.InspectionChecklist": [],
+  "SafeStartExt.model.InspectionField": [],
   "SafeStartExt.model.MenuVehicle": [],
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
   "SafeStartExt.store.AbstractStore": [],
   "SafeStartExt.store.Companies": [],
+  "SafeStartExt.store.InspectionChecklists": [],
   "SafeStartExt.store.Inspections": [],
   "SafeStartExt.store.MenuVehicles": [],
+  "SafeStartExt.store.Users": [],
   "SafeStartExt.view.BottomNav": [
     "widget.SafeStartExtBottomNav"
   ],
@@ -1886,11 +1904,20 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.component.Contact": [
     "widget.SafeStartExtComponentContact"
   ],
+  "SafeStartExt.view.component.Users": [
+    "widget.SafeStartExtComponentUsers"
+  ],
   "SafeStartExt.view.container.TopNav": [
     "widget.SafeStartExtContainerTopNav"
   ],
   "SafeStartExt.view.form.Company": [
     "widget.SafeStartExtFormCompany"
+  ],
+  "SafeStartExt.view.form.User": [
+    "widget.SafeStartExtFormUser"
+  ],
+  "SafeStartExt.view.form.UserProfile": [
+    "widget.SafeStartExtUserProfileForm"
   ],
   "SafeStartExt.view.form.Vehicle": [
     "widget.SafeStartExtFormVehicle"
@@ -1907,8 +1934,17 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.panel.Inspections": [
     "widget.SafeStartExtPanelInspections"
   ],
+  "SafeStartExt.view.panel.UserProfile": [
+    "widget.SafeStartExtUserProfileWindow"
+  ],
+  "SafeStartExt.view.panel.UsersList": [
+    "widget.SafeStartExtPanelUsersList"
+  ],
   "SafeStartExt.view.panel.VehicleInfo": [
     "widget.SafeStartExtPanelVehicleInfo"
+  ],
+  "SafeStartExt.view.panel.VehicleInspection": [
+    "widget.SafeStartExtPanelVehicleInspection"
   ],
   "SafeStartExt.view.panel.VehicleList": [
     "widget.SafeStartExtPanelVehicleList"
