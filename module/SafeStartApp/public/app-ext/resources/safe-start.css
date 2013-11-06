@@ -4,7 +4,8 @@
 }
 
 .sfa-vehicles-tabpanel .x-panel-body {
-  background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');
+  /*background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');*/
+  background-color: #FFF;
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar {
@@ -559,6 +560,35 @@ font-size: 24px;
 }
 
 .x-ie .sfa-vehicles-tabpanel .x-panel .x-panel-body{
-    padding-top: 20px;
+    /*padding-top: 20px;*/
 
+}
+
+.x-form-item-label {
+    margin-top: 8px;
+    font-size: 16px;
+    color: #333;
+}
+
+
+.x-form-text {
+    font-size: 16px;
+    height: 30px;
+    padding: 6px 3px;
+    color: #333;
+}
+
+.sfa-field-group .sfa-field-group-label {
+    font-size: 18px;
+    color: #1368a4;
+    margin: 15px 0;
+    display: block;
+}
+
+.sfa-field-group.x-item-disabled .sfa-field-group-label {
+    color: #79CEFF;
+}
+
+.x-form-checkbox {
+    margin-top: 8px;
 }

@@ -2,7 +2,7 @@ Ext.define('SafeStartExt.view.form.UserProfile', {
 	extend: 'Ext.form.Panel',
 	requires: [
 		'Ext.form.field.Text',
-		'Ext.form.FieldSet',
+		'Ext.form.FieldSet'
 	],
 	xtype: 'SafeStartExtUserProfileForm',
 	config: {
