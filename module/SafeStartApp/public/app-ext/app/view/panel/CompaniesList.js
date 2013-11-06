@@ -10,7 +10,6 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     ui: 'light-left',
     minWidth: 250,
     border: 0,
-    title: 'Companies',
 
 
     initComponent: function () {

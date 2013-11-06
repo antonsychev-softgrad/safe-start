@@ -2843,6 +2843,35 @@
         "t": 0
       },
       "box": {
+        "h": 36,
+        "w": 119,
+        "x": 10,
+        "y": 6830
+      },
+      "gradient": "top",
+      "id": "button-1154",
+      "radius": {
+        "bl": 7,
+        "br": 7,
+        "tl": 7,
+        "tr": 7
+      },
+      "slices": {
+        "bg": "images/btn/btn-green-medium-disabled-bg.gif",
+        "corners": "images/btn/btn-green-medium-disabled-corners.gif",
+        "frame_bg": "images/btn/btn-green-medium-disabled-fbg.gif",
+        "sides": "images/btn/btn-green-medium-disabled-sides.gif"
+      },
+      "stretch": "bottom"
+    },
+    {
+      "border": {
+        "b": 0,
+        "l": 0,
+        "r": 0,
+        "t": 0
+      },
+      "box": {
         "h": 15,
         "w": 42,
         "x": 10,
@@ -3509,6 +3538,35 @@
         "t": 0
       },
       "box": {
+        "h": 36,
+        "w": 119,
+        "x": 10,
+        "y": 7735
+      },
+      "gradient": "top",
+      "id": "button-1184",
+      "radius": {
+        "bl": 7,
+        "br": 7,
+        "tl": 7,
+        "tr": 7
+      },
+      "slices": {
+        "bg": "images/btn/btn-red-medium-disabled-bg.gif",
+        "corners": "images/btn/btn-red-medium-disabled-corners.gif",
+        "frame_bg": "images/btn/btn-red-medium-disabled-fbg.gif",
+        "sides": "images/btn/btn-red-medium-disabled-sides.gif"
+      },
+      "stretch": "bottom"
+    },
+    {
+      "border": {
+        "b": 0,
+        "l": 0,
+        "r": 0,
+        "t": 0
+      },
+      "box": {
         "h": 15,
         "w": 42,
         "x": 10,
@@ -4164,6 +4222,35 @@
         "corners": "images/btn/btn-blue-medium-pressed-corners.gif",
         "frame_bg": "images/btn/btn-blue-medium-pressed-fbg.gif",
         "sides": "images/btn/btn-blue-medium-pressed-sides.gif"
+      },
+      "stretch": "bottom"
+    },
+    {
+      "border": {
+        "b": 0,
+        "l": 0,
+        "r": 0,
+        "t": 0
+      },
+      "box": {
+        "h": 36,
+        "w": 119,
+        "x": 10,
+        "y": 8640
+      },
+      "gradient": "top",
+      "id": "button-1214",
+      "radius": {
+        "bl": 7,
+        "br": 7,
+        "tl": 7,
+        "tr": 7
+      },
+      "slices": {
+        "bg": "images/btn/btn-blue-medium-disabled-bg.gif",
+        "corners": "images/btn/btn-blue-medium-disabled-corners.gif",
+        "frame_bg": "images/btn/btn-blue-medium-disabled-fbg.gif",
+        "sides": "images/btn/btn-blue-medium-disabled-sides.gif"
       },
       "stretch": "bottom"
     },

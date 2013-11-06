@@ -73,7 +73,7 @@
 }
 /* line 647, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-disabled .x-frame-mc {
-  background-color: transparent;
+  background-color: #3085b6;
   background-image: url(images/btn/btn-blue-medium-disabled-fbg.gif);
 }
 
@@ -376,7 +376,12 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 /* line 309, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-disabled {
   background-image: none;
-  background-color: transparent;
+  background-color: #c70505;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d60505), color-stop(100%, #b30505));
+  background-image: -webkit-linear-gradient(top, #d60505, #b30505);
+  background-image: -moz-linear-gradient(top, #d60505, #b30505);
+  background-image: -o-linear-gradient(top, #d60505, #b30505);
+  background-image: linear-gradient(top, #d60505, #b30505);
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -624,7 +629,7 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 }
 /* line 647, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-disabled .x-frame-mc {
-  background-color: transparent;
+  background-color: #c70505;
   background-image: url(images/btn/btn-red-medium-disabled-fbg.gif);
 }
 

@@ -16,6 +16,7 @@ Ext.define('SafeStartExt.view.form.Company', {
         type: 'vbox',
         align: 'stretch'
     },
+    autoScroll: true,
 
     initComponent: function () {
         var me = this;
