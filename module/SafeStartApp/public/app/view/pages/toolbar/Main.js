@@ -55,6 +55,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
             iconCls: 'action',
             ui: 'action',
             text: 'Logout',
+            cls:'sfa-logout',
             action: 'logout'
         }]);
 
