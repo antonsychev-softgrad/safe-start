@@ -42,6 +42,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
         }, {
             name: 'btn-title',
             ui: 'action',
+            cls:'sfa-title',
             text: this.config.btnTitle || ''
         }, {
             xtype: 'spacer'
@@ -54,6 +55,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
             iconCls: 'action',
             ui: 'action',
             text: 'Logout',
+            cls:'sfa-logout',
             action: 'logout'
         }]);
 
