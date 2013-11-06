@@ -23,7 +23,7 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
                 },
                 items: [{
                     text: 'Add company',
-                    cls:'sfa-add-company',
+                    cls: 'sfa-add-button',
                     handler: function () {
                         this.up('SafeStartExtPanelCompaniesList').fireEvent('addCompanyAction');
                     }
