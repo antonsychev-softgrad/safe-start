@@ -36,7 +36,7 @@ Ext.define('SafeStartExt.controller.Users', {
             'SafeStartExtFormUser': {
                 updateUserAction: this.updateUserAction,
                 deleteUserAction: this.deleteUserAction,
-                sendPasswordAction: this.sendPasswordAction,
+                sendPasswordAction: this.sendPasswordAction
             }
         });
     },

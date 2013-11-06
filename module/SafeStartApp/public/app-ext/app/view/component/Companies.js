@@ -12,6 +12,7 @@ Ext.define('SafeStartExt.view.component.Companies', {
         align: 'stretch'
     },
     width: '100%',
+    border: 0,
     ui: 'transparent',
 
     initComponent: function () {
@@ -31,12 +32,13 @@ Ext.define('SafeStartExt.view.component.Companies', {
                     flex: 1,
                     maxWidth: 250
                 }, {
-                    cls: 'sfa-info-container',
+                    //cls: 'sfa-info-container',
                     xtype: 'panel',
-                    type: 'vbox',
+                    border: 0,
+                    layout: 'fit',
                     flex: 2,
-                    padding: 20,
                     ui: 'transparent',
+                    padding: 30,
                     name: 'company-info'
                 }]
             }]

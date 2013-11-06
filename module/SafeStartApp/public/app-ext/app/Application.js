@@ -42,7 +42,7 @@ Ext.define('SafeStartExt.Application', {
         'company': 'main#showCompanyPage',
         'company/:id': 'main#showCompanyPageById',
         'contact': 'main#showContactPage',
-        'users': 'main#showUsersPage',
+        'users': 'main#showUsersPage'
     },
 
     acl: {

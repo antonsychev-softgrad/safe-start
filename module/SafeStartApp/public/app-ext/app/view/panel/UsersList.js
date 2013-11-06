@@ -53,7 +53,7 @@ Ext.define('SafeStartExt.view.panel.UsersList', {
                             store.load();
                         }
                     }]
-                }],
+                }]
             },
                 items: [{
                     xtype: 'dataview',

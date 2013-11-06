@@ -112,6 +112,6 @@ Ext.define('SafeStartExt.view.form.User', {
             handler: function () {
                 this.up('form').fireEvent('sendPasswordAction');
             }
-        },
+        }
     ]
 });
