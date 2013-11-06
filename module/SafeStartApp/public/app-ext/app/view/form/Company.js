@@ -83,6 +83,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                         type: 'vbox',
                         align: 'stretch'
                     },
+                    //cls:'sfa-company-settings',
                     labelAlign: 'top',
                     items: [
                         {
