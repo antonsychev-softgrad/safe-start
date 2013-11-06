@@ -355,11 +355,13 @@ font-size: 24px;
     background: none\0/ !important;
 }
 
-*:first-child+html .sfa-vehicles-tabpanel .x-table-plain {
-    height: 50px;
+*:first-child+html .sfa-vehicles-tabpanel .x-table-plain .x-tab-ml,
+*:first-child+html .sfa-vehicles-tabpanel .x-table-plain .x-tab-mc,
+{
+    /*height: 41px;*/
 }
 .sfa-vehicles-tabpanel .x-table-plain {
-    height: 50px\0/;
+    /*height: 50px\0/;*/
 }
 
 *:first-child+html .sfa-previous-inspections-info .sfa-group-item {
@@ -386,8 +388,8 @@ font-size: 24px;
 
 
 
-*:first-child+html .sfa-left-coll .sfa-add-button .x-table-plain
-*:first-child+html .sfa-left-coll .sfa-add-button .x-table-plain * {
+*:first-child+html .sfa-left-coll .sfa-add-button .x-table-plain,
+*:first-child+html .sfa-left-coll .sfa-add-button .x-table-plain *{
     background: none !important;
 }
 

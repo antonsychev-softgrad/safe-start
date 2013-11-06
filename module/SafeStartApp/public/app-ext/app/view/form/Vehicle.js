@@ -13,6 +13,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
         align: 'stretch'
     },
     padding: 30,
+    scrollable: true,
 
     initComponent: function () {
         var me = this;
