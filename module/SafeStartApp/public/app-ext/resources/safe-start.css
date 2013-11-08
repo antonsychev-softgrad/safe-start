@@ -412,10 +412,6 @@ font-size: 24px;
     background: none !important;
 }
 
-.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td,
-.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain td{
-    height: 10px;
-}
 .x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td,
 .x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td{
     height: 8px;
@@ -813,7 +809,7 @@ span.x-btn-inner.x-btn-inner-center {
 
 
 
-.x-form-item-label {
+/*.x-form-item-label {
     margin-top: 8px;
     font-size: 16px;
     color: #333;
@@ -833,13 +829,14 @@ span.x-btn-inner.x-btn-inner-center {
     box-shadow: 0 1px 0 #F3F4F4;
 }
 
+*/
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
-    margin: 15px 0;
+    margin: 10px 0;
     display: block;
 }
-
+/*
 .sfa-field-group.x-item-disabled .sfa-field-group-label {
     color: #79CEFF;
 }
@@ -847,3 +844,5 @@ span.x-btn-inner.x-btn-inner-center {
 .x-form-checkbox {
     margin-top: 8px;
 }
+*/
+
