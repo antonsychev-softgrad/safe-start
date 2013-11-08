@@ -397,6 +397,11 @@ font-size: 24px;
 
 
 
+.x-ie7p .sfa-left-coll .x-btn.x-icon.x-btn-icon.x-btn-default-medium-icon td {
+    background: none;
+}
+
+
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
@@ -409,16 +414,57 @@ font-size: 24px;
     background: none !important;
 }
 
-.sfa-left-coll .sfa-add-button .x-table-plain {
-    height: 35px;
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain td{
+    height: 10px;
 }
-/*.sfa-left-coll .sfa-add-button .x-table-plain td .x-btn-inner {
-    padding: 30px;
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td{
+    height: 8px;
 }
-*/
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center {
+    text-align: left;
+    padding-left: 22px;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    margin-right: 16px;
+}
 
+span.x-btn-inner.x-btn-inner-center {
+    background: none;
+}
 
+.sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
+    color: #1368a4;
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    margin-right: 15px;
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    text-shadow: 0 -1px 0 #2C5E77;
+}
+.x-toolbar-footer span.x-btn-inner {
+    font-size: 16px;
+    display: block;
+    padding-bottom: 2px;
+}
+.sfa-company-settings .x-toolbar-footer .x-btn-button {
+    height: 18px;
+    /*padding: 8px 30px;*/
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    padding: 8px 35px;
+}
+.sfa-company-settings .x-toolbar-footer > .x-box-inner {
+    height: 38px !important;
+}
 
+.sfa-company-settings .sfa-last.x-btn-blue-medium {
+    background: none;
+    padding: 8px 0 8px 12px;
+}
 
 /* END LEFt column */
 
