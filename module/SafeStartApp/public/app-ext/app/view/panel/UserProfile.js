@@ -4,20 +4,20 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 		'SafeStartExt.view.form.UserProfile'
 	],
 	xtype: 'SafeStartExtUserProfileWindow',
+	
 	profileForm: null,
 	padding: 5,
-	initComponent: function () {
-		var me = this;
+	modal: true,
+	layout: 'fit',
+	scrollable: false,
+	cls: 'sfa-modal-form',
+	closeAction: 'hide',
+
+	initComponent: function() {
 		Ext.apply(this, {
-			modal: true,
-			layout: 'fit',
-			scrollable: false,
-			cls: 'sfa-modal-form',
-			closeAction: 'hide',
 			buttons: [{
 				text: 'Cancel',
-				ui: 'action',
-				handler: function () {
+				handler: function() {
 					this.up('SafeStartExtUserProfileWindow').hide();
 				}
 			}, {
@@ -26,17 +26,15 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 			}, {
 				text: 'Save',
 				action: 'save-data',
-				ui: 'confirm',
-				handler: function () {
+				handler: function() {
 					this.up('SafeStartExtUserProfileWindow').fireEvent('updateProfileAction', this.up('SafeStartExtUserProfileWindow'));
 				}
-			}
-			]
+			}],
+			items: [{
+				xtype: 'SafeStartExtUserProfileForm',
+				record: SafeStartExt.getApplication().getUserRecord()
+			}]
 		});
 		this.callParent();
-		this.profileForm = Ext.create('SafeStartExt.view.form.UserProfile');
-		this.add(this.profileForm);
-		this.profileForm.loadRecord(SafeStartExt.getApplication().getUserRecord())
 	}
-
 });

@@ -5,49 +5,70 @@ Ext.define('SafeStartExt.view.form.UserProfile', {
 		'Ext.form.FieldSet'
 	],
 	xtype: 'SafeStartExtUserProfileForm',
-	config: {
-		height: 430,
-		scrollable: false,
-		items: [
-			{
-				xtype: 'fieldset',
-				title: 'Personal Info',
-				/*    instructions: 'You can change your info above.',*/
-				items: [
-					{
-						xtype: 'textfield',
-						fieldLabel: 'First Name',
-						name: 'firstName'
-					},
-					{
-						xtype: 'textfield',
-						fieldLabel: 'Last Name',
-						name: 'lastName'
-					},
-					{
-						xtype: 'textfield',
-						vtype: 'email',
-						fieldLabel: 'Email',
-						name: 'email'
-					},
-					{
-						xtype: 'fieldset',
-						title: 'Change password:',
-						items: [
-							{
-								xtype: 'textfield',
-								name: 'newPassword',
-								fieldLabel: 'New'
-							},
-							{
-								xtype: 'textfield',
-								name: 'confirmPassword',
-								fieldLabel: 'Confirm'
-							}
-						]
-					}
-				]
-			}
-		]
+	minWidth: 400,
+	scrollable: false,
+
+	initComponent: function() {
+		Ext.apply(this, {
+			items: [{
+				xtype: 'fieldcontainer',
+				fieldLabel: 'Personal Info',
+				cls: 'sfa-field-group',
+				labelCls: 'sfa-field-group-label',
+				labelAlign: 'top',
+				layout: {
+					type: 'vbox',
+					align: 'stretch'
+				},
+				maxWidth: 400,
+				items: [{
+					xtype: 'textfield',
+					fieldLabel: 'First Name',
+					labelWidth: 130,
+					labelSeparator: '',
+					name: 'firstName'
+				}, {
+					xtype: 'textfield',
+					fieldLabel: 'Last Name',
+					labelWidth: 130,
+					labelSeparator: '',
+					name: 'lastName'
+				}, {
+					xtype: 'textfield',
+					vtype: 'email',
+					labelWidth: 130,
+					labelSeparator: '',
+					fieldLabel: 'Email',
+					name: 'email'
+				}]
+			}, {
+				xtype: 'fieldcontainer',
+				fieldLabel: 'Change password',
+				cls: 'sfa-field-group',
+				labelCls: 'sfa-field-group-label',
+				labelAlign: 'top',
+				layout: {
+					type: 'vbox',
+					align: 'stretch'
+				},
+				maxWidth: 400,
+				items: [{
+					xtype: 'textfield',
+					name: 'newPassword',
+					labelWidth: 130,
+					labelSeparator: '',
+					fieldLabel: 'New'
+				}, {
+					xtype: 'textfield',
+					name: 'confirmPassword',
+					labelWidth: 130,
+					labelSeparator: '',
+					fieldLabel: 'Confirm'
+				}]
+			}]
+		});
+		this.callParent();
+
+		this.loadRecord(this.record);
 	}
 });

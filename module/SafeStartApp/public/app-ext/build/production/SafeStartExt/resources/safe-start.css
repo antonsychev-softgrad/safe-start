@@ -412,10 +412,10 @@ font-size: 24px;
 .sfa-left-coll .sfa-add-button .x-table-plain {
     height: 35px;
 }
-/*.sfa-left-coll .sfa-add-button .x-table-plain td .x-btn-inner {
+.sfa-left-coll .sfa-add-button .x-table-plain td .x-btn-inner {
     padding: 30px;
 }
-*/
+
 
 
 
@@ -773,7 +773,7 @@ font-size: 24px;
 
 }
 
-.x-form-item-label {
+/*.x-form-item-label {
     margin-top: 8px;
     font-size: 16px;
     color: #333;
@@ -787,13 +787,14 @@ font-size: 24px;
     color: #333;
 }
 
+*/
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
-    margin: 15px 0;
+    margin: 10px 0;
     display: block;
 }
-
+/*
 .sfa-field-group.x-item-disabled .sfa-field-group-label {
     color: #79CEFF;
 }
@@ -801,3 +802,5 @@ font-size: 24px;
 .x-form-checkbox {
     margin-top: 8px;
 }
+*/
+
