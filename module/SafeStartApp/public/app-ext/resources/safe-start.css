@@ -2,6 +2,12 @@
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
 }
+.x-form-trigger-wrap {
+    border: none;
+}
+.x-toolbar-footer {
+    background: none;
+}
 .x-form-text {
     background: none;
 }
@@ -45,12 +51,17 @@
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding: 14px 15px 15px;
+    padding: 13px 15px 14px;
     background: none;
     box-shadow: none;
     border: none;
 }
-
+.x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    height: 49px;
+}
+.x-ie8 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    padding-top: 5px !important;
+}
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
     background: url(img/tab-active_bg.png) no-repeat 50% 100%;
 }
@@ -111,6 +122,9 @@
     height: 62px !important;
     background: #1673b5 url(img/top_bg.png) repeat-x;
 }
+.x-ie7 .sfa-top-nav.x-box-item {
+    height: 61px !important;
+}
 .sfa-top-nav {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     z-index: 9;
@@ -118,6 +132,7 @@
 .sfa-top-nav .x-btn-transparent-medium .x-btn-inner {
     color: #fff;
 }
+
 .x-ie .x-panel-light-left .x-toolbar-default {
   background-image: none !important;
 }
@@ -221,10 +236,24 @@
 .sfa-top-nav .sfa-company-name .x-btn-inner {
 font-size: 24px;
 }
+.sfa-top-nav .sfa-topmenu-logo {
+    height: 62px !important;
+}
 .sfa-top-nav .sfa-topmenu-logo img {
     cursor: pointer;
+    display: block;
+    margin: auto;
 }
+
+.sfa-top-nav > div {
+    height: 62px !important;
+}
+
 .sfa-top-nav .sfa-topmenu-logo > span {
+    background: url(img/sfa-top-logo-bg.png) repeat-x;
+    border-right: 1px solid #000;
+}
+.x-ie7 .sfa-top-nav .sfa-topmenu-logo > div {
     background: url(img/sfa-top-logo-bg.png) repeat-x;
     border-right: 1px solid #000;
 }
@@ -276,15 +305,9 @@ font-size: 24px;
     background: url(img/reload-ic.png) no-repeat;
 }
 .sfa-left-coll a.x-btn span {
-    /*TODO*/
-    /*width: 22px;*/
-    /*height: 18px;*/
-    /*line-height: 18px;*/
+    font-weight: normal;
 }
-.sfa-left-coll a.x-btn {
-    /*TODO*/
-    /*top: 5px !important;*/
-}
+
 .sfa-left-coll .x-btn-default-toolbar-medium-over {
     border-color: #fff;
     background: none;
@@ -316,18 +339,24 @@ font-size: 24px;
 }
 
 .sfa-left-coll .search.x-table-plain {
-    margin-left: 10px !important;
-    width: 195px !important;
+    margin-left: 5px !important;
+    width: 190px !important;
 }
 
 .sfa-left-coll .sfa-add-button {
     border: none;
-    margin-bottom: 24px;
-    margin-left: 15px;
+    left: 10px !important;
+    width: 213px !important;
     padding: 8px 5px 9px 21px;
     text-align: left;
     display: block;
+    margin-bottom: 24px;
     background: url(img/sfa-add-button_bg.png) no-repeat;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    overflow: hidden;
+    background: url(img/sfa-add-button_bg-ie.png) no-repeat;
 }
 
 .sfa-left-coll .sfa-add-button span.x-btn-inner {
@@ -367,30 +396,26 @@ font-size: 24px;
     height: 41px;
 }
 
-.sfa-vehicles-tabpanel .x-table-plain {
-    /*height: 50px\0/;*/
-}
-
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item {
     width: 100%;
     overflow: hidden;
 }
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div:first-child {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item > div:first-child {
     float: left;
 }
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item > div {
     float: right;
 }
 
-.sfa-previous-inspections-info .sfa-group-item {
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item {
     width: 100%;
-    overflow: hidden\0/;
+    overflow: hidden;
 }
-.sfa-previous-inspections-info .sfa-group-item > div:first-child {
-    float: left\0/;
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item > div:first-child {
+    float: left;
 }
-.sfa-previous-inspections-info .sfa-group-item > div {
-    float: right\0/;
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item > div {
+    float: right;
 }
 
 
@@ -399,7 +424,10 @@ font-size: 24px;
     background: none;
 }
 
-
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    height: 33px;
+}
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
@@ -413,7 +441,7 @@ font-size: 24px;
 }
 
 .x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td,
-.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td{
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td {
     height: 8px;
 }
 .x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center,
@@ -432,6 +460,11 @@ span.x-btn-inner.x-btn-inner-center {
 
 .sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
     color: #1368a4;
+}
+.sfa-company-settings .sfa-last td {
+    background: none;
+    padding-left: 4px;
+    padding-right: 0;
 }
 .sfa-company-settings .x-toolbar-footer a.x-btn {
     margin-right: 15px;
@@ -470,6 +503,7 @@ span.x-btn-inner.x-btn-inner-center {
 .sfa-vehicles-tabpanel, .sfa-vehicles-tabpanel .x-panel-body {
     padding: 0;
 }
+
 .sfa-vehicles-tabpanel > span > div .x-panel-body-default {
     border: none;
 }
@@ -539,6 +573,11 @@ span.x-btn-inner.x-btn-inner-center {
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
 }
+.x-ie7 .sfa-info-container > div:first-child {
+    padding: 0;
+    border: none;
+    background: none;
+}
 
 .sfa-info-container .x-panel-body.x-panel-body-default.x-panel-body-default {
     background: none;
@@ -549,6 +588,14 @@ span.x-btn-inner.x-btn-inner-center {
 .sfa-info-container textarea {
     font-size: 16px;
     color: #565555;
+}
+.x-ie7 .sfa-info-container input.x-form-field {
+    padding-top: 4px;
+    height: 28px;
+}
+.x-ie8 .sfa-info-container input.x-form-field {
+    padding-top: 4px;
+    height: 33px;
 }
 .sfa-info-container input.x-form-text, .sfa-info-container .x-form-textarea {
     padding: 0 30px 0 7px;
@@ -564,6 +611,12 @@ span.x-btn-inner.x-btn-inner-center {
     box-shadow: 0 1px 0 #f3f4f4;
     background: #fff;
 }
+
+.sfa-info-container input.x-form-focus, .sfa-info-container textarea.x-form-focus {
+    border: 3px solid #2e7fb7;
+}
+
+
 .sfa-info-container .x-form-textarea {
     height: 84px;
 }
@@ -609,15 +662,11 @@ span.x-btn-inner.x-btn-inner-center {
 .sfa-left-coll {
     padding-top: 15px;
 }
-.sfa-company-settings tr td {
-    padding: 8px 0;
-}
+
 .sfa-company-settings .x-table-plain.x-form-item.x-form-type-text {
     width: 700px;
 }
-.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td:first-child {
-    width: 30%;
-}
+
 .sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td label {
     width: 100% !important;
 }
@@ -809,40 +858,14 @@ span.x-btn-inner.x-btn-inner-center {
 
 
 
-/*.x-form-item-label {
-    margin-top: 8px;
-    font-size: 16px;
-    color: #333;
-}
-
-.x-form-text {
-    font-size: 16px;
-    height: 30px;
-    padding: 6px 3px;
-    color: #333;
-
-    border-radius: 6px;
-    border: 1px solid #fbfbfb;
-    border-top-color: #a9acaf;
-    border-left-color: #F3F4F4;
-    border-right-color: #F3F4F4;
-    box-shadow: 0 1px 0 #F3F4F4;
-}
-
-*/
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
     margin: 10px 0;
     display: block;
-}
-/*
-.sfa-field-group.x-item-disabled .sfa-field-group-label {
-    color: #79CEFF;
+    font-weight: bold;
 }
 
-.x-form-checkbox {
-    margin-top: 8px;
-}
-*/
+
+
 
