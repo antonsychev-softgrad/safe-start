@@ -9,7 +9,7 @@ Ext.define('SafeStartExt.view.form.Company', {
         'Ext.form.FieldContainer'
     ],
     xtype: 'SafeStartExtFormCompany',
-
+    cls:'sfa-company-settings',
     border: 0,
     ui: 'transparent',
     layout: {
@@ -63,6 +63,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                 text: 'Send Password to Company Owner',
                 ui: 'blue',
                 name: 'send-password',
+                cls:'sfa-last',
                 scale: 'medium',
                 handler: function() {
                     if (me.isValid()) {
