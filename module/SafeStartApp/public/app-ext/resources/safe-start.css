@@ -2,9 +2,10 @@
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
 }
-
+.x-form-text {
+    background: none;
+}
 .sfa-vehicles-tabpanel .x-panel-body {
-  /*background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');*/
   background-color: #FFF;
 }
 
@@ -63,9 +64,6 @@
   background-color: transparent;
   height: 0;
 }
-
-/*.x-btn-default-toolbar-small-icon .x-btn-icon-el*/
-
 
 .sfa-icon-refresh {
   background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png);
@@ -452,7 +450,6 @@ span.x-btn-inner.x-btn-inner-center {
 }
 .sfa-company-settings .x-toolbar-footer .x-btn-button {
     height: 18px;
-    /*padding: 8px 30px;*/
 }
 .sfa-company-settings .x-toolbar-footer a.x-btn {
     padding: 8px 35px;
@@ -461,7 +458,7 @@ span.x-btn-inner.x-btn-inner-center {
     height: 38px !important;
 }
 
-.sfa-company-settings .sfa-last.x-btn-blue-medium {
+.sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
     background: none;
     padding: 8px 0 8px 12px;
 }
@@ -814,10 +811,7 @@ span.x-btn-inner.x-btn-inner-center {
     background-image: url(img/sfa-icon-contact.png);
 }
 
-.x-ie .sfa-vehicles-tabpanel .x-panel .x-panel-body{
-    /*padding-top: 20px;*/
 
-}
 
 .x-form-item-label {
     margin-top: 8px;
@@ -825,12 +819,18 @@ span.x-btn-inner.x-btn-inner-center {
     color: #333;
 }
 
-
 .x-form-text {
     font-size: 16px;
     height: 30px;
     padding: 6px 3px;
     color: #333;
+
+    border-radius: 6px;
+    border: 1px solid #fbfbfb;
+    border-top-color: #a9acaf;
+    border-left-color: #F3F4F4;
+    border-right-color: #F3F4F4;
+    box-shadow: 0 1px 0 #F3F4F4;
 }
 
 .sfa-field-group .sfa-field-group-label {
