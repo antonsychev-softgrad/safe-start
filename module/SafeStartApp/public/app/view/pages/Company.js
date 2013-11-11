@@ -67,15 +67,11 @@ Ext.define('SafeStartApp.view.pages.Company', {
 
         if (SafeStartApp.userModel.get('role') != 'companyUser') {
             additionalButton.push({
-                xtype: 'spacer'
-            }, {
                 cls: 'sfa-add-button',
                 iconCls: 'add',
                 ui: 'action',
                 text: 'Add Vehicle',
                 action: 'add-vehicle'
-            }, {
-                xtype: 'spacer'
             });
         }
         this.add({

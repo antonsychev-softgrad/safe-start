@@ -132,6 +132,11 @@ class CheckList extends BaseEntity
     protected $location;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $email_mode = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -724,6 +729,18 @@ class CheckList extends BaseEntity
     public function setLocation($location)
     {
         $this->location = $location;
+        return $this;
+    }
+
+
+    public function getEmailMode()
+    {
+        return $this->email_mode;
+    }
+
+    public function setEmailMode($val)
+    {
+        $this->email_mode = $val;
         return $this;
     }
 

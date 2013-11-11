@@ -119,6 +119,7 @@ class PublicVehicleController extends PublicAccessRestController
         }
 
         $checkList->setUserData($userData);
+        $checkList->setEmailMode(1);
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
