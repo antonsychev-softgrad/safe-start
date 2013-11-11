@@ -222,7 +222,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     updateAction: function () {
         var self = this;
         var values = {};
-        var vehicleId = this.record.raw.vehicle.id;
+        var vehicleId = (this.record.raw && this.record.raw.vehicle.id) || 0;
         var status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
         var action = '';
         if (this.record.get('status') != status) {
