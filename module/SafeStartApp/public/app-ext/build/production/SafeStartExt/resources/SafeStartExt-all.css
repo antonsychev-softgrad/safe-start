@@ -16475,16 +16475,16 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 10px 30px 10px 30px;
+  padding: 8px 30px 8px 30px;
   border-width: 0;
   border-style: solid;
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #77a704), color-stop(100%, #5e8403));
-  background-image: -webkit-linear-gradient(top, #77a704, #5e8403);
-  background-image: -moz-linear-gradient(top, #77a704, #5e8403);
-  background-image: -o-linear-gradient(top, #77a704, #5e8403);
-  background-image: linear-gradient(top, #77a704, #5e8403);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16515,7 +16515,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-green-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-10-30-10-30;
+  font-family: th-7-7-7-7-0-0-0-0-8-30-8-30;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16604,7 +16604,7 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-green-medium-mc {
-  padding: 3px 23px 3px 23px;
+  padding: 1px 23px 1px 23px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16659,11 +16659,11 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-disabled {
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #77a704), color-stop(100%, #5e8403));
-  background-image: -webkit-linear-gradient(top, #77a704, #5e8403);
-  background-image: -moz-linear-gradient(top, #77a704, #5e8403);
-  background-image: -o-linear-gradient(top, #77a704, #5e8403);
-  background-image: linear-gradient(top, #77a704, #5e8403);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -16765,22 +16765,17 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-over {
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #77a704), color-stop(100%, #5e8403));
-  background-image: -webkit-linear-gradient(top, #77a704, #5e8403);
-  background-image: -moz-linear-gradient(top, #77a704, #5e8403);
-  background-image: -o-linear-gradient(top, #77a704, #5e8403);
-  background-image: linear-gradient(top, #77a704, #5e8403);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-focus {
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #77a704), color-stop(100%, #5e8403));
-  background-image: -webkit-linear-gradient(top, #77a704, #5e8403);
-  background-image: -moz-linear-gradient(top, #77a704, #5e8403);
-  background-image: -o-linear-gradient(top, #77a704, #5e8403);
-  background-image: linear-gradient(top, #77a704, #5e8403);
 }
 
 /* line 541, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -16788,11 +16783,11 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-pressed {
   background-image: none;
   background-color: #628904;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d6b03), color-stop(100%, #709d05));
-  background-image: -webkit-linear-gradient(top, #4d6b03, #709d05);
-  background-image: -moz-linear-gradient(top, #4d6b03, #709d05);
-  background-image: -o-linear-gradient(top, #4d6b03, #709d05);
-  background-image: linear-gradient(top, #4d6b03, #709d05);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #628904), color-stop(4%, #71941d));
+  background-image: -webkit-linear-gradient(top, #628904, #71941d 4%);
+  background-image: -moz-linear-gradient(top, #628904, #71941d 4%);
+  background-image: -o-linear-gradient(top, #628904, #71941d 4%);
+  background-image: linear-gradient(top, #628904, #71941d 4%);
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -16973,6 +16968,18 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /*</if slicer>*/
 /* */
+/* line 130, ../../../../packages/safe-start-theme/sass/src/button/Button.scss */
+.x-btn-blue-medium, .x-btn-green-medium, .x-btn-red-medium {
+  -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.4);
+  -moz-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 0px 0px rgba(255, 255, 255, 0.4);
+}
+
+/* line 136, ../../../../packages/safe-start-theme/sass/src/button/Button.scss */
+.x-toolbar > .x-box-inner {
+  overflow: visible;
+}
+
 /* line 246, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-transparent-medium {
   border-color: transparent;
@@ -17481,16 +17488,16 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 10px 30px 10px 30px;
+  padding: 8px 30px 8px 30px;
   border-width: 0;
   border-style: solid;
   background-image: none;
   background-color: #3085b6;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #338ec2), color-stop(100%, #2c79a6));
-  background-image: -webkit-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -moz-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -o-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: linear-gradient(top, #338ec2, #2c79a6);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17521,7 +17528,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-blue-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-10-30-10-30;
+  font-family: th-7-7-7-7-0-0-0-0-8-30-8-30;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17610,7 +17617,7 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-blue-medium-mc {
-  padding: 3px 23px 3px 23px;
+  padding: 1px 23px 1px 23px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17665,11 +17672,11 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-disabled {
   background-image: none;
   background-color: #3085b6;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #338ec2), color-stop(100%, #2c79a6));
-  background-image: -webkit-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -moz-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -o-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: linear-gradient(top, #338ec2, #2c79a6);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17771,22 +17778,17 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-over {
   background-image: none;
   background-color: #3085b6;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #338ec2), color-stop(100%, #2c79a6));
-  background-image: -webkit-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -moz-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -o-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: linear-gradient(top, #338ec2, #2c79a6);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-focus {
   background-image: none;
   background-color: #3085b6;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #338ec2), color-stop(100%, #2c79a6));
-  background-image: -webkit-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -moz-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: -o-linear-gradient(top, #338ec2, #2c79a6);
-  background-image: linear-gradient(top, #338ec2, #2c79a6);
 }
 
 /* line 541, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17794,11 +17796,11 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-pressed {
   background-image: none;
   background-color: #0062a7;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #005088), color-stop(100%, #006ebb));
-  background-image: -webkit-linear-gradient(top, #005088, #006ebb);
-  background-image: -moz-linear-gradient(top, #005088, #006ebb);
-  background-image: -o-linear-gradient(top, #005088, #006ebb);
-  background-image: linear-gradient(top, #005088, #006ebb);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #0062a7), color-stop(4%, #1971af));
+  background-image: -webkit-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: -moz-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: -o-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: linear-gradient(top, #0062a7, #1971af 4%);
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17991,16 +17993,16 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 10px 30px 10px 30px;
+  padding: 8px 30px 8px 30px;
   border-width: 0;
   border-style: solid;
   background-image: none;
   background-color: #c70505;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d60505), color-stop(100%, #b30505));
-  background-image: -webkit-linear-gradient(top, #d60505, #b30505);
-  background-image: -moz-linear-gradient(top, #d60505, #b30505);
-  background-image: -o-linear-gradient(top, #d60505, #b30505);
-  background-image: linear-gradient(top, #d60505, #b30505);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18031,7 +18033,7 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-red-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-10-30-10-30;
+  font-family: th-7-7-7-7-0-0-0-0-8-30-8-30;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18120,7 +18122,7 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-red-medium-mc {
-  padding: 3px 23px 3px 23px;
+  padding: 1px 23px 1px 23px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18175,11 +18177,11 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-disabled {
   background-image: none;
   background-color: #c70505;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d60505), color-stop(100%, #b30505));
-  background-image: -webkit-linear-gradient(top, #d60505, #b30505);
-  background-image: -moz-linear-gradient(top, #d60505, #b30505);
-  background-image: -o-linear-gradient(top, #d60505, #b30505);
-  background-image: linear-gradient(top, #d60505, #b30505);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18281,22 +18283,17 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-over {
   background-image: none;
   background-color: #c70505;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d60505), color-stop(100%, #b30505));
-  background-image: -webkit-linear-gradient(top, #d60505, #b30505);
-  background-image: -moz-linear-gradient(top, #d60505, #b30505);
-  background-image: -o-linear-gradient(top, #d60505, #b30505);
-  background-image: linear-gradient(top, #d60505, #b30505);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-focus {
   background-image: none;
   background-color: #c70505;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d60505), color-stop(100%, #b30505));
-  background-image: -webkit-linear-gradient(top, #d60505, #b30505);
-  background-image: -moz-linear-gradient(top, #d60505, #b30505);
-  background-image: -o-linear-gradient(top, #d60505, #b30505);
-  background-image: linear-gradient(top, #d60505, #b30505);
 }
 
 /* line 541, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18304,11 +18301,11 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-pressed {
   background-image: none;
   background-color: #c70505;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #a90404), color-stop(100%, #db0606));
-  background-image: -webkit-linear-gradient(top, #a90404, #db0606);
-  background-image: -moz-linear-gradient(top, #a90404, #db0606);
-  background-image: -o-linear-gradient(top, #a90404, #db0606);
-  background-image: linear-gradient(top, #a90404, #db0606);
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(4%, #cc1d1d));
+  background-image: -webkit-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: -moz-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: -o-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: linear-gradient(top, #c70505, #cc1d1d 4%);
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
