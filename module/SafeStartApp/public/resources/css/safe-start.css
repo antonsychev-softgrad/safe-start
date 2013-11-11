@@ -1351,11 +1351,34 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
 .sfa-vehicle-inspection > div > form:last-child {
     min-height: 68px;
 }
-.checklist-alert-description {
+.checklist-alert-description-critical, .checklist-alert-description {
     position: relative;
     top: 10px;
-    color: #c00;
+    height: 30px;
     font-size: 20px;
+}
+
+.checklist-alert-description {
+    color: #333;
+}
+
+.checklist-alert-description-critical {
+    color: #c00;
+}
+
+.checklist-alert-description .checklist-alert-icon {
+    display: none;
+}
+.checklist-alert-description-critical .checklist-alert-icon {
+    position: absolute;
+    top: -4px;
+    right: -2px;
+    font-size: 26px;
+    font-family: 'Pictos';
+}
+
+.sfa-alert-panel .x-toolbar {
+    margin-top: 0;
 }
 
 /* hack for chrome & safari -> button 'back' in left column, naprimer */

@@ -673,20 +673,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             title: 'Alerts'            
         }];
         Ext.each(alerts, function (alert) {
+            console.log(alert);
             items.push({
                 xtype: 'panel',
                 width: '100%',
-                maxWidth: 900,
+                maxWidth: 520,
                 name: 'alert-container',
+                margin: '5 0 10 0',
+                cls: 'sfa-alert-panel',
                 fieldId: alert.get('fieldId'),
                 alertModel: alert,
                 items: [{
                     xtype: 'container',
-                    cls: 'checklist-alert-description',
-                    html: alert.get('alertDescription')
+                    cls: alert.get('critical') ? 'checklist-alert-description-critical' : 'checklist-alert-description',
+                    html: [
+                        alert.get('alertDescription'),
+                        '<div class="checklist-alert-icon">*</div>'
+                    ].join('')
                 }, {
                     xtype: 'textfield',
                     label: 'Additional comments',
+                    padding: '10 0 0 0',
                     value: alert.get('comment'),
                     listeners: {
                         change: function (textfield, value) {
