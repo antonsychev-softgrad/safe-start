@@ -168,6 +168,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 xtype: 'fieldset',
                 maxWidth: 700,
                 width: '100%',
+                title: 'Do you need to perform additional inspections for any of the following equipment?',
+                padding: '20 0 0 0',
                 defaults: {
                     labelWidth: '80%'
                 },
@@ -624,17 +626,39 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }];
     },
     createVehicleDetailsView: function (passedCards) {
+        var data = [];
+        Ext.each(passedCards, function (card) {
+            data.push({
+                title: card.groupName,
+                checklist: card.checklist,
+                cls: card.alert ? 'alerts' : 'ok'
+            });
+        });
         var items = [{
             xtype: 'titlebar',
             title: 'Vehicle details'
+        }, {
+            xtype: 'dataview',
+            scrollable: false,
+            height: data.length * 27,
+            itemTpl: [
+                '<div class="checklist-details-{cls}">',
+                '{title}',
+                '</div>'
+            ].join(''),
+            store: {
+                fields: ['title', 'cls'],
+                data: data
+            },
+            listeners: {
+                itemtap: function (view, index, el, record) {
+                    this.setActiveItem(record.raw.checklist);
+                },
+                scope: this
+            }
         }];
-        Ext.each(passedCards, function (card) {
-            items.push({
-                xtype: 'container',
-                html: card.groupName,
-                cls: card.alert ? 'checklist-details-alerts' : 'checklist-details-ok'
-            });
-        });
+
+
         return {
             xtype: 'fieldset',
             width: '100%',

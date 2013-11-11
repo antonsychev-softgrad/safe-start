@@ -322,6 +322,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             });
             passedCards.push({
                 groupName: checklist.config.groupName,
+                checklist: checklist,
                 additional: checklist.config.additional,
                 alert: alert
             });

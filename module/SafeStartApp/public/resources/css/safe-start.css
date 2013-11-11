@@ -1524,7 +1524,14 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     font-size: 18px;
     color: #565555;
     position: relative;
+    cursor: pointer;
 }
+.sfa-checklist-form .checklist-details-ok:hover, .sfa-checklist-form .checklist-details-alerts:hover {
+    font-size: 18px;
+    color: #898888;
+    position: relative;
+    cursor: pointer;
+}    
 .sfa-checklist-form .checklist-details-ok:after, .sfa-checklist-form .checklist-details-alerts:after {
     bottom: 0;
     content: "3";
