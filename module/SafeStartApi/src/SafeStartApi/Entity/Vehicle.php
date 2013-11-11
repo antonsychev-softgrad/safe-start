@@ -1094,10 +1094,10 @@ class Vehicle extends BaseEntity
         $openAlerts = array();
         foreach ($alerts as $alert) {
             if ($alert->getStatus() === \SafeStartApi\Entity\Alert::STATUS_NEW) {
-                $openALerts[] = $alert;
+                $openAlerts[] = $alert;
             }
         }
-        return $openALerts;
+        return $openAlerts;
     }
 
     /**

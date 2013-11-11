@@ -155,6 +155,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
+        $user = \SafeStartApi\Application::getCurrentUser();
         $plantId = strtoupper($this->data->plantId);
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
@@ -182,6 +183,7 @@ class CompanyController extends RestrictedAccessRestController
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
+            $vehicle->addResponsibleUser($user);
             $this->copyVehicleDefFields($vehicle);
         }
 

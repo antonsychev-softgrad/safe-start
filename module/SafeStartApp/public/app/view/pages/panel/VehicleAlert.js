@@ -257,7 +257,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
             self.fireAction('updateAlertsBadge');
         });
-        console.log('update action');
     },
 
     setComments: function(comments) {

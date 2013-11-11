@@ -334,7 +334,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var me = this,
             inspectionPanel = this.getVehicleInspectionPanel(),
             odometerKms = inspectionPanel.down('field[name=current-odometer-kms]').getValue(),
-            odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue(),
+            odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue() || 24,
             odometerHoursInterval = 0,
             currentOdometerHours,
             currentOdometerKms,
