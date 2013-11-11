@@ -48,7 +48,7 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
             return;
         }
 
-        SafeStartApp.app.getController('Company').updateAlertsBadge();
+        SafeStartApp.app.getController('Main').updateAlertsBadge();
     },
 
     getInfoPanel: function() {
