@@ -673,7 +673,6 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             title: 'Alerts'            
         }];
         Ext.each(alerts, function (alert) {
-            console.log(alert);
             items.push({
                 xtype: 'panel',
                 width: '100%',

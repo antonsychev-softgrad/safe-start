@@ -313,11 +313,13 @@ class Vehicle extends BaseEntity
                 'text' => 'Perform An Inspection',
                 'leaf' => true,
             );
-            if (count($this->getAlerts()) > 0) {
+
+            $alerts = $this->getOpenAlerts();
+            if (count($alerts) > 0) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-alerts',
                     'action' => 'alerts',
-                    'text' => 'Alerts (' . count($this->getAlerts()) . ')',
+                    'text' => 'Alerts (' . count($alerts) . ')',
                     'leaf' => true,
                 );
             }
@@ -1079,6 +1081,23 @@ class Vehicle extends BaseEntity
             }
         }
         return $alerts;
+    }
+
+    /**
+     * Get open alerts
+     *
+     * @return array 
+     */
+    public function getOpenAlerts()
+    {
+        $alerts = $this->getAlerts();
+        $openAlerts = array();
+        foreach ($alerts as $alert) {
+            if ($alert->getStatus() === \SafeStartApi\Entity\Alert::STATUS_NEW) {
+                $openALerts[] = $alert;
+            }
+        }
+        return $openALerts;
     }
 
     /**

@@ -256,6 +256,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             self.setComments(self.record.raw.comments);
             self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
         });
+        console.log('update action');
     },
 
     setComments: function(comments) {
