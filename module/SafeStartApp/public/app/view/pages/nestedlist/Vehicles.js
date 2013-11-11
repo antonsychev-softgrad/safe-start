@@ -222,35 +222,44 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             }
         ]);
 
-        this.add([
-            {
-                xtype: 'toolbar',
-                name: 'first-level-bottom',
-                docked: 'bottom',
-                ui: '',
-                items: [
-                    {
-                        xtype: 'spacer'
-                    },
-                    {
-                        xtype: 'button',
-                        cls: 'sfa-add-button',
-                        name: 'print-action-lists',
-                        ui: 'action',
-                        iconCls: 'organize',
-                        action: 'print-action-lists',
-                        text: 'Print Action List',
-                        handler: function () {
-                            window.open('/api/vehicle/0/print-action-list', '_blank');
+        this.add([{
+            xtype: 'toolbar',
+            name: 'first-level-bottom',
+            docked: 'bottom',
+            ui: '',
+            items: [{
+                xtype: 'spacer'
+            }, {
+                xtype: 'button',
+                cls: 'sfa-add-button',
+                name: 'print-action-lists',
+                ui: 'action',
+                iconCls: 'organize',
+                action: 'print-action-lists',
+                text: 'Print Action List',
+                handler: function(btn) {
+                    var Ajax = new Ext.data.Connection({
+                        async: false
+                    });
+                    Ajax.request({
+                        url: '/api/vehicle/0/print-action-list',
+                        success: function(response) {
+                            if (/x-pdf/.test(response.getResponseHeader('Content-Type'))) {
+                                window.open("data:application/pdf," + escape(response.responseText), '_blank');
+                            } else {
+                                Ext.Msg.alert('Message', 'No vehicles available for getting Action List');
+                            }
                         },
-                        scope: this
-                    },
-                    {
-                        xtype: 'spacer'
-                    }
-                ]
-            }
-        ]);
-
+                        failure: function(response) {
+                            var data = Ext.decode(response.responseText);
+                            Ext.Msg.alert('Server response error', data.data.errorMessage);
+                        }
+                    });
+                },
+                scope: this
+            }, {
+                xtype: 'spacer'
+            }]
+        }]);
     }
 });
