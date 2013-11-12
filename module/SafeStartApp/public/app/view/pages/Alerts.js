@@ -69,12 +69,10 @@ Ext.define('SafeStartApp.view.pages.Alerts', {
 
     loadData: function() {
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
-        if (SafeStartApp.companyModel.get('id') == this.companyId) return;
+        // we need only new alerts
         this.companyId = SafeStartApp.companyModel.get('id');
-
         this.down('SafeStartMainToolbar').setBtnTitle(SafeStartApp.companyModel.get('title') + ': ' + 'Outstanding Alerts');
 
-        // we need only new alerts
         this.down('SafeStartVehicleAlertsPanel').loadCompanyList(this.companyId, 'new');
     }
 
