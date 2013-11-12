@@ -1,6 +1,5 @@
 Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     extend: 'Ext.dataview.NestedList',
-    alias: 'widget.SafeStartNestedListVehicles',
     xtype: 'SafeStartNestedListVehicles',
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
     name: 'vehicles',
@@ -238,14 +237,16 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 action: 'print-action-lists',
                 text: 'Print Action List',
                 handler: function(btn) {
+                    var vehicleId = parseInt(this._activeNode.get('id')) || 0;
                     var Ajax = new Ext.data.Connection({
                         async: false
                     });
                     Ajax.request({
-                        url: '/api/vehicle/0/print-action-list',
+                        url: '/api/vehicle/' + vehicleId + '/print-action-list',
                         success: function(response) {
                             if (/x-pdf/.test(response.getResponseHeader('Content-Type'))) {
-                                window.open("data:application/pdf," + escape(response.responseText), '_blank');
+                                window.location.assign('/api/vehicle/' + vehicleId + '/print-action-list');
+                                // window.open("data:application/pdf," + escape(response.responseText), '_blank');
                             } else {
                                 Ext.Msg.alert('Message', 'No vehicles available for getting Action List');
                             }
