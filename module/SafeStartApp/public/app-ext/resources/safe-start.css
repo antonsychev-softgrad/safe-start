@@ -573,6 +573,11 @@ span.x-btn-inner.x-btn-inner-center {
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
 }
+.sfa-info-container.sfa-vehicles-tabpanel > div {
+    padding: 0;
+    border: none;
+    background: none;
+}
 .x-ie7 .sfa-info-container > div:first-child {
     padding: 0;
     border: none;
