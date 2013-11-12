@@ -686,42 +686,80 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         };
     },
 
-    createAlertsView: function (alerts) {
-        var items = [{
-            xtype: 'titlebar',
-            title: 'Alerts'            
-        }];
-        Ext.each(alerts, function (alert) {
-            items.push({
-                xtype: 'panel',
-                width: '100%',
-                maxWidth: 520,
-                name: 'alert-container',
-                margin: '5 0 10 0',
-                cls: 'sfa-alert-panel',
-                fieldId: alert.get('fieldId'),
-                alertModel: alert,
-                items: [{
-                    xtype: 'container',
-                    cls: alert.get('critical') ? 'checklist-alert-description-critical' : 'checklist-alert-description',
-                    html: [
-                        alert.get('alertDescription'),
-                        '<div class="checklist-alert-icon">*</div>'
-                    ].join('')
-                }, {
-                    xtype: 'textfield',
-                    label: 'Additional comments',
-                    padding: '10 0 0 0',
-                    value: alert.get('comment'),
-                    listeners: {
-                        change: function (textfield, value) {
-                            alert.set('comment', value);
-                        }
+    createAlertPanel: function (alert) {
+        return {
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            name: 'alert-container',
+            margin: '5 0 10 0',
+            cls: 'sfa-alert-panel',
+            fieldId: alert.get('fieldId'),
+            alertModel: alert,
+            items: [{
+                xtype: 'container',
+                cls: 'checklist-alert-description-critical',
+                html: [
+                    alert.get('alertDescription'),
+                    '<div class="checklist-alert-icon"></div>'
+                ].join('')
+            }, {
+                xtype: 'textfield',
+                label: 'Additional comments',
+                padding: '10 0 0 0',
+                value: alert.get('comment'),
+                listeners: {
+                    change: function (textfield, value) {
+                        alert.set('comment', value);
                     }
-                }, this.createImageUploadPanel(alert)
-                ]
-            });
+                }
+            }, this.createImageUploadPanel(alert)
+            ]
+        };
+    },
+
+    createAlertsView: function (alerts) {
+        var criticalAlerts = [{
+                xtype: 'container',
+                cls: 'sfa-alerts-toolbar',
+                margin: '10 0',
+                height: 40,
+                html: [
+                    '<div style="position: absolute; left: 0;" class="sfa-alerts-toolbar-title">Alerts</div>',
+                    '<div style="position: absolute; right: 0;" class="sfa-alerts-toolbar-description">Critical</div>'
+                ].join('')
+            }],
+            nonCriticalAlerts = [{
+                xtype: 'container',
+                cls: 'sfa-alerts-toolbar',
+                margin: '10 0',
+                height: 40,
+                html: [
+                    '<div class="sfa-alerts-toolbar-title">Alerts</div>',
+                    '<div class="sfa-alerts-toolbar-description">Non-Critical</div>'
+                ].join('')
+            }];
+
+        Ext.each(alerts, function (alert) {
+            if (alert.get('critical')) {
+                criticalAlerts.push(this.createAlertPanel(alert));
+            } else {
+                nonCriticalAlerts.push(this.createAlertPanel(alert));
+            }
         }, this);
+
+        var items = [{
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            items: criticalAlerts
+        }, {
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            items: nonCriticalAlerts
+        }];
+
         return items;
     },
 
@@ -750,12 +788,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     autoUpload: true,
                     url: 'api/upload-images',
                     name: 'image',
+                    padding: '5 10',
+                    cls: 'sfa-add-button',
                     states: {
                         browse: {
+                            ui: 'action',
+                            padding: 0,
+                            margin: 0,
                             text: 'Add photo'
                         },
 
                         uploading: {
+                            ui: 'action',
+                            margin: 0,
+                            padding: '0 25 0 0',
+                            text: 'Loading ...',
                             loading: false
                         }
                     },

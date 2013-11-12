@@ -1567,6 +1567,12 @@ background-image: linear-gradient(top, #3e5702, #507003 10%, #628904 65%, #648c0
     text-align: right;
     top: 0;
 }
+.sfa-checklist-form .checklist-details-ok:hover:after {
+    color: #309BD6;
+}    
+.sfa-checklist-form .checklist-details-alerts:hover:after {
+    color: #F55;
+}
 .sfa-checklist-form .checklist-details-alerts:after {
     color: #f00;
 }
@@ -2381,4 +2387,35 @@ span.sfa-comment-content {
 
 .x-field-input .x-clear-icon {
     background: url(../img/erase.png) no-repeat 50% 50%;
+}
+
+.sfa-alerts-toolbar {
+    border-bottom: 1px solid #f88;
+    font-size: 20px;
+    color: #C00;
+    position: relative;
+}
+
+.sfa-alerts-toolbar .sfa-alerts-toolbar-title {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.sfa-alerts-toolbar .sfa-alerts-toolbar-description {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.sfa-info-container .x-fileup form {
+    margin: 0;
+}
+.sfa-info-container .x-fileup-uploading form {
+    margin: 0;
+}
+.sfa-info-container .x-toolbar .x-fileup .x-button-label {
+    line-height: inherit !important;
+}
+.sfa-info-container .x-toolbar .x-fileup-uploading .x-button-label {
+    line-height: inherit !important;
 }
