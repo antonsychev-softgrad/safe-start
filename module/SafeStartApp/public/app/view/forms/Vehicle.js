@@ -77,7 +77,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     {
                         xtype: 'numberfield',
                         maxValue: 1000000,
-                        minValue: 24,
+                        minValue: 0,
                         name: 'serviceDueHours',
                         required: true,
                         label: 'Hours'

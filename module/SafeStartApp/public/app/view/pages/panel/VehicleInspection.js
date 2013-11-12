@@ -231,7 +231,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createForm: function (checklist, index) {
-        var buttons = []; 
+        var buttons = [{
+            text: 'Back',
+            hidden: true,
+            action: 'back'
+        }]; 
         if (index !== 0) {
             buttons.push({
                 text: 'Prev',
@@ -652,12 +656,27 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             },
             listeners: {
                 itemtap: function (view, index, el, record) {
+                    var checklist = record.raw.checklist;
+
+                    var back = checklist.down('button[action=back]');
+                    if (back) {
+                        back.show();
+                    }
+
+                    var next = checklist.down('button[action=next]');
+                    if (next) {
+                        next.hide();
+                    }
+
+                    var prev = checklist.down('button[action=prev]');
+                    if (prev) {
+                        prev.hide();
+                    }
                     this.setActiveItem(record.raw.checklist);
                 },
                 scope: this
             }
         }];
-
 
         return {
             xtype: 'fieldset',

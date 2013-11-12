@@ -21,6 +21,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection button[action=next]': {
                 tap: 'onNextBtnTap'
             },
+            'SafeStartCompanyPage SafeStartVehicleInspection button[action=back]': {
+                tap: 'onBackBtnTap'
+            },
             'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-choise-additional] checkboxfield': {
                 change: 'onSelectAdditional'
             },
@@ -246,6 +249,26 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
             self.getVehicleInspectionPanel().loadChecklist(result, vehicle);
         });
+    },
+
+    onBackBtnTap: function (btn) {
+        var checklistPanel = this.getVehicleInspectionPanel(),
+            reviewCard = checklistPanel.down('formpanel[name=checklist-card-review]'),
+            activeCard = btn.up('formpanel'),
+            back = activeCard.down('button[action=back]'),
+            next = activeCard.down('button[action=next]'),
+            prev = activeCard.down('button[action=prev]');
+            
+        if (back) {
+            back.hide();
+        }
+        if (next) {
+            next.show();
+        }
+        if (prev) {
+            prev.show();
+        }
+        checklistPanel.setActiveItem(reviewCard);
     },
 
     onNextBtnTap: function (btn) {
