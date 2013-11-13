@@ -222,19 +222,17 @@ class InspectionFaultPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractP
             foreach ($alert['images'] as $imageHash) {
                 $imagePath = $this->getImagePathByName($imageHash);
                 if (!file_exists($imagePath)) continue;
-                $image = new \SafeStartApi\Model\ImageProcessor($imagePath);
+                
                 $imageWidth = $columnWidth - $columnsPadding;
                 $imageHeight = round($imageWidth * (2 / 3));
-                $image->cover(array(
-                        'width' => $imageWidth,
-                        'height' => $imageHeight,
-                        'position' => 'centermiddle',
-                    )
-                );
-                $newImagePath = $this->getUploadPath() . $imageHash . $imageWidth . "x" . $imageHeight . ".jpg";
-                $image->save($newImagePath);
 
-                $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
+                $alertImage = ZendPdf\Image::imageWithPath($imagePath);
+                $alertImageWidth = $alertImage->getPixelWidth();
+                $alertImageHeight = $alertImage->getPixelHeight();
+
+                $scale = min($imageWidth / $alertImageWidth, $imageHeight / $alertImageHeight);
+                $imageWidth = (int)($alertImageWidth * $scale);
+                $imageHeight = (int)($alertImageHeight * $scale);
 
 
                 if (($this->lastTopPos - $imageHeight) <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {

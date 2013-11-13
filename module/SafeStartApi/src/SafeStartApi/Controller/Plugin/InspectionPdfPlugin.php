@@ -476,8 +476,6 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
             foreach ($alert['images'] as $imageHash) {
                 $imagePath = $this->getImagePathByName($imageHash);
                 if (!file_exists($imagePath)) continue;
-                $image = new \SafeStartApi\Model\ImageProcessor($imagePath);
-
                 $imageWidth = $columnWidth - $columnsPadding;
                 $imageHeight = round($imageWidth * (2 / 3));
 
