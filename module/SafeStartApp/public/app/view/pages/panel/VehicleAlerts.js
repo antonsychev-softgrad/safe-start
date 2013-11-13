@@ -29,7 +29,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlerts', {
                         },
                         keyup: function (field) {
                             var alertsPanel = this.up('SafeStartVehicleAlertsPanel');
-                            alertsPanel.filterStoreDataBySearchFiled(alertsPanel.down('list[name=vehicle-alerts]').getStore(), field, 'title');
+                            alertsPanel.filterStoreDataBySearchFiled(alertsPanel.down('list[name=vehicle-alerts]').getStore(), field, 'alertDescription');
                         }
                     }
                 },
