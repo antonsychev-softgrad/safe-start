@@ -222,7 +222,7 @@ class InspectionFaultPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractP
             foreach ($alert['images'] as $imageHash) {
                 $imagePath = $this->getImagePathByName($imageHash);
                 if (!file_exists($imagePath)) continue;
-                
+
                 $imageWidth = $columnWidth - $columnsPadding;
                 $imageHeight = round($imageWidth * (2 / 3));
 
