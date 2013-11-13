@@ -776,11 +776,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'panel',
             width: '100%',
             maxWidth: 520,
+            hidden: (criticalAlerts.length <= 1),
             items: criticalAlerts
         }, {
             xtype: 'panel',
             width: '100%',
             maxWidth: 520,
+            hidden: (nonCriticalAlerts.length <= 1),
             items: nonCriticalAlerts
         }];
 
