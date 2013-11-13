@@ -104,14 +104,18 @@ class ImageProcessor {
             throw new \Exception();
         }
 
-        $imageBox = $this->image->getSize();
-        $imageBox = $this->image->getSize();
+/*        $imageBox1 = $this->image->getSize();
+        $imageBox1 = $this->image->getSize();
         // Scale by width
-        $imageBox = $imageBox->widen($options['width']);
+        $imageBox = $imageBox1->widen($options['width']);
         // Scale by height
-        if ($imageBox->getHeight() < $options['height']) $imageBox = $imageBox->heighten($options['height']);
+        if ($imageBox1->getHeight() < $options['height']) $imageBox = $imageBox1->heighten($options['height']);
 
-        $imageBox = new \Imagine\Image\Box($imageBox->getWidth(), $imageBox->getHeight());
+        $scale = min($options['width'] / $imageBox->getWidth(), $options['height'] / $imageBox->getHeight());
+        $imageWidth = (int)($imageBox1->getHeight() * $scale);
+        $imageHeight = (int)($imageBox1->getWidth() * $scale);*/
+
+        $imageBox = new \Imagine\Image\Box($options['width'], $options['height']);
         $this->image->resize($imageBox);
     }
 

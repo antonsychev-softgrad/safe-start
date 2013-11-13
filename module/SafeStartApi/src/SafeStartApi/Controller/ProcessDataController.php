@@ -34,13 +34,13 @@ class ProcessDataController extends PublicAccessRestController
             $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
             $filePath = $this->getFileByDirAndName($searchDir, $fileHash);
             if (file_exists($filePath)) chmod($filePath, 0777);
-            $image = new \SafeStartApi\Model\ImageProcessor($filePath);
+         /*   $image = new \SafeStartApi\Model\ImageProcessor($filePath);
             $image->resize(array(
                     'width' => 1024,
                     'height' => 768
                 )
             );
-            $image->save($filePath);
+            $image->save($filePath);*/
             $this->answer = $return;
         }
         return $this->AnswerPlugin()->format($this->answer, !empty($errors) ? 400 : 0);
