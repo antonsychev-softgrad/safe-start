@@ -71,23 +71,19 @@ class VehicleReportPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdf
         $page->drawText($signature, $leftPosInStr - ($imageMaxWidth / 2), $topPosInPage);
 
         if (($signaturePath = $this->getImagePathByName(isset($userData['signature']) ? $userData['signature'] : '')) !== null) {
-            $image = new \SafeStartApi\Model\ImageProcessor($signaturePath);
-            $image->cover(array(
-                    'width' => $this->opts['style']['signature_width'],
-                    'height' => $this->opts['style']['signature_height'],
-                    'position' => 'centermiddle',
-                )
-            );
-            $newImagePath = $this->getUploadPath() . $userData['signature'] . "120x60.jpg";
-            $image->save($newImagePath);
+            $signatureImage = ZendPdf\Image::imageWithPath($signaturePath);
+            $signatureWidth = $signatureImage->getPixelWidth();
+            $signatureHeight = $signatureImage->getPixelHeight();
 
-            $alertImage = ZendPdf\Image::imageWithPath($newImagePath);
+            $scale = min($this->opts['style']['signature_width'] / $signatureWidth, $this->opts['style']['signature_height'] / $signatureHeight);
+            $signatureNewWidth = (int)($signatureWidth * $scale);
+            $signatureNewHeight = (int)($signatureHeight * $scale);
 
-            $page->drawImage($alertImage,
+            $page->drawImage($signatureImage,
                 $leftPosInStr + 30,
                 $topPosInPage - 10,
-                $leftPosInStr + ($this->opts['style']['signature_width'] / 2) + 30,
-                $topPosInPage + ($this->opts['style']['signature_height'] / 2) - 10
+                $leftPosInStr + ($signatureNewWidth / 2) + 30,
+                $topPosInPage + ($signatureNewHeight / 2) - 10
             );
         }
 

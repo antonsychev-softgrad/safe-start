@@ -104,7 +104,14 @@ class ImageProcessor {
             throw new \Exception();
         }
 
-        $imageBox = new \Imagine\Image\Box($options['width'], $options['height']);
+        $imageBox = $this->image->getSize();
+        $imageBox = $this->image->getSize();
+        // Scale by width
+        $imageBox = $imageBox->widen($options['width']);
+        // Scale by height
+        if ($imageBox->getHeight() < $options['height']) $imageBox = $imageBox->heighten($options['height']);
+
+        $imageBox = new \Imagine\Image\Box($imageBox->getWidth(), $imageBox->getHeight());
         $this->image->resize($imageBox);
     }
 
@@ -186,7 +193,6 @@ class ImageProcessor {
                     'y' => 0,
                 );
             } else {
-                var_dump(array('width', $options['position'], substr($options['position'], 0, 6), substr($options['position'], 0, 4), substr($options['position'], 0, 5)));
                 throw new Exception('Unknown position');
             }
         } else {
