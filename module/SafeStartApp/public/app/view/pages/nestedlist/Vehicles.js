@@ -20,12 +20,6 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         title: 'Vehicles',
         displayField: 'text',
         flex: 1,
-        getTitleTextTpl: function () {
-            return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-        },
-        getItemTextTpl: function () {
-            return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-        },
         listeners: {
             activeitemchange: function (nestedlist) {
                 Ext.each(this.down('toolbar[name=first-level]'), function (toolbar) {
@@ -49,6 +43,10 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 }
             }
         }
+    },
+
+    getItemTextTpl: function () {
+        return '{' + this.getDisplayField() + '}<tpl if="counter !== 0"> ({counter}) </tpl>';
     },
 
     updateNestedListStore: function () {

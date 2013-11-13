@@ -314,12 +314,12 @@ class Vehicle extends BaseEntity
                 'leaf' => true,
             );
 
-            $alerts = $this->getOpenAlerts();
-            if (count($alerts) > 0) {
+            if (count($this->getAlerts()) > 0) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-alerts',
                     'action' => 'alerts',
-                    'text' => 'Alerts (' . count($alerts) . ')',
+                    'text' => 'Alerts',
+                    'counter' => count($this->getOpenAlerts()),
                     'leaf' => true,
                 );
             }
@@ -327,7 +327,8 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
-                    'text' => 'Previous Inspections (' . count($this->getCheckLists()) . ')',
+                    'text' => 'Previous Inspections',
+                    'counter' => count($this->getCheckLists()),
                     'leaf' => true
                 );
             }

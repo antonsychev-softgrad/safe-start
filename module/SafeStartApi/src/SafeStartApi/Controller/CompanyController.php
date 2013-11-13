@@ -63,12 +63,12 @@ class CompanyController extends RestrictedAccessRestController
 
         $node = (int)$this->getRequest()->getQuery('node');
 
-        $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehicles" . $companyId;
+        // $cache = \SafeStartApi\Application::getCache();
+        // $cashKey = "getCompanyVehicles" . $companyId;
 
-        if ($cache->hasItem($cashKey) && !$node) {
-            $this->answer = $cache->getItem($cashKey);
-        } else {
+        // if ($cache->hasItem($cashKey) && !$node) {
+        //     $this->answer = $cache->getItem($cashKey);
+        // } else {
             if (!$node) {
                 $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
                 $query->setParameter(1, $company);
@@ -78,14 +78,14 @@ class CompanyController extends RestrictedAccessRestController
                         $this->answer[] = $vehicle->toMenuArray();
                     }
                 }
-                $cache->setItem($cashKey, $this->answer);
+                //$cache->setItem($cashKey, $this->answer);
             } else {
                 $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $node);
                 if ($vehicle) {
                     $this->answer = $vehicle->getMenuItems();
                 }
             }
-        }
+        // }
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -155,7 +155,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
-        $user = \SafeStartApi\Application::getCurrentUser();
+        //$user = \SafeStartApi\Application::getCurrentUser();
         $plantId = strtoupper($this->data->plantId);
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
@@ -183,7 +183,7 @@ class CompanyController extends RestrictedAccessRestController
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
-            $vehicle->addResponsibleUser($user);
+            //$vehicle->addResponsibleUser($user);
             $this->copyVehicleDefFields($vehicle);
         }
 

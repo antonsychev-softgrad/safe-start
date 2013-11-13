@@ -225,15 +225,19 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         var vehicleId = (this.record.raw && this.record.raw.vehicle.id) || 0;
         var status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
         var action = '';
+        var counter = 0;
         if (this.record.get('status') != status) {
             switch (status) {
                 case 'new':
                     action = 'Reopened';
+                    counter = 1;
                     break;
                 case 'closed':
                     action = 'Completed';
+                    counter = -1;
                     break;
             }
+            this.fireEvent('updateAlertsCounter', counter);
             
             this.alertContent.history.push({
                 username: SafeStartApp.userModel.getFullName(),

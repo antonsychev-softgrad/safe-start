@@ -462,19 +462,43 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                 maxWidth: 420,
                 labelWidth: 300,
                 width: '100%',
-                yearFrom: 2000,
                 triggerable: true,
                 picker: {
-                    yearTo: new Date().getFullYear() + 10
+                    yearFrom: 2000,
+                    yearTo: new Date().getFullYear() + 10,
+                    listeners: {
+                        show: function (picker) {
+                            var datepicker = this.down('datepickerfield{config.fieldId === ' + fieldData.fieldId + '}'),
+                                datePickerValue = datepicker.getValue();
+
+                            datepicker.originalValue = datePickerValue;
+                            if (datePickerValue === null || typeof datePickerValue !== 'object') {
+                                datepicker.setValue(new Date());
+                            }
+                        },
+                        cancel: function (picker) {
+                            var datepicker = this.down('datepickerfield{config.fieldId === ' + fieldData.fieldId + '}');
+                            if (datepicker.originalValue === null) {
+                                datepicker.reset();
+                                picker.setValue({
+                                    year: null,
+                                    day: null,
+                                    month: null
+                                });
+                            }
+                        },
+                        scope: this
+                    }
                 },
                 dateFormat: SafeStartApp.dateFormat,
                 label: fieldData.fieldName,
                 fieldId: fieldData.fieldId,
-                value: new Date(fieldData.fieldValue * 1000 || Date.now()),
                 defaultValue: fieldData.defaultValue
             };
         if (value) {
-            field.value = value;
+            field.value = new Date(value);
+        } else {
+            field.value = null;
         }
         return field;
     },
@@ -752,11 +776,13 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'panel',
             width: '100%',
             maxWidth: 520,
+            hidden: (criticalAlerts.length <= 1),
             items: criticalAlerts
         }, {
             xtype: 'panel',
             width: '100%',
             maxWidth: 520,
+            hidden: (nonCriticalAlerts.length <= 1),
             items: nonCriticalAlerts
         }];
 
