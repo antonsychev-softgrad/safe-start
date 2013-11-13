@@ -58,6 +58,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 'save-data': 'saveAction',
                 'reset-data': 'resetAction',
                 'delete-data': 'deleteAction'
+            },
+            SafeStartVehicleAlertPanel: {
+                updateAlertsCounter: 'updateAlertsCounter'
             }
         },
 
@@ -240,6 +243,18 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         }, this, {single: true, order: 'after'});
 
         this.getNavMain().getVehiclesStore().loadData();
+    },
+
+    updateAlertsCounter: function (counter) {
+        var vehicle = this.getNavMain().getActiveItem().getStore().getNode();
+        if (! vehicle) {
+            return;
+        }
+        var alertsRecord = vehicle.findChild('id', vehicle.get('id') + '-alerts');
+        if (! alertsRecord) {
+            return;
+        }
+        alertsRecord.set('counter', alertsRecord.get('counter') + counter);
     },
 
     loadChecklist: function (id) {
