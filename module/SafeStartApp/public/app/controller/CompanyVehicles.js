@@ -518,10 +518,18 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                         });
                         break;
                     case 'datepickerfield':
-                        fieldValues.push({
-                            id: field.config.fieldId,
-                            value: parseInt(field.getValue().getTime()/1000, 10)
-                        });
+                        var date = field.getValue();
+                        if (date !== null && typeof date === 'object') {
+                            fieldValues.push({
+                                id: field.config.fieldId,
+                                value: parseInt(date.getTime()/1000, 10)
+                            });
+                        } else {
+                            fieldValues.push({
+                                id: field.config.fieldId,
+                                value: null
+                            });
+                        }
                         break;
                 }
             });
