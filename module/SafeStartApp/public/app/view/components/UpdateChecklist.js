@@ -40,6 +40,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             this.getChecklistStore().getProxy().setExtraParam('vehicleId', vehicleId);
             this.vehicleId = vehicleId;
             this.getChecklistStore().loadData();
+            this.getForm().hide();
         }
     },
 

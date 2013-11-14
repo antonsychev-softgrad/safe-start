@@ -16,7 +16,7 @@ Ext.define('SafeStartApp.model.ChecklistField', {
             {name: 'trigger_value', type: 'string', defaultValue: 1},
             {name: 'alert_title', type: 'string', defaultValue: ''},
             {name: 'alert_description', type: 'string', defaultValue: ''},
-            {name: 'alert_critical', type: 'int', defaultValue: 1},
+            {name: 'alert_critical', type: 'int', defaultValue: 0},
             {name: 'is_root', type: 'boolean', defaultValue: false}
         ],
         validations: [

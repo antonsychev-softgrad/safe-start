@@ -1,6 +1,7 @@
 Ext.define('SafeStartApp.view.forms.ChecklistField', {
     extend: 'Ext.form.Panel',
     mixins: ['Ext.mixin.Observable'],
+    requires: ['SafeStartApp.model.ChecklistField'],
     xtype: 'SafeStartChecklistFieldForm',
     config: {
         minHeight: 400,
@@ -82,7 +83,8 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     data: [
                         { rank: '', title: ''},
                         { rank: 'yes', title: 'Yes'},
-                        { rank: 'no', title: 'No'}
+                        { rank: 'no', title: 'No'},
+                        { rank: 'n/a', title: 'N/A'}
                     ]
                 }
             },
@@ -156,6 +158,10 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
 
     },
 
+    initialize: function () {
+        this.callParent([]);
+    },
+
     setRecord: function (record) {
         if (! record) {
             this.reset();
@@ -166,15 +172,16 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             fields['additional'].show();
             fields['type'].hide();
         } else {
-            fields['additional'].hide();
             fields['type'].show();
             fields['additional'].hide();
         }
         this.show();
 
+        this._record = record;
         this.changeFieldType(record.get('type'));
 
         this.callParent([record]);
+
         if (record.get('type') === 'datePicker') {
             var date = new Date(record.get('default_value') * 1000);
             if (date) {
@@ -190,6 +197,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
     switchDefaultValueField: function (type) {
         var field = this.down('field[name=default_value]');
         var index = this.items.indexOf(field);
+        var value = this._record.get('default_value');
         if (field) this.remove(field);
         switch (type) {
             case 'group': 
@@ -204,6 +212,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     xtype: 'selectfield',
                     valueField: 'rank',
                     displayField: 'title',
+                    value: this._record.get('default_value'),
                     store: {
                         data: [
                             { rank: '', title: ''},
@@ -216,13 +225,16 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             case 'datePicker':
                 field = {
                     xtype: 'datepickerfield',
-                    value: new Date(),
                     picker: {
-                        yearTo: 2024
+                        yearTo: 2024,
+                        yearFrom: 2000
                     },
                     dateFormat: SafeStartApp.dateFormat
                 };
-            break;
+                if (value) {
+                    field.value = new Date(value);
+                } 
+                break;
             default:
                 field = {
                     xtype: 'textfield'
@@ -244,7 +256,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     name: 'trigger_value',
                     label: 'Alert Trigger Value',
                     step: 1,
-                    value: 30
+                    value: this._record.get('trigger_value')
                 };
                 break;
             default: 
@@ -254,11 +266,13 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     label: 'Alert Trigger Value',
                     valueField: 'rank',
                     displayField: 'title',
+                    value: this._record.get('trigger_value'),
                     store: {
                         data: [
                             { rank: '', title: ''},
                             { rank: 'yes', title: 'Yes'},
-                            { rank: 'no', title: 'No'}
+                            { rank: 'no', title: 'No'},
+                            { rank: 'n/a', title: 'N/A'}
                         ]
                     }
                 };
