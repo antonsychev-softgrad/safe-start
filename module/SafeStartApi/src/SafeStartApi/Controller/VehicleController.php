@@ -491,7 +491,7 @@ class VehicleController extends RestrictedAccessRestController
         $page = (int)$this->getRequest()->getQuery('page');
         $limit = (int)$this->getRequest()->getQuery('limit');
         $inspections = array_reverse($inspections);
-        if (count($inspections) < ($page - 1) * $limit) {
+        if (count($inspections) <= ($page - 1) * $limit) {
             $this->answer = array();
             return $this->AnswerPlugin()->format($this->answer);
         }
@@ -711,6 +711,35 @@ class VehicleController extends RestrictedAccessRestController
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($pdf['path']);
+    }
+
+    public function verifyPrintActionListAction()
+    {
+        $vehicles = array();
+        $vehicleId = (int)$this->params('id');
+        if (!$vehicleId) {
+            $user = $this->authService->getIdentity();
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
+            $operatorVehicles = $user->getVehicles();
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
+        } else {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $vehicles[] = $vehicle;
+        }
+
+        if (empty($vehicles)) {
+            $this->answer = array(
+                'errorMessage' => 'No vehicles available for getting Action List',
+            );
+            return $this->AnswerPlugin()->format($this->answer, 204);
+        }
+
+        $this->answer = array();
+
+        return $this->AnswerPlugin()->format($this->answer, 0);
     }
 
     public function printActionListAction()

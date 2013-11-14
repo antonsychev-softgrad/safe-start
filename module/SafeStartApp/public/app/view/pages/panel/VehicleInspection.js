@@ -296,7 +296,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             if (fieldData.additional) {
                 additionalFieldsConfig = this.createFields(fieldData.items, true);
             }
-            if (Ext.isArray(fieldData.alerts) && fieldData.alerts[0]) {
+            if (Ext.isArray(fieldData.alerts) 
+                    && fieldData.alerts[0] 
+                    && fieldData.alerts[0].triggerValue
+                ) {
                 alert = fieldData.alerts[0];
                 alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,

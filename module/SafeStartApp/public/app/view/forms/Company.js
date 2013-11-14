@@ -26,12 +26,27 @@ Ext.define('SafeStartApp.view.forms.Company', {
                         xtype: 'textfield',
                         label: 'Responsible Name',
                         required: true,
+                        disabled: true,
                         name: 'firstName'
                     },
                     {
                         xtype: 'emailfield',
                         label: 'Responsible Email',
                         required: true,
+                        listeners: {
+                            keyup: function (view) {
+                                var form = view.up('SafeStartCompanyForm'),
+                                    firstNameView = form.down('textfield[name=firstName]'),
+                                    value = view.getValue(),
+                                    originalValue = view.originalValue;
+
+                                if (value && value == originalValue) {
+                                    firstNameView.disable();
+                                } else {
+                                    firstNameView.enable();
+                                }
+                            }
+                        },
                         name: 'email'
                     },
                     {
@@ -164,5 +179,17 @@ Ext.define('SafeStartApp.view.forms.Company', {
                 ]
             }
         ]
+    },
+
+    setRecord: function (record) {
+        if (! record || typeof record.get != 'function') {
+            this.callParent([record]);
+            return;
+        }
+        if (record.get('email')) {
+            this.down('textfield[name=firstName]').disable();
+        }
+        this.down('emailfield[name=email]').originalValue = record.get('email');
+        this.callParent([record]);
     }
 });

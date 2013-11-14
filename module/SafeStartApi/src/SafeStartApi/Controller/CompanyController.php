@@ -543,6 +543,16 @@ class CompanyController extends RestrictedAccessRestController
         $record->setUserName($user->getFirstName() ." ". $user->getLastName());
         $record->setUserId($user->getId());
 
+        $vehicle = $field->getVehicle();
+
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklist" . $vehicle->getId();
+        $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
+        $cashKey3 = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
+        if ($cache->hasItem($cashKey3)) $cache->removeItem($cashKey3);
+
         $this->em->persist($record);
         $this->em->flush();
 
