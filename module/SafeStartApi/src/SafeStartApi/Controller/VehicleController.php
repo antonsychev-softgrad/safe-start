@@ -355,6 +355,8 @@ class VehicleController extends RestrictedAccessRestController
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
