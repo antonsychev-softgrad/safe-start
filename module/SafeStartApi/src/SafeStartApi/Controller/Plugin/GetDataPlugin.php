@@ -97,7 +97,7 @@ class GetDataPlugin extends AbstractPlugin
                             'alertMessage' => $field->getAlertTitle(),
                             'alertDescription' => $field->getAlertDescription(),
                             'critical' => $field->getAlertCritical(),
-                            'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
+                            'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : '',
                         )
                     );
                 } else if (!empty($listField['items']) && $field->getType() != 'group') {
@@ -153,7 +153,7 @@ class GetDataPlugin extends AbstractPlugin
                             'alertMessage' => $field->getAlertTitle(),
                             'alertDescription' => $field->getAlertDescription(),
                             'critical' => $field->getAlertCritical(),
-                            'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : 'no',
+                            'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : '',
                         )
                     );
                 } else if (!empty($listField['items']) && $field->getType() != 'group') {

@@ -40,15 +40,14 @@ class MailPlugin extends AbstractPlugin
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
         if (!empty($pdfFileName) && file_exists($pdfFileName)) {
-
             $content = new MimeMessage();
             $htmlPart = new MimePart($html);
             $htmlPart->type = 'text/html';
             $content->setParts(array($htmlPart));
 
-            $contentPart = new MimePart($content->generateMessage());
+            /*$contentPart = new MimePart($content->generateMessage());
             $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
-            $bodyParts = array($contentPart);
+            $bodyParts = array($contentPart);*/
 
             $attachment = new MimePart(fopen($pdfFileName, 'r'));
             $attachment->type = 'application/pdf';
@@ -56,11 +55,15 @@ class MailPlugin extends AbstractPlugin
             $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
             $attachment->filename = basename($pdfFileName);
             $bodyParts[] = $attachment;
+            $bodyParts[] = $htmlPart;
 
             $body = new MimeMessage();
             $body->setParts($bodyParts);
         } else {
-            $body = $html;
+            $body = new MimeMessage();
+            $htmlPart = new MimePart($html);
+            $htmlPart->type = 'text/html';
+            $body->setParts(array($htmlPart));
         }
 
         $message->setEncoding('utf-8')

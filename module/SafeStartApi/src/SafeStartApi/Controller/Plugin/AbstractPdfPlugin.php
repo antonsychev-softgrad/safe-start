@@ -67,28 +67,27 @@ class AbstractPdfPlugin extends AbstractPlugin
         $contentWidth = $this->getPageContentWidth();
 
         $logoMaxWidth = 140;
-        $logoMaxHeight = 140;
+        $logoMaxHeight = 80;
         $logoPath = '';
         if (isset($companyData['logo'])) {
             $searchDir = $this->getController()->moduleConfig['defUsersPath'];
-            $filePath = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo']);
-            if ($filePath) {
+            $logoPath = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo']);
+         /*   if ($filePath) {
                 $filePathLogo = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight);
                 if (!$filePathLogo) {
                     $image = new \SafeStartApi\Model\ImageProcessor($filePath);
-                    $image->cover(array(
+                    $image->resize(array(
                             'width' => $logoMaxWidth,
-                            'height' => $logoMaxHeight,
-                            'position' => 'centermiddle',
+                            'height' => $logoMaxHeight
                         )
                     );
-                    $newImagePath = $this->getUploadPath() . $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight. ".jpg";
-                    $image->save($newImagePath);
-                    $logoPath = $newImagePath;
+                    $ext = explode('.', $filePath);
+                    $logoPath = $this->getUploadPath() . $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight. "." . $ext[count($ext) - 1];
+                    $image->save($logoPath);
                 } else {
                     $logoPath = $filePathLogo;
                 }
-            }
+            }*/
         }
         if (empty($logoPath))$logoPath = $this->getRootPath() . "public/logo-pdf.png";
 

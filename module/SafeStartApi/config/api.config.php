@@ -3,13 +3,16 @@
 $api = array(
     'params' => array(
         'version' => '1.0-beta',
-        'date_format' => 'm/d/Y',
+        'site_url' => 'http://ec2-54-200-245-179.us-west-2.compute.amazonaws.com',
+        'email_static_content_url' => 'https://s3-us-west-2.amazonaws.com/safe-start/emails/',
+        'date_format' => 'd/m/Y',
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
         'emailForContacts' => 'info@safestartinspections.com',
         'emailSubjects' => array(
             'vehicle_fail_notification' => 'New Critical Alerts for Vehicle',
+            'vehicle_action_list' => 'New Vehicle(s) Action List',
             'new_vehicle_inspection' => 'New Vehicle Inspection',
             'welcome' => 'Welcome To Safe Start Inspections!',
         )
@@ -120,7 +123,7 @@ $api = array(
                 'category_field_size' => 12,
                 'category_field_line_spacing' => 4,
                 'category_field_color' => '#0F5B8D',
-                'alerts_header' => 'Faults',
+                'alerts_header' => 'Critical Alerts',
                 'alerts_comments_header' => 'Additional Comments',
                 'alert_description_size' => '10',
                 'alert_description_color' => '#ff0000',

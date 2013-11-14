@@ -160,6 +160,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'send-vehicle-action-list' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/send-action-list',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'sendActionList'
+                    ),
+                ),
+            ),
             'complete-vehicle-checklist' => array(
                 'type' => 'Segment',
                 'options' => array(

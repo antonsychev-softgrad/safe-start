@@ -94,6 +94,15 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                                     handler: function () {
                                         this.up('SafeStartVehicleReportPanel').printActionList();
                                     }
+                                },
+                                {
+                                    xtype: 'button',
+                                    name: 'send-action-list',
+                                    text: 'Send Action List',
+                                    ui: 'confirm',
+                                    handler: function () {
+                                        this.up('SafeStartVehicleReportPanel').sendActionList();
+                                    }
                                 }
                             ]
                         },
@@ -382,6 +391,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
     printActionList: function () {
         window.open('/api/vehicle/' + this.record.get('id') + '/print-action-list', '_blank');
+    },
+
+    sendActionList: function () {
+        SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/send-action-list', {}, function (result) {});
     }
 
 });
