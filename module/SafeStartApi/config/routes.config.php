@@ -160,6 +160,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'verify-print-vehicle-action-list' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/verify-print-action-list',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'verifyPrintActionList'
+                    ),
+                ),
+            ),
             'send-vehicle-action-list' => array(
                 'type' => 'Segment',
                 'options' => array(

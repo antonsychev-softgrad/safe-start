@@ -224,6 +224,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             name: 'first-level-bottom',
             docked: 'bottom',
             ui: '',
+            hidden: SafeStartApp.userModel.get('role') == 'superAdmin',
             items: [{
                 xtype: 'spacer'
             }, {
@@ -235,24 +236,8 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 action: 'print-action-lists',
                 text: 'Print Action List',
                 handler: function(btn) {
-                    var vehicleId = parseInt(this._activeNode.get('id')) || 0;
-                    var Ajax = new Ext.data.Connection({
-                        async: false
-                    });
-                    Ajax.request({
-                        url: '/api/vehicle/' + vehicleId + '/print-action-list',
-                        success: function(response) {
-                            if (/x-pdf/.test(response.getResponseHeader('Content-Type'))) {
-                                window.location.assign('/api/vehicle/' + vehicleId + '/print-action-list');
-                                // window.open("data:application/pdf," + escape(response.responseText), '_blank');
-                            } else {
-                                Ext.Msg.alert('Message', 'No vehicles available for getting Action List');
-                            }
-                        },
-                        failure: function(response) {
-                            var data = Ext.decode(response.responseText);
-                            Ext.Msg.alert('Server response error', data.data.errorMessage);
-                        }
+                    SafeStartApp.AJAX('vehicle/0/verify-print-action-list', {}, function (data) {
+                        window.location.assign('/api/vehicle/0/print-action-list');
                     });
                 },
                 scope: this
