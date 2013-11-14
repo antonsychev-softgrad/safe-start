@@ -117,8 +117,8 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 );
             } else if ($days < 30) {
                 $warnings[] = array(
-                  'action' => 'next_service_due',
-                  'text' => sprintf($this->opts['style']['next_service_due'], ceil($days))
+                    'action' => 'next_service_due',
+                    'text' => sprintf($this->opts['style']['next_service_due'], ceil($days))
                 );
             }
         }
@@ -189,7 +189,8 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         if (!$currentColumn) $currentColumn = 1;
 
         $location = $this->checkList->getLocation();
-        if (!empty($location)) {
+        $gps = $this->checkList->getGpsCoords();
+        if (!empty($location) || !empty($gps)) {
             $this->drawText(
                 "Location",
                 $this->opts['style']['category_field_size'],
@@ -201,8 +202,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 $columnWidth
             );
             $this->lastTopPos -= 10;
+
             $lines = array_filter($this->getTextLines($location, $this->opts['style']['field_size'], $columnWidth));
-            foreach ($lines as $line) {
+            foreach ((array)$lines as $line) {
+                if (empty($line)) continue;
                 if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                     $currentColumn++;
                     if ($currentColumn > $columns) {
@@ -224,6 +227,38 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 );
                 $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
             }
+
+            if (!empty($gps)) {
+                $mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" . str_replace(";", ",", $gps) . "&zoom=12&size=400x400&markers=color:blue|53.9128749,27.5135608&sensor=false";
+                $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+                $mapPath =  dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".png";
+                file_put_contents($mapPath, file_get_contents($mapUrl));
+
+                if (file_exists($mapPath)) {
+                    $imageWidth = $columnWidth;
+                    $imageHeight = $imageWidth;
+
+                    $alertImage = ZendPdf\Image::imageWithPath($mapPath);
+                    $alertImageWidth = $alertImage->getPixelWidth();
+                    $alertImageHeight = $alertImage->getPixelHeight();
+
+                    $scale = min($imageWidth / $alertImageWidth, $imageHeight / $alertImageHeight);
+                    $imageWidth = (int)($alertImageWidth * $scale);
+                    $imageHeight = (int)($alertImageHeight * $scale);
+
+                    $this->document->pages[$this->pageIndex]->drawImage(
+                        $alertImage,
+                        ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) ,
+                        $this->lastTopPos - $imageHeight,
+                        ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $imageWidth,
+                        $this->lastTopPos
+                    );
+
+                    $this->lastTopPos = $this->lastTopPos - $imageHeight - 10;
+                }
+
+            }
+
             $this->lastTopPos -= 10;
         }
     }
@@ -571,6 +606,6 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
             }
         }
 
-        return $template .'.'. $ext;
+        return $template . '.' . $ext;
     }
 }
