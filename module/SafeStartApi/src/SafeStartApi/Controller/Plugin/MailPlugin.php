@@ -45,9 +45,9 @@ class MailPlugin extends AbstractPlugin
             $htmlPart->type = 'text/html';
             $content->setParts(array($htmlPart));
 
-            $contentPart = new MimePart($content->generateMessage());
+            /*$contentPart = new MimePart($content->generateMessage());
             $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
-            $bodyParts = array($contentPart);
+            $bodyParts = array($contentPart);*/
 
             $attachment = new MimePart(fopen($pdfFileName, 'r'));
             $attachment->type = 'application/pdf';
@@ -55,6 +55,7 @@ class MailPlugin extends AbstractPlugin
             $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
             $attachment->filename = basename($pdfFileName);
             $bodyParts[] = $attachment;
+            $bodyParts[] = $htmlPart;
 
             $body = new MimeMessage();
             $body->setParts($bodyParts);

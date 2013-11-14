@@ -40,7 +40,7 @@ Ext.apply(SafeStartApp, {
         };
         data = data || {test: 1};
         if (!silent) {
-            Ext.Viewport.setMasked({xtype: 'loadmask', zIndex: 20});
+            Ext.Viewport.setMasked({xtype: 'loadmask', zIndex: 20, message: 'Please wait! Working...'});
         }
         Ext.Ajax.request({
             url: this.baseHref + url,

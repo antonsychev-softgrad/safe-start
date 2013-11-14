@@ -20,45 +20,45 @@ class VehicleController extends RestrictedAccessRestController
 
         $vehiclesList = array();
 
-       /* if ($cache->hasItem($cashKey)) {
-            $vehiclesList = $cache->getItem($cashKey);
-        } else {*/
-            $vehicles = $user->getVehicles();
+        /* if ($cache->hasItem($cashKey)) {
+             $vehiclesList = $cache->getItem($cashKey);
+         } else {*/
+        $vehicles = $user->getVehicles();
 
-            foreach ($vehicles as $vehicle) {
-                $vehicleData = $vehicle->toResponseArray();
-                $vehicleInfo = array(
-                    'vehicleId' => $vehicleData['vehicleId'],
-                    'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['vehicleName'],
-                    'projectName' => $vehicleData['projectName'],
-                    'projectNumber' => $vehicleData['projectNumber'],
-                    'expiryDate' => $vehicleData['expiryDate'],
-                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
-                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
-                    'role' => 'user'
-                );
-                $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
-            }
+        foreach ($vehicles as $vehicle) {
+            $vehicleData = $vehicle->toResponseArray();
+            $vehicleInfo = array(
+                'vehicleId' => $vehicleData['vehicleId'],
+                'type' => $vehicleData['type'],
+                'vehicleName' => $vehicleData['vehicleName'],
+                'projectName' => $vehicleData['projectName'],
+                'projectNumber' => $vehicleData['projectNumber'],
+                'expiryDate' => $vehicleData['expiryDate'],
+                'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                'hoursUntilNext' => $vehicleData['hoursUntilNext'],
+                'role' => 'user'
+            );
+            $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
+        }
 
-            $responsibleVehicles = $user->getResponsibleForVehicles();
-            foreach ($responsibleVehicles as $vehicle) {
-                $vehicleData = $vehicle->toResponseArray();
-                $vehicleInfo = array(
-                    'vehicleId' => $vehicleData['vehicleId'],
-                    'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['vehicleName'],
-                    'projectName' => $vehicleData['projectName'],
-                    'projectNumber' => $vehicleData['projectNumber'],
-                    'expiryDate' => $vehicleData['expiryDate'],
-                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
-                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
-                    'role' => 'responsible'
-                );
-                $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
-            }
-            $cache->setItem($cashKey, $vehiclesList);
-       /* }*/
+        $responsibleVehicles = $user->getResponsibleForVehicles();
+        foreach ($responsibleVehicles as $vehicle) {
+            $vehicleData = $vehicle->toResponseArray();
+            $vehicleInfo = array(
+                'vehicleId' => $vehicleData['vehicleId'],
+                'type' => $vehicleData['type'],
+                'vehicleName' => $vehicleData['vehicleName'],
+                'projectName' => $vehicleData['projectName'],
+                'projectNumber' => $vehicleData['projectNumber'],
+                'expiryDate' => $vehicleData['expiryDate'],
+                'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                'hoursUntilNext' => $vehicleData['hoursUntilNext'],
+                'role' => 'responsible'
+            );
+            $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
+        }
+        $cache->setItem($cashKey, $vehiclesList);
+        /* }*/
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -742,6 +742,57 @@ class VehicleController extends RestrictedAccessRestController
         header("Content-Disposition: inline; filename={$pdf['name']}");
         header("Content-type: application/x-pdf");
         echo file_get_contents($pdf['path']);
+
+    }
+
+    public function sendActionListAction()
+    {
+        $vehicles = array();
+        $vehicleId = (int)$this->params('id');
+        if (!$vehicleId) {
+            $user = $this->authService->getIdentity();
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
+            $operatorVehicles = $user->getVehicles();
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
+        } else {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $vehicles[] = $vehicle;
+        }
+
+        if (empty($vehicles)) {
+            $this->answer = array(
+                'errorMessage' => 'No vehicles available for getting Action List',
+            );
+            return $this->AnswerPlugin()->format($this->answer, 204);
+        }
+
+        $pdf = $this->vehicleActionListPdf()->create($vehicles);
+        $config = $this->getServiceLocator()->get('Config');
+        foreach ($vehicles as $vehicle) {
+            $responsibles = $vehicle->getResponsibleUsers();
+            if (!$responsibles) continue;
+            foreach ($responsibles as $responsible) {
+                $this->MailPlugin()->send(
+                    $this->moduleConfig['params']['emailSubjects']['vehicle_action_list'],
+                    $responsible->email,
+                    'actionlist.phtml',
+                    array(
+                        'siteUrl' => $config['params']['site_url'],
+                        'emailStaticContentUrl' => $config['params']['email_static_content_url']
+                    ),
+                    $pdf['path']
+                );
+            }
+        }
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
 
     }
 }
