@@ -40,7 +40,6 @@ class MailPlugin extends AbstractPlugin
         $transport = $this->getController()->getServiceLocator()->get('mail.transport');
 
         if (!empty($pdfFileName) && file_exists($pdfFileName)) {
-
             $content = new MimeMessage();
             $htmlPart = new MimePart($html);
             $htmlPart->type = 'text/html';
@@ -60,7 +59,10 @@ class MailPlugin extends AbstractPlugin
             $body = new MimeMessage();
             $body->setParts($bodyParts);
         } else {
-            $body = $html;
+            $body = new MimeMessage();
+            $htmlPart = new MimePart($html);
+            $htmlPart->type = 'text/html';
+            $body->setParts(array($htmlPart));
         }
 
         $message->setEncoding('utf-8')

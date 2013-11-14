@@ -260,7 +260,8 @@ class UserController extends RestController
                 'username' => $user->getEmail(),
                 'firstName' => $user->getFirstName(),
                 'password' => $password,
-                'siteUrl' => $config['safe-start-app']['siteUrl']
+                'siteUrl' => $config['params']['site_url'],
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
             )
         );
 
