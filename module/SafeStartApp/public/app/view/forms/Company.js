@@ -182,6 +182,10 @@ Ext.define('SafeStartApp.view.forms.Company', {
     },
 
     setRecord: function (record) {
+        if (! record || typeof record.get != 'function') {
+            this.callParent([record]);
+            return;
+        }
         if (record.get('email')) {
             this.down('textfield[name=firstName]').disable();
         }
