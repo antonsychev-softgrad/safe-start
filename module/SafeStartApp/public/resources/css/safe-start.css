@@ -2347,6 +2347,7 @@ span.sfa-comment-content {
 
 .x-tabbar.x-docked-bottom {
     height: 59px;
+    background: url(../img/foot_bg.png) repeat-x;
 }
 
 .x-field-input .x-clear-icon {
