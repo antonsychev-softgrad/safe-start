@@ -546,8 +546,11 @@ class VehicleController extends RestrictedAccessRestController
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
+        $openAlertsCount = count($vehicle->getOpenAlerts());
+
         $this->answer = array(
             'done' => true,
+            'openAlertsCount' => $openAlertsCount,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
