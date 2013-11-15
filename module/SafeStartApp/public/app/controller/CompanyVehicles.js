@@ -254,7 +254,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         if (! alertsRecord) {
             return;
         }
-        alertsRecord.set('counter', alertsRecord.get('counter') + counter);
+        alertsRecord.set('counter', counter);
     },
 
     loadChecklist: function (id) {
