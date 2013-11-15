@@ -32,7 +32,7 @@ Ext.define('SafeStartExt.view.component.Companies', {
                     flex: 1,
                     maxWidth: 250
                 }, {
-                    //cls: 'sfa-info-container',
+                    cls: 'sfa-info-container',
                     xtype: 'panel',
                     border: 0,
                     layout: 'fit',

@@ -9,10 +9,10 @@
  */
 
 defined('APP_ENV')
-|| define('APP_ENV', 'dev');
+|| define('APP_ENV', 'prod');
 
 defined('APP_DEBUG')
-|| define('APP_DEBUG', true);
+|| define('APP_DEBUG', false);
 
 defined('APP_RESQUE')
 || define('APP_RESQUE', true);
@@ -21,7 +21,7 @@ defined('APP_LOGS')
 || define('APP_LOGS', true);
 
 defined('APP_CACHE')
-|| define('APP_CACHE', false);
+|| define('APP_CACHE',true);
 
 
 if (APP_DEBUG) {
