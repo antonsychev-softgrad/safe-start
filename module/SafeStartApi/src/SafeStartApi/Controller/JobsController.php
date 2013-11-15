@@ -79,7 +79,8 @@ class JobsController extends AbstractActionController
                     $email['email'],
                     'checklist.phtml',
                     array(
-                        'name' => $email['name']
+                        'name' => $email['name'],
+                        'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                     ),
                     $pdf
                 );
@@ -129,7 +130,8 @@ class JobsController extends AbstractActionController
                     $email['email'],
                     'checklist.phtml',
                     array(
-                        'name' => isset($email['name']) ? $email['name'] : 'friend'
+                        'name' => isset($email['name']) ? $email['name'] : 'friend',
+                        'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                     ),
                     $path
                 );
