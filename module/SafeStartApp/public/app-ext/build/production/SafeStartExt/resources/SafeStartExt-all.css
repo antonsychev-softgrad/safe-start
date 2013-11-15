@@ -12786,7 +12786,7 @@ body.x-nbr .x-window-header-default-collapsed-left-frameInfo {
 
 /* line 14, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 div.x-lbl-top-err-icon {
-  margin-bottom: 3px;
+  margin-bottom: 7px;
 }
 
 /* line 18, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
@@ -12800,9 +12800,9 @@ div.x-lbl-top-err-icon {
 
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-form-item-label {
-  color: black;
-  font: normal 12px/14px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
-  margin-top: 4px;
+  color: #333333;
+  font: normal 16px/18px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  margin-top: 6px;
 }
 /* line 31, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-toolbar-item .x-form-item-label {
@@ -12835,7 +12835,7 @@ div.x-lbl-top-err-icon {
 /* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
 .x-form-item,
 .x-form-field {
-  font: normal 12px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
 }
 
 /* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
@@ -12876,8 +12876,8 @@ div.x-lbl-top-err-icon {
   border-style: solid;
   border-color: #b5b8c8;
   background-image: url(images/form/text-bg.gif);
-  height: 22px;
-  line-height: 17px;
+  height: 30px;
+  line-height: 25px;
 }
 /* line 14, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
 .x-field-toolbar .x-form-text {
@@ -12886,7 +12886,7 @@ div.x-lbl-top-err-icon {
 }
 /* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
 .x-content-box .x-form-text {
-  height: 17px;
+  height: 25px;
 }
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Text.scss */
 .x-content-box .x-field-toolbar .x-form-text {
@@ -12920,7 +12920,7 @@ textarea.x-form-empty-field {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-form-display-field-body {
-  height: 22px;
+  height: 30px;
 }
 /* line 5, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-toolbar-item .x-form-display-field-body {
@@ -12929,9 +12929,9 @@ textarea.x-form-empty-field {
 
 /* line 11, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-form-display-field {
-  font: normal 12px/14px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px/18px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
   color: black;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 /* line 17, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-toolbar-item .x-form-display-field {
@@ -13048,7 +13048,7 @@ textarea.x-form-empty-field {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/layout/container/Border.scss */
 .x-border-layout-ct {
-  background-color: #e0e0e0;
+  background-color: #e8e8e8;
 }
 
 /* line 14, ../../../../ext/packages/ext-theme-neutral/sass/src/menu/Menu.scss */

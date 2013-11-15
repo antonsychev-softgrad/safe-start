@@ -2167,6 +2167,7 @@ span.sfa-comment-content {
 
 .sfa-alert-title {
     color: #f00;
+<<<<<<< HEAD
     text-align: center;
 }
 
@@ -2219,6 +2220,8 @@ span.sfa-comment-content {
     bottom: 1px;
     right: 1px;
     width: 18px;
+=======
+>>>>>>> 2f04bd1ff7b51218f6da211530ae4c2dd998e317
     text-align: center;
     color: #fff;
     line-height: 16px;
@@ -2418,4 +2421,7 @@ span.sfa-comment-content {
 }
 .sfa-info-container .x-toolbar .x-fileup-uploading .x-button-label {
     line-height: inherit !important;
+}
+.checklist-alert-description .x-fileup.x-button-filebrowse span.x-button-label {
+    text-shadow: none;
 }

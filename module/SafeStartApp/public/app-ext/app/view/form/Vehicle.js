@@ -12,8 +12,12 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
         type: 'vbox',
         align: 'stretch'
     },
+    fieldDefaults: {
+        msgTarget: 'side'
+    },
     padding: 30,
     scrollable: true,
+    buttonAlign: 'left',
 
     initComponent: function () {
         var me = this;
@@ -44,9 +48,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                         me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
                     }
                 }
-            }, {
-                xtype: 'box',
-                flex: 1
             }],
             items: [{
                 xtype: 'textfield',
@@ -102,6 +103,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 fieldLabel: 'Until next service due',
                 maxWidth: 400,
                 cls: 'sfa-field-group',
+                padding: '1 0 0 0',
                 labelCls: 'sfa-field-group-label',
                 layout: {
                     type: 'vbox',
@@ -111,7 +113,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 items: [{
                     xtype: 'numberfield',
                     hideTrigger: true,
-                    maxWidth: 400,
                     labelWidth: 130,
                     labelSeparator: '*',
                     fieldLabel: 'Hours',
@@ -119,7 +120,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 }, {
                     xtype: 'numberfield',
                     hideTrigger: true,
-                    maxWidth: 400,
                     labelWidth: 130,
                     labelSeparator: '*',
                     fieldLabel: 'Kilometers',

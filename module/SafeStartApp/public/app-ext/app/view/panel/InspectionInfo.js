@@ -6,6 +6,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     cls:'sfa-previous-inspections-info',
     ui: 'light',
     autoScroll: true,
+    border: 0,
 
     initComponent: function () {
         this.callParent();
