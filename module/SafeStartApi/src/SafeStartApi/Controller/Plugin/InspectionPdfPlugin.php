@@ -194,6 +194,9 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         if (!empty($gps)) {
             $gps = str_replace(" ", "", $gps);
             $gps = str_replace("null", "", $gps);
+            $gps = str_replace("0.00", "", $gps);
+            $gps = str_replace("0.0", "", $gps);
+            $gps = str_replace("0", "", $gps);
             $gpss = explode(";", $gps);
             if (count($gpss) == 2 && !empty($gpss[0]) && !empty($gpss[1])) $gps = urlencode($gpss[0] . "," . $gpss[1]);
             else $gps = null;

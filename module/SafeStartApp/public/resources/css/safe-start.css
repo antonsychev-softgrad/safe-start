@@ -2419,3 +2419,9 @@ span.sfa-comment-content {
 .sfa-info-container .x-toolbar .x-fileup-uploading .x-button-label {
     line-height: inherit !important;
 }
+.checklist-alert-description .x-fileup.x-button-filebrowse span.x-button-label {
+    text-shadow: none;
+}
+textarea {
+    resize: none;
+}
