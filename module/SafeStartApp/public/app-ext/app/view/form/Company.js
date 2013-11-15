@@ -12,6 +12,10 @@ Ext.define('SafeStartExt.view.form.Company', {
     cls:'sfa-company-settings',
     border: 0,
     ui: 'transparent',
+    buttonAlign: 'left',
+    fieldDefaults: {
+        msgTarget: 'side'
+    },
     layout: {
         type: 'vbox',
         align: 'stretch'
@@ -70,9 +74,6 @@ Ext.define('SafeStartExt.view.form.Company', {
                         me.fireEvent('sendPasswordAction', me.getRecord());
                     }
                 }
-            }, {
-                xtype: 'box',
-                flex: 1
             }],
             items: [{
                 xtype: 'fieldcontainer',

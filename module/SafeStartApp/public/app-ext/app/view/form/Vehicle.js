@@ -17,6 +17,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
     },
     padding: 30,
     scrollable: true,
+    buttonAlgin: 'left',
 
     initComponent: function () {
         var me = this;
@@ -47,9 +48,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                         me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
                     }
                 }
-            }, {
-                xtype: 'box',
-                flex: 1
             }],
             items: [{
                 xtype: 'textfield',
