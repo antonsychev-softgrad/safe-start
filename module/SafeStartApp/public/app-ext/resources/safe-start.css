@@ -225,6 +225,9 @@
     padding-left: 22px;
     background: url(img/user-ic.png) no-repeat 0 15px;
 }
+.x-ie7 .sfa-top-nav .sfa-user, .x-ie8 .sfa-top-nav .sfa-user {
+    padding-left: 18px !important;
+}
 .sfa-top-nav .sfa-logout {
     padding-left: 27px;
     margin-left: 20px;
@@ -267,7 +270,7 @@ font-size: 24px;
     padding-bottom: 7px;
 }
 .sfa-left-coll .search input.x-form-text {
-    padding: 7px 3% 8px 14%;
+    padding: 4px 3% 8px 14%;
     height: auto !important;
     background: url(img/search-ic.png) no-repeat 4% 50%;
     -moz-border-radius: 6px;
@@ -490,7 +493,9 @@ span.x-btn-inner.x-btn-inner-center {
 .sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
     background: none;
     padding: 8px 0 8px 12px;
+    text-shadow: none;
 }
+
 
 /* END LEFt column */
 
@@ -594,10 +599,19 @@ span.x-btn-inner.x-btn-inner-center {
     font-size: 16px;
     color: #565555;
 }
-.x-ie7 .sfa-info-container input.x-form-field {
+.x-ie7 .sfa-info-container input.x-form-field.x-form-text {
     padding-top: 4px;
+    width: 98% !important;
     height: 28px;
 }
+.x-ie7 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text,
+.x-ie8 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text {
+    width: 95% !important;
+}
+.x-ie7 .sfa-info-container .x-form-textarea {
+    width: 98% !important;
+}
+
 .x-ie8 .sfa-info-container input.x-form-field {
     padding-top: 4px;
     height: 33px;
@@ -677,8 +691,12 @@ span.x-btn-inner.x-btn-inner-center {
     border-top-color: #dedede;
 }
 
-
-
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child {
+    background: #e3edf1;
+}
 
 
 .sfa-left-coll .sfa-vehicle-item.x-item-selected,
@@ -730,6 +748,9 @@ span.x-btn-inner.x-btn-inner-center {
     /* page Vehisles -> inspections-info */
     .sfa-previous-inspections-info {
         border-left: 1px dotted #ccc;
+
+    }
+    .sfa-previous-inspections-info .sfa-group {
         font-size: 16px;
     }
     .sfa-previous-inspections-info .x-panel-body .x-component{
@@ -895,8 +916,6 @@ span.x-btn-inner.x-btn-inner-center {
     background-image: url(img/sfa-icon-contact.png);
 }
 
-
-
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
@@ -905,6 +924,14 @@ span.x-btn-inner.x-btn-inner-center {
     font-weight: bold;
 }
 
+.x-form-date-trigger {
+    background: url(img/calendar.png) 100% 50% no-repeat;
+}
+.x-ie7 .x-form-date-trigger {
+    background-position: 0 50%;
+}
 
-
+table.x-form-trigger-wrap td {
+    background: none;
+}
 

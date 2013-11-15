@@ -1964,6 +1964,10 @@ span.sfa-comment-content {
 }
 
 .sfa-alert-title {
-    color: #ff000;
+    color: #f00;
     text-align: center;
+}
+
+.checklist-alert-description .x-fileup.x-button-filebrowse span.x-button-label {
+    text-shadow: none;
 }
