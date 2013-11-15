@@ -935,3 +935,35 @@ table.x-form-trigger-wrap td {
     background: none;
 }
 
+
+.x-btn-blue-medium-tc, 
+.x-btn-blue-medium-bc,
+.x-btn-red-medium-tc,
+.x-btn-red-medium-bc {
+    height: 6px !important;
+}
+
+.x-btn-green-medium-tc, 
+.x-btn-green-medium-bc {
+    height: 5px !important;
+}
+
+.x-btn-green-medium-tl {
+    background-position-y: -15px;
+}
+
+.x-btn-green-medium-tr {
+    background-position-y: -22px;
+}
+
+.x-btn-green-medium-br {
+    background-position-y: -36px;
+}
+
+.x-btn-green-medium-bl {
+    background-position-y: -29px;
+}
+
+.x-btn-green-medium-bc {
+    background-position-y: -8px;
+}
