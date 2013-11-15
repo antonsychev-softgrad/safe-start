@@ -21,7 +21,7 @@ defined('APP_LOGS')
 || define('APP_LOGS', true);
 
 defined('APP_CACHE')
-|| define('APP_CACHE', true);
+|| define('APP_CACHE', false);
 
 
 if (APP_DEBUG) {
