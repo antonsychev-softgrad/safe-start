@@ -312,26 +312,4 @@ class PublicVehicleController extends PublicAccessRestController
         }
         return true;
     }
-
-    public function sendTestEmailAction() {
-
-        $mapUrl = 'http://maps.googleapis.com/maps/api/staticmap?center=53.912739,%2027.513294&zoom=12&size=400x400&markers=color:blue|53.9128749,27.5135608&sensor=false&format=png';
-        $moduleConfig = $this->getServiceLocator()->get('Config');
-        $mapPath =  dirname(__FILE__) . "/../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . "test-test.PNG";
-        echo $mapPath;
-        file_put_contents($mapPath, file_get_contents($mapUrl));
-
-        /*
-        $email = 'test21141@gmail.com';
-        $this->MailPlugin()->send(
-            'New inspection report',
-            $email,
-            'checklist.phtml',
-            array(
-                'name' => 'Artem'
-            ),
-            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_113_at_2013-09-17.pdf'
-        );
-        */
-    }
 }

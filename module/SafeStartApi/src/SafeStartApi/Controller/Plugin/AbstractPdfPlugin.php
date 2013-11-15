@@ -180,7 +180,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         // > end draw header line.
         $topPosInPage = $currentYPos;
 
-        return $topPosInPage - 15;
+        return $topPosInPage - 20;
     }
 
     protected function drawFooter(\ZendPdf\Page $page)
