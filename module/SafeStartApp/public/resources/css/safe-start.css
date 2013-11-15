@@ -2352,3 +2352,9 @@ span.sfa-comment-content {
 .x-field-input .x-clear-icon {
     background: url(../img/erase.png) no-repeat 50% 50%;
 }
+.checklist-alert-description .x-fileup.x-button-filebrowse span.x-button-label {
+    text-shadow: none;
+}
+textarea {
+    resize: none;
+}
