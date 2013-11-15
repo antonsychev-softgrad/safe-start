@@ -6,7 +6,7 @@ use SafeStartApi\Model\ImageProcessor;
 
 class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
-    const HEADER_EMPIRIC_HEIGHT = 100;
+    const HEADER_EMPIRIC_HEIGHT = 90;
     protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
     private $checkList;
 
