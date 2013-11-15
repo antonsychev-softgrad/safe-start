@@ -2,9 +2,16 @@
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
 }
-
+.x-form-trigger-wrap {
+    border: none;
+}
+.x-toolbar-footer {
+    background: none;
+}
+.x-form-text {
+    background: none;
+}
 .sfa-vehicles-tabpanel .x-panel-body {
-  /*background: url('../build/production/SafeStartExt/resources/img/x-component-light_bg.jpg');*/
   background-color: #FFF;
 }
 
@@ -44,12 +51,17 @@
 }
 
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding: 14px 15px 15px;
+    padding: 13px 15px 14px;
     background: none;
     box-shadow: none;
     border: none;
 }
-
+.x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    height: 49px;
+}
+.x-ie8 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    padding-top: 5px !important;
+}
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
     background: url(img/tab-active_bg.png) no-repeat 50% 100%;
 }
@@ -63,9 +75,6 @@
   background-color: transparent;
   height: 0;
 }
-
-/*.x-btn-default-toolbar-small-icon .x-btn-icon-el*/
-
 
 .sfa-icon-refresh {
   background: url(../build/production/SafeStartExt/resources/img/sfa-icon-refresh.png);
@@ -113,6 +122,9 @@
     height: 62px !important;
     background: #1673b5 url(img/top_bg.png) repeat-x;
 }
+.x-ie7 .sfa-top-nav.x-box-item {
+    height: 61px !important;
+}
 .sfa-top-nav {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
     z-index: 9;
@@ -120,6 +132,7 @@
 .sfa-top-nav .x-btn-transparent-medium .x-btn-inner {
     color: #fff;
 }
+
 .x-ie .x-panel-light-left .x-toolbar-default {
   background-image: none !important;
 }
@@ -212,6 +225,9 @@
     padding-left: 22px;
     background: url(img/user-ic.png) no-repeat 0 15px;
 }
+.x-ie7 .sfa-top-nav .sfa-user, .x-ie8 .sfa-top-nav .sfa-user {
+    padding-left: 18px !important;
+}
 .sfa-top-nav .sfa-logout {
     padding-left: 27px;
     margin-left: 20px;
@@ -223,10 +239,24 @@
 .sfa-top-nav .sfa-company-name .x-btn-inner {
 font-size: 24px;
 }
+.sfa-top-nav .sfa-topmenu-logo {
+    height: 62px !important;
+}
 .sfa-top-nav .sfa-topmenu-logo img {
     cursor: pointer;
+    display: block;
+    margin: auto;
 }
+
+.sfa-top-nav > div {
+    height: 62px !important;
+}
+
 .sfa-top-nav .sfa-topmenu-logo > span {
+    background: url(img/sfa-top-logo-bg.png) repeat-x;
+    border-right: 1px solid #000;
+}
+.x-ie7 .sfa-top-nav .sfa-topmenu-logo > div {
     background: url(img/sfa-top-logo-bg.png) repeat-x;
     border-right: 1px solid #000;
 }
@@ -240,7 +270,7 @@ font-size: 24px;
     padding-bottom: 7px;
 }
 .sfa-left-coll .search input.x-form-text {
-    padding: 7px 3% 8px 14%;
+    padding: 4px 3% 8px 14%;
     height: auto !important;
     background: url(img/search-ic.png) no-repeat 4% 50%;
     -moz-border-radius: 6px;
@@ -278,15 +308,9 @@ font-size: 24px;
     background: url(img/reload-ic.png) no-repeat;
 }
 .sfa-left-coll a.x-btn span {
-    /*TODO*/
-    /*width: 22px;*/
-    /*height: 18px;*/
-    /*line-height: 18px;*/
+    font-weight: normal;
 }
-.sfa-left-coll a.x-btn {
-    /*TODO*/
-    /*top: 5px !important;*/
-}
+
 .sfa-left-coll .x-btn-default-toolbar-medium-over {
     border-color: #fff;
     background: none;
@@ -318,18 +342,24 @@ font-size: 24px;
 }
 
 .sfa-left-coll .search.x-table-plain {
-    margin-left: 10px !important;
-    width: 195px !important;
+    margin-left: 5px !important;
+    width: 190px !important;
 }
 
 .sfa-left-coll .sfa-add-button {
     border: none;
-    margin-bottom: 24px;
-    margin-left: 15px;
+    left: 10px !important;
+    width: 213px !important;
     padding: 8px 5px 9px 21px;
     text-align: left;
     display: block;
+    margin-bottom: 24px;
     background: url(img/sfa-add-button_bg.png) no-repeat;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    overflow: hidden;
+    background: url(img/sfa-add-button_bg-ie.png) no-repeat;
 }
 
 .sfa-left-coll .sfa-add-button span.x-btn-inner {
@@ -369,34 +399,38 @@ font-size: 24px;
     height: 41px;
 }
 
-.sfa-vehicles-tabpanel .x-table-plain {
-    /*height: 50px\0/;*/
-}
-
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item {
     width: 100%;
     overflow: hidden;
 }
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div:first-child {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item > div:first-child {
     float: left;
 }
-*:first-child+html .sfa-previous-inspections-info .sfa-group-item > div {
+.x-ie7 .sfa-previous-inspections-info .sfa-group-item > div {
     float: right;
 }
 
-.sfa-previous-inspections-info .sfa-group-item {
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item {
     width: 100%;
-    overflow: hidden\0/;
+    overflow: hidden;
 }
-.sfa-previous-inspections-info .sfa-group-item > div:first-child {
-    float: left\0/;
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item > div:first-child {
+    float: left;
 }
-.sfa-previous-inspections-info .sfa-group-item > div {
-    float: right\0/;
+.x-ie8 .sfa-previous-inspections-info .sfa-group-item > div {
+    float: right;
 }
 
 
 
+.x-ie7p .sfa-left-coll .x-btn.x-icon.x-btn-icon.x-btn-default-medium-icon td {
+    background: none;
+}
+
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    height: 33px;
+}
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
@@ -409,15 +443,58 @@ font-size: 24px;
     background: none !important;
 }
 
-.sfa-left-coll .sfa-add-button .x-table-plain {
-    height: 35px;
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td {
+    height: 8px;
 }
-.sfa-left-coll .sfa-add-button .x-table-plain td .x-btn-inner {
-    padding: 30px;
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center {
+    text-align: left;
+    padding-left: 22px;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button,
+.x-ie8 .sfa-left-coll .sfa-add-button {
+    margin-right: 16px;
 }
 
+span.x-btn-inner.x-btn-inner-center {
+    background: none;
+}
 
+.sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
+    color: #1368a4;
+}
+.sfa-company-settings .sfa-last td {
+    background: none;
+    padding-left: 4px;
+    padding-right: 0;
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    margin-right: 15px;
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    text-shadow: 0 -1px 0 #2C5E77;
+}
+.x-toolbar-footer span.x-btn-inner {
+    font-size: 16px;
+    display: block;
+    padding-bottom: 2px;
+}
+.sfa-company-settings .x-toolbar-footer .x-btn-button {
+    height: 18px;
+}
+.sfa-company-settings .x-toolbar-footer a.x-btn {
+    padding: 8px 35px;
+}
+.sfa-company-settings .x-toolbar-footer > .x-box-inner {
+    height: 38px !important;
+}
 
+.sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
+    background: none;
+    padding: 8px 0 8px 12px;
+    text-shadow: none;
+}
 
 
 /* END LEFt column */
@@ -431,6 +508,7 @@ font-size: 24px;
 .sfa-vehicles-tabpanel, .sfa-vehicles-tabpanel .x-panel-body {
     padding: 0;
 }
+
 .sfa-vehicles-tabpanel > span > div .x-panel-body-default {
     border: none;
 }
@@ -500,6 +578,16 @@ font-size: 24px;
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
 }
+.sfa-info-container.sfa-vehicles-tabpanel > div {
+    padding: 0;
+    border: none;
+    background: none;
+}
+.x-ie7 .sfa-info-container > div:first-child {
+    padding: 0;
+    border: none;
+    background: none;
+}
 
 .sfa-info-container .x-panel-body.x-panel-body-default.x-panel-body-default {
     background: none;
@@ -510,6 +598,23 @@ font-size: 24px;
 .sfa-info-container textarea {
     font-size: 16px;
     color: #565555;
+}
+.x-ie7 .sfa-info-container input.x-form-field.x-form-text {
+    padding-top: 4px;
+    width: 98% !important;
+    height: 28px;
+}
+.x-ie7 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text,
+.x-ie8 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text {
+    width: 95% !important;
+}
+.x-ie7 .sfa-info-container .x-form-textarea {
+    width: 98% !important;
+}
+
+.x-ie8 .sfa-info-container input.x-form-field {
+    padding-top: 4px;
+    height: 33px;
 }
 .sfa-info-container input.x-form-text, .sfa-info-container .x-form-textarea {
     padding: 0 30px 0 7px;
@@ -525,9 +630,31 @@ font-size: 24px;
     box-shadow: 0 1px 0 #f3f4f4;
     background: #fff;
 }
+
+.sfa-info-container input.x-form-focus, .sfa-info-container textarea.x-form-focus {
+    border: 3px solid #2e7fb7;
+}
+
 .sfa-info-container .x-form-textarea {
     height: 84px;
 }
+
+.sfa-vehicles-tabpanel {
+    padding: 24px 26px 20px;
+}
+.sfa-vehicles-tabpanel > div > .x-panel-body {
+    border-left: 2px solid #c0c0c0 !important;
+    border-bottom: 1px solid #dbdbdb !important;
+    border-right: 1px solid #c0c0c0 !important;
+    -moz-border-radius: 0 0 5px 5px;
+    -webkit-border-radius: 0 0 5px 5px;
+    -khtml-border-radius: 0 0 5px 5px;
+    -o-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+    box-shadow: inset 1px 0 0 0 rgba(219,219,219,1), inset -1px 0 0 0 rgba(219,219,219,1);
+}
+
+
 
 /* END CONTENT */
 
@@ -544,12 +671,34 @@ font-size: 24px;
 }
 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item {
     border-bottom: 1px solid #DEDEDE;
-    box-shadow: 0 1px 0 #FFFFFF;
+    border-top: 1px solid #fff;
+    padding: 12px 15px 12px 18px;
 }
+
 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child {
-    border-top: 1px solid #dedede;
-    box-shadow: 0 -1px 0 #FFFFFF, 0 1px 0 #FFFFFF;
+    box-shadow: 0 -1px 0 #DEDEDE;
 }
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:last-child {
+    box-shadow: 0 1px 0 #fff;
+}
+
+
+/* .x-ie78 */
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child {
+    background: url(img/line-left-coll-ie.gif) repeat-x;
+    padding-top: 13px;
+    border-top-color: #dedede;
+}
+
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child {
+    background: #e3edf1;
+}
+
+
 .sfa-left-coll .sfa-vehicle-item.x-item-selected,
 .sfa-left-coll .sfa-vehicle-item:hover,
 .sfa-left-coll .sfa-vehicle-item.x-item-selected, /* page Vehisles */
@@ -570,15 +719,11 @@ font-size: 24px;
 .sfa-left-coll {
     padding-top: 15px;
 }
-.sfa-company-settings tr td {
-    padding: 8px 0;
-}
+
 .sfa-company-settings .x-table-plain.x-form-item.x-form-type-text {
     width: 700px;
 }
-.sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td:first-child {
-    width: 30%;
-}
+
 .sfa-company-settings .x-table-plain.x-form-item.x-form-type-text tr td label {
     width: 100% !important;
 }
@@ -603,6 +748,9 @@ font-size: 24px;
     /* page Vehisles -> inspections-info */
     .sfa-previous-inspections-info {
         border-left: 1px dotted #ccc;
+
+    }
+    .sfa-previous-inspections-info .sfa-group {
         font-size: 16px;
     }
     .sfa-previous-inspections-info .x-panel-body .x-component{
@@ -768,39 +916,54 @@ font-size: 24px;
     background-image: url(img/sfa-icon-contact.png);
 }
 
-.x-ie .sfa-vehicles-tabpanel .x-panel .x-panel-body{
-    /*padding-top: 20px;*/
-
-}
-
-/*.x-form-item-label {
-    margin-top: 8px;
-    font-size: 16px;
-    color: #333;
-}
-
-
-.x-form-text {
-    font-size: 16px;
-    height: 30px;
-    padding: 6px 3px;
-    color: #333;
-}
-
-*/
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
     margin: 10px 0;
     display: block;
-}
-/*
-.sfa-field-group.x-item-disabled .sfa-field-group-label {
-    color: #79CEFF;
+    font-weight: bold;
 }
 
-.x-form-checkbox {
-    margin-top: 8px;
+.x-form-date-trigger {
+    background: url(img/calendar.png) 100% 50% no-repeat;
 }
-*/
+.x-ie7 .x-form-date-trigger {
+    background-position: 0 50%;
+}
 
+table.x-form-trigger-wrap td {
+    background: none;
+}
+
+
+.x-btn-blue-medium-tc, 
+.x-btn-blue-medium-bc,
+.x-btn-red-medium-tc,
+.x-btn-red-medium-bc {
+    height: 6px !important;
+}
+
+.x-btn-green-medium-tc, 
+.x-btn-green-medium-bc {
+    height: 5px !important;
+}
+
+.x-btn-green-medium-tl {
+    background-position-y: -15px;
+}
+
+.x-btn-green-medium-tr {
+    background-position-y: -22px;
+}
+
+.x-btn-green-medium-br {
+    background-position-y: -36px;
+}
+
+.x-btn-green-medium-bl {
+    background-position-y: -29px;
+}
+
+.x-btn-green-medium-bc {
+    background-position-y: -8px;
+}
