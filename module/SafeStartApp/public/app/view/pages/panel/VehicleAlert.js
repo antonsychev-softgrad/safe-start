@@ -237,7 +237,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
                     counter = -1;
                     break;
             }
-            this.fireEvent('updateAlertsCounter', counter);
+            // this.fireEvent('updateAlertsCounter', counter);
             
             this.alertContent.history.push({
                 username: SafeStartApp.userModel.getFullName(),
@@ -260,6 +260,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             self.setComments(self.record.raw.comments);
             self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
             self.fireAction('updateAlertsBadge');
+            self.fireEvent('updateAlertsCounter', result.openAlertsCount);
         });
     },
 
