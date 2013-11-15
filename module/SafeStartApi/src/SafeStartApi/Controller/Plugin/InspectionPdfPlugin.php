@@ -234,7 +234,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                     $mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" . str_replace(";", ",", $gps) . "&zoom=12&size=400x400&markers=color:blue|" . str_replace(";", ",", $gps) . "&sensor=false&format=PNG";
                     $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
                     $mapPath =  dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".PNG";
-                    file_put_contents($mapPath, file_get_contents(urlencode($mapUrl)));
+                    file_put_contents($mapPath, file_get_contents($mapUrl));
 
                     if (file_exists($mapPath)) {
                         $imageWidth = $columnWidth;
