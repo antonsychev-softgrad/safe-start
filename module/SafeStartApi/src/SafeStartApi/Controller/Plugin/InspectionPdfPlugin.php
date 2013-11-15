@@ -230,32 +230,37 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
             }
 
             if (!empty($gps)) {
-                $mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" . str_replace(";", ",", $gps) . "&zoom=12&size=400x400&markers=color:blue|53.9128749,27.5135608&sensor=false&format=PNG";
-                $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
-                $mapPath =  dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".PNG";
-                file_put_contents($mapPath, file_get_contents($mapUrl));
+                try {
+                    $mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" . str_replace(";", ",", $gps) . "&zoom=12&size=400x400&markers=color:blue|53.9128749,27.5135608&sensor=false&format=PNG";
+                    $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+                    $mapPath =  dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".PNG";
+                    file_put_contents($mapPath, file_get_contents(urlencode($mapUrl)));
 
-                if (file_exists($mapPath)) {
-                    $imageWidth = $columnWidth;
-                    $imageHeight = $imageWidth;
+                    if (file_exists($mapPath)) {
+                        $imageWidth = $columnWidth;
+                        $imageHeight = $imageWidth;
 
-                    $alertImage = ZendPdf\Image::imageWithPath($mapPath);
-                    $alertImageWidth = $alertImage->getPixelWidth();
-                    $alertImageHeight = $alertImage->getPixelHeight();
+                        $alertImage = ZendPdf\Image::imageWithPath($mapPath);
+                        $alertImageWidth = $alertImage->getPixelWidth();
+                        $alertImageHeight = $alertImage->getPixelHeight();
 
-                    $scale = min($imageWidth / $alertImageWidth, $imageHeight / $alertImageHeight);
-                    $imageWidth = (int)($alertImageWidth * $scale);
-                    $imageHeight = (int)($alertImageHeight * $scale);
+                        $scale = min($imageWidth / $alertImageWidth, $imageHeight / $alertImageHeight);
+                        $imageWidth = (int)($alertImageWidth * $scale);
+                        $imageHeight = (int)($alertImageHeight * $scale);
 
-                    $this->document->pages[$this->pageIndex]->drawImage(
-                        $alertImage,
-                        ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) ,
-                        $this->lastTopPos - $imageHeight,
-                        ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $imageWidth,
-                        $this->lastTopPos
-                    );
+                        $this->document->pages[$this->pageIndex]->drawImage(
+                            $alertImage,
+                            ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) ,
+                            $this->lastTopPos - $imageHeight,
+                            ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $imageWidth,
+                            $this->lastTopPos
+                        );
 
-                    $this->lastTopPos = $this->lastTopPos - $imageHeight - 10;
+                        $this->lastTopPos = $this->lastTopPos - $imageHeight - 10;
+
+                    }
+                } catch (\Exception $e) {
+
                 }
 
             }
