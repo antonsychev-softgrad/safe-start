@@ -191,6 +191,13 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
         $location = $this->checkList->getLocation();
         $gps = $this->checkList->getGpsCoords();
+        if (!empty($gps)) {
+            $gps = str_replace(" ", "", $gps);
+            $gps = str_replace("null", "", $gps);
+            $gpss = explode(";", $gps);
+            if (count($gpss) == 2 && !empty($gpss[0]) && !empty($gpss[1])) $gps = urlencode($gpss[0] . "," . $gpss[1]);
+            else $gps = null;
+        }
         if (!empty($location) || !empty($gps)) {
             $this->drawText(
                 "Location",
@@ -231,11 +238,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
             if (!empty($gps)) {
                 try {
-                    $gps = str_replace(" ", "", $gps);
-                    $gps = urlencode(str_replace(";", ",", $gps));
+                    $gps = urlencode($gpss[0] . "," . $gpss[1]);
                     $mapUrl = "http://maps.googleapis.com/maps/api/staticmap?center=" . $gps . "&zoom=12&size=400x400&markers=color:blue|" . $gps . "&sensor=false&format=PNG";
                     $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
-                    $mapPath =  dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".PNG";
+                    $mapPath = dirname(__FILE__) . "/../../../../../.." . $moduleConfig['defUsersPath'] . uniqid() . ".PNG";
                     file_put_contents($mapPath, file_get_contents($mapUrl));
 
                     if (file_exists($mapPath)) {
@@ -252,14 +258,13 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
                         $this->document->pages[$this->pageIndex]->drawImage(
                             $alertImage,
-                            ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) ,
+                            ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth),
                             $this->lastTopPos - $imageHeight,
                             ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $imageWidth,
                             $this->lastTopPos
                         );
 
                         $this->lastTopPos = $this->lastTopPos - $imageHeight - 10;
-
                     }
                 } catch (\Exception $e) {
 
@@ -422,7 +427,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
             $this->lastTopPos -= ($this->opts['style']['category_field_size'] + ($this->opts['style']['category_field_line_spacing'] * 2));
 
-       //     $this->lastTopPos -= 10;
+            //     $this->lastTopPos -= 10;
         }
 
         foreach ($alerts as $alert) {
@@ -543,9 +548,9 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
                 $this->document->pages[$this->pageIndex]->drawImage(
                     $alertImage,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - ($columnsPadding / 4) + ($columnWidth - $imageWidth)/2,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding - ($columnsPadding / 4) + ($columnWidth - $imageWidth) / 2,
                     $this->lastTopPos - $imageHeight,
-                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - ($columnsPadding / 4) + ($columnWidth - $imageWidth)/2,
+                    ($this->opts['style']['page_padding_left'] + ($currentColumn - 1) * $columnWidth) + $columnsPadding + $imageWidth - ($columnsPadding / 4) + ($columnWidth - $imageWidth) / 2,
                     $this->lastTopPos
                 );
 
