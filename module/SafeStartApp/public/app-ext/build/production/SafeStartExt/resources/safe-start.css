@@ -427,10 +427,14 @@ font-size: 24px;
     background: none;
 }
 
+<<<<<<< HEAD
 .x-ie7 .sfa-left-coll .sfa-add-button,
 .x-ie8 .sfa-left-coll .sfa-add-button {
     height: 33px;
 }
+=======
+
+>>>>>>> web/test
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
@@ -444,6 +448,7 @@ font-size: 24px;
 }
 
 .x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td,
+<<<<<<< HEAD
 .x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td {
     height: 8px;
 }
@@ -452,6 +457,16 @@ font-size: 24px;
     text-align: left;
     padding-left: 22px;
 }
+=======
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain tr:first-child td{
+    height: 8px;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center,
+.x-ie8 .sfa-left-coll .sfa-add-button .x-table-plain td span.x-btn-inner.x-btn-inner-center {
+    text-align: left;
+    padding-left: 22px;
+}
+>>>>>>> web/test
 .x-ie7 .sfa-left-coll .sfa-add-button,
 .x-ie8 .sfa-left-coll .sfa-add-button {
     margin-right: 16px;
@@ -464,11 +479,14 @@ span.x-btn-inner.x-btn-inner-center {
 .sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
     color: #1368a4;
 }
+<<<<<<< HEAD
 .sfa-company-settings .sfa-last td {
     background: none;
     padding-left: 4px;
     padding-right: 0;
 }
+=======
+>>>>>>> web/test
 .sfa-company-settings .x-toolbar-footer a.x-btn {
     margin-right: 15px;
 }
@@ -482,6 +500,10 @@ span.x-btn-inner.x-btn-inner-center {
 }
 .sfa-company-settings .x-toolbar-footer .x-btn-button {
     height: 18px;
+<<<<<<< HEAD
+=======
+    /*padding: 8px 30px;*/
+>>>>>>> web/test
 }
 .sfa-company-settings .x-toolbar-footer a.x-btn {
     padding: 8px 35px;
@@ -490,12 +512,19 @@ span.x-btn-inner.x-btn-inner-center {
     height: 38px !important;
 }
 
+<<<<<<< HEAD
 .sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
     background: none;
     padding: 8px 0 8px 12px;
     text-shadow: none;
 }
 
+=======
+.sfa-company-settings .sfa-last.x-btn-blue-medium {
+    background: none;
+    padding: 8px 0 8px 12px;
+}
+>>>>>>> web/test
 
 /* END LEFt column */
 

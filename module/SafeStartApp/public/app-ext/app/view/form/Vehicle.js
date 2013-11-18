@@ -27,6 +27,8 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 ui: 'red',
                 name: 'delete',
                 scale: 'medium',
+                margin: '0 8',
+                minWidth: 140,
                 handler: function () {
                     Ext.Msg.confirm({
                         title: 'Confirmation',
@@ -44,6 +46,8 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 text: 'Save',
                 ui: 'blue',
                 scale: 'medium',
+                margin: '0 8',
+                minWidth: 140,
                 handler: function () {
                     if (me.isValid()) {
                         me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());

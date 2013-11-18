@@ -12,6 +12,8 @@ $form-field-text-color: #333;
 $form-toolbar-label-color: #1368a4;
 
 
+
+
 @function linear-gradient-custom-button($direction, $bg-color) {
     @return linear-gradient($direction, color_stops(
         // mix(#fff, $bg-color, 40%),
@@ -34,4 +36,3 @@ $form-toolbar-label-color: #1368a4;
 @function linear-gradient-custom-button-disabled($direction, $bg-color) {
     @return linear-gradient-custom-button($direction, $bg-color);
 }
-

@@ -16480,6 +16480,14 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   border-style: solid;
   background-image: none;
   background-color: #6c9804;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
+>>>>>>> web/test
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -16654,6 +16662,14 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-disabled {
   background-image: none;
   background-color: #6c9804;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
+>>>>>>> web/test
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -16755,6 +16771,14 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-over {
   background-image: none;
   background-color: #6c9804;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #6c9804), color-stop(100%, #385900));
+  background-image: -webkit-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -moz-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: -o-linear-gradient(top, #6c9804, #385900 100%);
+  background-image: linear-gradient(top, #6c9804, #385900 100%);
+>>>>>>> web/test
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -16768,6 +16792,14 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-pressed {
   background-image: none;
   background-color: #628904;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #628904), color-stop(4%, #71941d));
+  background-image: -webkit-linear-gradient(top, #628904, #71941d 4%);
+  background-image: -moz-linear-gradient(top, #628904, #71941d 4%);
+  background-image: -o-linear-gradient(top, #628904, #71941d 4%);
+  background-image: linear-gradient(top, #628904, #71941d 4%);
+>>>>>>> web/test
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17473,6 +17505,14 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
   border-style: solid;
   background-image: none;
   background-color: #3085b6;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
+>>>>>>> web/test
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17647,6 +17687,14 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-disabled {
   background-image: none;
   background-color: #3085b6;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
+>>>>>>> web/test
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17748,6 +17796,14 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-over {
   background-image: none;
   background-color: #3085b6;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3085b6), color-stop(100%, #004684));
+  background-image: -webkit-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -moz-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: -o-linear-gradient(top, #3085b6, #004684 100%);
+  background-image: linear-gradient(top, #3085b6, #004684 100%);
+>>>>>>> web/test
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17761,6 +17817,14 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 .x-btn-blue-medium-pressed {
   background-image: none;
   background-color: #0062a7;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #0062a7), color-stop(4%, #1971af));
+  background-image: -webkit-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: -moz-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: -o-linear-gradient(top, #0062a7, #1971af 4%);
+  background-image: linear-gradient(top, #0062a7, #1971af 4%);
+>>>>>>> web/test
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17958,6 +18022,14 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
   border-style: solid;
   background-image: none;
   background-color: #c70505;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
+>>>>>>> web/test
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18132,6 +18204,14 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-disabled {
   background-image: none;
   background-color: #c70505;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
+>>>>>>> web/test
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18233,6 +18313,14 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-over {
   background-image: none;
   background-color: #c70505;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(100%, #930000));
+  background-image: -webkit-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -moz-linear-gradient(top, #c70505, #930000 100%);
+  background-image: -o-linear-gradient(top, #c70505, #930000 100%);
+  background-image: linear-gradient(top, #c70505, #930000 100%);
+>>>>>>> web/test
 }
 
 /* line 516, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18246,6 +18334,14 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 .x-btn-red-medium-pressed {
   background-image: none;
   background-color: #c70505;
+<<<<<<< HEAD
+=======
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #c70505), color-stop(4%, #cc1d1d));
+  background-image: -webkit-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: -moz-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: -o-linear-gradient(top, #c70505, #cc1d1d 4%);
+  background-image: linear-gradient(top, #c70505, #cc1d1d 4%);
+>>>>>>> web/test
 }
 
 /* line 573, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
