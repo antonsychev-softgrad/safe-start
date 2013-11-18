@@ -49,19 +49,18 @@ Ext.define('SafeStartExt.view.form.Company', {
                 name: 'manage-data',
                 scale: 'medium',
                 handler: function() {
-                    if (me.isValid()) {
-                        me.fireEvent('manageCompanyAction', me.getRecord());
-                    }
+                    me.fireEvent('manageCompanyAction', me.getRecord());
                 }
             }, {
                 text: 'Save',
                 ui: 'blue',
                 name: 'save-data',
+                formBind: true,
                 scale: 'medium',
                 handler: function() {
-                    if (me.isValid()) {
+                    // if (me.isValid()) {
                         me.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
-                    }
+                    // }
                 }
             }, {
                 text: 'Send Password to Company Owner',
@@ -70,9 +69,9 @@ Ext.define('SafeStartExt.view.form.Company', {
                 cls:'sfa-last',
                 scale: 'medium',
                 handler: function() {
-                    if (me.isValid()) {
+                    // if (me.isValid()) {
                         me.fireEvent('sendPasswordAction', me.getRecord());
-                    }
+                    // }
                 }
             }],
             items: [{

@@ -25,6 +25,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             buttons: [{
                 text: 'Delete',
                 ui: 'red',
+                name: 'delete',
                 scale: 'medium',
                 handler: function () {
                     Ext.Msg.confirm({
@@ -165,5 +166,14 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             }]
         });
         this.callParent();
+    },
+
+    loadRecord: function (record) {
+        if (! record.get('id')) {
+            this.down('button[name=delete]').disable();
+        } else {
+            this.down('button[name=delete]').enable();
+        }
+        this.callParent(arguments);
     }
 });
