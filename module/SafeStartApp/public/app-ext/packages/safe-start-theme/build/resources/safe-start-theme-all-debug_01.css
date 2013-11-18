@@ -22904,16 +22904,11 @@ body.x-nbr .x-btn-tab-large-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 10px 30px 10px 30px;
+  padding: 8px 30px 8px 30px;
   border-width: 0;
   border-style: solid;
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7aa21d), color-stop(50%, #6c9804), color-stop(51%, #669003), color-stop(100%, #6c9804));
-  background-image: -webkit-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: -moz-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: -o-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
 }
 
 /* line 189, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -22944,7 +22939,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-green-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-10-30-10-30;
+  font-family: th-7-7-7-7-0-0-0-0-8-30-8-30;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -23033,7 +23028,7 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-green-medium-mc {
-  padding: 3px 23px 3px 23px;
+  padding: 1px 23px 1px 23px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -23088,11 +23083,6 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 .x-btn-green-medium-disabled {
   background-image: none;
   background-color: #6c9804;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7aa21d), color-stop(50%, #6c9804), color-stop(51%, #669003), color-stop(100%, #6c9804));
-  background-image: -webkit-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: -moz-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: -o-linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
-  background-image: linear-gradient(top, #7aa21d, #6c9804 50%, #669003 51%, #6c9804);
 }
 
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
