@@ -81,7 +81,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
                 "Vehicle Alert \n\r" .
                 "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
-                if ($alert->getField()->getAlertCritical()) continue;
+                if (!$alert->getField()->getAlertCritical()) continue;
                 $badge++;
                 $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }

@@ -162,11 +162,12 @@ class PublicVehicleController extends PublicAccessRestController
                 foreach($emails as $email) {
                     $email = (array) $email;
                     $this->MailPlugin()->send(
-                        'New inspection report',
+                        $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
                         $email['email'],
                         'checklist.phtml',
                         array(
-                            'name' => isset($email['name']) ? $email['name'] : 'friend'
+                            'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $pdf
                     );
@@ -247,7 +248,8 @@ class PublicVehicleController extends PublicAccessRestController
                         $email['email'],
                         'checklist.phtml',
                         array(
-                            'name' => isset($email['name']) ? $email['name'] : 'friend'
+                            'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $path
                     );
@@ -309,20 +311,5 @@ class PublicVehicleController extends PublicAccessRestController
             }
         }
         return true;
-    }
-
-    public function sendTestEmailAction() {
-        /*
-        $email = 'test21141@gmail.com';
-        $this->MailPlugin()->send(
-            'New inspection report',
-            $email,
-            'checklist.phtml',
-            array(
-                'name' => 'Artem'
-            ),
-            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_113_at_2013-09-17.pdf'
-        );
-        */
     }
 }

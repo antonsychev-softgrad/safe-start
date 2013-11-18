@@ -133,12 +133,12 @@ class UploadPlugin extends AbstractPlugin
             'orient_image' => true,
             // default params
             'image_versions' => array(
-                'full' => array(
+                /*'full' => array(
                     'max_width' => 1024,
                     'max_height' => 768,
                     'jpeg_quality' => 95,
                     'png_quality' => 9
-                ),
+                ),*/
                 'medium' => array(
                     'max_width' => 320,
                     'max_height' => 220,

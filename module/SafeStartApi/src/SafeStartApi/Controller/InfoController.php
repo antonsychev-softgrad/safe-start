@@ -103,6 +103,7 @@ class InfoController extends RestController
                 'name' => $name,
                 'message' => $message,
                 'email' => $email,
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
             )
         );
 
