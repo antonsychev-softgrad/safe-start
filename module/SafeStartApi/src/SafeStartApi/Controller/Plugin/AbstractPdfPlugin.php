@@ -50,11 +50,11 @@ class AbstractPdfPlugin extends AbstractPlugin
 
         $data = array(
             'Company name' => isset($companyData['title']) ? $companyData['title'] : 'Safe Start',
-            'Vehicle title' => $vehicleData['title'],
+            'Vehicle Make' => $vehicleData['title'],
+            'Vehicle Model' => $vehicleData['type'],
+            'Plant ID' => $vehicleData['plantId'],
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
-            'Plant ID' => $vehicleData['plantId'],
-            'Type of vehicle' => $vehicleData['type'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
             'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
