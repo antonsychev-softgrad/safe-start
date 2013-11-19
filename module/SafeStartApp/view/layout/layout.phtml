@@ -29,13 +29,13 @@
                     }
                     break;
                 case 'prod':
+                    $VER = 1.003;
                     if (isIe9()) {
                         $pathToApp = '/app-ext/build/production/SafeStartExt';
-                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver=1.001');
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
                         $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
-                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
                     } else {
-                        $VER = 1.002;
                         $S3URL = 'https://s3-us-west-2.amazonaws.com/safe-start/sencha-touch/build/v1.0/';
                         $this->headLink()->appendStylesheet($S3URL . 'resources/css/app.css?ver='.$VER);
                         $this->headLink()->appendStylesheet($S3URL . 'resources/css/safe-start.css?ver='.$VER);
