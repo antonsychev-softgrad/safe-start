@@ -1010,7 +1010,7 @@ table.x-form-trigger-wrap td {
     margin-top: 3px;
 }
 
-.sfa-company-settings .x-toolbar-docked-bottom {
+.x-ie .x-toolbar-docked-bottom {
     border-width: 0 !important;
 }
 
@@ -1024,3 +1024,188 @@ table.x-form-trigger-wrap td {
     padding: 10px 21px 18px;
 }
 
+
+/* BUTTONS */
+.x-btn-blue-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-blue-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-blue-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-blue-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-blue-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-blue-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-blue-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-blue-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-blue-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-blue-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-blue-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-blue-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}
+
+
+.x-btn-green-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-green-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-green-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-green-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-green-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-green-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-green-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-green-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-green-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-green-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-green-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-green-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}
+
+.x-btn-red-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-red-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-red-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-red-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-red-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-red-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-red-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-red-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-red-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-red-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-red-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-red-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}
