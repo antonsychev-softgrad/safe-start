@@ -167,6 +167,9 @@ class PublicVehicleController extends PublicAccessRestController
                         'checklist.phtml',
                         array(
                             'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'plantId' => $checkList->getVehicle() ? $checkList->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $checkList->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
                             'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $pdf
@@ -249,6 +252,9 @@ class PublicVehicleController extends PublicAccessRestController
                         'checklist.phtml',
                         array(
                             'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'plantId' => $inspection->getVehicle() ? $inspection->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $inspection->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
                             'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $path

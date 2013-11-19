@@ -815,6 +815,7 @@ class VehicleController extends RestrictedAccessRestController
                     $responsible->email,
                     'actionlist.phtml',
                     array(
+                        'plantId' => $vehicle->getPlantId(),
                         'siteUrl' => $config['params']['site_url'],
                         'emailStaticContentUrl' => $config['params']['email_static_content_url']
                     ),

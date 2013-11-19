@@ -11,9 +11,9 @@ $api = array(
         'href' => '/api/',
         'emailForContacts' => 'info@safestartinspections.com',
         'emailSubjects' => array(
-            'vehicle_fail_notification' => 'New Critical Alerts for Vehicle',
-            'vehicle_action_list' => 'New Vehicle(s) Action List',
-            'new_vehicle_inspection' => 'New Vehicle Inspection',
+            'vehicle_fail_notification' => 'New Critical Alert(s)',
+            'vehicle_action_list' => 'New Action List',
+            'new_vehicle_inspection' => 'New Inspection Report',
             'welcome' => 'Welcome To Safe Start Inspections!',
         )
     ),

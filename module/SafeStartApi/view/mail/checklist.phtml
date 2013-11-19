@@ -11,7 +11,6 @@
         }
         body {
             background: #e5e9ec;
-            border-top: 32px solid #d9dde0;
             font-size: 13.99px;
             color: #8c9297;
             font-family: 'HelveticaNeueRegular';
@@ -43,49 +42,34 @@
         <td height="110" align="center" bgcolor="#e5e9ec"><a href="#" target="_blank"><img src="<?php echo $this->emailStaticContentUrl; ?>images/logo.png" width="222" height="59" alt="logo" /></a></td>
     </tr>
     <tr>
-        <td align="center" style="color:#2e7fb7; padding: 24px; border-radius: 20px 20px 0 0; background: #fafafa; border-bottom: 6px solid #1585bd;"></td>
+        <td align="center" style="color:#2e7fb7; padding: 24px; border-radius: 20px 20px 0 0; background: #fafafa;"></td>
     </tr>
     <tr>
         <td  bgcolor="#fff" style="padding:24px"><table width="500" border="0" align="center">
-                <tr>
-                    <td><strong>SUBJECT:</strong> New Inspection </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><strong> New Inspection </strong></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>If you have any queries, please send us an email at <a href="mailto:support@safestartinspections.com">support@safestartinspections.com. </a></td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>Thanks, </td>
-                </tr>
-                <tr>
-                    <td>The Safe Start Inspections Team </td>
-                </tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td> <p></p><strong>New Inspection Report For <?php echo $this->plantId; ?></strong></p></td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>A new inspection report has been submitted for this vehicle:</td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>Plant ID: <?php echo $this->plantId; ?></td></tr>
+                <tr><td>Submitted By: <?php echo $this->uploadedByName; ?></td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>View the report attached to this email or login to view online: <a href="<?php echo $this->siteUrl; ?>">login URL</a> </td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr> <td>Thanks, </td></tr>
+                <tr> <td>The Safe Start Inspections Team </td></tr>
             </table></td>
     </tr>
     <tr>
-        <td align="left"><img src="<?php echo $this->emailStaticContentUrl; ?>images/footer.png" width="608" height="200" /></td>
+        <td align="left"><img src="<?php echo $this->emailStaticContentUrl; ?>images/footer.png" width="608" /></td>
     <tr>
         <td align="center" class="footer"><ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Forward this</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms & Conditions</a></li>
+                <li><a href="http://safestartinspections.com">Home</a></li>
+                <li><a href="http://safestartinspections.com/contact">Contact</a></li>
+                <li><a href="http://safestartinspections.com/privacy-policy">Privacy Policy</a></li>
+                <li><a href="http://safestartinspections.com/terms">Terms & Conditions</a></li>
             </ul>
-            <hr width="100" style="color: #c4c8cd;">
-            <p>You are receiving this email because you have subscribed to our newsletter list. If you do not wish to receive our newsletter emails in the future, please<a href="#"> unsubscribe here.</a></p></td>
 </table>
 </body>
 </html>
