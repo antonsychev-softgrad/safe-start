@@ -367,7 +367,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
             }
             if ($field->type != 'group') {
-                if ($field->type == 'datePicker' && isset($fieldsDataValues[$field->id]) && !empty($fieldsDataValues[$field->id])) {
+                if ($field->type == 'datePicker' && isset($fieldsDataValues[$field->id]) && !empty($fieldsDataValues[$field->id]) && $fieldsDataValues[$field->id] != "null") {
                     $value = !empty($fieldsDataValues[$field->id]) ? date($this->getController()->moduleConfig['params']['date_format'], (int)$fieldsDataValues[$field->id]) : '-';
                 } else {
                     $value = (isset($fieldsDataValues[$field->id]) && !empty($fieldsDataValues[$field->id])) ? $fieldsDataValues[$field->id] : '-';

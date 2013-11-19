@@ -25,13 +25,13 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             },
             {
                 xtype: 'textfield',
-                label: 'Question',
+                label: 'Checklist Title',
                 required: true,
                 name: 'title'
             },
             {
                 xtype: 'textfield',
-                label: 'Title',
+                label: 'Report Title',
                 required: true,
                 name: 'description'
             },
@@ -43,7 +43,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 displayField: 'title',
                 store: {
                     data: [
-                        { rank: 'group', title: 'Questions Group'},
+                        { rank: 'group', title: 'Checklist Titles Group'},
                         { rank: 'radio', title: 'Radio Buttons Yes|No|N\\A'},
                         { rank: 'checkbox', title: 'Checkbox Yes|No'},
                         { rank: 'label', title: 'Label'},
@@ -81,7 +81,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 displayField: 'title',
                 store: {
                     data: [
-                        { rank: '', title: ''},
+                        { rank: '', title: 'No Alert Required'},
                         { rank: 'yes', title: 'Yes'},
                         { rank: 'no', title: 'No'},
                         { rank: 'n/a', title: 'N/A'}
@@ -269,7 +269,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     value: this._record.get('trigger_value'),
                     store: {
                         data: [
-                            { rank: '', title: ''},
+                            { rank: '', title: 'No Alert Required'},
                             { rank: 'yes', title: 'Yes'},
                             { rank: 'no', title: 'No'},
                             { rank: 'n/a', title: 'N/A'}
@@ -305,7 +305,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['trigger_value'].hide();
                 fields['description'].show();
                 fields['default_value'].show();
-                fields['title'].setLabel('Question');
+                fields['title'].setLabel('Checklist Title');
             break;
             case 'radio':
             case 'checkbox':
@@ -315,7 +315,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['trigger_value'].show();
                 fields['description'].show();
                 fields['default_value'].show();
-                fields['title'].setLabel('Question');
+                fields['title'].setLabel('Checklist Title');
                 break;
             case 'datePicker':
                 fields['alert_critical'].show();
@@ -323,7 +323,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['trigger_value'].show();
                 fields['description'].show();
                 fields['default_value'].show();
-                fields['title'].setLabel('Question');
+                fields['title'].setLabel('Checklist Title');
                 break;
             case 'label':
                 fields['alert_title'].hide();
@@ -341,7 +341,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['trigger_value'].hide();
                 fields['description'].show();
                 fields['default_value'].show();
-                fields['title'].setLabel('Question');
+                fields['title'].setLabel('Checklist Title');
                 break;
         }
     },
