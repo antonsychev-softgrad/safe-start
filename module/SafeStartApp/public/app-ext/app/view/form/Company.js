@@ -12,68 +12,20 @@ Ext.define('SafeStartExt.view.form.Company', {
     cls:'sfa-company-settings',
     border: 0,
     ui: 'transparent',
+    buttonAlign: 'left',
+    fieldDefaults: {
+        msgTarget: 'side'
+    },
     layout: {
         type: 'vbox',
         align: 'stretch'
     },
-    // autoScroll: true,
+    autoScroll: true,
+    minWidth: 512,
 
     initComponent: function() {
         var me = this;
         Ext.apply(this, {
-            buttons: [{
-                text: 'Delete',
-                name: 'delete-data',
-                ui: 'red',
-                scale: 'medium',
-                handler: function() {
-                    Ext.Msg.confirm({
-                        title: 'Confirmation',
-                        msg: 'Are you sure want to delete this company?',
-                        buttons: Ext.Msg.YESNO,
-                        fn: function(btn) {
-                            if (btn !== 'yes') {
-                                return;
-                            }
-                            me.fireEvent('deleteCompanyAction', me.getRecord());
-                        }
-                    });
-                }
-            }, {
-                text: 'Manage',
-                ui: 'blue',
-                name: 'manage-data',
-                scale: 'medium',
-                handler: function() {
-                    if (me.isValid()) {
-                        me.fireEvent('manageCompanyAction', me.getRecord());
-                    }
-                }
-            }, {
-                text: 'Save',
-                ui: 'blue',
-                name: 'save-data',
-                scale: 'medium',
-                handler: function() {
-                    if (me.isValid()) {
-                        me.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
-                    }
-                }
-            }, {
-                text: 'Send Password to Company Owner',
-                ui: 'blue',
-                name: 'send-password',
-                cls:'sfa-last',
-                scale: 'medium',
-                handler: function() {
-                    if (me.isValid()) {
-                        me.fireEvent('sendPasswordAction', me.getRecord());
-                    }
-                }
-            }, {
-                xtype: 'box',
-                flex: 1
-            }],
             items: [{
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Company Settings',
@@ -84,7 +36,6 @@ Ext.define('SafeStartExt.view.form.Company', {
                     type: 'vbox',
                     align: 'stretch'
                 },
-                //cls:'sfa-company-settings',
                 labelAlign: 'top',
                 items: [{
                     xtype: 'hiddenfield',
@@ -143,6 +94,12 @@ Ext.define('SafeStartExt.view.form.Company', {
                         } else {
                             this.up('form').down('[name=subscription]').disable();
                         }
+                    },
+                    listeners: {
+                        change: function (el) {
+                            this.isValid();
+                        },
+                        scope: this
                     }
                 }]
             }, {
@@ -190,6 +147,68 @@ Ext.define('SafeStartExt.view.form.Company', {
                     fieldLabel: 'Expiry Date',
                     value: new Date(),
                     cls: 'sfa-datepicker'
+                }]
+            }],
+            bbar: [{
+                xtype: 'container',
+                defaults: {
+                    margin: '4 8'
+                },
+                items: [{
+                    xtype: 'button',
+                    text: 'Delete',
+                    name: 'delete-data',
+                    ui: 'red',
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function() {
+                        Ext.Msg.confirm({
+                            title: 'Confirmation',
+                            msg: 'Are you sure want to delete this company?',
+                            buttons: Ext.Msg.YESNO,
+                            fn: function(btn) {
+                                if (btn !== 'yes') {
+                                    return;
+                                }
+                                me.fireEvent('deleteCompanyAction', me.getRecord());
+                            }
+                        });
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Manage',
+                    ui: 'blue',
+                    name: 'manage-data',
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function() {
+                        me.fireEvent('manageCompanyAction', me.getRecord());
+                    }
+                }, {
+                    xtype: 'button',
+                    text: 'Save',
+                    ui: 'blue',
+                    name: 'save-data',
+                    formBind: true,
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function() {
+                        if (this.isValid()) {
+                            this.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
+                        }
+                    },
+                    scope: this
+                }, {
+                    xtype: 'button',
+                    text: 'Send Password to Company Owner',
+                    ui: 'transparent',
+                    minWidth: 240,
+                    name: 'send-password',
+                    cls:'sfa-last',
+                    scale: 'medium',
+                    handler: function() {
+                        me.fireEvent('sendPasswordAction', me.getRecord());
+                    }
                 }]
             }]
         });

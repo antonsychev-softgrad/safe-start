@@ -20,6 +20,11 @@
   background-color: transparent;
 }
 
+.x-tab-bar-body .x-box-scroller-right,
+.x-tab-bar-body .x-box-scroller-left {
+    margin-top: 10px;
+}
+
 .sfa-vehicles-tabpanel .x-tab-bar-body {
   padding-bottom: 0;
 }
@@ -169,13 +174,13 @@
     height: 40px !important;
 }
 /* button */
-.sfa-form-auth .x-panel-form .x-btn-inner {
+/*.sfa-form-auth .x-panel-form .x-btn-inner {
     padding-bottom: 2px;
 }
-.sfa-form-auth .x-panel-form .x-btn-button {
+*//*.sfa-form-auth .x-panel-form .x-btn-button {
     height: 18px;
 }
-
+*/
 .sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
     padding-left: 0;
 }
@@ -225,6 +230,9 @@
     padding-left: 22px;
     background: url(img/user-ic.png) no-repeat 0 15px;
 }
+.x-ie7 .sfa-top-nav .sfa-user, .x-ie8 .sfa-top-nav .sfa-user {
+    padding-left: 18px !important;
+}
 .sfa-top-nav .sfa-logout {
     padding-left: 27px;
     margin-left: 20px;
@@ -267,7 +275,7 @@ font-size: 24px;
     padding-bottom: 7px;
 }
 .sfa-left-coll .search input.x-form-text {
-    padding: 7px 3% 8px 14%;
+    padding: 4px 3% 8px 14%;
     height: auto !important;
     background: url(img/search-ic.png) no-repeat 4% 50%;
     -moz-border-radius: 6px;
@@ -454,43 +462,52 @@ font-size: 24px;
     margin-right: 16px;
 }
 
-span.x-btn-inner.x-btn-inner-center {
+/*span.x-btn-inner.x-btn-inner-center {
     background: none;
 }
-
-.sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
+*/
+/*.sfa-company-settings .sfa-last span.x-btn-inner.x-btn-inner-center {
     color: #1368a4;
 }
+*/
 .sfa-company-settings .sfa-last td {
     background: none;
     padding-left: 4px;
     padding-right: 0;
 }
-.sfa-company-settings .x-toolbar-footer a.x-btn {
+/*.sfa-company-settings .x-toolbar-footer a.x-btn {
     margin-right: 15px;
 }
-.sfa-company-settings .x-toolbar-footer a.x-btn {
+*/
+/*.sfa-company-settings .x-toolbar-footer a.x-btn {
     text-shadow: 0 -1px 0 #2C5E77;
 }
-.x-toolbar-footer span.x-btn-inner {
+*/
+/*.x-toolbar-footer span.x-btn-inner {
     font-size: 16px;
     display: block;
     padding-bottom: 2px;
 }
-.sfa-company-settings .x-toolbar-footer .x-btn-button {
+*/
+/*.sfa-company-settings .x-toolbar-footer .x-btn-button {
     height: 18px;
 }
-.sfa-company-settings .x-toolbar-footer a.x-btn {
+*/
+/*.sfa-company-settings .x-toolbar-footer a.x-btn {
     padding: 8px 35px;
 }
-.sfa-company-settings .x-toolbar-footer > .x-box-inner {
+*/
+/*.sfa-company-settings .x-toolbar-footer > .x-box-inner {
     height: 38px !important;
 }
+*/
 
-.sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
+/*.sfa-company-settings .x-toolbar-footer .sfa-last.x-btn-blue-medium {
     background: none;
     padding: 8px 0 8px 12px;
+    text-shadow: none;
 }
+*/
 
 /* END LEFt column */
 
@@ -561,7 +578,6 @@ span.x-btn-inner.x-btn-inner-center {
 
 .sfa-info-container > div {
     border: 1px solid red;
-    padding: 10px 20px 18px;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
@@ -573,6 +589,11 @@ span.x-btn-inner.x-btn-inner-center {
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
 }
+
+.sfa-info-container .sfa-company-settings > .x-panel-body {
+    padding: 10px 21px 18px;
+}
+
 .sfa-info-container.sfa-vehicles-tabpanel > div {
     padding: 0;
     border: none;
@@ -594,10 +615,19 @@ span.x-btn-inner.x-btn-inner-center {
     font-size: 16px;
     color: #565555;
 }
-.x-ie7 .sfa-info-container input.x-form-field {
+.x-ie7 .sfa-info-container input.x-form-field.x-form-text {
     padding-top: 4px;
+    width: 98% !important;
     height: 28px;
 }
+.x-ie7 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text,
+.x-ie8 .sfa-info-container .sfa-company-settings .sfa-datepicker input.x-form-field.x-form-text {
+    width: 95% !important;
+}
+.x-ie7 .sfa-info-container .x-form-textarea {
+    width: 98% !important;
+}
+
 .x-ie8 .sfa-info-container input.x-form-field {
     padding-top: 4px;
     height: 33px;
@@ -677,8 +707,12 @@ span.x-btn-inner.x-btn-inner-center {
     border-top-color: #dedede;
 }
 
-
-
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie7 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child:hover,
+.x-ie8 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.x-item-selected:first-child {
+    background: #e3edf1;
+}
 
 
 .sfa-left-coll .sfa-vehicle-item.x-item-selected,
@@ -730,6 +764,9 @@ span.x-btn-inner.x-btn-inner-center {
     /* page Vehisles -> inspections-info */
     .sfa-previous-inspections-info {
         border-left: 1px dotted #ccc;
+
+    }
+    .sfa-previous-inspections-info .sfa-group {
         font-size: 16px;
     }
     .sfa-previous-inspections-info .x-panel-body .x-component{
@@ -895,8 +932,6 @@ span.x-btn-inner.x-btn-inner-center {
     background-image: url(img/sfa-icon-contact.png);
 }
 
-
-
 .sfa-field-group .sfa-field-group-label {
     font-size: 18px;
     color: #1368a4;
@@ -905,6 +940,272 @@ span.x-btn-inner.x-btn-inner-center {
     font-weight: bold;
 }
 
+.x-form-date-trigger {
+    background: url(img/calendar.png) 100% 50% no-repeat;
+}
+.x-ie7 .x-form-date-trigger {
+    background-position: 0 50%;
+}
+
+table.x-form-trigger-wrap td {
+    background: none;
+}
+
+
+/*
+.x-btn-green-medium-tc, 
+.x-btn-green-medium-bc {
+    height: 5px !important;
+}
 
 
 
+
+.x-btn-green-medium-bl {
+    background-position-y: -29px;
+}
+
+*/
+
+
+/*.x-btn-blue-medium-bc,
+.x-btn-red-medium-bc {
+    height: 5px !important;
+}
+*/
+/*.x-btn-blue-medium-tc, */
+/*.x-btn-red-medium-tc,*/
+/*
+.x-btn-green-medium-br,
+.x-btn-blue-medium-br,
+.x-btn-red-medium-br {
+    background-position-y: -36px;
+}
+
+.x-btn-green-medium-tl, 
+.x-btn-blue-medium-tl,
+.x-btn-red-medium-tl {
+    background-position-y: -15px;
+}
+
+.x-btn-green-medium-tr, 
+.x-btn-blue-medium-tr,
+.x-btn-red-medium-tr {
+    background-position-y: -20px;
+}
+
+.x-btn-green-medium-tl, 
+.x-btn-blue-medium-tl,
+.x-btn-red-medium-tl {
+    background-position-y: -13px;
+}
+
+.x-btn-green-medium-bc,
+.x-btn-blue-medium-bc,
+.x-btn-red-medium-bc {
+    background-position-y: -8px;
+}
+*/
+.x-form-date-trigger {
+    margin-top: 3px;
+}
+
+.x-ie .x-toolbar-docked-bottom {
+    border-width: 0 !important;
+}
+
+
+
+.x-toolbar-default {
+    background-color: transparent;
+}
+
+.sfa-vehicle-form > .x-panel-body {
+    padding: 10px 21px 18px;
+}
+
+
+/* BUTTONS */
+.x-btn-blue-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-blue-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-blue-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-blue-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-blue-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-blue-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-blue-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-blue-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-blue-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-blue-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-blue-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-blue-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}
+
+
+.x-btn-green-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-green-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-green-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-green-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-green-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-green-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-green-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-green-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-green-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-green-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-green-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-green-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}
+
+.x-btn-red-medium .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -19px;
+}
+.x-btn-red-medium .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -1px;
+}
+.x-btn-red-medium .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -28px;
+}
+.x-btn-red-medium .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -37px;
+}
+.x-btn-red-medium .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -11px;
+}
+.x-btn-red-medium .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -46px;
+}
+.x-btn-red-medium-pressed .x-frame-tl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -73px;
+}
+.x-btn-red-medium-pressed .x-frame-tc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -55px;
+}
+.x-btn-red-medium-pressed .x-frame-tr {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -82px;
+}
+.x-btn-red-medium-pressed .x-frame-bl {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -91px;
+}
+.x-btn-red-medium-pressed .x-frame-bc {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -64px;
+}
+.x-btn-red-medium-pressed .x-frame-br {
+    background-image: url(../build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif);
+    background-position-x: -1px;
+    background-position-y: -100px;
+}

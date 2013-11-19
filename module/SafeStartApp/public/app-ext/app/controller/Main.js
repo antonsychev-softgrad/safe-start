@@ -43,6 +43,7 @@ Ext.define('SafeStartExt.controller.Main', {
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
                 switch(token) {
+                    case 'users':
                     case 'system-statistic':
                     case 'system-settings':
                     case 'company-settings':
