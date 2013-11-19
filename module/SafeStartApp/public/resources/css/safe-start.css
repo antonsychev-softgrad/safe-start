@@ -2426,3 +2426,12 @@ span.sfa-comment-content {
 textarea {
     resize: none;
 }
+
+.x-tabbar.x-docked-bottom .x-tab {
+    padding-top: 0;
+}
+
+.x-tabbar.x-docked-bottom .x-tab {
+    padding-top: 0;
+    border: 2px inset transparent;
+}
