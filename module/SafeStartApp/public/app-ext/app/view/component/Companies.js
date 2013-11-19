@@ -38,7 +38,7 @@ Ext.define('SafeStartExt.view.component.Companies', {
                     layout: 'fit',
                     flex: 2,
                     ui: 'transparent',
-                    padding: '24 26 20',
+                    padding: '24 26 19',
                     name: 'company-info'
                 }]
             }]

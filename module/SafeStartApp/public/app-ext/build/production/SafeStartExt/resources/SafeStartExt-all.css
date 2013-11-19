@@ -16980,7 +16980,7 @@ body.x-nbr .x-btn-green-large-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 8px 8px 8px 8px;
+  padding: 7px 7px 7px 7px;
   border-width: 0;
   border-style: solid;
   background-image: none;
@@ -17020,7 +17020,7 @@ body.x-nbr .x-btn-green-large-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-green-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-8-8-8-8;
+  font-family: th-7-7-7-7-0-0-0-0-7-7-7-7;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17109,7 +17109,7 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-green-medium-mc {
-  padding: 1px 1px 1px 1px;
+  padding: 0px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -17150,8 +17150,8 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 }
 /* line 284, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium .x-btn-glyph {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 18px;
   color: #333333;
   opacity: 0.5;
 }
@@ -17174,12 +17174,12 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon .x-btn-button,
 .x-btn-green-medium-noicon .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon .x-btn-inner,
 .x-btn-green-medium-noicon .x-btn-inner {
-  line-height: 16px;
+  line-height: 18px;
 }
 
 /* line 349, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17191,60 +17191,60 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /* line 364, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon .x-btn-inner {
-  width: 16px;
+  width: 18px;
   padding: 0;
 }
 /* line 370, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon .x-btn-icon-el {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 /* line 377, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-left .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 382, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-left .x-btn-inner {
-  line-height: 16px;
-  padding-left: 20px;
+  line-height: 18px;
+  padding-left: 22px;
 }
 /* line 398, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-left .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   right: auto;
 }
 /* line 403, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-green-medium-icon-text-left .x-btn-icon-el, .x-quirks .x-btn-green-medium-icon-text-left .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 417, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-right .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 422, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-right .x-btn-inner {
-  line-height: 16px;
-  padding-right: 20px;
+  line-height: 18px;
+  padding-right: 22px;
 }
 /* line 434, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-right .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   left: auto;
 }
 /* line 439, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-green-medium-icon-text-right .x-btn-icon-el, .x-quirks .x-btn-green-medium-icon-text-right .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 453, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-top .x-btn-inner {
-  padding-top: 20px;
+  padding-top: 22px;
 }
 /* line 457, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-top .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   bottom: auto;
 }
 /* line 465, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -17254,11 +17254,11 @@ body.x-nbr .x-btn-green-medium-frameInfo {
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-bottom .x-btn-inner {
-  padding-bottom: 20px;
+  padding-bottom: 22px;
 }
 /* line 477, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-green-medium-icon-text-bottom .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   top: auto;
 }
 /* line 485, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18486,7 +18486,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 8px 8px 8px 8px;
+  padding: 7px 7px 7px 7px;
   border-width: 0;
   border-style: solid;
   background-image: none;
@@ -18526,7 +18526,7 @@ body.x-nbr .x-btn-transparent-medium-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-blue-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-8-8-8-8;
+  font-family: th-7-7-7-7-0-0-0-0-7-7-7-7;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18615,7 +18615,7 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-blue-medium-mc {
-  padding: 1px 1px 1px 1px;
+  padding: 0px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -18656,8 +18656,8 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 }
 /* line 284, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium .x-btn-glyph {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 18px;
   color: #333333;
   opacity: 0.5;
 }
@@ -18680,12 +18680,12 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon .x-btn-button,
 .x-btn-blue-medium-noicon .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon .x-btn-inner,
 .x-btn-blue-medium-noicon .x-btn-inner {
-  line-height: 16px;
+  line-height: 18px;
 }
 
 /* line 349, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18697,60 +18697,60 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 
 /* line 364, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon .x-btn-inner {
-  width: 16px;
+  width: 18px;
   padding: 0;
 }
 /* line 370, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon .x-btn-icon-el {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 /* line 377, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-left .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 382, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-left .x-btn-inner {
-  line-height: 16px;
-  padding-left: 20px;
+  line-height: 18px;
+  padding-left: 22px;
 }
 /* line 398, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-left .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   right: auto;
 }
 /* line 403, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-blue-medium-icon-text-left .x-btn-icon-el, .x-quirks .x-btn-blue-medium-icon-text-left .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 417, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-right .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 422, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-right .x-btn-inner {
-  line-height: 16px;
-  padding-right: 20px;
+  line-height: 18px;
+  padding-right: 22px;
 }
 /* line 434, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-right .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   left: auto;
 }
 /* line 439, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-blue-medium-icon-text-right .x-btn-icon-el, .x-quirks .x-btn-blue-medium-icon-text-right .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 453, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-top .x-btn-inner {
-  padding-top: 20px;
+  padding-top: 22px;
 }
 /* line 457, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-top .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   bottom: auto;
 }
 /* line 465, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -18760,11 +18760,11 @@ body.x-nbr .x-btn-blue-medium-frameInfo {
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-bottom .x-btn-inner {
-  padding-bottom: 20px;
+  padding-bottom: 22px;
 }
 /* line 477, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-blue-medium-icon-text-bottom .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   top: auto;
 }
 /* line 485, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19496,7 +19496,7 @@ body.x-nbr .x-btn-red-small-frameInfo {
   -ms-border-radius: 7px;
   -o-border-radius: 7px;
   border-radius: 7px;
-  padding: 8px 8px 8px 8px;
+  padding: 7px 7px 7px 7px;
   border-width: 0;
   border-style: solid;
   background-image: none;
@@ -19536,7 +19536,7 @@ body.x-nbr .x-btn-red-small-frameInfo {
 
 /* line 255, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 body.x-nbr .x-btn-red-medium-frameInfo {
-  font-family: th-7-7-7-7-0-0-0-0-8-8-8-8;
+  font-family: th-7-7-7-7-0-0-0-0-7-7-7-7;
 }
 
 /* line 322, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19625,7 +19625,7 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 
 /* line 437, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
 .x-btn-red-medium-mc {
-  padding: 1px 1px 1px 1px;
+  padding: 0px 0px 0px 0px;
 }
 
 /* line 446, ../../../../ext/packages/ext-theme-base/sass/etc/mixins/frame.scss */
@@ -19666,8 +19666,8 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 }
 /* line 284, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium .x-btn-glyph {
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 18px;
+  line-height: 18px;
   color: #333333;
   opacity: 0.5;
 }
@@ -19690,12 +19690,12 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 /* line 335, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon .x-btn-button,
 .x-btn-red-medium-noicon .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 339, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon .x-btn-inner,
 .x-btn-red-medium-noicon .x-btn-inner {
-  line-height: 16px;
+  line-height: 18px;
 }
 
 /* line 349, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19707,60 +19707,60 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 
 /* line 364, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon .x-btn-inner {
-  width: 16px;
+  width: 18px;
   padding: 0;
 }
 /* line 370, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon .x-btn-icon-el {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 /* line 377, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-left .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 382, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-left .x-btn-inner {
-  line-height: 16px;
-  padding-left: 20px;
+  line-height: 18px;
+  padding-left: 22px;
 }
 /* line 398, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-left .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   right: auto;
 }
 /* line 403, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-red-medium-icon-text-left .x-btn-icon-el, .x-quirks .x-btn-red-medium-icon-text-left .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 417, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-right .x-btn-button {
-  height: 16px;
+  height: 18px;
 }
 /* line 422, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-right .x-btn-inner {
-  line-height: 16px;
-  padding-right: 20px;
+  line-height: 18px;
+  padding-right: 22px;
 }
 /* line 434, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-right .x-btn-icon-el {
-  width: 16px;
+  width: 18px;
   left: auto;
 }
 /* line 439, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-ie6 .x-btn-red-medium-icon-text-right .x-btn-icon-el, .x-quirks .x-btn-red-medium-icon-text-right .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
 }
 
 /* line 453, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-top .x-btn-inner {
-  padding-top: 20px;
+  padding-top: 22px;
 }
 /* line 457, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-top .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   bottom: auto;
 }
 /* line 465, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
@@ -19770,11 +19770,11 @@ body.x-nbr .x-btn-red-medium-frameInfo {
 
 /* line 473, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-bottom .x-btn-inner {
-  padding-bottom: 20px;
+  padding-bottom: 22px;
 }
 /* line 477, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */
 .x-btn-red-medium-icon-text-bottom .x-btn-icon-el {
-  height: 16px;
+  height: 18px;
   top: auto;
 }
 /* line 485, ../../../../ext/packages/ext-theme-neutral/sass/src/button/Button.scss */

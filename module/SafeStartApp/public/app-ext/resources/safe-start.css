@@ -1010,6 +1010,10 @@ table.x-form-trigger-wrap td {
     margin-top: 3px;
 }
 
+.sfa-company-settings .x-toolbar-docked-bottom {
+    border-width: 0 !important;
+}
+
 
 
 .x-toolbar-default {
