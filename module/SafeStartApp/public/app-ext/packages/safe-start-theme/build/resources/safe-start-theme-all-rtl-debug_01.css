@@ -4648,7 +4648,7 @@ div.x-editor {
   padding-left: 20px;
   white-space: nowrap;
   color: #000;
-  font: normal 12px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 12px helvetica, arial, verdana, sans-serif;
   border: 1px solid;
   border-color: #ddd #bbb #bbb #ddd;
   background-color: #fff;
@@ -5847,7 +5847,7 @@ a.x-tab {
 .x-body {
   color: black;
   font-size: 13px;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   background: #f5f5f5;
 }
 
@@ -5929,7 +5929,7 @@ a.x-tab {
   padding: 0;
   background-color: transparent;
   color: #666666;
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 41, ../../../../ext/packages/ext-theme-neutral/sass/src/LoadMask.scss */
@@ -6365,7 +6365,7 @@ body.x-nbr .x-btn-default-small-frameInfo {
 .x-btn-default-small .x-btn-inner {
   font-size: 12px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: white;
   padding: 0 5px;
 }
@@ -6904,7 +6904,7 @@ body.x-nbr .x-btn-default-medium-frameInfo {
 .x-btn-default-medium .x-btn-inner {
   font-size: 14px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: white;
   padding: 0 8px;
 }
@@ -7443,7 +7443,7 @@ body.x-nbr .x-btn-default-large-frameInfo {
 .x-btn-default-large .x-btn-inner {
   font-size: 16px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: white;
   padding: 0 10px;
 }
@@ -7982,7 +7982,7 @@ body.x-nbr .x-btn-default-toolbar-small-frameInfo {
 .x-btn-default-toolbar-small .x-btn-inner {
   font-size: 12px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: #666666;
   padding: 0 5px;
 }
@@ -8524,7 +8524,7 @@ body.x-nbr .x-btn-default-toolbar-medium-frameInfo {
 .x-btn-default-toolbar-medium .x-btn-inner {
   font-size: 14px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: #666666;
   padding: 0 8px;
 }
@@ -9066,7 +9066,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
 .x-btn-default-toolbar-large .x-btn-inner {
   font-size: 16px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: #666666;
   padding: 0 10px;
 }
@@ -9571,7 +9571,7 @@ body.x-nbr .x-btn-default-toolbar-large-frameInfo {
   margin: 0 6px 0 4px;
   color: #333f49;
   line-height: 16px;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   font-size: 12px;
   font-weight: normal;
 }
@@ -12614,7 +12614,7 @@ body.x-nbr .x-tip-form-invalid-frameInfo {
 
 /* line 120, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default {
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
   line-height: 16px;
   color: #666666;
 }
@@ -12938,7 +12938,7 @@ body.x-nbr .x-btn-group-default-framed-notitle-frameInfo {
 
 /* line 120, ../../../../ext/packages/ext-theme-neutral/sass/src/container/ButtonGroup.scss */
 .x-btn-group-header-text-container-default-framed {
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
   line-height: 16px;
   color: #666666;
 }
@@ -14739,7 +14739,7 @@ body.x-nbr .x-window-header-default-collapsed-left-frameInfo {
 .x-form-invalid-under {
   padding: 2px 2px 2px 20px;
   color: #cf4c35;
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
   line-height: 16px;
   background: no-repeat 0 2px;
   background-image: url(images/form/exclamation.png);
@@ -14762,12 +14762,12 @@ div.x-lbl-top-err-icon {
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-form-item-label {
   color: #333333;
-  font: normal 16px/17px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px/17px helvetica, arial, verdana, sans-serif;
   margin-top: 7px;
 }
 /* line 31, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
 .x-toolbar-item .x-form-item-label {
-  font: normal 13px/17px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/17px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 45, ../../../../ext/packages/ext-theme-neutral/sass/src/form/Labelable.scss */
@@ -14795,7 +14795,7 @@ div.x-lbl-top-err-icon {
 /* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
 .x-form-item,
 .x-form-field {
-  font: normal 16px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 21, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Base.scss */
@@ -14871,7 +14871,7 @@ textarea.x-form-empty-field {
 
 /* line 11, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Display.scss */
 .x-form-display-field {
-  font: normal 16px/17px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px/17px helvetica, arial, verdana, sans-serif;
   color: black;
   margin-top: 7px;
 }
@@ -14953,11 +14953,11 @@ textarea.x-form-empty-field {
 /* line 40, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Checkbox.scss */
 .x-form-cb-label {
   margin-top: 7px;
-  font: normal 16px/17px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px/17px helvetica, arial, verdana, sans-serif;
 }
 /* line 43, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Checkbox.scss */
 .x-toolbar-item .x-form-cb-label {
-  font: normal 13px/17px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/17px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 53, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/Checkbox.scss */
@@ -15050,7 +15050,7 @@ textarea.x-form-empty-field {
 
 /* line 39, ../../../../ext/packages/ext-theme-neutral/sass/src/form/FieldSet.scss */
 .x-fieldset-header-text {
-  font: 12px/16px bold "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: 12px/16px bold helvetica, arial, verdana, sans-serif;
   color: black;
   padding: 1px 0;
 }
@@ -15480,7 +15480,7 @@ a.x-datepicker-arrow:hover {
 .x-datepicker-column-header {
   width: 30px;
   color: black;
-  font: bold 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: bold 13px helvetica, arial, verdana, sans-serif;
   text-align: right;
   background-image: none;
   background-color: white;
@@ -15503,7 +15503,7 @@ a.x-datepicker-arrow:hover {
 /* line 128, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-datepicker-date {
   padding: 0 7px 0 0;
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
   color: black;
   cursor: pointer;
   line-height: 23px;
@@ -15597,7 +15597,7 @@ a.x-datepicker-date:hover {
 /* line 233, ../../../../ext/packages/ext-theme-neutral/sass/src/picker/Date.scss */
 .x-monthpicker-item {
   margin: 5px 0 5px;
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
   text-align: center;
 }
 
@@ -15870,7 +15870,7 @@ a.x-color-picker-item:hover {
 
 /* line 100, ../../../../ext/packages/ext-theme-neutral/sass/src/form/field/HtmlEditor.scss */
 .x-html-editor-wrap textarea {
-  font: normal 16px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 16px helvetica, arial, verdana, sans-serif;
   background-color: white;
   resize: none;
 }
@@ -15888,13 +15888,13 @@ a.x-color-picker-item:hover {
   padding: 10px;
   color: gray;
   background-color: white;
-  font: normal 13px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/panel/Table.scss */
 .x-grid-cell {
   color: null;
-  font: normal 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
   background-color: white;
   border-color: #ededed;
   border-style: solid;
@@ -16134,7 +16134,7 @@ a.x-color-picker-item:hover {
 .x-column-header {
   border-right: 1px solid silver;
   color: #666666;
-  font: bold 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: bold 13px/15px helvetica, arial, verdana, sans-serif;
   background-color: #f5f5f5;
 }
 
@@ -16303,7 +16303,7 @@ a.x-color-picker-item:hover {
 /* line 30, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
 .x-grid-group-title {
   color: #666666;
-  font: bold 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: bold 13px/15px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 36, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Grouping.scss */
@@ -16328,7 +16328,7 @@ a.x-color-picker-item:hover {
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/RowBody.scss */
 .x-grid-rowbody {
-  font: normal 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
   padding: 5px 10px 5px 10px;
 }
 
@@ -16361,7 +16361,7 @@ a.x-color-picker-item:hover {
   border-color: #ededed;
   background-color: transparent !important;
   border-top-width: 0;
-  font: normal 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
 }
 
 /* line 26, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/feature/Summary.scss */
@@ -16411,7 +16411,7 @@ a.x-color-picker-item:hover {
 
 /* line 4, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/plugin/Editing.scss */
 .x-grid-editor .x-form-text {
-  font: normal 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
   padding: 4px 9px 3px 9px;
   height: 24px;
 }
@@ -16446,7 +16446,7 @@ a.x-color-picker-item:hover {
 }
 /* line 62, ../../../../ext/packages/ext-theme-neutral/sass/src/grid/plugin/Editing.scss */
 .x-grid-editor .x-form-display-field {
-  font: normal 13px/15px "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font: normal 13px/15px helvetica, arial, verdana, sans-serif;
   padding: 5px 10px 4px 10px;
   text-overflow: ellipsis;
 }
@@ -16881,7 +16881,7 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 .x-accordion-hd .x-panel-header-text-container {
   color: #666666;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   text-transform: none;
 }
 
@@ -18872,7 +18872,7 @@ body.x-nbr .x-tab-default-right-frameInfo {
 .x-tab-default .x-tab-inner {
   font-size: 13px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: white;
   line-height: 16px;
 }
@@ -20129,7 +20129,7 @@ body.x-nbr .x-btn-plain-toolbar-small-frameInfo {
 .x-btn-plain-toolbar-small .x-btn-inner {
   font-size: 12px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: #666666;
   padding: 0 5px;
 }
@@ -20616,7 +20616,7 @@ body.x-nbr .x-btn-plain-toolbar-small-frameInfo {
   color: #666666;
   font-size: 13px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -21009,7 +21009,7 @@ body.x-nbr .x-btn-plain-toolbar-small-frameInfo {
   color: #666666;
   font-size: 13px;
   font-weight: bold;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   line-height: 15px;
   padding: 1px 0 0;
   text-transform: none;
@@ -23012,7 +23012,7 @@ body.x-nbr .x-btn-tab-large-frameInfo {
 .x-btn-tab-large .x-btn-inner {
   font-size: 12px;
   font-weight: normal;
-  font-family: "Archivo Narrow", "Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+  font-family: helvetica, arial, verdana, sans-serif;
   color: white;
   padding: 0 0px 0px 0px 0px;
 }
