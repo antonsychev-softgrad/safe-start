@@ -316,8 +316,8 @@ class Alert extends BaseEntity
         $data = array(
             'id' => $this->getId(),
             'status' => $this->getStatus(),
-            'title' => $this->field ? $this->field->getAlertDescription() : '',
-            'alert_description' => $this->field ? $this->field->getAlertDescription() : '',
+            'title' => $this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): '',
+            'alert_description' => $this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): '',
             'field' => $this->field ? $this->field->toArray() : null,
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : array(),
@@ -325,8 +325,8 @@ class Alert extends BaseEntity
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
             'comments' => $this->getComments(),
-            'creation_date' => $this->getCreationDate(),
-            'update_date' => $this->getUpdateDate(),
+            'creation_date' => $this->getCreationDate()->getTimestamp(),
+            'update_date' => $this->getUpdateDate()->getTimestamp(),
             'history' => $this->getHistory(),
             'refreshed_times' => $this->getRefreshedTimes()
         );
