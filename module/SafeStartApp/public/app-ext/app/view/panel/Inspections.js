@@ -27,11 +27,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                 border: 0,
                 maxWidth: 250,
                 cls: 'sfa-previous-inspections-left-coll',
-                // tbar: {
-                //     xtype: 'pagingtoolbar',
-                //     pageSize: 5,
-                //     store: store
-                // },
+                overflowY: 'auto',
                 items: [{
                     xtype: 'dataview',
                     itemSelector: 'div.sfa-vehicle-item',

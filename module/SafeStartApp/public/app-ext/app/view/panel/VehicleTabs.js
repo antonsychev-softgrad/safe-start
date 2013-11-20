@@ -41,14 +41,14 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                         vehicle: this.vehicle
                     });
                     break;
-                //case 'fill-checklist':
-                //    tabs.push({
-                //        xtype: 'SafeStartExtPanelVehicleInspection',
-                //        title: page.get('text'),
-                //        vehicle: this.vehicle
-                //    });
-                //    break;
                 case 'fill-checklist':
+                   tabs.push({
+                       xtype: 'SafeStartExtPanelVehicleInspection',
+                       title: page.get('text'),
+                       vehicle: this.vehicle
+                   });
+                   break;
+                // case 'fill-checklist':
                 case 'alerts':
                 case 'users':
                 case 'report':

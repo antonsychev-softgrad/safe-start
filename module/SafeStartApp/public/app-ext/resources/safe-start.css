@@ -43,9 +43,15 @@
   font-size: 18px;
   color: #b8d3e4;
   padding-top: 1px;
-  padding-bottom: 5px;
+  /*padding-bottom: 5px;*/
+  margin-top: 5px;
   font-weight: normal;
 }
+
+.x-ie78 .sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default .x-tab-inner {
+    margin-top: 0px;
+}
+
 .sfa-vehicles-tabpanel .x-tab-bar-body .x-tab-default.x-top-over .x-tab-inner {
     color: #fff;
 }

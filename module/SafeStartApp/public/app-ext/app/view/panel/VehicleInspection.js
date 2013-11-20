@@ -18,7 +18,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         CHOISE_ADDITIONAL_FORM: 4
     },
 
-    ui: 'light',
+    // ui: 'light',
     html: 'inspection',
     current: -1,
     forms: {},
@@ -123,17 +123,24 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     },
 
     createChecklistForm: function (form) {
-        var buttons = [];
+        var leftBtns = [],
+            rightBtns = [];
 
-        buttons.unshift({
+        rightBtns.push({
+            xtype: 'button',
             text: 'Next',
+            // ui: 'green',
+            scale: 'small',
             handler: this.onNextClick,
             scope: this
         });
 
         if (! form.isFirst) {
-            buttons.unshift({
+            leftBtns.unshift({
+                xtype: 'button',
                 text: 'Prev',
+                // ui: 'green',
+                scale: 'small',
                 handler: this.onPrevClick,
                 scope: this
             });
@@ -141,10 +148,45 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         form.view = this.add({
             xtype: 'form',
+            overflowY: 'auto',
             checklist: form.checklist,
-            title: form.checklist.get('groupName').toUpperCase(),
+            // title: 'PRE START INSPECTION - ' + form.checklist.get('groupName').toUpperCase(),
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
             items: this.createChecklistFields(form.checklist.items()),
-            buttons: buttons
+            tbar: [{
+                xtype: 'container',
+                width: '100%',
+                layout: 'hbox',
+                items: [{
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    minWidth: 100,
+                    items: leftBtns
+                }, {
+                    xtype: 'container',
+                    flex: 1,
+                    style: {
+                        textAlign: 'center',
+                        fontSize: '18px'
+                    },
+                    html: 'PRE START INSPECTION - ' + form.checklist.get('groupName').toUpperCase()
+                }, {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle',
+                        pack: 'end'
+                    },
+                    minWidth: 100,
+                    items: rightBtns
+                }]
+            }]
         });
     },
 
@@ -180,6 +222,8 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     createTextField: function (field) {
         return {
             xtype: 'textfield',
+            width: 500,
+            labelWidth: 200,
             fieldLabel: field.get('fieldName'),
             value: field.get('fieldValue') || field.get('defaultValue')
         };
@@ -234,10 +278,10 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             };
         }
 
-        if (field.alerts().getCount()) {
+        if (field.alerts().getCount() && field.alerts().first().get('triggerValue')) {
             listeners.checkAlert = function (value) {
                 var alert = field.alerts().first();
-                if (RegExp(this.field.get('triggerValue'), 'i').test(value)) {
+                if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
                     alert.set('active', true);
                     if (alert.get('critical') && alert.get('alertMessage')) {
                         Ext.Msg.alert('DANGER', alert.get('alertMessage'));
@@ -255,27 +299,40 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             });
         }, this);
         return [{
-            xtype: 'fieldcontainer',
-            layout: 'hbox',
-            fieldId: field.get('id'),
-            field: field,
-            labelAlign: 'top',
-            defaults: {
-                xtype: 'radio',
-                name: 'sfa-checklist-radio-' + field.get('id'),
-                listeners: {
-                    change: function (combo, checked) {
-                        if (checked) {
-                            var formField = this.up('fieldcontainer[fieldId=' + field.get('id') + ']');
-                            formField.fireEvent('checkAdditional', combo.inputValue);
-                            formField.fireEvent('checkAlert', combo.inputValue);
+            xtype: 'container',
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
+            items: [{
+                xtype: 'container',
+                style: {
+                    textAlign: 'center'
+                },
+                html: field.get('fieldName')
+            }, {
+                xtype: 'fieldcontainer',
+                fieldId: field.get('id'),
+                field: field,
+                layout: 'hbox',
+                defaults: {
+                    xtype: 'radio',
+                    name: 'sfa-checklist-radio-' + field.get('id'),
+                    listeners: {
+                        change: function (combo, checked) {
+                            if (checked) {
+                                var formField = this.up('fieldcontainer[fieldId=' + field.get('id') + ']');
+                                formField.fireEvent('checkAdditional', combo.inputValue);
+                                formField.fireEvent('checkAlert', combo.inputValue);
+                            }
                         }
                     }
-                }
-            },
-            fieldLabel: field.get('fieldName'),
-            items: options,
-            listeners: listeners
+                },
+                items: options,
+                listeners: listeners
+            }]
+            // fieldLabel: field.get('fieldName'),
+            // items: options,
         }].concat(formAdditionalFields);
     },
 
@@ -283,6 +340,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         return {
             xtype: 'datefield',
             value: field.get('fieldValue') || '',
+            labelWidth: 300,
             fieldLabel: field.get('fieldName')
         };
     },
@@ -296,11 +354,26 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
     createGroupField: function (field) {
         return {
-            xtype: 'fieldcontainer',
-            layout: 'vbox',
-            labelAlign: 'top',
-            fieldLabel: field.get('fieldName'),
-            items: this.createChecklistFields(field.items())
+            xtype: 'container',
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
+            items: [{
+                xtype: 'container',
+                style: {
+                    textAlign: 'center'
+                },
+                html: field.get('fieldName')
+            }, {
+                xtype: 'container',
+                cls: 'sfa-group-container',
+                layout: {
+                    type: 'vbox',
+                    align: 'center'
+                },
+                items: this.createChecklistFields(field.items())
+            }]
         };
     },
 
@@ -319,16 +392,51 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         form.view = this.add({
             xtype: 'form',
             defaultType: 'checkboxfield',
-            title: 'ADDITIONAL',
+            layout: {
+                type: 'vbox',
+                align: 'center'
+            },
             items: checkboxes,
-            buttons: [{
-                text: 'Prev',
-                handler: this.onPrevClick,
-                scope: this
-            }, {                
-                text: 'Next',
-                handler: this.onNextClick,
-                scope: this
+            tbar: [{
+                xtype: 'container',
+                width: '100%',
+                layout: 'hbox',
+                items: [{
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    minWidth: 100,
+                    items: [{
+                        xtype: 'button',
+                        text: 'Prev',
+                        handler: this.onPrevClick,
+                        scope: this
+                    }]
+                }, {
+                    xtype: 'container',
+                    flex: 1,
+                    style: {
+                        textAlign: 'center',
+                        fontSize: '18px'
+                    },
+                    html: 'PRE START INSPECTION - ADDITIONAL' 
+                }, {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle',
+                        pack: 'end'
+                    },
+                    minWidth: 100,
+                    items: [{
+                        xtype: 'button',
+                        text: 'Next',
+                        handler: this.onNextClick,
+                        scope: this
+                    }]
+                }]
             }]
         });
     },
@@ -336,15 +444,46 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     createReviewForm: function (form) {
         form.view = this.add({
             xtype: 'form',
-            title: 'REVIEW',
-            buttons: [{
-                text: 'Prev',
-                handler: this.onPrevClick,
-                scope: this
-            }, {                
-                text: 'Submit',
-                handler: this.onSubmitClick,
-                scope: this
+            tbar: [{
+                xtype: 'container',
+                width: '100%',
+                layout: 'hbox',
+                items: [{
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle'
+                    },
+                    minWidth: 100,
+                    items: [{
+                        xtype: 'button',
+                        text: 'Prev',
+                        handler: this.onPrevClick,
+                        scope: this
+                    }]
+                }, {
+                    xtype: 'container',
+                    flex: 1,
+                    style: {
+                        textAlign: 'center',
+                        fontSize: '18px'
+                    },
+                    html: 'PRE START INSPECTION - REVIEW' 
+                }, {
+                    xtype: 'container',
+                    layout: {
+                        type: 'hbox',
+                        align: 'middle',
+                        pack: 'end'
+                    },
+                    minWidth: 100,
+                    items: [{
+                        xtype: 'button',
+                        text: 'Submit',
+                        handler: this.onSubmitClick,
+                        scope: this
+                    }]
+                }]
             }]
         });
     },
