@@ -300,7 +300,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
         switch (type) {
             case 'group':
                 fields['alert_title'].hide();
-                fields['alert_critical'].hide();
+                fields['alert_critical'].hide().disable();
                 fields['alert_description'].hide();
                 fields['trigger_value'].hide();
                 fields['description'].show();
@@ -310,7 +310,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
             case 'radio':
             case 'checkbox':
                 fields['alert_title'].show();
-                fields['alert_critical'].show();
+                fields['alert_critical'].show().enable();
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
                 fields['description'].show();
@@ -318,7 +318,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 fields['title'].setLabel('Question');
                 break;
             case 'datePicker':
-                fields['alert_critical'].show();
+                fields['alert_critical'].show().enable();
                 fields['alert_description'].show();
                 fields['trigger_value'].show();
                 fields['description'].show();
@@ -327,7 +327,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 break;
             case 'label':
                 fields['alert_title'].hide();
-                fields['alert_critical'].hide();
+                fields['alert_critical'].hide().disable();
                 fields['alert_description'].hide();
                 fields['trigger_value'].hide();
                 fields['description'].hide();
@@ -336,7 +336,7 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 break;
             default:
                 fields['alert_title'].hide();
-                fields['alert_critical'].hide();
+                fields['alert_critical'].hide().disable();
                 fields['alert_description'].hide();
                 fields['trigger_value'].hide();
                 fields['description'].show();
