@@ -1215,3 +1215,74 @@ table.x-form-trigger-wrap td {
     background-position-x: -1px;
     background-position-y: -100px;
 }
+
+
+
+/* TEMPORARY - DEBUG */
+
+.sfa-review-details-item {
+    font-size: 20px;
+    color: #558FAC;
+    cursor: pointer;
+    /*padding: 12px 15px 12px 15px !important;*/
+    width: 100%;
+}
+
+.sfa-review-details-item-completed {
+    font-size: 20px;
+    /*background-image: url('img/checklist-success.gif');*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 215px;*/
+    color: #558FAC;
+}
+
+.sfa-review-details-item-alerts {
+    font-size: 20px;
+    color: #F00;
+}
+
+.sfa-review-details-item-disabled {
+    font-size: 20px;
+    display: none;
+    color: #AAA;
+}
+
+.sfa-review-details-item.x-item-selected, 
+.sfa-review-details-item:hover {
+    background-color: #E3EDF1;
+}
+
+
+.sfa-review-details-item {
+    border-bottom: 1px solid #DEDEDE;
+}
+
+.sfa-review-details-item:first {
+    border-top: 1px solid #DEDEDE;
+}
+
+.sfa-vehicle-inspection-checklist {
+    border-right: 1px solid #DEDEDE;
+}
+
+.x-form-file-btn input {
+    /*display: opacity;*/
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    filter: alpha(opacity = 0);
+}
+
+
+.x-ie .x-form-file-btn {
+    /*z-index: 2;*/
+}
+
+.x-ie .x-form-file-btn input {
+    /*left: 100px;*/
+}
+
+.sfa-checklists-container .x-contaner-default {
+    background-color: #E8E8E8;
+}

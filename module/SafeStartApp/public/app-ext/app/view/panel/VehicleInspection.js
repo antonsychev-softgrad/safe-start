@@ -2,13 +2,15 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     extend: 'Ext.panel.Panel',
     requires: [
         'Ext.form.field.Radio',
+        'Ext.form.field.File',
         'Ext.form.field.Checkbox',
         'Ext.form.field.Date',
         'SafeStartExt.store.InspectionChecklists'
     ],
     xtype: 'SafeStartExtPanelVehicleInspection',
     layout: {
-        type: 'card'
+        type: 'hbox',
+        align: 'strech'
     },
 
     statics: {
@@ -18,13 +20,58 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         CHOISE_ADDITIONAL_FORM: 4
     },
 
-    // ui: 'light',
-    html: 'inspection',
     current: -1,
     forms: {},
 
     initComponent: function () {
         Ext.apply(this, {
+            items: [{
+                xtype: 'dataview',
+                width: 250,
+                height: '100%',
+                cls: 'sfa-vehicle-inspection-checklist',
+                itemSelector: 'div',
+                tpl: new Ext.XTemplate(
+                    '<tpl for=".">',
+                    '<div class="sfa-review-details-item ',
+                    '<tpl if="enabled == false">sfa-review-details-item-disabled</tpl> ',
+                    '<tpl if="completed == true">sfa-review-details-item-completed</tpl> ',
+                    '<tpl if="alerts.length != 0">sfa-review-details-item-alerts</tpl> ',
+                    '" style="padding: 10px; font-size: 20px;">',
+                    '{groupName}',
+                    '</div>',
+                    '</tpl>'
+                ),
+                store: {
+                    proxy: {
+                        type: 'memory'
+                    },
+                    fields: [
+                        'groupName', 
+                        'clsPostfix', 
+                        'view', 
+                        'checklist', 
+                        'checklistPages', 
+                        'enabled', 
+                        'type', 
+                        'alerts', 
+                        'completed'
+                    ],
+                    data: []
+                },
+                listeners: {
+                    itemclick: function (dataview, record) {
+                        this.onChecklistClick(record);
+                    },
+                    scope: this
+                }
+            }, {
+                xtype: 'container',
+                name: 'checklists-container',
+                flex: 1,
+                cls: 'sfa-checklists-container',
+                layout: 'card'
+            }]
         });
         this.callParent();
     },
@@ -33,79 +80,161 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         this.checklists = checklists;
         this.current = -1;
         this.forms = [];
+        var listStore = this.down('dataview').getStore();
+        this.listStore = listStore;
 
         checklists.query('additional', false).each(function (checklist) {
-            this.forms.push({
+            listStore.add({
                 type: this.self.CHECKLIST_FORM,
                 view: null,
-                checklist: checklist
+                checklist: checklist,
+                enabled: true,
+                alerts: [],
+                groupName: checklist.get('groupName'),
+                clsPostfix: '',
+                form: this.forms[this.forms.length-1]
             });
         }, this);
-        this.forms[0].isFirst = true;
+        listStore.first().set('isFirst', true);
+        // this.forms[0].isFirst = true;
 
-        var index = this.forms.push({
+        // var index = this.forms.push({
+        //     type: this.self.CHOISE_ADDITIONAL_FORM,
+        //     checklistPages: [],
+        //     view: null
+        // });
+        var checklistPages = [];
+        var additional = listStore.add({
             type: this.self.CHOISE_ADDITIONAL_FORM,
+            groupName: 'Additional',
+            alerts: [],
+            enabled: true,
             checklistPages: [],
             view: null
-        });
+        })[0];
 
         checklists.query('additional', true).each(function (checklist) {
-            var page = {
-                type: this.self.CHECKLIST_ADDITIONAL_FORM,
+            // var page = {
+            //     type: this.self.CHECKLIST_ADDITIONAL_FORM,
+            //     view: null,
+            //     enabled: false,
+            //     checklist: checklist
+            // };
+            // this.forms.push(page);
+            var page = listStore.add({
+                groupName: checklist.get('groupName'),
                 view: null,
                 enabled: false,
-                checklist: checklist
-            };
-            this.forms.push(page);
-            this.forms[index-1].checklistPages.push(page);
+                alerts: [],
+                checklist: checklist,
+                clsPostfix: '-disabled',
+                type: this.self.CHECKLIST_ADDITIONAL_FORM
+            })[0];
+            checklistPages.push(page);
+            // this.forms[index-1].checklistPages.push(page);
         }, this);
 
-        this.forms.push({
+        additional.set('checklistPages', checklistPages);
+
+        listStore.add({
             type: this.self.REVIEW_FORM,
-            view: null
+            alerts: [],
+            view: null,
+            enabled: true,
+            groupName: 'Review'
         });
 
         this.onNextClick();
     },
 
-    onNextClick: function () {
-        var form;
-        this.current++;
-        form = this.forms[this.current];
-
+    onLeave: function (form) {
         if (form) {
-            if (form.type === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.enabled) {
-                this.onNextClick();
-                return;
+            form.set('completed', true);
+
+            var alerts = [];
+            if (form.get('type') === this.self.CHECKLIST_FORM
+                || (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && form.get('enabled') === true)
+                ) {
+                var triggerableFields = form.get('view').query('fieldcontainer{alert !== false}');
+                Ext.each(triggerableFields, function (field) {
+                    if (field.alert.get('active')) {
+                        alerts.push(field.alert);
+                    }
+                }, this);
             }
-            this.goToForm(form);
-        } 
+            // form.set('alerts', alert);
+            form.set('alerts', alerts);
+        }
+        //check for alerts or completion
     },
 
-    onPrevClick: function () {
+    onNextClick: function (leave) {
         var form;
-        this.current--;
-        form = this.forms[this.current];
-
-        if (form) {
-            if (form.type === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.enabled) {
-                this.onPrevClick();
-                return;
-            }
-            this.goToForm(form);
-        } 
-    },
-
-    goToForm: function (form) {
-        if (! form.view) {
-            this.createForm(form);
+        if (leave) {
+            this.onLeave(this.listStore.getAt(this.current));
         }
 
-        this.getLayout().setActiveItem(form.view);
+        this.current++;
+        form = this.listStore.getAt(this.current);
+        // form = this.forms[this.current];
+
+        if (form) {
+            if (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.get('enabled')) {
+                this.onNextClick(false);
+                return;
+            }
+            this.goToForm(form);
+        } 
+    },
+
+    onPrevClick: function (leave) {
+        var form;
+        if (leave) {
+            this.onLeave(this.listStore.getAt(this.current));
+        }
+        this.current--;
+        form = this.listStore.getAt(this.current);
+
+        if (form) {
+            if (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.get('enabled')) {
+                this.onPrevClick(false);
+                return;
+            }
+            this.goToForm(form);
+        } 
+    },
+
+    onChecklistClick: function (form) {
+        this.onLeave(this.listStore.getAt(this.current));
+        this.current = this.listStore.indexOf(form);
+        this.goToForm(form);
+    },
+
+    onReviewClick: function (button) {
+        var form = this.listStore.findRecord('type', this.self.REVIEW_FORM);
+        this.goToForm(form);
+    },
+
+
+
+    goToForm: function (form) {
+        if (! form.get('view')) {
+            this.createForm(form);
+        } else {
+            this.updateForm(form);
+        }
+
+        if (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.get('enabled')) {
+            form.set('enabled', true);
+            form.set('clsPostfix', '');
+        }
+        this.down('dataview').select(form);
+
+        this.getChecklistsContainer().getLayout().setActiveItem(form.get('view'));
     },
 
     createForm: function (form) {
-        switch(form.type) {
+        switch(form.get('type')) {
             case this.self.CHECKLIST_FORM:
                 this.createChecklistForm(form);
                 break;
@@ -122,23 +251,46 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         return form;
     },
 
+    updateForm: function (form) {
+        switch(form.get('type')) {
+            case this.self.REVIEW_FORM:
+                this.updateReviewForm(form);
+                break;
+        }
+        return form;
+    },
+
+    getChecklistsContainer: function () {
+        return this.down('container[name=checklists-container]');
+    },
+
     createChecklistForm: function (form) {
         var leftBtns = [],
             rightBtns = [];
 
         rightBtns.push({
             xtype: 'button',
+            action: 'next',
             text: 'Next',
             // ui: 'green',
             scale: 'small',
             handler: this.onNextClick,
             scope: this
+        }, {
+            xtype: 'button',
+            action: 'review',
+            text: 'Review',
+            scale: 'small',
+            hidden: true,
+            handler: this.onReviewClick,
+            scope: this
         });
 
-        if (! form.isFirst) {
+        if (! form.get('isFirst')) {
             leftBtns.unshift({
                 xtype: 'button',
                 text: 'Prev',
+                action: 'prev',
                 // ui: 'green',
                 scale: 'small',
                 handler: this.onPrevClick,
@@ -146,7 +298,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             });
         }
 
-        form.view = this.add({
+        form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
             overflowY: 'auto',
             checklist: form.checklist,
@@ -155,7 +307,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 type: 'vbox',
                 align: 'center'
             },
-            items: this.createChecklistFields(form.checklist.items()),
+            items: this.createChecklistFields(form.get('checklist').items()),
             tbar: [{
                 xtype: 'container',
                 width: '100%',
@@ -175,7 +327,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                         textAlign: 'center',
                         fontSize: '18px'
                     },
-                    html: 'PRE START INSPECTION - ' + form.checklist.get('groupName').toUpperCase()
+                    html: 'PRE START INSPECTION - ' + form.get('groupName').toUpperCase()
                 }, {
                     xtype: 'container',
                     layout: {
@@ -187,7 +339,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     items: rightBtns
                 }]
             }]
-        });
+        }));
     },
 
     createChecklistFields: function (fields) {
@@ -231,6 +383,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
     createRadioField: function (field) {
         var me = this,
+            alert = false,
             formAdditionalFields = [],
             options = [],
             listeners = {},
@@ -279,8 +432,8 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         }
 
         if (field.alerts().getCount() && field.alerts().first().get('triggerValue')) {
+            alert = field.alerts().first();
             listeners.checkAlert = function (value) {
-                var alert = field.alerts().first();
                 if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
                     alert.set('active', true);
                     if (alert.get('critical') && alert.get('alertMessage')) {
@@ -312,6 +465,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 html: field.get('fieldName')
             }, {
                 xtype: 'fieldcontainer',
+                alert: alert,
                 fieldId: field.get('id'),
                 field: field,
                 layout: 'hbox',
@@ -379,17 +533,17 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
     createChoiseAdditionalForm: function (form) {
         var checkboxes = [];
-        Ext.each(form.checklistPages, function (checklistPage) {
+        Ext.each(form.get('checklistPages'), function (checklistPage) {
             checkboxes.push({
-                fieldLabel: checklistPage.checklist.get('groupName'),
+                fieldLabel: checklistPage.get('checklist').get('groupName'),
                 listeners: {
                     change: function (checkbox, value) {
-                        checklistPage.enabled = value;
+                        checklistPage.set('enabled', value);
                     }
                 }
             });
         });
-        form.view = this.add({
+        form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
             defaultType: 'checkboxfield',
             layout: {
@@ -410,6 +564,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     minWidth: 100,
                     items: [{
                         xtype: 'button',
+                        action: 'prev',
                         text: 'Prev',
                         handler: this.onPrevClick,
                         scope: this
@@ -432,18 +587,114 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     minWidth: 100,
                     items: [{
                         xtype: 'button',
+                        action: 'prev',
                         text: 'Next',
                         handler: this.onNextClick,
                         scope: this
                     }]
                 }]
             }]
-        });
+        }));
     },
 
     createReviewForm: function (form) {
-        form.view = this.add({
+        var items = [],
+            criticalAlerts = [],
+            alerts = [];
+
+
+        if (navigator && navigator.geolocation) {
+            items.push({
+                xtype: 'checkboxfield',
+                fieldLabel: 'GPS',
+                listeners: {
+                    change: function (checkbox, value) {
+                        if (value) {
+                            this.up('form').down('hiddenfield[name=geolocation]').enable(); 
+                            if (! this.checkedGeo) {
+                                navigator.geolocation.getCurrentPosition(Ext.Function.bind(this.changePosition, this));
+                                this.checkedGeo = true;
+                            }
+                        } else {
+                            this.up('form').down('hiddenfield[name=geolocation]').disable(); 
+                        }
+                    }
+                },
+                changePosition: function (position) {
+                    this.up('form').down('hiddenfield[name=geolocation]').setValue(position.coords.latitude + ';' + position.coords.longitude);
+                }
+            }, {
+                xtype: 'hiddenfield',
+                name: 'geolocation'
+            });
+        }
+
+        items.push({
+            xtype: 'fieldcontainer',
+            fieldLabel: 'Current odometer',
+            labelAlign: 'top',
+            items: [{
+                xtype: 'numberfield',
+                fieldLabel: 'Kms',
+                minValue: 0,
+                maxValue: 100000000,
+                name: 'currentOdomterKms'
+            }, {
+                xtype: 'numberfield',
+                fieldLabel: 'Hours',
+                minValue: 0,
+                maxValue: 100000000,
+                name: 'currentOdomterHours'
+            }]
+        });
+
+        this.listStore.each(function (form) {
+            if (form.get('type') !== this.self.CHECKLIST_FORM &&
+                (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && form.get('enabled') === false)
+            ) {
+                return;
+            }
+            Ext.each(form.get('alerts'), function (alert) {
+                if (alert.get('critical')) {
+                    criticalAlerts.push(alert);
+                } else {
+                    alerts.push(alert);
+                }
+            });
+        });
+
+        if (criticalAlerts.length) {
+            items.push({
+                xtype: 'container',
+                layout: 'vbox',
+                items: [{
+                    xtype: 'container',
+                    html: 'Alerts - Critical'
+                }, {
+                    xtype: 'container',
+                    items: this.createAlertsView(criticalAlerts)
+                }]
+            });
+        }
+        if (alerts.length) {
+            items.push({
+                xtype: 'container',
+                layout: 'vbox',
+                items: [{
+                    xtype: 'container',
+                    html: 'Alerts - Non-Critical'
+                }, {
+                    xtype: 'container',
+                    items: this.createAlertsView(alerts)
+                }]
+            });
+        }
+
+
+
+        form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            items: items,
             tbar: [{
                 xtype: 'container',
                 width: '100%',
@@ -457,6 +708,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     minWidth: 100,
                     items: [{
                         xtype: 'button',
+                        action: 'prev',
                         text: 'Prev',
                         handler: this.onPrevClick,
                         scope: this
@@ -479,13 +731,87 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     minWidth: 100,
                     items: [{
                         xtype: 'button',
+                        action: 'submit',
                         text: 'Submit',
                         handler: this.onSubmitClick,
                         scope: this
                     }]
                 }]
             }]
-        });
+        }));
+    },
+
+    updateReviewForm: function (form) {
+        form.get('view').destroy();
+        this.createReviewForm(form);
+    },
+
+    createImageUploadView: function () {
+        return {
+            xtype: 'form',
+            width: '100%',
+            name: 'image-container',
+            maxWidth: 400,
+            items: [{
+                xtype: 'filefield',
+                buttonOnly: true,
+                buttonConfig: {
+                    scale: 'small'
+                },
+                buttonText: 'Upload Image',
+                ui: 'default',
+                msgTarget: 'side',
+                name: 'image',
+                listeners: {
+                    change: function () {
+                        var form = this.up('form');
+                        if (form.isValid()) {
+                            form.submit({
+                                url: '/api/upload-images',
+                                waitMsg: 'Uploading your photos...',
+                                success: function (fp, o) {
+                                    console.log(fp, o);
+                                },
+                                failure: function (fp, o) {
+                                    var data = Ext.decode(o.response.responseText);
+                                    form.insert(0, {
+                                        xtype: 'image', 
+                                        height: 70,
+                                        margin: 10,
+                                        width: 70,
+                                        src: '/api/image/' + data.data.hash + '/70x70'
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+            }]
+        };
+    },
+
+    createAlertsView: function (alerts) {
+        var items = [];
+        Ext.each(alerts, function (alert) {
+            items.push({
+                xtype: 'container',
+                items: [{
+                    xtype: 'container',
+                    html: alert.get('alertDescription')
+                }, {
+                    xtype: 'textfield',
+                    fieldLabel: 'Comment',
+                    value: alert.get('comment'),
+                    listeners: {
+                        change: function (textfield, value) {
+                            alert.set('comment', value);
+                        }
+                    }
+                }, this.createImageUploadView(alert)
+                ]
+            });
+        }, this);
+        return items;
     },
 
     getAlertsStore: function () {
