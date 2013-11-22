@@ -863,6 +863,7 @@ font-size: 26px;
     border-right-color: #c0c0c0;
     background: #e8e8e8 url(../img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
+    background-size: auto !important;
 }
 
 .sfa-info-container form {
