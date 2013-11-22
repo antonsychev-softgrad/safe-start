@@ -41,7 +41,11 @@ class ProcessChecklistPlugin extends AbstractPlugin
                         $responsibleUserInfo['email'],
                         'checklist_fault.phtml',
                         array(
-                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName']
+                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName'],
+                            'plantId' => $checkList->getVehicle() ? $checkList->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $checkList->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $path
                     );
