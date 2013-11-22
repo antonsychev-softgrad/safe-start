@@ -68,7 +68,7 @@ class Application
                                 array('localhost', 11211),
                             ),
                             'lib_options' => array(
-                                'prefix_key' => 'SafeStartApp_',
+                                'prefix_key' => 'SafeStartApp_v1_',
                             ),
                         ),
                     ),
@@ -81,7 +81,7 @@ class Application
                     'adapter' => array(
                         'name' => 'apc',
                         'options' => array(
-                            'namespace' => 'SafeStartApp_',
+                            'namespace' => 'SafeStartApp_v1_',
                         ),
                     ),
                     'plugins' => array(
@@ -93,7 +93,7 @@ class Application
                     'adapter' => array(
                         'name' => 'filesystem',
                         'options' => array(
-                            'namespace' => 'SafeStartApp',
+                            'namespace' => 'SafeStartApp_v1_',
                             'cache_dir' => self::getFileSystemPath('data/cache/'),
                         ),
                     ),
