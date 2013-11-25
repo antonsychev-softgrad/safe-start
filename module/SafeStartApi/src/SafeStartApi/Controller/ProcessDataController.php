@@ -29,7 +29,7 @@ class ProcessDataController extends PublicAccessRestController
             );
         } else {
             $return = (array) $return;
-            $fileHash = $return['hash'];
+            $fileHash = isset($return['hash']) ? $return['hash'] : null;
             $defUsersPath = $this->moduleConfig['defUsersPath'];
             $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
             $filePath = $this->getFileByDirAndName($searchDir, $fileHash);

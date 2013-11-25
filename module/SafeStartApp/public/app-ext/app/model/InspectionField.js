@@ -20,6 +20,8 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'fieldType', type: 'int'
     }, {
+        name: 'fieldId', type: 'int', defaultValue: 0
+    }, {
         name: 'type', type: 'string'
     }, {
         name: 'fieldValue', type: 'string'

@@ -56,7 +56,8 @@ Ext.define('SafeStartExt.controller.Company', {
                 itemclick: this.setInspectionInfo
             },
             'SafeStartExtPanelVehicleInspection': {
-                afterrender: this.createInspection
+                afterrender: this.createInspection,
+                completeInspectionAction: this.completeInspection
             }
         });
     },
@@ -201,6 +202,17 @@ Ext.define('SafeStartExt.controller.Company', {
                     Ext.create('SafeStartExt.store.InspectionChecklists', {data: result.checklist}),
                     []
                 );
+            }
+        });
+    },
+
+    completeInspection: function (data) {
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + this.vehicle.get('id') + '/completechecklist',
+            data: data,
+            success: function (result) {
+                console.log(result);
+                //
             }
         });
     }

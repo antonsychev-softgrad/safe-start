@@ -18,7 +18,30 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
             }]
         });
 
+
         this.callParent();
+
+        this.confirm = this.add(Ext.window.MessageBox.create({
+            onConfirm: function () {},
+            buttons: [{
+                text: 'Confirm',
+                handler: function (btn) {
+                    btn.up('messagebox').onConfirm();
+                }
+            }, {
+                text: 'Cancel',
+                handler: function (btn) {
+                    btn.up('messagebox').hide();
+                }
+            }],
+            display: function (cfg) {
+                cfg = cfg || {};
+                if (typeof cfg.onConfirm == 'function') {
+                    this.onConfirm = cfg.onConfirm;
+                }
+                this.show(cfg);
+            }
+        }));
 
         this.down('tabpanel').setActiveTab(this.items.first());
     },
