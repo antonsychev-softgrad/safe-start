@@ -50,7 +50,7 @@
 
             function isIe9() {
                 $ieVersion = null;
-                if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
+                if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
                     preg_match_all('/MSIE (\d+)/', $_SERVER['HTTP_USER_AGENT'], $matches);
                     $ieVersion = $matches[1][0];
                 }
