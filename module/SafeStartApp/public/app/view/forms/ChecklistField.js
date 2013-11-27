@@ -44,12 +44,11 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 store: {
                     data: [
                         { rank: 'group', title: 'Checklist Titles Group'},
-                        { rank: 'radio', title: 'Radio Buttons Yes|No|N\\A'},
+                        { rank: 'radio', title: 'Radio Buttons Yes|No|N/A'},
                         { rank: 'checkbox', title: 'Checkbox Yes|No'},
                         { rank: 'label', title: 'Label'},
                         { rank: 'text', title: 'Text'},
-                        { rank: 'datePicker', title: 'Date Picker'},
-                        { rank: 'label', title: 'Label'}
+                        { rank: 'datePicker', title: 'Date Picker'}
                     ]
                 },
                 listeners: {
@@ -82,9 +81,9 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 store: {
                     data: [
                         { rank: '', title: 'No Alert Required'},
+                        { rank: 'n/a', title: 'N/A'},
                         { rank: 'yes', title: 'Yes'},
-                        { rank: 'no', title: 'No'},
-                        { rank: 'n/a', title: 'N/A'}
+                        { rank: 'no', title: 'No'}
                     ]
                 }
             },
@@ -207,6 +206,20 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                 };
             break;
             case 'radio':
+                field = {
+                    xtype: 'selectfield',
+                    valueField: 'rank',
+                    displayField: 'title',
+                    value: this._record.get('default_value'),
+                    store: {
+                        data: [
+                            { rank: 'n/a', title: 'N/A'},
+                            { rank: 'no', title: 'No'},
+                            { rank: 'yes', title: 'Yes'}
+                        ]
+                    }
+                };
+                break;
             case 'checkbox':
                 field = {
                     xtype: 'selectfield',
@@ -215,9 +228,8 @@ Ext.define('SafeStartApp.view.forms.ChecklistField', {
                     value: this._record.get('default_value'),
                     store: {
                         data: [
-                            { rank: '', title: ''},
-                            { rank: 'yes', title: 'Yes'},
-                            { rank: 'no', title: 'No'}
+                            { rank: 'no', title: 'No'},
+                            { rank: 'yes', title: 'Yes'}
                         ]
                     }
                 };
