@@ -1298,7 +1298,7 @@ table.x-form-trigger-wrap td {
 }
 
 .sfa-alerts-container .sfa-alerts-container-title {
-    color: #1368a4;
+    color: #F00;
     font-size: 18px;
     position: absolute;
     left: 0;
@@ -1313,3 +1313,6 @@ table.x-form-trigger-wrap td {
     top: 0;
 }
 
+.form-scrollable > .x-panel-body-default {
+    overflow-y: auto;
+}

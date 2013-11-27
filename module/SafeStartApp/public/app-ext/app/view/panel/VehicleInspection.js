@@ -84,6 +84,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         this.forms = [];
         var listStore = this.down('dataview').getStore();
         this.listStore = listStore;
+        this.isNew = true;
 
         checklists.query('additional', false).each(function (checklist) {
             listStore.add({
@@ -218,10 +219,71 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     },
 
     onSubmitClick: function (form) {
+        var me = this,
+            message = this.validateReviewForm();
+
+        if (message !== undefined) {
+            this.up('SafeStartExtPanelVehicleTabs').confirm.display({
+                msg: message,
+                onConfirm: function () {
+                    me.up('SafeStartExtPanelVehicleTabs').confirm.display({
+                        msg: 'Please confirm your submission',
+                        onConfirm: Ext.Function.bind(me.onConfirm, me)
+                    });
+
+                } 
+            });
+            return;
+        }
+
         this.up('SafeStartExtPanelVehicleTabs').confirm.display({
             msg: 'Please confirm your submission',
             onConfirm: Ext.Function.bind(this.onConfirm, this)
         });
+    },
+
+    validateReviewForm: function () {
+        var vehicle = this.vehicle,
+            reviewForm = this.listStore.findRecord('type', this.self.REVIEW_FORM),
+            odometerHoursInterval,
+            inspectionDueHours,
+            inspectionDueKms,
+            lastInspectionDate,
+            lastInspectionDay,
+            odometerKms = reviewForm.get('view').down('numberfield[name=currentOdometerKms]').getValue(),
+            odometerHours = reviewForm.get('view').down('numberfield[name=currentOdometerHours]').getValue(),
+            intervals;
+
+        if (this.isNew) {
+            currentOdometerHours = parseInt(vehicle.get('currentOdometerHours'), 10);
+            currentOdometerKms = parseInt(vehicle.get('currentOdometerKms'), 10);
+
+            if (odometerKms == currentOdometerKms && odometerHours == currentOdometerHours) {
+                return 'Current odometer should be changed';
+            }
+
+            lastInspectionDate = vehicle.get('lastInspectionDay');
+            odometerHoursInterval = odometerHours - currentOdometerHours;
+            inspectionDueHours = vehicle.get('inspectionDueHours');
+            inspectionDueKms = vehicle.get('inspectionDueKms');
+            if (lastInspectionDate) {
+                inspectionInterval = (new Date().getTime() - lastInspectionDate) / 60 / 60 / 1000;
+                if (inspectionInterval < odometerHoursInterval) {
+                    return 'Please make sure the data is correct';
+                }
+                intervals = (inspectionInterval / inspectionDueHours);
+            } else {
+                intervals = 1;
+            }
+
+            if (intervals * inspectionDueKms < odometerKms) {
+                return 'Please make sure the data is correct';
+            }
+
+            if (odometerKms < currentOdometerKms || odometerHours < currentOdometerHours) {
+                return 'Please make sure the data is correct';
+            }
+        }
     },
 
     onConfirm: function (form) {
@@ -257,41 +319,9 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 || (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && form.get('enabled') === true)
             ) {
                 completedForms.push(form);
-                // formView = form.get('view');
-
                 fields = fields.concat(this.getFieldValuesByParent(form.get('checklist'), form));
-
-                // if (formView) {
-                //     form.get('checklist').items().each(function (field) {
-                //         if (field.type == 'group') {
-                //             value = this.getGroupFieldValues(field, formView);
-                //             if (value.length) {
-                //                 fields = fields.concat(value);
-                //             }
-                //         } else {
-                //             value = this.getFieldValue(field, formView);
-                //             if (value !== undefined) {
-                //                 fields.push({
-                //                     id: field.get('id'),
-                //                     value: value
-                //                 });
-                //             }
-                //         }
-                //     }, this);
-                // } else {
-                //     form.get('checklist').items().each(function (field) {
-                //         fields.push({
-                //             id: field.get('id'),
-                //             value: field.get('fieldValue')
-                //         });
-                //     });
-                // }
-                // var formField = me.down('component[fieldId=' + field.get('id') + ']');
-
-
             }
         }, this);
-        console.log(fields);
         return fields;
     },
 
@@ -814,13 +844,15 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 fieldLabel: 'Kms',
                 minValue: 0,
                 maxValue: 100000000,
-                name: 'currentOdometerKms'
+                name: 'currentOdometerKms',
+                value: this.vehicle.get('currentOdometerKms')
             }, {
                 xtype: 'numberfield',
                 fieldLabel: 'Hours',
                 minValue: 0,
                 maxValue: 100000000,
-                name: 'currentOdometerHours'
+                name: 'currentOdometerHours',
+                value: this.vehicle.get('currentOdometerHours')
             }]
         });
 
@@ -843,14 +875,12 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         if (criticalAlerts.length) {
             items.push({
                 xtype: 'container',
-                //cls: 'sfa-alerts-container',
                 width: '100%',
                 flex: 1,
                 layout: 'vbox',
                 items: [{
                     xtype: 'container',
                     width: '100%',
-                    maxWidth: 500,
                     html: [ 
                         '<div class="sfa-alerts-container">',
                             '<div class="sfa-alerts-container-title">',
@@ -870,10 +900,21 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         if (alerts.length) {
             items.push({
                 xtype: 'container',
+                width: '100%',
                 layout: 'vbox',
                 items: [{
                     xtype: 'container',
-                    html: 'Alerts - Non-Critical'
+                    width: '100%',
+                    html: [ 
+                        '<div class="sfa-alerts-container">',
+                            '<div class="sfa-alerts-container-title">',
+                                'Alerts',
+                            '</div>',
+                            '<div class="sfa-alerts-container-title-desc">',
+                                'Non-Critical',
+                            '</div>',
+                        '</div>'
+                    ].join('')
                 }, {
                     xtype: 'container',
                     items: this.createAlertsView(alerts)
@@ -883,6 +924,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            cls: 'form-scrollable',
             width: '100%',
             items: items,
             tbar: [{
