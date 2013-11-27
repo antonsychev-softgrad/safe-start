@@ -78,13 +78,16 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         this.callParent();
     },
 
-    createInspection: function (checklists) {
+    createInspection: function (checklists, inspectionId) {
         this.checklists = checklists;
         this.current = -1;
         this.forms = [];
         var listStore = this.down('dataview').getStore();
         this.listStore = listStore;
-        this.isNew = true;
+        this.inspectionId = inspectionId;
+        this.isNew = !! inspectionId;
+
+        listStore.removeAll();
 
         checklists.query('additional', false).each(function (checklist) {
             listStore.add({
@@ -98,13 +101,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             });
         }, this);
         listStore.first().set('isFirst', true);
-        // this.forms[0].isFirst = true;
-
-        // var index = this.forms.push({
-        //     type: this.self.CHOISE_ADDITIONAL_FORM,
-        //     checklistPages: [],
-        //     view: null
-        // });
         var checklistPages = [];
         var additional = listStore.add({
             type: this.self.CHOISE_ADDITIONAL_FORM,
@@ -116,13 +112,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         })[0];
 
         checklists.query('additional', true).each(function (checklist) {
-            // var page = {
-            //     type: this.self.CHECKLIST_ADDITIONAL_FORM,
-            //     view: null,
-            //     enabled: false,
-            //     checklist: checklist
-            // };
-            // this.forms.push(page);
             var page = listStore.add({
                 groupName: checklist.get('groupName'),
                 view: null,
@@ -132,7 +121,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 type: this.self.CHECKLIST_ADDITIONAL_FORM
             })[0];
             checklistPages.push(page);
-            // this.forms[index-1].checklistPages.push(page);
         }, this);
 
         additional.set('checklistPages', checklistPages);
@@ -146,6 +134,36 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         });
 
         this.onNextClick();
+    },
+
+    editInspection: function (data, inspectionId) {
+        var checklists = SafeStartExt.store.InspectionChecklists.create({data: data.checklist});
+        this.createInspection(checklists, inspectionId);
+        this.showPreviousAlerts(data.alerts);
+    },
+
+    showPreviousAlerts: function (alerts) {
+        var messageBox = Ext.create('Ext.window.Window', {
+            title: 'Alerts in inspection',
+            width: 300,
+            items: [{
+                xtype: 'dataview',
+                width: '100%',
+                store: {
+                    proxy: 'memory',
+                    fields: ['alert_description']
+                },
+                itemSelector: 'div.sfa-previous-alert-item',
+                tpl: [
+                    '<tpl for=".">',
+                    '<div class="sfa-previous-alert-item"> {alert_description} </div>',
+                    '</tpl>'
+                ].join(''),
+                data: alerts
+            }]
+        });
+        this.add(messageBox);
+        messageBox.show();
     },
 
     onLeave: function (form) {
@@ -166,10 +184,8 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     }
                 }, this);
             }
-            // form.set('alerts', alert);
             form.set('alerts', alerts);
         }
-        //check for alerts or completion
     },
 
     onNextClick: function (leave) {
@@ -180,7 +196,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         this.current++;
         form = this.listStore.getAt(this.current);
-        // form = this.forms[this.current];
 
         if (form) {
             if (form.get('type') === this.self.CHECKLIST_ADDITIONAL_FORM && ! form.get('enabled')) {
@@ -248,8 +263,10 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             odometerHoursInterval,
             inspectionDueHours,
             inspectionDueKms,
+            inspectionInterval,
             lastInspectionDate,
-            lastInspectionDay,
+            currentOdometerKms,
+            currentOdometerHours,
             odometerKms = reviewForm.get('view').down('numberfield[name=currentOdometerKms]').getValue(),
             odometerHours = reviewForm.get('view').down('numberfield[name=currentOdometerHours]').getValue(),
             intervals;
@@ -287,7 +304,8 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     },
 
     onConfirm: function (form) {
-        this.fireEvent('completeInspectionAction', this.getValues());
+        var inspectionId = this.inspectionId || 0;
+        this.fireEvent('completeInspectionAction', this.getValues(), inspectionId);
     },
 
     getValues: function () {
@@ -310,7 +328,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
     }, 
 
     getFieldsValue: function () {
-        // var completedForm = this.listStore.collect('completed', false, true);
         var completedForms = [];
         var fields = [];
 
@@ -465,7 +482,6 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
             xtype: 'button',
             action: 'next',
             text: 'Next',
-            // ui: 'green',
             scale: 'small',
             handler: this.onNextClick,
             scope: this
@@ -501,7 +517,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 type: 'vbox',
                 align: 'center'
             },
-            items: this.createChecklistFields(form.get('checklist').items()),
+            items: this.createChecklistFields(form.get('checklist').items(), form),
             tbar: [{
                 xtype: 'container',
                 width: '100%',
@@ -536,7 +552,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         }));
     },
 
-    createChecklistFields: function (fields) {
+    createChecklistFields: function (fields, form) {
         var formFields = [];
 
         fields.each(function (field) {
@@ -545,13 +561,13 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     formFields = formFields.concat(this.createTextField(field));
                     break;
                 case 'radio':
-                    formFields = formFields.concat(this.createRadioField(field));
+                    formFields = formFields.concat(this.createRadioField(field, form));
                     break;
                 case 'datePicker':
                     formFields = formFields.concat(this.createDatePickerField(field));
                     break;
                 case 'group':
-                    formFields = formFields.concat(this.createGroupField(field));
+                    formFields = formFields.concat(this.createGroupField(field, form));
                     break;
                 case 'checkbox':
                     formFields = formFields.concat(this.createRadioField(field));
@@ -577,7 +593,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         };
     },
 
-    createRadioField: function (field) {
+    createRadioField: function (field, form) {
         var me = this,
             alert = false,
             formAdditionalFields = [],
@@ -587,7 +603,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         if (field.get('additional')) {
             additionalFields = field.items();
-            formAdditionalFields = this.createChecklistFields(additionalFields);
+            formAdditionalFields = this.createChecklistFields(additionalFields, form);
             Ext.each(formAdditionalFields, function (field) {
                 field.hidden = true;
                 field.disabled = true;
@@ -633,6 +649,11 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         if (field.alerts().getCount() && field.alerts().first().get('triggerValue')) {
             alert = field.alerts().first();
+            if (RegExp(alert.get('triggerValue'), 'i').test(field.get('fieldValue'))) {
+                alert.set('active', true);
+                var formAlerts = form.get('alerts');
+                formAlerts.push(alert);
+            }
             // alert.set('fieldId', field.get('fieldId'));
             listeners.checkAlert = function (value) {
                 if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
@@ -711,7 +732,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         };
     },
 
-    createGroupField: function (field) {
+    createGroupField: function (field, form) {
         return {
             xtype: 'container',
             layout: {
@@ -731,7 +752,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                     type: 'vbox',
                     align: 'center'
                 },
-                items: this.createChecklistFields(field.items())
+                items: this.createChecklistFields(field.items(), form)
             }]
         };
     },

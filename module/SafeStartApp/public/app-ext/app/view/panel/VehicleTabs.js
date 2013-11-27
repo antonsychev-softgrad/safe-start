@@ -10,11 +10,11 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     layout: 'fit',
 
     initComponent: function () {
-        var tabs = this.getTabs();
+        var activeTab;
         Ext.apply(this, {
             items: [{
                 xtype: 'tabpanel',
-                items: tabs
+                items: this.getTabs()
             }]
         });
 
@@ -42,8 +42,25 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                 this.show(cfg);
             }
         }));
+        if (this.action) {
+            activeTab = this.down('component[action=' + this.action + ']');
+        }
 
-        this.down('tabpanel').setActiveTab(this.items.first());
+        if (! activeTab) {
+            activeTab = this.down('tabpanel').items.first();
+        }
+        activeTab.params = this.params;
+
+        this.down('tabpanel').setActiveTab(activeTab);
+    },
+
+    changeAction: function (action, params) {
+        var activeTab = this.down('component[action=' + action + ']');
+        activeTab.params = params;
+        if (activeTab) {
+            this.down('tabpanel').setActiveTab(activeTab);
+            return activeTab;
+        }
     },
 
     getTabs: function () {
@@ -54,6 +71,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                 case 'info': 
                     tabs.push({
                         xtype: 'SafeStartExtFormVehicle', 
+                        action: 'info',
                         title: page.get('text') 
                     });
                     break;
@@ -61,6 +79,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tabs.push({
                         xtype: 'SafeStartExtPanelInspections',
                         title: page.get('text'),
+                        action: 'inspections',
                         vehicle: this.vehicle
                     });
                     break;
@@ -68,10 +87,10 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                    tabs.push({
                        xtype: 'SafeStartExtPanelVehicleInspection',
                        title: page.get('text'),
+                       action: 'fill-checklist',
                        vehicle: this.vehicle
                    });
                    break;
-                // case 'fill-checklist':
                 case 'alerts':
                 case 'users':
                 case 'report':

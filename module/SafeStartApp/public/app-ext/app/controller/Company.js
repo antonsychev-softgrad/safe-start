@@ -49,8 +49,10 @@ Ext.define('SafeStartExt.controller.Company', {
                 deleteVehicleAction: this.deleteVehicle
             },
             'SafeStartExtPanelInspections': {
-                afterrender: this.loadInspections
-                // setInspectionInfo: this.setInspectionInfo
+                afterrender: this.loadInspections,
+                editInspectionAction: this.editInspection,
+                deleteInspectionAction: this.deleteInspection,
+                printInspectionAction: this.printInspection
             },
             'SafeStartExtPanelInspections dataview': {
                 itemclick: this.setInspectionInfo
@@ -60,6 +62,10 @@ Ext.define('SafeStartExt.controller.Company', {
                 completeInspectionAction: this.completeInspection
             }
         });
+    },
+
+    changeAction: function (action) {
+        return this.getVehicleTabsView().changeAction(action);
     },
 
     addVehicle: function () {
@@ -103,7 +109,7 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    reloadVehicles: function (vehicleId) {
+    reloadVehicles: function (vehicleId, action, params) {
         var me = this, 
             store = this.getVehicleListView().getListStore();
 
@@ -114,7 +120,7 @@ Ext.define('SafeStartExt.controller.Company', {
                     record = this.findRecord('id', vehicleId);
                 }
                 if (record) {
-                    me.selectVehicle(record);
+                    me.selectVehicle(record, action, params);
                 } else {
                     me.deselectVehicle();
                 }
@@ -122,9 +128,9 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    selectVehicle: function (vehicle) {
+    selectVehicle: function (vehicle, action, params) {
         this.getVehicleListView().getList().select(vehicle);
-        this.changeVehicleAction(vehicle);
+        this.changeVehicleAction(vehicle, action, params);
     },
 
     deselectVehicle: function () {
@@ -168,6 +174,7 @@ Ext.define('SafeStartExt.controller.Company', {
 
     setInspectionInfo: function (view, inspection) {
         var me = this;
+        view.inspection = inspection;
         SafeStartExt.Ajax.request({
             url: 'vehicle/' + inspection.get('id') + '/getchecklistdata',
             success: function (data) {
@@ -176,9 +183,38 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    changeVehicleAction: function (vehicle) {
+    editInspection: function (id) {
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + this.vehicle.get('id') + '/getchecklist?checklistId=' + id, 
+            success: function (result) {
+                var inspectionPanel = me.changeAction('fill-checklist');
+                if (! inspectionPanel) {
+                    return;
+                }
+                inspectionPanel.editInspection(result, id);
+            }
+        });
+    },
+
+    deleteInspection: function (id) {
+        var vehicleId = this.vehicle.get('id');
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/inspection/' + id + '/delete',
+            success: function (result) {
+                me.reloadVehicles(vehicleId, 'inspections');
+            }
+        });
+    },
+
+    printInspection: function (id) {
+        window.open('/api/checklist/' + id + '/generate-pdf', '_blank');
+    },
+
+    changeVehicleAction: function (vehicle, action, params) {
         this.vehicle = vehicle;
-        this.getCompanyPage().setVehicle(vehicle);
+        this.getCompanyPage().setVehicle(vehicle, action, params);
     },
 
     refreshPage: function () {
@@ -206,13 +242,17 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    completeInspection: function (data) {
+    completeInspection: function (data, inspectionId) {
+        var me = this;
+        var getParams = '';
+        if (inspectionId) {
+            getParams = '?checklistId=' + inspectionId;
+        }
         SafeStartExt.Ajax.request({
-            url: 'vehicle/' + this.vehicle.get('id') + '/completechecklist',
+            url: 'vehicle/' + this.vehicle.get('id') + '/completechecklist' + getParams,
             data: data,
             success: function (result) {
-                console.log(result);
-                //
+                me.reloadVehicles(me.vehicle.get('id'), 'inspections', {checklistHash: result.checklist});
             }
         });
     }

@@ -38,11 +38,13 @@ Ext.define('SafeStartExt.view.component.Company', {
         this.callParent();
     },
 
-    setVehicle: function (vehicle) {
+    setVehicle: function (vehicle, action, params) {
         this.unsetVehicle();
         this.down('container[name=vehicle-container]').add({
             xtype: 'SafeStartExtPanelVehicleTabs',
             vehicle: vehicle,
+            action: action,
+            params: params,
             flex: 2
         });
     },

@@ -67,7 +67,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
         }, this);
 
         this.removeAll();
-        console.log(data);
         this.add({
             xtype: 'component',
             border: 0,
