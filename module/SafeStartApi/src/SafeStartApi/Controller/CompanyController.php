@@ -458,7 +458,7 @@ class CompanyController extends RestrictedAccessRestController
 
         $oldTitle = $field->getTitle();
         $oldType = $field->getType();
-        // if ($this->data->type == 'root' && $this->data->parentId) $this->data->type = 'text';
+        if ($this->data->type == 'root' && $this->data->parentId) $this->data->type = 'text';
 
         $field->setTitle($this->data->title);
         $field->setDescription($this->data->description);
