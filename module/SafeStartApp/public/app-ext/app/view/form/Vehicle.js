@@ -100,7 +100,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 }]
             }, {
                 xtype: 'fieldcontainer',
-                fieldLabel: 'Until next service due',
+                fieldLabel: 'Next service due',
                 maxWidth: 400,
                 cls: 'sfa-field-group',
                 padding: '1 0 0 0',

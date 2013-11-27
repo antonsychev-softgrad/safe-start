@@ -456,7 +456,7 @@ class VehicleController extends RestrictedAccessRestController
                     if ($days < 1) {
                         $warnings[] = array(
                             'action' => 'next_service_due',
-                            'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                            'text' => 'Estimated Date of Next Service Is ' . $vehicle->getNextServiceDay(),
                         );
                     } else if ($days < 30) {
                         $warnings[] = array(

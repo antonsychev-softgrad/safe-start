@@ -114,8 +114,8 @@ class VehicleReportPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdf
 
         $this->lastTopPos -= ($this->opts['style']['field_size'] + ($this->opts['style']['field_line_spacing'] * 2));
 
-        $this->driveReportInfoLineItem("Amount of travelled kms", $statistic['kms']);
-        $this->driveReportInfoLineItem("Sum of used hours", $statistic['hours']);
+        $this->driveReportInfoLineItem("Total kms travelled", $statistic['kms']);
+        $this->driveReportInfoLineItem("Total hours used", $statistic['hours']);
         $this->driveReportInfoLineItem("Total number of completed inspections", $statistic['inspections']);
         $this->driveReportInfoLineItem("Total number of completed Alerts", $statistic['completed_alerts']);
         $this->driveReportInfoLineItem("Total number of outstanding Alerts", $statistic['new_alerts']);

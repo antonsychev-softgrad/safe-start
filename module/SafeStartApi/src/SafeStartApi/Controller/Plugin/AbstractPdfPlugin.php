@@ -50,14 +50,14 @@ class AbstractPdfPlugin extends AbstractPlugin
 
         $data = array(
             'Company name' => isset($companyData['title']) ? $companyData['title'] : 'Safe Start',
-            'Vehicle Model' => $vehicleData['title'],
-            'Vehicle Make' => $vehicleData['type'],
+            'Vehicle Make' => $vehicleData['title'],
+            'Vehicle Model' => $vehicleData['type'],
             'Plant ID' => $vehicleData['plantId'],
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
-            'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
+            'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
 
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
