@@ -66,6 +66,9 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 }
             }, {
                 xtype: 'container',
+                autoScroll: true,
+                padding: 10,
+                height: '100%',
                 name: 'checklists-container',
                 flex: 1,
                 cls: 'sfa-checklists-container',
@@ -840,10 +843,24 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
         if (criticalAlerts.length) {
             items.push({
                 xtype: 'container',
+                //cls: 'sfa-alerts-container',
+                width: '100%',
+                flex: 1,
                 layout: 'vbox',
                 items: [{
                     xtype: 'container',
-                    html: 'Alerts - Critical'
+                    width: '100%',
+                    maxWidth: 500,
+                    html: [ 
+                        '<div class="sfa-alerts-container">',
+                            '<div class="sfa-alerts-container-title">',
+                                'Alerts',
+                            '</div>',
+                            '<div class="sfa-alerts-container-title-desc">',
+                                'Critical',
+                            '</div>',
+                        '</div>'
+                    ].join('')
                 }, {
                     xtype: 'container',
                     items: this.createAlertsView(criticalAlerts)
@@ -866,6 +883,7 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            width: '100%',
             items: items,
             tbar: [{
                 xtype: 'container',
@@ -990,7 +1008,11 @@ Ext.define('SafeStartExt.view.panel.VehicleInspection', {
                 xtype: 'container',
                 items: [{
                     xtype: 'container',
-                    html: alert.get('alertDescription')
+                    html: [ 
+                        '<div class="sfa-alert-title">',
+                            alert.get('alertDescription'),
+                        '</div>'
+                    ].join('')
                 }, {
                     xtype: 'textfield',
                     fieldLabel: 'Comment',

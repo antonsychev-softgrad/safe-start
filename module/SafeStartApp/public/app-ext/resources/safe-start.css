@@ -1286,3 +1286,30 @@ table.x-form-trigger-wrap td {
 .sfa-checklists-container .x-contaner-default {
     background-color: #E8E8E8;
 }
+
+.sfa-alert-title {
+    color: #F00;
+    font-size: 16px;
+}
+
+.sfa-alerts-container {
+    height: 20px;
+    border-bottom: 1px solid #779;
+}
+
+.sfa-alerts-container .sfa-alerts-container-title {
+    color: #1368a4;
+    font-size: 18px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.sfa-alerts-container .sfa-alerts-container-title-desc {
+    font-size: 18px;
+    color: #F00;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
