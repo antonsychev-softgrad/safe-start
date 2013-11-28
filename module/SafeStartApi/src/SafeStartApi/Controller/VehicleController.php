@@ -659,6 +659,34 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getAlertsStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'alerts' => $vehicle->getAlertsByPeriod($from, $to)
+        );
+        
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function getInspectionBreakdownsStatisticAction()
     {
         $vehicleId = (int)$this->params('id');
