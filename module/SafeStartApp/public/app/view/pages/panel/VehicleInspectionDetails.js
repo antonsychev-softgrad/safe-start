@@ -85,7 +85,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
-            this.createContainer('Make', vehicle.get('type'))
+            this.createContainer('Model', vehicle.get('type'))
         ]);
 
         var warningsGroup = [];
