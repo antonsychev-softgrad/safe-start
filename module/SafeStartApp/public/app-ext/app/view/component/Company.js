@@ -3,8 +3,7 @@ Ext.define('SafeStartExt.view.component.Company', {
     requires: [
         'SafeStartExt.view.container.TopNav',
         'SafeStartExt.view.panel.VehicleList',
-        'SafeStartExt.view.panel.VehicleTabs',
-        'SafeStartExt.view.panel.Inspections'
+        'SafeStartExt.view.panel.VehicleTabs'
     ],
     xtype: 'SafeStartExtComponentCompany',
     layout: {

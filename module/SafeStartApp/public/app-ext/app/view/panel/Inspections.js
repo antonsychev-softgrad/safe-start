@@ -13,31 +13,34 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         type: 'hbox',
         align: 'stretch'
     },
+    configData: {
+
+    },
 
     listeners: {
         activate: function () {
-            if (this.params && this.params.checklistHash) {
+            if (this.configData && this.configData.checklistHash) {
                 var hashes = [];
                 var store = this.getListStore();
                 if (store.getCount()) {
-                    var record = this.getListStore().findRecord('hash', this.params.checklistHash);
+                    var record = this.getListStore().findRecord('hash', this.configData.checklistHash);
                     this.getListStore().each(function (rec) {
                         hashes.push({title: rec.get('title'), hash: rec.get('hash')});
                     });
                     if (record) {
                         this.down('dataview').fireEvent('itemclick', this.down('dataview'), record, {}, {});
-                        delete this.params.checklistHash;
+                        delete this.configData.checklistHash;
                     }
                     return;
                 }
                 store.on('load', function (records) {
-                    var record = this.getListStore().findRecord('hash', this.params.checklistHash);
+                    var record = this.getListStore().findRecord('hash', this.configData.checklistHash);
                     this.getListStore().each(function (rec) {
                         hashes.push({title: rec.get('title'), hash: rec.get('hash')});
                     });
                     if (record) {
                         this.down('dataview').fireEvent('itemclick', this.down('dataview'), record, {}, {});
-                        delete this.params.checklistHash;
+                        delete this.configData.checklistHash;
                     }
                 }, this, {single: true, priority: 1000});
             }  
