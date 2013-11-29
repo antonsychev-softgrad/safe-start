@@ -2444,3 +2444,18 @@ textarea {
     padding-top: 0;
     border: 2px inset transparent;
 }
+
+.sfa-statistic-item-odd {
+    background-color: #D3D3D3;
+    font-size: 16px;
+    height: 24px;
+    line-height: 24px;
+    color: #333;
+}
+
+.sfa-statistic-item-even {
+    font-size: 16px;
+    height: 24px;
+    line-height: 24px;
+    color: #333;
+}
