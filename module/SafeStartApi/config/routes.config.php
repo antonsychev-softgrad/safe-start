@@ -148,7 +148,7 @@ $routes = array(
             'print-vehicle-statistic' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/print-statistic/:from/:to',
+                    'route' => '/vehicle/:id/print-statistic/:from/:to[/:name][/]',
                     'constraints' => array(
                         'id' => '[0-9]*',
                         'from' => '[0-9]*',
@@ -163,7 +163,7 @@ $routes = array(
             'print-vehicle-action-list' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/print-action-list',
+                    'route' => '/vehicle/:id/print-action-list[/:name][/]',
                     'constraints' => array(
                         'id' => '[0-9]*',
                     ),
@@ -391,7 +391,7 @@ $routes = array(
             'generate-pdf' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/checklist/:id/generate-pdf',
+                    'route' => '/checklist/:id/generate-pdf[/:name][/]',
                     'constraints' => array(
                         'id' => '[A-Za-z0-9]+',
                     ),

@@ -77,7 +77,7 @@ class ProcessDataController extends PublicAccessRestController
         $queryResult = $query->getResult();
         if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0])) $checkList = $queryResult[0];
 
-        if (!$checkList) return $this->getController()->_showNotFound('Requested inspection not found.');
+        if (!$checkList) return $this->_showNotFound('Requested inspection not found.');
 
         $link = $checkList->getPdfLink();
         $cache = \SafeStartApi\Application::getCache();
