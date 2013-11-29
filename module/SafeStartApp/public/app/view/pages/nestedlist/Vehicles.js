@@ -237,7 +237,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 text: 'Print Action List',
                 handler: function(btn) {
                     SafeStartApp.AJAX('vehicle/0/verify-print-action-list', {}, function (data) {
-                        window.location.assign('/api/vehicle/0/print-action-list');
+                        window.location.assign('/api/vehicle/0/print-action-list/vehicles_action_lists.pdf');
                     });
                 },
                 scope: this

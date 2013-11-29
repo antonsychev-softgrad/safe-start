@@ -389,7 +389,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
     printDataView: function() {
         var from = Math.round(this.down('datepickerfield[name=from]').getValue().getTime() / 1000);
         var to = Math.round(this.down('datepickerfield[name=to]').getValue().getTime() / 1000);
-        window.open('/api/vehicle/' + this.record.get('id') + '/print-statistic/' + from + '/' + to + '/vehicle_report.pdf', '_blank');
+        window.open('/api/vehicle/' + this.record.get('id') + '/print-statistic/' + from + '/' + to + '/vehicle_report_'+this.record.get('id')+'.pdf', '_blank');
     },
 
     addChart: function() {
@@ -452,7 +452,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
 
 
     printActionList: function() {
-        window.open('/api/vehicle/' + this.record.get('id') + '/print-action-list/vehicle_action_list.pdf', '_blank');
+        window.open('/api/vehicle/' + this.record.get('id') + '/print-action-list/vehicle_action_list_'+this.record.get('id')+'.pdf', '_blank');
     },
 
     sendActionList: function() {
