@@ -743,12 +743,11 @@ class VehicleController extends RestrictedAccessRestController
         $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
         header("Content-Type: application/octet-stream");
-        header("Content-Type: application/pdf");
         header("Content-Disposition: attachment; filename={$pdf['name']}");
         header("Content-Transfer-Encoding:Binary");
         header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
-
+        return true;
     }
 
     public function verifyPrintActionListAction()
@@ -807,12 +806,11 @@ class VehicleController extends RestrictedAccessRestController
         $pdf = $this->vehicleActionListPdf()->create($vehicles);
 
         header("Content-Type: application/octet-stream");
-        header("Content-Type: application/pdf");
         header("Content-Disposition: attachment; filename={$pdf['name']}");
         header("Content-Transfer-Encoding:Binary");
         header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
-
+        return true;
     }
 
     public function sendActionListAction()
