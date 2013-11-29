@@ -240,8 +240,8 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $users = $vehicle->getUsers() ? $vehicle->getUsers()->toArray() : array();
-        $responsibleUsers = $vehicle->getResponsibleUsers() ? $vehicle->getResponsibleUsers()->toArray() : array();
+        $users = $vehicle->getUsers();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
         $users = array_merge($users, $responsibleUsers);
 
         $cache = \SafeStartApi\Application::getCache();

@@ -934,7 +934,14 @@ class Vehicle extends BaseEntity
      */
     public function getResponsibleUsers()
     {
-        return $this->responsibleUsers;
+        $users = array();
+        if (!$this->responsibleUsers) return $users;
+        foreach ($this->responsibleUsers as $user) {
+            if (!$users->getDeleted()) {
+                $users[] = $user;
+            }
+        }
+        return $users;
     }
 
     /**
@@ -983,7 +990,14 @@ class Vehicle extends BaseEntity
      */
     public function getUsers()
     {
-        return $this->users;
+        $users = array();
+        if (!$this->users) return $users;
+        foreach ($this->users as $user) {
+            if (!$users->getDeleted()) {
+                $users[] = $user;
+            }
+        }
+        return $users;
     }
 
     /**

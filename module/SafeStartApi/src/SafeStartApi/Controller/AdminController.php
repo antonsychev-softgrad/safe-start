@@ -272,7 +272,6 @@ class AdminController extends AdminAccessRestController
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
             if (!$company) return $this->_showNotFound("Company not found.");
             $vehicles = $company->getVehicles();
-            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
             $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company)';
             $query = $this->em->createQuery($dql);
             $query->setParameter('company', $company);
