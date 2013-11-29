@@ -251,7 +251,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             yearFrom: new Date().getFullYear() - 10,
                             yearTo: new Date().getFullYear()
                         },
-                        value: new Date()
+                        value: (new Date(new Date().setMonth(new Date().getMonth() - 6))) 
                     }, {
                         xtype: 'datepickerfield',
                         name: 'alerts-to',
@@ -275,20 +275,14 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                         }
                     }]
                 }, {
-                    xtype: 'list',
+                    xtype: 'container',
                     name: 'vehicle-alerts',
-                    emptyText: 'No new Alerts',
-                    itemTpl: [
-                        '<div class="sfa-statistic-alert">{updateDate} {alertDescription}&nbsp</div>'//,
-                        // '<span>{vehicle.title} <b>{vehicle.plantId}</b> added by {user.firstName} {user.lastName} at {creationDate}</span></div>'
-                    ].join(''),
-                    cls: 'sfa-alerts',
-                    store: {
-                        proxy: {
-                            type: 'memory'
-                        },
-                        fields: ['updateDate', 'alertDescription']
-                    }
+                    scrollable: true,
+                    tpl: [
+                        '<tpl for=".">',
+                           '<div class="sfa-statistic-item-{[xindex % 2 === 0 ? "even" : "odd"]}">{[xindex]}) {updateDate} <b>{alertDescription}</b>&nbsp;</div>',
+                        '</tpl>'
+                    ].join('')
                 }]
             }]
         }
@@ -387,8 +381,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                     updateDate: Ext.Date.format(new Date(alert.update_date * 1000), SafeStartApp.dateFormat)
                 });
             });
-            self.down('dataview[name=vehicle-alerts]').getStore().removeAll();
-            self.down('dataview[name=vehicle-alerts]').setData(data);
+            self.down('container[name=vehicle-alerts]').setData(data);
         });
 
     },
