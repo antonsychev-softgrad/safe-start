@@ -490,6 +490,29 @@ class Vehicle extends BaseEntity
     }
 
     /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array
+     */
+    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null) {
+        //if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
+        //if (!$to) $to = new \DateTime();
+        $alerts = array();
+
+        $em = \SafeStartApi\Application::getEntityManager();
+        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\Alert al WHERE al.vehicle = ?1 AND al.deleted = 0 AND al.update_date >= :from AND al.update_date <= :to  ORDER BY al.update_date DESC');
+        $query->setParameter(1, $this)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to);
+
+        $items = $query->getResult();
+        foreach ($items as $item) {
+            $alerts[] = $item->toArray();
+        }
+        return $alerts;
+    }
+
+    /**
      * @return array
      */
     public function getCurrentDayOdometerUsage()

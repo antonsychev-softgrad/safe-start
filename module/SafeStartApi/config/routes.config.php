@@ -132,6 +132,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-vehicle-alerts-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/alerts-statistic',
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getAlertsStatistic'
+                    ),
+                ),
+            ),
             'print-vehicle-statistic' => array(
                 'type' => 'Segment',
                 'options' => array(
