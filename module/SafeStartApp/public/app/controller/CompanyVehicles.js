@@ -141,7 +141,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     downloadVehicleInspectionDetailsPdf: function (btn) {
-        window.open('/api/checklist/' + btn.checklistId + '/generate-pdf/checklist.pdf', '_blank');
+        window.open('/api/checklist/' + btn.checklistId + '/generate-pdf/checklist_'+ btn.checklistId +'_.pdf', '_blank');
     },
 
     onEditInspectionAction: function (vehicleId, checkListId, inspectionRecord) {
