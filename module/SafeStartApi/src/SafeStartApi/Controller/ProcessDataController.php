@@ -87,9 +87,10 @@ class ProcessDataController extends PublicAccessRestController
             $path = $this->inspectionPdf()->getFilePathByName($link);
         }
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
-
-        header("Content-Disposition: inline; filename={$checkList->getPdfLink()}");
-        header("Content-type: application/x-pdf");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename={$checkList->getPdfLink()}");
+        header("Content-Transfer-Encoding:Binary");
+        header('Content-Length: ' . filesize($path));
         echo file_get_contents($path);
         return true;
     }
