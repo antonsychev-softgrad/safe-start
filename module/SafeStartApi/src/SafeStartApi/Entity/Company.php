@@ -298,7 +298,14 @@ class Company extends BaseEntity
      */
     public function getUsers()
     {
-        return $this->users;
+        $users = array();
+        if (!$this->users) return $users;
+        foreach ($this->users as $user) {
+            if (!$users->getDeleted()) {
+                $users[] = $user;
+            }
+        }
+        return $users;
     }
 
     /**
@@ -331,7 +338,14 @@ class Company extends BaseEntity
      */
     public function getVehicles()
     {
-        return $this->vehicles;
+        $vehicles = array();
+        if (!$this->vehicles) return $vehicles;
+        foreach ($this->vehicles as $vehicle) {
+            if (!$vehicle->getDeleted()) {
+                $vehicles[] = $vehicle;
+            }
+        }
+        return $vehicles;
     }
 
     /**

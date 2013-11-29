@@ -744,8 +744,10 @@ class VehicleController extends RestrictedAccessRestController
 
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename={$pdf['name']}");
+        header("Content-Transfer-Encoding:Binary");
+        header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
-        
+
     }
 
     public function verifyPrintActionListAction()
@@ -805,7 +807,8 @@ class VehicleController extends RestrictedAccessRestController
 
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename={$pdf['name']}");
-       // header("Content-type: application/x-pdf");
+        header("Content-Transfer-Encoding:Binary");
+        header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
 
     }
