@@ -742,9 +742,10 @@ class VehicleController extends RestrictedAccessRestController
 
         $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
-        header("Content-Disposition: inline; filename={$pdf['name']}");
-        header("Content-type: application/x-pdf");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename={$pdf['name']}");
         echo file_get_contents($pdf['path']);
+        
     }
 
     public function verifyPrintActionListAction()
@@ -802,8 +803,9 @@ class VehicleController extends RestrictedAccessRestController
 
         $pdf = $this->vehicleActionListPdf()->create($vehicles);
 
-        header("Content-Disposition: inline; filename={$pdf['name']}");
-        header("Content-type: application/x-pdf");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename={$pdf['name']}");
+       // header("Content-type: application/x-pdf");
         echo file_get_contents($pdf['path']);
 
     }
