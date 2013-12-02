@@ -937,7 +937,7 @@ class Vehicle extends BaseEntity
         $users = array();
         if (!$this->responsibleUsers) return $users;
         foreach ($this->responsibleUsers as $user) {
-            if (!$users->getDeleted()) {
+            if (!$user->getDeleted()) {
                 $users[] = $user;
             }
         }
@@ -993,7 +993,7 @@ class Vehicle extends BaseEntity
         $users = array();
         if (!$this->users) return $users;
         foreach ($this->users as $user) {
-            if (!$users->getDeleted()) {
+            if (!$user->getDeleted()) {
                 $users[] = $user;
             }
         }
