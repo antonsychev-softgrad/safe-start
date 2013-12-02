@@ -33,12 +33,12 @@ class PublicVehicleController extends PublicAccessRestController
         $emails = $this->data->emails;
 
         $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
-        $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : 0;
-        $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '';
+        $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : '-';
+        $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '-';
         $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
         $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
-        $title = isset($this->data->title) ? $this->data->title : '';
-        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
+        $title = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
+        $type = isset($this->data->title) ? $this->data->title : '';
 
         $userData = array(
             'firstName' => isset($this->data->firstName) ? $this->data->firstName : '',
@@ -80,9 +80,8 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setTitle($title);
         $vehicle->setType($type);
 
-        if($persist) {
-            $this->em->persist($vehicle);
-        }
+        if($persist) $this->em->persist($vehicle);
+        $this->em->flush();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
         $items = $query->getResult();
