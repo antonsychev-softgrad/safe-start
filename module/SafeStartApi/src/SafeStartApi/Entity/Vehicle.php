@@ -71,7 +71,7 @@ class Vehicle extends BaseEntity
     protected $projectName;
 
     /**
-     * @ORM\Column(type="integer", name="project_number", nullable=true)
+     * @ORM\Column(type="string", name="project_number", nullable=true)
      */
     protected $projectNumber;
 
@@ -172,7 +172,7 @@ class Vehicle extends BaseEntity
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
@@ -194,12 +194,7 @@ class Vehicle extends BaseEntity
     public function getNextServiceDay()
     {
         $date = '-';
-        if (!count($this->checkLists)) {
-            if ($this->serviceDueHours) {
-                $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], time() + (int)$this->getNetServiceDueHours() * 60 * 60);
-            }
-        } else {
+        if (count($this->checkLists) > 1) {
             $averageKms = array();
             $averageHours = array();
             $lastCheckListDate = $this->getCreationDate()->getTimestamp();
@@ -222,7 +217,6 @@ class Vehicle extends BaseEntity
                 $lastHour = $checkList->getCurrentOdometerHours();
             }
             if (!empty($averageKms) || !empty($averageHours)) {
-                $averageNextServiceSec = 0;
                 if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
                 if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
                 if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
@@ -232,8 +226,10 @@ class Vehicle extends BaseEntity
                 } else if (!empty($averageNextServiceSec2)) {
                     $averageNextServiceSec = $averageNextServiceSec2;
                 }
-                $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
+                if (!empty($averageNextServiceSec)) {
+                    $config = \SafeStartApi\Application::getConfig();
+                    $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
+                }
             }
         }
         return $date;
@@ -266,7 +262,7 @@ class Vehicle extends BaseEntity
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'vehicleName' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
