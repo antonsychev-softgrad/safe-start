@@ -143,6 +143,7 @@ class CheckList extends BaseEntity
     {
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setCreationDate(new \DateTime());
+        $this->setUpdateDate(new \DateTime());
     }
 
     /**

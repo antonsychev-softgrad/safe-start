@@ -194,7 +194,6 @@ class Vehicle extends BaseEntity
     public function getNextServiceDay()
     {
         $date = '-';
-     //   if (!$this->getCompany()) return $date;
         if (!count($this->checkLists)) {
             if ($this->serviceDueHours) {
                 $config = \SafeStartApi\Application::getConfig();

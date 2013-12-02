@@ -34,11 +34,10 @@ class PublicVehicleController extends PublicAccessRestController
 
         $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
         $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : '-';
-        $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '-';
         $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
         $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
-        $title = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
-        $type = isset($this->data->title) ? $this->data->title : '';
+        $title = isset($this->data->title) ? $this->data->title : '';
+        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
 
         $userData = array(
             'firstName' => isset($this->data->firstName) ? $this->data->firstName : '',
@@ -122,6 +121,7 @@ class PublicVehicleController extends PublicAccessRestController
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
+        $this->em->flush();
 
         // save new alerts
         $alerts = array();
