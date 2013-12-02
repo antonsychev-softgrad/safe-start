@@ -24,6 +24,8 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'type', type: 'string'
     }, {
+        name: 'title', type: 'string'
+    }, {
         name: 'fieldValue', type: 'string'
     }, {
         name: 'triggerValue', type: 'string'
@@ -33,6 +35,10 @@ Ext.define('SafeStartExt.model.InspectionField', {
         name: 'groupName', type: 'string'
     }, {
         name: 'groupOrder', type: 'int'
+    }, {
+        name: 'iconCls', type: 'string'
+    }, {
+        name: 'sortOrder', mapping: 'sort_order', type: 'int' 
     }],
 
     hasMany: [{
