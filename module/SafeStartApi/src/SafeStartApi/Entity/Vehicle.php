@@ -934,12 +934,11 @@ class Vehicle extends BaseEntity
      */
     public function getResponsibleUsers()
     {
-        $users = array();
+        $users = new \Doctrine\Common\Collections\ArrayCollection();
         if (!$this->responsibleUsers) return $users;
-        $users = clone $this->responsibleUsers;
         foreach ($this->responsibleUsers as $user) {
             if (!$user->getDeleted()) {
-                $users->removeElement($user);
+                $users->add($user);
             }
         }
         return $users;
@@ -991,12 +990,11 @@ class Vehicle extends BaseEntity
      */
     public function getUsers()
     {
-        $users = array();
+        $users = new \Doctrine\Common\Collections\ArrayCollection();
         if (!$this->users) return $users;
-        $users = clone $this->users;
         foreach ($this->users as $user) {
             if (!$user->getDeleted()) {
-                $users->removeElement($user);
+                $users->add($user);
             }
         }
         return $users;
