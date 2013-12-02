@@ -61,6 +61,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         );
 
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
+        else  $data['Expiry Day'] = '-';
 
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();

@@ -937,7 +937,7 @@ class Vehicle extends BaseEntity
         $users = new \Doctrine\Common\Collections\ArrayCollection();
         if (!$this->responsibleUsers) return $users;
         foreach ($this->responsibleUsers as $user) {
-            if (!$user->getDeleted()) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
                 $users->add($user);
             }
         }
@@ -993,7 +993,7 @@ class Vehicle extends BaseEntity
         $users = new \Doctrine\Common\Collections\ArrayCollection();
         if (!$this->users) return $users;
         foreach ($this->users as $user) {
-            if (!$user->getDeleted()) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
                 $users->add($user);
             }
         }
