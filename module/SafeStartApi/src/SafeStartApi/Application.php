@@ -112,7 +112,12 @@ class Application
 
     public static function getFileSystemPath($fEndPath = null)
     {
-        $root = $_SERVER['DOCUMENT_ROOT'];
+        if (! empty($_SERVER['DOCUMENT_ROOT'])) {
+            $root = $_SERVER['DOCUMENT_ROOT'];
+        } else {
+            $root = getcwd();
+        }
+
         if (!file_exists($root . "/init_autoloader.php")) {
             $root = dirname($root);
         }
