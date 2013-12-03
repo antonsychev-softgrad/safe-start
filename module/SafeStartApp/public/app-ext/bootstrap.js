@@ -884,6 +884,13 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.view.form.User": [],
   "SafeStartExt.view.form.UserProfile": [],
   "SafeStartExt.view.form.Vehicle": [],
+  "SafeStartExt.view.form.inspectionfield.Checkbox": [],
+  "SafeStartExt.view.form.inspectionfield.DatePicker": [],
+  "SafeStartExt.view.form.inspectionfield.Group": [],
+  "SafeStartExt.view.form.inspectionfield.Label": [],
+  "SafeStartExt.view.form.inspectionfield.Radio": [],
+  "SafeStartExt.view.form.inspectionfield.Root": [],
+  "SafeStartExt.view.form.inspectionfield.Text": [],
   "SafeStartExt.view.panel.CompaniesList": [],
   "SafeStartExt.view.panel.CompanyInfo": [],
   "SafeStartExt.view.panel.Inspection": [],
@@ -1957,6 +1964,27 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.view.form.Vehicle": [
     "widget.SafeStartExtFormVehicle"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Checkbox": [
+    "widget.SafeStartExtFormInspectionfieldCheckbox"
+  ],
+  "SafeStartExt.view.form.inspectionfield.DatePicker": [
+    "widget.SafeStartExtFormInspectionfieldDatePicker"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Group": [
+    "widget.SafeStartExtFormInspectionfieldGroup"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Label": [
+    "widget.SafeStartExtFormInspectionfieldLabel"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Radio": [
+    "widget.SafeStartExtFormInspectionfieldRadio"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Root": [
+    "widget.SafeStartExtFormInspectionfieldRoot"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Text": [
+    "widget.SafeStartExtFormInspectionfieldText"
   ],
   "SafeStartExt.view.panel.CompaniesList": [
     "widget.SafeStartExtPanelCompaniesList"

@@ -4,15 +4,17 @@ Ext.define('SafeStartExt.model.InspectionField', {
     fields: [{
         name: 'id', type: 'int'
     }, {
-        name: 'alertCritical', type: 'boolean'
+        name: 'alertCritical', type: 'boolean', mapping: 'alert_critical'
     }, {
-        name: 'alertDescription', type: 'string'
+        name: 'alertDescription', type: 'string', mapping: 'alert_description'
     }, {
-        name: 'alertMessage', type: 'string'
+        name: 'alertMessage', type: 'string', mapping: 'alert_title'
     }, {
-        name: 'defaultValue', type: 'string'
+        name: 'defaultValue', type: 'string', mapping: 'default_value'
     }, {
-        name: 'fieldDescription', type: 'string'
+        name: 'isLeaf', type: 'boolena', defaultValue: true
+    }, {
+        name: 'description', type: 'string'
     }, {
         name: 'fieldName', type: 'string'
     }, {
@@ -28,7 +30,7 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'fieldValue', type: 'string'
     }, {
-        name: 'triggerValue', type: 'string'
+        name: 'triggerValue', type: 'string', mapping: 'trigger_value'
     }, {
         name: 'additional', type: 'boolean'
     }, {
@@ -36,9 +38,9 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'groupOrder', type: 'int'
     }, {
-        name: 'iconCls', type: 'string'
-    }, {
         name: 'sortOrder', mapping: 'sort_order', type: 'int' 
+    }, {
+        name: 'enabled', type: 'boolean', defaultValue: true
     }],
 
     hasMany: [{

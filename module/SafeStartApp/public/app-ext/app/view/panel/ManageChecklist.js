@@ -2,10 +2,17 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
     extend: 'Ext.panel.Panel',
     requires: [
         'SafeStartExt.store.ChecklistTree',
-        'SafeStartExt.view.form.InspectionFieldRoot',
+        'SafeStartExt.view.form.inspectionfield.Root',
+        'SafeStartExt.view.form.inspectionfield.Group',
+        'SafeStartExt.view.form.inspectionfield.Radio',
+        'SafeStartExt.view.form.inspectionfield.Checkbox',
+        'SafeStartExt.view.form.inspectionfield.Text',
+        'SafeStartExt.view.form.inspectionfield.Label',
+        'SafeStartExt.view.form.inspectionfield.DatePicker',
         'Ext.tree.Panel'
     ],
     xtype: 'SafeStartExtPanelManageChecklist',
+    autoScroll: true,
     layout: {
         type: 'hbox',
         align: 'stretch'
@@ -25,29 +32,49 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
             items: [{
                 xtype: 'treepanel',
                 store: store,
-                // autoScroll: false,
                 rootVisible: false,
                 displayField: 'title',
-                width: 300,
+                flex: 1,
+                // margin: '0 10 0 0',
+                minWidth: 350,
                 height: '100%',
                 valueField: 'id',
                 listeners: {
-                    beforeselect: Ext.Function.bind(this.onSelect, this)
+                    beforeselect: this.onSelect,
+                    scope: this
                 }
             }, {
                 xtype: 'panel',
                 name: 'forms-panel',
                 flex: 1,
+                minWidth: 350,
+                maxWidth: 600,
                 layout: 'card',
+                defaults: {
+                    maxWidth: 500,
+                    padding: 10,
+                    defaults: {
+                        labelWidth: 180,
+                        anchor: '100%'
+                    }
+                },
                 items: [{
                     xtype: 'container',
                     name: 'blank'
                 }, {
-                    xtype: 'SafeStartExtFormInspectionFieldRoot'
+                    xtype: 'SafeStartExtFormInspectionfieldRoot'
                 }, {
-                    xtype: 'form',
-                    name: 'radio',
-                    html: 'form for radio'
+                    xtype: 'SafeStartExtFormInspectionfieldGroup'
+                }, {
+                    xtype: 'SafeStartExtFormInspectionfieldText'
+                }, {
+                    xtype: 'SafeStartExtFormInspectionfieldLabel'
+                }, {
+                    xtype: 'SafeStartExtFormInspectionfieldCheckbox'
+                }, {
+                    xtype: 'SafeStartExtFormInspectionfieldRadio'
+                }, {
+                    xtype: 'SafeStartExtFormInspectionfieldDatePicker'
                 }]
             }]
         });

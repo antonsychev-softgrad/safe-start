@@ -1316,3 +1316,21 @@ table.x-form-trigger-wrap td {
 .form-scrollable > .x-panel-body-default {
     overflow-y: auto;
 }
+
+
+.x-tree-view .x-grid-cell {
+    background-color: inherit;
+}
+
+.x-tree-view .x-grid-row-selected .x-grid-cell {
+    /*color: #00f;*/
+    background-color: #d8d8d8;
+}
+
+.x-tree-view {
+    border-right: 1px dotted #999;
+}
+
+.x-tree-view .x-grid-cell-inner .x-tree-node-text {
+    font-size: 16px;
+} 
