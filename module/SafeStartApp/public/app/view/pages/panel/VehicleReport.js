@@ -106,8 +106,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
                             '<table style="max-width: 700px;"><tr>',
                             '<td>',
                             /*'<div class="name">Period from {period.from} to {period.to}</div>',*/
-                            '<div class="name">Amount of <b>travelled kms</b>: <span style="color:#0F5B8D;">{statistic.kms}</span> </div>',
-                            '<div class="name">Sum of <b>used hours</b>: <span style="color:#0F5B8D;">{statistic.hours} </span></div>',
+                            '<div class="name">Total <b>kms travelled</b>: <span style="color:#0F5B8D;">{statistic.kms}</span> </div>',
+                            '<div class="name">Total <b>hours used</b>: <span style="color:#0F5B8D;">{statistic.hours} </span></div>',
                             '</td>',
                             '<td>',
                             '<div class="name">Total number of <b>completed inspections</b>: <span style="color:#0F5B8D;">{statistic.inspections} </span></div>',
