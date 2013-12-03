@@ -32,12 +32,12 @@ class PublicVehicleController extends PublicAccessRestController
 
         $emails = $this->data->emails;
 
-        $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
+        $projectName = isset($this->data->projectName) ? $this->data->projectName : '-';
         $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : '-';
         $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
         $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
-        $title = isset($this->data->title) ? $this->data->title : '';
-        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
+        $title = isset($this->data->title) ? $this->data->title : '-';
+        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '-';
 
         $userData = array(
             'firstName' => isset($this->data->firstName) ? $this->data->firstName : '',
