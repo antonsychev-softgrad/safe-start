@@ -194,98 +194,98 @@ class Vehicle extends BaseEntity
     public function getNextServiceDay()
     {
         $date = '-';
-        $checkLists = $this->checkLists->toArray();
-        if (count($this->checkLists) > 1) {
-            $firstCheckList = array_shift($checkLists);
-            $lastKms = $firstCheckList->getCurrentOdometer();
-            $lastHours = $firstCheckList->getCurrentOdometerHours();
-            $lastUpdateDate = $firstCheckList->getUpdateDate()->getTimestamp();
+        if (count($this->checkLists) < 2) return $date;
 
-            $serviceDueKms = $this->getNetServiceDueKms();
-            $serviceDueHours = $this->getNetServiceDueHours();
+        /* $firstCheckList = array_shift($checkLists);
+         $lastKms = $firstCheckList->getCurrentOdometer();
+         $lastHours = $firstCheckList->getCurrentOdometerHours();
+         $lastUpdateDate = $firstCheckList->getUpdateDate()->getTimestamp();
+
+         $serviceDueKms = $this->getNetServiceDueKms();
+         $serviceDueHours = $this->getNetServiceDueHours();
 
 
-            $serviceDaysByHours = array();
-            $serviceDaysByKms = array();
+         $serviceDaysByHours = array();
+         $serviceDaysByKms = array();
 
-            foreach ($checkLists as $checkList) {
-                $kms = $checkList->getCurrentOdometer();
-                $hours = $checkList->getCurrentOdometerHours();
-                $deltaKms = $kms - $lastKms;
-                $deltaHours = $hours - $lastHours;
-                $updateDate = $checkList->getUpdateDate()->getTimestamp();
-                $deltaTime = $updateDate - $lastUpdateDate;
-                $kmsLeft = $serviceDueKms - $kms;
-                $hoursLeft = $serviceDueHours - $hours;
+         foreach ($checkLists as $checkList) {
+             $kms = $checkList->getCurrentOdometer();
+             $hours = $checkList->getCurrentOdometerHours();
+             $deltaKms = $kms - $lastKms;
+             $deltaHours = $hours - $lastHours;
+             $updateDate = $checkList->getUpdateDate()->getTimestamp();
+             $deltaTime = $updateDate - $lastUpdateDate;
+             $kmsLeft = $serviceDueKms - $kms;
+             $hoursLeft = $serviceDueHours - $hours;
 
-                if ($deltaKms) {
-                    $serviceDaysByKms[] = $kmsLeft/($deltaKms/$deltaTime) + $updateDate;
-                }
-                if ($deltaHours) {
-                    $serviceDaysByHours[] = $hoursLeft/($deltaHours/$deltaTime) + $updateDate;
-                }
+             if ($deltaKms) {
+                 $serviceDaysByKms[] = $kmsLeft/($deltaKms/$deltaTime) + $updateDate;
+             }
+             if ($deltaHours) {
+                 $serviceDaysByHours[] = $hoursLeft/($deltaHours/$deltaTime) + $updateDate;
+             }
 
-                $lastKms = $kms;
-                $lastHours = $hours;
-                $lastUpdateDate = $updateDate;
+             $lastKms = $kms;
+             $lastHours = $hours;
+             $lastUpdateDate = $updateDate;
+         }
+
+         if (count($serviceDaysByKms)) {
+             $averageServiceDateByKms = array_sum($serviceDaysByKms) / count($serviceDaysByKms);
+         } else {
+             $averageServiceDateByKms = 0;
+         }
+         if (count($serviceDaysByHours)) {
+             $averageServiceDateByHours = array_sum($serviceDaysByHours) / count($serviceDaysByHours);
+         } else {
+             $averageServiceDateByHours = 0;
+         }
+
+         $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
+
+         if ($serviceDate !== 0) {
+             $config = \SafeStartApi\Application::getConfig();
+             $date = date($config['params']['date_format'], $serviceDate);
+         }*/
+
+
+        $averageKms = array();
+        $averageHours = array();
+        $lastCheckListDate = $this->getCreationDate()->getTimestamp();
+        $lastKm = 0;
+        $lastHour = 0;
+        foreach ($this->checkLists as $checkList) {
+            $km = $checkList->getCurrentOdometer() - $lastKm;
+            $hours = $checkList->getCurrentOdometerHours() - $lastHour;
+            $period = $checkList->getUpdateDate()->getTimestamp() - $lastCheckListDate;
+            if ($hours) {
+                $nextServiceSecHours = ($this->getNetServiceDueHours() * $period) / $hours;
+                $averageHours[] = $nextServiceSecHours;
             }
-
-            if (count($serviceDaysByKms)) {
-                $averageServiceDateByKms = array_sum($serviceDaysByKms) / count($serviceDaysByKms);
-            } else {
-                $averageServiceDateByKms = 0;
+            if ($km) {
+                $nextServiceSecKm = ($this->getNetServiceDueKms() * $period) / $km;
+                $averageKms[] = $nextServiceSecKm;
             }
-            if (count($serviceDaysByHours)) {
-                $averageServiceDateByHours = array_sum($serviceDaysByHours) / count($serviceDaysByHours);
-            } else {
-                $averageServiceDateByHours = 0;
-            }
-
-            $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
-
-            if ($serviceDate !== 0) {
-                $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], $serviceDate);
-            }
-
-
-            // $averageKms = array();
-            // $averageHours = array();
-            // $lastCheckListDate = $this->getCreationDate()->getTimestamp();
-            // $lastKm = 0;
-            // $lastHour = 0;
-            // foreach ($this->checkLists as $checkList) {
-            //     $km = $checkList->getCurrentOdometer() - $lastKm;
-            //     $hours = $checkList->getCurrentOdometerHours() - $lastHour;
-            //     $period = $checkList->getUpdateDate()->getTimestamp() - $lastCheckListDate;
-            //     if ($hours) {
-            //         $nextServiceSecHours = ($this->getNetServiceDueHours() * $period) / $hours;
-            //         $averageHours[] = $nextServiceSecHours;
-            //     }
-            //     if ($km) {
-            //         $nextServiceSecKm = ($this->getNetServiceDueKms() * $period) / $km;
-            //         $averageKms[] = $nextServiceSecKm;
-            //     }
-            //     $lastCheckListDate = $checkList->getUpdateDate()->getTimestamp();
-            //     $lastKm = $checkList->getCurrentOdometer();
-            //     $lastHour = $checkList->getCurrentOdometerHours();
-            // }
-            // if (!empty($averageKms) || !empty($averageHours)) {
-            //     if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
-            //     if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
-            //     if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
-            //         $averageNextServiceSec = ($averageNextServiceSec1 + $averageNextServiceSec2) / 2;
-            //     } else if (!empty($averageNextServiceSec1)) {
-            //         $averageNextServiceSec = $averageNextServiceSec1;
-            //     } else if (!empty($averageNextServiceSec2)) {
-            //         $averageNextServiceSec = $averageNextServiceSec2;
-            //     }
-            //     if (!empty($averageNextServiceSec)) {
-            //         $config = \SafeStartApi\Application::getConfig();
-            //         $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
-            //     }
-            // }
+            $lastCheckListDate = $checkList->getUpdateDate()->getTimestamp();
+            $lastKm = $checkList->getCurrentOdometer();
+            $lastHour = $checkList->getCurrentOdometerHours();
         }
+        if (!empty($averageKms) || !empty($averageHours)) {
+            if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
+            if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
+            if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
+                $averageNextServiceSec = ($averageNextServiceSec1 + $averageNextServiceSec2) / 2;
+            } else if (!empty($averageNextServiceSec1)) {
+                $averageNextServiceSec = $averageNextServiceSec1;
+            } else if (!empty($averageNextServiceSec2)) {
+                $averageNextServiceSec = $averageNextServiceSec2;
+            }
+            if (!empty($averageNextServiceSec)) {
+                $config = \SafeStartApi\Application::getConfig();
+                $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
+            }
+        }
+
         return $date;
     }
 
@@ -544,7 +544,8 @@ class Vehicle extends BaseEntity
      * @param \DateTime $to
      * @return array
      */
-    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null) {
+    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null)
+    {
         //if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
         //if (!$to) $to = new \DateTime();
         $alerts = array();
@@ -1174,7 +1175,7 @@ class Vehicle extends BaseEntity
     /**
      * Get open alerts
      *
-     * @return array 
+     * @return array
      */
     public function getOpenAlerts()
     {
@@ -1297,7 +1298,7 @@ class Vehicle extends BaseEntity
     public function getInspectionBreakdowns($from = null, $to = null, $range = 'monthly')
     {
         $chart = array();
-        if ( $range == 'monthly' ) $delta = 30 * 24 * 60 * 60;
+        if ($range == 'monthly') $delta = 30 * 24 * 60 * 60;
         else $delta = 7 * 24 * 60 * 60;
         if (!$from) $from = new \DateTime(date('Y-m-d', time() - $delta * 6));
         if (!$to) $to = new \DateTime();
@@ -1308,7 +1309,7 @@ class Vehicle extends BaseEntity
         $toTime = $to->getTimestamp();
 
         while ($fromTime < $toTime) {
-            if ( $range == 'monthly' ) $date = date('m/Y', $fromTime);
+            if ($range == 'monthly') $date = date('m/Y', $fromTime);
             else  $date = date('W/Y', $fromTime);
 
             $toTimeParam = new \DateTime();
