@@ -54,6 +54,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Text', {
                         key: 'Date Picker',
                         value: 'datePicker'
                     }]
+                },
+                listeners: {
+                    change: function (combo) {
+                        this.fireEvent('onChangeType', this);
+                    },
+                    scope: this
                 }
             }, {
                 xtype: 'textfield',
@@ -74,6 +80,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Text', {
             }]
         });
         this.callParent();
+    },
+
+    loadRecord: function (record) {
+        this.down('field[name=type]').suspendEvents();
+        this.callParent(arguments);
+        this.down('field[name=type]').resumeEvents();
     }
 
 });

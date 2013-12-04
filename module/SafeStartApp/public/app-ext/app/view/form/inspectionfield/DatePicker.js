@@ -54,6 +54,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
                         key: 'Date Picker',
                         value: 'datePicker'
                     }]
+                },
+                listeners: {
+                    change: function (combo) {
+                        this.fireEvent('onChangeType', this);
+                    },
+                    scope: this
                 }
             }, {
                 xtype: 'datefield',
@@ -90,7 +96,10 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
     },
 
     loadRecord: function (record) {
+        this.down('field[name=type]').suspendEvents();
         this.callParent(arguments);
+        this.down('field[name=type]').resumeEvents();
+
         var date = parseFloat(record.get('defaultValue'));
         if (date) {
             this.down('datefield[name=defaultValue]').setValue(new Date(date * 1000));

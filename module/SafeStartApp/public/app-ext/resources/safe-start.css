@@ -1331,6 +1331,13 @@ table.x-form-trigger-wrap td {
     border-right: 1px dotted #999;
 }
 
+
 .x-tree-view .x-grid-cell-inner .x-tree-node-text {
+    /*white-space: normal;*/
     font-size: 16px;
 } 
+
+.sfa-icon-leaf {
+    background-image: url(img/leaf.png) !important;
+}
+

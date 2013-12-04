@@ -1,6 +1,9 @@
 Ext.define('SafeStartExt.model.InspectionField', {
     extend: "Ext.data.Model",
     requires: ['SafeStartExt.model.InspectionAlert'],
+
+    groupTypes: ['group', 'root'],
+
     fields: [{
         name: 'id', type: 'int'
     }, {
@@ -24,7 +27,7 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'fieldId', type: 'int', defaultValue: 0
     }, {
-        name: 'type', type: 'string'
+        name: 'type', type: 'string', defaultValue: 'text'
     }, {
         name: 'title', type: 'string'
     }, {
@@ -41,6 +44,8 @@ Ext.define('SafeStartExt.model.InspectionField', {
         name: 'sortOrder', mapping: 'sort_order', type: 'int' 
     }, {
         name: 'enabled', type: 'boolean', defaultValue: true
+    }, {
+        name: 'vehicleId', type: 'int'
     }],
 
     hasMany: [{
@@ -55,5 +60,29 @@ Ext.define('SafeStartExt.model.InspectionField', {
 
     proxy: {
         type: 'memory'
+    },
+
+    constructor: function (root, id, raw) {
+        if (typeof raw == 'object') {
+            if (! Ext.Array.contains(this.groupTypes, raw.type)) {
+                raw.iconCls = 'sfa-icon-leaf';
+            }
+        }
+        this.callParent(arguments);
+    },
+
+    getWriteData: function () {
+        var data = this.getData(),
+            writeData = {};
+
+        Ext.Object.each(this.fields.map, function (key, value) {
+            if (value.mapping) {
+                writeData[value.mapping] = data[key];
+            } else {
+                writeData[key] = data[key];
+            }
+        });
+
+        return writeData;
     }
 });

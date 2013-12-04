@@ -63,6 +63,9 @@ Ext.define('SafeStartExt.controller.Company', {
             'SafeStartExtPanelInspection': {
                 afterrender: this.createInspection,
                 completeInspectionAction: this.completeInspection
+            },
+            'SafeStartExtPanelManageChecklist': {
+                saveField: this.saveChecklistField
             }
         });
     },
@@ -264,5 +267,22 @@ Ext.define('SafeStartExt.controller.Company', {
 
     actionChange: function () {
         console.log(arguments);
+    },
+
+    saveChecklistField: function (form) {
+        var record = form.getRecord();
+        SafeStartExt.Ajax.request({
+            url: 'checklist/' + record.get('id') + '/update',
+            data: record.getWriteData(),
+            success: function (result) {
+                record.beginEdit();
+                if (! record.get('id')) {
+                    record.set('id', result.fieldId);
+                }
+                record.modified = {};
+                record.endEdit();
+                form.loadRecord(record);
+            }
+        });
     }
 });

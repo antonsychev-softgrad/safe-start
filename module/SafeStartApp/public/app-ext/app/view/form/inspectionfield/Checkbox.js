@@ -54,6 +54,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
                         key: 'Date Picker',
                         value: 'datePicker'
                     }]
+                },
+                listeners: {
+                    change: function (combo) {
+                        this.fireEvent('onChangeType', this);
+                    },
+                    scope: this
                 }
             }, {
                 xtype: 'combobox',
@@ -119,5 +125,11 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
             }]
         });
         this.callParent();
+    },
+    
+    loadRecord: function (record) {
+        this.down('field[name=type]').suspendEvents();
+        this.callParent(arguments);
+        this.down('field[name=type]').resumeEvents();
     }
 });

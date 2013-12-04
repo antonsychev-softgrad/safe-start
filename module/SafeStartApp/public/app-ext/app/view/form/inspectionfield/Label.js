@@ -49,6 +49,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Label', {
                         key: 'Date Picker',
                         value: 'datePicker'
                     }]
+                },
+                listeners: {
+                    change: function (combo) {
+                        this.fireEvent('onChangeType', this);
+                    },
+                    scope: this
                 }
             }, {
                 xtype: 'numberfield',
@@ -65,6 +71,12 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Label', {
             }]
         });
         this.callParent();
+    },
+
+    loadRecord: function (record) {
+        this.down('field[name=type]').suspendEvents();
+        this.callParent(arguments);
+        this.down('field[name=type]').resumeEvents();
     }
 
 });

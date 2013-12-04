@@ -22,17 +22,29 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
             this.down('treepanel').getStore().load();
         }
     },
-    
 
     initComponent: function() {
         var store = SafeStartExt.store.ChecklistTree.create({
             vehicleId: this.vehicle.get('id')
         });
         Ext.apply(this, {
+            tbar: [{
+                text: 'Refresh',
+                handler: this.onRefresh,
+                scope: this
+            }, {
+                xtype: 'tbfill'
+            }, {
+                text: 'Add inspection field',
+                handler: this.onAddField,
+                align: 'right',
+                scope: this
+            }],
             items: [{
                 xtype: 'treepanel',
                 store: store,
-                rootVisible: false,
+                useArrows: true,
+                rootVisible: true,
                 displayField: 'title',
                 flex: 1,
                 // margin: '0 10 0 0',
@@ -40,7 +52,8 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                 height: '100%',
                 valueField: 'id',
                 listeners: {
-                    beforeselect: this.onSelect,
+                    beforeselect: this.onBeforeSelect,
+                    beforedeselect: this.onBeforeDeselect,
                     scope: this
                 }
             }, {
@@ -53,18 +66,43 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                 defaults: {
                     maxWidth: 500,
                     padding: 10,
+                    trackResetOnLoad: true,
                     defaults: {
                         labelWidth: 180,
                         anchor: '100%'
-                    }
+                    },
+                    buttons: [{
+                        text: 'Save',
+                        handler: function (btn) {
+                            this.onSaveField(btn.up('form'));
+                        },
+                        scope: this
+                    }, {
+                        text: 'Delete',
+                        handler: function (btn) {
+                            this.onDeleteField(btn.up('form'));
+                        },
+                        scope: this
+                    }]
                 },
                 items: [{
                     xtype: 'container',
                     name: 'blank'
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldRoot'
+                    xtype: 'SafeStartExtFormInspectionfieldRoot',
+                    listeners: {
+                        afterrender: function () {
+                            this.down('field[name=type]').on('change', function () {
+                                this.up('form').getRecord(); 
+                            });
+                        }
+                    }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldGroup'
+                    xtype: 'SafeStartExtFormInspectionfieldGroup',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }, {
                     xtype: 'SafeStartExtFormInspectionfieldText'
                 }, {
@@ -81,8 +119,18 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
         this.callParent();
     },
 
-    onSelect: function (view, record) {
-        var activeForm = this.getFormsPanel().getLayout().getActiveItem(),
+    onChangeType: function (form) {
+        var record = form.getRecord();
+        if (form.isDirty()) {
+            record.setDirty(true);
+            form.updateRecord(record);
+            record.endEdit();
+        }
+        this.onBeforeSelect(null, record);
+    },
+
+    onBeforeSelect: function (view, record) {
+        var activeForm = this.getActiveForm(),
             type = record.get('type');
 
         record = record || new SafeStartExt.model.InspectionField({});
@@ -91,16 +139,41 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
             activeForm = this.switchForm(type);
         }
 
+        this.activeRecord = record;
+
         if (activeForm) {
             activeForm.loadRecord(record);
+            // activeForm.getForm().reset();
             return;
         }
 
         return false;
     },
 
+    onBeforeDeselect: function () {
+        var form = this.getActiveForm(),
+            record;
+
+        if (! form) {
+            return;
+        }
+
+        record = form.getRecord();
+        if (record && form.isDirty()) {
+            record.setDirty(true);
+            form.updateRecord(record);
+            record.endEdit();
+        }
+    },
+
+    onDeselect: function () {
+        var formsPanel = this.getFormsPanel();
+        formsPanel.getLayout().setActiveItem(formsPanel.down('component[name=blank]'));
+    },
+
     switchForm: function (type) {
         var newForm = this.getForm(type);
+        window.test = newForm;
         if (newForm) {
             this.getFormsPanel().getLayout().setActiveItem(newForm);
             return newForm;
@@ -111,6 +184,43 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
 
     getForm: function (type) {
         return this.getFormsPanel().down('component[name=' + type + ']');       
+    },
+
+    getActiveForm: function () {
+        var activeView = this.getFormsPanel().getLayout().getActiveItem();
+        if (activeView.xtypesMap.form) {
+            return activeView;
+        }
+        return null;
+    },
+
+    onSaveField: function (form) {
+        form.updateRecord();
+        this.fireEvent('saveField', form);
+    },
+
+    onDeleteField: function (form) {
+        console.log(form.getRecord());
+    },
+
+    onAddField: function () {
+        var parentField = this.activeRecord,
+            activeForm,
+            field = SafeStartExt.model.InspectionField.create({
+                vehicleId: this.vehicle.get('id')
+            });
+
+        if (typeof parentField === 'object' && parentField.get('id')) {
+            parentField.appendChild(field);
+            field.set('parentId', parentField.get('id'));
+            activeForm = this.switchForm(field.get('type')); 
+            activeForm.loadRecord(field);
+        }
+    },
+
+    onRefresh: function () {
+        this.onDeselect();
+        this.down('treepanel').getStore().load();
     },
 
     getFormsPanel: function () {
