@@ -17,17 +17,44 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
         type: 'hbox',
         align: 'stretch'
     },
-    listeners: {
-        afterrender: function () {
-            this.down('treepanel').getStore().load();
-        }
+
+    initTree: function () {
+        this.insert(0, {
+            xtype: 'treepanel',
+            store: this.treeStore,
+            folderSort: true,
+            useArrows: true,
+            rootVisible: false,
+            allowDeselect: true,
+            displayField: 'title',
+            flex: 1,
+            minWidth: 350,
+            height: '100%',
+            valueField: 'id',
+            sorters: [{
+                property: 'sortOrder'
+            }],
+            listeners: {
+                beforeselect: this.onBeforeSelect,
+                beforedeselect: this.onBeforeDeselect,
+                containerclick: this.onRootSelect,
+                scope: this
+            }
+        });
     },
 
     initComponent: function() {
-        var store = SafeStartExt.store.ChecklistTree.create({
-            vehicleId: this.vehicle.get('id')
+        this.treeStore = SafeStartExt.store.ChecklistTree.create({
+            vehicleId: this.vehicle.get('id'),
+            listeners: {
+                beforeremove: this.onBeforeRemove,
+                scope: this
+            }
         });
         Ext.apply(this, {
+            listeners: {
+                afterrender: this.initTree
+            },
             tbar: [{
                 text: 'Refresh',
                 handler: this.onRefresh,
@@ -37,26 +64,11 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
             }, {
                 text: 'Add inspection field',
                 handler: this.onAddField,
+                name: 'add-field',
                 align: 'right',
                 scope: this
             }],
             items: [{
-                xtype: 'treepanel',
-                store: store,
-                useArrows: true,
-                rootVisible: true,
-                displayField: 'title',
-                flex: 1,
-                // margin: '0 10 0 0',
-                minWidth: 350,
-                height: '100%',
-                valueField: 'id',
-                listeners: {
-                    beforeselect: this.onBeforeSelect,
-                    beforedeselect: this.onBeforeDeselect,
-                    scope: this
-                }
-            }, {
                 xtype: 'panel',
                 name: 'forms-panel',
                 flex: 1,
@@ -73,12 +85,14 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                     },
                     buttons: [{
                         text: 'Save',
+                        name: 'save-field',
                         handler: function (btn) {
                             this.onSaveField(btn.up('form'));
                         },
                         scope: this
                     }, {
                         text: 'Delete',
+                        name: 'delete-field',
                         handler: function (btn) {
                             this.onDeleteField(btn.up('form'));
                         },
@@ -89,14 +103,7 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                     xtype: 'container',
                     name: 'blank'
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldRoot',
-                    listeners: {
-                        afterrender: function () {
-                            this.down('field[name=type]').on('change', function () {
-                                this.up('form').getRecord(); 
-                            });
-                        }
-                    }
+                    xtype: 'SafeStartExtFormInspectionfieldRoot'
                 }, {
                     xtype: 'SafeStartExtFormInspectionfieldGroup',
                     listeners: {
@@ -104,15 +111,35 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                         scope: this
                     }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldText'
+                    xtype: 'SafeStartExtFormInspectionfieldText',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldLabel'
+                    xtype: 'SafeStartExtFormInspectionfieldLabel',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldCheckbox'
+                    xtype: 'SafeStartExtFormInspectionfieldCheckbox',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldRadio'
+                    xtype: 'SafeStartExtFormInspectionfieldRadio',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }, {
-                    xtype: 'SafeStartExtFormInspectionfieldDatePicker'
+                    xtype: 'SafeStartExtFormInspectionfieldDatePicker',
+                    listeners: {
+                        onChangeType: this.onChangeType,
+                        scope: this
+                    }
                 }]
             }]
         });
@@ -129,6 +156,9 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
         this.onBeforeSelect(null, record);
     },
 
+    onBeforeRemove: function (node, child) {
+    },
+
     onBeforeSelect: function (view, record) {
         var activeForm = this.getActiveForm(),
             type = record.get('type');
@@ -141,9 +171,14 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
 
         this.activeRecord = record;
 
+        if (record.get('id') === 0) {
+            this.down('button[name=add-field]').disable();
+        } else {
+            this.down('button[name=add-field]').enable();
+        }
+
         if (activeForm) {
             activeForm.loadRecord(record);
-            // activeForm.getForm().reset();
             return;
         }
 
@@ -164,11 +199,21 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
             form.updateRecord(record);
             record.endEdit();
         }
+        if (record.get('id') === 0 && (! record.get('title') && ! record.get('description'))) {
+            record.destroy();
+        }
+        this.onDeselect();
     },
 
     onDeselect: function () {
         var formsPanel = this.getFormsPanel();
         formsPanel.getLayout().setActiveItem(formsPanel.down('component[name=blank]'));
+    },
+
+    onRootSelect: function () {
+        this.down('treepanel').getSelectionModel().deselect(this.activeRecord);
+        this.activeRecord = null;
+        this.onDeselect();
     },
 
     switchForm: function (type) {
@@ -195,31 +240,47 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
     },
 
     onSaveField: function (form) {
-        form.updateRecord();
-        this.fireEvent('saveField', form);
+        if (! (typeof form.validate === 'function' && ! form.validate())) {
+            form.updateRecord();
+            this.fireEvent('saveField', form);
+        }
     },
 
     onDeleteField: function (form) {
-        console.log(form.getRecord());
+        this.fireEvent('deleteField', form);
     },
 
     onAddField: function () {
         var parentField = this.activeRecord,
-            activeForm,
-            field = SafeStartExt.model.InspectionField.create({
-                vehicleId: this.vehicle.get('id')
-            });
+            field;
 
-        if (typeof parentField === 'object' && parentField.get('id')) {
-            parentField.appendChild(field);
+        field = SafeStartExt.model.InspectionField.create({
+            vehicleId: this.vehicle.get('id')
+        });
+
+        if (! parentField) {
+            parentField = this.down('treepanel').getStore().getRootNode();
+            field.set('type', 'root');
+        } else {
             field.set('parentId', parentField.get('id'));
-            activeForm = this.switchForm(field.get('type')); 
-            activeForm.loadRecord(field);
         }
+
+        parentField.appendChild(field);
+        parentField.expand();
+        this.down('treepanel').getSelectionModel().select([field]);
     },
 
     onRefresh: function () {
-        this.onDeselect();
+        var store = this.down('treepanel').getStore();
+        this.setLoading(true, true);
+
+        store.on('load', function () {
+            this.setLoading(false);
+            if (this.activeRecord) {
+                this.down('treepanel').getSelectionModel().deselect(this.activeRecord);
+            }
+        }, this, {single: true});
+
         this.down('treepanel').getStore().load();
     },
 

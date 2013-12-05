@@ -11,6 +11,10 @@ Ext.define('SafeStartExt.store.ChecklistTree', {
         expanded: true
     },
 
+    sorters: [{
+        property: 'sortOrder'
+    }],
+
     constructor: function (config) {
         Ext.apply(this, {
             root: 'data',

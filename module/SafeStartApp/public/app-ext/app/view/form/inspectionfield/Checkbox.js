@@ -33,6 +33,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
                 valueField: 'value',
                 fieldLabel: 'Type',
                 name: 'type',
+                editable: false,
                 store: {
                     fields: ['key', 'value'],
                     data: [{
@@ -68,6 +69,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
                 name: 'defaultValue',
                 displayField: 'key',
                 valueField: 'value',
+                editable: false,
                 store: {
                     fields: ['key', 'value'],
                     data: [{
@@ -85,6 +87,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
                 name: 'triggerValue',
                 displayField: 'key',
                 valueField: 'value',
+                editable: false,
                 store: {
                     fields: ['key', 'value'],
                     data: [{
@@ -126,10 +129,35 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
         });
         this.callParent();
     },
-    
+
     loadRecord: function (record) {
         this.down('field[name=type]').suspendEvents();
         this.callParent(arguments);
         this.down('field[name=type]').resumeEvents();
+    },
+
+    validate: function () {
+        if (Ext.each(this.query('field[required]'), function (field) {
+            if (Ext.util.Format.trim('' + field.getValue()).length === 0) {
+                Ext.Msg.alert({
+                    msg: 'Field ' + field.fieldLabel + ' is required',
+                    buttons: Ext.Msg.OK
+                });
+                return false;
+            }
+        }) !== true) { // compare with return value of Ext.each
+            return false;
+        }
+
+        if (this.down('field[name=alertCritical]').getValue()
+            && Ext.util.Format.trim(this.down('field[name=alertMessage]').getValue()).length === 0
+        ) {
+            Ext.Msg.alert({
+                msg: 'Alert message is required',
+                buttons: Ext.Msg.OK
+            });
+            return false;
+        }
+        return true;
     }
 });

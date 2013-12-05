@@ -33,6 +33,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Group', {
                 valueField: 'value',
                 fieldLabel: 'Type',
                 name: 'type',
+                editable: false,
                 store: {
                     fields: ['key', 'value'],
                     data: [{
@@ -82,6 +83,21 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Group', {
         this.down('field[name=type]').suspendEvents();
         this.callParent(arguments);
         this.down('field[name=type]').resumeEvents();
+    },
+
+    validate: function () {
+        if (Ext.each(this.query('field[required]'), function (field) {
+            if (Ext.util.Format.trim('' + field.getValue()).length === 0) {
+                Ext.Msg.alert({
+                    msg: 'Field ' + field.fieldLabel + ' is required',
+                    buttons: Ext.Msg.OK
+                });
+                return false;
+            }
+        }) !== true) { // compare with return value of Ext.each
+            return false;
+        }
+        return true;
     }
 
 });

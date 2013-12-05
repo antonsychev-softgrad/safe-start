@@ -2,7 +2,7 @@ Ext.define('SafeStartExt.model.InspectionField', {
     extend: "Ext.data.Model",
     requires: ['SafeStartExt.model.InspectionAlert'],
 
-    groupTypes: ['group', 'root'],
+    groupTypes: ['root'],
 
     fields: [{
         name: 'id', type: 'int'

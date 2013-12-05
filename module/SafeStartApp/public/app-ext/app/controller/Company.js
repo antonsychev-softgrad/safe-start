@@ -65,7 +65,8 @@ Ext.define('SafeStartExt.controller.Company', {
                 completeInspectionAction: this.completeInspection
             },
             'SafeStartExtPanelManageChecklist': {
-                saveField: this.saveChecklistField
+                saveField: this.saveChecklistField,
+                deleteField: this.deleteChecklistField
             }
         });
     },
@@ -282,6 +283,38 @@ Ext.define('SafeStartExt.controller.Company', {
                 record.modified = {};
                 record.endEdit();
                 form.loadRecord(record);
+            }
+        });
+    },
+
+    deleteChecklistField: function (form) {
+        var record = form.getRecord();
+        var parent = record.parentNode;
+        if (record.get('id') === 0) {
+            parent.removeChild(record);
+            if (parent && parent.getDepth()) {
+                form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
+            }
+            return;
+        }
+
+        Ext.Msg.confirm({
+            msg: 'Do you sure you want to delete this field from checklist?',
+            buttons: Ext.Msg.YESNO,
+            fn: function (result) {
+                if (result !== 'yes') {
+                    return;
+                }
+                SafeStartExt.Ajax.request({
+                    url: 'checklist/' + record.get('id') + '/delete',
+                    success: function(result) {
+                        // record.destroy();
+                        parent.removeChild(record);
+                        if (parent && parent.getDepth() != 0) {
+                            form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
+                        }
+                    }
+                });
             }
         });
     }

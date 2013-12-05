@@ -33,6 +33,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
                 queryMode: 'local',
                 displayField: 'key',
                 valueField: 'value',
+                editable: false,
                 store: {
                     fields: ['key', 'value'],
                     data: [{
@@ -65,7 +66,17 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
                 xtype: 'datefield',
                 format: SafeStartExt.dateFormat,
                 name: 'defaultValue',
-                fieldLabel: 'Default Value'
+                fieldLabel: 'Default Value',
+                getValue: function () {
+                    var dt = Ext.Date.parse(this.getRawValue(), this.format);
+                    if (dt === undefined) {
+                        return '';
+                    }
+                    if (typeof dt === 'object') {
+                        return parseInt(dt.getTime()/1000, 10);
+                    }
+                    return;
+                }
             }, {
                 xtype: 'numberfield',
                 fieldLabel: 'Alert Trigger Value',
@@ -103,7 +114,23 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
         var date = parseFloat(record.get('defaultValue'));
         if (date) {
             this.down('datefield[name=defaultValue]').setValue(new Date(date * 1000));
+            this.down('datefield[name=defaultValue]').originalValue = this.down('datefield[name=defaultValue]').getValue();
         }
+    },
+
+    validate: function () {
+        if (Ext.each(this.query('field[required]'), function (field) {
+            if (Ext.util.Format.trim('' + field.getValue()).length === 0) {
+                Ext.Msg.alert({
+                    msg: 'Field ' + field.fieldLabel + ' is required',
+                    buttons: Ext.Msg.OK
+                });
+                return false;
+            }
+        }) !== true) { // compare with return value of Ext.each
+            return false;
+        }
+        return true;
     }
 
 });
