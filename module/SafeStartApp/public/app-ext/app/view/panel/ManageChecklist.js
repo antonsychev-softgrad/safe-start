@@ -83,18 +83,23 @@ Ext.define('SafeStartExt.view.panel.ManageChecklist', {
                         labelWidth: 180,
                         anchor: '100%'
                     },
+                    buttonAlign: 'left',
                     buttons: [{
-                        text: 'Save',
-                        name: 'save-field',
-                        handler: function (btn) {
-                            this.onSaveField(btn.up('form'));
-                        },
-                        scope: this
-                    }, {
                         text: 'Delete',
+                        ui: 'red',
+                        scale: 'medium',
                         name: 'delete-field',
                         handler: function (btn) {
                             this.onDeleteField(btn.up('form'));
+                        },
+                        scope: this
+                    }, {
+                        text: 'Save',
+                        ui: 'blue',
+                        scale: 'medium',
+                        name: 'save-field',
+                        handler: function (btn) {
+                            this.onSaveField(btn.up('form'));
                         },
                         scope: this
                     }]
