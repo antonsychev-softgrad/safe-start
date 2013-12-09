@@ -82,11 +82,11 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
     },
 
     createInspection: function (checklists, inspectionId) {
-        console.log('CREATE');
+        var listStore = this.down('dataview').getStore();
+        
         this.checklists = checklists;
         this.current = -1;
         this.forms = [];
-        var listStore = this.down('dataview').getStore();
         this.listStore = listStore;
         this.inspectionId = inspectionId;
         this.isNew = !! inspectionId;

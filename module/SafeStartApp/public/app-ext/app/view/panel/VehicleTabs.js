@@ -87,8 +87,8 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                 case 'update-checklist':
                     tab.xtype = 'SafeStartExtPanelManageChecklist';
                     break;
-                case 'alerts':
                 case 'users':
+                case 'alerts':
                 case 'report':
                     Ext.apply(tab, {
                         xtype: 'container',

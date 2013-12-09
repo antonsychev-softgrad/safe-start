@@ -22,11 +22,13 @@ Ext.define('SafeStartExt.controller.Users', {
     }],
 
     company: null,
+    needUpdate: false,
 
     init: function () {
         this.control({
             'SafeStartExtPanelUsersList': {
-                beforerender: this.refreshUsersList,
+                beforerender: this.updateUsersList,
+                activate: this.updateUsersList,
                 changeUserAction: this.changeUserAction,
                 addUserAction: this.addUserAction
             },
@@ -108,6 +110,8 @@ Ext.define('SafeStartExt.controller.Users', {
         
         if (this.getUsersListView()) {
             this.refreshUsersList();
+        } else {
+            this.needUpdate = true;
         }
     },
 
@@ -140,7 +144,13 @@ Ext.define('SafeStartExt.controller.Users', {
 
         store.getProxy().setExtraParam('companyId', companyId);
         store.load();
-        
+    },
+
+    updateUsersList: function () {
+        if (this.needUpdate) {
+            this.refreshUsersList();
+            this.needUpdate = false;
+        }
     }
 
 

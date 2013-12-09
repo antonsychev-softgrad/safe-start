@@ -33,7 +33,7 @@ Ext.define('SafeStartExt.view.component.Users', {
                  {
                     cls: 'sfa-info-container',
                     xtype: 'panel',
-                    type: 'vbox',
+                    layout: 'fit',
                     flex: 2,
                     padding: 20,
                     ui: 'transparent',

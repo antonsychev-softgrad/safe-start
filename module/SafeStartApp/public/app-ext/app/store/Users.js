@@ -7,7 +7,7 @@ Ext.define('SafeStartExt.store.Users', {
 
     proxy: {
         type: 'ajax',
-        url : "api/company/getusers",
+        url : "/api/company/getusers",
         reader: {
             type: 'json',
             root: 'data'
