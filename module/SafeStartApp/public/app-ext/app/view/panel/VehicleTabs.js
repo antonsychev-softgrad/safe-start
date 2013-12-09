@@ -4,7 +4,8 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         'SafeStartExt.view.form.Vehicle',
         'SafeStartExt.view.panel.Inspections',
         'SafeStartExt.view.panel.Inspection',
-        'SafeStartExt.view.panel.ManageChecklist'
+        'SafeStartExt.view.panel.ManageChecklist',
+        'SafeStartExt.view.panel.VehicleUsers'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
@@ -88,6 +89,8 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tab.xtype = 'SafeStartExtPanelManageChecklist';
                     break;
                 case 'users':
+                    tab.xtype = 'SafeStartExtPanelVehicleUsers';
+                    break;
                 case 'alerts':
                 case 'report':
                     Ext.apply(tab, {
