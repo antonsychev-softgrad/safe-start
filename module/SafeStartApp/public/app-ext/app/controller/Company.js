@@ -67,6 +67,9 @@ Ext.define('SafeStartExt.controller.Company', {
             'SafeStartExtPanelManageChecklist': {
                 saveField: this.saveChecklistField,
                 deleteField: this.deleteChecklistField
+            },
+            'SafeStartExtPanelVehicleUsers': {
+                saveVehicleUsers: this.saveVehicleUsers
             }
         });
     },
@@ -290,9 +293,9 @@ Ext.define('SafeStartExt.controller.Company', {
     deleteChecklistField: function (form) {
         var record = form.getRecord();
         var parent = record.parentNode;
-        if (record.get('id') === 0) {
+        if (record.get('id') === 0 && parent) {
             parent.removeChild(record);
-            if (parent && parent.getDepth()) {
+            if (parent.getDepth()) {
                 form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
             }
             return;
@@ -316,6 +319,13 @@ Ext.define('SafeStartExt.controller.Company', {
                     }
                 });
             }
+        });
+    },
+
+    saveVehicleUsers: function (values) {
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + this.vehicle.get('id') + '/update-users',
+            data: {value: values}
         });
     }
 });

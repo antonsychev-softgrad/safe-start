@@ -3,6 +3,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     requires: [
         'SafeStartExt.view.form.Vehicle',
         'SafeStartExt.view.panel.Inspections',
+        'SafeStartExt.view.panel.Alerts',
         'SafeStartExt.view.panel.Inspection',
         'SafeStartExt.view.panel.ManageChecklist',
         'SafeStartExt.view.panel.VehicleUsers'
@@ -20,7 +21,6 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                 items: this.getTabs()
             }]
         });
-
 
         this.callParent();
 
@@ -92,6 +92,8 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tab.xtype = 'SafeStartExtPanelVehicleUsers';
                     break;
                 case 'alerts':
+                    tab.xtype = 'SafeStartExtPanelAlerts';
+                    break;
                 case 'report':
                     Ext.apply(tab, {
                         xtype: 'container',
