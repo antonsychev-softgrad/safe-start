@@ -5,6 +5,10 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
     requires: [
         'SafeStartExt.store.Alerts'
     ],
+    layout: {
+        type: 'hbox',
+        align: 'stretch'
+    },
 
     initComponent: function () {
         var store = SafeStartExt.store.Alerts.create({vehicleId: this.vehicle.get('id')});
@@ -20,7 +24,7 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                 overflowY: 'auto',
                 items: [{
                     xtype: 'dataview',
-                    itemSelector: 'div.sfa-vehicle-item',
+                    itemSelector: 'div.sfa-alert-item',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
                         '<div class="sfa-alert-item">',
@@ -43,45 +47,84 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                 }]
             }, {
                 xtype: 'panel',
+                layout: {
+                    type: 'vbox'
+                },
+                name: 'alert-details',
+                padding: '10 20',
                 hidden: true,
                 items: [{
                     xtype: 'dataview',
-                    itemSelector: 'div',
-                    tpl: new Ext.XTemplate('')
+                    itemTpl: new Ext.XTemplate(
+                        '<div class="sfa-alert-info">',
+                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}</b>)</div>',
+                        '<div>Fault: <b>{alertDescription}</b></div>',
+                        '<div>Description: {description} </div>',
+                        '<div>Added by: {user.firstName} {user.lastName} at {creationDate}</div>',
+                        '<tpl for="history">',
+                            '<div>{action} by: {username} at {date} </div>',
+                        '</tpl>',
+                        '</div>'
+                    )
                 }, {
-                    xtype: 'combobox',
-                    name: 'status',
-                    store: {
-                        proxy: {
-                            type: 'memory'
-                        },
-                        fields: ['key', 'value'],
-                        data: [{
-                            key: 'New',
-                            value: 'new'
-                        }]
+                    xtype: 'container',
+                    width: 500,
+                    layout: {
+                        type: 'hbox'
                     },
-                    displayField: 'key',
-                    valueField: 'value',
-                    editable: false,
-                    queryMode: 'local'
+                    items: [{
+                        xtype: 'combobox',
+                        fieldLabel: 'Status',
+                        width: 430,
+                        labelWidth: 130,
+                        name: 'status',
+                        store: {
+                            proxy: {
+                                type: 'memory'
+                            },
+                            fields: ['key', 'value'],
+                            data: [{
+                                key: 'New',
+                                value: 'new'
+                            }, {
+                                key: 'Closed',
+                                value: 'closed'
+                            }]
+                        },
+                        displayField: 'key',
+                        valueField: 'value',
+                        editable: false,
+                        queryMode: 'local'
+                    }, {
+                        xtype: 'button',
+                        width: 70,
+                        text: 'Update'
+                    }]
                 }, {
                     xtype: 'textarea',
+                    width: 500,
+                    labelWidth: 130,
+                    fieldLabel: 'Comment',
                     name: 'comment'
                 }],
-                tbar: {
+                bbar: {
                     xtype: 'container',
+                    layout: {
+                        type: 'hbox'
+                    },
                     items: [{
-                        xtype: 'button',
-                        name: 'save',
-                        text: 'Save',
-                        ui: 'blue',
-                        scale: 'medium'
-                    }, {
                         xtype: 'button',
                         name: 'delete',
                         text: 'Delete',
                         ui: 'red',
+                        scale: 'medium'
+                    }, {
+                        flex: 1
+                    }, {
+                        xtype: 'button',
+                        name: 'save',
+                        text: 'Save',
+                        ui: 'blue',
                         scale: 'medium'
                     }]
                 },
@@ -96,10 +139,30 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
 
         this.callParent();
     },
-    onSelect: function () {
-
+    onSelect: function (selModel, record) {
+        var panel = this.down('panel[name=alert-details]');
+        var alertData = [{
+            vehicle: {
+                title: 'Title',
+                plantId: 'PlantId'
+            },
+            alertDescription: 'Alert description',
+            description: 'Description',
+            user: {
+                firstName: 'Firstname',
+                lastName: 'Lastname'
+            },
+            creationDate: 'dd/mm/yyyy',
+            history: [
+                {action: 'Action', username: 'Firstname Lastname', date: 'dd/mm/yyyy'}
+            ]
+        }];
+        panel.show();
+        panel.down('dataview').update(alertData);
     },
-    onDeselect: function () {
 
+    onDeselect: function (selModel, record) {
+        var panel = this.down('panel[name=alert-details]');
+        panel.hide();
     }
 });
