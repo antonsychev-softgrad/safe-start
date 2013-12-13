@@ -12,8 +12,9 @@ Ext.define('SafeStartExt.model.Alert', {
         {name: 'alertDescription', type: 'string', mapping: 'alert_description'},
         {name: 'creationDate', type: 'string', mapping: 'creation_date'},
         {name: 'status', type: 'string'},
+        {name: 'images', type: 'auto'},
         {name: 'history', type: 'auto'},
-        {name: 'comments', type: 'string', defaultValue: ''},
+        {name: 'comments', type: 'auto'},
         {name: 'thumbnail', type: 'string', defaultValue: ''}
     ],
 

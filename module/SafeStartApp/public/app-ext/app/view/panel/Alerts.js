@@ -3,7 +3,8 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
     xtype: 'SafeStartExtPanelAlerts',
 
     requires: [
-        'SafeStartExt.store.Alerts'
+        'SafeStartExt.store.Alerts',
+        'SafeStartExt.view.Carousel'
     ],
     layout: {
         type: 'hbox',
@@ -55,9 +56,10 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                 hidden: true,
                 items: [{
                     xtype: 'dataview',
+                    name: 'alert',
                     itemTpl: new Ext.XTemplate(
                         '<div class="sfa-alert-info">',
-                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}</b>)</div>',
+                        '<div>Vehicle: vehicle.title (<b>{vehicle.plantId}</b>)</div>',
                         '<div>Fault: <b>{alertDescription}</b></div>',
                         '<div>Description: {description} </div>',
                         '<div>Added by: {user.firstName} {user.lastName} at {creationDate}</div>',
@@ -87,8 +89,8 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                                 key: 'New',
                                 value: 'new'
                             }, {
-                                key: 'Closed',
-                                value: 'closed'
+                                key: 'Completed',
+                                value: 'completed'
                             }]
                         },
                         displayField: 'key',
@@ -101,11 +103,55 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                         text: 'Update'
                     }]
                 }, {
+                    xtype: 'container',
+                    name: 'previous-alerts',
+                    tpl: [
+                        '<div class="sfa-alert-comments">',
+                        '<h3>Previous alerts:</h3>',
+                        '<tpl for="alerts">',
+                        '<div class="sfa-item">',
+                        '<div class="alert">Added by {user} at {date} <br/>',
+                        '</div></div>',
+                        '</tpl>',
+                        '</div>'
+                    ].join('')
+
+                }, {
+                    xtype: 'carousel',
+                    name: 'carousel',
+                    height: 400
+                }, {
+                    xtype: 'container',
+                    name: 'comments',
+                    tpl: [
+                        '<div class="sfa-alert-comments">',
+                        '<h3>Comments:</h3>',
+                        '<tpl for="comments">',
+                        '<div class="sfa-item">',
+                        '<div class="name">{user.firstName} {user.lastName} at <b>{update_date}</b><br/>',
+                        '</div>',
+                        '<span class="sfa-comment-content">{content}</span><div class="clear"></div></div>',
+                        '</tpl>',
+                        '</div>'
+                    ].join('')
+                }, {
                     xtype: 'textarea',
                     width: 500,
                     labelWidth: 130,
                     fieldLabel: 'Comment',
                     name: 'comment'
+                }, {
+                    xtype: 'container',
+                    width: 500,
+                    layout: {
+                        type: 'vbox',
+                        align: 'right'
+                    },
+                    items: [{
+                        xtype: 'button',
+                        text: 'Add',
+                        right: 0
+                    }]
                 }],
                 bbar: {
                     xtype: 'container',
@@ -117,14 +163,6 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                         name: 'delete',
                         text: 'Delete',
                         ui: 'red',
-                        scale: 'medium'
-                    }, {
-                        flex: 1
-                    }, {
-                        xtype: 'button',
-                        name: 'save',
-                        text: 'Save',
-                        ui: 'blue',
                         scale: 'medium'
                     }]
                 },
@@ -141,28 +179,107 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
     },
     onSelect: function (selModel, record) {
         var panel = this.down('panel[name=alert-details]');
-        var alertData = [{
-            vehicle: {
-                title: 'Title',
-                plantId: 'PlantId'
-            },
-            alertDescription: 'Alert description',
-            description: 'Description',
-            user: {
-                firstName: 'Firstname',
-                lastName: 'Lastname'
-            },
-            creationDate: 'dd/mm/yyyy',
-            history: [
-                {action: 'Action', username: 'Firstname Lastname', date: 'dd/mm/yyyy'}
-            ]
-        }];
+        var data = record.getData();
+        var history = data.history || [];
+        var i = history.length - 1; 
+        var refreshedFlag = false;
+        var alert;
+        var date;
+        var alertsHistory = {
+            alerts: []
+        };
+        data.history = [];
+        for (i; i >= 0; i--) {
+            if (history[i].action === 'alert_refreshed') {
+                refreshedFlag = true;
+                alert = {
+                    user: history[i].user.firstName + ' ' + history[i].user.lastName
+                };
+                date = new Date(history[i].date * 1000);
+                alert.date = Ext.Date.format(date, SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat);
+                alertsHistory.alerts.push(alert);
+            } else if (! refreshedFlag) {
+                alert = {
+                    username: history[i].user.firstName + ' ' + history[i].user.lastName
+                };
+                date = new Date(history[i].date * 1000);
+                alert.date = Ext.Date.format(date, SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat);
+
+                switch (history[i].action) {
+                    case 'alert_reopened':
+                        alert.action = 'Reopened';
+                        break;
+                    case 'alert_closed':
+                        alert.action = 'Completed';
+                        break;
+                }
+                data.history.push(alert);
+            }
+        }
+        data.history.reverse();
+        data.user = record.getUser().getData();
+
+        data.vehicle = record.getVehicle().getData();
+        // var alertData = [{
+        //     vehicle: {
+        //         title: 'Title',
+        //         plantId: 'PlantId'
+        //     },
+        //     alertDescription: 'Alert description',
+        //     description: 'Description',
+        //     user: {
+        //         firstName: 'Firstname',
+        //         lastName: 'Lastname'
+        //     },
+        //     creationDate: 'dd/mm/yyyy',
+        //     history: [
+        //         {action: 'Action', username: 'Firstname Lastname', date: 'dd/mm/yyyy'}
+        //     ]
+        // }];
         panel.show();
-        panel.down('dataview').update(alertData);
+        this.down('combobox[name=status]').select(data.status);
+
+        console.log(data);
+        this.setComments(data.comments);
+
+        this.down('dataview[name=alert]').update(data);
+        if (alertsHistory.alerts.length) {
+            this.down('container[name=previous-alerts]').show();
+            this.down('container[name=previous-alerts]').update(alertsHistory);
+        } else {
+            this.down('container[name=previous-alerts]').hide();
+        }
+
+        console.log(data);
+        var images = data.images || [];
+        var carousel = this.down('carousel[name=carousel]');
+        if (images.length) {
+            carousel.show();
+            Ext.each(images, function (imageHash) {
+                carousel.add({
+                    xtype: 'image',
+                    src: '/api/image/' + imageHash + '/1024x768'
+                });
+            }, this);
+        } else {
+            carousel.hide();
+        }
+
     },
 
     onDeselect: function (selModel, record) {
         var panel = this.down('panel[name=alert-details]');
         panel.hide();
+    },
+
+
+    setComments: function(comments) {
+        var container = this.down('container[name=comments]');
+        if (comments && comments.length) {
+            container.show();
+            container.update({comments: comments});
+        } else {
+            container.hide();
+        }
     }
 });
