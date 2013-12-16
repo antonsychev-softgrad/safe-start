@@ -3,8 +3,7 @@ Ext.define('SafeStartExt.view.component.Company', {
     requires: [
         'SafeStartExt.view.container.TopNav',
         'SafeStartExt.view.panel.VehicleList',
-        'SafeStartExt.view.panel.VehicleTabs',
-        'SafeStartExt.view.panel.Inspections'
+        'SafeStartExt.view.panel.VehicleTabs'
     ],
     xtype: 'SafeStartExtComponentCompany',
     layout: {
@@ -38,11 +37,13 @@ Ext.define('SafeStartExt.view.component.Company', {
         this.callParent();
     },
 
-    setVehicle: function (vehicle) {
+    setVehicle: function (vehicle, action, params) {
         this.unsetVehicle();
         this.down('container[name=vehicle-container]').add({
             xtype: 'SafeStartExtPanelVehicleTabs',
             vehicle: vehicle,
+            action: action,
+            params: params,
             flex: 2
         });
     },

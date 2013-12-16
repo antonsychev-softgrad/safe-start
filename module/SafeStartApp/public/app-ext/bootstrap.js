@@ -865,6 +865,7 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
   "SafeStartExt.store.AbstractStore": [],
+  "SafeStartExt.store.ChecklistTree": [],
   "SafeStartExt.store.Companies": [],
   "SafeStartExt.store.InspectionChecklists": [],
   "SafeStartExt.store.Inspections": [],
@@ -883,14 +884,22 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.view.form.User": [],
   "SafeStartExt.view.form.UserProfile": [],
   "SafeStartExt.view.form.Vehicle": [],
+  "SafeStartExt.view.form.inspectionfield.Checkbox": [],
+  "SafeStartExt.view.form.inspectionfield.DatePicker": [],
+  "SafeStartExt.view.form.inspectionfield.Group": [],
+  "SafeStartExt.view.form.inspectionfield.Label": [],
+  "SafeStartExt.view.form.inspectionfield.Radio": [],
+  "SafeStartExt.view.form.inspectionfield.Root": [],
+  "SafeStartExt.view.form.inspectionfield.Text": [],
   "SafeStartExt.view.panel.CompaniesList": [],
   "SafeStartExt.view.panel.CompanyInfo": [],
+  "SafeStartExt.view.panel.Inspection": [],
   "SafeStartExt.view.panel.InspectionInfo": [],
   "SafeStartExt.view.panel.Inspections": [],
+  "SafeStartExt.view.panel.ManageChecklist": [],
   "SafeStartExt.view.panel.UserProfile": [],
   "SafeStartExt.view.panel.UsersList": [],
   "SafeStartExt.view.panel.VehicleInfo": [],
-  "SafeStartExt.view.panel.VehicleInspection": [],
   "SafeStartExt.view.panel.VehicleList": [],
   "SafeStartExt.view.panel.VehicleTabs": []
 });
@@ -1913,6 +1922,7 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.model.MenuVehiclePage": [],
   "SafeStartExt.model.User": [],
   "SafeStartExt.store.AbstractStore": [],
+  "SafeStartExt.store.ChecklistTree": [],
   "SafeStartExt.store.Companies": [],
   "SafeStartExt.store.InspectionChecklists": [],
   "SafeStartExt.store.Inspections": [],
@@ -1955,17 +1965,44 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.form.Vehicle": [
     "widget.SafeStartExtFormVehicle"
   ],
+  "SafeStartExt.view.form.inspectionfield.Checkbox": [
+    "widget.SafeStartExtFormInspectionfieldCheckbox"
+  ],
+  "SafeStartExt.view.form.inspectionfield.DatePicker": [
+    "widget.SafeStartExtFormInspectionfieldDatePicker"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Group": [
+    "widget.SafeStartExtFormInspectionfieldGroup"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Label": [
+    "widget.SafeStartExtFormInspectionfieldLabel"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Radio": [
+    "widget.SafeStartExtFormInspectionfieldRadio"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Root": [
+    "widget.SafeStartExtFormInspectionfieldRoot"
+  ],
+  "SafeStartExt.view.form.inspectionfield.Text": [
+    "widget.SafeStartExtFormInspectionfieldText"
+  ],
   "SafeStartExt.view.panel.CompaniesList": [
     "widget.SafeStartExtPanelCompaniesList"
   ],
   "SafeStartExt.view.panel.CompanyInfo": [
     "widget.SafeStartExtPanelCompanyInfo"
   ],
+  "SafeStartExt.view.panel.Inspection": [
+    "widget.SafeStartExtPanelInspection"
+  ],
   "SafeStartExt.view.panel.InspectionInfo": [
     "widget.SafeStartExtPanelInspectionInfo"
   ],
   "SafeStartExt.view.panel.Inspections": [
     "widget.SafeStartExtPanelInspections"
+  ],
+  "SafeStartExt.view.panel.ManageChecklist": [
+    "widget.SafeStartExtPanelManageChecklist"
   ],
   "SafeStartExt.view.panel.UserProfile": [
     "widget.SafeStartExtUserProfileWindow"
@@ -1975,9 +2012,6 @@ Ext.ClassManager.addNameAliasMappings({
   ],
   "SafeStartExt.view.panel.VehicleInfo": [
     "widget.SafeStartExtPanelVehicleInfo"
-  ],
-  "SafeStartExt.view.panel.VehicleInspection": [
-    "widget.SafeStartExtPanelVehicleInspection"
   ],
   "SafeStartExt.view.panel.VehicleList": [
     "widget.SafeStartExtPanelVehicleList"

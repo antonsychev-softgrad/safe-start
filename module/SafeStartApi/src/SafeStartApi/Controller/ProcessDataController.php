@@ -28,37 +28,32 @@ class ProcessDataController extends PublicAccessRestController
                 "errorMessage" => trim(implode("\n", $errors))
             );
         } else {
-            $return = (array)$return;
-            $fileHash = $return['hash'];
+            $return = (array) $return;
+            $fileHash = isset($return['hash']) ? $return['hash'] : null;
             $defUsersPath = $this->moduleConfig['defUsersPath'];
             $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
             $filePath = $this->getFileByDirAndName($searchDir, $fileHash);
             if (file_exists($filePath)) chmod($filePath, 0777);
-            $image = new \SafeStartApi\Model\ImageProcessor($filePath);
-            $image->resize(array(
-                    'width' => 1024,
-                    'height' => 768
-                )
-            );
-            $image->save($filePath, array('quality' => 50));
             $this->answer = $return;
         }
         return $this->AnswerPlugin()->format($this->answer, !empty($errors) ? 400 : 0);
     }
 
-    protected function getFileByDirAndName($dir, $tosearch)
-    {
-        if (file_exists($dir) && is_dir($dir)) {
+    protected function getFileByDirAndName($dir, $tosearch) {
+        if(file_exists($dir) && is_dir($dir)) {
 
-            $validFileExts = array("jpg", "jpeg", "png");
-            $path = $dir . $tosearch;
-            $ext = preg_replace('/.*\.([^\.]*)$/is', '$1', $tosearch);
-            if (file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
                 return (realpath($path));
             } else {
-                foreach ($validFileExts as $validExt) {
+                foreach($validFileExts as $validExt) {
                     $filename = $path . "." . $validExt;
-                    if (file_exists($filename) && !is_dir($filename)) {
+                    if(file_exists($filename) && !is_dir($filename)) {
                         return (realpath($filename));
                     }
                 }
@@ -69,28 +64,22 @@ class ProcessDataController extends PublicAccessRestController
 
     public function generatePdfAction()
     {
-        $checkListId = $this->params('id');
+        $checkListId = (int)$this->params('id');
 
         $checkList = null;
-        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.hash = :hash");
-        $query->setParameters(array('hash' => $checkListId));
+        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.id = :id OR cl.hash = :hash");
+        $query->setParameters(array('id' => $checkListId, 'hash' => $checkListId));
         $queryResult = $query->getResult();
-        if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0])) $checkList = $queryResult[0];
+        if (is_array($queryResult) && !empty($queryResult) && isset($queryResult[0]))  $checkList = $queryResult[0];
 
-        if (!$checkList) return $this->_showNotFound('Requested inspection not found.');
+        if (!$checkList) return $this->getController()->_showNotFound('Requested inspection not found.');
 
         $link = $checkList->getPdfLink();
-        $cache = \SafeStartApi\Application::getCache();
-        $cashKey = $link;
-        $path = '';
-        if ($cashKey && $cache->hasItem($cashKey)) {
-            $path = $this->inspectionPdf()->getFilePathByName($link);
-        }
+        $path = '';//$this->inspectionPdf()->getFilePathByName($link);
         if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($checkList);
-        header("Content-Type: application/octet-stream");
-        header("Content-Disposition: attachment; filename={$checkList->getPdfLink()}");
-        header("Content-Transfer-Encoding:Binary");
-        header('Content-Length: ' . filesize($path));
+
+        header("Content-Disposition: inline; filename={$checkList->getPdfLink()}");
+        header("Content-type: application/x-pdf");
         echo file_get_contents($path);
         return true;
     }

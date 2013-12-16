@@ -258,7 +258,7 @@ $api = array(
     ),
     'requestsLimit' => array(
         'limitForLoggedInUsers' => 50,
-        'limitForUnloggedUsers' => 5,
+        'limitForUnloggedUsers' => 30,
         'limitTime' => 60,
     )
 );

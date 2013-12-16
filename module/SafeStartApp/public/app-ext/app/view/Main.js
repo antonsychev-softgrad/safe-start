@@ -6,6 +6,7 @@ Ext.define('SafeStartExt.view.Main', {
         'SafeStartExt.view.component.Auth',
         'SafeStartExt.view.component.Companies',
         'SafeStartExt.view.component.Company',
+        'SafeStartExt.view.component.Users',
         'SafeStartExt.view.component.Contact'
     ],
     

@@ -4,7 +4,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     ],
     xtype: 'SafeStartExtPanelInspectionInfo',
     cls:'sfa-previous-inspections-info',
-    ui: 'light',
     autoScroll: true,
     border: 0,
 
@@ -70,6 +69,7 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
         this.removeAll();
         this.add({
             xtype: 'component',
+            border: 0,
             layout: 'fit',
             tpl: new Ext.XTemplate(
                 '<tpl for=".">',
@@ -87,7 +87,11 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
                                             '{key}',
                                         '</div>',
                                         '<div class="sfa-group-item-key" style="text-align: right;display: inline-block; width: 20%">',
-                                            '{value}',
+                                            '<tpl if="Ext.isEmpty(value)">',
+                                                'N/A',
+                                            '<tpl else>',
+                                                '{value}',
+                                            '</tpl>',
                                         '</div>',                                
                                     '</div>',
                                 '</tpl>',
@@ -128,7 +132,10 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
             var isAlert = false;
             switch (field.type) {
                 case 'group':
-                    items.push(this.createFields(field.items, values, field.triggerValue, field.fieldName, depth + 1));
+                    var group = this.createFields(field.items, values, field.triggerValue, field.fieldName, depth + 1);
+                    if (group) {
+                        items.push(group); 
+                    }
                     break;
                 case 'radio':
                 case 'checkbox':

@@ -43,7 +43,6 @@ Ext.define('SafeStartExt.controller.Main', {
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
                 switch(token) {
-                    case 'users':
                     case 'system-statistic':
                     case 'system-settings':
                     case 'company-settings':
@@ -165,6 +164,24 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainPanel().getLayout().setActiveItem(page);
     },
 
+    showUsersPageById: function (params) {
+        if (! params.id) {
+            this.redirectTo(this.getApplication().getDefaultPage());
+            return;
+        }
+
+        this.getMainPanel().fireEvent('setCompanyByIdAction', params.id);
+
+        var page = this.getUsersPanel();
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Users');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Users');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
     redirectTo: function(name) {
         Ext.History.add(name);
     },
@@ -191,7 +208,11 @@ Ext.define('SafeStartExt.controller.Main', {
                 this.redirectTo('system-statistic');
                 break;
             case 'Users':
-                this.redirectTo('users');
+                if (this.getApplication().isAllowed('showUsersPageById')) {
+                    this.redirectTo('users/' + SafeStartExt.companyRecord.getId());
+                } else {
+                    this.redirectTo('users');
+                }
                 break;
             default:
                 this.redirectTo(name.toLowerCase());

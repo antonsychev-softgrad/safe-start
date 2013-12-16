@@ -165,6 +165,7 @@ $general = array(
             'inspectionFaultPdf' => 'SafeStartApi\Controller\Plugin\InspectionFaultPdfPlugin',
             'inspectionPdf' => 'SafeStartApi\Controller\Plugin\InspectionPdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
+            'processTrailerPlugin' => 'SafeStartApi\Controller\Plugin\ProcessTrailerPlugin',
             'queues' => 'SafeStartApi\Controller\Plugin\QueuePlugin',
             'pushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
             'processChecklistPlugin' => 'SafeStartApi\Controller\Plugin\ProcessChecklistPlugin',
