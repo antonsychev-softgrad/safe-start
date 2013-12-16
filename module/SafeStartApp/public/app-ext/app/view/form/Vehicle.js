@@ -15,44 +15,16 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
     fieldDefaults: {
         msgTarget: 'side'
     },
-    padding: 30,
-    scrollable: true,
+    autoScroll: true,
     buttonAlign: 'left',
+    cls: 'sfa-vehicle-form',
 
     initComponent: function () {
         var me = this;
         Ext.apply(this, {
-            buttons: [{
-                text: 'Delete',
-                ui: 'red',
-                scale: 'medium',
-                handler: function () {
-                    Ext.Msg.confirm({
-                        title: 'Confirmation',
-                        msg: 'Are you sure want to delete this vehicle?',
-                        buttons: Ext.Msg.YESNO,
-                        fn: function (btn) {
-                            if (btn !== 'yes') {
-                                return;
-                            }
-                            me.fireEvent('deleteVehicleAction', me.getRecord());
-                        }
-                    });
-                }
-            }, {
-                text: 'Save',
-                ui: 'blue',
-                scale: 'medium',
-                handler: function () {
-                    if (me.isValid()) {
-                        me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
-                    }
-                }
-            }],
             items: [{
                 xtype: 'textfield',
                 fieldLabel: 'Model',
-                // width: '100%',
                 maxWidth: 400,
                 labelWidth: 130,
                 labelSeparator: '*',
@@ -162,8 +134,54 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     disabled: true,
                     name: 'nextServiceDay'
                 }]
+            }],
+            bbar: [{
+                xtype: 'container',
+                defaults: {
+                    xtype: 'button',
+                    margin: '4 8'
+                },
+                items: [{
+                    text: 'Delete',
+                    ui: 'red',
+                    name: 'delete',
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function () {
+                        Ext.Msg.confirm({
+                            title: 'Confirmation',
+                            msg: 'Are you sure want to delete this vehicle?',
+                            buttons: Ext.Msg.YESNO,
+                            fn: function (btn) {
+                                if (btn !== 'yes') {
+                                    return;
+                                }
+                                me.fireEvent('deleteVehicleAction', me.getRecord());
+                            }
+                        });
+                    }
+                }, {
+                    text: 'Save',
+                    ui: 'blue',
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function () {
+                        if (me.isValid()) {
+                            me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
+                        }
+                    }
+                }]
             }]
         });
         this.callParent();
+    },
+
+    loadRecord: function (record) {
+        if (! record.get('id')) {
+            this.down('button[name=delete]').disable();
+        } else {
+            this.down('button[name=delete]').enable();
+        }
+        this.callParent(arguments);
     }
 });

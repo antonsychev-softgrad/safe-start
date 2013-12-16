@@ -5,6 +5,7 @@ Ext.define('SafeStartExt.model.User', {
     ],
     fields: [
         {name: 'id', type: 'int', defaultValue: 0},
+        {name: 'assigned', type: 'auto', defaultValue: 'no'},
         {name: 'enabled', type: 'auto', defaultValue: 1},
         {name: 'companyId', type: 'int'},
         {name: 'username', type: 'string'},

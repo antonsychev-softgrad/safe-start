@@ -13,6 +13,39 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         type: 'hbox',
         align: 'stretch'
     },
+    configData: {
+
+    },
+
+    listeners: {
+        activate: function () {
+            if (this.configData && this.configData.checklistHash) {
+                var hashes = [];
+                var store = this.getListStore();
+                if (store.getCount()) {
+                    var record = this.getListStore().findRecord('hash', this.configData.checklistHash);
+                    this.getListStore().each(function (rec) {
+                        hashes.push({title: rec.get('title'), hash: rec.get('hash')});
+                    });
+                    if (record) {
+                        this.down('dataview').fireEvent('itemclick', this.down('dataview'), record, {}, {});
+                        delete this.configData.checklistHash;
+                    }
+                    return;
+                }
+                store.on('load', function (records) {
+                    var record = this.getListStore().findRecord('hash', this.configData.checklistHash);
+                    this.getListStore().each(function (rec) {
+                        hashes.push({title: rec.get('title'), hash: rec.get('hash')});
+                    });
+                    if (record) {
+                        this.down('dataview').fireEvent('itemclick', this.down('dataview'), record, {}, {});
+                        delete this.configData.checklistHash;
+                    }
+                }, this, {single: true, priority: 1000});
+            }  
+        }
+    },
 
     initComponent: function () {
         var store = SafeStartExt.store.Inspections.create({
@@ -27,11 +60,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                 border: 0,
                 maxWidth: 250,
                 cls: 'sfa-previous-inspections-left-coll',
-                // tbar: {
-                //     xtype: 'pagingtoolbar',
-                //     pageSize: 5,
-                //     store: store
-                // },
+                overflowY: 'auto',
                 items: [{
                     xtype: 'dataview',
                     itemSelector: 'div.sfa-vehicle-item',
@@ -42,10 +71,55 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         '</div>',
                         '</tpl>'
                     ),
-                    store: store
+                    store: store,
+                    listeners: {
+                        select: function () {
+                            this.down('SafeStartExtPanelInspectionInfo').down('toolbar').show();
+                        },
+                        deselect: function () {
+                            this.down('SafeStartExtPanelInspectionInfo').down('toolbar').hide();
+                        },
+                        scope: this
+                    }
                 }]
             }, {
                 xtype: 'SafeStartExtPanelInspectionInfo',
+                tbar: {
+                    xtype: 'toolbar',
+                    border: 0,
+                    style: {
+                        border: 0
+                    },
+                    hidden: true,
+                    items: [{
+                        text: 'Print',
+                        handler: function (btn) {
+                            var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
+                            if (panel.inspection) {
+                                this.fireEvent('printInspectionAction', panel.inspection.get('id'));
+                            }
+                        },
+                        scope: this
+                    }, {
+                        text: 'Edit',
+                        handler: function (btn) {
+                            var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
+                            if (panel.inspection) {
+                                this.fireEvent('editInspectionAction', panel.inspection.get('id'));
+                            }
+                        },
+                        scope: this
+                    }, {
+                        text: 'Delete',
+                        handler: function (btn) {
+                            var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
+                            if (panel.inspection) {
+                                this.fireEvent('deleteInspectionAction', panel.inspection.get('id'));
+                            }
+                        },
+                        scope: this
+                    }]
+                },
                 vehicle: this.vehicle,
                 flex: 2
             }]

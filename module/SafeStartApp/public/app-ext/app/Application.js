@@ -1,6 +1,6 @@
 Ext.ns('SafeStartExt');
 
-SafeStartExt.dateFormat = SafeStartExt.dateFormat || 'Y/m/d';
+SafeStartExt.dateFormat = SafeStartExt.dateFormat || 'd/m/Y';
 SafeStartExt.timeFormat = SafeStartExt.timeFormat || 'H:i';
 
 Ext.Loader.setConfig({
@@ -41,8 +41,9 @@ Ext.define('SafeStartExt.Application', {
         'companies': 'main#showCompaniesPage',
         'company': 'main#showCompanyPage',
         'company/:id': 'main#showCompanyPageById',
-        'contact': 'main#showContactPage'//,
-        // 'users': 'main#showUsersPage'
+        'contact': 'main#showContactPage',
+        'users': 'main#showUsersPage',
+        'users/:id': 'main#showUsersPageById'
     },
 
     acl: {

@@ -251,6 +251,12 @@
             $gradient: linear-gradient-glossy-button-over($direction, $bg-color);
         } @else if $type == glossy-button-pressed {
             $gradient: linear-gradient-glossy-button-pressed($direction, $bg-color);
+        } @else if $type == custom-button {
+            $gradient: linear-gradient-custom-button($direction, $bg-color);
+        } @else if $type == custom-button-over {
+            $gradient: linear-gradient-custom-button-over($direction, $bg-color);
+        } @else if $type == custom-button-pressed {
+            $gradient: linear-gradient-custom-button-pressed($direction, $bg-color);
         }
 
         @if $gradient != null {

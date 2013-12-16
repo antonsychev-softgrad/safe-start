@@ -10,43 +10,51 @@ Ext.define('SafeStartExt.view.form.User', {
     ],
     xtype: 'SafeStartExtFormUser',
 
-    items: [
-        {
+    padding: 10,
+
+    layout: {
+        type: 'vbox',
+        align: 'stretch'
+    },
+    fieldDefaults: {
+        msgTarget: 'side'
+    },
+    defaults: {
+        maxWidth: 400,
+        labelWidth: 130 
+    },
+
+    items: [{
             xtype: 'hiddenfield',
             name: 'id',
             value: 0
-        },
-        {
+        }, {
             xtype: 'textfield',
             fieldLabel: 'Email',
             allowBlank: false,
             vtype: 'email',
             name: 'email'
-        },
-        {
+        }, {
             xtype: 'textfield',
             fieldLabel: 'First name',
             allowBlank: false,
             name: 'firstName'
-        },
-        {
+        }, {
             xtype: 'textfield',
             fieldLabel: 'Last name',
             allowBlank: false,
             name: 'lastName'
-        },
-        {
+        }, {
             xtype: 'textfield',
             fieldLabel: 'Position',
             name: 'position'
-        },
-        {
+        }, {
             xtype: 'textfield',
             fieldLabel: 'Sector/Department',
             name: 'department'
-        },
-        {
+        }, {
             xtype: 'combobox',
+            editable: false,
             fieldLabel: 'Company role',
             name: 'role',
             queryMode: 'local',
@@ -55,13 +63,15 @@ Ext.define('SafeStartExt.view.form.User', {
             allowBlank: false,
             store: Ext.create('Ext.data.Store', {
                 fields: ['rank', 'title'],
-                data : [
-                    { rank: 'companyManager', title: 'Manager'},
-                    { rank: 'companyUser', title: 'User'}
-                ]
+                data: [{
+                    rank: 'companyManager',
+                    title: 'Manager'
+                }, {
+                    rank: 'companyUser',
+                    title: 'User'
+                }]
             })
-        },
-        {
+        }, {
             xtype: 'checkboxfield',
             name: 'enabled',
             fieldLabel: 'Enabled',
@@ -74,19 +84,25 @@ Ext.define('SafeStartExt.view.form.User', {
 
     ],
 
-    buttons: [
-        {
+    bbar: [{
+        xtype: 'container',
+        defaults: {
+            margin: '4 8'
+        },
+        items: [{
+            xtype: 'button',
             text: 'Delete',
+            minWidth: 140,
             name: 'delete-data',
             ui: 'red',
             scale: 'medium',
-            handler: function () {
+            handler: function() {
                 var self = this;
                 Ext.Msg.confirm({
                     title: 'Confirmation',
                     msg: 'Are you sure want to delete this user?',
                     buttons: Ext.Msg.YESNO,
-                    fn: function (btn) {
+                    fn: function(btn) {
                         if (btn !== 'yes') {
                             return;
                         }
@@ -94,24 +110,27 @@ Ext.define('SafeStartExt.view.form.User', {
                     }
                 });
             }
-        },
-        {
+        }, {
+            xtype: 'button',
             text: 'Save',
-            ui: 'green',
+            ui: 'blue',
             name: 'save-data',
+            minWidth: 140,
             scale: 'medium',
-            handler: function () {
+            handler: function() {
                 this.up('form').fireEvent('updateUserAction');
             }
-        },
-        {
+        }, {
+            xtype: 'button',
             text: 'Send Password to User',
-            ui: 'blue',
+            ui: 'transparent',
             name: 'send-password',
+            minWidth: 140,
             scale: 'medium',
-            handler: function () {
+            handler: function() {
                 this.up('form').fireEvent('sendPasswordAction');
             }
-        }
-    ]
+        }]
+
+    }]
 });

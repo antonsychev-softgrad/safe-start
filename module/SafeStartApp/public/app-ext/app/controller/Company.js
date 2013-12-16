@@ -23,14 +23,17 @@ Ext.define('SafeStartExt.controller.Company', {
         selector: 'SafeStartExtComponentCompany SafeStartExtFormVehicle',
         ref: 'vehicleForm'
     }, {
-        selector: 'SafeStartExtComponentCompany SafeStartExtPanelVehicleInspection',
-        ref: 'vehicleInspectionPanel'
+        selector: 'SafeStartExtComponentCompany SafeStartExtPanelInspection',
+        ref: 'inspectionPanel'
     }],
 
     needUpdate: false,
 
     init: function () {
         this.control({
+            'SafeStartExtPanelVehicleTabs': {
+                tabchange: this.actionChange
+            },
             'SafeStartExtMain': {
                 setCompanyAction: this.setCompanyAction,
                 changeCompanyAction: this.changeCompanyAction
@@ -49,16 +52,30 @@ Ext.define('SafeStartExt.controller.Company', {
                 deleteVehicleAction: this.deleteVehicle
             },
             'SafeStartExtPanelInspections': {
-                afterrender: this.loadInspections
-                // setInspectionInfo: this.setInspectionInfo
+                afterrender: this.loadInspections,
+                editInspectionAction: this.editInspection,
+                deleteInspectionAction: this.deleteInspection,
+                printInspectionAction: this.printInspection
             },
             'SafeStartExtPanelInspections dataview': {
                 itemclick: this.setInspectionInfo
             },
-            'SafeStartExtPanelVehicleInspection': {
-                afterrender: this.createInspection
+            'SafeStartExtPanelInspection': {
+                afterrender: this.createInspection,
+                completeInspectionAction: this.completeInspection
+            },
+            'SafeStartExtPanelManageChecklist': {
+                saveField: this.saveChecklistField,
+                deleteField: this.deleteChecklistField
+            },
+            'SafeStartExtPanelVehicleUsers': {
+                saveVehicleUsers: this.saveVehicleUsers
             }
         });
+    },
+
+    changeAction: function (action) {
+        return this.getVehicleTabsView().changeAction(action);
     },
 
     addVehicle: function () {
@@ -102,7 +119,7 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    reloadVehicles: function (vehicleId) {
+    reloadVehicles: function (vehicleId, action, params) {
         var me = this, 
             store = this.getVehicleListView().getListStore();
 
@@ -113,7 +130,7 @@ Ext.define('SafeStartExt.controller.Company', {
                     record = this.findRecord('id', vehicleId);
                 }
                 if (record) {
-                    me.selectVehicle(record);
+                    me.selectVehicle(record, action, params);
                 } else {
                     me.deselectVehicle();
                 }
@@ -121,9 +138,9 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    selectVehicle: function (vehicle) {
+    selectVehicle: function (vehicle, action, params) {
         this.getVehicleListView().getList().select(vehicle);
-        this.changeVehicleAction(vehicle);
+        this.changeVehicleAction(vehicle, action, params);
     },
 
     deselectVehicle: function () {
@@ -167,6 +184,7 @@ Ext.define('SafeStartExt.controller.Company', {
 
     setInspectionInfo: function (view, inspection) {
         var me = this;
+        view.inspection = inspection;
         SafeStartExt.Ajax.request({
             url: 'vehicle/' + inspection.get('id') + '/getchecklistdata',
             success: function (data) {
@@ -175,9 +193,38 @@ Ext.define('SafeStartExt.controller.Company', {
         });
     },
 
-    changeVehicleAction: function (vehicle) {
+    editInspection: function (id) {
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + this.vehicle.get('id') + '/getchecklist?checklistId=' + id, 
+            success: function (result) {
+                var inspectionPanel = me.changeAction('fill-checklist', {autoCreateInspection: false});
+                if (! inspectionPanel) {
+                    return;
+                }
+                inspectionPanel.editInspection(result, id);
+            }
+        });
+    },
+
+    deleteInspection: function (id) {
+        var vehicleId = this.vehicle.get('id');
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/inspection/' + id + '/delete',
+            success: function (result) {
+                me.reloadVehicles(vehicleId, 'inspections');
+            }
+        });
+    },
+
+    printInspection: function (id) {
+        window.open('/api/checklist/' + id + '/generate-pdf', '_blank');
+    },
+
+    changeVehicleAction: function (vehicle, action, params) {
         this.vehicle = vehicle;
-        this.getCompanyPage().setVehicle(vehicle);
+        this.getCompanyPage().setVehicle(vehicle, action, params);
     },
 
     refreshPage: function () {
@@ -192,16 +239,93 @@ Ext.define('SafeStartExt.controller.Company', {
         }
     },
 
-    createInspection: function () {
+    createInspection: function (inspectionPanel) {
         var me = this;
+        if (inspectionPanel.configData && inspectionPanel.configData.autoCreateInspection) {
+            SafeStartExt.Ajax.request({
+                url: 'vehicle/' + this.vehicle.get('id') + '/getchecklist',
+                success: function (result) {
+                    me.getInspectionPanel().createInspection(
+                        Ext.create('SafeStartExt.store.InspectionChecklists', {data: result.checklist}),
+                        []
+                    );
+                }
+            });
+        }
+    },
+
+    completeInspection: function (data, inspectionId) {
+        var me = this;
+        var getParams = '';
+        if (inspectionId) {
+            getParams = '?checklistId=' + inspectionId;
+        }
         SafeStartExt.Ajax.request({
-            url: 'vehicle/' + this.vehicle.get('id') + '/getchecklist',
+            url: 'vehicle/' + this.vehicle.get('id') + '/completechecklist' + getParams,
+            data: data,
             success: function (result) {
-                me.getVehicleInspectionPanel().createInspection(
-                    Ext.create('SafeStartExt.store.InspectionChecklists', {data: result.checklist}),
-                    []
-                );
+                me.reloadVehicles(me.vehicle.get('id'), 'inspections', {checklistHash: result.checklist});
             }
+        });
+    },
+
+    actionChange: function () {
+        console.log(arguments);
+    },
+
+    saveChecklistField: function (form) {
+        var record = form.getRecord();
+        SafeStartExt.Ajax.request({
+            url: 'checklist/' + record.get('id') + '/update',
+            data: record.getWriteData(),
+            success: function (result) {
+                record.beginEdit();
+                if (! record.get('id')) {
+                    record.set('id', result.fieldId);
+                }
+                record.modified = {};
+                record.endEdit();
+                form.loadRecord(record);
+            }
+        });
+    },
+
+    deleteChecklistField: function (form) {
+        var record = form.getRecord();
+        var parent = record.parentNode;
+        if (record.get('id') === 0 && parent) {
+            parent.removeChild(record);
+            if (parent.getDepth()) {
+                form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
+            }
+            return;
+        }
+
+        Ext.Msg.confirm({
+            msg: 'Do you sure you want to delete this field from checklist?',
+            buttons: Ext.Msg.YESNO,
+            fn: function (result) {
+                if (result !== 'yes') {
+                    return;
+                }
+                SafeStartExt.Ajax.request({
+                    url: 'checklist/' + record.get('id') + '/delete',
+                    success: function(result) {
+                        // record.destroy();
+                        parent.removeChild(record);
+                        if (parent && parent.getDepth() != 0) {
+                            form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
+                        }
+                    }
+                });
+            }
+        });
+    },
+
+    saveVehicleUsers: function (values) {
+        SafeStartExt.Ajax.request({
+            url: 'vehicle/' + this.vehicle.get('id') + '/update-users',
+            data: {value: values}
         });
     }
 });

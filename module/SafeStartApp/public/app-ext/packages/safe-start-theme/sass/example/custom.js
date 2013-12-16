@@ -1,4 +1,5 @@
 
+
 Ext.theme.addManifest({
     xtype: 'widget.button',
     ui: 'tab',
@@ -10,20 +11,18 @@ Ext.theme.addManifest({
     }
 });
 
+
 Ext.theme.addManifest({
     xtype: 'widget.button',
-    ui: 'green',
-    scale: 'medium'
+    ui: 'green'
 });
 
 Ext.theme.addManifest({
     xtype: 'widget.button',
-    ui: 'red',
-    scale: 'medium'
+    ui: 'red'
 });
 
 Ext.theme.addManifest({
     xtype: 'widget.button',
-    ui: 'blue',
-    scale: 'medium'
+    ui: 'blue'
 });
