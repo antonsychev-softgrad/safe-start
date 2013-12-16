@@ -235,7 +235,7 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
         $checkList->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
-
+        
         if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
         else $checkList->setOperatorName($user->getFullName());
 
@@ -345,6 +345,8 @@ class VehicleController extends RestrictedAccessRestController
             }
             $this->em->flush();
         }
+
+        $this->processTrailerPlugin()->processTrailer($checkList, $newAlerts);
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
