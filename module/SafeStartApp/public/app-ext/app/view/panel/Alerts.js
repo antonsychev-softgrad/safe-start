@@ -10,7 +10,6 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
         type: 'hbox',
         align: 'stretch'
     },
-
     initComponent: function () {
         var store = SafeStartExt.store.Alerts.create({vehicleId: this.vehicle.get('id')});
         Ext.apply(this, {
@@ -51,6 +50,8 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                 layout: {
                     type: 'vbox'
                 },
+                width: '100%',
+                autoScroll: true,
                 name: 'alert-details',
                 padding: '10 20',
                 hidden: true,
@@ -119,7 +120,19 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
                 }, {
                     xtype: 'carousel',
                     name: 'carousel',
-                    height: 400
+                    items: [],
+                    defaults: {
+                        xtype: 'container',
+                        layout: {
+                            type: 'hbox',
+                            align: 'stretch',
+                            pack: 'center'
+                        },
+                        height: 432,
+                        width: 576
+                    },
+                    height: 460,
+                    width: 576
                 }, {
                     xtype: 'container',
                     name: 'comments',
@@ -177,6 +190,7 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
 
         this.callParent();
     },
+
     onSelect: function (selModel, record) {
         var panel = this.down('panel[name=alert-details]');
         var data = record.getData();
@@ -218,28 +232,11 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
         }
         data.history.reverse();
         data.user = record.getUser().getData();
-
         data.vehicle = record.getVehicle().getData();
-        // var alertData = [{
-        //     vehicle: {
-        //         title: 'Title',
-        //         plantId: 'PlantId'
-        //     },
-        //     alertDescription: 'Alert description',
-        //     description: 'Description',
-        //     user: {
-        //         firstName: 'Firstname',
-        //         lastName: 'Lastname'
-        //     },
-        //     creationDate: 'dd/mm/yyyy',
-        //     history: [
-        //         {action: 'Action', username: 'Firstname Lastname', date: 'dd/mm/yyyy'}
-        //     ]
-        // }];
         panel.show();
+
         this.down('combobox[name=status]').select(data.status);
 
-        console.log(data);
         this.setComments(data.comments);
 
         this.down('dataview[name=alert]').update(data);
@@ -250,15 +247,16 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
             this.down('container[name=previous-alerts]').hide();
         }
 
-        console.log(data);
         var images = data.images || [];
         var carousel = this.down('carousel[name=carousel]');
         if (images.length) {
             carousel.show();
             Ext.each(images, function (imageHash) {
                 carousel.add({
-                    xtype: 'image',
-                    src: '/api/image/' + imageHash + '/1024x768'
+                    items: [{
+                        xtype: 'image',
+                        src: '/api/image/' + imageHash + '/1024x768'
+                    }]
                 });
             }, this);
         } else {
