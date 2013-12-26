@@ -166,8 +166,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             },
             items: [{
                 xtype: 'fieldset',
-                maxWidth: 900,
+                maxWidth: 700,
                 width: '100%',
+                title: 'Do you need to perform additional inspections for any of the following equipment?',
+                padding: '20 0 0 0',
                 defaults: {
                     labelWidth: '80%'
                 },
@@ -229,7 +231,11 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
     },
 
     createForm: function (checklist, index) {
-        var buttons = []; 
+        var buttons = [{
+            text: 'Back',
+            hidden: true,
+            action: 'back'
+        }]; 
         if (index !== 0) {
             buttons.push({
                 text: 'Prev',
@@ -290,7 +296,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             if (fieldData.additional) {
                 additionalFieldsConfig = this.createFields(fieldData.items, true);
             }
-            if (Ext.isArray(fieldData.alerts) && fieldData.alerts[0]) {
+            if (Ext.isArray(fieldData.alerts) 
+                    && fieldData.alerts[0] 
+                    && fieldData.alerts[0].triggerValue
+                ) {
                 alert = fieldData.alerts[0];
                 alertRecord = Ext.create('SafeStartApp.model.ChecklistAlert', {
                     alertMessage: alert.alertMessage,
@@ -306,6 +315,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             switch(fieldData.type) {
                 case 'text':
                     fields.push(this.createTextField(fieldData));
+                    break;
+                case 'label':
+                    fields.push(this.createLabelField(fieldData));
                     break;
                 case 'radio':
                     fields.push(this.createRadioField(fieldData, alertRecord, additionalFieldsConfig));
@@ -335,7 +347,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         return {
             xtype: 'textfield',
             label: fieldData.fieldName,
-            maxWidth: 900,
+            maxWidth: 420,
             width: '100%',
             value: fieldData.fieldValue,
             fieldId: fieldData.fieldId
@@ -450,22 +462,46 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         var value = fieldData.fieldValue * 1000,
             field = {
                 xtype: 'datepickerfield',
-                maxWidth: 900,
-                labelWidth: '',
+                maxWidth: 420,
+                labelWidth: 300,
                 width: '100%',
-                yearFrom: 2000,
                 triggerable: true,
                 picker: {
-                    yearTo: new Date().getFullYear() + 10
+                    yearFrom: 2000,
+                    yearTo: new Date().getFullYear() + 10,
+                    listeners: {
+                        show: function (picker) {
+                            var datepicker = this.down('datepickerfield{config.fieldId === ' + fieldData.fieldId + '}'),
+                                datePickerValue = datepicker.getValue();
+
+                            datepicker.originalValue = datePickerValue;
+                            if (datePickerValue === null || typeof datePickerValue !== 'object') {
+                                datepicker.setValue(new Date());
+                            }
+                        },
+                        cancel: function (picker) {
+                            var datepicker = this.down('datepickerfield{config.fieldId === ' + fieldData.fieldId + '}');
+                            if (datepicker.originalValue === null) {
+                                datepicker.reset();
+                                picker.setValue({
+                                    year: null,
+                                    day: null,
+                                    month: null
+                                });
+                            }
+                        },
+                        scope: this
+                    }
                 },
                 dateFormat: SafeStartApp.dateFormat,
                 label: fieldData.fieldName,
                 fieldId: fieldData.fieldId,
-                value: new Date(fieldData.fieldValue * 1000 || Date.now()),
                 defaultValue: fieldData.defaultValue
             };
         if (value) {
-            field.value = value;
+            field.value = new Date(value);
+        } else {
+            field.value = null;
         }
         return field;
     },
@@ -571,7 +607,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'container',
             width: '100%',
             cls: 'sfa-vehicle-inspection-gps',
-            maxWidth: 900,
+            maxWidth: 520,
             items: [{
                 xtype: 'togglefield',
                 label: 'GPS',
@@ -594,7 +630,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
             xtype: 'container',
             name: 'vehicle-inspection-additional-fields',
             width: '100%',
-            maxWidth: 900,
+            maxWidth: 520,
             height: 'auto',
             items: [{
                 xtype: 'fieldset',
@@ -621,55 +657,138 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
         }];
     },
     createVehicleDetailsView: function (passedCards) {
+        var data = [];
+        Ext.each(passedCards, function (card) {
+            data.push({
+                title: card.groupName,
+                checklist: card.checklist,
+                cls: card.alert ? 'alerts' : 'ok'
+            });
+        });
         var items = [{
             xtype: 'titlebar',
             title: 'Vehicle details'
+        }, {
+            xtype: 'dataview',
+            scrollable: false,
+            height: data.length * 27,
+            itemTpl: [
+                '<div class="checklist-details-{cls}">',
+                '{title}',
+                '</div>'
+            ].join(''),
+            store: {
+                fields: ['title', 'cls'],
+                data: data
+            },
+            listeners: {
+                itemtap: function (view, index, el, record) {
+                    var checklist = record.raw.checklist;
+
+                    var back = checklist.down('button[action=back]');
+                    if (back) {
+                        back.show();
+                    }
+
+                    var next = checklist.down('button[action=next]');
+                    if (next) {
+                        next.hide();
+                    }
+
+                    var prev = checklist.down('button[action=prev]');
+                    if (prev) {
+                        prev.hide();
+                    }
+                    this.setActiveItem(record.raw.checklist);
+                },
+                scope: this
+            }
         }];
-        Ext.each(passedCards, function (card) {
-            items.push({
-                xtype: 'container',
-                html: card.groupName,
-                cls: card.alert ? 'checklist-details-alerts' : 'checklist-details-ok'
-            });
-        });
+
         return {
             xtype: 'fieldset',
             width: '100%',
-            maxWidth: 900,
+            maxWidth: 520,
             items: items
         };
     },
 
-    createAlertsView: function (alerts) {
-        var items = [{
-            xtype: 'titlebar',
-            title: 'Alerts'            
-        }];
-        Ext.each(alerts, function (alert) {
-            items.push({
-                xtype: 'panel',
-                width: '100%',
-                maxWidth: 900,
-                name: 'alert-container',
-                fieldId: alert.get('fieldId'),
-                alertModel: alert,
-                items: [{
-                    xtype: 'container',
-                    cls: 'checklist-alert-description',
-                    html: alert.get('alertDescription')
-                }, {
-                    xtype: 'textfield',
-                    label: 'Additional comments',
-                    value: alert.get('comment'),
-                    listeners: {
-                        change: function (textfield, value) {
-                            alert.set('comment', value);
-                        }
+    createAlertPanel: function (alert) {
+        return {
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            name: 'alert-container',
+            margin: '5 0 10 0',
+            cls: 'sfa-alert-panel',
+            fieldId: alert.get('fieldId'),
+            alertModel: alert,
+            items: [{
+                xtype: 'container',
+                cls: 'checklist-alert-description-critical',
+                html: [
+                    alert.get('alertDescription'),
+                    '<div class="checklist-alert-icon"></div>'
+                ].join('')
+            }, {
+                xtype: 'textfield',
+                label: 'Additional comments',
+                padding: '10 0 0 0',
+                value: alert.get('comment'),
+                listeners: {
+                    change: function (textfield, value) {
+                        alert.set('comment', value);
                     }
-                }, this.createImageUploadPanel(alert)
-                ]
-            });
+                }
+            }, this.createImageUploadPanel(alert)
+            ]
+        };
+    },
+
+    createAlertsView: function (alerts) {
+        var criticalAlerts = [{
+                xtype: 'container',
+                cls: 'sfa-alerts-toolbar',
+                margin: '10 0',
+                height: 40,
+                html: [
+                    '<div style="position: absolute; left: 0;" class="sfa-alerts-toolbar-title">Alerts</div>',
+                    '<div style="position: absolute; right: 0;" class="sfa-alerts-toolbar-description">Critical</div>'
+                ].join('')
+            }],
+            nonCriticalAlerts = [{
+                xtype: 'container',
+                cls: 'sfa-alerts-toolbar',
+                margin: '10 0',
+                height: 40,
+                html: [
+                    '<div class="sfa-alerts-toolbar-title">Alerts</div>',
+                    '<div class="sfa-alerts-toolbar-description">Non-Critical</div>'
+                ].join('')
+            }];
+
+        Ext.each(alerts, function (alert) {
+            if (alert.get('critical')) {
+                criticalAlerts.push(this.createAlertPanel(alert));
+            } else {
+                nonCriticalAlerts.push(this.createAlertPanel(alert));
+            }
         }, this);
+
+        var items = [{
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            hidden: (criticalAlerts.length <= 1),
+            items: criticalAlerts
+        }, {
+            xtype: 'panel',
+            width: '100%',
+            maxWidth: 520,
+            hidden: (nonCriticalAlerts.length <= 1),
+            items: nonCriticalAlerts
+        }];
+
         return items;
     },
 
@@ -698,12 +817,21 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
                     autoUpload: true,
                     url: 'api/upload-images',
                     name: 'image',
+                    padding: '5 10',
+                    cls: 'sfa-add-button',
                     states: {
                         browse: {
+                            ui: 'action',
+                            padding: 0,
+                            margin: 0,
                             text: 'Add photo'
                         },
 
                         uploading: {
+                            ui: 'action',
+                            margin: 0,
+                            padding: '0 25 0 0',
+                            text: 'Loading ...',
                             loading: false
                         }
                     },
@@ -729,24 +857,51 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspection', {
 
     getAlertsListView: function (alerts) {
         return Ext.MessageBox.create({
-            title: 'Alerts in inspection:',
-            tpl: new Ext.XTemplate(
-                '<div class="sfa-alerts">',
-                '<tpl for=".">',
-                    '<div class="sfa-alert-description">',
-                    '{message}',
-                    '</div>',
-                '</tpl>',
-                '</div>'
-            ),
+            layout: 'fit',
+            title: 'Outstanding Alerts:',
+            scrollable: true,
+            listeners: {
+                resize: function (view) {
+                    var maxHeight = this.element.dom.offsetHeight || 320;
+                    var height = alerts.length * 16 + 130;
+
+                    view.setHeight(height < maxHeight ? height : maxHeight);
+                },
+                scope: this
+            },
+            items: [{
+                xtype: 'panel',
+                scroll: 'vertical',
+                tpl: new Ext.XTemplate(
+                    '<div class="sfa-alerts">',
+                    '<tpl for=".">',
+                        '<div class="sfa-alert-description">',
+                        '{message}',
+                        '</div>',
+                    '</tpl>',
+                    '</div>'
+                ),
+                data: alerts
+            }],
             buttons: [{
                 text: 'OK',
                 ui: 'action',
                 handler: function () {
                     this.up('sheet').destroy();
                 }
-            }],
-            data: alerts
+            }]
         });
+    },
+
+    createLabelField: function (fieldData) {
+        return {
+            xtype: 'container',
+            style: {
+                fontSize: '20px'
+            },
+            cls: 'sfa-field-label',
+            html: fieldData.fieldName
+        };
     }
+
 });

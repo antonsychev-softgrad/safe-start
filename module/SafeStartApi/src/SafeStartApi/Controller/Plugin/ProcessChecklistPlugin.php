@@ -37,11 +37,15 @@ class ProcessChecklistPlugin extends AbstractPlugin
             if (file_exists($path)) {
                 try {
                     $this->getController()->MailPlugin()->send(
-                        'New inspection fault report',
+                        $this->getController()->moduleConfig['params']['emailSubjects']['vehicle_fail_notification'],
                         $responsibleUserInfo['email'],
                         'checklist_fault.phtml',
                         array(
-                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName']
+                            'name' => $responsibleUserInfo['firstName'] . ' ' . $responsibleUserInfo['lastName'],
+                            'plantId' => $checkList->getVehicle() ? $checkList->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $checkList->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $path
                     );
@@ -81,7 +85,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
                 "Vehicle Alert \n\r" .
                 "Vehicle ID#" . $vehicle->getPlantId() . " has a critical error with its: \n\r";
             foreach ($alerts as $alert) {
-                if ($alert->getField()->getAlertCritical()) continue;
+                if (!$alert->getField()->getAlertCritical()) continue;
                 $badge++;
                 $message .= $alert->getField()->getAlertDescription() ? $alert->getField()->getAlertDescription() : $alert->getField()->getAlertTitle() . "\n\r";
             }

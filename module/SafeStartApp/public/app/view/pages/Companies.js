@@ -65,7 +65,7 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                         out: 'true'
                     },
                     cls: 'sfa-left-container',
-                    margin: '0 20 0 0',
+                    margin: '',
                     store: this.companiesStore,
                     items: [{
                         xtype: 'toolbar',
@@ -76,18 +76,6 @@ Ext.define('SafeStartApp.view.pages.Companies', {
                             ui: 'action',
                             text: 'Add Company',
                             action: 'add-company'
-                        }, {
-                            xtype: 'spacer',
-                            flex: 1
-                        }, {
-                            iconCls: 'arrow_left',
-                            height: 20,
-                            cls: 'sfa-collapse',
-                            iconMask: true,
-                            handler: function (btn) {
-                                var panel = this.up('SafeStartLeftContainer');
-                                panel.toggleMenu();
-                            }
                         }]
                     }, {
                         xtype: 'toolbar',
@@ -121,17 +109,10 @@ Ext.define('SafeStartApp.view.pages.Companies', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
-                    items: [{
-                        iconCls: 'arrow_right',
-                        height: 20,
-                        iconMask: true,
-                        handler: function () {
-                            var panel = this.up('SafeStartLeftContainer');
-                            panel.toggleMenu();
-                        }
-                    }]
+                    items: []
                 }]
             }]
         };

@@ -1,0 +1,50 @@
+{
+    "description": "Re-send Checklist requst",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "hash": {
+                    "description": "Checklist hash",
+                    "type": "string",
+                    "required": true
+                },
+                "emails": {
+                    "description": "Emails to send",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "email": {
+                                "description": "Email address",
+                                "type": "string",
+                                "required": true
+                            },
+                            "name": {
+                                "description": "User name",
+                                "type": "string",
+                                "required": false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

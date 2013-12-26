@@ -3,8 +3,6 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
     mixins: ['Ext.mixin.Observable'],
     xtype: 'SafeStartVehicleForm',
     config: {
-        minHeight: 400,
-        //maxWidth: 600,
         cls: 'sfa-form-no-title',
         items: [
 
@@ -19,19 +17,13 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'textfield',
-                label: 'Title',
+                label: 'Make',
                 required: true,
                 name: 'title'
             },
             {
                 xtype: 'textfield',
-                disabled: true,
-                name: 'nextServiceDay',
-                label: 'Next Service Day'
-            },
-            {
-                xtype: 'textfield',
-                label: 'Type',
+                label: 'Model',
                 name: 'type'
             },
             {
@@ -80,12 +72,12 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             },
             {
                 xtype: 'fieldset',
-                title: 'Until next service due:',
+                title: 'Next service due:',
                 items: [
                     {
                         xtype: 'numberfield',
                         maxValue: 1000000,
-                        minValue: 24,
+                        minValue: 0,
                         name: 'serviceDueHours',
                         required: true,
                         label: 'Hours'
@@ -116,6 +108,12 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     }
                 ]
             },
+            {
+                xtype: 'textfield',
+                disabled: true,
+                name: 'nextServiceDay',
+                label: 'Estimated Date of Next Service'
+            },
            /* {
                 xtype: 'fieldset',
                 title: 'Until next inspection due:',
@@ -143,6 +141,7 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
             {
                 xtype: 'toolbar',
                 docked: 'bottom',
+                maxWidth: '',
                 items: [
                     {
                         xtype: 'button',

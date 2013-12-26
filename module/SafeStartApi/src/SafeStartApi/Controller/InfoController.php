@@ -10,30 +10,7 @@ use SafeStartApi\Model\ImageProcessor;
 
 class InfoController extends RestController
 {
-    protected function getFileByDirAndName($dir, $tosearch) {
-        if(file_exists($dir) && is_dir($dir)) {
-
-            $validFileExts = array(
-                "jpg", "jpeg", "png"
-            );
-
-            $path = $dir.$tosearch;
-            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
-            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
-                return (realpath($path));
-            } else {
-                foreach($validFileExts as $validExt) {
-                    $filename = $path . "." . $validExt;
-                    if(file_exists($filename) && !is_dir($filename)) {
-                        return (realpath($filename));
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
+ 
     public function getImageAction()
     {
         $hash = $this->params('hash');
@@ -45,7 +22,7 @@ class InfoController extends RestController
         $defUsersPath = $moduleConfig['defUsersPath'];
         $searchDir = \SafeStartApi\Application::getFileSystemPath($defUsersPath);
         $tosearch = $hash.$size;
-        $filePath = $this->getFileByDirAndName($searchDir, $tosearch);
+        $filePath = \SafeStartApi\Application::getImageFileByDirAndName($searchDir, $tosearch);
         if(!$filePath && !empty($size)) {
 
             $size = preg_replace("/x/is", "x", $size);
@@ -55,7 +32,7 @@ class InfoController extends RestController
             $max_height = intval($max_height);
 
             if($max_width > 0 && $max_height > 0) {
-                $origFilePath = $this->getFileByDirAndName($searchDir, $hash);
+                $origFilePath =\SafeStartApi\Application::getImageFileByDirAndName($searchDir, $hash);
                 if(!$origFilePath) {
                     return false;
                 } else {
@@ -126,6 +103,7 @@ class InfoController extends RestController
                 'name' => $name,
                 'message' => $message,
                 'email' => $email,
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
             )
         );
 

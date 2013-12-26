@@ -21,6 +21,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection button[action=next]': {
                 tap: 'onNextBtnTap'
             },
+            'SafeStartCompanyPage SafeStartVehicleInspection button[action=back]': {
+                tap: 'onBackBtnTap'
+            },
             'SafeStartCompanyPage SafeStartVehicleInspection formpanel[name=checklist-card-choise-additional] checkboxfield': {
                 change: 'onSelectAdditional'
             },
@@ -30,7 +33,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             'SafeStartCompanyPage SafeStartVehicleInspection sheet[cls=sfa-messagebox-confirm] button[action=confirm]': {
                 tap: 'onReviewConfirmBtnTap'
             },
-            'SafeStartCompanyPage SafeStartVehicleInspectionDetails button[action=print]': {
+            'SafeStartCompanyPage SafeStartVehicleInspectionsPanel button[action=print]': {
                 tap: 'downloadVehicleInspectionDetailsPdf'
             },
             'SafeStartCompanyPage SafeStartVehicleInspectionsPanel': {
@@ -55,6 +58,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                 'save-data': 'saveAction',
                 'reset-data': 'resetAction',
                 'delete-data': 'deleteAction'
+            },
+            SafeStartVehicleAlertPanel: {
+                updateAlertsCounter: 'updateAlertsCounter'
             }
         },
 
@@ -135,7 +141,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     },
 
     downloadVehicleInspectionDetailsPdf: function (btn) {
-        window.open('/api/checklist/' + btn.config.checkListId + '/generate-pdf', '_blank');
+        window.open('/api/checklist/' + btn.checklistId + '/generate-pdf/checklist_'+ btn.checklistId +'_.pdf', '_blank');
     },
 
     onEditInspectionAction: function (vehicleId, checkListId, inspectionRecord) {
@@ -239,6 +245,18 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         this.getNavMain().getVehiclesStore().loadData();
     },
 
+    updateAlertsCounter: function (counter) {
+        var vehicle = this.getNavMain().getActiveItem().getStore().getNode();
+        if (! vehicle) {
+            return;
+        }
+        var alertsRecord = vehicle.findChild('id', vehicle.get('id') + '-alerts');
+        if (! alertsRecord) {
+            return;
+        }
+        alertsRecord.set('counter', counter);
+    },
+
     loadChecklist: function (id) {
         var self = this;
         var vehicle = this.getNavMain().getVehiclesStore().getRoot().findChild('id', id);
@@ -246,6 +264,26 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         SafeStartApp.AJAX('vehicle/' + id + '/getchecklist', {}, function (result) {
             self.getVehicleInspectionPanel().loadChecklist(result, vehicle);
         });
+    },
+
+    onBackBtnTap: function (btn) {
+        var checklistPanel = this.getVehicleInspectionPanel(),
+            reviewCard = checklistPanel.down('formpanel[name=checklist-card-review]'),
+            activeCard = btn.up('formpanel'),
+            back = activeCard.down('button[action=back]'),
+            next = activeCard.down('button[action=next]'),
+            prev = activeCard.down('button[action=prev]');
+            
+        if (back) {
+            back.hide();
+        }
+        if (next) {
+            next.show();
+        }
+        if (prev) {
+            prev.show();
+        }
+        checklistPanel.setActiveItem(reviewCard);
     },
 
     onNextBtnTap: function (btn) {
@@ -322,6 +360,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             });
             passedCards.push({
                 groupName: checklist.config.groupName,
+                checklist: checklist,
                 additional: checklist.config.additional,
                 alert: alert
             });
@@ -333,7 +372,7 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
         var me = this,
             inspectionPanel = this.getVehicleInspectionPanel(),
             odometerKms = inspectionPanel.down('field[name=current-odometer-kms]').getValue(),
-            odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue(),
+            odometerHours = inspectionPanel.down('field[name=current-odometer-hours]').getValue() || 24,
             odometerHoursInterval = 0,
             currentOdometerHours,
             currentOdometerKms,
@@ -494,10 +533,18 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
                         });
                         break;
                     case 'datepickerfield':
-                        fieldValues.push({
-                            id: field.config.fieldId,
-                            value: parseInt(field.getValue().getTime()/1000, 10)
-                        });
+                        var date = field.getValue();
+                        if (date !== null && typeof date === 'object') {
+                            fieldValues.push({
+                                id: field.config.fieldId,
+                                value: parseInt(date.getTime()/1000, 10)
+                            });
+                        } else {
+                            fieldValues.push({
+                                id: field.config.fieldId,
+                                value: null
+                            });
+                        }
                         break;
                 }
             });

@@ -119,10 +119,36 @@ $routes = array(
                     ),
                 ),
             ),
+            'get-vehicle-inspections-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/inspections-statistic',
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getInspectionBreakdownsStatistic'
+                    ),
+                ),
+            ),
+            'get-vehicle-alerts-statistic' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/alerts-statistic',
+                    'constraints' => array(
+                        'id' => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'getAlertsStatistic'
+                    ),
+                ),
+            ),
             'print-vehicle-statistic' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/print-statistic/:from/:to',
+                    'route' => '/vehicle/:id/print-statistic/:from/:to[/:name][/]',
                     'constraints' => array(
                         'id' => '[0-9]*',
                         'from' => '[0-9]*',
@@ -137,13 +163,39 @@ $routes = array(
             'print-vehicle-action-list' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/vehicle/:id/print-action-list',
+                    'route' => '/vehicle/:id/print-action-list[/:name][/]',
                     'constraints' => array(
                         'id' => '[0-9]*',
                     ),
                     'defaults' => array(
                         'controller' => 'Vehicle',
                         'action' => 'printActionList'
+                    ),
+                ),
+            ),
+            'verify-print-vehicle-action-list' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/verify-print-action-list',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'verifyPrintActionList'
+                    ),
+                ),
+            ),
+            'send-vehicle-action-list' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/send-action-list',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'sendActionList'
                     ),
                 ),
             ),
@@ -339,7 +391,7 @@ $routes = array(
             'generate-pdf' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/checklist/:id/generate-pdf',
+                    'route' => '/checklist/:id/generate-pdf[/:name][/]',
                     'constraints' => array(
                         'id' => '[A-Za-z0-9]+',
                     ),

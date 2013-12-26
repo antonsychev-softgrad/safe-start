@@ -40,6 +40,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
             this.getChecklistStore().getProxy().setExtraParam('vehicleId', vehicleId);
             this.vehicleId = vehicleId;
             this.getChecklistStore().loadData();
+            this.getForm().hide();
         }
     },
 
@@ -166,6 +167,7 @@ Ext.define('SafeStartApp.view.components.UpdateChecklist', {
 
             if (record.get('is_root')) {
                 formValues.type = 'root';
+                formValues.parentId = 0;
             }
             if (record.get('type') == 'datePicker') {
                 formValues.default_value = defaultValue.getTime() / 1000;

@@ -71,7 +71,7 @@ class Vehicle extends BaseEntity
     protected $projectName;
 
     /**
-     * @ORM\Column(type="integer", name="project_number", nullable=true)
+     * @ORM\Column(type="string", name="project_number", nullable=true)
      */
     protected $projectNumber;
 
@@ -172,7 +172,7 @@ class Vehicle extends BaseEntity
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
@@ -193,49 +193,100 @@ class Vehicle extends BaseEntity
      */
     public function getNextServiceDay()
     {
-        $date = 'unknown';
-        if (!count($this->checkLists)) {
-            if ($this->serviceDueHours) {
-                $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], time() + (int)$this->getNetServiceDueHours() * 60 * 60);
+        $date = '-';
+        if (count($this->checkLists) < 2) return $date;
+
+        $checkLists = $this->checkLists->toArray();
+        $firstCheckList = array_shift($checkLists);
+        $lastKms = $firstCheckList->getCurrentOdometer();
+        $lastHours = $firstCheckList->getCurrentOdometerHours();
+        $lastUpdateDate = $firstCheckList->getUpdateDate()->getTimestamp();
+
+        $serviceDueKms = $this->getNetServiceDueKms();
+        $serviceDueHours = $this->getNetServiceDueHours();
+
+
+        $serviceDaysByHours = array();
+        $serviceDaysByKms = array();
+
+        foreach ($checkLists as $checkList) {
+            $kms = $checkList->getCurrentOdometer();
+            $hours = $checkList->getCurrentOdometerHours();
+            $deltaKms = $kms - $lastKms;
+            $deltaHours = $hours - $lastHours;
+            $updateDate = $checkList->getUpdateDate()->getTimestamp();
+            $deltaTime = $updateDate - $lastUpdateDate;
+            $kmsLeft = $serviceDueKms - $kms;
+            $hoursLeft = $serviceDueHours - $hours;
+
+            if ($deltaKms) {
+                $serviceDaysByKms[] = $kmsLeft / ($deltaKms / $deltaTime) + $updateDate;
             }
-        } else {
-            $averageKms = array();
-            $averageHours = array();
-            $lastCheckListDate = $this->getCreationDate()->getTimestamp();
-            $lastKm = 0;
-            $lastHour = 0;
-            foreach ($this->checkLists as $checkList) {
-                $km = $checkList->getCurrentOdometer() - $lastKm;
-                $hours = $checkList->getCurrentOdometerHours() - $lastHour;
-                $period = $checkList->getUpdateDate()->getTimestamp() - $lastCheckListDate;
-                if ($hours) {
-                    $nextServiceSecHours = ($this->getNetServiceDueHours() * $period) / $hours;
-                    $averageHours[] = $nextServiceSecHours;
-                }
-                if ($km) {
-                    $nextServiceSecKm = ($this->getNetServiceDueKms() * $period) / $km;
-                    $averageKms[] = $nextServiceSecKm;
-                }
-                $lastCheckListDate = $checkList->getUpdateDate()->getTimestamp();
-                $lastKm = $checkList->getCurrentOdometer();
-                $lastHour = $checkList->getCurrentOdometerHours();
+            if ($deltaHours) {
+                $serviceDaysByHours[] = $hoursLeft / ($deltaHours / $deltaTime) + $updateDate;
             }
-            if (!empty($averageKms) || !empty($averageHours)) {
-                $averageNextServiceSec = 0;
-                if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
-                if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
-                if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
-                    $averageNextServiceSec = ($averageNextServiceSec1 + $averageNextServiceSec2) / 2;
-                } else if (!empty($averageNextServiceSec1)) {
-                    $averageNextServiceSec = $averageNextServiceSec1;
-                } else if (!empty($averageNextServiceSec2)) {
-                    $averageNextServiceSec = $averageNextServiceSec2;
-                }
-                $config = \SafeStartApi\Application::getConfig();
-                $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
-            }
+
+            $lastKms = $kms;
+            $lastHours = $hours;
+            $lastUpdateDate = $updateDate;
         }
+
+        if (count($serviceDaysByKms)) {
+            $averageServiceDateByKms = array_sum($serviceDaysByKms) / count($serviceDaysByKms);
+        } else {
+            $averageServiceDateByKms = 0;
+        }
+        if (count($serviceDaysByHours)) {
+            $averageServiceDateByHours = array_sum($serviceDaysByHours) / count($serviceDaysByHours);
+        } else {
+            $averageServiceDateByHours = 0;
+        }
+
+        $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
+
+        if ($serviceDate !== 0) {
+            $config = \SafeStartApi\Application::getConfig();
+            $date = date($config['params']['date_format'], $serviceDate);
+        }
+
+
+        /* $averageKms = array();
+         $averageHours = array();
+         $lastCheckListDate = $this->getCreationDate()->getTimestamp();
+         $lastKm = 0;
+         $lastHour = 0;
+         foreach ($this->checkLists as $checkList) {
+             $km = $checkList->getCurrentOdometer() - $lastKm;
+             $hours = $checkList->getCurrentOdometerHours() - $lastHour;
+             $period = $checkList->getUpdateDate()->getTimestamp() - $lastCheckListDate;
+             if ($hours) {
+                 $nextServiceSecHours = ($this->getNetServiceDueHours() * $period) / $hours;
+                 $averageHours[] = $nextServiceSecHours;
+             }
+             if ($km) {
+                 $nextServiceSecKm = ($this->getNetServiceDueKms() * $period) / $km;
+                 $averageKms[] = $nextServiceSecKm;
+             }
+             $lastCheckListDate = $checkList->getUpdateDate()->getTimestamp();
+             $lastKm = $checkList->getCurrentOdometer();
+             $lastHour = $checkList->getCurrentOdometerHours();
+         }
+         if (!empty($averageKms) || !empty($averageHours)) {
+             if (!empty($averageKms)) $averageNextServiceSec1 = round(array_sum($averageKms) / count($averageKms));
+             if (!empty($averageHours)) $averageNextServiceSec2 = round(array_sum($averageHours) / count($averageHours));
+             if (!empty($averageNextServiceSec2) && !empty($averageNextServiceSec1)) {
+                 $averageNextServiceSec = ($averageNextServiceSec1 + $averageNextServiceSec2) / 2;
+             } else if (!empty($averageNextServiceSec1)) {
+                 $averageNextServiceSec = $averageNextServiceSec1;
+             } else if (!empty($averageNextServiceSec2)) {
+                 $averageNextServiceSec = $averageNextServiceSec2;
+             }
+             if (!empty($averageNextServiceSec)) {
+                 $config = \SafeStartApi\Application::getConfig();
+                 $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
+             }
+         }*/
+
         return $date;
     }
 
@@ -266,7 +317,7 @@ class Vehicle extends BaseEntity
             'type' => (!is_null($this->type)) ? $this->getType() : '',
             'vehicleName' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : 0,
+            "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
@@ -313,11 +364,13 @@ class Vehicle extends BaseEntity
                 'text' => 'Perform An Inspection',
                 'leaf' => true,
             );
+
             if (count($this->getAlerts()) > 0) {
                 $menuItems[] = array(
                     'id' => $this->getId() . '-alerts',
                     'action' => 'alerts',
-                    'text' => 'Alerts (' . count($this->getAlerts()) . ')',
+                    'text' => 'Alerts',
+                    'counter' => count($this->getOpenAlerts()),
                     'leaf' => true,
                 );
             }
@@ -325,7 +378,8 @@ class Vehicle extends BaseEntity
                 $menuItems[] = array(
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
-                    'text' => 'Previous Inspections (' . count($this->getCheckLists()) . ')',
+                    'text' => 'Previous Inspections',
+                    'counter' => count($this->getCheckLists()),
                     'leaf' => true
                 );
             }
@@ -484,6 +538,30 @@ class Vehicle extends BaseEntity
             'new_alerts' => count($new_alerts),
             'chart' => $chart
         );
+    }
+
+    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return array
+     */
+    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null)
+    {
+        //if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
+        //if (!$to) $to = new \DateTime();
+        $alerts = array();
+
+        $em = \SafeStartApi\Application::getEntityManager();
+        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\Alert al WHERE al.vehicle = ?1 AND al.deleted = 0 AND al.update_date >= :from AND al.update_date <= :to  ORDER BY al.update_date DESC');
+        $query->setParameter(1, $this)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to);
+
+        $items = $query->getResult();
+        foreach ($items as $item) {
+            $alerts[] = $item->toArray();
+        }
+        return $alerts;
     }
 
     /**
@@ -908,7 +986,14 @@ class Vehicle extends BaseEntity
      */
     public function getResponsibleUsers()
     {
-        return $this->responsibleUsers;
+        $users = new \Doctrine\Common\Collections\ArrayCollection();
+        if (!$this->responsibleUsers) return $users;
+        foreach ($this->responsibleUsers as $user) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
+                $users->add($user);
+            }
+        }
+        return $users;
     }
 
     /**
@@ -957,7 +1042,14 @@ class Vehicle extends BaseEntity
      */
     public function getUsers()
     {
-        return $this->users;
+        $users = new \Doctrine\Common\Collections\ArrayCollection();
+        if (!$this->users) return $users;
+        foreach ($this->users as $user) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
+                $users->add($user);
+            }
+        }
+        return $users;
     }
 
     /**
@@ -1082,6 +1174,23 @@ class Vehicle extends BaseEntity
     }
 
     /**
+     * Get open alerts
+     *
+     * @return array
+     */
+    public function getOpenAlerts()
+    {
+        $alerts = $this->getAlerts();
+        $openAlerts = array();
+        foreach ($alerts as $alert) {
+            if ($alert->getStatus() === \SafeStartApi\Entity\Alert::STATUS_NEW) {
+                $openAlerts[] = $alert;
+            }
+        }
+        return $openAlerts;
+    }
+
+    /**
      * Remove alerts
      */
     public function removeAlerts()
@@ -1185,5 +1294,40 @@ class Vehicle extends BaseEntity
         }
 
         return false;
+    }
+
+    public function getInspectionBreakdowns($from = null, $to = null, $range = 'monthly')
+    {
+        $chart = array();
+        if ($range == 'monthly') $delta = 30 * 24 * 60 * 60;
+        else $delta = 7 * 24 * 60 * 60;
+        if (!$from) $from = new \DateTime(date('Y-m-d', time() - $delta * 6));
+        if (!$to) $to = new \DateTime();
+
+        $em = \SafeStartApi\Application::getEntityManager();
+
+        $fromTime = $from->getTimestamp();
+        $toTime = $to->getTimestamp();
+
+        while ($fromTime < $toTime) {
+            if ($range == 'monthly') $date = date('m/Y', $fromTime);
+            else  $date = date('W/Y', $fromTime);
+
+            $toTimeParam = new \DateTime();
+            $toTimeParam->setTimestamp($fromTime + $delta);
+            $fromTimeParam = new \DateTime();
+            $fromTimeParam->setTimestamp($fromTime);
+
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null AND cl.vehicle = (:vehicle)';
+            $query = $em->createQuery($dql);
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam)->setParameter('vehicle', $this);
+            $value1 = $query->getSingleScalarResult();
+            $fromTime = $fromTime + $delta;
+            $chart[] = array(
+                'date' => $date,
+                'value1' => $value1,
+            );
+        }
+        return $chart;
     }
 }

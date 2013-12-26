@@ -63,7 +63,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
         this.down('panel[cls=sfa-vehicle-inspection-details]').removeAll();
 
         infoGroup.push(
-            this.createContainer('Project number', vehicle.get('projectNumber')),
+            this.createContainer('Project number', vehicle.get('projectNumber') == '0' ? '-': vehicle.get('projectNumber')),
             this.createContainer('Project name', vehicle.get('projectName'))
         );
         if (inspection.get('operator_name')) {
@@ -85,7 +85,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
 
         this.createGroup([
             this.createContainer('Plant ID', vehicle.get('plantId')),
-            this.createContainer('Type of vehicle', vehicle.get('type'))
+            this.createContainer('Model', vehicle.get('type'))
         ]);
 
         var warningsGroup = [];
@@ -114,7 +114,7 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createContainer('Current odometer', odometerString)
         ]);
 
-        this.createButtons(checklist.id);
+        this.up('SafeStartVehicleInspectionsPanel').down('button[action=print]').checklistId = checklist.hash;
 
         this.checkListId = checklist.id;
         this.vehicleId = vehicle.get('id');
@@ -290,6 +290,10 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
                     break;
             }
         }, this);
+
+        if (depth == 1) {
+            title = title.toUpperCase();
+        }
 
         if (items.length) {
             return this.createGroup(items, title, depth);

@@ -29,3 +29,5 @@ Ext.define('SafeStartApp.view.Main', {
         });
     }
 });
+
+

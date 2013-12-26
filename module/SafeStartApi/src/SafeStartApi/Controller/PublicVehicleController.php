@@ -32,13 +32,12 @@ class PublicVehicleController extends PublicAccessRestController
 
         $emails = $this->data->emails;
 
-        $projectName = isset($this->data->projectName) ? $this->data->projectName : '';
-        $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : 0;
-        $registrationNumber = isset($this->data->registrationNumber) ? $this->data->registrationNumber : '';
+        $projectName = isset($this->data->projectName) ? $this->data->projectName : '-';
+        $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : '-';
         $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
         $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
-        $title = isset($this->data->title) ? $this->data->title : '';
-        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '';
+        $title = isset($this->data->title) ? $this->data->title : '-';
+        $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '-';
 
         $userData = array(
             'firstName' => isset($this->data->firstName) ? $this->data->firstName : '',
@@ -80,9 +79,8 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setTitle($title);
         $vehicle->setType($type);
 
-        if($persist) {
-            $this->em->persist($vehicle);
-        }
+        if($persist) $this->em->persist($vehicle);
+        $this->em->flush();
 
         $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\DefaultField f WHERE f.deleted = 0 AND f.enabled = 1');
         $items = $query->getResult();
@@ -97,6 +95,7 @@ class PublicVehicleController extends PublicAccessRestController
         $checkList->setFieldsStructure($fieldsStructure);
         $checkList->setFieldsData($fieldsData);
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+        $checkList->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
 
         if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
         else $checkList->setOperatorName($userData['firstName'] ." ". $userData['lastName']);
@@ -118,9 +117,11 @@ class PublicVehicleController extends PublicAccessRestController
         }
 
         $checkList->setUserData($userData);
+        $checkList->setEmailMode(1);
         $uniqId = uniqid();
         $checkList->setHash($uniqId);
         $this->em->persist($checkList);
+        $this->em->flush();
 
         // save new alerts
         $alerts = array();
@@ -160,11 +161,15 @@ class PublicVehicleController extends PublicAccessRestController
                 foreach($emails as $email) {
                     $email = (array) $email;
                     $this->MailPlugin()->send(
-                        'New inspection report',
+                        $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
                         $email['email'],
                         'checklist.phtml',
                         array(
-                            'name' => isset($email['name']) ? $email['name'] : 'friend'
+                            'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'plantId' => $checkList->getVehicle() ? $checkList->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $checkList->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
                         ),
                         $pdf
                     );
@@ -203,6 +208,69 @@ class PublicVehicleController extends PublicAccessRestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function sendCheckListToEmailsAction()
+    {
+        if (!$this->_requestIsValid('vehicle/sendCheckListToEmails')) return $this->_showBadRequest();
+
+        $hash = $this->data->hash;
+        $inspection = $this->em->getRepository('SafeStartApi\Entity\Checklist')->findOneBy(array(
+            'hash' => $hash,
+            'deleted' => 0,
+        ));
+        if (!$inspection) return $this->_showNotFound("Inspection not found.");
+        $emails = $this->data->emails;
+
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        if (APP_RESQUE) {
+            \Resque::enqueue('default', '\SafeStartApi\Jobs\CheckListResend', array(
+                'checkListId' => $inspection->getId(),
+                'emails' => $emails
+            ));
+            return $this->AnswerPlugin()->format($this->answer);
+        } else {
+            $link = $inspection->getPdfLink();
+            $cache = \SafeStartApi\Application::getCache();
+            $cashKey = $link;
+            $path = '';
+            if ($cashKey && $cache->hasItem($cashKey)) {
+                $path = $this->inspectionPdf()->getFilePathByName($link);
+            }
+            if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($inspection);
+
+            if (file_exists($path)) {
+                foreach($emails as $email) {
+                    $email = (array) $email;
+                    $this->MailPlugin()->send(
+                        $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                        $email['email'],
+                        'checklist.phtml',
+                        array(
+                            'name' => isset($email['name']) ? $email['name'] : 'friend',
+                            'plantId' => $inspection->getVehicle() ? $inspection->getVehicle()->getPlantId() : '-',
+                            'uploadedByName' => $inspection->getOperatorName(),
+                            'siteUrl' => $this->moduleConfig['params']['site_url'],
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
+                        ),
+                        $path
+                    );
+                }
+                return $this->AnswerPlugin()->format($this->answer);
+            } else {
+                $this->answer = array(
+                    'errorMessage' => 'PDF document was not generated'
+                );
+                return $this->AnswerPlugin()->format($this->answer, 500, 500);
+            }
+        }
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
 
     private function _setInspectionStatistic(\SafeStartApi\Entity\CheckList $checkList)
     {
@@ -248,20 +316,5 @@ class PublicVehicleController extends PublicAccessRestController
             }
         }
         return true;
-    }
-
-    public function sendTestEmailAction() {
-        /*
-        $email = 'test21141@gmail.com';
-        $this->MailPlugin()->send(
-            'New inspection report',
-            $email,
-            'checklist.phtml',
-            array(
-                'name' => 'Artem'
-            ),
-            '/var/www/safe-start.dev/data/users/pdf/checklist_review_4_2_113_at_2013-09-17.pdf'
-        );
-        */
     }
 }

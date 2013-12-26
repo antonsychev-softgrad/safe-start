@@ -49,6 +49,9 @@
 
         ssh -i safe-start-root.pem ubuntu@54.200.117.161
 
+        git fetch origin
+        git checkout -b v1 origin/v1
+
 ##b) MySql:
         user: root
         Password: SafeStart!@

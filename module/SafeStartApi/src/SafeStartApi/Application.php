@@ -68,7 +68,7 @@ class Application
                                 array('localhost', 11211),
                             ),
                             'lib_options' => array(
-                                'prefix_key' => 'SafeStartApp_',
+                                'prefix_key' => 'SafeStartApp_v1_',
                             ),
                         ),
                     ),
@@ -81,7 +81,7 @@ class Application
                     'adapter' => array(
                         'name' => 'apc',
                         'options' => array(
-                            'namespace' => 'SafeStartApp_',
+                            'namespace' => 'SafeStartApp_v1_',
                         ),
                     ),
                     'plugins' => array(
@@ -93,7 +93,7 @@ class Application
                     'adapter' => array(
                         'name' => 'filesystem',
                         'options' => array(
-                            'namespace' => 'SafeStartApp',
+                            'namespace' => 'SafeStartApp_v1_',
                             'cache_dir' => self::getFileSystemPath('data/cache/'),
                         ),
                     ),
@@ -105,13 +105,19 @@ class Application
             }
 
         }
+        defined('APP_CACHE') || define('APP_CACHE', false);
         self::$cache->setCaching(APP_CACHE);
         return self::$cache;
     }
 
     public static function getFileSystemPath($fEndPath = null)
     {
-        $root = $_SERVER['DOCUMENT_ROOT'];
+        if (! empty($_SERVER['DOCUMENT_ROOT'])) {
+            $root = $_SERVER['DOCUMENT_ROOT'];
+        } else {
+            $root = getcwd();
+        }
+
         if (!file_exists($root . "/init_autoloader.php")) {
             $root = dirname($root);
         }
@@ -136,6 +142,29 @@ class Application
         }
 
         return $returnFolder;
+    }
+
+    public static function getImageFileByDirAndName($dir, $tosearch) {
+        if(file_exists($dir) && is_dir($dir)) {
+
+            $validFileExts = array(
+                "jpg", "jpeg", "png"
+            );
+
+            $path = $dir.$tosearch;
+            $ext = preg_replace('/.*\.([^\.]*)$/is','$1', $tosearch);
+            if(file_exists($path) && is_file($path) && ($ext != $tosearch)) {
+                return (realpath($path));
+            } else {
+                foreach($validFileExts as $validExt) {
+                    $filename = $path . "." . $validExt;
+                    if(file_exists($filename) && !is_dir($filename)) {
+                        return (realpath($filename));
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private function __construct()

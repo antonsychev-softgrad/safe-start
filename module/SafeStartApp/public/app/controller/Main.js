@@ -17,6 +17,9 @@ Ext.define('SafeStartApp.controller.Main', {
         control: {
             SafeStartMainView: {
                 changeTab: 'changeTab'
+            },
+            SafeStartVehicleAlertPanel: {
+                updateAlertsBadge: 'updateAlertsBadge'
             }
         },
 
@@ -33,6 +36,43 @@ Ext.define('SafeStartApp.controller.Main', {
             authPage: 'SafeStartAuthPage',
             companySettingsPage: 'SafeStartCompanySettingsPage'
         }
+    },
+
+    init: function () {
+        this.startUpdateAlertsBadge();
+        Ext.Viewport.on('userLogin', function () {
+            this.startUpdateAlertsBadge();
+        }, this);
+        Ext.Viewport.on('userLogout', function () {
+            this.stopUpdateAlertsBadge();
+        }, this);
+    },
+
+    startUpdateAlertsBadge: function () {
+        var me = this;
+        this.stopUpdateAlertsBadge();
+        this.updateAlertsIntervalId = setInterval(function () {
+            me.updateAlertsBadge();
+        }, 60000);
+    },
+
+    stopUpdateAlertsBadge: function () {
+        if (this.hasOwnProperty('updateAlertsIntervalId')) {
+            clearInterval(this.updateAlertsIntervalId); 
+            delete this.updateAlertsIntervalId;
+        }
+    },
+
+    updateAlertsBadge: function() {
+        var self = this;
+        if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
+        SafeStartApp.AJAX('company/' + SafeStartApp.companyModel.get('id') + '/get-new-incoming?now=' + new Date().getTime(), {}, function (result) {
+            if (SafeStartApp.userModel.get('role') == 'superAdmin') {
+                self.getMainView().getTabBar().getComponent(2).setBadgeText(result.alerts);
+            } else {
+                self.getMainView().getTabBar().getComponent(1).setBadgeText(result.alerts);
+            }
+        }, function() {}, true);
     },
 
     changeTab: function (action) {

@@ -126,7 +126,8 @@ class AdminController extends AdminAccessRestController
                 'username' => $user->getUsername(),
                 'firstName' => $user->getFirstName(),
                 'password' => $password,
-                'siteUrl' => $config['safe-start-app']['siteUrl']
+                'siteUrl' => $config['params']['site_url'],
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
             )
         );
 
@@ -203,7 +204,7 @@ class AdminController extends AdminAccessRestController
             $field->setParent($parentField);
         }
 
-        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker'))) {
+        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker', 'label'))) {
             $this->answer = array(
                 "errorMessage" => "Wrong field type."
             );
@@ -271,8 +272,35 @@ class AdminController extends AdminAccessRestController
             $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
             if (!$company) return $this->_showNotFound("Company not found.");
             $vehicles = $company->getVehicles();
-            $vehicles = !empty($vehicles) ? $vehicles->toArray() : array();
+            $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company)';
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_users'] = $query->getSingleScalarResult();
+            $dql = 'SELECT COUNT(v.id) FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = (:company)';
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_vehicles'] = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company) AND u.role = 'companyUser'";
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_vehicle_users']  = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company = (:company) AND (u.role = 'companyManager' OR u.role = 'companyAdmin')";
+            $query = $this->em->createQuery($dql);
+            $query->setParameter('company', $company);
+            $statistic['total']['database_responsible_users']  = $query->getSingleScalarResult();
         } else {
+            $dql = 'SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null';
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_users'] = $query->getSingleScalarResult();
+            $dql = 'SELECT COUNT(v.id) FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0';
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_vehicles'] = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null AND u.role = 'companyUser'";
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_vehicle_users']  = $query->getSingleScalarResult();
+            $dql = "SELECT COUNT(u.id) FROM SafeStartApi\Entity\User u WHERE u.deleted = 0 AND u.company is not null AND (u.role = 'companyManager' OR u.role = 'companyAdmin')";
+            $query = $this->em->createQuery($dql);
+            $statistic['total']['database_responsible_users']  = $query->getSingleScalarResult();
             $company = null;
             $vehicles = array();
         }
@@ -283,7 +311,7 @@ class AdminController extends AdminAccessRestController
             $from->setTimestamp((int)$this->data->from);
         } else {
             $from = new \DateTime();
-            $from->setTimestamp(time() - 366*24*60*60);
+            $from->setTimestamp(time() - 6*30*24*60*60);
         }
 
         $fromFirstMonthDay = date('1-m-Y', $from->getTimestamp());
@@ -311,7 +339,7 @@ class AdminController extends AdminAccessRestController
         if($company && count($vehicles) <= 0) {
             $statistic['total']['database_inspections'] = 0;
         } else {
-            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+            $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 0';
             if($company) {
                 $dql .= ' AND cl.vehicle in (:vehicles)';
             }
@@ -323,7 +351,7 @@ class AdminController extends AdminAccessRestController
             $statistic['total']['database_inspections'] = $query->getSingleScalarResult();
         }
 
-        if($company && count($vehicles) <= 0) {
+        if($company && count($vehicles) == 0) {
             $statistic['total']['database_alerts'] = 0;
         } else {
             $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\Alert cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to';
@@ -339,7 +367,7 @@ class AdminController extends AdminAccessRestController
         }
 
         if(!$company) {
-            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
             $query->setParameter('from', $from)->setParameter('to', $to);
             $statistic['total']['email_inspections'] = $query->getSingleScalarResult();
         } else {
@@ -349,7 +377,8 @@ class AdminController extends AdminAccessRestController
         $chart = array();
 
         while ($fromTime < $toTime) {
-            $date = date('Y-m-d', $fromTime);
+            if ( $range == 'monthly' ) $date = date('m/Y', $fromTime);
+            else  $date = date('W/Y', $fromTime);
 
             $toTimeParam = new \DateTime();
             $toTimeParam->setTimestamp($fromTime + $delta);
@@ -359,7 +388,7 @@ class AdminController extends AdminAccessRestController
             if($company && count($vehicles) <= 0) {
                 $value1 = 0;
             } else {
-                $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is not null';
+                $dql = 'SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 0';
                 if($company) {
                     $dql .= ' AND cl.vehicle in (:vehicles)';
                 }
@@ -371,13 +400,11 @@ class AdminController extends AdminAccessRestController
                 $value1 = $query->getSingleScalarResult();
             }
 
-            if($company && count($vehicles) <= 0 || !$company) {
-                $value2 = 0;
-            } else {
-                $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.user is null');
-                $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
-                $value2 = $query->getSingleScalarResult();
-            }
+
+            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
+            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+            $value2 = $query->getSingleScalarResult();
+
 
             if($company && count($vehicles) <= 0) {
                 $value3 = 0;

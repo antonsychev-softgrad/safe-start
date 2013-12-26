@@ -63,12 +63,12 @@ class CompanyController extends RestrictedAccessRestController
 
         $node = (int)$this->getRequest()->getQuery('node');
 
-        $cache = \SafeStartApi\Application::getCache();
-        $cashKey = "getCompanyVehicles" . $companyId;
+        // $cache = \SafeStartApi\Application::getCache();
+        // $cashKey = "getCompanyVehicles" . $companyId;
 
-        if ($cache->hasItem($cashKey) && !$node) {
-            $this->answer = $cache->getItem($cashKey);
-        } else {
+        // if ($cache->hasItem($cashKey) && !$node) {
+        //     $this->answer = $cache->getItem($cashKey);
+        // } else {
             if (!$node) {
                 $query = $this->em->createQuery('SELECT v FROM SafeStartApi\Entity\Vehicle v WHERE v.deleted = 0 AND v.company = ?1');
                 $query->setParameter(1, $company);
@@ -78,14 +78,14 @@ class CompanyController extends RestrictedAccessRestController
                         $this->answer[] = $vehicle->toMenuArray();
                     }
                 }
-                $cache->setItem($cashKey, $this->answer);
+                //$cache->setItem($cashKey, $this->answer);
             } else {
                 $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $node);
                 if ($vehicle) {
                     $this->answer = $vehicle->getMenuItems();
                 }
             }
-        }
+        // }
 
         return $this->AnswerPlugin()->format($this->answer);
     }
@@ -155,6 +155,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         $vehicleId = (int)$this->params('id');
+        //$user = \SafeStartApi\Application::getCurrentUser();
         $plantId = strtoupper($this->data->plantId);
         $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
         if ($vehicleId) {
@@ -182,6 +183,7 @@ class CompanyController extends RestrictedAccessRestController
             if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
             if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
             $vehicle = new \SafeStartApi\Entity\Vehicle();
+            //$vehicle->addResponsibleUser($user);
             $this->copyVehicleDefFields($vehicle);
         }
 
@@ -238,8 +240,8 @@ class CompanyController extends RestrictedAccessRestController
 
         if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
-        $users = $vehicle->getUsers() ? $vehicle->getUsers()->toArray() : array();
-        $responsibleUsers = $vehicle->getResponsibleUsers() ? $vehicle->getResponsibleUsers()->toArray() : array();
+        $users = $vehicle->getUsers();
+        $responsibleUsers = $vehicle->getResponsibleUsers();
         $users = array_merge($users, $responsibleUsers);
 
         $cache = \SafeStartApi\Application::getCache();
@@ -447,7 +449,7 @@ class CompanyController extends RestrictedAccessRestController
             $field->setParent($parentField);
         }
 
-        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker'))) {
+        if (!in_array($this->data->type, array('root', 'text', 'group', 'radio', 'checkbox', 'photo', 'datePicker', 'label'))) {
             $this->answer = array(
                 "errorMessage" => "Wrong field type."
             );
@@ -540,6 +542,16 @@ class CompanyController extends RestrictedAccessRestController
         $record->setCompanyId($user->getCompany() ? $user->getCompany()->getId() : '');
         $record->setUserName($user->getFirstName() ." ". $user->getLastName());
         $record->setUserId($user->getId());
+
+        $vehicle = $field->getVehicle();
+
+        $cache = \SafeStartApi\Application::getCache();
+        $cashKey = "getVehicleChecklist" . $vehicle->getId();
+        $cashKey2 = "getVehicleForEditChecklist" . $vehicle->getId();
+        $cashKey3 = "getVehicleChecklistFieldsStructure" . $vehicle->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        if ($cache->hasItem($cashKey2)) $cache->removeItem($cashKey2);
+        if ($cache->hasItem($cashKey3)) $cache->removeItem($cashKey3);
 
         $this->em->persist($record);
         $this->em->flush();

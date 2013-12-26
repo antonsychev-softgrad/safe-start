@@ -80,24 +80,13 @@ Ext.define('SafeStartApp.view.pages.Company', {
             items: [{
                 xtype: 'panel',
                 cls: 'sfa-left-container',
-                margin: '0 20 0 0',
+                margin: '0',
                 layout: 'fit',
                 items: [{
                     xtype: 'toolbar',
                     cls: 'sfa-menu-toggle',
                     docked: 'top',
-                    items: additionalButton.concat({
-                        xtype: 'spacer',
-                        flex: 1
-                    }, {
-                        iconCls: 'arrow_left',
-                        height: 20,
-                        iconMask: true,
-                        handler: function (btn) {
-                            var panel = this.up('SafeStartLeftContainer');
-                            panel.toggleMenu();
-                        }
-                    })
+                    items: additionalButton
                 }, {
                     xtype: 'SafeStartNestedListVehicles',
                     vehiclesStore: this.vehiclesStore,
@@ -107,11 +96,12 @@ Ext.define('SafeStartApp.view.pages.Company', {
             }, {
                 xtype: 'panel',
                 cls: 'sfa-left-container',
+                margin: '0',
                 items: [{
                     xtype: 'toolbar',
                     items: [{
                         iconCls: 'arrow_right',
-                        height: 20,
+                        //height: 22,
                         iconMask: true,
                         handler: function () {
                             var panel = this.up('SafeStartLeftContainer');
@@ -132,7 +122,6 @@ Ext.define('SafeStartApp.view.pages.Company', {
             xtype: 'panel',
             cls: 'sfa-info-container',
             name: 'info-container',
-            scrollable: null,
             layout: 'card',
             flex: 2,
             items: [{

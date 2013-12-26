@@ -20,43 +20,45 @@ class VehicleController extends RestrictedAccessRestController
 
         $vehiclesList = array();
 
-        if ($cache->hasItem($cashKey)) {
-            $vehiclesList = $cache->getItem($cashKey);
-        } else {
-            $vehicles = $user->getVehicles();
+        /* if ($cache->hasItem($cashKey)) {
+             $vehiclesList = $cache->getItem($cashKey);
+         } else {*/
+        $vehicles = $user->getVehicles();
 
-            foreach ($vehicles as $vehicle) {
-                $vehicleData = $vehicle->toResponseArray();
-                $vehiclesList[] = array(
-                    'vehicleId' => $vehicleData['vehicleId'],
-                    'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['vehicleName'],
-                    'projectName' => $vehicleData['projectName'],
-                    'projectNumber' => $vehicleData['projectNumber'],
-                    'expiryDate' => $vehicleData['expiryDate'],
-                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
-                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
-                    'role' => 'user'
-                );
-            }
-
-            $responsibleVehicles = $user->getResponsibleForVehicles();
-            foreach ($responsibleVehicles as $vehicle) {
-                $vehicleData = $vehicle->toResponseArray();
-                $vehiclesList[] = array(
-                    'vehicleId' => $vehicleData['vehicleId'],
-                    'type' => $vehicleData['type'],
-                    'vehicleName' => $vehicleData['vehicleName'],
-                    'projectName' => $vehicleData['projectName'],
-                    'projectNumber' => $vehicleData['projectNumber'],
-                    'expiryDate' => $vehicleData['expiryDate'],
-                    'kmsUntilNext' => $vehicleData['kmsUntilNext'],
-                    'hoursUntilNext' => $vehicleData['hoursUntilNext'],
-                    'role' => 'responsible'
-                );
-            }
-            $cache->setItem($cashKey, $vehiclesList);
+        foreach ($vehicles as $vehicle) {
+            $vehicleData = $vehicle->toResponseArray();
+            $vehicleInfo = array(
+                'vehicleId' => $vehicleData['vehicleId'],
+                'type' => $vehicleData['type'],
+                'vehicleName' => $vehicleData['vehicleName'],
+                'projectName' => $vehicleData['projectName'],
+                'projectNumber' => $vehicleData['projectNumber'],
+                'expiryDate' => $vehicleData['expiryDate'],
+                'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                'hoursUntilNext' => $vehicleData['hoursUntilNext'],
+                'role' => 'user'
+            );
+            $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
         }
+
+        $responsibleVehicles = $user->getResponsibleForVehicles();
+        foreach ($responsibleVehicles as $vehicle) {
+            $vehicleData = $vehicle->toResponseArray();
+            $vehicleInfo = array(
+                'vehicleId' => $vehicleData['vehicleId'],
+                'type' => $vehicleData['type'],
+                'vehicleName' => $vehicleData['vehicleName'],
+                'projectName' => $vehicleData['projectName'],
+                'projectNumber' => $vehicleData['projectNumber'],
+                'expiryDate' => $vehicleData['expiryDate'],
+                'kmsUntilNext' => $vehicleData['kmsUntilNext'],
+                'hoursUntilNext' => $vehicleData['hoursUntilNext'],
+                'role' => 'responsible'
+            );
+            $vehiclesList[] = array_merge($vehicleInfo, $vehicle->toInfoArray());
+        }
+        $cache->setItem($cashKey, $vehiclesList);
+        /* }*/
 
         $this->answer = array(
             'vehicles' => $vehiclesList,
@@ -155,6 +157,7 @@ class VehicleController extends RestrictedAccessRestController
                 if (isset($queryResult[0])) {
                     $checklist = array(
                         'id' => $queryResult[0]->getid(),
+                        'hash' => $queryResult[0]->getHash(),
                         'gpsCoords' => $queryResult[0]->getGpsCoords(),
                         'fieldsStructure' => json_decode($queryResult[0]->getFieldsStructure()),
                         'fieldsData' => json_decode($queryResult[0]->getFieldsData()),
@@ -231,7 +234,8 @@ class VehicleController extends RestrictedAccessRestController
         $checkList->setFieldsStructure(json_encode($fieldsStructure));
         $checkList->setFieldsData(json_encode($this->data->fields));
         $checkList->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
-
+        $checkList->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
+        
         if (isset($this->data->operator_name) && !empty($this->data->operator_name)) $checkList->setOperatorName($this->data->operator_name);
         else $checkList->setOperatorName($user->getFullName());
 
@@ -342,6 +346,8 @@ class VehicleController extends RestrictedAccessRestController
             $this->em->flush();
         }
 
+        $this->processTrailerPlugin()->processTrailer($checkList, $newAlerts);
+
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
@@ -350,6 +356,8 @@ class VehicleController extends RestrictedAccessRestController
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getCompanyVehicles" . $vehicle->getCompany()->getId();
+        if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+        $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
         $this->answer = array(
@@ -429,63 +437,63 @@ class VehicleController extends RestrictedAccessRestController
         $inspections = array();
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
-       /* if ($cache->hasItem($cashKey)) {
-            $inspections = $cache->getItem($cashKey);
-        } else {*/
-            $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
-            $query->setParameters(array('id' => $vehicle));
-            $items = $query->getResult();
+        /* if ($cache->hasItem($cashKey)) {
+             $inspections = $cache->getItem($cashKey);
+         } else {*/
+        $query = $this->em->createQuery("SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.vehicle = :id");
+        $query->setParameters(array('id' => $vehicle));
+        $items = $query->getResult();
 
-            if (is_array($items) && !empty($items)) {
-                foreach ($items as $checkList) {
-                    $checkListData = $checkList->toArray();
+        if (is_array($items) && !empty($items)) {
+            foreach ($items as $checkList) {
+                $checkListData = $checkList->toArray();
 
-                    $checkListData['checkListId'] = $checkList->getId();
-                    $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
+                $checkListData['checkListId'] = $checkList->getId();
+                $checkListData['title'] = $checkList->getCreationDate()->format($this->moduleConfig['params']['date_format'] . ' ' . $this->moduleConfig['params']['time_format']);
 
-                    $warnings = $checkList->getWarnings();
-                    $vehicle = $checkList->getVehicle();
-                    if ($vehicle->getNextServiceDay()) {
-                        $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                $warnings = $checkList->getWarnings();
+                $vehicle = $checkList->getVehicle();
+                if ($vehicle->getNextServiceDay()) {
+                    $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                    if ($days < 1) {
+                        $warnings[] = array(
+                            'action' => 'next_service_due',
+                            'text' => 'Estimated Date of Next Service Is ' . $vehicle->getNextServiceDay(),
+                        );
+                    } else if ($days < 30) {
+                        $warnings[] = array(
+                            'action' => 'next_service_due',
+                            'text' => 'Next service In ' . ceil($days) . ' Days',
+                        );
+                    }
+                }
+                if ($vehicle->getCompany()) {
+                    if ($vehicle->getCompany()->getExpiryDate()) {
+                        $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
                         if ($days < 1) {
                             $warnings[] = array(
-                                'action' => 'next_service_due',
-                                'text' => 'Next Service Day Is ' . $vehicle->getNextServiceDay(),
+                                'action' => 'subscription_ending',
+                                'text' => 'Your subscription has expired'
                             );
                         } else if ($days < 30) {
                             $warnings[] = array(
-                              'action' => 'next_service_due',
-                              'text' => 'Next service In ' . ceil($days) . ' Days',
+                                'action' => 'subscription_ending',
+                                'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
                             );
                         }
                     }
-                    if ($vehicle->getCompany()) {
-                        if ($vehicle->getCompany()->getExpiryDate()) {
-                            $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
-                            if ($days < 1) {
-                                $warnings[] = array(
-                                    'action' => 'subscription_ending',
-                                    'text' => 'Your subscription has expired'
-                                );
-                            } else if ($days < 30) {
-                                $warnings[] = array(
-                                    'action' => 'subscription_ending',
-                                    'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
-                                );
-                            }
-                        }
-                    }
-                    $checkListData['warnings'] = $warnings;
-
-                    $inspections[] = $checkListData;
                 }
+                $checkListData['warnings'] = $warnings;
+
+                $inspections[] = $checkListData;
             }
-   /*         $cache->setItem($cashKey, $inspections);
-        }*/
+        }
+        /*         $cache->setItem($cashKey, $inspections);
+             }*/
         $page = (int)$this->getRequest()->getQuery('page');
         $limit = (int)$this->getRequest()->getQuery('limit');
         $inspections = array_reverse($inspections);
-        if (count($inspections) < ($page - 1) * $limit) {
+        if (count($inspections) <= ($page - 1) * $limit) {
             $this->answer = array();
             return $this->AnswerPlugin()->format($this->answer);
         }
@@ -540,8 +548,11 @@ class VehicleController extends RestrictedAccessRestController
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
+        $openAlertsCount = count($vehicle->getOpenAlerts());
+
         $this->answer = array(
             'done' => true,
+            'openAlertsCount' => $openAlertsCount,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -567,8 +578,11 @@ class VehicleController extends RestrictedAccessRestController
         $cashKey = "getAlertsByCompany" . $vehicle->getCompany()->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
 
+        $openAlertsCount = count($vehicle->getOpenAlerts());
+
         $this->answer = array(
-            'done' => true
+            'done' => true,
+            'openAlertsCount' => $openAlertsCount,
         );
 
         return $this->AnswerPlugin()->format($this->answer);
@@ -647,6 +661,67 @@ class VehicleController extends RestrictedAccessRestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function getAlertsStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'alerts' => $vehicle->getAlertsByPeriod($from, $to)
+        );
+        
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function getInspectionBreakdownsStatisticAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+        $from = null;
+        if (isset($this->data->from) && !empty($this->data->from)) {
+            $from = new \DateTime();
+            $from->setTimestamp((int)$this->data->from);
+        }
+
+        $to = null;
+        if (isset($this->data->to) && !empty($this->data->to)) {
+            $to = new \DateTime();
+            $to->setTimestamp((int)$this->data->to);
+        }
+
+        $range = 'monthly';
+        if (isset($this->data->range) && !empty($this->data->range)) {
+            $range = $this->data->range;
+        }
+
+        $this->answer = array(
+            'done' => true,
+            'chart' => $vehicle->getInspectionBreakdowns($from, $to, $range)
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function printStatisticAction()
     {
         $vehicleId = (int)$this->params('id');
@@ -669,9 +744,41 @@ class VehicleController extends RestrictedAccessRestController
 
         $pdf = $this->vehicleReportPdf()->create($vehicle, $from, $to);
 
-        header("Content-Disposition: inline; filename={$pdf['name']}");
-        header("Content-type: application/x-pdf");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename={$pdf['name']}");
+        header("Content-Transfer-Encoding:Binary");
+        header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
+        return true;
+    }
+
+    public function verifyPrintActionListAction()
+    {
+        $vehicles = array();
+        $vehicleId = (int)$this->params('id');
+        if (!$vehicleId) {
+            $user = $this->authService->getIdentity();
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
+            $operatorVehicles = $user->getVehicles();
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
+        } else {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $vehicles[] = $vehicle;
+        }
+
+        if (empty($vehicles)) {
+            $this->answer = array(
+                'errorMessage' => 'No vehicles available for getting Action List',
+            );
+            return $this->AnswerPlugin()->format($this->answer, 204);
+        }
+
+        $this->answer = array();
+
+        return $this->AnswerPlugin()->format($this->answer, 0);
     }
 
     public function printActionListAction()
@@ -681,9 +788,9 @@ class VehicleController extends RestrictedAccessRestController
         if (!$vehicleId) {
             $user = $this->authService->getIdentity();
             $responsibleVehicles = $user->getResponsibleForVehicles();
-            if ($responsibleVehicles) foreach($responsibleVehicles as $vehicle)  $vehicles[] = $vehicle;
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
             $operatorVehicles = $user->getVehicles();
-            if ($operatorVehicles) foreach($operatorVehicles as $vehicle)  $vehicles[] = $vehicle;
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
         } else {
             $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
             if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
@@ -700,9 +807,63 @@ class VehicleController extends RestrictedAccessRestController
 
         $pdf = $this->vehicleActionListPdf()->create($vehicles);
 
-        header("Content-Disposition: inline; filename={$pdf['name']}");
-        header("Content-type: application/x-pdf");
+        header("Content-Type: application/octet-stream");
+        header("Content-Disposition: attachment; filename={$pdf['name']}");
+        header("Content-Transfer-Encoding:Binary");
+        header('Content-Length: ' . filesize($pdf['path']));
         echo file_get_contents($pdf['path']);
+        return true;
+    }
+
+    public function sendActionListAction()
+    {
+        $vehicles = array();
+        $vehicleId = (int)$this->params('id');
+        if (!$vehicleId) {
+            $user = $this->authService->getIdentity();
+            $responsibleVehicles = $user->getResponsibleForVehicles();
+            if ($responsibleVehicles) foreach ($responsibleVehicles as $vehicle) $vehicles[] = $vehicle;
+            $operatorVehicles = $user->getVehicles();
+            if ($operatorVehicles) foreach ($operatorVehicles as $vehicle) $vehicles[] = $vehicle;
+        } else {
+            $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+            if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+            $vehicles[] = $vehicle;
+        }
+
+        if (empty($vehicles)) {
+            $this->answer = array(
+                'errorMessage' => 'No vehicles available for getting Action List',
+            );
+            return $this->AnswerPlugin()->format($this->answer, 204);
+        }
+
+        $pdf = $this->vehicleActionListPdf()->create($vehicles);
+        $config = $this->getServiceLocator()->get('Config');
+        foreach ($vehicles as $vehicle) {
+            $responsibles = $vehicle->getResponsibleUsers();
+            if (!$responsibles) continue;
+            foreach ($responsibles as $responsible) {
+                $this->MailPlugin()->send(
+                    $this->moduleConfig['params']['emailSubjects']['vehicle_action_list'],
+                    $responsible->email,
+                    'actionlist.phtml',
+                    array(
+                        'plantId' => $vehicle->getPlantId(),
+                        'siteUrl' => $config['params']['site_url'],
+                        'emailStaticContentUrl' => $config['params']['email_static_content_url']
+                    ),
+                    $pdf['path']
+                );
+            }
+        }
+
+        $this->answer = array(
+            'done' => true,
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
 
     }
 }

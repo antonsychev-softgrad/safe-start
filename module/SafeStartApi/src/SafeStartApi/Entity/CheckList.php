@@ -127,12 +127,23 @@ class CheckList extends BaseEntity
     protected $warnings = '';
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $location;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $email_mode = 0;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->alerts = new \Doctrine\Common\Collections\ArrayCollection();
         $this->setCreationDate(new \DateTime());
+        $this->setUpdateDate(new \DateTime());
     }
 
     /**
@@ -582,6 +593,7 @@ class CheckList extends BaseEntity
             'id' => $this->getId(),
             'hash' => $this->getHash(),
             'gps' => $this->getGpsCoords(),
+            'location' => $this->getLocation(),
             'operator_name' => $this->getOperatorName(),
             'odometer_kms' => $this->getCurrentOdometer(),
             'odometer_hours' => $this->getCurrentOdometerHours(),
@@ -698,5 +710,40 @@ class CheckList extends BaseEntity
 
         return $this;
     }
+
+    /**
+     * Get location
+     *
+     * @return string
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Get location
+     *
+     * @param $location
+     * @return string
+     */
+    public function setLocation($location)
+    {
+        $this->location = $location;
+        return $this;
+    }
+
+
+    public function getEmailMode()
+    {
+        return $this->email_mode;
+    }
+
+    public function setEmailMode($val)
+    {
+        $this->email_mode = $val;
+        return $this;
+    }
+
 
 }

@@ -1,6 +1,5 @@
 Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     extend: 'Ext.dataview.NestedList',
-    alias: 'widget.SafeStartNestedListVehicles',
     xtype: 'SafeStartNestedListVehicles',
     mixins: ['SafeStartApp.store.mixins.FilterByField'],
     name: 'vehicles',
@@ -21,12 +20,6 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
         title: 'Vehicles',
         displayField: 'text',
         flex: 1,
-        getTitleTextTpl: function () {
-            return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-        },
-        getItemTextTpl: function () {
-            return '{' + this.getDisplayField() + '}<tpl if="leaf !== true"> -> </tpl>';
-        },
         listeners: {
             activeitemchange: function (nestedlist) {
                 Ext.each(this.down('toolbar[name=first-level]'), function (toolbar) {
@@ -50,6 +43,10 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
                 }
             }
         }
+    },
+
+    getItemTextTpl: function () {
+        return '{' + this.getDisplayField() + '}<tpl if="counter !== 0"> ({counter}) </tpl>';
     },
 
     updateNestedListStore: function () {
@@ -222,35 +219,31 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
             }
         ]);
 
-        this.add([
-            {
-                xtype: 'toolbar',
-                name: 'first-level-bottom',
-                docked: 'bottom',
-                ui: '',
-                items: [
-                    {
-                        xtype: 'spacer'
-                    },
-                    {
-                        xtype: 'button',
-                        cls: 'sfa-add-button',
-                        name: 'print-action-lists',
-                        ui: 'action',
-                        iconCls: 'organize',
-                        action: 'print-action-lists',
-                        text: 'Print Action List',
-                        handler: function () {
-                            window.open('/api/vehicle/0/print-action-list', '_blank');
-                        },
-                        scope: this
-                    },
-                    {
-                        xtype: 'spacer'
-                    }
-                ]
-            }
-        ]);
-
+        this.add([{
+            xtype: 'toolbar',
+            name: 'first-level-bottom',
+            docked: 'bottom',
+            ui: '',
+            hidden: SafeStartApp.userModel.get('role') == 'superAdmin',
+            items: [{
+                xtype: 'spacer'
+            }, {
+                xtype: 'button',
+                cls: 'sfa-add-button',
+                name: 'print-action-lists',
+                ui: 'action',
+                iconCls: 'organize',
+                action: 'print-action-lists',
+                text: 'Print Action List',
+                handler: function(btn) {
+                    SafeStartApp.AJAX('vehicle/0/verify-print-action-list', {}, function (data) {
+                        window.location.assign('/api/vehicle/0/print-action-list/vehicles_action_lists.pdf');
+                    });
+                },
+                scope: this
+            }, {
+                xtype: 'spacer'
+            }]
+        }]);
     }
 });

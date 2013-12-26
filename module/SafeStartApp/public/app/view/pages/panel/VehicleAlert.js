@@ -10,12 +10,16 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
 
     record: false,
 
-    config: {cls:'sfa-alert-information',
+    config: { 
+        cls:'sfa-alert-information',
         title: 'Alert Information',
         baseCls: 'x-show-contact',
-        layout: 'vbox',
         scrollable: true,
-        record: null
+        layout: 'vbox',
+        record: null,
+        defaults: {
+            maxWidth: 700
+        }
     },
 
     initialize: function () {
@@ -218,18 +222,22 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
     updateAction: function () {
         var self = this;
         var values = {};
-        var vehicleId = this.record.raw.vehicle.id;
+        var vehicleId = (this.record.raw && this.record.raw.vehicle.id) || 0;
         var status = this.down('#SafeStartVehicleAlertStatus' + this.uniqueId).getValue();
         var action = '';
+        var counter = 0;
         if (this.record.get('status') != status) {
             switch (status) {
                 case 'new':
                     action = 'Reopened';
+                    counter = 1;
                     break;
                 case 'closed':
                     action = 'Completed';
+                    counter = -1;
                     break;
             }
+            // this.fireEvent('updateAlertsCounter', counter);
             
             this.alertContent.history.push({
                 username: SafeStartApp.userModel.getFullName(),
@@ -251,6 +259,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
             }
             self.setComments(self.record.raw.comments);
             self.down('#SafeStartVehicleAlertNewComment' + self.uniqueId).setValue('');
+            self.fireAction('updateAlertsBadge');
+            self.fireEvent('updateAlertsCounter', result.openAlertsCount);
         });
     },
 
@@ -268,6 +278,9 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleAlert', {
         Ext.Msg.confirm("Confirmation", "Are you sure you want to delete this alert?", function (btn) {
             if (btn == 'yes') {
                 SafeStartApp.AJAX('vehicle/alert/' + self.record.get('id') + '/delete', {}, function (result) {
+                    if (result.hasOwnProperty('openAlertsCount')) {
+                        self.fireEvent('updateAlertsCounter', result.openAlertsCount);
+                    }
                     self.getParent().pop();
                     self.getParent().alertsStore.loadData();
                 });

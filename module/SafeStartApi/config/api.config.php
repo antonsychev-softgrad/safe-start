@@ -3,11 +3,19 @@
 $api = array(
     'params' => array(
         'version' => '1.0-beta',
-        'date_format' => 'm/d/Y',
+        'site_url' => 'http://ec2-54-200-245-179.us-west-2.compute.amazonaws.com',
+        'email_static_content_url' => 'https://s3-us-west-2.amazonaws.com/safe-start/emails/',
+        'date_format' => 'd/m/Y',
         'time_format' => 'H:i',
         'output' => 'json',
         'href' => '/api/',
         'emailForContacts' => 'info@safestartinspections.com',
+        'emailSubjects' => array(
+            'vehicle_fail_notification' => 'New Critical Alert(s)',
+            'vehicle_action_list' => 'New Action List',
+            'new_vehicle_inspection' => 'New Inspection Report',
+            'welcome' => 'Welcome To Safe Start Inspections!',
+        )
     ),
     'fieldTypes' => array(
         'root' => array(
@@ -65,6 +73,10 @@ $api = array(
         'group' => array(
             'id' => 6,
         ),
+        'label' => array(
+            'id' => 8,
+            'default' => ''
+        ),
     ),
     'mail' => array(
         'from' => 'info@safestartinspections.com',
@@ -86,7 +98,7 @@ $api = array(
             'ext' => 'pdf',
             'output_name_title' => 'inspection',
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
-            'title' => 'safe start inspection',
+            'title' => 'daily inspection',
             'style' => array(
                 'footer_text_size' => 10,
                 'footer_text_color' => '#333333',
@@ -111,8 +123,9 @@ $api = array(
                 'category_field_size' => 12,
                 'category_field_line_spacing' => 4,
                 'category_field_color' => '#0F5B8D',
-                'alerts_header' => 'Faults',
-                'alerts_comments_header' => 'Additional Comments',
+                'critical_alerts_header' => 'Critical Alerts',
+                'alerts_header' => 'Non-Critical Alerts',
+                'alerts_comments_header' => 'Additional comments:',
                 'alert_description_size' => '10',
                 'alert_description_color' => '#ff0000',
                 'alert_comment_size' => '10',
@@ -132,7 +145,7 @@ $api = array(
             'ext' => 'pdf',
             'output_name_title' => 'inspection_fault',
             'output_name_format' => '{name}_{user}_{vehicle}_{checkList}_at_{date}',
-            'title' => 'safe start inspection',
+            'title' => 'fault notification',
             'style' => array(
                 'footer_text_size' => 10,
                 'footer_text_color' => '#333333',
@@ -245,7 +258,7 @@ $api = array(
     ),
     'requestsLimit' => array(
         'limitForLoggedInUsers' => 50,
-        'limitForUnloggedUsers' => 5,
+        'limitForUnloggedUsers' => 30,
         'limitTime' => 60,
     )
 );

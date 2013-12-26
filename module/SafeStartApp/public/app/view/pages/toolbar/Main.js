@@ -18,14 +18,15 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
     initialize: function () {
         this.setItems([{
             xtype: 'container',
-            width: 250,
+            width: 300,
+            cls:'sfa-top-logo-bg',
             layout: {
                 type: 'hbox',
                 align: 'middle'
             },
             items: [{
                 xtype: 'image',
-                margin: '0 0 0 16',
+                margin: '0 auto',
                 height: 45,
                 width: 172,
                 src: 'resources/img/logo-top.png',
@@ -41,6 +42,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
         }, {
             name: 'btn-title',
             ui: 'action',
+            cls:'sfa-title',
             text: this.config.btnTitle || ''
         }, {
             xtype: 'spacer'
@@ -53,6 +55,7 @@ Ext.define('SafeStartApp.view.pages.toolbar.Main', {
             iconCls: 'action',
             ui: 'action',
             text: 'Logout',
+            cls:'sfa-logout',
             action: 'logout'
         }]);
 

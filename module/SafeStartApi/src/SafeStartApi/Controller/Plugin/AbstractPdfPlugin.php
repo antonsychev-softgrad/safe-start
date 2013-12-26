@@ -7,6 +7,7 @@ use SafeStartApi\Model\ImageProcessor;
 class AbstractPdfPlugin extends AbstractPlugin
 {
     const PAGE_HEADER_TITLE_SIZE = 12;
+    const PAGE_SUB_HEADER_TITLE_SIZE = 8;
 
     const BLOCK_SUBHEADER_SIZE = 10;
 
@@ -45,33 +46,59 @@ class AbstractPdfPlugin extends AbstractPlugin
 
     protected function drawVehicleHeader($vehicleData = array(), $companyData = array())
     {
+        if (isset($companyData['description'])) $this->opts['style']['content_height'] = 0;
+
         $data = array(
-            'Company name' => isset($companyData['title']) ? $companyData['title'] : '',
-            'Vehicle title' => $vehicleData['title'],
+            'Company name' => isset($companyData['title']) ? $companyData['title'] : 'Safe Start',
+            'Vehicle Make' => $vehicleData['title'],
+            'Vehicle Model' => $vehicleData['type'],
+            'Plant ID' => $vehicleData['plantId'],
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
-            'Plant ID' => $vehicleData['plantId'],
-            'Type of vehicle' => $vehicleData['type'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
-            'Next Service Day' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
+            'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
 
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
+        else  $data['Expiry Day'] = '-';
 
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();
         $contentWidth = $this->getPageContentWidth();
 
-
-        $logoMaxWidth = 130;
-        $logoMaxHeight = 115;
-        $logoPath = $this->getRootPath() . "public/logo-pdf.png";
+        $logoMaxWidth = 140;
+        $logoMaxHeight = 80;
+        $logoPath = '';
+        if (isset($companyData['logo'])) {
+            $searchDir = $this->getController()->moduleConfig['defUsersPath'];
+            $logoPath = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo']);
+         /*   if ($filePath) {
+                $filePathLogo = \SafeStartApi\Application::getImageFileByDirAndName($this->getRootPath() . $searchDir, $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight);
+                if (!$filePathLogo) {
+                    $image = new \SafeStartApi\Model\ImageProcessor($filePath);
+                    $image->resize(array(
+                            'width' => $logoMaxWidth,
+                            'height' => $logoMaxHeight
+                        )
+                    );
+                    $ext = explode('.', $filePath);
+                    $logoPath = $this->getUploadPath() . $companyData['logo'] .'.'. $logoMaxWidth .'x'. $logoMaxHeight. "." . $ext[count($ext) - 1];
+                    $image->save($logoPath);
+                } else {
+                    $logoPath = $filePathLogo;
+                }
+            }*/
+        }
+        if (empty($logoPath))$logoPath = $this->getRootPath() . "public/logo-pdf.png";
 
         if (file_exists($logoPath)) {
             $logo = ZendPdf\Image::imageWithPath($logoPath);
             $logoWidth = $logo->getPixelWidth();
             $logoHeight = $logo->getPixelHeight();
+
+            $logoMaxWidth = 140;
+            $logoMaxHeight = 80;
 
             $scale = min($logoMaxWidth / $logoWidth, $logoMaxHeight / $logoHeight);
             $logoNewWidth = (int)($logoWidth * $scale);
@@ -81,9 +108,9 @@ class AbstractPdfPlugin extends AbstractPlugin
         }
 
         $headerTitlePaddingRight = 25;
-        $headerTitleXOffset = $logoMaxWidth + $headerTitlePaddingRight;
+        $headerTitleXOffset = $logoNewWidth + $headerTitlePaddingRight;
         // draw header title >
-
+        $topPosInPage = $pageHeight - 16;
         $text = strtoupper($this->opts['title']);
         $topPosInPage = $this->drawText($text, self::PAGE_HEADER_TITLE_SIZE, '#0F5B8D', $pageHeight - 16, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
 
@@ -93,7 +120,29 @@ class AbstractPdfPlugin extends AbstractPlugin
             unset($data['Company name']);
         }
 
-        $columnsLeftXOffset = 290;
+        if (isset($companyData['address']) && !empty($companyData['address'])) {
+            $lines = $this->getTextLines('Address: ' . $companyData['address'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
+            $k = 0;
+            foreach ($lines as $line) {
+                $k++;
+                if ($k == 4) break;
+                $topPosInPage -= (self::PAGE_SUB_HEADER_TITLE_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
+                $topPosInPage = $this->drawText($line, self::PAGE_SUB_HEADER_TITLE_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
+            }
+        }
+
+        if (isset($companyData['phone']) && !empty($companyData['phone'])) {
+            $lines = $this->getTextLines('Phone number: ' . $companyData['phone'], self::PAGE_SUB_HEADER_TITLE_SIZE, 150);
+            $k = 0;
+            foreach ($lines as $line) {
+                $k++;
+                if ($k == 4) break;
+                $topPosInPage -= (self::PAGE_SUB_HEADER_TITLE_SIZE + (self::BLOCK_TEXT_LINE_SPACING_AT * 2));
+                $topPosInPage = $this->drawText($line, self::PAGE_SUB_HEADER_TITLE_SIZE, '#333333', $topPosInPage, self::TEXT_ALIGN_LEFT, $headerTitleXOffset);
+            }
+        }
+
+        $columnsLeftXOffset = $headerTitleXOffset + 170;
         $columns = 2;
         $columnsPadding = 15;
         $total = count($data);
@@ -132,7 +181,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         // > end draw header line.
         $topPosInPage = $currentYPos;
 
-        return $topPosInPage;
+        return $topPosInPage - 22;
     }
 
     protected function drawFooter(\ZendPdf\Page $page)

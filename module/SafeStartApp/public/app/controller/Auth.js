@@ -52,7 +52,12 @@ Ext.define('SafeStartApp.controller.Auth', {
 
     logoutAction: function() {
         window.location.replace('#');
+        var me = this;
         SafeStartApp.AJAX('user/logout', {}, function (result) {
+            if (me.profileDlg) {
+                me.profileDlg.destroy();
+                delete me.profileDlg;
+            }
             Ext.Viewport.fireEvent('userLogout');
             SafeStartApp.currentUser = result.userInfo;
             Ext.Ajax.abortAll();

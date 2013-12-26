@@ -5,49 +5,39 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
     scrollable: false,
     config: {
         minHeight: 400,
-        //maxWidth: 600,
-        items: [
-            {
+        items: [{
                 xtype: 'fieldset',
                 title: 'User Info',
-                items: [
-                    {
+                items: [ {
                         xtype: 'hiddenfield',
                         name: 'id'
-                    },
-                    {
+                    }, {
                         xtype: 'hiddenfield',
                         name: 'companyId'
-                    },
-                    {
+                    }, {
                         xtype: 'emailfield',
                         label: 'Email',
                         required: true,
                         name: 'email'
-                    },
-                    {
+                    }, {
                         xtype: 'textfield',
                         label: 'First name',
                         required: true,
                         name: 'firstName'
-                    },
-                    {
+                    }, {
                         xtype: 'textfield',
                         label: 'Last name',
                         required: true,
                         name: 'lastName'
-                    },
-                    {
+                    }, {
                         xtype: 'textfield',
                         label: 'Position',
                         name: 'position'
-                    },
-                    {
+                    }, {
                         xtype: 'textfield',
                         label: 'Sector/Department',
                         name: 'department'
-                    },
-                    {
+                    }, {
                         xtype: 'selectfield',
                         name: 'role',
                         label: 'Company role',
@@ -59,8 +49,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                                 { rank: 'companyUser', title: 'User'}
                             ]
                         }
-                    },
-                    {
+                    }, {
                         xtype: 'togglefield',
                         name: 'enabled',
                         label: 'Enabled',
@@ -76,8 +65,13 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
             {
                 xtype: 'toolbar',
                 docked: 'bottom',
-                items: [
-                    {
+                align: 'center',
+                maxWidth: '',
+                layout: {
+                    type: 'hbox',
+                    align: 'center'
+                },
+                items: [{
                         xtype: 'button',
                         name: 'delete-data',
                         text: 'Delete',
@@ -86,17 +80,14 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                         handler: function() {
                             this.up('SafeStartCompanyUserForm').fireEvent('delete-data', this.up('SafeStartCompanyUserForm'));
                         }
-                    },
-                    { xtype: 'spacer' },
-                    {
+                    }, { xtype: 'spacer' }, {
                         xtype: 'button',
                         text: 'Reset',
                         name: 'reset-data',
                         handler: function() {
                             this.up('SafeStartCompanyUserForm').fireEvent('reset-data', this.up('SafeStartCompanyUserForm'));
                         }
-                    },
-                    {
+                    }, {
                         xtype: 'button',
                         text: 'Send Password to User',
                         name: 'send-credentials',
@@ -104,8 +95,7 @@ Ext.define('SafeStartApp.view.forms.CompanyUser', {
                         handler: function() {
                             this.up('SafeStartCompanyUserForm').fireEvent('send-credentials', this.up('SafeStartCompanyUserForm'));
                         }
-                    },
-                    {
+                    }, {
                         xtype: 'button',
                         text: 'Save',
                         name: 'save-data',

@@ -2,6 +2,7 @@
 
 namespace SafeStartApi\Model;
 
+use Imagine\Image\ImageInterface;
 
 /**
  * Class ImageProcessor
@@ -103,9 +104,12 @@ class ImageProcessor {
         if (!isset($options['width']) || !isset($options['height'])) {
             throw new \Exception();
         }
-
-        $imageBox = new \Imagine\Image\Box($options['width'], $options['height']);
-        $this->image->resize($imageBox);
+        $imageBox1 = $this->image->getSize();
+        if ($imageBox1->getHeight() > $options['height'] || $imageBox1->getWidth() > $options['width'] ) {
+            $scale = min($options['width'] / $imageBox1->getWidth(), $options['height'] / $imageBox1->getHeight());
+            $imageBox = new \Imagine\Image\Box($imageBox1->getWidth() * $scale, $imageBox1->getHeight() * $scale);
+            $this->image->resize($imageBox);
+        }
     }
 
 
@@ -186,7 +190,6 @@ class ImageProcessor {
                     'y' => 0,
                 );
             } else {
-                var_dump(array('width', $options['position'], substr($options['position'], 0, 6), substr($options['position'], 0, 4), substr($options['position'], 0, 5)));
                 throw new Exception('Unknown position');
             }
         } else {

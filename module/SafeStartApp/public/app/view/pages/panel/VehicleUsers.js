@@ -11,7 +11,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleUsers', {
         scrollable: true,
         cls: 'sfa-vehicle-inspection',
         layout: {
-            type: 'vbox'
+            type: 'vbox',
+            align: 'center'
         },
         items: [{
             xtype: 'toolbar',
@@ -56,6 +57,8 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleUsers', {
             this.add({
                 xtype: 'selectfield',
                 name: 'assigned',
+                maxWidth: 600,
+                width: '100%',
                 userId: user.id,
                 label: user.firstName + ' ' + user.lastName,
                 valueField: 'rank',

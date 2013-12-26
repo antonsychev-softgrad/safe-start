@@ -25,8 +25,8 @@ class UploadPlugin extends AbstractPlugin
         7 => 'Failed to write file to disk',
         8 => 'A PHP extension stopped the file upload',
         'post_max_size' => 'The uploaded file exceeds the post_max_size directive in php.ini',
-        'max_file_size' => 'File is too big',
-        'min_file_size' => 'File is too small',
+        'max_file_size' => 'The uploaded file exceeds the max allowed size',
+        'min_file_size' => 'The uploaded file does not reach the min allowed size',
         'accept_file_types' => 'Filetype not allowed',
         'max_number_of_files' => 'Maximum number of files exceeded',
         'max_width' => 'Image exceeds maximum width',
@@ -116,8 +116,8 @@ class UploadPlugin extends AbstractPlugin
             'accept_file_types' => '/.+$/i',
             // The php.ini settings upload_max_filesize and post_max_size
             // take precedence over the following max_file_size setting:
-            'max_file_size' => null,
-            'min_file_size' => 1,
+            'max_file_size' => 20 * 1024 * 1024,
+            'min_file_size' => 1024,
             // The maximum number of files for the upload directory:
             'max_number_of_files' => null,
             // Image resolution restrictions:
@@ -133,12 +133,12 @@ class UploadPlugin extends AbstractPlugin
             'orient_image' => true,
             // default params
             'image_versions' => array(
-                'full' => array(
+                /*'full' => array(
                     'max_width' => 1024,
                     'max_height' => 768,
                     'jpeg_quality' => 95,
                     'png_quality' => 9
-                ),
+                ),*/
                 'medium' => array(
                     'max_width' => 320,
                     'max_height' => 220,
