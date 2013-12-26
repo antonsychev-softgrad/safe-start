@@ -133,7 +133,7 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
             }, {
                 type: 'category',
                 position: 'bottom',
-                fields: 'key',
+                fields: ['key'],
                 title: {
                     text: 'CheckLists',
                     fontSize: 15
@@ -146,8 +146,9 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
             }],
             series: [{
                 type: 'bar',
-                xField: 'key',
-                yField: ['count'],
+                columnt: true,
+                yField: ['key'],
+                xField: ['count'],
                 label: {
                     field: 'key',
                     display: 'insideEnd'
