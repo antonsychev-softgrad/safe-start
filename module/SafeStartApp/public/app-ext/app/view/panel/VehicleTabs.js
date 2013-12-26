@@ -6,7 +6,8 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         'SafeStartExt.view.panel.Alerts',
         'SafeStartExt.view.panel.Inspection',
         'SafeStartExt.view.panel.ManageChecklist',
-        'SafeStartExt.view.panel.VehicleUsers'
+        'SafeStartExt.view.panel.VehicleUsers',
+        'SafeStartExt.view.panel.VehicleReports'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
@@ -95,16 +96,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tab.xtype = 'SafeStartExtPanelAlerts';
                     break;
                 case 'report':
-                    Ext.apply(tab, {
-                        xtype: 'container',
-                        listeners: {
-                            beforeactivate: function () {
-                                this.up('SafeStartExtMain').fireEvent('notSupportedAction');
-                                return false;
-                            }
-                        }
-                    });
-
+                    tab.xtype = 'SafeStartExtPanelVehicleReports';
                     break;
             }
             tabs.push(tab);

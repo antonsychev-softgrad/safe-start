@@ -22,6 +22,9 @@ Ext.define('SafeStartExt.controller.Main', {
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentContact',
         ref: 'contactPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemStatistic',
+        ref: 'systemStatisticPanel'
     }],
 
     init: function () {
@@ -179,6 +182,18 @@ Ext.define('SafeStartExt.controller.Main', {
         }
 
         this.getMainNavPanel().setActiveButton('Users');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showSystemStatisticPage: function () {
+        var page = this.getSystemStatisticPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.SystemStatistic');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('SystemStatistic');
         this.getMainPanel().getLayout().setActiveItem(page);
     },
 

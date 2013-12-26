@@ -43,6 +43,7 @@ Ext.define('SafeStartExt.Application', {
         'company/:id': 'main#showCompanyPageById',
         'contact': 'main#showContactPage',
         'users': 'main#showUsersPage',
+        'system-statistic': 'main#showSystemStatisticPage',
         'users/:id': 'main#showUsersPageById'
     },
 
