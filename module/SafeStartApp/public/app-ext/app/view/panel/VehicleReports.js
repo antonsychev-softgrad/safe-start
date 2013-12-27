@@ -12,13 +12,19 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
 
     cls: 'sfa-vehicle-report',
     layout: {
-        type: 'card'
+        type: 'fit'
     },
 
     initComponent: function() {
         var prevDate = new Date();
         prevDate.setMonth(prevDate.getMonth() - 5);
         Ext.apply(this, {
+            listeners: {
+                afterrender: function () {
+                    this.loadData(this.vehicle);
+                },
+                scope: this
+            },
             items: {
                 cls: 'sfa-system-settings',
                 xtype: 'tabpanel',
@@ -35,7 +41,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     },
                     name: 'vehicle-report',
                     scrollable: true,
-                    items: [{
+                    tbar: {
                         xtype: 'toolbar',
                         cls: 'sfa-top-toolbar',
                         docked: 'top',
@@ -89,7 +95,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                                 this.up('SafeStartExtPanelVehicleReports').sendActionList();
                             }
                         }]
-                    }, {
+                    },
+                    items: [{
                         xtype: 'panel',
                         height: 200,
                         items: [{
@@ -124,8 +131,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         type: 'fit'
                     },
                     name: 'vehicle-inspection-report',
-                    scrollable: true,
-                    items: [{
+                    tbar: {
                         xtype: 'toolbar',
                         docked: 'top',
                         cls: 'sfa-top-toolbar',
@@ -175,7 +181,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                                 this.up('SafeStartExtPanelVehicleReports').updateInspectionsDataView();
                             }
                         }]
-                    }, {
+                    },
+                    items: [{
                         xtype: 'chart',
                         name: 'vehicle-inspections',
                         flex: 1,
@@ -228,10 +235,9 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         type: 'fit'
                     },
                     name: 'vehicle-report',
-                    items: [{
+                    tbar: {
                         xtype: 'toolbar',
                         cls: 'sfa-top-toolbar',
-                        docked: 'top',
                         items: [{
                             xtype: 'datefield',
                             name: 'alerts-from',
@@ -258,7 +264,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                                 this.up('SafeStartExtPanelVehicleReports').updateAlertsDataView();
                             }
                         }]
-                    }, {
+                    },
+                    items: [{
                         xtype: 'container',
                         name: 'vehicle-alerts',
                         flex: 1,
@@ -275,8 +282,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
         this.callParent();
     },
 
-    loadData: function(record) {
-        this.record = record;
+    loadData: function() {
         var date = new Date();
         date.setMonth(date.getMonth() - 1);
         this.down('datefield[name=from]').setValue(date);
@@ -302,7 +308,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
             post.to = this.down('datefield[name=to]').getValue().getTime() / 1000;
         }
         SafeStartExt.Ajax.request({
-            url: 'vehicle/' + self.vehicle.get('id') + '/statistic',
+            // url: 'vehicle/' + self.vehicle.get('id') + '/statistic',
+            url: '/ajax/vehicle-statistic.json',
             data: post,
             success: function(result) {
                 if (result.statistic) {
@@ -320,9 +327,16 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     if (result.statistic.chart && result.statistic.chart.length) {
                         var chart = self.down('chart[name=vehicle-report-chart]');
                         chart.show();
-                        chart.getAxes()[1].setDateFormat(SafeStartExt.dateFormat);
-                        chart.getAxes()[1].setFromDate(self.down('datefield[name=from]').getValue());
-                        chart.getAxes()[1].setToDate(self.down('datefield[name=to]').getValue());
+                        console.log(chart.axes);
+                        var axis = chart.axes.items[1];
+                        axis.setConfig({
+                            dateFormat: SafeStartExt.dateFormat,
+                            fromDate: self.down('datefield[name=from]').getValue(),
+                            toDate: self.down('datefield[name=to]').getValue()
+                        });
+                        // chart.axes.items[0].setDateFormat(SafeStartExt.dateFormat);
+                        // chart.axes.items[0].setFromDate(self.down('datefield[name=from]').getValue());
+                        // chart.axes.items[0].setToDate(self.down('datefield[name=to]').getValue());
                         var store = chart.getStore();
                         store.removeAll();
                         store.add(result.statistic.chart);
@@ -412,6 +426,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
             xtype: 'chart',
             //id: 'SafeStartVehicleReportChart',
             name: 'vehicle-report-chart',
+            flex: 1,
             animate: true,
             store: {
                 fields: ['date', 'value'],

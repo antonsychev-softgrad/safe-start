@@ -20,7 +20,12 @@ Ext.define('SafeStartExt.Ajax', {
         if (! silent) {
             this.getViewport().setLoading(true);
         }
-        options.url = this.baseHref + url;
+        url += '';
+        options.url = '';
+        if (url[0] !== '/') {
+            options.url += this.baseHref;
+        }
+        options.url += url;
         options.method = options.method || 'POST';
         options.params = Ext.encode({
             meta: meta,
