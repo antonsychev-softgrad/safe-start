@@ -308,8 +308,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
             post.to = this.down('datefield[name=to]').getValue().getTime() / 1000;
         }
         SafeStartExt.Ajax.request({
-            // url: 'vehicle/' + self.vehicle.get('id') + '/statistic',
-            url: '/ajax/vehicle-statistic.json',
+            url: 'vehicle/' + self.vehicle.get('id') + '/statistic',
             data: post,
             success: function(result) {
                 if (result.statistic) {
