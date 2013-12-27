@@ -326,7 +326,6 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     if (result.statistic.chart && result.statistic.chart.length) {
                         var chart = self.down('chart[name=vehicle-report-chart]');
                         chart.show();
-                        console.log(chart.axes);
                         var axis = chart.axes.items[1];
                         axis.setConfig({
                             dateFormat: SafeStartExt.dateFormat,

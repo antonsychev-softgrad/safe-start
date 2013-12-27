@@ -30,7 +30,8 @@ Ext.define('SafeStartExt.Application', {
         'Companies',
         'Company',
         'Contact',
-        'Users'
+        'Users',
+        'SystemSettings'
     ],
 
     enableRouter: false,
@@ -44,6 +45,7 @@ Ext.define('SafeStartExt.Application', {
         'contact': 'main#showContactPage',
         'users': 'main#showUsersPage',
         'system-statistic': 'main#showSystemStatisticPage',
+        'system-settings': 'main#showSystemSettingsPage',
         'users/:id': 'main#showUsersPageById'
     },
 

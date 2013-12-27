@@ -1,12 +1,11 @@
-Ext.define('SafeStartExt.view.component.SystemStatistic', {
+Ext.define('SafeStartExt.view.component.SystemSettings', {
     extend: 'Ext.panel.Panel',
 
-    xtype: 'SafeStartExtComponentSystemStatistic',
+    xtype: 'SafeStartExtComponentSystemSettings',
 
     requires: [
-        'SafeStartExt.view.panel.SystemGeneralReport',
-        'SafeStartExt.view.panel.InspectionBreakdownsReport',
-        'SafeStartExt.view.panel.CheckListsChangesReport'
+        'SafeStartExt.view.container.TopNav',
+        'SafeStartExt.view.panel.ManageDefaultChecklist',
     ],
 
     layout: {
@@ -16,18 +15,11 @@ Ext.define('SafeStartExt.view.component.SystemStatistic', {
     width: '100%',
     ui: 'transparent',
 
-    listeners: {
-        scope: this,
-        afterrender: function (page) {
-
-        }
-    },
-
     initComponent: function () {
         Ext.apply(this, {
             items: [{
                 xtype: 'SafeStartExtContainerTopNav',
-                titleText: 'Statistic'
+                titleText: 'System Settings'
             }, {
                 xtype: 'container',
                 flex: 1,
@@ -39,12 +31,10 @@ Ext.define('SafeStartExt.view.component.SystemStatistic', {
                     cls: 'sfa-info-container sfa-system-settings',
                     height: '100%',
                     items: [{
-                        xtype: 'SafeStartExtPanelSystemGeneralReport'
-                    }, {
-                        xtype: 'SafeStartExtPanelInspectionBreakdownsReport'
-                    }, {
-                        xtype: 'SafeStartExtPanelCheckListsChangesReport'
-                    }]
+                        xtype: 'SafeStartExtPanelManageDefaultChecklist'
+                    }],
+                    listeners: {
+                    }
                 }]
             }]
         });

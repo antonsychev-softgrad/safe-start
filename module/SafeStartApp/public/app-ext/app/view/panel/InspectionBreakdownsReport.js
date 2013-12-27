@@ -12,54 +12,59 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
     cls: 'sfa-statistic',
     title: 'Inspection Breakdowns',
     layout: {
-        type: 'vbox',
+        type: 'fit',
         align: 'stretch'
     },
     name: 'breakdown',
-    autoScroll: true,
-    minHeight: 300,
-
-    initComponent: function() {
-        this.callParent();
-        this.setContentPanel();
+    listeners: {
+        afterrender: function () {
+            this.loadData();
+        }
     },
 
-    setContentPanel: function() {
-        this.add([{
-            xtype: 'toolbar',
-            docked: 'top',
-            cls: 'sfa-top-toolbar',
-            items: [{
-                xtype: 'datefield',
-                name: 'from',
-                label: 'From',
-                labelWidth: ''
-                // picker: {
-                //     yearFrom: new Date().getFullYear() - 10,
-                //     yearTo: new Date().getFullYear()
-                // }
-            }, {
-                xtype: 'datefield',
-                name: 'to',
-                label: 'To',
-                labelWidth: '',
-                // picker: {
-                //     yearFrom: new Date().getFullYear() - 10,
-                //     yearTo: new Date().getFullYear()
-                // },
-                value: new Date()
-            }, {
-                xtype: 'button',
-                name: 'reload',
-                ui: 'action',
-                action: 'refresh',
-                iconCls: 'refresh',
-                text: 'reload',
-                handler: function() {
-                    this.up('SafeStartExtPanelInspectionBreakdownsReport').updateDataView();
-                }
-            }]
-        }]);
+    initComponent: function() {
+        var now = new Date();
+        var prevYear = new Date();
+        prevYear.setFullYear(now.getFullYear()-1);
+        Ext.apply(this, {
+            tbar: {
+                xtype: 'toolbar',
+                docked: 'top',
+                cls: 'sfa-top-toolbar',
+                items: [{
+                    xtype: 'datefield',
+                    name: 'from',
+                    fieldLabel: 'From',
+                    labelWidth: '',
+                    value: prevYear
+                    // picker: {
+                    //     yearFrom: new Date().getFullYear() - 10,
+                    //     yearTo: new Date().getFullYear()
+                    // }
+                }, {
+                    xtype: 'datefield',
+                    name: 'to',
+                    fieldLabel: 'To',
+                    labelWidth: '',
+                    // picker: {
+                    //     yearFrom: new Date().getFullYear() - 10,
+                    //     yearTo: new Date().getFullYear()
+                    // },
+                    value: now 
+                }, {
+                    xtype: 'button',
+                    name: 'reload',
+                    ui: 'action',
+                    action: 'refresh',
+                    iconCls: 'refresh',
+                    text: 'reload',
+                    handler: function() {
+                        this.up('SafeStartExtPanelInspectionBreakdownsReport').updateDataView();
+                    }
+                }]
+            }
+        });
+        this.callParent();
     },
 
     loadData: function() {
@@ -91,7 +96,8 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
         };
 
         SafeStartExt.Ajax.request({
-            url: 'admin/getInspectionBreakdownsStatistic',
+            // url: 'admin/getInspectionBreakdownsStatistic',
+            url: '/ajax/inspection-breakdowns.json',
             data: post,
             success: function (result) {
                 if (!self.chartAdded) {
@@ -115,10 +121,9 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
         this.add({
             xtype: 'chart',
             id: 'SafeStartInspectionBreakdownsStatisticChart',
-            minHeight: 300,
-            flex: 1,
             animate: true,
             store: {
+                proxy: 'memory',
                 fields: ['key', 'count', 'additional']
             },
             axes: [{
@@ -146,9 +151,10 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
             }],
             series: [{
                 type: 'bar',
-                columnt: true,
-                yField: ['key'],
-                xField: ['count'],
+                axis: 'bottom',
+                column: true,
+                xField: ['key'],
+                yField: ['count'],
                 label: {
                     field: 'key',
                     display: 'insideEnd'
@@ -159,46 +165,45 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                     stroke: 'dodgerblue',
                     fill: 'palegreen',
                     opacity: 0.6
-                },
-                renderer: function(sprite, config, rendererData, index) {
-
-                    var store = rendererData.store,
-                        storeItems = store.getData().items,
-                        record = storeItems[index],
-                        last = storeItems.length - 1,
-                        surface = sprite.getParent(),
-                        changes = {},
-                        lineSprites, firstColumnConfig, firstData, lastData, growth, string;
-                    if (!record) {
-                        return;
-                    }
-
-                    if (record.get('additional') && record.get('count') > 0) {
-                        changes.fill = '#94ae0a';
-                        /*   lineSprites = surface.myLineSprites;
-                            if (!lineSprites) {
-                                lineSprites = surface.myLineSprites = [];
-                                lineSprites[0] = surface.add({type:'text'});
-                            }
-
-                            lineSprites[0].setAttributes({
-                                text: 'Additional',
-                                x: config.x - 8,
-                                y: config.y - 40,
-                                fill: '#000',
-                                fontSize: 14,
-                                zIndex: 10000,
-                                opacity: 0.6,
-                                scalingY: -1,
-                                textAlign: "center",
-                                rotate: -90
-                            });*/
-                    } else {
-                        changes.fill = "#115fa6";
-                    }
-
-                    return changes;
                 }
+                // renderer: function(sprite, record, attributes, index, store) {
+                //     var storeItems = store.data.items,
+                //         record = storeItems[index],
+                //         last = storeItems.length - 1,
+                //         //surface = sprite.getParent(),
+                //         changes = {},
+                //         lineSprites, firstColumnConfig, firstData, lastData, growth, string;
+
+                //     if (!record) {
+                //         return;
+                //     }
+
+                //     if (record.get('additional') && record.get('count') > 0) {
+                //         changes.fill = '#94ae0a';
+                //            lineSprites = surface.myLineSprites;
+                //             if (!lineSprites) {
+                //                 lineSprites = surface.myLineSprites = [];
+                //                 lineSprites[0] = surface.add({type:'text'});
+                //             }
+
+                //             lineSprites[0].setAttributes({
+                //                 text: 'Additional',
+                //                 x: config.x - 8,
+                //                 y: config.y - 40,
+                //                 fill: '#000',
+                //                 fontSize: 14,
+                //                 zIndex: 10000,
+                //                 opacity: 0.6,
+                //                 scalingY: -1,
+                //                 textAlign: "center",
+                //                 rotate: -90
+                //             });
+                //     } else {
+                //         changes.fill = "#115fa6";
+                //     }
+
+                //     return changes;
+                // }
             }]
         });
     }

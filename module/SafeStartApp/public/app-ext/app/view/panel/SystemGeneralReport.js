@@ -17,8 +17,13 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
         type: 'vbox',
         align: 'stretch'
     },
-    height: '100%',
     name: 'statistic',
+    
+    listeners: {
+        afterrender: function () {
+            this.loadData();
+        }
+    },
 
     initComponent: function () {
         this.callParent();
@@ -103,6 +108,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }]
         }, {
             xtype: 'panel',
+            height: 100,
             items: [{
                 id: 'SafeStartSystemStatisticContent',
                 docked: 'top',

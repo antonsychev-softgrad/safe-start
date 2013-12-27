@@ -15,6 +15,12 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
     name: 'changes',
     autoScroll: true,
     minHeight: 300,
+    
+    listeners: {
+        afterrender: function () {
+            this.loadData();
+        }
+    },
 
     initComponent: function() {
         var self = this;
@@ -24,6 +30,9 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
 
     setContentPanel: function() {
         var self = this;
+        var now = new Date();
+        var prevYear = new Date();
+        prevYear.setFullYear(now.getFullYear()-1);
         this.add(
             [{
                 xtype: 'toolbar',
@@ -32,14 +41,15 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
                 items: [{
                     xtype: 'datefield',
                     name: 'from',
-                    label: 'From',
+                    fieldLabel: 'From',
+                    value: prevYear,
                     labelWidth: ''
                 }, {
                     xtype: 'datefield',
                     name: 'to',
-                    label: 'To',
+                    fieldLabel: 'To',
                     labelWidth: '',
-                    value: new Date()
+                    value: now
                 }, {
                     xtype: 'button',
                     name: 'reload',

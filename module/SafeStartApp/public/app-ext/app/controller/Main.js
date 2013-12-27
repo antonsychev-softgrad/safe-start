@@ -25,6 +25,9 @@ Ext.define('SafeStartExt.controller.Main', {
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemStatistic',
         ref: 'systemStatisticPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemSettings',
+        ref: 'systemSettingsPanel'
     }],
 
     init: function () {
@@ -194,6 +197,18 @@ Ext.define('SafeStartExt.controller.Main', {
         }
 
         this.getMainNavPanel().setActiveButton('SystemStatistic');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showSystemSettingsPage: function () {
+        var page = this.getSystemSettingsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.SystemSettings');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('SystemSettings');
         this.getMainPanel().getLayout().setActiveItem(page);
     },
 
