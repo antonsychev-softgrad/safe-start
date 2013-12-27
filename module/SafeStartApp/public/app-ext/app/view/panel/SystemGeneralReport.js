@@ -17,9 +17,8 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
         type: 'vbox',
         align: 'stretch'
     },
+    height: '100%',
     name: 'statistic',
-    scrollable: true,
-    minHeight: 300,
 
     initComponent: function () {
         this.callParent();
@@ -28,17 +27,26 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
 
     setContentPanel: function () {
         var self = this;
+        var prevYear = new Date();
+        prevYear.setFullYear(prevYear.getFullYear() - 1);
         var companiesStore = Ext.create(SafeStartExt.store.Companies);
+        companiesStore.on('load', function () {
+            this.insert(0, {
+                id: 0,
+                title: 'All Companies'
+            });
+        });
+
 
         this.add([{
             xtype: 'toolbar',
-            docked: 'top',
+            dock: 'top',
             cls: 'sfa-top-toolbar',
             items: [{
                 xtype: 'combobox',
                 queryMode: 'local',
                 name: 'company',
-                label: 'Status',
+                fieldLabel: 'Status',
                 labelWidth: '',
                 cls: 'sfa-status',
                 valueField: 'id',
@@ -49,7 +57,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 xtype: 'combobox',
                 queryMode: 'local',
                 name: 'range',
-                label: 'Status',
+                fieldlabel: 'Status',
                 labelWidth: '',
                 cls: 'sfa-status',
                 valueField: 'rank',
@@ -72,13 +80,14 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 xtype: 'datefield',
                 name: 'from',
                 cls: 'sfa-data',
-                label: 'From',
+                fieldLabel: 'From',
+                value: prevYear,
                 labelWidth: ''
             }, {
                 xtype: 'datefield',
                 name: 'to',
                 cls: 'sfa-data',
-                label: 'To',
+                fieldLabel: 'To',
                 labelWidth: '',
                 value: new Date()
             }, {
@@ -123,7 +132,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 id: 0,
                 title: 'All companies'
             });
-            self.down('selectfield[name=company]').setValue(0);
+            self.down('combobox[name=company]').setValue(0);
         });
     },
 
@@ -178,7 +187,27 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                         self.down('#SafeStartSystemStatisticChart').show();
                         var store = self.down('#SafeStartSystemStatisticChart').getStore();
                         store.removeAll();
-                        store.add(result.statistic.chart);
+                        var charts = {},
+                            resCharts = [];
+                        Ext.each(result.statistic.chart, function (chart) {
+                            var key = chart.date;
+                            if (charts.hasOwnProperty(key)) {
+                                charts[key].value1 += parseInt(chart.value1, 10);
+                                charts[key].value2 += parseInt(chart.value2, 10);
+                                charts[key].value3 += parseInt(chart.value3, 10);
+                            } else {
+                                charts[key] = {};
+                                charts[key].value1 = parseInt(chart.value1, 10);
+                                charts[key].value2 = parseInt(chart.value2, 10);
+                                charts[key].value3 = parseInt(chart.value3, 10);
+                                charts[key].date = chart.date;
+                            }
+                        });
+
+                        Ext.iterate(charts, function (key, value) {
+                            resCharts.push(value);
+                        });
+                        store.add(resCharts);
                         store.sync();
                     }
                 }
@@ -190,7 +219,6 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
         this.add({
             xtype: 'chart',
             id: 'SafeStartSystemStatisticChart',
-            minHeight: 300,
             flex: 1,
             animate: true,
             store: {
@@ -220,7 +248,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }, {
                 type: 'category',
                 position: 'bottom',
-                fields: 'date',
+                fields: ['date'],
                 title: {
                     text: 'Date',
                     fontSize: 15
@@ -233,6 +261,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }],
             series: [{
                 type: 'line',
+                axis: 'left',
                 xField: 'date',
                 yField: 'value1',
                 labelField: 'value1',
@@ -250,6 +279,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 }
             }, {
                 type: 'line',
+                axis: 'left',
                 xField: 'date',
                 yField: 'value2',
                 labelField: 'value2',
@@ -267,6 +297,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 }
             }, {
                 type: 'line',
+                axis: 'left',
                 xField: 'date',
                 yField: 'value3',
                 labelField: 'value3',

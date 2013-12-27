@@ -44,6 +44,7 @@ Ext.define('SafeStartExt.view.component.SystemStatistic', {
         return {
             cls: 'sfa-info-container sfa-system-settings',
             xtype: 'tabpanel',
+            height: '100%',
             items: [{
                 xtype: 'SafeStartExtPanelSystemGeneralReport'
             }, {
