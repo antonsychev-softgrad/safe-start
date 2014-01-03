@@ -44,9 +44,11 @@ Ext.define('SafeStartExt.Application', {
         'company/:id': 'main#showCompanyPageById',
         'contact': 'main#showContactPage',
         'users': 'main#showUsersPage',
+        'alerts': 'main#showAlertsPage',
         'system-statistic': 'main#showSystemStatisticPage',
         'system-settings': 'main#showSystemSettingsPage',
-        'users/:id': 'main#showUsersPageById'
+        'users/:id': 'main#showUsersPageById',
+        'alerts/:id': 'main#showAlertsPageById'
     },
 
     acl: {
@@ -72,6 +74,8 @@ Ext.define('SafeStartExt.Application', {
             'showAlertsPageById',
             'showUsersPage',
             'showUsersPageById',
+            'showAlertsPage',
+            'showAlertsPageById',
             'showSystemSettingsPage',
             'showSystemStatisticPage'
         ]

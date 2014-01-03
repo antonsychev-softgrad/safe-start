@@ -19,13 +19,25 @@ Ext.define('SafeStartExt.store.Alerts', {
 
     constructor: function (config) {
         this.setVehicleId(config.vehicleId || 0);
+        this.setCompanyId(config.companyId || 0);
         this.callParent([config]);
     },
 
     setVehicleId: function (vehicleId) {
-        this.getProxy().url = SafeStartExt.Ajax.baseHref + 'company/getvehiclealerts';
-        this.getProxy().extraParams = {
-            vehicleId: vehicleId
-        };
+        if (vehicleId) {
+            this.getProxy().url = SafeStartExt.Ajax.baseHref + 'company/getvehiclealerts';
+            this.getProxy().extraParams = {
+                vehicleId: vehicleId
+            };
+        }
+    },
+
+    setCompanyId: function (companyId) {
+        if (companyId) {
+            this.getProxy().url = SafeStartExt.Ajax.baseHref + 'company/getvehiclealerts';
+            this.getProxy().extraParams = {
+                companyId: companyId 
+            };
+        }
     }
 });

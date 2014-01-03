@@ -28,6 +28,9 @@ Ext.define('SafeStartExt.controller.Main', {
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemSettings',
         ref: 'systemSettingsPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAlerts',
+        ref: 'alertsPanel'
     }],
 
     init: function () {
@@ -49,10 +52,7 @@ Ext.define('SafeStartExt.controller.Main', {
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
                 switch(token) {
-                    case 'system-statistic':
-                    case 'system-settings':
                     case 'company-settings':
-                    case 'alerts':
                         me.notSupportedAction();
                         break;
                 }
@@ -188,6 +188,38 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainPanel().getLayout().setActiveItem(page);
     },
 
+    showAlertsPage: function () {
+        var page = this.getAlertsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Alerts');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Alerts');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showAlertsPageById: function (params) {
+        if (! params.id) {
+            this.redirectTo(this.getApplication().getDefaultPage());
+            return;
+        }
+
+        this.getMainPanel().fireEvent('setCompanyByIdAction', params.id);
+
+        var page = this.getAlertsPanel();
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Alerts', {
+                companyId: params.id
+            });
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Alerts');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
     showSystemStatisticPage: function () {
         var page = this.getSystemStatisticPanel();
 
@@ -236,6 +268,13 @@ Ext.define('SafeStartExt.controller.Main', {
                 break;
             case 'SystemStatistic':
                 this.redirectTo('system-statistic');
+                break;
+            case 'Alerts':
+                if (this.getApplication().isAllowed('showAlertsPageById')) {
+                    this.redirectTo('alerts/' + SafeStartExt.companyRecord.getId());
+                } else {
+                    this.redirectTo('alerts');
+                }
                 break;
             case 'Users':
                 if (this.getApplication().isAllowed('showUsersPageById')) {
