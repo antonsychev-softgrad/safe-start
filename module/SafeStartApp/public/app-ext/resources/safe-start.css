@@ -1,3 +1,95 @@
+/* fix bugs */
+/* DatePicker при фокусе исчезает иконка. */
+.x-form-trigger-wrap-focus .x-form-date-trigger  {
+    background-position: 100% 50%;
+}
+.x-ie7p.x-ie7 .x-form-trigger-input-cell {
+    width: 130px;
+}
+.x-ie7p.x-ie7 .sfa-datapicker .x-form-trigger-input-cell input.x-form-field {
+    width: 80px !important;
+}
+
+/* выпадающий список - подравняем треугольник */
+.x-form-trigger, .x-form-trigger-wrap-focus .x-form-trigger {
+    background-position: 0 6px;
+}
+
+/* Combobox из-за закругленных углов выпадающий список выглядит кривовато. */
+.x-boundlist {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #a9acaf;
+    overflow: hidden;
+}
+.x-boundlist-selected {
+    background: #e8e8e8;
+    border-color: #a9acaf;
+}
+
+/* Чеклисты привести к общему дизайну (в том числе последнюю страницу Review). */
+
+.sfa-info-container .sfa-checklists-container table.x-field.x-form-type-radio {
+    margin: 0 10px;
+}
+.sfa-info-container .sfa-checklists-container .x-box-target {
+    min-width: 515px;
+}
+
+.sfa-info-container .sfa-checklists-container .x-field.x-table-plain.x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 120px;
+}
+
+
+/* маленькие кнопки */
+.sfa-info-container .sfa-checklists-container a.x-btn.x-btn-default-small, .sfa-info-container a.x-btn.x-btn-default-toolbar-small {
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.x-btn-default-toolbar-small .x-btn-inner {
+    color: #fff;
+}
+.sfa-info-container a.x-btn-default-small-pressed.x-btn-focus.x-focus,
+.sfa-info-container a.x-btn-default-toolbar-small-pressed.x-btn-focus.x-focus {
+    background: #3085b6;
+    opacity: 1;
+}
+.sfa-info-container a.x-btn-default-small.x-over, .sfa-info-container a.x-btn-default-toolbar-small.x-over {
+    opacity: 0.92;
+}
+.sfa-info-container .sfa-checklists-container a.x-btn.x-btn-default-small .x-btn-inner,
+a.x-btn.x-btn-default-toolbar-small .x-btn-inner{
+    line-height: 18px;
+    font-size: 18px;
+    font-weight: normal;
+}
+.sfa-info-container .sfa-checklists-container a.x-btn.x-btn-default-small .x-btn-button,
+a.x-btn.x-btn-default-toolbar-small .x-btn-button{
+    height: 18px;
+}
+
+/*закладка companies у кнопки manage снизу обрезается буква g, фиксим*/
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button .x-btn-inner,
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
+    overflow: visible;
+}
+
+
+
+
+
 .sfa-bottomnav {
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
