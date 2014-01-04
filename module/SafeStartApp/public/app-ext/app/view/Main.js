@@ -9,6 +9,7 @@ Ext.define('SafeStartExt.view.Main', {
         'SafeStartExt.view.component.Users',
         'SafeStartExt.view.component.Alerts',
         'SafeStartExt.view.component.Contact',
+        'SafeStartExt.view.component.CompanySettings',
         'SafeStartExt.view.component.SystemStatistic',
         'SafeStartExt.view.component.SystemSettings'
     ],

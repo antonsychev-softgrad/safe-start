@@ -47,6 +47,7 @@ Ext.define('SafeStartExt.Application', {
         'alerts': 'main#showAlertsPage',
         'system-statistic': 'main#showSystemStatisticPage',
         'system-settings': 'main#showSystemSettingsPage',
+        'company-settings': 'main#showCompanySettingsPage',
         'users/:id': 'main#showUsersPageById',
         'alerts/:id': 'main#showAlertsPageById'
     },

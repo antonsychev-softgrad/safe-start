@@ -29,6 +29,9 @@ Ext.define('SafeStartExt.controller.Main', {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemSettings',
         ref: 'systemSettingsPanel'
     }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompanySettings',
+        ref: 'companySettingsPanel'
+    }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAlerts',
         ref: 'alertsPanel'
     }],
@@ -111,6 +114,7 @@ Ext.define('SafeStartExt.controller.Main', {
         }
         this.getMainNavPanel().setActiveButton('Contact');
         this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
     },
 
     showCompaniesPage: function () {
@@ -200,6 +204,7 @@ Ext.define('SafeStartExt.controller.Main', {
 
         this.getMainNavPanel().setActiveButton('Alerts');
         this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
     },
 
     showAlertsPageById: function (params) {
@@ -244,6 +249,19 @@ Ext.define('SafeStartExt.controller.Main', {
 
         this.getMainNavPanel().setActiveButton('SystemSettings');
         this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showCompanySettingsPage: function () {
+        var page = this.getCompanySettingsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.CompanySettings');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('CompanySettings');
+        this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
     },
 
     redirectTo: function(name) {

@@ -4,6 +4,7 @@ Ext.define('SafeStartExt.model.Company', {
         {name: 'id', type: 'int', defaultValue: 0},
         {name: 'title', type: 'string'},
         {name: 'email', type: 'string'},
+        {name: 'logo', type: 'string'},
         {name: 'firstName', type: 'string'},
         {name: 'description', type: 'string'},
         {name: 'address', type: 'string'},
