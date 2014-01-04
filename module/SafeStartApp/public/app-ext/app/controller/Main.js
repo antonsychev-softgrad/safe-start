@@ -192,7 +192,9 @@ Ext.define('SafeStartExt.controller.Main', {
         var page = this.getAlertsPanel();
 
         if (! page) {
-            page = Ext.create('SafeStartExt.view.component.Alerts');
+            page = Ext.create('SafeStartExt.view.component.Alerts', {
+                companyId: this.getApplication().getCompanyRecord().getId()
+            });
             this.getMainPanel().add(page);
         }
 
