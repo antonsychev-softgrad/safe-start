@@ -1,6 +1,7 @@
 /* fix bugs */
 /* DatePicker при фокусе исчезает иконка. */
-.x-form-trigger-wrap-focus .x-form-date-trigger  {
+/* add class .sfa-datepicker на все поля-календари */
+.sfa-datepicker .x-form-trigger-wrap-focus .x-form-date-trigger  {
     background-position: 100% 50%;
 }
 .x-ie7p.x-ie7 .x-form-trigger-input-cell {
@@ -85,6 +86,38 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
     overflow: visible;
 }
+/*закладка vehicles у кнопки Reporting снизу обрезается буква g, фиксим*/
+.sfa-vehicles-tabpanel .x-tab-inner {
+    overflow: visible;
+}
+
+
+/* Spinner (ввод числа) фиксим иконки */
+.x-form-trigger.x-form-spinner-up, .x-form-trigger.x-form-spinner-down {
+    position: relative;
+    left: -20px;
+    top: -1px;
+    height: 15px;
+    background: url(img/spinner.png) no-repeat;
+}
+.x-form-trigger.x-form-spinner-up {
+    background-position: 0 -1px;
+    border-radius: 0 6px 0 0;
+}
+.x-form-trigger.x-form-spinner-down {
+    background-position: 0 -17px;
+    border-radius: 0 0 6px 0;
+    top: 0px;
+}
+.x-form-trigger-input-cell input.x-form-field.x-form-text {
+    border: 1px solid #d1d1d1;
+    border-top-color: #f3f4f4;
+    border-bottom-color: #a4a4a4;
+    box-shadow: 0 1px 0 #d1d1d1;
+    padding-right: 25px;
+}
+
+
 
 
 
@@ -136,7 +169,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
   color: #b8d3e4;
   padding-top: 1px;
   /*padding-bottom: 5px;*/
-  margin-top: 5px;
+  margin: 3px 0 2px;
   font-weight: normal;
 }
 
