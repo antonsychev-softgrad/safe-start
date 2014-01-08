@@ -541,6 +541,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                         textAlign: 'center',
                         fontSize: '18px'
                     },
+                    cls:'sfa-group-title',
                     html: 'PRE START INSPECTION - ' + form.get('groupName').toUpperCase()
                 }, {
                     xtype: 'container',
@@ -806,6 +807,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                         textAlign: 'center',
                         fontSize: '18px'
                     },
+                    cls:'sfa-group-title',
                     html: 'PRE START INSPECTION - ADDITIONAL' 
                 }, {
                     xtype: 'container',
@@ -974,9 +976,9 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                     xtype: 'container',
                     flex: 1,
                     style: {
-                        textAlign: 'center',
-                        fontSize: '18px'
+                        textAlign: 'center'
                     },
+                    cls:'sfa-group-title',
                     html: 'PRE START INSPECTION - REVIEW' 
                 }, {
                     xtype: 'container',

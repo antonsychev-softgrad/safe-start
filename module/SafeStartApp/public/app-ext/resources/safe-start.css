@@ -116,10 +116,25 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     box-shadow: 0 1px 0 #d1d1d1;
     padding-right: 25px;
 }
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-up {
+    height: 16px;
+    background-position: 0 0;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-down {
+    height: 16px;
+}
 
-
-
-
+/* увеличим шрифт для тела страниц */
+.x-panel-body-default {
+    font-size: 16px;
+}
+.sfa-checklists-container .x-box-target .x-container.x-box-item span > div {
+    font-size: 18px;
+    color: #558fac;
+}
+.sfa-checklists-container .x-box-target > table.x-container.x-form-fieldcontainer {
+    margin-bottom: 10px;
+}
 
 
 
@@ -903,11 +918,16 @@ font-size: 24px;
     .sfa-previous-inspections-info .x-panel-body .x-component{
         padding: 10px 15px;
     }
-    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top,
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
         padding-top: 15px;
         font-size: 28px;
         color: #558fac;
     }
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
+        padding: 5px 0 10px;
+    }
+
     .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-sub {
         font-size: 20px;
         color: #558fac;
@@ -1380,10 +1400,14 @@ table.x-form-trigger-wrap td {
 
 .sfa-review-details-item {
     border-bottom: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
 }
 
-.sfa-review-details-item:first {
-    border-top: 1px solid #DEDEDE;
+.sfa-review-details-item:first-child {
+    border-top: none;
+}
+.sfa-review-details-item:last-child {
+    box-shadow: 0 1px 0 #fff;
 }
 
 .sfa-vehicle-inspection-checklist {
