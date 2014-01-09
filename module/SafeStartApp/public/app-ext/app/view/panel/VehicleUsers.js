@@ -58,7 +58,8 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
                 queryMode: 'local',
                 userId: user.get('id'),
                 width: 400,
-                labelWidth: 130,
+                labelWidth: 140,
+                cls:'sfa-combobox',
                 value: user.get('assigned'),
                 store: {
                     fields: ['rank', 'title'],

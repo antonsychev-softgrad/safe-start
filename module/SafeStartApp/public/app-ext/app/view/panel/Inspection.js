@@ -951,7 +951,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
-            cls: 'form-scrollable',
+            cls: 'form-scrollable sfa-pre-start-inspection-review',
             width: '100%',
             items: items,
             tbar: [{
@@ -1030,6 +1030,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             width: '100%',
             name: 'image-container',
             maxWidth: 400,
+            cls:'sfa-upload-image',
             items: items.concat([{
                 xtype: 'filefield',
                 buttonOnly: true,
