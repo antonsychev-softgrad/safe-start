@@ -14,9 +14,14 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
         return SafeStartExt.store.Alerts.create({vehicleId: 0});
     },
 
+    getTBarItems: function () {
+        return [];
+    },
+
     initComponent: function () {
         var store = this.createVehicleStore();
         Ext.apply(this, {
+            tbar: this.getTBarItems(),
             items: [{
                 xtype: 'panel',
                 title: 'Alerts',
@@ -28,7 +33,9 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                 overflowY: 'auto',
                 items: [{
                     xtype: 'dataview',
+                    name: 'alerts',
                     itemSelector: 'div.sfa-alert-item',
+                    emptyText: 'No new Alerts',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
                         '<div class="sfa-alert-item">',
@@ -192,7 +199,11 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                         name: 'delete',
                         text: 'Delete',
                         ui: 'red',
-                        scale: 'medium'
+                        scale: 'medium',
+                        handler: function () {
+                            this.onDelete();
+                        },
+                        scope: this
                     }]
                 },
                 flex: 2
@@ -359,6 +370,39 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                     alert.set('comments', comments);
                     me.onSelect(null, alert);
                 }
+            }
+        });
+    },
+
+    onDelete: function () {
+        var alert = this.alert, 
+            me = this;
+        if (! alert) {
+            return;
+        }
+
+
+        Ext.Msg.confirm({
+            title: 'Confirmation',
+            msg: 'Are you sure want to delete this alert?',
+            buttons: Ext.Msg.YESNO,
+            fn: function(btn) {
+                if (btn !== 'yes') {
+                    return;
+                }
+                SafeStartExt.Ajax.request({
+                    url: 'vehicle/alert/' + alert.getId() + '/delete',
+                    success: function () {
+                        var store = me.down('dataview[name=alerts]').getStore();
+                        me.onDeselect();
+                        store.remove(alert);
+                    },
+                    failure: function () {
+                        var store = me.down('dataview[name=alerts]').getStore();
+                        me.onDeselect();
+                        store.load();
+                    }
+                });
             }
         });
     }

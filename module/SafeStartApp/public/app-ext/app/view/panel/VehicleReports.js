@@ -51,6 +51,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             label: 'From',
                             labelWidth: '',
                             dateFormat: SafeStartExt.dateFormat,
+                            cls: 'sfa-datepicker',
                             value: new Date()
                         }, {
                             xtype: 'datefield',
@@ -58,7 +59,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             label: 'To',
                             labelWidth: '',
                             dateFormat: SafeStartExt.dateFormat,
-                            cls: 'sfa-label-to',
+                            cls: 'sfa-datepicker',
                             value: new Date()
                         }, {
                             xtype: 'button',
@@ -159,14 +160,14 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         }, {
                             xtype: 'datefield',
                             name: 'inspections-from',
-                            cls: 'sfa-data',
+                            cls: 'sfa-datepicker',
                             value: new Date(new Date().setMonth(new Date().getMonth() - 6)),
                             label: 'From',
                             labelWidth: ''
                         }, {
                             xtype: 'datefield',
                             name: 'inspections-to',
-                            cls: 'sfa-data',
+                            cls: 'sfa-datepicker',
                             label: 'To',
                             labelWidth: '',
                             value: new Date()
@@ -240,6 +241,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         cls: 'sfa-top-toolbar',
                         items: [{
                             xtype: 'datefield',
+                            cls: 'sfa-datepicker',
                             name: 'alerts-from',
                             label: 'From',
                             labelWidth: '',
@@ -249,9 +251,9 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             xtype: 'datefield',
                             name: 'alerts-to',
                             label: 'To',
+                            cls: 'sfa-datepicker',
                             labelWidth: '',
                             dateFormat: SafeStartExt.dateFormat,
-                            cls: 'sfa-label-to',
                             value: new Date()
                         }, {
                             xtype: 'button',

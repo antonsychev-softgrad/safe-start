@@ -69,6 +69,7 @@ Ext.define('SafeStartExt.controller.Auth', {
         SafeStartExt.Ajax.request({
             url: 'user/logout',
             success: function() {
+                delete SafeStartExt.companyRecord;
                 viewport.fireEvent('reloadMainMenu');
                 viewport.down('SafeStartExtMain').on('mainMenuLoaded', function() {
                     Ext.History.setHash('auth');

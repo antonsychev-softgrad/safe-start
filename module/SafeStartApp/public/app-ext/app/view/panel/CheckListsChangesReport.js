@@ -43,11 +43,13 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
                     name: 'from',
                     fieldLabel: 'From',
                     value: prevYear,
-                    labelWidth: ''
+                    labelWidth: '',
+                    cls: 'sfa-datepicker'
                 }, {
                     xtype: 'datefield',
                     name: 'to',
                     fieldLabel: 'To',
+                    cls: 'sfa-datepicker',
                     labelWidth: '',
                     value: now
                 }, {

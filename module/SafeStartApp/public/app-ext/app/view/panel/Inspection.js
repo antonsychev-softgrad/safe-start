@@ -81,7 +81,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         this.callParent();
     },
 
-    createInspection: function (checklists, inspectionId) {
+    createInspection: function (checklists, inspectionId, prevAlerts) {
         var listStore = this.down('dataview').getStore();
         
         this.checklists = checklists;
@@ -137,18 +137,23 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             groupName: 'Review'
         });
 
+        this.showPreviousAlerts(prevAlerts);
+
         this.onNextClick();
     },
 
     editInspection: function (data, inspectionId) {
         var checklists = SafeStartExt.store.InspectionChecklists.create({data: data.checklist});
-        this.createInspection(checklists, inspectionId);
-        this.showPreviousAlerts(data.alerts);
+        this.createInspection(checklists, inspectionId, data.alerts);
     },
 
     showPreviousAlerts: function (alerts) {
+        if (! (Ext.isArray(alerts) && alerts.length)) {
+            return;
+        }
         var messageBox = Ext.create('Ext.window.Window', {
-            title: 'Alerts in inspection',
+            title: 'Outstanding alerts',
+            padding: 10,
             width: 300,
             items: [{
                 xtype: 'dataview',
@@ -160,11 +165,25 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 itemSelector: 'div.sfa-previous-alert-item',
                 tpl: [
                     '<tpl for=".">',
-                    '<div class="sfa-previous-alert-item"> {alert_description} </div>',
+                    '<div class="sfa-previous-alert-item" style="color: #F00; font-size: 16px;"> {alert_description} </div>',
                     '</tpl>'
                 ].join(''),
                 data: alerts
-            }]
+            }],
+            bbar: {
+                xtype: 'toolbar', 
+                buttonAlign: 'center',
+                layout: {
+                    type: 'hbox',
+                    pack: 'center'
+                },
+                items: [{
+                    text: 'OK',
+                    handler: function () {
+                        this.up('window').close();
+                    }
+                }]
+            }
         });
         this.add(messageBox);
         messageBox.show();
@@ -309,7 +328,9 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
     onConfirm: function (form) {
         var inspectionId = this.inspectionId || 0;
+        this.up('SafeStartExtPanelVehicleTabs').confirm.close();
         this.fireEvent('completeInspectionAction', this.getValues(), inspectionId);
+        // this.setTitle(this.pageConfig.get('text'));
     },
 
     getValues: function () {
@@ -515,6 +536,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            maxWidth: 600,
             overflowY: 'auto',
             checklist: form.checklist,
             layout: {
@@ -724,6 +746,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             field: field,
             fieldId: field.get('fieldId'),
             labelWidth: 300,
+            cls: 'sfa-datepicker',
             fieldLabel: field.get('fieldName')
         };
     },
@@ -776,6 +799,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         });
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            maxWidth: 600,
             defaultType: 'checkboxfield',
             layout: {
                 type: 'vbox',
@@ -951,6 +975,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
+            maxWidth: 600,            
             cls: 'form-scrollable sfa-pre-start-inspection-review',
             width: '100%',
             items: items,

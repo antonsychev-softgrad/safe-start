@@ -67,6 +67,7 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
                 format: SafeStartExt.dateFormat,
                 name: 'defaultValue',
                 fieldLabel: 'Default Value',
+                cls: 'sfa-datepicker',
                 getValue: function () {
                     var dt = Ext.Date.parse(this.getRawValue(), this.format);
                     if (dt === undefined) {
