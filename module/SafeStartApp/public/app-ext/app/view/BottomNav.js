@@ -1,7 +1,8 @@
 Ext.define('SafeStartExt.view.BottomNav', {
     extend: 'Ext.container.Container',
     requires: [
-        'Ext.button.Button'
+        'Ext.button.Button',
+        'SafeStartExt.view.BadgeButton'
     ],
     
     alias: 'widget.SafeStartExtBottomNav',
@@ -62,7 +63,7 @@ Ext.define('SafeStartExt.view.BottomNav', {
         var me = this;
         Ext.apply(this, {
             defaults: {
-                xtype: 'button',
+                xtype: 'badgebutton',
                 ui: 'tab',
                 scale: 'large',
                 margin: '5 2 3 2',
@@ -108,6 +109,14 @@ Ext.define('SafeStartExt.view.BottomNav', {
             button.toggle(false);
         });
         this.down('button[componentClass=' + name + ']').toggle(true);
+    },
+
+    setBadge: function (name, title) {
+        var button = this.down('button[componentClass=' + name + ']');
+        if (! button) {
+            return;
+        }
+        button.setBadgeText(title);
     }
 
 });

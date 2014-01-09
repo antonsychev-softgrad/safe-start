@@ -84,14 +84,14 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }, {
                 xtype: 'datefield',
                 name: 'from',
-                cls: 'sfa-data',
+                cls: 'sfa-datepicker',
                 fieldLabel: 'From',
                 value: prevYear,
                 labelWidth: ''
             }, {
                 xtype: 'datefield',
                 name: 'to',
-                cls: 'sfa-data',
+                cls: 'sfa-datepicker',
                 fieldLabel: 'To',
                 labelWidth: '',
                 value: new Date()

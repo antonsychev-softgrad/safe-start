@@ -15,6 +15,7 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
 
     initComponent: function () {
         Ext.apply(this, {
+            buttonAlign: 'left',
             buttons: [{
                 text: 'Save',
                 ui: 'blue',

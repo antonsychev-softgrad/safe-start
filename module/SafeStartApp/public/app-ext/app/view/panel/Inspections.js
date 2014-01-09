@@ -3,7 +3,8 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
     requires: [
         'Ext.toolbar.Paging',
         'SafeStartExt.store.Inspections',
-        'SafeStartExt.view.panel.InspectionInfo'
+        'SafeStartExt.view.panel.InspectionInfo',
+        'Ext.ux.GMapPanel'
     ],
     xtype: 'SafeStartExtPanelInspections',
     cls:'sfa-previous-inspection',
@@ -73,8 +74,25 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                     ),
                     store: store,
                     listeners: {
-                        select: function () {
+                        select: function (dataview, record) {
+                            var latlon = record.get('gps').split(';'),
+                                lat = NaN, 
+                                lon = NaN;
+
                             this.down('SafeStartExtPanelInspectionInfo').down('toolbar').show();
+
+                            if (latlon.length) {
+                                lat = parseFloat(latlon[0], 10);
+                                lon = parseFloat(latlon[1], 10);
+                            }
+                            var button = this.down('SafeStartExtPanelInspectionInfo').down('button[action=open-map]');
+                            if (isNaN(lat) || isNaN(lon)) {
+                                button.hide();
+                            } else {
+                                button.lat = lat;
+                                button.lon = lon;
+                                button.show();
+                            }
                         },
                         deselect: function () {
                             this.down('SafeStartExtPanelInspectionInfo').down('toolbar').hide();
@@ -118,6 +136,16 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                             }
                         },
                         scope: this
+                    }, {
+                        xtype: 'tbfill'   
+                    }, {
+                        text: 'Open Map',
+                        action: 'open-map',
+                        hidden: true,
+                        handler: function (btn) {
+                            this.openMap(btn.lat, btn.lon);
+                        },
+                        scope: this
                     }]
                 },
                 vehicle: this.vehicle,
@@ -129,5 +157,58 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
 
     getListStore: function () {
         return this.down('dataview').getStore();
+    },
+
+    openMap: function (lat, lon) {    
+        var panel;
+        if (typeof google === 'undefined') {
+            Ext.Msg.alert(
+                "Error", 
+                "The maps is currently unreachable"
+            );
+            return;
+        }
+        panel = Ext.create('Ext.window.Window', {
+            cls: 'sfa-vehicle-inspection-details-map', 
+            width: 800,
+            height: 600,
+            layout: 'fit'
+        });
+        var position = new google.maps.LatLng(lat, lon);
+        var map = panel.down('map');
+        console.log(google.G_NORMAL_MAP);
+        if (map) {
+            map.marker.setPosition(position);
+            map.getMap().setCenter(position);
+        } else {
+            panel.setLoading(true);
+            panel.add({
+                xtype: 'gmappanel',
+                // gmaptype: google.GMapType.G_NORMAL_MAP,
+                // GMapType: 
+                mapOptions: {
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                },
+                // gmaptype: google.maps.MapTypeId.ROADMAP,
+                center: position,
+                markers: [{
+                    lat: lat,
+                    lng: lon,
+                    marker: {title: "TEST"}
+                }]
+                // listeners: {
+                    // maprender: function (mapCmp) {
+                    //     panel.setLoading(false);
+                    //     mapCmp.marker = new google.maps.Marker({
+                    //         position: position,
+                    //         title: 'Vehicle Inspection',
+                    //         map: mapCmp.getMap()
+                    //     });
+                    // }
+                // }
+            });
+        }
+        this.add(panel);
+        panel.show();
     }
 });

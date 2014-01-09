@@ -133,7 +133,8 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     xtype: 'datefield',
                     disabled: true,
                     name: 'nextServiceDay'
-                }]
+                }],
+                cls: 'sfa-datepicker'
             }],
             bbar: [{
                 xtype: 'container',

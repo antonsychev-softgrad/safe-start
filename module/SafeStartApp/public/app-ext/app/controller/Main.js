@@ -62,7 +62,9 @@ Ext.define('SafeStartExt.controller.Main', {
                 me.showDefaultPage();
             }
         });
+        this.startUpdateAlertsBadge();
     },
+
 
     updateMainMenu: function (menu) {
         var mainNavPanel = this.getMainNavPanel();
@@ -307,5 +309,41 @@ Ext.define('SafeStartExt.controller.Main', {
                 this.redirectTo(name.toLowerCase());
                 break;
         }
+    },
+
+    startUpdateAlertsBadge: function () {
+        var me = this;
+        this.stopUpdateAlertsBadge();
+        this.updateAlertsIntervalId = setInterval(function () {
+            me.updateAlertsBadge();
+        }, 60000);
+    },
+
+    stopUpdateAlertsBadge: function () {
+        if (this.hasOwnProperty('updateAlertsIntervalId')) {
+            clearInterval(this.updateAlertsIntervalId); 
+            delete this.updateAlertsIntervalId;
+        }
+    },
+
+    updateAlertsBadge: function() {
+        var companyRecord = SafeStartExt.companyRecord,
+            mainNavPanel = this.getMainNavPanel();
+
+        if (!companyRecord || !companyRecord.get || !companyRecord.get('id')) {
+            return;
+        }
+        SafeStartExt.Ajax.request({
+            url: 'company/' + companyRecord.get('id') + '/get-new-incoming?now=' + new Date().getTime(),
+            success: function (result) {
+                var badgeText = '';
+                if (result.alerts) {
+                    badgeText = result.alerts;
+                }
+
+                mainNavPanel.setBadge('Alerts', badgeText);
+            },
+            silent: true
+        });
     }
 });
