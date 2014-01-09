@@ -199,6 +199,28 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-upload-image a span.x-btn-inner {
     padding-bottom: 2px;
 }
+.sfa-info-container .sfa-checklists-container .x-panel.form-scrollable.sfa-pre-start-inspection-review .x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 50px;
+}
+
+
+/* Vehicle – Alerts */
+
+.sfa-previous-inspections-left-coll.x-panel-light-left {
+    background: #f7f7f7;
+}
+.sfa-previous-inspections-left-coll.x-panel-light-left .sfa-alert-item {
+    padding: 0 8px 7px 10px;
+    font-size: 18px;
+}
+.sfa-previous-inspections-left-coll.x-panel-light-left .sfa-alert-title {
+    font-size: 18px;
+}
+
+
+
+
+
 
 
 
