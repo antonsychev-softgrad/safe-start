@@ -116,9 +116,89 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     box-shadow: 0 1px 0 #d1d1d1;
     padding-right: 25px;
 }
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-up {
+    height: 16px;
+    background-position: 0 0;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-down {
+    height: 16px;
+}
+
+/* увеличим шрифт для тела страниц */
+.x-panel-body-default {
+    font-size: 16px;
+}
+.sfa-checklists-container .x-box-target .x-container.x-box-item span > div {
+    font-size: 18px;
+    color: #558fac;
+}
+.sfa-checklists-container .x-box-target > table.x-container.x-form-fieldcontainer {
+    margin-bottom: 10px;
+}
 
 
+/* comboboxes */
 
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field, .sfa-combobox .x-form-arrow-trigger {
+    border: 1px solid #e00606;
+    height: 32px;
+    -moz-border-radius: 6px 0 0 6px;
+    -webkit-border-radius: 6px 0 0 6px;
+    -khtml-border-radius: 6px 0 0 6px;
+    -o-border-radius: 6px 0 0 6px;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    border-bottom-color: #fbfbfb;
+    box-shadow: 0 1px 0 #f3f4f4;
+    background: #fff;
+    margin-bottom: 4px;
+}
+.sfa-combobox .x-form-arrow-trigger {
+    -moz-border-radius: 0 6px 6px 0;
+    -webkit-border-radius: 0 6px 6px 0;
+    -khtml-border-radius: 0 6px 6px 0;
+    -o-border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+    position: relative;
+}
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field {
+    border-right: none;
+}
+.sfa-combobox .x-form-arrow-trigger:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 13px;
+    border: 5px solid #0088cc;
+    border-bottom: none;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+
+/* Perform an inspection -> Review */
+
+.sfa-pre-start-inspection-review .sfa-alerts-container {
+    height: 30px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.sfa-pre-start-inspection-review .x-box-inner {
+    margin-bottom: 20px;
+}
+.sfa-pre-start-inspection-review .sfa-alerts-container .sfa-alerts-container-title-desc {
+    right: 20px;
+}
+.sfa-upload-image {
+    margin: 8px 0 8px 175px;
+}
+.sfa-upload-image a span.x-btn-inner {
+    padding-bottom: 2px;
+}
 
 
 
@@ -903,11 +983,16 @@ font-size: 24px;
     .sfa-previous-inspections-info .x-panel-body .x-component{
         padding: 10px 15px;
     }
-    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top,
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
         padding-top: 15px;
         font-size: 28px;
         color: #558fac;
     }
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
+        padding: 5px 0 10px;
+    }
+
     .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-sub {
         font-size: 20px;
         color: #558fac;
@@ -1380,14 +1465,19 @@ table.x-form-trigger-wrap td {
 
 .sfa-review-details-item {
     border-bottom: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
 }
 
-.sfa-review-details-item:first {
-    border-top: 1px solid #DEDEDE;
+.sfa-review-details-item:first-child {
+    border-top: none;
+}
+.sfa-review-details-item:last-child {
+    box-shadow: 0 1px 0 #fff;
 }
 
 .sfa-vehicle-inspection-checklist {
     border-right: 1px solid #DEDEDE;
+    background: #f7f7f7;
 }
 
 .x-form-file-btn input {
