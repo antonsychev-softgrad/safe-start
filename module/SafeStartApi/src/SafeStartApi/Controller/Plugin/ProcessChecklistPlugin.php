@@ -7,6 +7,8 @@ class ProcessChecklistPlugin extends AbstractPlugin
 {
     public function pushNewChecklistNotification(\SafeStartApi\Entity\CheckList $checkList)
     {
+        $this->moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+
         $vehicle = $checkList->getVehicle();
         $alerts = $checkList->getAlerts();
 
@@ -33,7 +35,6 @@ class ProcessChecklistPlugin extends AbstractPlugin
             $link = $checkList->getFaultPdfLink();
             $path = $this->getController()->inspectionFaultPdf()->getFilePathByName($link);
             if (!$link || !file_exists($path)) $path = $this->getController()->inspectionFaultPdf()->create($checkList);
-
             if (file_exists($path)) {
                 try {
                     $this->getController()->MailPlugin()->send(
