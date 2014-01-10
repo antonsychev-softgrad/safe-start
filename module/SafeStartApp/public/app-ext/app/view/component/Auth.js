@@ -12,6 +12,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
     },
 
     initComponent: function () {
+        var me = this;
         Ext.apply(this, {
             items: [{
                 layout: 'absolute',
@@ -64,12 +65,61 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     fieldLabel: 'Password'
                 }, {
                     xtype: 'container',
+                    cls: 'sfa-text-forgot-password',
+                    autoEl: { 
+                        tag: 'div',
+                        'class': 'sfa-forgot-password',
+                        html: 'Forgot password?' 
+                    },
+                    listeners: {
+                        render: function(c){
+                            c.getEl().on({
+                                click: function() {
+                                    me.showForgotPasswordDialog();
+                                }
+                            });
+                        }
+                    }                
+                }, {
+                    xtype: 'container',
                     cls: 'sfa-text-info',
                     html: 'If you do not have password please contact us'
                 }]
             }]
         });
         this.callParent();
+    },
+    showForgotPasswordDialog: function () {
+        var dialog = Ext.window.Window.create({
+            items: [{
+                xtype: 'textfield',
+                fieldLabel: 'Email',
+                name: 'email',
+                vtype: 'email'
+            }, {
+                xtype: 'button',
+                text: 'Send',
+                handler: function () {
+                    var win = this.up('window');
+                    var email = win.down('textfield[name=email]').getValue();
+                    if (email) {
+                        SafeStartExt.Ajax.request({
+                            url: 'user/forgotpassword',
+                            data: {
+                                email: email
+                            },
+                            success: function (result) {
+                                if (! result.done) {
+                                    win.close();
+                                    return;
+                                }
+                            }
+                        });
+                    }
+                }
+            }]
+        });
+        dialog.show();
     }
 });
 
