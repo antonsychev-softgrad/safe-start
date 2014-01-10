@@ -92,13 +92,15 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                 }, {
                     xtype: 'container',
                     width: 500,
+                    cls:'sfa-alert-status-update',
                     layout: {
                         type: 'hbox'
                     },
                     items: [{
                         xtype: 'combobox',
+                        cls:'sfa-combobox',
                         fieldLabel: 'Status',
-                        width: 430,
+                        width: 412,
                         labelWidth: 130,
                         name: 'status',
                         store: {
@@ -120,7 +122,7 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                         queryMode: 'local'
                     }, {
                         xtype: 'button',
-                        width: 70,
+                        width: 80,
                         handler: function () {
                             var status = this.down('combobox[name=status]').getValue();
                             this.updateStatus(this.alert, status);
@@ -174,6 +176,7 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                     ].join('')
                 }, {
                     xtype: 'textarea',
+                    cls:'sfa-alert-comment',
                     width: 500,
                     labelWidth: 130,
                     fieldLabel: 'Comment',

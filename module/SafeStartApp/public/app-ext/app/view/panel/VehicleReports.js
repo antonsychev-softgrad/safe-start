@@ -107,7 +107,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             docked: 'top',
                             tpl: [
                                 '<div class="top">',
-                                '<table style="max-width: 700px;"><tr>',
+                                '<table style="max-width: 700px;" class="sfa-total-of-numbers"><tr>',
                                 '<td>',
                                 /*'<div class="name">Period from {period.from} to {period.to}</div>',*/
                                 '<div class="name">Total <b>kms travelled</b>: <span style="color:#0F5B8D;">{statistic.kms}</span> </div>',

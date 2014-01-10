@@ -59,6 +59,7 @@ Ext.define('SafeStartExt.view.panel.VehicleAlerts', {
             }
         }, {
             xtype: 'combobox',
+            cls:'sfa-combobox',
             queryMode: 'local',
             name: 'status-filter',
             select: 0,
