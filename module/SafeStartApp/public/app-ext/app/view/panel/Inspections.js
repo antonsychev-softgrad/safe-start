@@ -129,6 +129,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         scope: this
                     }, {
                         text: 'Delete',
+                        cls:'sfa-red-button',
                         handler: function (btn) {
                             var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
                             if (panel.inspection) {
