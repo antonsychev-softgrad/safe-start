@@ -45,11 +45,18 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                             '</div>',
                             '<div class="sfa-alert-info">',
                                 '<div class="sfa-alert-title">{alertDescription}</div>',
-                                '<div class="sfa-alert-vehicle">{[values[\'SafeStartExt.model.Vehicle\'].title]}<b>{[values[\'SafeStartExt.model.Vehicle\'].plantId]}</b></div>',
-                                '<div class="sfa-alert-user">added by {[values[\'SafeStartExt.model.User\'].firstName]} {[values[\'SafeStartExt.model.User\'].lastName]} at {creationDate}</div>',
+                                '<div class="sfa-alert-vehicle">{[values[\'SafeStartExt.model.Vehicle\'].title]} ',
+                                '<b>{[values[\'SafeStartExt.model.Vehicle\'].plantId]}</b></div>',
+                                '<div style="fo_nt-size: 12px" class="sfa-alert-user">added by {[values[\'SafeStartExt.model.User\'].firstName]}',
+                                ' {[values[\'SafeStartExt.model.User\'].lastName]}<br> at {[this.formatDate(values.creationDate)]}</div>',
                             '</div>',
                         '</div>',
-                        '</tpl>'
+                        '</tpl>',
+                        {
+                            formatDate: function (date)  {
+                                return Ext.Date.format(new Date(date * 1000), SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat);
+                            }
+                        }
                     ),
                     store: store,
                     listeners: {
@@ -264,6 +271,7 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
         data.user = record.getUser().getData();
         data.vehicle = record.getVehicle().getData();
         this.alertData = data;
+        //data.creationDate = Ext.Date.format(new Date(data.creationDate * 1000), SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat);
         panel.show();
 
         this.down('combobox[name=status]').select(data.status);
@@ -373,7 +381,7 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                 });
 
                 if (result.done) {
-                    alert.set('status', status);
+                    //alert.set('status', status);
                     var comments = alert.get('comments');
                     if (! Ext.isArray(comments)) {
                         comments = [];

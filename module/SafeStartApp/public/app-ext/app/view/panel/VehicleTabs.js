@@ -88,6 +88,9 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tab.xtype = 'SafeStartExtPanelInspections';
                     if (page.get('badge')) {
                         tab.title = title + '<br> <small>(' + page.get('badge') + ')</small>';
+                        tab.tabConfig = {
+                            cls: 'sfa-tab-double-line'
+                        };
                     } 
                     break;
                 case 'fill-checklist':
