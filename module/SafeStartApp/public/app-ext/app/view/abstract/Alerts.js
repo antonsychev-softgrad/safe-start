@@ -10,6 +10,8 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
         align: 'stretch'
     },
 
+    xtype: 'SafeStartExtAbstractAlerts',
+
     createVehicleStore: function () {
         return SafeStartExt.store.Alerts.create({vehicleId: 0});
     },
@@ -313,6 +315,14 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
     updateStatus: function (alert, status) {
         var alertData = this.alertData;
         var me = this;
+        if (alert.get('status') !== status) {
+            if (status == 'new') {
+                console.log('increase');
+                this.fireEvent('increaseAlertsCounter');
+            } else {
+                this.fireEvent('decreaseAlertsCounter');
+            }
+        }
         SafeStartExt.Ajax.request({
             url: 'vehicle/' + alert.getVehicle().get('id') + '/alert/' + alert.get('id') + '/update',
             data: {
@@ -342,6 +352,7 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                         alert.set('status', status);
                     }
                 }
+                me.fireEvent('updateAlertsCounter');
             }
         });
     },

@@ -47,6 +47,10 @@ Ext.define('SafeStartExt.controller.Main', {
                 notSupportedAction: this.notSupportedAction,
                 changeCompanyAction: this.changeCompanyAction,
                 changeTab: this.changeTab
+            },
+            'SafeStartExtAbstractAlerts': {
+                increaseAlertsCounter: this.increaseAlertsCounter,
+                decreaseAlertsCounter: this.decreaseAlertsCounter
             }
         });
         
@@ -80,6 +84,7 @@ Ext.define('SafeStartExt.controller.Main', {
         if (company) {
             SafeStartExt.companyRecord = company;
             this.getMainNavPanel().enableAll();
+            this.updateAlertsBadge();
         }
     },
 
@@ -327,7 +332,8 @@ Ext.define('SafeStartExt.controller.Main', {
     },
 
     updateAlertsBadge: function() {
-        var companyRecord = SafeStartExt.companyRecord,
+        var me = this,
+            companyRecord = SafeStartExt.companyRecord,
             mainNavPanel = this.getMainNavPanel();
 
         if (!companyRecord || !companyRecord.get || !companyRecord.get('id')) {
@@ -341,9 +347,28 @@ Ext.define('SafeStartExt.controller.Main', {
                     badgeText = result.alerts;
                 }
 
+                me.alertsCounter = parseInt(result.alerts, 10);
                 mainNavPanel.setBadge('Alerts', badgeText);
             },
             silent: true
         });
+    },
+
+    increaseAlertsCounter: function () {
+        console.log('inc');
+        var mainNavPanel = this.getMainNavPanel();
+        this.alertsCounter++;
+        mainNavPanel.setBadge('Alerts', this.alertsCounter);
+    },
+
+    decreaseAlertsCounter: function () {
+        console.log('dec');
+        var mainNavPanel = this.getMainNavPanel();
+        if (this.alertsCounter < 2) {
+            this.alertsCounter = 0;
+            mainNavPanel.setBadge('Alerts', '');
+        }
+        this.alertsCounter--;
+        mainNavPanel.setBadge('Alerts', this.alertsCounter);
     }
 });

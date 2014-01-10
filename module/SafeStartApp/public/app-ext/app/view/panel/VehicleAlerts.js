@@ -8,6 +8,30 @@ Ext.define('SafeStartExt.view.panel.VehicleAlerts', {
         });
     },
 
+    initComponent: function () {
+        this.callParent(arguments);
+        var store = this.down('dataview[name=alerts]').getStore();
+        store.on('load', function () {
+            this.fireEvent('updateAlertsCounter');
+        }, this);
+
+        this.on('updateAlertsCounter', function () {
+            var counter = 0;
+            var title = this.pageConfig.get('text');
+            store.each(function (record) {
+                if (record.get('status') == 'new') {
+                    counter++;
+                }
+            });
+            if (counter) {
+                title += ' (' + counter + ')';
+            }
+            this.pageConfig.set('counter', counter);
+            this.setTitle(title);
+        }, this);
+    },
+
+
     filterAlerts: function () {
         var searchValue = this.down('textfield[name=search]').getValue();
         var statusValue = this.down('combobox[name=status-filter]').getValue();
