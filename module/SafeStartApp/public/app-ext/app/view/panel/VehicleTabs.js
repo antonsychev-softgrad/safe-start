@@ -86,9 +86,11 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     break;
                 case 'inspections':
                     tab.xtype = 'SafeStartExtPanelInspections';
-                    tab.title = title + '<br> <small>(30 Days Since Last)</small>';
                     if (page.get('badge')) {
                         tab.title = title + '<br> <small>(' + page.get('badge') + ')</small>';
+                        tab.tabConfig = {
+                            cls: 'sfa-tab-double-line'
+                        };
                     } 
                     break;
                 case 'fill-checklist':
@@ -102,8 +104,10 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     break;
                 case 'alerts':
                     tab.xtype = 'SafeStartExtPanelVehicleAlerts';
-                    tab.title = title + ' (' + page.get('counter') + ')';
-                    tab.enableCounterBadge = true;
+                    if (parseInt(page.get('counter'), 10)) {
+                        tab.title = title + ' (' + page.get('counter') + ')';
+                        tab.enableCounterBadge = true;
+                    }
                     break;
                 case 'report':
                     tab.xtype = 'SafeStartExtPanelVehicleReports';

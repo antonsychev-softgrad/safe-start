@@ -379,7 +379,8 @@ class Vehicle extends BaseEntity
                     'id' => $this->getId() . '-inspections',
                     'action' => 'inspections',
                     'text' => 'Previous Inspections',
-                    'counter' => count($this->getCheckLists()),
+                    // 'counter' => count($this->getCheckLists()),
+                    'badge' => $this->getCheckListsBadge(),
                     'leaf' => true
                 );
             }
@@ -1329,5 +1330,17 @@ class Vehicle extends BaseEntity
             );
         }
         return $chart;
+    }
+
+    public function getCheckListsBadge() {
+        $badge = '';
+        $lastInspectionDay = $this->getLastInspectionDay();
+        $now = time();
+        $delta = $now - $lastInspectionDay;
+        $days = floor($delta/60/60/24);
+        if ($days) {
+            $badge = $days. ' Days Since Last';
+        }
+        return $badge;
     }
 }

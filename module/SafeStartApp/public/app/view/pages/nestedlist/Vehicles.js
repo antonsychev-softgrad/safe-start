@@ -46,7 +46,7 @@ Ext.define('SafeStartApp.view.pages.nestedlist.Vehicles', {
     },
 
     getItemTextTpl: function () {
-        return '{' + this.getDisplayField() + '}<tpl if="counter !== 0"> ({counter}) </tpl>';
+        return '{' + this.getDisplayField() + '}<tpl if="counter !== 0"> ({counter}) </tpl><tpl if="badge"> ({badge})</tpl>';
     },
 
     updateNestedListStore: function () {

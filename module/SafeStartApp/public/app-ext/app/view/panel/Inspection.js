@@ -330,7 +330,6 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         var inspectionId = this.inspectionId || 0;
         this.up('SafeStartExtPanelVehicleTabs').confirm.close();
         this.fireEvent('completeInspectionAction', this.getValues(), inspectionId);
-        // this.setTitle(this.pageConfig.get('text'));
     },
 
     getValues: function () {
