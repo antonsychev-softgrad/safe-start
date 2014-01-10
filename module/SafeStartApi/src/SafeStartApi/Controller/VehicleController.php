@@ -284,8 +284,8 @@ class VehicleController extends RestrictedAccessRestController
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
             }
             if (!$warningHours) $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
-        } else {
-            $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
+        // } else {
+        //     $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
         $warnings = $this->processChecklistPlugin()->getWarningsFromInspectionFields($checkList);

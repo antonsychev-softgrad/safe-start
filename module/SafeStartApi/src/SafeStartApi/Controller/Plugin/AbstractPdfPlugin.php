@@ -48,6 +48,10 @@ class AbstractPdfPlugin extends AbstractPlugin
     {
         if (isset($companyData['description'])) $this->opts['style']['content_height'] = 0;
 
+        $currentOdometer = $vehicleData['currentOdometerKms'] . ' km';
+        if ($vehicleData['currentOdometerHours'] > 0) {
+            $currentOdometer .=  ' ' . $vehicleData['currentOdometerHours'] . ' hours';
+        }
         $data = array(
             'Company name' => isset($companyData['title']) ? $companyData['title'] : 'Safe Start',
             'Vehicle Make' => $vehicleData['title'],
@@ -56,7 +60,7 @@ class AbstractPdfPlugin extends AbstractPlugin
             'Project number' => $vehicleData['projectNumber'],
             'Project name' => $vehicleData['projectName'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
-            'Current odometer' => $vehicleData['currentOdometerKms'] . ' km ' . $vehicleData['currentOdometerHours'] . ' hours',
+            'Current odometer' => $currentOdometer,
             'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
 
