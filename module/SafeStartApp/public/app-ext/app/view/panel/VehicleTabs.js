@@ -25,7 +25,6 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         });
 
         this.callParent();
-        console.log(tabs);
 
         this.confirm = this.add(Ext.window.MessageBox.create({
             onConfirm: function () {},
