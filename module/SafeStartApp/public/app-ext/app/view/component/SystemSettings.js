@@ -28,7 +28,7 @@ Ext.define('SafeStartExt.view.component.SystemSettings', {
                 },
                 items: [{
                     xtype: 'tabpanel',
-                    cls: 'sfa-info-container sfa-system-settings',
+                    cls: 'sfa-info-container sfa-system-settings sfa-vehicles-tabpanel',
                     height: '100%',
                     items: [{
                         xtype: 'SafeStartExtPanelManageDefaultChecklist'
