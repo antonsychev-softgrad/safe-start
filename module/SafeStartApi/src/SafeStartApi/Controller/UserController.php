@@ -8,6 +8,7 @@ use Zend\Session\Container;
 use SafeStartApi\Base\Exception\Rest403;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\View\Model\ViewModel;
 
 class UserController extends RestController
 {
@@ -299,8 +300,7 @@ class UserController extends RestController
 
         $this->MailPlugin()->send(
             'Recovery Password',
-            // $user->getEmail(),
-            'rusffer@gmail.com',
+            $user->getEmail(),
             'recovery.phtml',
             array(
                 'username' => $user->getEmail(),
@@ -322,6 +322,14 @@ class UserController extends RestController
     {
         $token = $this->params('token');
         $now = new \DateTime();
+        $this->layout('user/layout');
+        $view = new ViewModel();
+        $view->setTemplate('user/reset-password');
+
+        if (strlen($token) !== 32) {
+            $view->setVariable('message', 'Invalid link');
+            return $view;
+        }
 
         $query = $this->em->createQuery("select u from SafeStartApi\Entity\User u where u.recoveryToken = ?1 and u.recoveryExpire > ?2");
         $query->setParameter(1, $token);
@@ -329,10 +337,8 @@ class UserController extends RestController
         $users = $query->getResult();
 
         if (! isset($users[0])) {
-            $this->answer = array(
-                "errorMessage" => "User not found"
-            );
-            return $this->AnswerPlugin()->format($this->answer, 404);
+            $view->setVariable('message', 'Link outdated');
+            return $view;
         }
         $user = $users[0];
 
@@ -344,10 +350,9 @@ class UserController extends RestController
         $config = $this->getServiceLocator()->get('Config');
 
         $this->MailPlugin()->send(
-            'Credentials',
-            // $user->getEmail(),
-            'rusffer@gmail.com',
-            'creds.phtml',
+            'New password',
+            $user->getEmail(),
+            'forgotpassword.phtml',
             array(
                 'username' => $user->getEmail(),
                 'firstName' => $user->getFirstName(),
@@ -357,11 +362,8 @@ class UserController extends RestController
             )
         );
 
-        $this->answer = array(
-            'done' => true
-        );
-
-        return $this->AnswerPlugin()->format($this->answer);
+        $view->setVariable('message', 'New password was sent to your email');
+        return $view;
     }
 
 }

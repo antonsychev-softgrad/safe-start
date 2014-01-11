@@ -89,20 +89,25 @@ Ext.define('SafeStartExt.view.component.Auth', {
         });
         this.callParent();
     },
+    
     showForgotPasswordDialog: function () {
         var dialog = Ext.window.Window.create({
+            title: 'Enter your email',
+            padding: 10,
             items: [{
                 xtype: 'textfield',
                 fieldLabel: 'Email',
                 name: 'email',
                 vtype: 'email'
             }, {
+                margin: '10 0 0 0',
                 xtype: 'button',
                 text: 'Send',
                 handler: function () {
                     var win = this.up('window');
                     var email = win.down('textfield[name=email]').getValue();
                     if (email) {
+                        win.hide();
                         SafeStartExt.Ajax.request({
                             url: 'user/forgotpassword',
                             data: {
@@ -110,9 +115,16 @@ Ext.define('SafeStartExt.view.component.Auth', {
                             },
                             success: function (result) {
                                 if (! result.done) {
-                                    win.close();
+                                    win.show();
                                     return;
                                 }
+                                win.close();
+                                Ext.Msg.alert({
+                                    title: 'Recovery password',
+                                    width: 200,
+                                    msg: 'Message that contains link to reset password was sent to your email',
+                                    buttons: Ext.Msg.OK
+                                });
                             }
                         });
                     }
