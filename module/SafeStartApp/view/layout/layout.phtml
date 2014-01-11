@@ -17,29 +17,29 @@
          <?php
             switch($env) {
                 case 'dev':
-                    if (isIe9()) {
+                    if (isMobile()) {
+                        $microLoaderScript = 'development.js';
+                        $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    } else {
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/bootstrap.css');
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css');
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/ext/ext-all.js');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/app.js');
-                    } else {
-                        $microLoaderScript = 'development.js';
-                        $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
                     }
                     break;
                 case 'prod':
                     $VER = 1.007;
-                    if (isIe9()) {
-                        $pathToApp = '/app-ext/build/production/SafeStartExt';
-                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
-                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
-                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
-                    } else {
+                    if (isMobile()) {
                         $S3URL = 'https://s3-us-west-2.amazonaws.com/safe-start/sencha-touch/build/v1.0/';
                         $this->headLink()->appendStylesheet($S3URL . 'resources/css/app.css?ver='.$VER);
                         $this->headLink()->appendStylesheet($S3URL . 'resources/css/safe-start.css?ver='.$VER);
                         $this->headScript()->appendFile($S3URL . 'app.js?ver='.$VER);
+                    } else {
+                        $pathToApp = '/app-ext/build/production/SafeStartExt';
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
                     }
                     break;
                 case 'testing':
@@ -55,6 +55,18 @@
                     $ieVersion = $matches[1][0];
                 }
                 return $ieVersion && $ieVersion <= 9;
+            }
+
+            function isMobile() {
+                $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+                if (stripos($ua, 'android') !== false
+                    || stripos($ua, 'ipod') !== false
+                    || stripos($ua, 'ipad') !== false 
+                    || stripos($ua, 'iphone') !== false
+                ) {
+                    return true;
+                }
+                return false;
             }
 
             echo $this->headScript();
