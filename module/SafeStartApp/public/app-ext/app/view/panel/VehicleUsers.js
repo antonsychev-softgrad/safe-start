@@ -7,7 +7,6 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
     ],
 
     padding: '10 20',
-
     name: 'vehicle-users',
     layout: {
         type: 'vbox'

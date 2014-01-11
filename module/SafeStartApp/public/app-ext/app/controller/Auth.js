@@ -91,7 +91,9 @@ Ext.define('SafeStartExt.controller.Auth', {
 
     updateProfileAction: function(window, e) {
         var self = this;
-        if (!this.userProfileModel) this.userProfileModel = Ext.create('SafeStartExt.model.User');
+        if (!this.userProfileModel) {
+            this.userProfileModel = Ext.create('SafeStartExt.model.User');
+        }
         // TODO: Validation
         //if (this.validateFormByModel(this.userProfileModel, this.getUpdateProfileForm())) {
         SafeStartExt.Ajax.request({

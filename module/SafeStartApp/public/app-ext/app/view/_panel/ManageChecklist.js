@@ -1,4 +1,4 @@
-Ext.define('SafeStartExt.view.abstract.ManageChecklist', {
+Ext.define('SafeStartExt.view._panel.ManageChecklist', {
     extend: 'Ext.panel.Panel',
     requires: [
         'SafeStartExt.store.ChecklistTree',

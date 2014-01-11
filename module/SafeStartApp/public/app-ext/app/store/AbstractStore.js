@@ -1,7 +1,6 @@
 Ext.define('SafeStartExt.store.AbstractStore', {
     extend: 'Ext.data.Store',
     // mixins: ['Ext.mixin.Observable'],
-
     config: {
         autoLoad: false,
         listeners: {
@@ -25,9 +24,13 @@ Ext.define('SafeStartExt.store.AbstractStore', {
                     this.fireEvent('data-load-failure', this);
                 } else if (operation.getResponse() && operation.getResponse().responseText) {
                     var result = Ext.decode(operation.getResponse().responseText);
-                    if (result.meta && (parseInt(result.meta.errorCode) != 0)) {
-                        if (result.data && result.data.errorMessage) SafeStartExt.showFailureInfoMsg(result.data.errorMessage);
-                        else SafeStartExt.showFailureInfoMsg('Operation filed');
+                    if (result.meta && (parseInt(result.meta.errorCode, 10) != 0)) {
+                        if (result.data && result.data.errorMessage) {
+                            SafeStartExt.showFailureInfoMsg(result.data.errorMessage);
+                        }
+                        else {
+                            SafeStartExt.showFailureInfoMsg('Operation filed');
+                        }
                         this.fireEvent( 'data-load-failure', this);
                     } else {
                         this.fireEvent('data-load-success', this);

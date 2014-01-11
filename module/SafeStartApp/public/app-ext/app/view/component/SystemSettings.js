@@ -5,7 +5,7 @@ Ext.define('SafeStartExt.view.component.SystemSettings', {
 
     requires: [
         'SafeStartExt.view.container.TopNav',
-        'SafeStartExt.view.panel.ManageDefaultChecklist',
+        'SafeStartExt.view.panel.ManageDefaultChecklist'
     ],
 
     layout: {

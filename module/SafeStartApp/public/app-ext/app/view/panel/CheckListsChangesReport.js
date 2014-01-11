@@ -157,5 +157,4 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
         content += '</div>';
         this.down('panel[name=content]').update(content);
     }
-
 });

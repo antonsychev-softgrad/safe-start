@@ -2,7 +2,7 @@ Ext.define('SafeStartExt.view.BadgeButton',{
     extend: 'Ext.button.Button',
     alias: 'widget.badgebutton',
 
-    badgeText: 'TEST',
+    badgeText: '',
     renderTpl : [
     '<span id="{id}-btnWrap" class="{baseCls}-wrap',
         '<tpl if="splitCls"> {splitCls}</tpl>',
@@ -34,11 +34,6 @@ Ext.define('SafeStartExt.view.BadgeButton',{
         'btnEl', 'btnWrap', 'btnInnerEl', 'btnIconEl', 'btnBadge'
     ],
 
-    listeners: {
-        afterrender: function () {
-        }
-    },
-    
     constructor: function( config ){
         this.callParent(arguments);
     },

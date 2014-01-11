@@ -1,5 +1,5 @@
 Ext.define('SafeStartExt.view.panel.VehicleAlerts', {
-    extend: 'SafeStartExt.view.abstract.Alerts',
+    extend: 'SafeStartExt.view._panel.Alerts',
     xtype: 'SafeStartExtPanelVehicleAlerts',
 
     createVehicleStore: function () {
@@ -7,7 +7,7 @@ Ext.define('SafeStartExt.view.panel.VehicleAlerts', {
             vehicleId: this.vehicle.get('id')
         });
     },
-
+    
     initComponent: function () {
         this.callParent(arguments);
         var store = this.down('dataview[name=alerts]').getStore();
@@ -30,7 +30,6 @@ Ext.define('SafeStartExt.view.panel.VehicleAlerts', {
             this.setTitle(title);
         }, this);
     },
-
 
     filterAlerts: function () {
         var searchValue = this.down('textfield[name=search]').getValue();

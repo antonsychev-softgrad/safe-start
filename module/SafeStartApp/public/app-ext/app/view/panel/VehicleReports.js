@@ -7,7 +7,6 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
         'Ext.chart.axis.Time',
         'Ext.chart.series.Line'
     ],
-
     record: null,
 
     cls: 'sfa-vehicle-report',

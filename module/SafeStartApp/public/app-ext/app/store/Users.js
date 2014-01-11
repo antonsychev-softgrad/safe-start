@@ -13,7 +13,6 @@ Ext.define('SafeStartExt.store.Users', {
             root: 'data'
         }
     },
-
     model: 'SafeStartExt.model.User'
 });
 

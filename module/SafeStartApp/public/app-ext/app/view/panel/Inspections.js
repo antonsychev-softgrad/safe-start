@@ -8,7 +8,6 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
     ],
     xtype: 'SafeStartExtPanelInspections',
     cls:'sfa-previous-inspection',
-    // layout: 'fit',
     border: 0,
     layout: {
         type: 'hbox',

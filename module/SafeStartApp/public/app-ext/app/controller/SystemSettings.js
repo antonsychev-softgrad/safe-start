@@ -12,7 +12,6 @@ Ext.define('SafeStartExt.controller.SystemSettings', {
 
     saveChecklistField: function (form) {
         var record = form.getRecord();
-        var data = record.getWriteData();
         SafeStartExt.Ajax.request({
             url: 'admin/checklist/' + record.get('id') + '/update',
             data: record.getWriteData(),

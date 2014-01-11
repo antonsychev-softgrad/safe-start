@@ -1,5 +1,5 @@
 Ext.define('SafeStartExt.view.panel.ManageDefaultChecklist', {
-    extend: 'SafeStartExt.view.abstract.ManageChecklist',
+    extend: 'SafeStartExt.view._panel.ManageChecklist',
 
     xtype: 'SafeStartExtPanelManageDefaultChecklist',
 
@@ -7,7 +7,6 @@ Ext.define('SafeStartExt.view.panel.ManageDefaultChecklist', {
         'SafeStartExt.store.DefaultChecklistTree'
     ],
     title: 'Default Checklist',
-
 
     initTreeStore: function () {
         this.treeStore = SafeStartExt.store.DefaultChecklistTree.create({
@@ -17,7 +16,7 @@ Ext.define('SafeStartExt.view.panel.ManageDefaultChecklist', {
             }
         });
     },
-
+    
     _getDeleteUrl: function() {
         return 'admin/checklist/' + this.getForm().getValues().id + '/delete';
     },

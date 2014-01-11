@@ -1,5 +1,5 @@
 Ext.define('SafeStartExt.view.panel.Alerts', {
-    extend: 'SafeStartExt.view.abstract.Alerts',
+    extend: 'SafeStartExt.view._panel.Alerts',
     xtype: 'SafeStartExtPanelAlerts',
 
     createVehicleStore: function () {

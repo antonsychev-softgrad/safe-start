@@ -5,7 +5,6 @@ Ext.define('SafeStartExt.Ajax', {
 
     baseHref: "/api/",
 
-
     request: function(options) {
         var me = this,
             url = options.url,
@@ -85,8 +84,10 @@ Ext.define('SafeStartExt.Ajax', {
         len = len || 12;
         charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var randomString = '';
-        for (var i = 0; i < len; i++) {
-            var randomPoz = Math.floor(Math.random() * charSet.length);
+        var i, randomPoz;
+
+        for (i = 0; i < len; i++) {
+            randomPoz = Math.floor(Math.random() * charSet.length);
             randomString += charSet.substring(randomPoz, randomPoz + 1);
         }
         return randomString;

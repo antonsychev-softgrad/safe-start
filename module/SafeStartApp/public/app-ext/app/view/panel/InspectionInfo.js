@@ -12,8 +12,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     },
 
     setInspectionInfo: function (inspection, data) {
-
-
         var infoGroup = [],
             vehicle = this.vehicle,
             checklist = data.checklist;

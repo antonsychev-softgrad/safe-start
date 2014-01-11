@@ -15,14 +15,12 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         type: 'hbox',
         align: 'strech'
     },
-
     statics: {
         CHECKLIST_FORM: 1,
         CHECKLIST_ADDITIONAL_FORM: 2,
         REVIEW_FORM: 3,
         CHOISE_ADDITIONAL_FORM: 4
     },
-
     current: -1,
     forms: {},
 
@@ -1073,7 +1071,6 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                                 url: '/api/upload-images',
                                 waitMsg: 'Uploading your photos...',
                                 success: function (fp, o) {
-                                    //TODO: fix success/failure
                                 },
                                 failure: function (fp, o) {
                                     var data = Ext.decode(o.response.responseText);

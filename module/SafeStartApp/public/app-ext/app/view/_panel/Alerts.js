@@ -1,4 +1,4 @@
-Ext.define('SafeStartExt.view.abstract.Alerts', {
+Ext.define('SafeStartExt.view._panel.Alerts', {
     extend: 'Ext.panel.Panel',
 
     requires: [

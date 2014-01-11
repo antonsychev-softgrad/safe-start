@@ -1,8 +1,6 @@
 Ext.define('SafeStartExt.model.InspectionAlert', {
     extend: "Ext.data.Model",
-    // requires: ['SafeStartExt.model.InspectionField'],
     fields: [
-        // {name: 'fieldId', type: 'int', defaultValue: 0},
         {name: 'alertMessage', type: 'string'},
         {name: 'alertDescription', type: 'string'},
         {name: 'critical', type: 'boolean', defaultValue: false},

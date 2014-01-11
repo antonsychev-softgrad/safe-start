@@ -21,6 +21,7 @@ Ext.define('SafeStartExt.controller.Users', {
         ref: 'mainPanel'
     }],
 
+
     company: null,
     needUpdate: false,
 
@@ -81,7 +82,9 @@ Ext.define('SafeStartExt.controller.Users', {
     },
 
     updateUserAction: function() {
-        if (!this.getUserFormPanel().isValid()) return;
+        if (!this.getUserFormPanel().isValid()) {
+            return;
+        }
 
         var formValues = this.getUserFormPanel().getValues(),
             me = this;
