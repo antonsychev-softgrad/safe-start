@@ -43,6 +43,8 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                         '<div class="sfa-alert-item">',
                             '<div class="sfa-alert-icon" style="background-image: url({thumbnail});">',
                             '</div>',
+                            '{[this.getCounter(values.history)]}',
+                            '</div>',
                             '<div class="sfa-alert-info">',
                                 '<div class="sfa-alert-title">{alertDescription}</div>',
                                 '<div class="sfa-alert-vehicle">{[values[\'SafeStartExt.model.Vehicle\'].title]} ',
@@ -55,6 +57,23 @@ Ext.define('SafeStartExt.view.abstract.Alerts', {
                         {
                             formatDate: function (date)  {
                                 return Ext.Date.format(new Date(date * 1000), SafeStartExt.dateFormat + ' ' + SafeStartExt.timeFormat);
+                            },
+                            getCounter: function (history) {
+                                var count = 0;
+                                console.log(history);
+                                Ext.each(history, function (item) {
+                                    if (item.action == 'alert_refreshed') {
+                                        count++;
+                                    } else {
+                                        count = 0;
+                                    }
+                                });
+                                console.log(count);
+                                if (count > 0) {
+                                    count++;
+                                    return '<div class="sfa-alert-badge">' + count + '</div>';
+                                }
+                                return '';
                             }
                         }
                     ),
