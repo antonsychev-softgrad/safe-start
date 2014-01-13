@@ -380,6 +380,14 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     box-shadow: none;
     border: none;
 }
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top {
+    padding: 0 15px;
+}
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin-top: 2px;
+}
+
+
 .x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
     height: 49px;
 }
@@ -982,7 +990,7 @@ font-size: 24px;
     padding: 24px 26px 20px;
 }
 .sfa-vehicles-tabpanel > div > .x-panel-body {
-    border-left: 2px solid #c0c0c0 !important;
+    border-left: 1px solid #c0c0c0 !important;
     border-bottom: 1px solid #dbdbdb !important;
     border-right: 1px solid #c0c0c0 !important;
     -moz-border-radius: 0 0 5px 5px;
