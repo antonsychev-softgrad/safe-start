@@ -33,7 +33,7 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                 cls: 'sfa-top-toolbar',
                 items: [{
                     xtype: 'datefield',
-                    cls: 'sfa-datepicker',
+                    cls: 'sfa-datepicker sfa-from',
                     name: 'from',
                     fieldLabel: 'From',
                     labelWidth: '',
@@ -51,7 +51,7 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                     ui: 'action',
                     action: 'refresh',
                     iconCls: 'refresh',
-                    text: 'reload',
+                    text: 'Reload',
                     handler: function() {
                         this.up('SafeStartExtPanelInspectionBreakdownsReport').updateDataView();
                     }

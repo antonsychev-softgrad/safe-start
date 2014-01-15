@@ -346,7 +346,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     top: 0;
 }
 
-.x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small, x-window-body-closable a.x-btn.x-btn-default-small {
+.x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small, .x-window-body-closable a.x-btn.x-btn-default-small {
     border-radius: 5px;
     font-size: 16px;
     border: none;
@@ -359,19 +359,49 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
     background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
-    background: red;
 }
-
+.x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small .x-btn-inner,
+.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner {
+    font-size: 16px;
+    font-weight: 400;
+}
 
 /* Statistic */
 
-.sfa-info-container.sfa-system-settings {
-
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-top-toolbar {
+    border: none;
 }
-
-
-
-
+.sfa-info-container.sfa-system-settings > div {
+    -moz-border-radius: 0 0 6px 6px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -khtml-border-radius: 0 0 6px 6px;
+    -o-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-status.sfa-combobox,
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-datepicker.sfa-from{
+    margin-right: 50px!important;
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child a.x-btn.x-btn-toolbar {
+    margin-left: 30px;
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child a .x-btn-inner {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 18px;
+}
 
 
 

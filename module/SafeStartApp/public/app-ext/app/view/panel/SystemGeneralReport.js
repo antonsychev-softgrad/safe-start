@@ -64,7 +64,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 name: 'range',
                 fieldlabel: 'Status',
                 labelWidth: '',
-                cls: 'sfa-status sfa-combobox',
+                cls: 'sfa-status-second sfa-combobox',
                 valueField: 'rank',
                 displayField: 'title',
                 value: 'monthly',
@@ -84,7 +84,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }, {
                 xtype: 'datefield',
                 name: 'from',
-                cls: 'sfa-datepicker',
+                cls: 'sfa-datepicker sfa-from',
                 fieldLabel: 'From',
                 value: prevYear,
                 labelWidth: ''
