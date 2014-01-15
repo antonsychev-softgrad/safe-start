@@ -84,14 +84,14 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 labelAlign: 'top',
                 items: [{
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     labelWidth: 130,
                     labelSeparator: '*',
                     fieldLabel: 'Hours',
                     name: 'serviceDueHours'
                 }, {
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     labelWidth: 130,
                     labelSeparator: '*',
                     fieldLabel: 'Kilometers',
@@ -110,14 +110,14 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 maxWidth: 400,
                 items: [{
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     fieldLabel: 'Hours',
                     labelWidth: 130,
                     labelSeparator: '',
                     name: 'currentOdometerHours'
                 }, {
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     labelWidth: 130,
                     fieldLabel: 'Kilometers',
                     labelSeparator: '',

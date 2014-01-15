@@ -141,7 +141,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             name: 'inspections-range',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-status',
+                            cls: 'sfa-status sfa-combobox',
                             valueField: 'rank',
                             displayField: 'title',
                             value: 'monthly',

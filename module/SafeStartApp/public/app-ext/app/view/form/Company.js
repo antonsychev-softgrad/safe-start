@@ -117,7 +117,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                 labelAlign: 'top',
                 items: [{
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     maxValue: 1000,
                     labelWidth: 130,
                     minValue: 1,
@@ -128,7 +128,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                     fieldLabel: 'Number of users'
                 }, {
                     xtype: 'numberfield',
-                    hideTrigger: true,
+                    //hideTrigger: true,
                     maxValue: 1000,
                     labelWidth: 130,
                     minValue: 1,

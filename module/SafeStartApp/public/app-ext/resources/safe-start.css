@@ -404,6 +404,22 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 }
 
 
+/* Refresh в левой колонке */
+.sfa-info-container a.x-btn.sfa-refresh-button {
+    background: 0;
+    padding: 0;
+}
+
+.sfa-info-container a.x-btn.sfa-refresh-button .sfa-icon-refresh {
+    height: 18px;
+    width: 22px;
+    background: url(img/reload-ic.png) no-repeat;
+}
+.sfa-info-container a.x-btn.sfa-refresh-button .x-btn-inner {
+    height: 18px;
+    width: 22px;
+}
+
 
 
 
