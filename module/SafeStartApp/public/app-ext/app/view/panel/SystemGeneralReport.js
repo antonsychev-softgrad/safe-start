@@ -52,7 +52,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 queryMode: 'local',
                 name: 'company',
                 fieldLabel: 'Status',
-                labelWidth: '',
+                labelWidth: 49,
                 cls: 'sfa-status sfa-combobox',
                 valueField: 'id',
                 displayField: 'title',
@@ -63,7 +63,6 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 queryMode: 'local',
                 name: 'range',
                 fieldlabel: 'Status',
-                labelWidth: '',
                 cls: 'sfa-status-second sfa-combobox',
                 valueField: 'rank',
                 displayField: 'title',
@@ -86,14 +85,14 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                 name: 'from',
                 cls: 'sfa-datepicker sfa-from',
                 fieldLabel: 'From',
-                value: prevYear,
-                labelWidth: ''
+                labelWidth: 40,
+                value: prevYear
             }, {
                 xtype: 'datefield',
                 name: 'to',
+                labelWidth: 20,
                 cls: 'sfa-datepicker',
                 fieldLabel: 'To',
-                labelWidth: '',
                 value: new Date()
             }, {
                 xtype: 'button',
@@ -112,6 +111,7 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             items: [{
                 id: 'SafeStartSystemStatisticContent',
                 docked: 'top',
+                cls: 'sfa-total',
                 tpl: [
                     '<div class="top">',
                     '<table style="max-width: 700px;"><tr>',

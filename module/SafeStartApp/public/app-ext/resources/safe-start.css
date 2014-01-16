@@ -43,6 +43,9 @@
 .sfa-info-container .sfa-checklists-container .x-field.x-table-plain.x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
     min-width: 120px;
 }
+.sfa-info-container .sfa-checklists-container .x-docked-top.x-toolbar-docked-top.x-toolbar-default-docked-top {
+    border: none;
+}
 
 /* маленькие кнопки */
 .sfa-info-container a.x-btn.x-btn-default-small, .sfa-info-container a.x-btn.x-btn-default-toolbar-small {
@@ -85,6 +88,11 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
     overflow: visible;
 }
+.x-ie8p.x-ie8.x-ie8m .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button .x-btn-inner,
+.x-ie8p.x-ie8.x-ie8m  .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
+    height: 20px;
+}
+
 /*закладка vehicles у кнопки Reporting снизу обрезается буква g, фиксим*/
 .sfa-vehicles-tabpanel .x-tab-inner {
     overflow: visible;
@@ -97,6 +105,9 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     top: -1px;
     height: 15px;
     background: url(img/spinner.png) no-repeat;
+}
+.x-form-trigger.x-form-spinner-up, .x-form-trigger.x-form-spinner-down {
+    background: url(img/spinner-ie8.png) no-repeat;
 }
 .x-form-trigger.x-form-spinner-up {
     background-position: 0 -1px;
@@ -239,6 +250,12 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     width: 50px;
     height: 50px;
 }
+.sfa-alerts-filter-form.x-docked-top {
+    padding: 10px 8px;
+}
+.sfa-alerts-filter-form.x-docked-top .sfa-combobox {
+    top: 2px!important;
+}
 
 /* Previous Inspections в две строки */
 
@@ -308,7 +325,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     float: left;
     width: 50px;
     height: 50px;
-    margin: 5px 8px 4px 5px;
+    margin: 5px 8px 2px 5px;
     border: 1px solid #dedede;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
@@ -325,8 +342,6 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     width: 50px;
     height: 50px;
 }
-
-
 
 /* для нижнего меню, порезались надписи снизу */
 
@@ -365,11 +380,51 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     font-size: 16px;
     font-weight: 400;
 }
+.x-window-body.x-window-body-closable {
+    border: none;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable {
+    padding: 8px;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a.x-btn.x-btn-default-small td.x-btn-default-small-mc {
+    padding: 2px 5px 3px !important;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a.x-btn.x-btn-default-small td,
+.x-ie8p.x-ie8.x-ie8m a.x-btn.x-btn-default-toolbar-small td{
+    background: none;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a {
+    background: none;
+}
+
+
+
+
+/* Settings */
+
+.sfa-info-container.sfa-system-settings .x-tree-view.x-fit-item {
+    border: none;
+}
+.sfa-info-container.sfa-system-settings .x-grid-header-ct.x-grid-header-ct-docked-top  {
+    border: none;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > .x-panel-body.x-panel-body-default.x-layout-fit {
+    border: 1px solid #dbdbdb !important;
+    border-top: none !important;
+    border-radius: 0 0 6px 6px;
+    /*box-shadow: none;*/
+}
+
+
 
 /* Statistic */
 
 .sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-top-toolbar {
     border: none;
+    padding: 10px 8px;
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-top-toolbar .sfa-combobox {
+    top: 2px !important;
 }
 .sfa-info-container.sfa-system-settings > div {
     -moz-border-radius: 0 0 6px 6px;
@@ -378,9 +433,15 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     -o-border-radius: 0 0 6px 6px;
     border-radius: 0 0 6px 6px;
 }
-.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-status.sfa-combobox,
-.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-datepicker.sfa-from{
-    margin-right: 50px!important;
+
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child label {
+    text-align: right;
+}
+.sfa-info-container.sfa-system-settings .sfa-total td {
+    padding-left: 15px;
+}
+.sfa-info-container.sfa-system-settings .sfa-total td > div {
+    padding-bottom: 3px;
 }
 .sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child a.x-btn.x-btn-toolbar {
     margin-left: 30px;
@@ -406,18 +467,25 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 
 /* Refresh в левой колонке */
 .sfa-info-container a.x-btn.sfa-refresh-button {
-    background: 0;
+    background: none;
     padding: 0;
 }
 
 .sfa-info-container a.x-btn.sfa-refresh-button .sfa-icon-refresh {
     height: 18px;
     width: 22px;
-    background: url(img/reload-ic.png) no-repeat;
+    background: url(img/reload-ic-transparent.png) no-repeat;
+}
+.sfa-info-container a.x-btn.sfa-refresh-button span {
+    background-color: transparent;
 }
 .sfa-info-container a.x-btn.sfa-refresh-button .x-btn-inner {
     height: 18px;
     width: 22px;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-info-container a.x-btn.sfa-refresh-button  {
+    zoom: 1;
+    background: red !important;
 }
 
 
@@ -492,19 +560,56 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     box-shadow: none;
     border: none;
 }
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 50px;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div {
+    border-bottom: none !important;
+}
+
+.x-ie8p.x-ie8.x-ie8m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 49px;
+}
+
+
+
+
+
+
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top {
     padding: 0 15px;
 }
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top {
+    padding-bottom: 1px;
+}
+
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top,
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin-top: 0;
+    padding-top: 1px;
+}
+
+
+
+
+
+
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
     margin-top: 2px;
 }
-
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin: 4px 0 2px;
+}
 
 .x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
     height: 49px;
 }
 .x-ie8 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding-top: 5px !important;
+    padding-top: 4px !important;
 }
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
     background: url(img/tab-active_bg.png) no-repeat 50% 100%;
@@ -596,6 +701,10 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-form-auth .sfa-text-forgot-password {
     font-size: 16px;
     cursor: pointer;
+    text-align: center;
+}
+.sfa-form-auth .sfa-text-forgot-password:hover {
+    color: #666;
 }
 .sfa-form-auth .x-panel-form {
     background: #fff;
@@ -879,14 +988,14 @@ font-size: 24px;
 .x-ie8 .sfa-left-coll .sfa-add-button {
     height: 33px;
 }
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tl, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tr, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tc, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bl, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-br, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tl,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tr,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tc,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bl,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-br,
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bc {
     background: none !important;
 }
@@ -918,6 +1027,12 @@ font-size: 24px;
     padding-left: 4px;
     padding-right: 0;
 }
+.sfa-datepicker.sfa-expiry-date {
+    margin-right: 22px;
+}
+
+
+
 /*.sfa-company-settings .x-toolbar-footer a.x-btn {
     margin-right: 15px;
 }
@@ -982,6 +1097,13 @@ font-size: 24px;
     border-radius: 6px 6px 0 0;
 }
 
+/* ie9 */
+
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 50px;
+}
+
+
 .sfa-vehicles-tabpanel > span {
     padding: 24px 26px;
 }
@@ -1024,17 +1146,26 @@ font-size: 24px;
 }
 
 .sfa-info-container > div {
-    border: 1px solid red;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
     -o-border-radius: 6px;
     border-radius: 6px;
-    border: 1px solid #dbdbdb;
-    border-left-color: #c0c0c0;
-    border-right-color: #c0c0c0;
+    border: 1px solid #dbdbdb !important;
+    border-left-color: #c0c0c0 !important;
+    border-right-color: #c0c0c0 !important;
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-header-horizontal {
+    box-shadow: none;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
+    box-shadow: rgba(192, 192, 192, 1) 1px 0 1px inset, rgba(192, 192, 192, 1) -1px 0 1px inset;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body,
+.x-ie7p.x-ie7.x-ie7m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
+    border-color: #c0c0c0 !important;
 }
 
 .sfa-info-container .sfa-company-settings > .x-panel-body {
@@ -1405,7 +1536,7 @@ table.x-form-trigger-wrap td {
 
 
 /*
-.x-btn-green-medium-tc, 
+.x-btn-green-medium-tc,
 .x-btn-green-medium-bc {
     height: 5px !important;
 }
@@ -1434,19 +1565,19 @@ table.x-form-trigger-wrap td {
     background-position-y: -36px;
 }
 
-.x-btn-green-medium-tl, 
+.x-btn-green-medium-tl,
 .x-btn-blue-medium-tl,
 .x-btn-red-medium-tl {
     background-position-y: -15px;
 }
 
-.x-btn-green-medium-tr, 
+.x-btn-green-medium-tr,
 .x-btn-blue-medium-tr,
 .x-btn-red-medium-tr {
     background-position-y: -20px;
 }
 
-.x-btn-green-medium-tl, 
+.x-btn-green-medium-tl,
 .x-btn-blue-medium-tl,
 .x-btn-red-medium-tl {
     background-position-y: -13px;
@@ -1693,7 +1824,7 @@ table.x-form-trigger-wrap td {
     color: #AAA;
 }
 
-.sfa-review-details-item.x-item-selected, 
+.sfa-review-details-item.x-item-selected,
 .sfa-review-details-item:hover {
     background-color: #E3EDF1;
 }
@@ -1786,9 +1917,23 @@ table.x-form-trigger-wrap td {
 .x-tree-view .x-grid-cell-inner .x-tree-node-text {
     /*white-space: normal;*/
     font-size: 16px;
-} 
+}
 
 .sfa-icon-leaf {
     background-image: url(img/leaf.png) !important;
 }
 
+
+/* Add vehicle кнопка в левой колонке */
+.x-ie8p.x-ie8.x-ie8m .sfa-left-coll .sfa-add-button .x-btn-inner {
+    position: relative;
+    top: -1px;
+}
+
+/* Manage Checklists */
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel.sfa-info-container .x-tree-view {
+    border: none;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel.sfa-info-container .x-grid-header-ct {
+    border: none;
+}

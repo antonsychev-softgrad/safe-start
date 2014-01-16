@@ -106,7 +106,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Subscription',
                 name: 'subscription',
-                maxWidth: 400,
+                maxWidth: 422,
                 padding: '1 0 0 0',
                 cls: 'sfa-field-group',
                 labelCls: 'sfa-field-group-label',
@@ -146,7 +146,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                     format: SafeStartExt.dateFormat,
                     fieldLabel: 'Expiry Date',
                     value: new Date(),
-                    cls: 'sfa-datepicker'
+                    cls: 'sfa-datepicker sfa-expiry-date'
                 }]
             }],
             bbar: [{

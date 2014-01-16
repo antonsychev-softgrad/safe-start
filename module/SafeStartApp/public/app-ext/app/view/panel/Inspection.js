@@ -608,8 +608,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
     createTextField: function (field) {
         return {
             xtype: 'textfield',
-            width: 500,
-            labelWidth: 200,
+            width: 300,
+            labelWidth: 70,
             field: field,
             fieldId: field.get('fieldId'),
             fieldLabel: field.get('fieldName'),
