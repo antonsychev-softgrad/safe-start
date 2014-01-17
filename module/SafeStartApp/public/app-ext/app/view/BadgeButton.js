@@ -8,7 +8,7 @@ Ext.define('SafeStartExt.view.BadgeButton',{
         '<tpl if="splitCls"> {splitCls}</tpl>',
         '{childElCls}" unselectable="on">',
 
-        '<span id="{id}-btnBadge" class="{baseCls}-badge">',
+        '<span id="{id}-btnBadge" class="{baseCls}-badge hide-badge">',
             '{badgeText}',
         '</span>',
 

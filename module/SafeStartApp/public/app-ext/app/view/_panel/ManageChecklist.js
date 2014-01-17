@@ -12,6 +12,7 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
         'Ext.tree.Panel'
     ],
     autoScroll: true,
+    cls:'sfa-manage-checklists',
     layout: {
         type: 'hbox',
         align: 'stretch'

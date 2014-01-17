@@ -797,6 +797,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
             maxWidth: 600,
+            cls:'sfa-additional',
             defaultType: 'checkboxfield',
             layout: {
                 type: 'vbox',
