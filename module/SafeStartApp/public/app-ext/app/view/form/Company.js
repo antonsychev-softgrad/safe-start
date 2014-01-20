@@ -194,7 +194,12 @@ Ext.define('SafeStartExt.view.form.Company', {
                     minWidth: 140,
                     handler: function() {
                         if (this.isValid()) {
-                            this.fireEvent('updateCompanyAction', me.getRecord(), me.getValues());
+                            var values = me.getValues();
+                            var date = this.down('datefield').getValue();
+                            values.expiry_date = date.getTime();
+                            // me.getRecord().set('expiry_date', values.expiry_date);
+                            console.log(values);
+                            this.fireEvent('updateCompanyAction', me.getRecord(), values);
                         }
                     },
                     scope: this

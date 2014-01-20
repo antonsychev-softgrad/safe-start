@@ -533,7 +533,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
-            maxWidth: 600,
+            maxWidth: 800,
             overflowY: 'auto',
             checklist: form.checklist,
             layout: {
@@ -796,8 +796,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         });
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
-            maxWidth: 600,
             cls:'sfa-additional',
+            maxWidth: 800,
             defaultType: 'checkboxfield',
             layout: {
                 type: 'vbox',
@@ -973,7 +973,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
         form.set('view', this.getChecklistsContainer().add({
             xtype: 'form',
-            maxWidth: 600,            
+            maxWidth: 800,            
             cls: 'form-scrollable sfa-pre-start-inspection-review',
             width: '100%',
             items: items,
