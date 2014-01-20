@@ -23,7 +23,11 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
     initComponent: function () {
         var store = this.createVehicleStore();
         Ext.apply(this, {
-            tbar: this.getTBarItems(),
+            tbar: {
+                xtype: 'toolbar',
+                cls: 'sfa-alerts-filter-form',
+                items: this.getTBarItems()
+            },
             items: [{
                 xtype: 'panel',
                 title: 'Alerts',

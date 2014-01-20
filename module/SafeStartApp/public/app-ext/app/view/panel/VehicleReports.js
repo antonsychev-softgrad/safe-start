@@ -66,7 +66,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             ui: 'action',
                             action: 'refresh',
                             iconCls: 'refresh',
-                            text: 'refresh',
+                            text: 'Refresh',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').updateDataView();
                             }
@@ -141,7 +141,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             name: 'inspections-range',
                             label: 'Status',
                             labelWidth: '',
-                            cls: 'sfa-status',
+                            cls: 'sfa-status sfa-combobox',
                             valueField: 'rank',
                             displayField: 'title',
                             value: 'monthly',
@@ -176,7 +176,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             ui: 'action',
                             action: 'refresh',
                             iconCls: 'refresh',
-                            text: 'refresh',
+                            text: 'Refresh',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').updateInspectionsDataView();
                             }
@@ -228,9 +228,10 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         }]
                     }]
                 }, {
-                    cls: 'sfa-statistic',
+                    cls: 'sfa-statistic sfa-reporting-alerts',
                     xtype: 'panel',
                     title: 'Alerts',
+                    autoScroll: true,
                     layout: {
                         type: 'fit'
                     },
@@ -260,7 +261,7 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             ui: 'action',
                             action: 'refresh',
                             iconCls: 'refresh',
-                            text: 'refresh',
+                            text: 'Refresh',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').updateAlertsDataView();
                             }

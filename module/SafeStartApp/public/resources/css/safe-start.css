@@ -352,7 +352,15 @@ div.logo {
 }
 
 .sfa-auth-form .x-container.x-form-fieldset {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+}
+.sfa-auth-form .sfa-text-forgot-password {
+    margin-bottom: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+.sfa-auth-form .sfa-text-forgot-password:hover {
+    color: #666;
 }
 .sfa-auth-form .x-container.x-field-textarea.x-field {
     height: 150px;

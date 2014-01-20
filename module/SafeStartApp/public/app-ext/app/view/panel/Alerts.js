@@ -29,7 +29,9 @@ Ext.define('SafeStartExt.view.panel.Alerts', {
             }
         }, {
             xtype: 'button',
-            text: 'Refresh',
+            text: '',
+            iconCls: 'sfa-icon-refresh',
+            cls:'sfa-refresh-button',
             handler: function () {
                 var store = this.down('dataview[name=alerts]').getStore();
                 store.load();
