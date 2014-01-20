@@ -647,10 +647,6 @@ overflow-x: hidden !important;
     padding-top: 0;
 }
 
-
-
-
-
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
     margin-top: 2px;
 }
@@ -661,6 +657,10 @@ overflow-x: hidden !important;
 .x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
     height: 49px;
 }
+.x-ie7 .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    height: 50px;
+}
+
 .x-ie8 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
     padding-top: 4px !important;
 }
@@ -1214,7 +1214,7 @@ font-size: 24px;
     box-shadow: none;
 }
 .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
-    box-shadow: rgba(192, 192, 192, 1) 1px 0 1px inset, rgba(192, 192, 192, 1) -1px 0 1px inset;
+    box-shadow: rgba(192, 192, 192, 1) 1px -1px 1px inset, rgba(192, 192, 192, 1) -1px -1px 1px inset;
 }
 .x-ie8p.x-ie8.x-ie8m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body,
 .x-ie7p.x-ie7.x-ie7m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
@@ -1235,6 +1235,14 @@ font-size: 24px;
     border: none;
     background: none;
 }
+.x-ie7 .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div:first-child {
+    background: url(img/tab_bg.png) repeat-x;
+}
+
+
+
+
+
 .x-ie7 .sfa-info-container > div.sfa-alerts-filter-form {
     padding: 10px 8px;
 }
