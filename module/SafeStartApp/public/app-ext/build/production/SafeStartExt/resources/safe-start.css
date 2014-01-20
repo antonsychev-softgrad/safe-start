@@ -1,3 +1,316 @@
+/* fix bugs */
+/* DatePicker при фокусе исчезает иконка. */
+/* add class .sfa-datepicker на все поля-календари */
+.sfa-datepicker .x-form-trigger-wrap-focus .x-form-date-trigger  {
+    background-position: 100% 50%;
+}
+.x-ie7p.x-ie7 .x-form-trigger-input-cell {
+    width: 130px;
+}
+.x-ie7p.x-ie7 .sfa-datapicker .x-form-trigger-input-cell input.x-form-field {
+    width: 80px !important;
+}
+
+/* выпадающий список - подравняем треугольник */
+.x-form-trigger, .x-form-trigger-wrap-focus .x-form-trigger {
+    background-position: 0 6px;
+}
+
+/* Combobox из-за закругленных углов выпадающий список выглядит кривовато. */
+.x-boundlist {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #a9acaf;
+    overflow: hidden;
+}
+.x-boundlist-selected {
+    background: #e8e8e8;
+    border-color: #a9acaf;
+}
+
+/* Чеклисты привести к общему дизайну (в том числе последнюю страницу Review). */
+
+.sfa-info-container .sfa-checklists-container table.x-field.x-form-type-radio {
+    margin: 0 10px;
+}
+.sfa-info-container .sfa-checklists-container .x-box-target {
+    min-width: 515px;
+}
+
+.sfa-info-container .sfa-checklists-container .x-field.x-table-plain.x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 120px;
+}
+
+
+/* маленькие кнопки */
+.sfa-info-container a.x-btn.x-btn-default-small, .sfa-info-container a.x-btn.x-btn-default-toolbar-small {
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.x-btn-default-toolbar-small .x-btn-inner {
+    color: #fff;
+}
+.sfa-info-container a.x-btn-default-small-pressed.x-btn-focus.x-focus,
+.sfa-info-container a.x-btn-default-toolbar-small-pressed.x-btn-focus.x-focus {
+    background: #3085b6;
+    opacity: 1;
+}
+.sfa-info-container a.x-btn-default-small.x-over, .sfa-info-container a.x-btn-default-toolbar-small.x-over {
+    opacity: 0.92;
+}
+.sfa-info-container a.x-btn.x-btn-default-small .x-btn-inner,
+a.x-btn.x-btn-default-toolbar-small .x-btn-inner{
+    line-height: 18px;
+    font-size: 18px;
+    font-weight: normal;
+}
+.sfa-info-container a.x-btn.x-btn-default-small .x-btn-button,
+a.x-btn.x-btn-default-toolbar-small .x-btn-button{
+    height: 18px;
+}
+
+/*закладка companies у кнопки manage снизу обрезается буква g, фиксим*/
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button .x-btn-inner,
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
+    overflow: visible;
+}
+/*закладка vehicles у кнопки Reporting снизу обрезается буква g, фиксим*/
+.sfa-vehicles-tabpanel .x-tab-inner {
+    overflow: visible;
+}
+
+
+/* Spinner (ввод числа) фиксим иконки */
+.x-form-trigger.x-form-spinner-up, .x-form-trigger.x-form-spinner-down {
+    position: relative;
+    left: -20px;
+    top: -1px;
+    height: 15px;
+    background: url(img/spinner.png) no-repeat;
+}
+.x-form-trigger.x-form-spinner-up {
+    background-position: 0 -1px;
+    border-radius: 0 6px 0 0;
+}
+.x-form-trigger.x-form-spinner-down {
+    background-position: 0 -17px;
+    border-radius: 0 0 6px 0;
+    top: 0px;
+}
+.x-form-trigger-input-cell input.x-form-field.x-form-text {
+    border: 1px solid #d1d1d1;
+    border-top-color: #f3f4f4;
+    border-bottom-color: #a4a4a4;
+    box-shadow: 0 1px 0 #d1d1d1;
+    padding-right: 25px;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-up {
+    height: 16px;
+    background-position: 0 0;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-down {
+    height: 16px;
+}
+
+/* увеличим шрифт для тела страниц */
+.x-panel-body-default {
+    font-size: 16px;
+}
+.sfa-checklists-container .x-box-target .x-container.x-box-item span > div {
+    font-size: 18px;
+    color: #558fac;
+}
+.sfa-checklists-container .x-box-target > table.x-container.x-form-fieldcontainer {
+    margin-bottom: 10px;
+}
+
+
+/* comboboxes */
+
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field, .sfa-combobox .x-form-arrow-trigger {
+    border: 1px solid #e00606;
+    height: 32px;
+    -moz-border-radius: 6px 0 0 6px;
+    -webkit-border-radius: 6px 0 0 6px;
+    -khtml-border-radius: 6px 0 0 6px;
+    -o-border-radius: 6px 0 0 6px;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    border-bottom-color: #fbfbfb;
+    box-shadow: 0 1px 0 #f3f4f4;
+    background: #fff;
+    margin-bottom: 4px;
+}
+.sfa-combobox .x-form-arrow-trigger {
+    -moz-border-radius: 0 6px 6px 0;
+    -webkit-border-radius: 0 6px 6px 0;
+    -khtml-border-radius: 0 6px 6px 0;
+    -o-border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+    position: relative;
+}
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field {
+    border-right: none;
+}
+.sfa-combobox .x-form-arrow-trigger:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 13px;
+    border: 5px solid #0088cc;
+    border-bottom: none;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+
+/* Perform an inspection -> Review */
+
+.sfa-pre-start-inspection-review .sfa-alerts-container {
+    height: 30px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.sfa-pre-start-inspection-review .x-box-inner {
+    margin-bottom: 20px;
+}
+.sfa-pre-start-inspection-review .sfa-alerts-container .sfa-alerts-container-title-desc {
+    right: 20px;
+}
+.sfa-upload-image {
+    margin: 8px 0 8px 175px;
+}
+.sfa-upload-image a span.x-btn-inner {
+    padding-bottom: 2px;
+}
+.sfa-info-container .sfa-checklists-container .x-panel.form-scrollable.sfa-pre-start-inspection-review .x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 50px;
+}
+
+
+/* Vehicle – Alerts */
+
+.sfa-previous-inspections-left-coll.x-panel-light-left {
+    background: #f7f7f7;
+}
+.sfa-previous-inspections-left-coll.x-panel-light-left .sfa-alert-item {
+    padding: 0 8px 7px 10px;
+    font-size: 18px;
+}
+.sfa-previous-inspections-left-coll.x-panel-light-left .sfa-alert-title {
+    font-size: 18px;
+    cursor: pointer;
+}
+.sfa-alert-status-update {
+    margin: 15px 0 0;
+}
+.sfa-alert-status-update a.x-btn-default-small {
+    margin-left: 8px;
+}
+.sfa-alert-comment {
+    margin-top: 15px;
+}
+
+/* Previous Inspections в две строки */
+
+.sfa-vehicles-tabpanel  .x-tab-bar.x-header.x-header-horizontal small {
+    position:  relative;
+    top: -5px;
+}
+
+/* красная кнопка */
+
+.sfa-info-container a.x-btn.sfa-red-button {
+    background: #c70505; /* Old browsers */
+    background: -moz-linear-gradient(top, #c70505 0%, #930000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c70505), color-stop(100%,#930000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #c70505 0%,#930000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #c70505 0%,#930000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #c70505 0%,#930000 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #c70505 0%,#930000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c70505', endColorstr='#930000',GradientType=0 ); /* IE6-9 */
+}
+
+/* Vehicle – Reporting */
+
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar a {
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar {
+    margin: 12px 8px;
+}
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar a .x-btn-inner {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 18px;
+}
+.sfa-vehicles-tabpanel .sfa-system-settings .x-tab-bar.x-header {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -khtml-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+
+.sfa-total-of-numbers td {
+    vertical-align: top;
+}
+
+/* Alerts */
+
+.sfa-previous-inspections-left-coll .x-panel-header-light-left {
+    background: none;
+    border: none !important;
+}
+
+/* для нижнего меню, порезались надписи снизу */
+
+.sfa-bottomnav .x-btn-wrap .x-btn-inner, .sfa-bottomnav .x-btn-wrap .x-btn-button {
+    overflow: visible;
+}
+.sfa-bottomnav .x-btn-wrap .x-btn-badge {
+    color: #f00;
+    height: 2px;
+    overflow: visible;
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
 .sfa-bottomnav {
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
@@ -44,7 +357,7 @@
   color: #b8d3e4;
   padding-top: 1px;
   /*padding-bottom: 5px;*/
-  margin-top: 5px;
+  margin: 3px 0 2px;
   font-weight: normal;
 }
 
@@ -579,7 +892,11 @@ font-size: 24px;
     background: none;
 }
 .sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item {
-    border-top: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #dedede;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item:last-child {
+    box-shadow: 0 1px 0 #FFFFFF;
 }
 
 .sfa-info-container > div {
@@ -778,11 +1095,16 @@ font-size: 24px;
     .sfa-previous-inspections-info .x-panel-body .x-component{
         padding: 10px 15px;
     }
-    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top,
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
         padding-top: 15px;
         font-size: 28px;
         color: #558fac;
     }
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
+        padding: 5px 0 10px;
+    }
+
     .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-sub {
         font-size: 20px;
         color: #558fac;
@@ -1255,14 +1577,19 @@ table.x-form-trigger-wrap td {
 
 .sfa-review-details-item {
     border-bottom: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
 }
 
-.sfa-review-details-item:first {
-    border-top: 1px solid #DEDEDE;
+.sfa-review-details-item:first-child {
+    border-top: none;
+}
+.sfa-review-details-item:last-child {
+    box-shadow: 0 1px 0 #fff;
 }
 
 .sfa-vehicle-inspection-checklist {
     border-right: 1px solid #DEDEDE;
+    background: #f7f7f7;
 }
 
 .x-form-file-btn input {
@@ -1316,3 +1643,28 @@ table.x-form-trigger-wrap td {
 .form-scrollable > .x-panel-body-default {
     overflow-y: auto;
 }
+
+
+.x-tree-view .x-grid-cell {
+    background-color: inherit;
+}
+
+.x-tree-view .x-grid-row-selected .x-grid-cell {
+    /*color: #00f;*/
+    background-color: #d8d8d8;
+}
+
+.x-tree-view {
+    border-right: 1px dotted #999;
+}
+
+
+.x-tree-view .x-grid-cell-inner .x-tree-node-text {
+    /*white-space: normal;*/
+    font-size: 16px;
+} 
+
+.sfa-icon-leaf {
+    background-image: url(img/leaf.png) !important;
+}
+

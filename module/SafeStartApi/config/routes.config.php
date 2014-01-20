@@ -287,6 +287,32 @@ $routes = array(
                     ),
                 ),
             ),
+            'user-forgot-password' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/forgotpassword/:email',
+                    'constraints' => array(
+                        'email' => '[A-Za-z0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User',
+                        'action' => 'forgotPassword',
+                    ),
+                ),
+            ),
+            'user-reset-password' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/resetpassword/:token',
+                    'constraints' => array(
+                        'token' => '[A-Za-z0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'User',
+                        'action' => 'resetPassword',
+                    ),
+                ),
+            ),
             'update-company-subscription' => array(
                 'type' => 'Segment',
                 'options' => array(

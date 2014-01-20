@@ -8,9 +8,12 @@ use Zend\Session\Container;
 use SafeStartApi\Base\Exception\Rest403;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\View\Model\ViewModel;
 
 class UserController extends RestController
 {
+
+    const USER_RECOVERY_INTERVAL_HOURS = 3;
     public function loginAction()
     {
         if (!$this->_requestIsValid('user/login')) return $this->_showBadRequest();
@@ -271,4 +274,96 @@ class UserController extends RestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function forgotPasswordAction()
+    {
+        // $userId = (int)$this->params('id');
+        $email = $this->data->email;
+
+        $user = $this->em->getRepository('SafeStartApi\Entity\User')->findOneBy(array('email' => $email));
+        if (!$user) {
+            $this->answer = array(
+                "errorMessage" => "User not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $token = md5($user->getId() . time() . rand());
+        $now = new \DateTime();
+        $now->add(new \DateInterval('PT' . self::USER_RECOVERY_INTERVAL_HOURS . 'H'));
+
+        $user->setRecoveryToken($token);
+        $user->setRecoveryExpire($now);
+        $this->em->flush();
+
+        $config = $this->getServiceLocator()->get('Config');
+
+        $this->MailPlugin()->send(
+            'Recovery Password',
+            $user->getEmail(),
+            'recovery.phtml',
+            array(
+                'username' => $user->getEmail(),
+                'firstName' => $user->getFirstName(),
+                'recoveryToken' => $token,
+                'siteUrl' => $config['params']['site_url'],
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
+            )
+        );
+
+        $this->answer = array(
+            'done' => true
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+    public function resetPasswordAction()
+    {
+        $token = $this->params('token');
+        $now = new \DateTime();
+        $this->layout('user/layout');
+        $view = new ViewModel();
+        $view->setTemplate('user/reset-password');
+
+        if (strlen($token) !== 32) {
+            $view->setVariable('message', 'Invalid link');
+            return $view;
+        }
+
+        $query = $this->em->createQuery("select u from SafeStartApi\Entity\User u where u.recoveryToken = ?1 and u.recoveryExpire > ?2");
+        $query->setParameter(1, $token);
+        $query->setParameter(2, $now);
+        $users = $query->getResult();
+
+        if (! isset($users[0])) {
+            $view->setVariable('message', 'Link outdated');
+            return $view;
+        }
+        $user = $users[0];
+
+        $user->setRecoveryExpire($now);
+        $password = substr(md5($user->getId() . time() . rand()), 0, 6);
+        $user->setPlainPassword($password);
+        $this->em->flush();
+
+        $config = $this->getServiceLocator()->get('Config');
+
+        $this->MailPlugin()->send(
+            'New password',
+            $user->getEmail(),
+            'forgotpassword.phtml',
+            array(
+                'username' => $user->getEmail(),
+                'firstName' => $user->getFirstName(),
+                'password' => $password,
+                'siteUrl' => $config['params']['site_url'],
+                'emailStaticContentUrl' => $config['params']['email_static_content_url']
+            )
+        );
+
+        $view->setVariable('message', 'New password was sent to your email');
+        return $view;
+    }
+
 }

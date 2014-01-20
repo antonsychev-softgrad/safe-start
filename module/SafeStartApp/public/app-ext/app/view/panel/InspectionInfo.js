@@ -12,8 +12,6 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
     },
 
     setInspectionInfo: function (inspection, data) {
-
-
         var infoGroup = [],
             vehicle = this.vehicle,
             checklist = data.checklist;
@@ -38,11 +36,11 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
 
         var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
         var odometerString = '';
-        if (inspection.get('odometerKms')) {
-            odometerString += inspection.get('odometerKms') + ' km';
+        if (inspection.get('odometer_kms') > 0) {
+            odometerString += inspection.get('odometer_kms') + ' km';
         }
-        if (inspection.get('odometerHours')) {
-            odometerString += ' ' + inspection.get('odometerHours') + ' hours';
+        if (inspection.get('odometer_hours') > 0) {
+            odometerString += ' ' + inspection.get('odometer_hours') + ' hours';
         }
         data.push(this.createGroup([
             this.createContainer('Service due', serviceDueString),

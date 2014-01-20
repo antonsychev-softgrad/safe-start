@@ -129,6 +129,16 @@ class User extends BaseEntity
     protected $department;
 
     /**
+     * @ORM\Column(type="string", name="recovery_token", nullable=true)
+     */
+    protected $recoveryToken;
+
+    /**
+     * @ORM\Column(type="datetime", name="recovery_expire", nullable=true)
+     */
+    protected $recoveryExpire;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $enabled = 1;
@@ -583,6 +593,52 @@ class User extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set recoveryExpire
+     *
+     * @param \DateTime $recoveryExpire
+     * @return User
+     */
+    public function setRecoveryExpire($recoveryExpire)
+    {
+        $this->recoveryExpire = $recoveryExpire;
+
+        return $this;
+    }
+
+    /**
+     * Get recoveryExpire
+     *
+     * @return \DateTime $recoveryExpire
+     */
+    public function getRecoveryExpire()
+    {
+        return $this->recoveryExpire;
+    }
+
+    /**
+     * Set recoveryToken
+     *
+     * @param string $recoveryToken
+     * @return User
+     */
+    public function setRecoveryToken($recoveryToken)
+    {
+        $this->recoveryToken = $recoveryToken;
+
+        return $this;
+    }
+
+    /**
+     * Get recoveryToken
+     *
+     * @return string $recoveryToken
+     */
+    public function getRecoveryToken($recoveryToken)
+    {
+        return $this->recoveryToken;
     }
 
     /**

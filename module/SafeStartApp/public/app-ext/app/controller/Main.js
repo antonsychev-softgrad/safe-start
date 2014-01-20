@@ -22,6 +22,18 @@ Ext.define('SafeStartExt.controller.Main', {
     }, {
         selector: 'viewport > SafeStartExtMain > SafeStartExtComponentContact',
         ref: 'contactPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemStatistic',
+        ref: 'systemStatisticPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentSystemSettings',
+        ref: 'systemSettingsPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentCompanySettings',
+        ref: 'companySettingsPanel'
+    }, {
+        selector: 'viewport > SafeStartExtMain > SafeStartExtComponentAlerts',
+        ref: 'alertsPanel'
     }],
 
     init: function () {
@@ -35,6 +47,10 @@ Ext.define('SafeStartExt.controller.Main', {
                 notSupportedAction: this.notSupportedAction,
                 changeCompanyAction: this.changeCompanyAction,
                 changeTab: this.changeTab
+            },
+            'SafeStartExtAbstractAlerts': {
+                increaseAlertsCounter: this.increaseAlertsCounter,
+                decreaseAlertsCounter: this.decreaseAlertsCounter
             }
         });
         
@@ -43,17 +59,16 @@ Ext.define('SafeStartExt.controller.Main', {
         Ext.ux.Router.on({
             routemissed: function(token, match, params) {
                 switch(token) {
-                    case 'system-statistic':
-                    case 'system-settings':
                     case 'company-settings':
-                    case 'alerts':
                         me.notSupportedAction();
                         break;
                 }
                 me.showDefaultPage();
             }
         });
+        this.startUpdateAlertsBadge();
     },
+
 
     updateMainMenu: function (menu) {
         var mainNavPanel = this.getMainNavPanel();
@@ -69,6 +84,7 @@ Ext.define('SafeStartExt.controller.Main', {
         if (company) {
             SafeStartExt.companyRecord = company;
             this.getMainNavPanel().enableAll();
+            this.updateAlertsBadge();
         }
     },
 
@@ -105,6 +121,7 @@ Ext.define('SafeStartExt.controller.Main', {
         }
         this.getMainNavPanel().setActiveButton('Contact');
         this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
     },
 
     showCompaniesPage: function () {
@@ -182,6 +199,78 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainPanel().getLayout().setActiveItem(page);
     },
 
+    showAlertsPage: function () {
+        var page = this.getAlertsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Alerts', {
+                companyId: this.getApplication().getCompanyRecord().getId()
+            });
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Alerts');
+        this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
+    },
+
+    showAlertsPageById: function (params) {
+        if (! params.id) {
+            this.redirectTo(this.getApplication().getDefaultPage());
+            return;
+        }
+
+        this.getMainPanel().fireEvent('setCompanyByIdAction', params.id);
+
+        var page = this.getAlertsPanel();
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.Alerts', {
+                companyId: params.id
+            });
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('Alerts');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showSystemStatisticPage: function () {
+        var page = this.getSystemStatisticPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.SystemStatistic');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('SystemStatistic');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showSystemSettingsPage: function () {
+        var page = this.getSystemSettingsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.SystemSettings');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('SystemSettings');
+        this.getMainPanel().getLayout().setActiveItem(page);
+    },
+
+    showCompanySettingsPage: function () {
+        var page = this.getCompanySettingsPanel();
+
+        if (! page) {
+            page = Ext.create('SafeStartExt.view.component.CompanySettings');
+            this.getMainPanel().add(page);
+        }
+
+        this.getMainNavPanel().setActiveButton('CompanySettings');
+        this.getMainPanel().getLayout().setActiveItem(page);
+        this.getMainNavPanel().enableAll();
+    },
+
     redirectTo: function(name) {
         Ext.History.add(name);
     },
@@ -207,6 +296,13 @@ Ext.define('SafeStartExt.controller.Main', {
             case 'SystemStatistic':
                 this.redirectTo('system-statistic');
                 break;
+            case 'Alerts':
+                if (this.getApplication().isAllowed('showAlertsPageById')) {
+                    this.redirectTo('alerts/' + SafeStartExt.companyRecord.getId());
+                } else {
+                    this.redirectTo('alerts');
+                }
+                break;
             case 'Users':
                 if (this.getApplication().isAllowed('showUsersPageById')) {
                     this.redirectTo('users/' + SafeStartExt.companyRecord.getId());
@@ -218,5 +314,61 @@ Ext.define('SafeStartExt.controller.Main', {
                 this.redirectTo(name.toLowerCase());
                 break;
         }
+    },
+
+    startUpdateAlertsBadge: function () {
+        var me = this;
+        this.stopUpdateAlertsBadge();
+        this.updateAlertsIntervalId = setInterval(function () {
+            me.updateAlertsBadge();
+        }, 60000);
+    },
+
+    stopUpdateAlertsBadge: function () {
+        if (this.hasOwnProperty('updateAlertsIntervalId')) {
+            clearInterval(this.updateAlertsIntervalId); 
+            delete this.updateAlertsIntervalId;
+        }
+    },
+
+    updateAlertsBadge: function() {
+        var me = this,
+            companyRecord = SafeStartExt.companyRecord,
+            mainNavPanel = this.getMainNavPanel();
+
+        if (!companyRecord || !companyRecord.get || !companyRecord.get('id')) {
+            return;
+        }
+        SafeStartExt.Ajax.request({
+            url: 'company/' + companyRecord.get('id') + '/get-new-incoming?now=' + new Date().getTime(),
+            success: function (result) {
+                var badgeText = '';
+                if (result.alerts) {
+                    badgeText = result.alerts;
+                }
+
+                me.alertsCounter = parseInt(result.alerts, 10);
+                mainNavPanel.setBadge('Alerts', badgeText);
+            },
+            silent: true
+        });
+    },
+
+    increaseAlertsCounter: function () {
+        console.log('inc');
+        var mainNavPanel = this.getMainNavPanel();
+        this.alertsCounter++;
+        mainNavPanel.setBadge('Alerts', this.alertsCounter);
+    },
+
+    decreaseAlertsCounter: function () {
+        console.log('dec');
+        var mainNavPanel = this.getMainNavPanel();
+        if (this.alertsCounter < 2) {
+            this.alertsCounter = 0;
+            mainNavPanel.setBadge('Alerts', '');
+        }
+        this.alertsCounter--;
+        mainNavPanel.setBadge('Alerts', this.alertsCounter);
     }
 });

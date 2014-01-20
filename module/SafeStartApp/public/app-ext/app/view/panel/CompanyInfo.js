@@ -8,5 +8,4 @@ Ext.define('SafeStartExt.view.panel.CompanyInfo', {
     initComponent: function () {
         this.callParent();
     }
-
 });

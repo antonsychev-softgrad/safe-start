@@ -4,6 +4,7 @@ Ext.define('SafeStartExt.model.Company', {
         {name: 'id', type: 'int', defaultValue: 0},
         {name: 'title', type: 'string'},
         {name: 'email', type: 'string'},
+        {name: 'logo', type: 'string'},
         {name: 'firstName', type: 'string'},
         {name: 'description', type: 'string'},
         {name: 'address', type: 'string'},
@@ -11,7 +12,7 @@ Ext.define('SafeStartExt.model.Company', {
         {name: 'restricted', type: 'boolean', defaultValue: false},
         {name: 'max_users', type: 'int', defaultValue: 0},
         {name: 'max_vehicles', type: 'int', defaultValue: 0},
-        {name: 'expiry_date', type: 'int', defaultValue: new Date()}
+        {name: 'expiry_date', type: 'int'}
     ],
 
     proxy: {

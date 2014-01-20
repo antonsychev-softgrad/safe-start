@@ -7,7 +7,6 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
     ],
 
     padding: '10 20',
-
     name: 'vehicle-users',
     layout: {
         type: 'vbox'
@@ -15,6 +14,7 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
 
     initComponent: function () {
         Ext.apply(this, {
+            buttonAlign: 'left',
             buttons: [{
                 text: 'Save',
                 ui: 'blue',
@@ -58,7 +58,8 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
                 queryMode: 'local',
                 userId: user.get('id'),
                 width: 400,
-                labelWidth: 130,
+                labelWidth: 140,
+                cls:'sfa-combobox',
                 value: user.get('assigned'),
                 store: {
                     fields: ['rank', 'title'],

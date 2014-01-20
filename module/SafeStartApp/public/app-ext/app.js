@@ -10,6 +10,7 @@ Ext.application({
     extend: 'SafeStartExt.Application',
     
     appFolder: '/app-ext/app',
+    appPropery: 'app',
 
     autoCreateViewport: false
 });

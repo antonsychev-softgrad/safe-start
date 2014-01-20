@@ -56,6 +56,7 @@ Ext.define('SafeStartExt.view.form.User', {
             xtype: 'combobox',
             editable: false,
             fieldLabel: 'Company role',
+            cls:'sfa-combobox',
             name: 'role',
             queryMode: 'local',
             displayField: 'title',

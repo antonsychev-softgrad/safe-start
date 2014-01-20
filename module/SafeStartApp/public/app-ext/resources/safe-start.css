@@ -1,3 +1,547 @@
+/* fix bugs */
+/* DatePicker при фокусе исчезает иконка. */
+/* add class .sfa-datepicker на все поля-календари */
+.sfa-datepicker .x-form-trigger-wrap-focus .x-form-date-trigger  {
+    background-position: 100% 50%;
+}
+.x-ie7p.x-ie7 .x-form-trigger-input-cell {
+    width: 130px;
+}
+.x-ie7p.x-ie7 .sfa-datapicker .x-form-trigger-input-cell input.x-form-field {
+    width: 80px !important;
+}
+
+/* выпадающий список - подравняем треугольник */
+.x-form-trigger, .x-form-trigger-wrap-focus .x-form-trigger {
+    background-position: 0 6px;
+}
+
+/* Combobox из-за закругленных углов выпадающий список выглядит кривовато. */
+.x-boundlist {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #a9acaf;
+    overflow: hidden;
+}
+.x-boundlist-selected {
+    background: #e8e8e8;
+    border-color: #a9acaf;
+}
+
+/* Чеклисты привести к общему дизайну (в том числе последнюю страницу Review). */
+
+.sfa-info-container .sfa-checklists-container table.x-field.x-form-type-radio {
+    margin: 0 10px;
+}
+.sfa-info-container .sfa-checklists-container .x-box-target {
+    min-width: 515px;
+}
+
+.sfa-info-container .sfa-checklists-container .x-field.x-table-plain.x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 120px;
+}
+.sfa-info-container .sfa-checklists-container .x-docked-top.x-toolbar-docked-top.x-toolbar-default-docked-top {
+    border: none;
+}
+
+/* маленькие кнопки */
+.sfa-info-container a.x-btn.x-btn-default-small, .sfa-info-container a.x-btn.x-btn-default-toolbar-small {
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+/* кнопки для ie7 ie8 */
+.x-ie8 .sfa-info-container a.x-btn.x-btn-default-small td .x-btn-inner {
+    padding: 2px 10px 3px;
+}
+.x-ie8 .sfa-info-container a.x-btn.x-btn-default-small td .x-btn-button {
+    height: auto;
+}
+
+.x-ie8 .sfa-info-container a.x-btn.x-btn-default-toolbar-small td .x-btn-inner {
+    padding: 2px 20px 3px;
+}
+.x-ie8 .sfa-info-container a.x-btn.x-btn-default-toolbar-small td .x-btn-button {
+    height: auto;
+}
+
+.x-btn-default-toolbar-small .x-btn-inner {
+    color: #fff;
+}
+.sfa-info-container a.x-btn-default-small-pressed.x-btn-focus.x-focus,
+.sfa-info-container a.x-btn-default-toolbar-small-pressed.x-btn-focus.x-focus {
+    background: #3085b6;
+    opacity: 1;
+}
+.sfa-info-container a.x-btn-default-small.x-over, .sfa-info-container a.x-btn-default-toolbar-small.x-over {
+    opacity: 0.92;
+}
+.sfa-info-container a.x-btn.x-btn-default-small .x-btn-inner,
+a.x-btn.x-btn-default-toolbar-small .x-btn-inner{
+    line-height: 18px;
+    font-size: 18px;
+    font-weight: normal;
+}
+.sfa-info-container a.x-btn.x-btn-default-small .x-btn-button,
+a.x-btn.x-btn-default-toolbar-small .x-btn-button{
+    height: 18px;
+}
+
+/*закладка companies у кнопки manage снизу обрезается буква g, фиксим*/
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button .x-btn-inner,
+.x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
+    overflow: visible;
+}
+.x-ie8p.x-ie8.x-ie8m .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button .x-btn-inner,
+.x-ie8p.x-ie8.x-ie8m  .x-toolbar.x-docked-bottom.x-toolbar-docked-bottom .x-btn .x-btn-wrap .x-btn-button {
+    height: 20px;
+}
+
+/*закладка vehicles у кнопки Reporting снизу обрезается буква g, фиксим*/
+.sfa-vehicles-tabpanel .x-tab-inner {
+    overflow: visible;
+}
+
+/* Spinner (ввод числа) фиксим иконки */
+.x-form-trigger.x-form-spinner-up, .x-form-trigger.x-form-spinner-down {
+    position: relative;
+    left: -20px;
+    top: -1px;
+    height: 15px;
+    background: url(img/spinner.png) no-repeat;
+}
+.x-form-trigger.x-form-spinner-up, .x-form-trigger.x-form-spinner-down {
+    background: url(img/spinner-ie8.png) no-repeat;
+}
+.x-form-trigger.x-form-spinner-up {
+    background-position: 0 -1px;
+    border-radius: 0 6px 0 0;
+}
+.x-form-trigger.x-form-spinner-down {
+    background-position: 0 -17px;
+    border-radius: 0 0 6px 0;
+    top: 0px;
+}
+.x-form-trigger-input-cell input.x-form-field.x-form-text {
+    border: 1px solid #d1d1d1;
+    border-top-color: #f3f4f4;
+    border-bottom-color: #a4a4a4;
+    box-shadow: 0 1px 0 #d1d1d1;
+    padding-right: 25px;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-up {
+    height: 16px;
+    background-position: 0 0;
+}
+.x-ie7p.x-ie7 .x-form-trigger.x-form-spinner-down {
+    height: 16px;
+}
+
+/* увеличим шрифт для тела страниц */
+.x-panel-body-default {
+    font-size: 16px;
+}
+.sfa-checklists-container .x-box-target .x-container.x-box-item span > div,
+.x-ie7 .sfa-checklists-container .x-box-inner .x-box-item > table td {
+    font-size: 18px;
+    color: #558fac;
+}
+.sfa-checklists-container .x-box-target > table.x-container.x-form-fieldcontainer {
+    margin-bottom: 10px;
+}
+
+/* comboboxes */
+
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field, .sfa-combobox .x-form-arrow-trigger {
+    border: 1px solid #e00606;
+    height: 32px;
+    -moz-border-radius: 6px 0 0 6px;
+    -webkit-border-radius: 6px 0 0 6px;
+    -khtml-border-radius: 6px 0 0 6px;
+    -o-border-radius: 6px 0 0 6px;
+    border-radius: 6px 0 0 6px;
+    border: 1px solid #f3f4f4;
+    border-top-color: #a9acaf;
+    border-bottom-color: #fbfbfb;
+    box-shadow: 0 1px 0 #f3f4f4;
+    background: #fff;
+    margin-bottom: 4px;
+}
+.sfa-combobox .x-form-arrow-trigger {
+    -moz-border-radius: 0 6px 6px 0;
+    -webkit-border-radius: 0 6px 6px 0;
+    -khtml-border-radius: 0 6px 6px 0;
+    -o-border-radius: 0 6px 6px 0;
+    border-radius: 0 6px 6px 0;
+    border-left: none;
+    position: relative;
+}
+.sfa-combobox.x-table-plain.x-form-item input.x-form-field {
+    border-right: none;
+}
+.sfa-combobox .x-form-arrow-trigger:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 13px;
+    border: 5px solid #0088cc;
+    border-bottom: none;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+/* Perform an inspection -> Review */
+
+.sfa-pre-start-inspection-review .sfa-alerts-container {
+    height: 30px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.sfa-pre-start-inspection-review .x-box-inner {
+    margin-bottom: 20px;
+}
+.sfa-pre-start-inspection-review .sfa-alerts-container .sfa-alerts-container-title-desc {
+    right: 20px;
+}
+.sfa-upload-image {
+    margin: 8px 0 8px 175px;
+}
+.sfa-upload-image a span.x-btn-inner {
+    padding-bottom: 2px;
+}
+.sfa-info-container .sfa-checklists-container .x-panel.form-scrollable.sfa-pre-start-inspection-review .x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
+    min-width: 50px;
+}
+
+/* Vehicle – Alerts */
+
+.sfa-previous-inspections-left-coll.x-panel-light-left {
+    background: #f7f7f7;
+}
+.sfa-previous-inspections-left-coll.x-panel-light-left .sfa-alert-title {
+    font-size: 18px;
+    cursor: pointer;
+}
+.sfa-alert-status-update {
+    margin: 15px 0 0;
+}
+.sfa-alert-status-update a.x-btn-default-small {
+    margin-left: 8px;
+}
+.sfa-alert-comment {
+    margin-top: 15px;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
+    position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 5px 8px 4px 5px;
+    border: 1px solid #dedede;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
+    padding: 0 8px 10px 10px;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    font-size: 18px;
+    color: #f00;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
+    width: 50px;
+    height: 50px;
+}
+.sfa-info-container > div.sfa-alerts-filter-form {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -khtml-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+.sfa-alerts-filter-form.x-docked-top {
+    padding: 10px 8px;
+}
+.sfa-alerts-filter-form.x-docked-top .sfa-combobox {
+    top: 2px!important;
+}
+
+/* Previous Inspections в две строки */
+
+.sfa-vehicles-tabpanel  .x-tab-bar.x-header.x-header-horizontal small {
+    position:  relative;
+    top: -5px;
+}
+
+/* красная кнопка */
+
+.sfa-info-container a.x-btn.sfa-red-button {
+    background: #c70505; /* Old browsers */
+    background: -moz-linear-gradient(top, #c70505 0%, #930000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c70505), color-stop(100%,#930000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #c70505 0%,#930000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #c70505 0%,#930000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #c70505 0%,#930000 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #c70505 0%,#930000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c70505', endColorstr='#930000',GradientType=0 ); /* IE6-9 */
+}
+
+/* Vehicle – Reporting */
+
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar a,
+.sfa-statistic.x-tabpanel-child .sfa-top-toolbar a.x-btn {
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+
+.sfa-statistic.x-tabpanel-child .sfa-top-toolbar {
+    margin: 12px 8px;
+}
+.sfa-statistic.x-tabpanel-child .sfa-top-toolbar .sfa-status.sfa-combobox {
+    top: 2px !important;
+}
+
+.sfa-statistic.vehicles-reporting .sfa-top-toolbar a .x-btn-inner,
+.sfa-statistic.x-tabpanel-child .sfa-top-toolbar a.x-btn .x-btn-inner {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 18px;
+}
+.sfa-vehicles-tabpanel .sfa-system-settings .x-tab-bar.x-header {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -khtml-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0;
+}
+.sfa-total-of-numbers td {
+    padding-left: 14px;
+    vertical-align: top;
+}
+.sfa-total-of-numbers td:first-child {
+    padding-right: 14px;
+}
+.sfa-total-of-numbers td > div {
+    padding-bottom: 3px;
+}
+/* Reporting- Alerts */
+.sfa-statistic.sfa-reporting-alerts .x-panel-body {
+overflow-x: hidden !important;
+}
+.sfa-statistic.sfa-reporting-alerts .sfa-statistic-item-odd,
+.sfa-statistic.sfa-reporting-alerts .sfa-statistic-item-even {
+    padding: 0 14px 2px;
+}
+
+
+/* Manage Checklists */
+
+.sfa-vehicles-tabpanel.sfa-info-container .x-tree-view  {
+    border: none;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .x-grid-header-ct {
+    border: none !important;
+}
+
+
+/* Alerts */
+
+.sfa-previous-inspections-left-coll .x-panel-header-light-left {
+    background: none;
+    border: none !important;
+}
+
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
+    position: relative;
+    float: left;
+    width: 50px;
+    height: 50px;
+    margin: 5px 8px 2px 5px;
+    border: 1px solid #dedede;
+    background: #eee;
+}
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
+    padding: 0 8px 10px 10px;
+}
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    font-size: 18px;
+    color: #f00;
+}
+.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
+    width: 50px;
+    height: 50px;
+}
+
+/* для нижнего меню, порезались надписи снизу */
+
+.sfa-bottomnav .x-btn-wrap .x-btn-inner, .sfa-bottomnav .x-btn-wrap .x-btn-button {
+    overflow: visible;
+}
+.sfa-bottomnav .x-btn-wrap .x-btn-badge {
+    background: none repeat scroll 0 0 #FF0000;
+    color: #FFFFFF;
+    display: block;
+    font-size: 12px;
+    min-width: 14px;
+    padding: 0 2px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+}
+
+.x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small, .x-window-body-closable a.x-btn.x-btn-default-small {
+    border-radius: 5px;
+    font-size: 16px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small .x-btn-inner,
+.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner {
+    font-size: 16px;
+    font-weight: 400;
+}
+.x-window-body.x-window-body-closable {
+    border: none;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable {
+    padding: 8px;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a.x-btn.x-btn-default-small td.x-btn-default-small-mc {
+    padding: 2px 5px 3px !important;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a.x-btn.x-btn-default-small td,
+.x-ie8p.x-ie8.x-ie8m a.x-btn.x-btn-default-toolbar-small td{
+    background: none;
+}
+.x-ie8p.x-ie8.x-ie8m .x-window-body-closable a {
+    background: none;
+}
+
+
+
+
+/* Settings */
+
+.sfa-info-container.sfa-system-settings .x-tree-view.x-fit-item {
+    border: none;
+}
+.sfa-info-container.sfa-system-settings .x-grid-header-ct.x-grid-header-ct-docked-top  {
+    border: none;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > .x-panel-body.x-panel-body-default.x-layout-fit {
+    border: 1px solid #dbdbdb !important;
+    border-top: none !important;
+    border-radius: 0 0 6px 6px;
+    /*box-shadow: none;*/
+}
+
+
+
+/* Statistic */
+
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-top-toolbar {
+    border: none;
+    padding: 10px 8px;
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child .sfa-top-toolbar .sfa-combobox {
+    top: 2px !important;
+}
+.sfa-info-container.sfa-system-settings > div {
+    -moz-border-radius: 0 0 6px 6px;
+    -webkit-border-radius: 0 0 6px 6px;
+    -khtml-border-radius: 0 0 6px 6px;
+    -o-border-radius: 0 0 6px 6px;
+    border-radius: 0 0 6px 6px;
+}
+
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child label {
+    text-align: right;
+}
+.sfa-info-container.sfa-system-settings .sfa-total td {
+    padding-left: 15px;
+}
+.sfa-info-container.sfa-system-settings .sfa-total td > div {
+    padding-bottom: 3px;
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child a.x-btn.x-btn-toolbar {
+    margin-left: 30px;
+    border-radius: 5px;
+    border: none;
+    padding: 7px 10px;
+    background: #4b9cd7; /* Old browsers */
+    background: -moz-linear-gradient(top, #4b9cd7 0%, #3892d3 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4b9cd7), color-stop(100%,#3892d3)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #4b9cd7 0%,#3892d3 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #4b9cd7 0%,#3892d3 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
+}
+.sfa-info-container.sfa-system-settings .sfa-statistic.x-tabpanel-child a .x-btn-inner {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 18px;
+}
+
+
+/* Refresh в левой колонке */
+.sfa-info-container a.x-btn.sfa-refresh-button {
+    background: none;
+    padding: 0;
+}
+
+.sfa-info-container a.x-btn.sfa-refresh-button .sfa-icon-refresh {
+    height: 18px;
+    width: 22px;
+    background: url(img/reload-ic-transparent.png) no-repeat;
+}
+.sfa-info-container a.x-btn.sfa-refresh-button span {
+    background-color: transparent;
+}
+.sfa-info-container a.x-btn.sfa-refresh-button .x-btn-inner {
+    height: 18px;
+    width: 22px;
+}
+
+
+
 .sfa-bottomnav {
   background: url(img/sfa-bottomnav_bg.jpg) repeat-x;
   height: 59px;
@@ -44,7 +588,7 @@
   color: #b8d3e4;
   padding-top: 1px;
   /*padding-bottom: 5px;*/
-  margin-top: 5px;
+  margin: 3px 0 2px;
   font-weight: normal;
 }
 
@@ -67,11 +611,58 @@
     box-shadow: none;
     border: none;
 }
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 50px;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div {
+    border-bottom: none !important;
+}
+
+.x-ie8p.x-ie8.x-ie8m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 49px;
+}
+
+
+
+
+
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top {
+    padding: 0 15px;
+}
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top {
+    padding-bottom: 1px;
+}
+
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top,
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin-top: 0;
+    padding-top: 1px;
+}
+.x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header a.sfa-tab-double-line td {
+    padding-top: 0;
+}
+
+.sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin-top: 2px;
+}
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header .sfa-tab-double-line.x-tab-default-top .x-tab-inner {
+    margin: 4px 0 2px;
+}
+
 .x-ie7 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
     height: 49px;
 }
+.x-ie7 .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
+    height: 50px;
+}
+
 .x-ie8 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top {
-    padding-top: 5px !important;
+    padding-top: 4px !important;
 }
 .sfa-vehicles-tabpanel .x-tab-bar.x-header .x-tab-default-top.x-tab-active {
     background: url(img/tab-active_bg.png) no-repeat 50% 100%;
@@ -159,6 +750,14 @@
     -khtml-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
+}
+.sfa-form-auth .sfa-text-forgot-password {
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+.sfa-form-auth .sfa-text-forgot-password:hover {
+    color: #666;
 }
 .sfa-form-auth .x-panel-form {
     background: #fff;
@@ -442,14 +1041,14 @@ font-size: 24px;
 .x-ie8 .sfa-left-coll .sfa-add-button {
     height: 33px;
 }
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tl, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tr, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tc, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bl, 
-.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-br, 
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-ml,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mr,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-mc,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tl,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tr,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-tc,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bl,
+.sfa-left-coll .sfa-add-button .x-table-plain .x-btn-br,
 .sfa-left-coll .sfa-add-button .x-table-plain .x-btn-bc {
     background: none !important;
 }
@@ -481,6 +1080,12 @@ font-size: 24px;
     padding-left: 4px;
     padding-right: 0;
 }
+.sfa-datepicker.sfa-expiry-date {
+    margin-right: 22px;
+}
+
+
+
 /*.sfa-company-settings .x-toolbar-footer a.x-btn {
     margin-right: 15px;
 }
@@ -545,6 +1150,13 @@ font-size: 24px;
     border-radius: 6px 6px 0 0;
 }
 
+/* ie9 */
+
+.x-ie9p.x-ie9.x-ie9m .sfa-vehicles-tabpanel .x-tab-bar.x-header {
+    height: 50px;
+}
+
+
 .sfa-vehicles-tabpanel > span {
     padding: 24px 26px;
 }
@@ -579,21 +1191,34 @@ font-size: 24px;
     background: none;
 }
 .sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item {
-    border-top: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #dedede;
+}
+.sfa-vehicles-tabpanel .sfa-previous-inspections-left-coll .sfa-vehicle-item:last-child {
+    box-shadow: 0 1px 0 #FFFFFF;
 }
 
 .sfa-info-container > div {
-    border: 1px solid red;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
     -khtml-border-radius: 6px;
     -o-border-radius: 6px;
     border-radius: 6px;
-    border: 1px solid #dbdbdb;
-    border-left-color: #c0c0c0;
-    border-right-color: #c0c0c0;
+    border: 1px solid #dbdbdb !important;
+    border-left-color: #c0c0c0 !important;
+    border-right-color: #c0c0c0 !important;
     background: #e8e8e8 url(img/sfa-info-container-top-border.gif) repeat-x;
     box-shadow: rgba(219, 219, 219, 1) 1px 0 0 inset, rgba(219, 219, 219, 1) -1px 0 0 inset;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-header-horizontal {
+    box-shadow: none;
+}
+.sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
+    box-shadow: rgba(192, 192, 192, 1) 1px -1px 1px inset, rgba(192, 192, 192, 1) -1px -1px 1px inset;
+}
+.x-ie8p.x-ie8.x-ie8m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body,
+.x-ie7p.x-ie7.x-ie7m .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div.x-panel-body {
+    border-color: #c0c0c0 !important;
 }
 
 .sfa-info-container .sfa-company-settings > .x-panel-body {
@@ -609,6 +1234,17 @@ font-size: 24px;
     padding: 0;
     border: none;
     background: none;
+}
+.x-ie7 .sfa-info-container.sfa-system-settings.sfa-vehicles-tabpanel > div:first-child {
+    background: url(img/tab_bg.png) repeat-x;
+}
+
+
+
+
+
+.x-ie7 .sfa-info-container > div.sfa-alerts-filter-form {
+    padding: 10px 8px;
 }
 
 .sfa-info-container .x-panel-body.x-panel-body-default.x-panel-body-default {
@@ -638,6 +1274,15 @@ font-size: 24px;
     padding-top: 4px;
     height: 33px;
 }
+.x-ie8 .sfa-info-container .sfa-checklists-container input.x-form-radio,
+.x-ie8 .sfa-info-container .sfa-checklists-container input.x-form-checkbox {
+    height: 15px;
+}
+
+
+
+
+
 .sfa-info-container input.x-form-text, .sfa-info-container .x-form-textarea {
     padding: 0 30px 0 7px;
     height: 32px;
@@ -665,7 +1310,7 @@ font-size: 24px;
     padding: 24px 26px 20px;
 }
 .sfa-vehicles-tabpanel > div > .x-panel-body {
-    border-left: 2px solid #c0c0c0 !important;
+    border-left: 1px solid #c0c0c0 !important;
     border-bottom: 1px solid #dbdbdb !important;
     border-right: 1px solid #c0c0c0 !important;
     -moz-border-radius: 0 0 5px 5px;
@@ -778,11 +1423,23 @@ font-size: 24px;
     .sfa-previous-inspections-info .x-panel-body .x-component{
         padding: 10px 15px;
     }
-    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top {
+    .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-top,
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div,
+    .x-ie7 .sfa-checklists-container .x-toolbar-docked-top .sfa-group-title div {
         padding-top: 15px;
         font-size: 28px;
         color: #558fac;
     }
+
+    .x-ie7 .sfa-checklists-container .x-toolbar-docked-top .sfa-group-title div {
+        padding-top: 0;
+        padding-bottom: 3px;
+    }
+
+    .sfa-checklists-container .x-box-target .sfa-group-title.x-container.x-box-item span div {
+        padding: 5px 0 10px;
+    }
+
     .sfa-previous-inspections-info .sfa-group-title.sfa-group-title-sub {
         font-size: 20px;
         color: #558fac;
@@ -959,7 +1616,7 @@ table.x-form-trigger-wrap td {
 
 
 /*
-.x-btn-green-medium-tc, 
+.x-btn-green-medium-tc,
 .x-btn-green-medium-bc {
     height: 5px !important;
 }
@@ -988,19 +1645,19 @@ table.x-form-trigger-wrap td {
     background-position-y: -36px;
 }
 
-.x-btn-green-medium-tl, 
+.x-btn-green-medium-tl,
 .x-btn-blue-medium-tl,
 .x-btn-red-medium-tl {
     background-position-y: -15px;
 }
 
-.x-btn-green-medium-tr, 
+.x-btn-green-medium-tr,
 .x-btn-blue-medium-tr,
 .x-btn-red-medium-tr {
     background-position-y: -20px;
 }
 
-.x-btn-green-medium-tl, 
+.x-btn-green-medium-tl,
 .x-btn-blue-medium-tl,
 .x-btn-red-medium-tl {
     background-position-y: -13px;
@@ -1247,7 +1904,7 @@ table.x-form-trigger-wrap td {
     color: #AAA;
 }
 
-.sfa-review-details-item.x-item-selected, 
+.sfa-review-details-item.x-item-selected,
 .sfa-review-details-item:hover {
     background-color: #E3EDF1;
 }
@@ -1255,14 +1912,19 @@ table.x-form-trigger-wrap td {
 
 .sfa-review-details-item {
     border-bottom: 1px solid #DEDEDE;
+    border-top: 1px solid #fff;
 }
 
-.sfa-review-details-item:first {
-    border-top: 1px solid #DEDEDE;
+.sfa-review-details-item:first-child {
+    border-top: none;
+}
+.sfa-review-details-item:last-child {
+    box-shadow: 0 1px 0 #fff;
 }
 
 .sfa-vehicle-inspection-checklist {
     border-right: 1px solid #DEDEDE;
+    background: #f7f7f7;
 }
 
 .x-form-file-btn input {
@@ -1335,9 +1997,125 @@ table.x-form-trigger-wrap td {
 .x-tree-view .x-grid-cell-inner .x-tree-node-text {
     /*white-space: normal;*/
     font-size: 16px;
-} 
+}
 
 .sfa-icon-leaf {
     background-image: url(img/leaf.png) !important;
 }
+
+
+/* Add vehicle кнопка в левой колонке */
+.x-ie8p.x-ie8.x-ie8m .sfa-left-coll .sfa-add-button .x-btn-inner {
+    position: relative;
+    top: -1px;
+}
+.x-ie7 .sfa-left-coll .sfa-add-button .x-btn-inner {
+    position: relative;
+    top: -2px;
+}
+
+/* ie7 */
+/* панель с табами */
+.x-ie7 .sfa-vehicles-tabpanel a .x-tab-default-top-mc {
+    padding-top: 0;
+    padding-bottom: 6px;
+}
+
+/* Perform An Inspection всплывающее окно */
+
+.x-ie7 .x-window-body-closable .sfa-previous-alert-item {
+    padding: 2px 10px;
+}
+
+.x-ie7 .x-closable.x-window-closable a.x-btn td {
+    background: #4297d5;
+}
+
+.x-ie7 .sfa-vehicles-tabpanel a span.x-tab-inner {
+    padding-bottom: 2px;
+}
+/* кнопка */
+.x-ie7 .sfa-vehicles-tabpanel.sfa-info-container .x-tabpanel-child .x-btn td {
+    /*background: #4297d5;
+    padding: 2px 5px 3px;*/
+}
+
+/* Tab Perform An Inspection */
+
+.x-ie7 .x-tabpanel-child .sfa-vehicle-inspection-checklist .sfa-review-details-item {
+    width: 229px;
+}
+
+.x-ie7 .sfa-checklists-container .x-docked-top a.x-btn td.x-btn-default-small-mc {
+    padding: 2px 5px 3px;
+}
+
+/* PRE START INSPECTION - ADDITIONAL label отодвинем чуть влево */
+.x-ie7 .sfa-additional label {
+    position: relative;
+    left: -12px;
+}
+
+/* Alerts Tab */
+
+.x-ie7 .sfa-alerts-filter-form.x-docked-top .x-box-target >table {
+    width: 150px;
+    margin-right: 50px;
+}
+.x-ie7 .sfa-alerts-filter-form.x-docked-top table.sfa-combobox {
+    width: auto;
+}
+
+/* комбобоксы */
+.x-ie7 .sfa-combobox .x-form-arrow-trigger {
+    position: relative;
+    left: -4px;
+    border-right: none;
+    background: #fff url(img/triangle-blue.png) no-repeat 50% 50%;
+}
+
+/* кнопка Alerts Tab - Refresh */
+.x-ie7 .sfa-alerts-filter-form a.x-btn td {
+    padding: 4px 5px 6px;
+    background: #4297d5;
+}
+.x-ie7 .sfa-alerts-filter-form a.x-btn table {
+    border-collapse: collapse;
+}
+.x-ie7 .sfa-alerts-filter-form.x-docked-top .sfa-combobox {
+    top: 3px!important;
+}
+/* Previous Inspections кнопки */
+.x-ie7 .sfa-previous-inspections-info a.x-btn td {
+    padding: 4px 5px 5px;
+    background: #4297d5;
+}
+.x-ie7 .sfa-previous-inspections-info .sfa-red-button.x-btn td {
+    background: #ad0303;
+}
+
+.x-ie7 .sfa-bottomnav .hide-badge {
+    display: none !important;
+}
+
+/* Manage Checklists */
+
+.x-ie7 .sfa-manage-checklists td {
+    background: none;
+}
+.x-ie7 .sfa-manage-checklists .x-docked-top a.x-btn td {
+    padding: 4px 5px 5px;
+    background: #4297d5;
+}
+
+.sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button td,
+.sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button span {
+   background-color: #e8e8e8 !important;
+   padding: 0;
+}
+
+
+
+
+
 

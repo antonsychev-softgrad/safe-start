@@ -20,6 +20,9 @@ Ext.define('SafeStartApp.controller.Main', {
             },
             SafeStartVehicleAlertPanel: {
                 updateAlertsBadge: 'updateAlertsBadge'
+            },
+            'SafeStartCompaniesPage list[name=companies]': {
+                itemtap: 'selectCompany'
             }
         },
 
@@ -48,6 +51,13 @@ Ext.define('SafeStartApp.controller.Main', {
         }, this);
     },
 
+    selectCompany: function () {
+        var me = this;
+        setTimeout(function () {
+            me.updateAlertsBadge();
+        }, 100);
+    },
+
     startUpdateAlertsBadge: function () {
         var me = this;
         this.stopUpdateAlertsBadge();
@@ -65,6 +75,7 @@ Ext.define('SafeStartApp.controller.Main', {
 
     updateAlertsBadge: function() {
         var self = this;
+        console.log('update');
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         SafeStartApp.AJAX('company/' + SafeStartApp.companyModel.get('id') + '/get-new-incoming?now=' + new Date().getTime(), {}, function (result) {
             if (SafeStartApp.userModel.get('role') == 'superAdmin') {

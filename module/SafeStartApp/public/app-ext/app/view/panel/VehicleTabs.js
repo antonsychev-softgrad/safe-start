@@ -3,10 +3,11 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     requires: [
         'SafeStartExt.view.form.Vehicle',
         'SafeStartExt.view.panel.Inspections',
-        'SafeStartExt.view.panel.Alerts',
+        'SafeStartExt.view.panel.VehicleAlerts',
         'SafeStartExt.view.panel.Inspection',
         'SafeStartExt.view.panel.ManageChecklist',
-        'SafeStartExt.view.panel.VehicleUsers'
+        'SafeStartExt.view.panel.VehicleUsers',
+        'SafeStartExt.view.panel.VehicleReports'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
@@ -15,10 +16,11 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
 
     initComponent: function () {
         var activeTab;
+        var tabs = this.getTabs();
         Ext.apply(this, {
             items: [{
                 xtype: 'tabpanel',
-                items: this.getTabs()
+                items: tabs 
             }]
         });
 
@@ -52,7 +54,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         if (! activeTab) {
             activeTab = this.down('tabpanel').items.first();
         }
-        activeTab.configData = this.configData;
+        activeTab.configData = this.params;
 
         this.down('tabpanel').setActiveTab(activeTab);
     },
@@ -70,9 +72,11 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
         var tabs = [];
 
         this.vehicle.pages().each(function (page) {
+            var title = page.get('text');
             var tab = {
                 action: page.get('action'),
                 title: page.get('text'),
+                pageConfig: page,
                 vehicle: this.vehicle
             };
             switch (tab.action) {
@@ -81,6 +85,12 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     break;
                 case 'inspections':
                     tab.xtype = 'SafeStartExtPanelInspections';
+                    if (page.get('badge')) {
+                        tab.title = title + '<br> <small>(' + page.get('badge') + ')</small>';
+                        tab.tabConfig = {
+                            cls: 'sfa-tab-double-line'
+                        };
+                    } 
                     break;
                 case 'fill-checklist':
                     tab.xtype = 'SafeStartExtPanelInspection';
@@ -92,19 +102,14 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     tab.xtype = 'SafeStartExtPanelVehicleUsers';
                     break;
                 case 'alerts':
-                    tab.xtype = 'SafeStartExtPanelAlerts';
+                    tab.xtype = 'SafeStartExtPanelVehicleAlerts';
+                    if (parseInt(page.get('counter'), 10)) {
+                        tab.title = title + ' (' + page.get('counter') + ')';
+                        tab.enableCounterBadge = true;
+                    }
                     break;
                 case 'report':
-                    Ext.apply(tab, {
-                        xtype: 'container',
-                        listeners: {
-                            beforeactivate: function () {
-                                this.up('SafeStartExtMain').fireEvent('notSupportedAction');
-                                return false;
-                            }
-                        }
-                    });
-
+                    tab.xtype = 'SafeStartExtPanelVehicleReports';
                     break;
             }
             tabs.push(tab);

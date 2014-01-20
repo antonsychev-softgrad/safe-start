@@ -8,15 +8,8 @@ Ext.define('SafeStartExt.view.panel.CompaniesList', {
     cls: 'sfa-left-coll',
     layout: 'fit',
     ui: 'light-left',
-    // autoScroll: true,
     overflowY: 'auto',
-    // minWidth: 2,
     border: 0,
-    // itemConfig: {
-    //     width: 250
-    // },
-
-
 
     initComponent: function() {
         var store = SafeStartExt.store.Companies.create({

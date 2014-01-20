@@ -30,7 +30,8 @@ Ext.define('SafeStartExt.Application', {
         'Companies',
         'Company',
         'Contact',
-        'Users'
+        'Users',
+        'SystemSettings'
     ],
 
     enableRouter: false,
@@ -43,7 +44,12 @@ Ext.define('SafeStartExt.Application', {
         'company/:id': 'main#showCompanyPageById',
         'contact': 'main#showContactPage',
         'users': 'main#showUsersPage',
-        'users/:id': 'main#showUsersPageById'
+        'alerts': 'main#showAlertsPage',
+        'system-statistic': 'main#showSystemStatisticPage',
+        'system-settings': 'main#showSystemSettingsPage',
+        'company-settings': 'main#showCompanySettingsPage',
+        'users/:id': 'main#showUsersPageById',
+        'alerts/:id': 'main#showAlertsPageById'
     },
 
     acl: {
@@ -69,6 +75,8 @@ Ext.define('SafeStartExt.Application', {
             'showAlertsPageById',
             'showUsersPage',
             'showUsersPageById',
+            'showAlertsPage',
+            'showAlertsPageById',
             'showSystemSettingsPage',
             'showSystemStatisticPage'
         ]

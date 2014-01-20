@@ -247,7 +247,8 @@ Ext.define('SafeStartExt.controller.Company', {
                 success: function (result) {
                     me.getInspectionPanel().createInspection(
                         Ext.create('SafeStartExt.store.InspectionChecklists', {data: result.checklist}),
-                        []
+                        null,
+                        result.alerts
                     );
                 }
             });
@@ -270,7 +271,6 @@ Ext.define('SafeStartExt.controller.Company', {
     },
 
     actionChange: function () {
-        console.log(arguments);
     },
 
     saveChecklistField: function (form) {
