@@ -40,7 +40,7 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                 items: [{
                     xtype: 'dataview',
                     name: 'alerts',
-                    itemSelector: 'div.sfa-alert-item',
+                    itemSelector: '.sfa-alert-info',
                     emptyText: 'No new Alerts',
                     tpl: new Ext.XTemplate(
                         '<tpl for=".">',
@@ -101,7 +101,7 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                     name: 'alert',
                     itemTpl: new Ext.XTemplate(
                         '<div class="sfa-alert-info">',
-                        '<div>Vehicle: vehicle.title (<b>{vehicle.plantId}</b>)</div>',
+                        '<div>Vehicle: {vehicle.title} (<b>{vehicle.plantId}</b>)</div>',
                         '<div>Fault: <b>{alertDescription}</b></div>',
                         '<div>Description: {description} </div>',
                         '<div>Added by: {user.firstName} {user.lastName} at {creationDate}</div>',
