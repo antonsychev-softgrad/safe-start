@@ -64,7 +64,6 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                             },
                             getCounter: function (history) {
                                 var count = 0;
-                                console.log(history);
                                 Ext.each(history, function (item) {
                                     if (item.action == 'alert_refreshed') {
                                         count++;
@@ -72,7 +71,6 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                                         count = 0;
                                     }
                                 });
-                                console.log(count);
                                 if (count > 0) {
                                     count++;
                                     return '<div class="sfa-alert-badge">' + count + '</div>';
