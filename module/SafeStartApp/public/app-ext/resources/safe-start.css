@@ -2100,8 +2100,14 @@ table.x-form-trigger-wrap td {
     background: #4297d5;
 }
 
-.sfa-info-container a.x-btn.sfa-refresh-button table td {
-   background: #e8e8e8;
+.sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button td,
+.sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button span {
+   background-color: #e8e8e8 !important;
    padding: 0;
 }
+
+
+
+
+
 
