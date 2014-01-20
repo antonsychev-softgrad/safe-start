@@ -210,9 +210,12 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     margin-right: 20px;
 }
 
-.sfa-pre-start-inspection-review .x-box-inner {
+.sfa-pre-start-inspection-review-hours {
     margin-bottom: 20px;
 }
+/*.sfa-pre-start-inspection-review .x-box-inner {
+    margin-bottom: 20px;
+}*/
 .sfa-pre-start-inspection-review .sfa-alerts-container .sfa-alerts-container-title-desc {
     right: 20px;
 }
@@ -1961,14 +1964,14 @@ table.x-form-trigger-wrap td {
 
 .sfa-alerts-container .sfa-alerts-container-title {
     color: #F00;
-    font-size: 18px;
+    font-size: 26px;
     position: absolute;
     left: 0;
     top: 0;
 }
 
 .sfa-alerts-container .sfa-alerts-container-title-desc {
-    font-size: 18px;
+    font-size: 26px;
     color: #F00;
     position: absolute;
     right: 0;
