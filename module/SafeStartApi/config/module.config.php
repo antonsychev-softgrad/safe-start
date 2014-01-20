@@ -67,6 +67,24 @@ $general = array(
                         )
                     )
                 ),
+                'run-sub-expiry-email-notify' => array(
+                    'options' => array(
+                        'route' => 'api email-notify',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'processSubExpiryEmailNotify'
+                        )
+                    )
+                ),
+                'run-sub-expiry-push-notify' => array(
+                    'options' => array(
+                        'route' => 'api push-notify',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'processSubExpiryPushNotify'
+                        )
+                    )
+                ),
                 'set-def-bd-data' => array(
                     'options' => array(
                         'route' => 'doctrine set-def-data [--verbose|-v]',
@@ -121,6 +139,7 @@ $general = array(
                         )
                     )
                 ),
+
             ),
         ),
     ),

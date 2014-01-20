@@ -149,6 +149,7 @@ class JobsController extends AbstractActionController
         $this->logger->info("Success Process CheckList Re-send Action with checkListId = $checkListId \r\n");
     }
 
+
     public function pingEmailAction()
     {
         $this->MailPlugin()->send(

@@ -194,6 +194,8 @@ Ext.define('SafeStartApp.view.pages.panel.SystemGeneralReport', {
             xtype: 'chart',
             id: 'SafeStartSystemStatisticChart',
             minHeight: 300,
+            width: 500,
+            height: 500,
             flex: 1,
             animate: true,
             store: {
