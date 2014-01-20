@@ -152,6 +152,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
         var messageBox = Ext.create('Ext.window.Window', {
             title: 'Outstanding alerts',
             padding: 10,
+            maxHeight: this.getHeight() * 0.8,
+            autoScroll: true,
             width: 300,
             items: [{
                 xtype: 'dataview',
