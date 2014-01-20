@@ -90,8 +90,8 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
         };
 
         SafeStartExt.Ajax.request({
-            // url: 'admin/getInspectionBreakdownsStatistic',
-            url: '/ajax/inspection-breakdowns.json',
+            url: 'admin/getInspectionBreakdownsStatistic',
+            // url: '/ajax/inspection-breakdowns.json',
             data: post,
             success: function (result) {
                 if (!self.chartAdded) {
