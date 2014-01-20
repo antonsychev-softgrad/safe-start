@@ -51,7 +51,7 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                     ui: 'action',
                     action: 'refresh',
                     iconCls: 'refresh',
-                    text: 'Reload',
+                    text: 'Refresh',
                     handler: function() {
                         this.up('SafeStartExtPanelInspectionBreakdownsReport').updateDataView();
                     }
