@@ -2059,6 +2059,12 @@ table.x-form-trigger-wrap td {
     left: -12px;
 }
 
+.sfa-checklists-container .sfa-additional label.x-form-item-label {
+    font-size: 20px;
+    width: 200px !important;
+    padding-bottom: 3px;
+}
+
 /* Alerts Tab */
 
 .x-ie7 .sfa-alerts-filter-form.x-docked-top .x-box-target >table {
