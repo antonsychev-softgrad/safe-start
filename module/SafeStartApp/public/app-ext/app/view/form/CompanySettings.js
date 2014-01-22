@@ -130,6 +130,7 @@ Ext.define('SafeStartExt.view.form.CompanySettings', {
                 title: 'Subscription:',
                 hidden: false,
                 disabled: true,
+                width:200,
                 cls: 'subscription-fieldset',
                 items: [{
                     xtype: 'textfield',

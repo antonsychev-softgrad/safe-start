@@ -383,23 +383,37 @@ overflow-x: hidden !important;
     float: left;
     width: 50px;
     height: 50px;
-    margin: 5px 8px 2px 5px;
+    margin: 0 8px 4px 5px;
     border: 1px solid #dedede;
     background: #eee;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
-    padding: 0 8px 10px 10px;
+    padding: 0 8px 15px 10px;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
     position: absolute;
     top: 0;
-    right: 3px;
-    font-size: 18px;
-    color: #f00;
+    right: 0;
+    min-width: 6px;
+    text-align: center;
+    padding: 1px 5px;
+    font-size: 12px;
+    color: #fff;
+    background: #ff1a1a; /* Old browsers */
+    background: -moz-linear-gradient(top, #ff1a1a 0%, #b30000 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ff1a1a), color-stop(100%,#b30000)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ff1a1a 0%,#b30000 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ff1a1a 0%,#b30000 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ff1a1a 0%,#b30000 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #ff1a1a 0%,#b30000 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff1a1a', endColorstr='#b30000',GradientType=0 ); /* IE6-9 */
 }
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
+}
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-vehicle {
+clear: both;
 }
 
 /* для нижнего меню, порезались надписи снизу */
@@ -2123,7 +2137,14 @@ table.x-form-trigger-wrap td {
    padding: 0;
 }
 
+.x-form-invalid-icon {
+    position: relative;
+    left: -23px;
+}
 
+.sfa-form-auth .x-panel-form .x-form-field {
+padding: 2px 7px 2px;
+}
 
 
 
