@@ -24,12 +24,13 @@ class UserController extends RestController
             if(!$userInfo->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
             if ($this->_checkExpiryDate()) throw new Rest403('You company subscription expired');
             $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
+
             $this->answer = array(
                 'authToken' => $this->sessionManager->getId(),
                 'userInfo' => $userInfo->toArray(),
                 'errorMessage' => 'User already logged in',
             );
-            return $this->AnswerPlugin()->format($this->answer, $errorCode);
+            return $this->AnswerPlugin()->format($this->answer, 0);
         }
 
         $identity = isset($this->data->username) ? $this->data->username : '';
