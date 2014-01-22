@@ -901,6 +901,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 xtype: 'numberfield',
                 fieldLabel: 'Hours',
                 minValue: 0,
+                cls:'sfa-pre-start-inspection-review-hours',
                 maxValue: 100000000,
                 name: 'currentOdometerHours',
                 value: this.vehicle.get('currentOdometerHours')

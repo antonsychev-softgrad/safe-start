@@ -36,13 +36,13 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                     cls: 'sfa-datepicker sfa-from',
                     name: 'from',
                     fieldLabel: 'From',
-                    labelWidth: '',
+                    labelWidth: 40,
                     value: prevYear
                 }, {
                     xtype: 'datefield',
                     name: 'to',
                     fieldLabel: 'To',
-                    labelWidth: '',
+                    labelWidth: 20,
                     cls: 'sfa-datepicker',
                     value: now 
                 }, {

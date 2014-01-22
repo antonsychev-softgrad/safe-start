@@ -69,6 +69,13 @@ Ext.define('SafeStartExt.Application', {
             'showCompanySettingsPage',
             'showContactPage'
         ],
+        'companyAdmin': [
+            'showCompanyPage',
+            'showAlertsPage',
+            'showUsersPage',
+            'showCompanySettingsPage',
+            'showContactPage'
+        ],
         'superAdmin': [
             'showCompaniesPage',
             'showCompanyPageById',
@@ -116,6 +123,7 @@ Ext.define('SafeStartExt.Application', {
                 return 'auth';
             case 'companyUser':
             case 'companyManager':
+            case 'companyAdmin':
                 return 'company';
             default:
                 return 'companies';
