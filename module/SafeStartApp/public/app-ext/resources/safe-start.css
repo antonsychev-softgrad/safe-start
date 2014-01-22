@@ -1,3 +1,7 @@
+body{ 
+    background-color: #1985D0;
+}
+
 /* fix bugs */
 /* DatePicker при фокусе исчезает иконка. */
 /* add class .sfa-datepicker на все поля-календари */
