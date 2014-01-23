@@ -262,13 +262,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
     padding: 0 8px 10px 10px;
 }
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
-    position: absolute;
-    top: 0;
-    right: 3px;
-    font-size: 18px;
-    color: #f00;
-}
+
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
@@ -394,6 +388,7 @@ overflow-x: hidden !important;
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
     padding: 0 8px 15px 10px;
 }
+
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
     position: absolute;
     top: 0;
@@ -415,6 +410,7 @@ overflow-x: hidden !important;
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
+    background-position: 50% 50%;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-vehicle {
 clear: both;
@@ -780,7 +776,7 @@ clear: both;
 .sfa-form-auth .sfa-text-forgot-password:hover {
     color: #666;
 }
-.sfa-form-auth .x-panel-form {
+.sfa-form-auth .x-panel-form, .sfa-form-contact .x-panel-form {
     background: #fff;
 }
 .sfa-form-auth .x-panel-form .x-form-field.x-form-text,
@@ -2141,7 +2137,7 @@ table.x-form-trigger-wrap td {
    padding: 0;
 }
 
-.x-form-invalid-icon {
+.x-form-dirty .x-form-invalid-icon {
     position: relative;
     left: -23px;
 }
@@ -2150,6 +2146,10 @@ table.x-form-trigger-wrap td {
 padding: 2px 7px 2px;
 }
 
+/* сделаем картинки из алертов по центру */
 
-
-
+.sfa-alert-info-fulldisplay .x-img.x-box-item {
+    position: static !important;
+    display: block;
+    margin: 0 auto !important;
+}

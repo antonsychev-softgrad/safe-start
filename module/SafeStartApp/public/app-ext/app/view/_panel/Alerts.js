@@ -94,6 +94,7 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                 width: '100%',
                 autoScroll: true,
                 name: 'alert-details',
+                cls:'sfa-alert-info-fulldisplay',
                 padding: '10 20',
                 hidden: true,
                 items: [{
