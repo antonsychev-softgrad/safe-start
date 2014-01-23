@@ -251,29 +251,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-alert-comment {
     margin-top: 15px;
 }
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
-    position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
-    margin: 5px 8px 4px 5px;
-    border: 1px solid #dedede;
-    cursor: pointer;
-}
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
-    padding: 0 8px 10px 10px;
-}
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
-    position: absolute;
-    top: 0;
-    right: 3px;
-    font-size: 18px;
-    color: #f00;
-}
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
-    width: 50px;
-    height: 50px;
-}
+
 .sfa-info-container > div.sfa-alerts-filter-form {
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
@@ -383,23 +361,10 @@ overflow-x: hidden !important;
     border: none !important;
 }
 
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
-    position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
-    margin: 0 8px 4px 5px;
-    border: 1px solid #dedede;
-    background: #eee;
-}
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
-    padding: 0 8px 15px 10px;
-}
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
     position: absolute;
     top: 0;
-    right: 0;
-    min-width: 6px;
+    right: 170px;
     text-align: center;
     padding: 1px 5px;
     font-size: 12px;
@@ -413,12 +378,23 @@ overflow-x: hidden !important;
     background: linear-gradient(to bottom, #ff1a1a 0%,#b30000 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff1a1a', endColorstr='#b30000',GradientType=0 ); /* IE6-9 */
 }
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
+
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
+    position: relative;
+    margin: 5px 8px 4px 5px;
+}
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
+    padding: 0 8px 10px 10px;
+}
+
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
-}
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-vehicle {
-clear: both;
+    float: left;
+    margin-right: 8px;
+    border: 1px solid #dedede;
+    background: #eee;
+    background-position: 50% 50%;
 }
 
 /* для нижнего меню, порезались надписи снизу */
@@ -439,6 +415,8 @@ clear: both;
     top: 0;
 }
 
+/* сообщения */
+
 .x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small, .x-window-body-closable a.x-btn.x-btn-default-small {
     border-radius: 5px;
     font-size: 16px;
@@ -454,7 +432,8 @@ clear: both;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
 }
 .x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small .x-btn-inner,
-.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner {
+.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner,
+.x-window-closable a.x-btn.x-btn-default-small .x-btn-inner {
     font-size: 16px;
     font-weight: 400;
 }
@@ -475,7 +454,9 @@ clear: both;
     background: none;
 }
 
-
+.x-ie8m .x-window-closable .x-docked-bottom.x-container-docked-bottom {
+    padding-bottom: 10px !important;
+}
 
 
 /* Settings */
@@ -781,7 +762,7 @@ clear: both;
 .sfa-form-auth .sfa-text-forgot-password:hover {
     color: #666;
 }
-.sfa-form-auth .x-panel-form {
+.sfa-form-auth .x-panel-form, .sfa-form-contact .x-panel-form {
     background: #fff;
 }
 .sfa-form-auth .x-panel-form .x-form-field.x-form-text,
@@ -1682,18 +1663,7 @@ table.x-form-trigger-wrap td.x-trigger-cell {
     background-position-y: -20px;
 }
 
-.x-btn-green-medium-tl,
-.x-btn-blue-medium-tl,
-.x-btn-red-medium-tl {
-    background-position-y: -13px;
-}
 
-.x-btn-green-medium-bc,
-.x-btn-blue-medium-bc,
-.x-btn-red-medium-bc {
-    background-position-y: -8px;
-}
-*/
 .x-form-date-trigger {
     margin-top: 3px;
 }
@@ -2053,7 +2023,7 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 }
 
 .x-ie7 .x-closable.x-window-closable a.x-btn td {
-    background: #4297d5;
+    /*background: #4297d5;*/
 }
 
 .x-ie7 .sfa-vehicles-tabpanel a span.x-tab-inner {
@@ -2119,10 +2089,10 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 /* Previous Inspections кнопки */
 .x-ie7 .sfa-previous-inspections-info a.x-btn td {
     padding: 4px 5px 5px;
-    background: #4297d5;
+    /*background: #4297d5;*/
 }
 .x-ie7 .sfa-previous-inspections-info .sfa-red-button.x-btn td {
-    background: #ad0303;
+    /*background: #ad0303;*/
 }
 
 .x-ie7 .sfa-bottomnav .hide-badge {
@@ -2132,13 +2102,19 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 /* Manage Checklists */
 
 .x-ie7 .sfa-manage-checklists .x-tree-view td {
-    background: none;
+    /*background: none;*/
 }
 .x-ie7 .sfa-manage-checklists .x-tree-view .x-docked-top a.x-btn td {
     /*padding: 4px 5px 5px;
     background: #4297d5;
     */
-    
+} 
+.x-ie7 .sfa-manage-checklists td {
+    /*background: none;*/
+}
+.x-ie7 .sfa-manage-checklists .x-docked-top a.x-btn td {
+    /*padding: 4px 5px 5px;*/
+    /*background: #4297d5;*/
 }
 
 .sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button td,
@@ -2147,15 +2123,37 @@ table.x-form-trigger-wrap td.x-trigger-cell {
    padding: 0;
 }
 
-.x-form-invalid-icon {
+.x-form-dirty .x-form-invalid-icon {
     position: relative;
     left: -23px;
 }
 
-.sfa-form-auth .x-panel-form .x-form-field {
+/* на форме авторизации буквы в ие9 обрезались снизу для ie9 и выше */
+.x-ie9p .sfa-form-auth .x-panel-form .x-form-field, .x-ie9p .sfa-form-contact .x-panel-form .x-form-field {
     padding: 2px 7px 2px;
 }
 
+/* сделаем картинки из алертов по центру */
+
+.sfa-alert-info-fulldisplay .x-img.x-box-item {
+    position: static !important;
+    display: block;
+    margin: 0 auto !important;
+}
 
 
+/* отцентрировать сообщение в всплывающих мессагах */
 
+.x-message-box table.x-window-text {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* для спинеров */
+.x-field table.x-form-trigger-wrap td {
+    /*background: none;*/
+}
+.x-trigger-cell {
+    background: inherit !important;
+}
