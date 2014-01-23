@@ -48,7 +48,6 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                             '<div class="sfa-alert-icon" style="background-image: url({thumbnail});">',
                             '</div>',
                             '{[this.getCounter(values.history)]}',
-                            '</div>',
                             '<div class="sfa-alert-info">',
                                 '<div class="sfa-alert-title">{alertDescription}</div>',
                                 '<div class="sfa-alert-vehicle">{[values[\'SafeStartExt.model.Vehicle\'].title]} ',

@@ -274,10 +274,11 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
 
     onAddField: function () {
         var parentField = this.activeRecord,
+            vehicleId = this.vehicle && this.vehicle.get('id') || 0,
             field;
 
         field = SafeStartExt.model.InspectionField.create({
-            vehicleId: this.vehicle.get('id')
+            vehicleId: vehicleId
         });
 
         if (! parentField) {

@@ -13,7 +13,9 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
     {
         $csvFile = __DIR__ . "/DefaultFields.csv";
         $csvContent = file_get_contents($csvFile);
-        $csvLines = explode("\r\n", $csvContent);
+        $csvContent = str_replace("\r\n", PHP_EOL, $csvContent);
+        $csvContent = preg_replace("/" . PHP_EOL . "$/", "", $csvContent);
+        $csvLines = explode("\n", $csvContent);
 
         $delimiter = ';';
         $csv = array();
@@ -61,9 +63,9 @@ class Fields extends AbstractFixture implements OrderedFixtureInterface
                 $field->setParent($this->getReference('user-' . $row['author_id']));
             }
             */
-            $manager->persist($field);
-            $manager->persist($field2);
-            $manager->flush();
+                $manager->persist($field);
+                $manager->persist($field2);
+                $manager->flush();
             //Associate a reference for other fixtures
             $this->addReference('field-' . $row['id'], $field);
             $this->addReference('field2-' . $row['id'], $field2);

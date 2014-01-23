@@ -13,7 +13,9 @@ class DefaultFields extends AbstractFixture implements OrderedFixtureInterface
     {
         $csvFile = __DIR__ . "/DefaultFields.csv";
         $csvContent = file_get_contents($csvFile);
-        $csvLines = explode("\r\n", $csvContent);
+        $csvContent = str_replace("\r\n", PHP_EOL, $csvContent);
+        $csvContent = preg_replace("/" . PHP_EOL . "$/", "", $csvContent);
+        $csvLines = explode("\n", $csvContent);
 
         $delimiter = ';';
         $csv = array();

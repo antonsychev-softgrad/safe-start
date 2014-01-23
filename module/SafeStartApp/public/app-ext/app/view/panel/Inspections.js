@@ -109,10 +109,22 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         border: 0
                     },
                     hidden: true,
+                    width: '100%',
                     defaults: {
                         margin: '5'
                     },
                     items: [{
+                        xtype: 'button',
+                        text: 'Open Map',
+                        action: 'open-map',
+                        ui: 'blue',
+                        scale: 'medium',
+                        hidden: true,
+                        handler: function (btn) {
+                            this.openMap(btn.lat, btn.lon);
+                        },
+                        scope: this
+                    }, {
                         xtype: 'button',
                         text: 'Print',
                         ui: 'blue',
@@ -149,19 +161,6 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                             }
                         },
                         scope: this
-                    }, {
-                        xtype: 'tbfill'   
-                    }, {
-                        xtype: 'button',
-                        text: 'Open Map',
-                        action: 'open-map',
-                        ui: 'blue',
-                        scale: 'medium',
-                        hidden: true,
-                        handler: function (btn) {
-                            this.openMap(btn.lat, btn.lon);
-                        },
-                        scope: this
                     }]
                 },
                 vehicle: this.vehicle,
@@ -192,7 +191,6 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         });
         var position = new google.maps.LatLng(lat, lon);
         var map = panel.down('map');
-        console.log(google.G_NORMAL_MAP);
         if (map) {
             map.marker.setPosition(position);
             map.getMap().setCenter(position);

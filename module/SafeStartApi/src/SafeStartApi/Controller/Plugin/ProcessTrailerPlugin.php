@@ -8,6 +8,8 @@ class ProcessTrailerPlugin extends AbstractPlugin
     const TRAILER_CHECKLIST_NAME = 'Trailer';
     const TRAILER_PLANT_ID_FIELD_NAME = 'Plant ID';
     const TRAILER_TYPE_FIELD_NAME = 'Type of trailer';
+    const TRAILER_MAKE_FIELD_NAME = 'Trailer Make';
+    const TRAILER_MODEL_FIELD_NAME = 'Trailer Model';
 
     public function processTrailer(\SafeStartApi\Entity\CheckList $checkList, $alerts) {
         $vehicle = $checkList->getVehicle();
@@ -23,8 +25,13 @@ class ProcessTrailerPlugin extends AbstractPlugin
             return;
         }
 
-        $type = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
-        $registration = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
+        //$type = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
+        $model = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_MODEL_FIELD_NAME);
+        if (!$model) {
+            $model = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
+        }
+        $make = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_MAKE_FIELD_NAME);
+        //$registration = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
         
         $repository = $this->getController()->em->getRepository('SafeStartApi\Entity\Vehicle');
 
@@ -42,8 +49,8 @@ class ProcessTrailerPlugin extends AbstractPlugin
 
             $trailer->setCompany($vehicle->getCompany());
             $trailer->setPlantId($plantId);
-            $trailer->setTitle($vehicle->getTitle());
-            $trailer->setType($type);
+            $trailer->setTitle($model);
+            $trailer->setType($make);
             $trailer->setEnabled($vehicle->getEnabled());
             $trailer->setProjectName($vehicle->getProjectName());
             $trailer->setProjectNumber($vehicle->getProjectNumber());
