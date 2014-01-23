@@ -65,9 +65,18 @@ class UserController extends RestController
                 $errorMessage = '';
                 $user = $userRep->findOneBy(array($identityProperty => $identity));
                 if ($user) {
-                    if($user->getDeleted()) return $this->_showUserUnavailable('User has been removed');
-                    if(!$user->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
-                    if ($this->_checkExpiryDate()) throw new Rest403('You company subscription expired');
+                    if($user->getDeleted()) {
+                        $this->authService->clearIdentity();
+                        return $this->_showUserUnavailable('User has been removed');
+                    }
+                    if(!$user->getEnabled()) {
+                        $this->authService->clearIdentity();
+                        return $this->_showUserUnavailable("User's account is unavailable");
+                    }
+                    if ($this->_checkExpiryDate()) {
+                        $this->authService->clearIdentity();
+                        throw new Rest403('You company subscription expired');
+                    }
                     $user->setLastLogin(new \DateTime());
                     if (isset($this->data->device)) $user->setDevice(strtolower($this->data->device));
                     if (isset($this->data->deviceId)) $user->setDeviceId($this->data->deviceId);
@@ -323,13 +332,13 @@ class UserController extends RestController
     {
         $token = $this->params('token');
         $now = new \DateTime();
-        $this->layout('user/layout');
-        $view = new ViewModel();
-        $view->setTemplate('user/reset-password');
+
 
         if (strlen($token) !== 32) {
-            $view->setVariable('message', 'Invalid link');
-            return $view;
+            $this->answer = array(
+                "msg" => "Invalid Link"
+            );
+            return $this->AnswerPlugin()->format($this->answer, 0);
         }
 
         $query = $this->em->createQuery("select u from SafeStartApi\Entity\User u where u.recoveryToken = ?1 and u.recoveryExpire > ?2");
@@ -338,8 +347,10 @@ class UserController extends RestController
         $users = $query->getResult();
 
         if (! isset($users[0])) {
-            $view->setVariable('message', 'Link outdated');
-            return $view;
+            $this->answer = array(
+                "msg" => "Link Outdated"
+            );
+            return $this->AnswerPlugin()->format($this->answer, 0);
         }
         $user = $users[0];
 
@@ -363,8 +374,10 @@ class UserController extends RestController
             )
         );
 
-        $view->setVariable('message', 'New password was sent to your email');
-        return $view;
+        $this->answer = array(
+            "msg" => "New password was sent to your email"
+        );
+        return $this->AnswerPlugin()->format($this->answer, 0);
     }
 
 }

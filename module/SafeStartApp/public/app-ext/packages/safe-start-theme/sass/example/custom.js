@@ -26,3 +26,8 @@ Ext.theme.addManifest({
     xtype: 'widget.button',
     ui: 'blue'
 });
+
+Ext.theme.addManifest({
+    xtype: 'widget.window',
+    ui: 'red'
+});

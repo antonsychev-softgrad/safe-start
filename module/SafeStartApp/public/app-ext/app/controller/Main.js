@@ -271,6 +271,17 @@ Ext.define('SafeStartExt.controller.Main', {
         this.getMainNavPanel().enableAll();
     },
 
+    resetPassword: function (params) {
+        var me = this;
+        SafeStartExt.Ajax.request({
+            url: 'user/resetpassword/' + params.id,
+            success: function (result) {
+                Ext.Msg.alert('Recovery password', result.msg);
+                me.showDefaultPage();
+            }
+        });
+    },
+
     redirectTo: function(name) {
         Ext.History.add(name);
     },
@@ -355,14 +366,12 @@ Ext.define('SafeStartExt.controller.Main', {
     },
 
     increaseAlertsCounter: function () {
-        console.log('inc');
         var mainNavPanel = this.getMainNavPanel();
         this.alertsCounter++;
         mainNavPanel.setBadge('Alerts', this.alertsCounter);
     },
 
     decreaseAlertsCounter: function () {
-        console.log('dec');
         var mainNavPanel = this.getMainNavPanel();
         if (this.alertsCounter < 2) {
             this.alertsCounter = 0;
