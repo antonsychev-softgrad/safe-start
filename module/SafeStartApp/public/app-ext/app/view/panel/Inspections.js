@@ -109,10 +109,22 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         border: 0
                     },
                     hidden: true,
+                    width: '100%',
                     defaults: {
                         margin: '5'
                     },
                     items: [{
+                        xtype: 'button',
+                        text: 'Open Map',
+                        action: 'open-map',
+                        ui: 'blue',
+                        scale: 'medium',
+                        hidden: true,
+                        handler: function (btn) {
+                            this.openMap(btn.lat, btn.lon);
+                        },
+                        scope: this
+                    }, {
                         xtype: 'button',
                         text: 'Print',
                         ui: 'blue',
@@ -147,19 +159,6 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                             if (panel.inspection) {
                                 this.fireEvent('deleteInspectionAction', panel.inspection.get('id'));
                             }
-                        },
-                        scope: this
-                    }, {
-                        xtype: 'tbfill'   
-                    }, {
-                        xtype: 'button',
-                        text: 'Open Map',
-                        action: 'open-map',
-                        ui: 'blue',
-                        scale: 'medium',
-                        hidden: true,
-                        handler: function (btn) {
-                            this.openMap(btn.lat, btn.lon);
                         },
                         scope: this
                     }]
