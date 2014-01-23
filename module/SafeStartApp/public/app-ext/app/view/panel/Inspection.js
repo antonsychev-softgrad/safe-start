@@ -171,14 +171,17 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 data: alerts
             }],
             bbar: {
-                xtype: 'toolbar', 
-                buttonAlign: 'center',
+                xtype: 'container', 
+                padding: '10 0 0',
                 layout: {
                     type: 'hbox',
                     pack: 'center'
                 },
                 items: [{
+                    xtype: 'button',
                     text: 'OK',
+                    scale: 'medium',
+                    ui: 'blue',
                     handler: function () {
                         this.up('window').close();
                     }
@@ -506,14 +509,16 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             xtype: 'button',
             action: 'next',
             text: 'Next',
-            scale: 'small',
+            ui: 'blue',
+            scale: 'medium',
             handler: this.onNextClick,
             scope: this
         }, {
             xtype: 'button',
             action: 'review',
             text: 'Review',
-            scale: 'small',
+            ui: 'blue',
+            scale: 'medium',
             hidden: true,
             handler: function () {
                 var reviewForm = this.listStore.findRecord('type', this.self.REVIEW_FORM);
@@ -527,7 +532,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 xtype: 'button',
                 text: 'Prev',
                 action: 'prev',
-                scale: 'small',
+                ui: 'blue',
+                scale: 'medium',
                 handler: this.onPrevClick,
                 scope: this
             });
@@ -685,7 +691,34 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 if (RegExp(alert.get('triggerValue'), 'i').test(value)) {
                     alert.set('active', true);
                     if (alert.get('critical') && alert.get('alertMessage')) {
-                        Ext.Msg.alert('DANGER', alert.get('alertMessage'));
+                        //Ext.Msg.alert('DANGER', alert.get('alertMessage'));
+                        var win = this.add({
+                            xtype: 'window',
+                            ui: 'red',
+                            title: 'DANGER',
+                            padding: '10',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [{
+                                xtype: 'container',
+                                padding: 10,
+                                style: {
+                                    fontSize: '16px'
+                                },
+                                cls: 'sfa-danger-message',
+                                html: alert.get('alertMessage')
+                            }, {
+                                xtype: 'button',
+                                ui: 'red',
+                                scale: 'medium',
+                                text: 'OK',
+                                handler: function() {
+                                    win.close(); 
+                                }
+                            }]
+                        }).show();
                     }
                 } else {
                     alert.set('active', false);
@@ -821,6 +854,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                         xtype: 'button',
                         action: 'prev',
                         text: 'Prev',
+                        ui: 'blue',
+                        scale: 'medium',
                         handler: this.onPrevClick,
                         scope: this
                     }]
@@ -844,6 +879,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                     items: [{
                         xtype: 'button',
                         action: 'prev',
+                        ui: 'blue',
+                        scale: 'medium',
                         text: 'Next',
                         handler: this.onNextClick,
                         scope: this
@@ -995,6 +1032,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                         xtype: 'button',
                         action: 'prev',
                         text: 'Prev',
+                        ui: 'blue',
+                        scale: 'medium',
                         handler: this.onPrevClick,
                         scope: this
                     }]
@@ -1016,6 +1055,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                     minWidth: 100,
                     items: [{
                         xtype: 'button',
+                        ui: 'blue',
+                        scale: 'medium',
                         action: 'submit',
                         text: 'Submit',
                         handler: function(btn) {
@@ -1061,7 +1102,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 xtype: 'filefield',
                 buttonOnly: true,
                 buttonConfig: {
-                    scale: 'small'
+                    scale: 'medium',
+                    ui: 'blue'
                 },
                 buttonText: 'Upload Image',
                 ui: 'default',

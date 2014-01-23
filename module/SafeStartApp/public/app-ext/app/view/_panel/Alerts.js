@@ -121,7 +121,7 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                         xtype: 'combobox',
                         cls:'sfa-combobox',
                         fieldLabel: 'Status',
-                        width: 412,
+                        width: 372,
                         labelWidth: 130,
                         name: 'status',
                         store: {
@@ -143,7 +143,10 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                         queryMode: 'local'
                     }, {
                         xtype: 'button',
-                        width: 80,
+                        width: 120,
+                        margin: '0 0 0 5',
+                        scale: 'medium',
+                        ui: 'blue',
                         handler: function () {
                             var status = this.down('combobox[name=status]').getValue();
                             this.updateStatus(this.alert, status);
@@ -212,6 +215,8 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
                     items: [{
                         xtype: 'button',
                         text: 'Add',
+                        scale: 'medium',
+                        ui: 'blue',
                         handler: function () {
                             var comment = this.down('textarea[name=comment]').getValue();
                             if (Ext.isString(comment) && comment.length) {

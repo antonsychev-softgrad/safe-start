@@ -82,3 +82,48 @@
 .#{$prefix}panel-body-light, .#{$prefix}component-light {
     background-image: url(img/x-component-light_bg.jpg);
 }
+
+
+@include extjs-window-ui( 
+    $ui-label: 'red', 
+    //[$ui-padding], 
+    //[$ui-border-radius], 
+    $ui-border-color: #f55,
+    /*[$ui-border-width], */
+    $ui-inner-border-color: #f55,
+    /*[$ui-inner-border-width], */
+    //$ui-header-color: #ff3,
+    $ui-header-background-color: #f55,
+    $ui-header-padding: 3px,
+    /*[$ui-header-font-family], */
+    /*[$ui-header-font-size], */
+    /*[$ui-header-font-weight], */
+    /*[$ui-header-line-height], */
+    /*[$ui-header-text-padding], */
+    /*[$ui-header-text-transform], */
+    $ui-header-border-color: #f55,
+    /*[$ui-header-border-width], */
+    $ui-header-inner-border-color: #f55
+    /*[$ui-header-inner-border-width], */
+    /*[$ui-header-icon-width], */
+    /*[$ui-header-icon-height], */
+    /*[$ui-header-icon-spacing], */
+    /*[$ui-header-icon-background-position], */
+    /*[$ui-header-glyph-color], */
+    /*[$ui-header-glyph-opacity], */
+    /*[$ui-tool-spacing], */
+    /*[$ui-tool-background-image], */
+    /*[$ui-body-border-color], */
+    /*[$ui-body-background-color], */
+    /*[$ui-body-border-width], */
+    /*[$ui-body-border-style], */
+    /*[$ui-body-color], */
+    /*[$ui-background-color], */
+    /*[$ui-force-header-border], */
+    /*[$ui-include-border-management-rules], */
+    /*[$ui-wrap-border-color], */
+    /*[$ui-wrap-border-width] */
+);
+.#{$prefix}window-header-body-red-top .#{$prefix}tool {
+    margin-left: -2px;
+}

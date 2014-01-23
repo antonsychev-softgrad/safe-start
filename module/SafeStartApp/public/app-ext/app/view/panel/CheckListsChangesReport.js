@@ -35,9 +35,12 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
         prevYear.setFullYear(now.getFullYear()-1);
         this.add(
             [{
-                xtype: 'toolbar',
+                xtype: 'container',
                 docked: 'top',
-                cls: 'sfa-top-toolbar',
+                defaults: {
+                    margin: 5
+                },
+                layout: 'hbox',
                 items: [{
                     xtype: 'datefield',
                     name: 'from',
@@ -55,9 +58,9 @@ Ext.define('SafeStartExt.view.panel.CheckListsChangesReport', {
                 }, {
                     xtype: 'button',
                     name: 'reload',
-                    ui: 'action',
+                    ui: 'blue',
+                    scale: 'medium',
                     action: 'refresh',
-                    iconCls: 'refresh',
                     text: 'Refresh',
                     handler: function() {
                         this.up('SafeStartExtPanelCheckListsChangesReport').updateDataView();
