@@ -1633,9 +1633,12 @@ font-size: 24px;
 }
 
 table.x-form-trigger-wrap td {
-    background: none;
+    /*background: none;*/
 }
 
+table.x-form-trigger-wrap td.x-trigger-cell {
+    background-color: transparent;
+}
 
 /*
 .x-btn-green-medium-tc,
@@ -2128,12 +2131,14 @@ table.x-form-trigger-wrap td {
 
 /* Manage Checklists */
 
-.x-ie7 .sfa-manage-checklists td {
+.x-ie7 .sfa-manage-checklists .x-tree-view td {
     background: none;
 }
-.x-ie7 .sfa-manage-checklists .x-docked-top a.x-btn td {
-    padding: 4px 5px 5px;
+.x-ie7 .sfa-manage-checklists .x-tree-view .x-docked-top a.x-btn td {
+    /*padding: 4px 5px 5px;
     background: #4297d5;
+    */
+    
 }
 
 .sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button td,
@@ -2148,7 +2153,7 @@ table.x-form-trigger-wrap td {
 }
 
 .sfa-form-auth .x-panel-form .x-form-field {
-padding: 2px 7px 2px;
+    padding: 2px 7px 2px;
 }
 
 
