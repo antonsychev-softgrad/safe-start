@@ -73,11 +73,12 @@ Ext.define('SafeStartExt.view.form.CompanySettings', {
                     name: 'image-container'
                 }, {
                     xtype: 'filefield',
-                    width: 100,
+                    width: 170,
                     padding: '40 0 0 0',
                     buttonOnly: true,
                     buttonConfig: {
-                        scale: 'small'
+                        scale: 'medium',
+                        ui: 'blue'
                     },
                     buttonText: 'Upload Image',
                     ui: 'default',

@@ -83,7 +83,7 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
                     name: 'add-field',
                     align: 'right',
                     scope: this
-                }],
+                }]
             },
             items: [{
                 xtype: 'panel',
