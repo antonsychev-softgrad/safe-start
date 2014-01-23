@@ -38,7 +38,7 @@
                     } else {
                         $pathToApp = '/app-ext/build/production/SafeStartExt';
                         $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
-                        //$this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
                         $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
                     }
                     break;
