@@ -251,21 +251,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-alert-comment {
     margin-top: 15px;
 }
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
-    position: relative;
-    margin: 5px 8px 4px 5px;
-}
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
-    padding: 0 8px 10px 10px;
-}
 
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
-    width: 50px;
-    height: 50px;
-    float: left;
-    border: 1px solid #dedede;
-    background: #eee;
-}
 .sfa-info-container > div.sfa-alerts-filter-form {
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
@@ -375,25 +361,10 @@ overflow-x: hidden !important;
     border: none !important;
 }
 
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
-    position: relative;
-    /*float: left;
-    width: 50px;
-    height: 50px;
-
-    border: 1px solid #dedede;
-    background: #eee;*/
-    margin: 0 8px 4px 5px;
-}
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
-    padding: 0 8px 15px 10px;
-}
-
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
     position: absolute;
     top: 0;
-    left: 40px;
-    min-width: 6px;
+    right: 170px;
     text-align: center;
     padding: 1px 5px;
     font-size: 12px;
@@ -407,13 +378,23 @@ overflow-x: hidden !important;
     background: linear-gradient(to bottom, #ff1a1a 0%,#b30000 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff1a1a', endColorstr='#b30000',GradientType=0 ); /* IE6-9 */
 }
-.sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
+
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
+    position: relative;
+    margin: 5px 8px 4px 5px;
+}
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
+    padding: 0 8px 10px 10px;
+}
+
+.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
+    float: left;
+    margin-right: 8px;
+    border: 1px solid #dedede;
+    background: #eee;
     background-position: 50% 50%;
-}
-.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-vehicle {
-/*clear: both;*/
 }
 
 /* для нижнего меню, порезались надписи снизу */
@@ -2145,7 +2126,8 @@ table.x-form-trigger-wrap td {
     left: -23px;
 }
 
-.sfa-form-auth .x-panel-form .x-form-field {
+/* на форме авторизации буквы в ие9 обрезались снизу для ie9 и выше */
+.x-ie9p .sfa-form-auth .x-panel-form .x-form-field, .x-ie9p .sfa-form-contact .x-panel-form .x-form-field {
 padding: 2px 7px 2px;
 }
 
