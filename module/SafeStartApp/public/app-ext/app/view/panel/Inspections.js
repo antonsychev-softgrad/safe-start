@@ -192,7 +192,6 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         });
         var position = new google.maps.LatLng(lat, lon);
         var map = panel.down('map');
-        console.log(google.G_NORMAL_MAP);
         if (map) {
             map.marker.setPosition(position);
             map.getMap().setCenter(position);
