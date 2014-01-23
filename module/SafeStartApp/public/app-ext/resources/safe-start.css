@@ -454,7 +454,9 @@ overflow-x: hidden !important;
     background: none;
 }
 
-
+.x-ie8m .x-window-closable .x-docked-bottom.x-container-docked-bottom {
+    padding-bottom: 10px !important;
+}
 
 
 /* Settings */
@@ -1611,65 +1613,8 @@ font-size: 24px;
     background-position: 0 50%;
 }
 
-table.x-form-trigger-wrap td {
-    background: none;
-}
 
 
-/*
-.x-btn-green-medium-tc,
-.x-btn-green-medium-bc {
-    height: 5px !important;
-}
-
-
-
-
-.x-btn-green-medium-bl {
-    background-position-y: -29px;
-}
-
-*/
-
-
-/*.x-btn-blue-medium-bc,
-.x-btn-red-medium-bc {
-    height: 5px !important;
-}
-*/
-/*.x-btn-blue-medium-tc, */
-/*.x-btn-red-medium-tc,*/
-/*
-.x-btn-green-medium-br,
-.x-btn-blue-medium-br,
-.x-btn-red-medium-br {
-    background-position-y: -36px;
-}
-
-.x-btn-green-medium-tl,
-.x-btn-blue-medium-tl,
-.x-btn-red-medium-tl {
-    background-position-y: -15px;
-}
-
-.x-btn-green-medium-tr,
-.x-btn-blue-medium-tr,
-.x-btn-red-medium-tr {
-    background-position-y: -20px;
-}
-
-.x-btn-green-medium-tl,
-.x-btn-blue-medium-tl,
-.x-btn-red-medium-tl {
-    background-position-y: -13px;
-}
-
-.x-btn-green-medium-bc,
-.x-btn-blue-medium-bc,
-.x-btn-red-medium-bc {
-    background-position-y: -8px;
-}
-*/
 .x-form-date-trigger {
     margin-top: 3px;
 }
@@ -2029,7 +1974,7 @@ table.x-form-trigger-wrap td {
 }
 
 .x-ie7 .x-closable.x-window-closable a.x-btn td {
-    background: #4297d5;
+    /*background: #4297d5;*/
 }
 
 .x-ie7 .sfa-vehicles-tabpanel a span.x-tab-inner {
@@ -2095,10 +2040,10 @@ table.x-form-trigger-wrap td {
 /* Previous Inspections кнопки */
 .x-ie7 .sfa-previous-inspections-info a.x-btn td {
     padding: 4px 5px 5px;
-    background: #4297d5;
+    /*background: #4297d5;*/
 }
 .x-ie7 .sfa-previous-inspections-info .sfa-red-button.x-btn td {
-    background: #ad0303;
+    /*background: #ad0303;*/
 }
 
 .x-ie7 .sfa-bottomnav .hide-badge {
@@ -2108,11 +2053,11 @@ table.x-form-trigger-wrap td {
 /* Manage Checklists */
 
 .x-ie7 .sfa-manage-checklists td {
-    background: none;
+    /*background: none;*/
 }
 .x-ie7 .sfa-manage-checklists .x-docked-top a.x-btn td {
-    padding: 4px 5px 5px;
-    background: #4297d5;
+    /*padding: 4px 5px 5px;*/
+    /*background: #4297d5;*/
 }
 
 .sfa-info-container .sfa-alerts-filter-form a.x-btn.sfa-refresh-button td,
@@ -2148,3 +2093,10 @@ padding: 2px 7px 2px;
 }
 
 
+/* для спинеров */
+.x-field table.x-form-trigger-wrap td {
+    /*background: none;*/
+}
+.x-trigger-cell {
+    background: inherit !important;
+}
