@@ -2157,3 +2157,7 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 .x-trigger-cell {
     background: inherit !important;
 }
+
+.x-toolbar-default {
+    background: transparent;
+}
