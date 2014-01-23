@@ -65,9 +65,18 @@ class UserController extends RestController
                 $errorMessage = '';
                 $user = $userRep->findOneBy(array($identityProperty => $identity));
                 if ($user) {
-                    if($user->getDeleted()) return $this->_showUserUnavailable('User has been removed');
-                    if(!$user->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
-                    if ($this->_checkExpiryDate()) throw new Rest403('You company subscription expired');
+                    if($user->getDeleted()) {
+                        $this->authService->clearIdentity();
+                        return $this->_showUserUnavailable('User has been removed');
+                    }
+                    if(!$user->getEnabled()) {
+                        $this->authService->clearIdentity();
+                        return $this->_showUserUnavailable("User's account is unavailable");
+                    }
+                    if ($this->_checkExpiryDate()) {
+                        $this->authService->clearIdentity();
+                        throw new Rest403('You company subscription expired');
+                    }
                     $user->setLastLogin(new \DateTime());
                     if (isset($this->data->device)) $user->setDevice(strtolower($this->data->device));
                     if (isset($this->data->deviceId)) $user->setDeviceId($this->data->deviceId);
