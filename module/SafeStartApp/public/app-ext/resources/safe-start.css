@@ -253,12 +253,7 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 }
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
     position: relative;
-    float: left;
-    width: 50px;
-    height: 50px;
     margin: 5px 8px 4px 5px;
-    border: 1px solid #dedede;
-    cursor: pointer;
 }
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
     padding: 0 8px 10px 10px;
@@ -267,6 +262,9 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
 .sfa-vehicles-tabpanel.sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-icon {
     width: 50px;
     height: 50px;
+    float: left;
+    border: 1px solid #dedede;
+    background: #eee;
 }
 .sfa-info-container > div.sfa-alerts-filter-form {
     -moz-border-radius: 0;
@@ -379,12 +377,13 @@ overflow-x: hidden !important;
 
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-item {
     position: relative;
-    float: left;
+    /*float: left;
     width: 50px;
     height: 50px;
-    margin: 0 8px 4px 5px;
+
     border: 1px solid #dedede;
-    background: #eee;
+    background: #eee;*/
+    margin: 0 8px 4px 5px;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-info {
     padding: 0 8px 15px 10px;
@@ -393,7 +392,7 @@ overflow-x: hidden !important;
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-badge {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 40px;
     min-width: 6px;
     text-align: center;
     padding: 1px 5px;
@@ -414,7 +413,7 @@ overflow-x: hidden !important;
     background-position: 50% 50%;
 }
 .sfa-info-container .sfa-previous-inspections-left-coll .sfa-alert-vehicle {
-clear: both;
+/*clear: both;*/
 }
 
 /* для нижнего меню, порезались надписи снизу */
@@ -435,6 +434,8 @@ clear: both;
     top: 0;
 }
 
+/* сообщения */
+
 .x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small, .x-window-body-closable a.x-btn.x-btn-default-small {
     border-radius: 5px;
     font-size: 16px;
@@ -450,7 +451,8 @@ clear: both;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4b9cd7', endColorstr='#3892d3',GradientType=0 ); /* IE6-9 */
 }
 .x-window.x-window-closable a.x-btn.x-btn-default-toolbar-small .x-btn-inner,
-.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner {
+.x-window-body-closable a.x-btn.x-btn-default-small .x-btn-inner,
+.x-window-closable a.x-btn.x-btn-default-small .x-btn-inner {
     font-size: 16px;
     font-weight: 400;
 }
@@ -2154,3 +2156,13 @@ padding: 2px 7px 2px;
     display: block;
     margin: 0 auto !important;
 }
+
+
+/* отцентрировать сообщение в всплывающих мессагах */
+
+.x-message-box table.x-window-text {
+    width: 100%;
+    text-align: center;
+}
+
+
