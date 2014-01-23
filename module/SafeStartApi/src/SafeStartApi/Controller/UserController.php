@@ -332,13 +332,13 @@ class UserController extends RestController
     {
         $token = $this->params('token');
         $now = new \DateTime();
-        $this->layout('user/layout');
-        $view = new ViewModel();
-        $view->setTemplate('user/reset-password');
+
 
         if (strlen($token) !== 32) {
-            $view->setVariable('message', 'Invalid link');
-            return $view;
+            $this->answer = array(
+                "msg" => "Invalid Link"
+            );
+            return $this->AnswerPlugin()->format($this->answer, 0);
         }
 
         $query = $this->em->createQuery("select u from SafeStartApi\Entity\User u where u.recoveryToken = ?1 and u.recoveryExpire > ?2");
@@ -347,8 +347,10 @@ class UserController extends RestController
         $users = $query->getResult();
 
         if (! isset($users[0])) {
-            $view->setVariable('message', 'Link outdated');
-            return $view;
+            $this->answer = array(
+                "msg" => "Link Outdated"
+            );
+            return $this->AnswerPlugin()->format($this->answer, 0);
         }
         $user = $users[0];
 
@@ -372,8 +374,10 @@ class UserController extends RestController
             )
         );
 
-        $view->setVariable('message', 'New password was sent to your email');
-        return $view;
+        $this->answer = array(
+            "msg" => "New password was sent to your email"
+        );
+        return $this->AnswerPlugin()->format($this->answer, 0);
     }
 
 }

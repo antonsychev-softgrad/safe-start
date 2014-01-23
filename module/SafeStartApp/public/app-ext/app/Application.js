@@ -49,32 +49,37 @@ Ext.define('SafeStartExt.Application', {
         'system-settings': 'main#showSystemSettingsPage',
         'company-settings': 'main#showCompanySettingsPage',
         'users/:id': 'main#showUsersPageById',
-        'alerts/:id': 'main#showAlertsPageById'
+        'alerts/:id': 'main#showAlertsPageById',
+        'reset/:id': 'main#resetPassword'
     },
 
     acl: {
         'guest': [
             'showAuthPage',
-            'showContactPage'
+            'showContactPage',
+            'resetPassword'
         ],
         'companyUser': [
             'showCompanyPage',
             'showAlertsPage',
-            'showContactPage'
+            'showContactPage',
+            'resetPassword'
         ],
         'companyManager': [
             'showCompanyPage',
             'showAlertsPage',
             'showUsersPage',
             'showCompanySettingsPage',
-            'showContactPage'
+            'showContactPage',
+            'resetPassword'
         ],
         'companyAdmin': [
             'showCompanyPage',
             'showAlertsPage',
             'showUsersPage',
             'showCompanySettingsPage',
-            'showContactPage'
+            'showContactPage',
+            'resetPassword'
         ],
         'superAdmin': [
             'showCompaniesPage',
@@ -85,7 +90,8 @@ Ext.define('SafeStartExt.Application', {
             'showAlertsPage',
             'showAlertsPageById',
             'showSystemSettingsPage',
-            'showSystemStatisticPage'
+            'showSystemStatisticPage',
+            'resetPassword'
         ]
     },
 
@@ -155,6 +161,8 @@ Ext.define('SafeStartExt.Application', {
     },
 
     launch: function () {
+        Ext.form.field.Base.prototype.validateOnBlur = false;
+        
         var loadingEl = Ext.get('appLoadingIndicator');
         if (loadingEl) {
             loadingEl.remove();
