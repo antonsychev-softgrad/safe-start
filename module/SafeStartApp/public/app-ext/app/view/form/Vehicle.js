@@ -18,6 +18,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
     autoScroll: true,
     buttonAlign: 'left',
     cls: 'sfa-vehicle-form',
+    padding: 20,
 
     initComponent: function () {
         var me = this;
