@@ -7,6 +7,7 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 	
 	profileForm: null,
 	padding: 5,
+    border: 0,
 	modal: true,
 	layout: 'fit',
 	scrollable: false,
@@ -17,6 +18,8 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 		Ext.apply(this, {
 			buttons: [{
 				text: 'Cancel',
+                ui: 'blue',
+                scale: 'medium',
 				handler: function() {
 					this.up('SafeStartExtUserProfileWindow').hide();
 				}
@@ -25,6 +28,8 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 				flex: 1
 			}, {
 				text: 'Save',
+                ui: 'blue',
+                scale: 'medium',
 				action: 'save-data',
 				handler: function() {
 					this.up('SafeStartExtUserProfileWindow').fireEvent('updateProfileAction', this.up('SafeStartExtUserProfileWindow'));
@@ -32,6 +37,7 @@ Ext.define('SafeStartExt.view.panel.UserProfile', {
 			}],
 			items: [{
 				xtype: 'SafeStartExtUserProfileForm',
+                border: 0,
 				record: SafeStartExt.getApplication().getUserRecord()
 			}]
 		});

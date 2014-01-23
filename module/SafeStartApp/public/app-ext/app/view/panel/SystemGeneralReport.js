@@ -44,9 +44,12 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
 
 
         this.add([{
-            xtype: 'toolbar',
+            xtype: 'container',
             dock: 'top',
-            cls: 'sfa-top-toolbar',
+            layout: 'hbox',
+            defaults: {
+                margin: 5
+            },
             items: [{
                 xtype: 'combobox',
                 queryMode: 'local',
@@ -97,9 +100,9 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
             }, {
                 xtype: 'button',
                 name: 'reload',
-                ui: 'action',
+                ui: 'blue',
+                scale: 'medium',
                 action: 'refresh',
-                iconCls: 'refresh',
                 text: 'Refresh',
                 handler: function() {
                     this.up('SafeStartExtPanelSystemGeneralReport').updateDataView();

@@ -41,9 +41,12 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     name: 'vehicle-report',
                     scrollable: true,
                     tbar: {
-                        xtype: 'toolbar',
-                        cls: 'sfa-top-toolbar',
+                        xtype: 'container',
                         docked: 'top',
+                        layout: 'hbox',
+                        defaults: {
+                            margin: '5'
+                        },
                         items: [{
                             xtype: 'datefield',
                             name: 'from',
@@ -63,34 +66,37 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         }, {
                             xtype: 'button',
                             name: 'reload',
-                            ui: 'action',
+                            ui: 'blue',
+                            scale: 'medium',
                             action: 'refresh',
-                            iconCls: 'refresh',
                             text: 'Refresh',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').updateDataView();
                             }
                         }, {
                             xtype: 'button',
+                            ui: 'blue',
+                            scale: 'medium',
                             name: 'print',
                             text: 'Print Report',
-                            ui: 'confirm',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').printDataView();
                             }
                         }, {
                             xtype: 'button',
+                            ui: 'blue',
+                            scale: 'medium',
                             name: 'print-action-list',
                             text: 'Print Action List',
-                            ui: 'confirm',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').printActionList();
                             }
                         }, {
                             xtype: 'button',
+                            ui: 'blue',
+                            scale: 'medium',
                             name: 'send-action-list',
                             text: 'Send Action List',
-                            ui: 'confirm',
                             handler: function() {
                                 this.up('SafeStartExtPanelVehicleReports').sendActionList();
                             }
@@ -132,9 +138,12 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     },
                     name: 'vehicle-inspection-report',
                     tbar: {
-                        xtype: 'toolbar',
+                        xtype: 'container',
+                        defaults: {
+                            margin: 5
+                        },
+                        layout: 'hbox',
                         docked: 'top',
-                        cls: 'sfa-top-toolbar',
                         items: [{
                             xtype: 'combobox',
                             queryMode: 'local',
@@ -173,7 +182,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         }, {
                             xtype: 'button',
                             name: 'inspections-reload',
-                            ui: 'action',
+                            ui: 'blue',
+                            scale: 'medium',
                             action: 'refresh',
                             iconCls: 'refresh',
                             text: 'Refresh',
@@ -237,8 +247,11 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                     },
                     name: 'vehicle-report',
                     tbar: {
-                        xtype: 'toolbar',
-                        cls: 'sfa-top-toolbar',
+                        xtype: 'container',
+                        layout: 'hbox',
+                        defaults: {
+                            margin: 5
+                        },
                         items: [{
                             xtype: 'datefield',
                             cls: 'sfa-datepicker',
@@ -258,7 +271,8 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         }, {
                             xtype: 'button',
                             name: 'reload',
-                            ui: 'action',
+                            ui: 'blue',
+                            scale: 'medium',
                             action: 'refresh',
                             iconCls: 'refresh',
                             text: 'Refresh',

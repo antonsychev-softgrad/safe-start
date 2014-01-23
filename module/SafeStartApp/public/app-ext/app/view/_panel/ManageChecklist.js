@@ -59,19 +59,32 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
             listeners: {
                 afterrender: this.initTree
             },
-            tbar: [{
-                text: 'Refresh',
-                handler: this.onRefresh,
-                scope: this
-            }, {
-                xtype: 'tbfill'
-            }, {
-                text: 'Add inspection field',
-                handler: this.onAddField,
-                name: 'add-field',
-                align: 'right',
-                scope: this
-            }],
+            tbar: {
+                xtype: 'container', 
+                layout: 'hbox',
+                defaults: {
+                    margin: 5
+                },
+                items: [{
+                    xtype: 'button',
+                    ui: 'blue',
+                    scale: 'medium',
+                    text: 'Refresh',
+                    handler: this.onRefresh,
+                    scope: this
+                }, {
+                    xtype: 'tbfill'
+                }, {
+                    xtype: 'button',
+                    ui: 'blue',
+                    scale: 'medium',
+                    text: 'Add inspection field',
+                    handler: this.onAddField,
+                    name: 'add-field',
+                    align: 'right',
+                    scope: this
+                }],
+            },
             items: [{
                 xtype: 'panel',
                 name: 'forms-panel',

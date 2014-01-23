@@ -78,7 +78,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                                 lat = NaN, 
                                 lon = NaN;
 
-                            this.down('SafeStartExtPanelInspectionInfo').down('toolbar').show();
+                            this.down('SafeStartExtPanelInspectionInfo').down('container[name=toolbar]').show();
 
                             if (latlon.length) {
                                 lat = parseFloat(latlon[0], 10);
@@ -94,7 +94,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                             }
                         },
                         deselect: function () {
-                            this.down('SafeStartExtPanelInspectionInfo').down('toolbar').hide();
+                            this.down('SafeStartExtPanelInspectionInfo').down('container[name=toolbar]').hide();
                         },
                         scope: this
                     }
@@ -102,14 +102,21 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
             }, {
                 xtype: 'SafeStartExtPanelInspectionInfo',
                 tbar: {
-                    xtype: 'toolbar',
+                    xtype: 'container',
+                    name: 'toolbar',
                     border: 0,
                     style: {
                         border: 0
                     },
                     hidden: true,
+                    defaults: {
+                        margin: '5'
+                    },
                     items: [{
+                        xtype: 'button',
                         text: 'Print',
+                        ui: 'blue',
+                        scale: 'medium',
                         handler: function (btn) {
                             var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
                             if (panel.inspection) {
@@ -118,7 +125,10 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         },
                         scope: this
                     }, {
+                        xtype: 'button',
                         text: 'Edit',
+                        ui: 'blue',
+                        scale: 'medium',
                         handler: function (btn) {
                             var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
                             if (panel.inspection) {
@@ -127,8 +137,11 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                         },
                         scope: this
                     }, {
+                        xtype: 'button',
                         text: 'Delete',
-                        cls:'sfa-red-button',
+                        //cls:'sfa-red-button',
+                        ui: 'red',
+                        scale: 'medium',
                         handler: function (btn) {
                             var panel = btn.up('SafeStartExtPanelInspections').down('dataview');
                             if (panel.inspection) {
@@ -139,8 +152,11 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
                     }, {
                         xtype: 'tbfill'   
                     }, {
+                        xtype: 'button',
                         text: 'Open Map',
                         action: 'open-map',
+                        ui: 'blue',
+                        scale: 'medium',
                         hidden: true,
                         handler: function (btn) {
                             this.openMap(btn.lat, btn.lon);

@@ -28,9 +28,12 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
         prevYear.setFullYear(now.getFullYear()-1);
         Ext.apply(this, {
             tbar: {
-                xtype: 'toolbar',
+                xtype: 'container',
                 docked: 'top',
-                cls: 'sfa-top-toolbar',
+                layout: 'hbox',
+                defaults: {
+                    margin: 5
+                },
                 items: [{
                     xtype: 'datefield',
                     cls: 'sfa-datepicker sfa-from',
@@ -48,9 +51,9 @@ Ext.define('SafeStartExt.view.panel.InspectionBreakdownsReport', {
                 }, {
                     xtype: 'button',
                     name: 'reload',
-                    ui: 'action',
+                    ui: 'blue',
+                    scale: 'medium',
                     action: 'refresh',
-                    iconCls: 'refresh',
                     text: 'Refresh',
                     handler: function() {
                         this.up('SafeStartExtPanelInspectionBreakdownsReport').updateDataView();
