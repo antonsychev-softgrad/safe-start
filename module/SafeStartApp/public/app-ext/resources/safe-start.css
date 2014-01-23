@@ -1,4 +1,4 @@
-body{ 
+body{
     background-color: #1985D0;
 }
 
@@ -9,7 +9,7 @@ body{
     background-position: 100% 50%;
 }
 .x-ie7p.x-ie7 .x-form-trigger-input-cell {
-    width: 130px;
+    /*width: 130px;*/
 }
 .x-ie7p.x-ie7 .sfa-datapicker .x-form-trigger-input-cell input.x-form-field {
     width: 80px !important;
@@ -227,8 +227,12 @@ a.x-btn.x-btn-default-toolbar-small .x-btn-button{
     margin: 8px 0 8px 175px;
 }
 .sfa-upload-image a span.x-btn-inner {
-    padding-bottom: 2px;
+    padding: 0 15px 4px;
 }
+.sfa-upload-image a span.x-btn-button {
+    overflow: visible;
+}
+
 .sfa-info-container .sfa-checklists-container .x-panel.form-scrollable.sfa-pre-start-inspection-review .x-form-item.x-form-type-checkbox .x-field-label-cell .x-form-item-label.x-form-item-label-left {
     min-width: 50px;
 }
@@ -799,21 +803,6 @@ overflow-x: hidden !important;
 
 
 
-/*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a,
-.x-ie7p .sfa-form-contact .x-panel-form .x-box-target a{
-    background: #6C9804;
-    display: block;
-}
-*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a span,
-.x-ie7p .sfa-form-contact .x-panel-form .x-box-target a span{
-    background: none;
-}
-*//*.x-ie7p .sfa-form-auth .x-panel-form .x-box-target a.x-btn-green-medium-pressed,
-.x-ie7p .sfa-form-contact .x-panel-form .x-box-target a.x-btn-green-medium-pressed {
-    background: #628904;
-}
-*/
-
 /* END Login & Contact form */
 
 /* TOP panel */
@@ -895,14 +884,7 @@ font-size: 24px;
     border-top-color: #a9acaf;
     box-shadow: 0px 1px 0px #fff, 1px 0px 0px #fbfbfb, -1px 0px 0px #fbfbfb;
 }
-.x-ie7p .sfa-left-coll .search input.x-form-text {
-    /*TODO*/
-    /*width: 92% !important;*/
-}
-.sfa-left-coll > div .x-box-inner {
-    /*TODO*/
-    /*height: 42px !important;*/
-}
+
 .sfa-left-coll .x-panel-header-light-left {
     padding: 0;
     margin: 0;
@@ -2097,6 +2079,7 @@ padding: 2px 7px 2px;
 .x-field table.x-form-trigger-wrap td {
     /*background: none;*/
 }
-.x-trigger-cell {
-    background: inherit !important;
-}
+
+
+
+
