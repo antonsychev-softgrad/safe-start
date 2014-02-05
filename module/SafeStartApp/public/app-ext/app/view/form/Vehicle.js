@@ -42,7 +42,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 xtype: 'textfield',
                 labelWidth: 130,
                 maxWidth: 400,
-                fieldLabel: 'Plan ID',
+                fieldLabel: 'Plant ID',
                 labelSeparator: '*',
                 allowBlank: false,
                 name: 'plantId'
