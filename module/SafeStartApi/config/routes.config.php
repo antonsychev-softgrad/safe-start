@@ -588,8 +588,8 @@ $routes = array(
                 'options' => array(
                     'route' => '/test-push/:device/:deviceId',
                     'constraints' => array(
-                        'device' => '[a-z]',
-                        'version' => '[a-zA-Z0-9_-]*'
+                        'device' => '[a-zA-Z0-9_-]*',
+                        'deviceId' => '[a-zA-Z0-9_-]*'
                     ),
                     'defaults' => array(
                         'controller' => 'Index',
