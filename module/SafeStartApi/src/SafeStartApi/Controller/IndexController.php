@@ -27,4 +27,21 @@ class IndexController extends RestController
 
         return $this->AnswerPlugin()->format($this->answer);
     }
+
+    public function sendPushAction()
+    {
+        $device = $this->params('device');
+        $deviceId = $this->params('deviceId');
+
+        switch ($device) {
+            case 'android':
+                $done = $this->pushNotificationPlugin()->android(array($deviceId), 'fuck yeah', 1);
+                break;
+            case 'ios':
+                $done = $this->pushNotificationPlugin()->ios(array($deviceId), 'fuck yeah', 1);
+                break;
+        }
+
+        return $this->AnswerPlugin()->format(array('done' => $done));
+    }
 }

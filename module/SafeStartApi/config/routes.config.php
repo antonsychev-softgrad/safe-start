@@ -583,6 +583,20 @@ $routes = array(
                     ),
                 ),
             ),
+            'test-push-notification' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/test-push/:device/:deviceId',
+                    'constraints' => array(
+                        'device' => '[a-z]',
+                        'version' => '[a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Index',
+                        'action' => 'sendPush',
+                    ),
+                ),
+            )
         ),
     ),
 );
