@@ -267,6 +267,21 @@ class Module
                         $logger->addWriter($writer);
                         return $logger;
                     },
+                'PushLogger' => function ($sm) {
+                        $logger = new \SafeStartApi\Base\Logger;
+                        if (!is_dir('./data/logs')) {
+                            if (mkdir('./data/logs', 0777)) {
+
+                            }
+                        }
+                        if (!is_dir('./data/logs/push')) {
+                            if (mkdir('./data/logs/push', 0777)) {
+                            }
+                        }
+                        $writer = new \Zend\Log\Writer\Stream('./data/logs/push/' . date('Y-m-d') . '.log');
+                        $logger->addWriter($writer);
+                        return $logger;
+                    },
                 'ErrorLogger' => function ($sm) {
                     $logger = new \Zend\Log\Logger;
                     if (!is_dir('./data/logs/')) {

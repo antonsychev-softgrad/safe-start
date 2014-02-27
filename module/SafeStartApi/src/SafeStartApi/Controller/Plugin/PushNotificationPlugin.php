@@ -34,7 +34,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $config = $this->getController()->getServiceLocator()->get('Config');
         $this->googleClient->setApiKey($config['externalApi']['google']['key']);
 
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger = $this->getController()->getServiceLocator()->get('PushLogger');
         $logger->debug("\n\n\n============ Android Push Notification ==================\n");
         if (!$this->googleClient) {
             $logger->debug("Failure client not initialised ");
@@ -66,7 +66,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
         $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['externalApi']['apple']['key'], $config['externalApi']['apple']['password']);
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger = $this->getController()->getServiceLocator()->get('PushLogger');
         $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
         if (!$this->appleClient) {
             $logger->debug("Failure client not initialised");
@@ -88,7 +88,7 @@ class PushNotificationPlugin extends AbstractPlugin
 
     private function _ios($token, $msg = '', $badge = 0)
     {
-        $logger = $this->getController()->getServiceLocator()->get('RequestLogger');
+        $logger = $this->getController()->getServiceLocator()->get('PushLogger');
         $message = new AppleApnsMessage();
         $message->setId('safe-start-app');
         $message->setToken($token);
