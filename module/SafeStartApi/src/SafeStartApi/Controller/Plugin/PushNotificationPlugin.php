@@ -97,7 +97,7 @@ class PushNotificationPlugin extends AbstractPlugin
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
-        } catch (RuntimeException $e) {
+        } catch (\Exception $e) {
             $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
