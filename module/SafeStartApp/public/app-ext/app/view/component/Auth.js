@@ -15,6 +15,9 @@ Ext.define('SafeStartExt.view.component.Auth', {
         var me = this;
         Ext.apply(this, {
             items: [{
+                xtype: 'container',
+                height: 60
+            }, {
                 layout: 'absolute',
                 xtype: 'container',
                 items: [{
@@ -40,10 +43,11 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     text: 'Sign In',
                     ui: 'green',
                     scale: 'medium',
-                    handler: function () {
-                        var form = this.down('form');
+                    name: 'sign-in',
+                    handler: function (btn) {
+                        var form = btn.up('form');
                         if (form.getForm().isValid()) {
-                            this.fireEvent('loginAction', form.getForm().getValues());
+                            form.up('SafeStartExtComponentAuth').fireEvent('loginAction', form.getForm().getValues());
                         }
                     },
                     scope: this
@@ -54,7 +58,16 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     labelAlign: 'top',
                     name: 'username',
                     allowBlank: false,
-                    fieldLabel: 'Username'
+                    fieldLabel: 'Username',
+                    enableKeyEvents: true,
+                    listeners: {
+                        keyup: function(textfield, eventObject){
+                            var btn = this.up('form').down('button[name=sign-in]');
+                            if (eventObject.getKey() == Ext.EventObject.ENTER) {
+                                btn.handler(btn);
+                            }
+                        }
+                    }
                 }, {
                     xtype: 'textfield',
                     inputType: 'password',
@@ -62,7 +75,16 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     labelAlign: 'top',
                     name: 'password',
                     allowBlank: false,
-                    fieldLabel: 'Password'
+                    fieldLabel: 'Password',
+                    enableKeyEvents: true,
+                    listeners: {
+                        keyup: function(textfield, eventObject){
+                            var btn = this.up('form').down('button[name=sign-in]');
+                            if (eventObject.getKey() == Ext.EventObject.ENTER) {
+                                btn.handler(btn);
+                            }
+                        }
+                    }
                 }, {
                     xtype: 'container',
                     cls: 'sfa-text-forgot-password',
