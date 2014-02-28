@@ -252,7 +252,7 @@ $api = array(
             'key' => 'AIzaSyDE7B2A5PvGmkFTgdVX21Al-mabPx1uB0E'
         ),
         'apple' => array(
-            'key' => __DIR__ . '/Development_APS_Certificate.pem',
+            'key' => __DIR__ . '/CertApsDev.pem',
             'password' => '',
         )
     ),
