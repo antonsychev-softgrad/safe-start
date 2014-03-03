@@ -30,7 +30,7 @@ class UserController extends RestController
                 'userInfo' => $userInfo->toArray(),
                 'errorMessage' => 'User already logged in',
             );
-            return $this->AnswerPlugin()->format($this->answer, 0);
+            return $this->AnswerPlugin()->format($this->answer, $errorCode);
         }
 
         $identity = isset($this->data->username) ? $this->data->username : '';
