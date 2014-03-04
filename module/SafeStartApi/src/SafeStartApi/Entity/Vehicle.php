@@ -488,6 +488,8 @@ class Vehicle extends BaseEntity
     {
         if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
         if (!$to) $to = new \DateTime();
+        $to->modify('tomorrow');
+        $to->modify('1 second ago');
 
         $em = \SafeStartApi\Application::getEntityManager();
         $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
@@ -521,6 +523,7 @@ class Vehicle extends BaseEntity
                 }
                 $km = $item->getCurrentOdometer();
                 $hour = $item->getCurrentOdometerHours();
+                
                 if (!empty($km) && !empty($hour)) {
                     $chart[] = array(
                         'value' => round($km / $hour),

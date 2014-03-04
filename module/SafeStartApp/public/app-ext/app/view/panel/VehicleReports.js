@@ -327,27 +327,26 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
             url: 'vehicle/' + self.vehicle.get('id') + '/statistic',
             data: post,
             success: function(result) {
-                if (result.statistic) {
-                    if (!self.chartAdded) {
-                        try {
-                            self.addChart();
-                            self.chartAdded = true;
-                        } catch (e) {
-                            console.log(e);
-                            return;
-                        }
+                if (!self.chartAdded) {
+                    try {
+                        self.addChart();
+                        self.chartAdded = true;
+                    } catch (e) {
+                        return;
                     }
+                }
+                var chart = self.down('chart[name=vehicle-report-chart]');
+                var axis = chart.axes.items[1];
+                axis.setConfig({
+                    dateFormat: SafeStartExt.dateFormat,
+                    fromDate: new Date(),
+                    toDate: self.down('datefield[name=to]').getValue()
+                });
+                if (result.statistic) {
                     data.statistic = result.statistic;
                     self.down('container[name=vehicle-report-content-one]').update(data);
                     if (result.statistic.chart && result.statistic.chart.length) {
-                        var chart = self.down('chart[name=vehicle-report-chart]');
                         chart.show();
-                        var axis = chart.axes.items[1];
-                        axis.setConfig({
-                            dateFormat: SafeStartExt.dateFormat,
-                            fromDate: self.down('datefield[name=from]').getValue(),
-                            toDate: self.down('datefield[name=to]').getValue()
-                        });
                         // chart.axes.items[0].setDateFormat(SafeStartExt.dateFormat);
                         // chart.axes.items[0].setFromDate(self.down('datefield[name=from]').getValue());
                         // chart.axes.items[0].setToDate(self.down('datefield[name=to]').getValue());
@@ -355,8 +354,11 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                         store.removeAll();
                         store.add(result.statistic.chart);
                         store.sync();
+                    } else {
+                        chart.hide();
                     }
                 }
+
             }
         });
     },
