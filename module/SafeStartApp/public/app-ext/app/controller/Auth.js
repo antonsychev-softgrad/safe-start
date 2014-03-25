@@ -33,6 +33,8 @@ Ext.define('SafeStartExt.controller.Auth', {
     }],
 
     init: function() {
+        //todo: hack for mac, have to reload scrolls for auth form
+        document.documentElement.style.overflow = 'auto';
         this.callParent();
         this.control({
             'SafeStartExtComponentAuth': {
