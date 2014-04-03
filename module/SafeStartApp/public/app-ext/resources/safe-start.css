@@ -2143,3 +2143,8 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 .x-toolbar-default {
     background: transparent;
 }
+
+/* уменьшим ширину кнопок на странице Vehicles -> Reporting -> General */
+.sfa-statistic.vehicles-reporting .x-btn-inner.x-btn-inner-center {
+    padding: 0 12px;
+}
