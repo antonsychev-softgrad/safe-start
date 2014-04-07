@@ -58,7 +58,11 @@ class AdminController extends AdminAccessRestController
                 'admin' => $user,
                 'deleted' => 0,
             ));
-            if(!is_null($adminForCompany)) return $this->_showAdminAlreadyInUse();
+            if (is_null($adminForCompany)) {
+                return $this->_showUserAlreadyInUse();
+            } else {
+                return $this->_showAdminAlreadyInUse();
+            }
         }
 
         $user->setEnabled(1);
