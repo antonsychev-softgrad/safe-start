@@ -46,7 +46,9 @@ class AbstractPdfPlugin extends AbstractPlugin
 
     protected function drawVehicleHeader($vehicleData = array(), $companyData = array())
     {
-        if (isset($companyData['description'])) $this->opts['style']['content_height'] = 0;
+        if ( !$this->checkList->getEmailMode() && isset($companyData['description'])) {
+            $this->opts['style']['content_height'] = 0;
+        }
 
         $currentOdometer = $vehicleData['currentOdometerKms'] . ' km';
         if ($vehicleData['currentOdometerHours'] > 0) {
@@ -61,11 +63,19 @@ class AbstractPdfPlugin extends AbstractPlugin
             'Project name' => $vehicleData['projectName'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $currentOdometer,
-            'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
+          //  'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
 
+        if ($vehicleData['nextServiceDay']) {
+            $data['Estimated Date of Next Service'] = $vehicleData['nextServiceDay'];
+        } else if (! $this->checkList->getEmailMode()) {
+            $data['Estimated Date of Next Service'] = '-';
+        }
+
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
-        else  $data['Expiry Day'] = '-';
+        else if (! $this->checkList->getEmailMode()) {
+            $data['Expiry Day'] = '-';
+        }
 
         $pageHeight = $this->getPageHeight();
         $pageWidth = $this->getPageWidth();

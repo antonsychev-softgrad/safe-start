@@ -15,6 +15,11 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $this->checkList = $checklist;
         $this->document = new ZendPdf\PdfDocument();
         $this->opts = $this->getController()->moduleConfig['pdf']['inspection'];
+
+        if ($checklist->getEmailMode()) {
+            $this->opts['style']['content_height'] = $this->opts['style']['email_content_height'];
+        }
+
         $this->uploadPath = $this->getController()->moduleConfig['defUsersPath'];
         $fontPath = dirname(__FILE__) . "/../../../../public/fonts/HelveticaNeueLTStd-Cn.ttf";
         $this->font = file_exists($fontPath) ? ZendPdf\Font::fontWithPath($fontPath) : ZendPdf\Font::fontWithName(ZendPdf\Font::FONT_HELVETICA);
@@ -33,6 +38,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         // save document
         $this->fileName = $this->getName();
         $this->filePath = $this->getFullPath();
+
         $this->saveDocument();
         $this->checkList->setPdfLink($this->fileName);
         $this->getController()->em->flush();
@@ -42,7 +48,6 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 
         return $this->filePath;
     }
-
 
     protected function drawHeader()
     {
@@ -102,7 +107,32 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $leftPosInStr = $this->getLeftStartPos($date, $this->font, self::BLOCK_TEXT_SIZE, self::TEXT_ALIGN_RIGHT);
         $page->drawText($date, $leftPosInStr, $topPosInPage);
 
+        if ($this->checkList->getEmailMode()) {
+            $this->drawAds($page);
+        }
         return true;
+    }
+
+    protected function drawAds(\ZendPdf\Page $page) 
+    {
+        $footerPath = $this->getRootPath() . "public/pdf/footer.jpg";
+        $pageHeight = $this->getPageHeight();
+        $pageWidth = $this->getPageWidth();
+        //$contentWidth = $this->getPageContentWidth();
+
+        if (file_exists($footerPath)) {
+            $footer = ZendPdf\Image::imageWithPath($footerPath);
+            $footerHeight = 150;
+
+
+            // page height 
+            $page->drawImage($footer, 
+                0,
+                35,
+                $pageWidth, 
+                $footerHeight + 35
+            );
+        }
     }
 
     private function drawWarnings($currentColumn = 1)
@@ -151,6 +181,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
             if (isset($this->opts['style'][$warning['action']])) {
                 $lines = $this->getTextLines(isset($warning['text']) ? $warning['text'] : $this->opts['style'][$warning['action']], $this->opts['style']['warning_size'], $columnWidth);
                 foreach ($lines as $line) {
+                
                     if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
                         $currentColumn++;
                         if ($currentColumn > $columns) {
@@ -283,6 +314,8 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $fieldsStructure = json_decode($this->checkList->getFieldsStructure());
         $fieldsData = json_decode($this->checkList->getFieldsData(), true);
         $fieldsDataValues = array();
+
+
         foreach ($fieldsData as $fieldData) $fieldsDataValues[$fieldData['id']] = $fieldData['value'];
 
         $columns = $this->opts['style']['content_columns'];
@@ -296,7 +329,9 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
             $text = (isset($groupBlock->fieldDescription) && !empty($groupBlock->fieldDescription)) ? $groupBlock->fieldDescription : $groupBlock->groupName;
             $lines = $this->getTextLines($text, $this->opts['style']['category_field_size'], $columnWidth);
             foreach ($lines as $line) {
+
                 if ($this->lastTopPos <= ($this->opts['style']['page_padding_bottom'] + $this->getPageHeight() * $this->opts['style']['content_height'])) {
+
                     $currentColumn++;
                     if ($currentColumn > $columns) {
                         $this->pageIndex++;
