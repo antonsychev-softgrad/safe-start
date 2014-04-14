@@ -23,6 +23,7 @@ class UserController extends RestController
             if($userInfo->getDeleted()) return $this->_showUserUnavailable('User has been removed');
             if(!$userInfo->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
             if ($this->_checkExpiryDate()) throw new Rest403('You company subscription expired');
+            if (!$this->_checkIfCompanyExists) throw new Rest403('You company has been blocked');
             $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
 
             $this->answer = array(
