@@ -289,10 +289,34 @@ class RestController extends AbstractActionController
                     }
 
                     if ($now >= $expiretyDate) {
-                       return true;
+                        return true;
                     }
                 }
             }
+        }
+
+        return false;
+    }
+
+    protected function _checkIfCompanyExists($userId = null)
+    {
+        $user = null;
+
+        if ($userId === null) {
+            if ($this->authService->hasIdentity()) {
+                $user = $this->authService->getStorage()->read();
+            }
+        } else {
+            $user = $this->em->find('SafeStartApi\Entity\User', (int)$userId);
+        }
+
+        if (!$user) return false;
+
+        if ($user->getRole() == 'superAdmin') return true;
+
+        if (($company = $user->getCompany()) !== null) {
+
+            return !$company->getDeleted();
         }
 
         return false;

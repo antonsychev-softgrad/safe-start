@@ -106,6 +106,7 @@ $api = array(
                 'signature_width' => 120,
                 'content_width' => 1,
                 'content_height' => 1/3,
+                'email_content_height' => 1/4,
                 'content_columns' => 5,
                 'content_column_padding' => 20,
                 'column_padding_left' => 0,
