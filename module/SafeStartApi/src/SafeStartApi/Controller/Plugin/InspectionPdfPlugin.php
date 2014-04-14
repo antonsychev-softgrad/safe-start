@@ -8,7 +8,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
 {
     const HEADER_EMPIRIC_HEIGHT = 90;
     protected $pageSize = ZendPdf\Page::SIZE_A4_LANDSCAPE;
-    private $checkList;
+    public $checkList;
 
     public function create(\SafeStartApi\Entity\CheckList $checklist)
     {
