@@ -766,6 +766,18 @@ overflow-x: hidden !important;
 .sfa-form-auth .sfa-text-forgot-password:hover {
     color: #666;
 }
+.sfa-form-auth .x-box-target {
+    height: 100%;
+}
+.sfa-form-auth .x-box-target > .x-container.x-box-item.x-container-default.x-abs-layout-ct {
+    top: 50% !important;
+    margin-top: -194px !important;
+}
+
+.sfa-form-auth .x-panel-form {
+    top: 50% !important;
+    margin-top: -186px !important;
+}
 .sfa-form-auth .x-panel-form, .sfa-form-contact .x-panel-form {
     background: #fff;
 }
@@ -785,23 +797,10 @@ overflow-x: hidden !important;
 .x-ie8p .sfa-form-contact .x-panel-form input.x-form-field.x-form-text{
     height: 40px !important;
 }
-/* button */
-/*.sfa-form-auth .x-panel-form .x-btn-inner {
-    padding-bottom: 2px;
-}
-*//*.sfa-form-auth .x-panel-form .x-btn-button {
-    height: 18px;
-}
-*/
+
 .sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
     padding-left: 0;
 }
-
-.sfa-form-auth img {
-    top: -110px !important;
-}
-
-
 
 /* END Login & Contact form */
 
@@ -814,11 +813,6 @@ overflow-x: hidden !important;
     text-transform: uppercase;
 }
 
-/*
-.sfa-top-nav .sfa-logout .x-btn-icon-el {
-    display: none;
-}
-*/
 .sfa-top-nav .sfa-logout {
     margin-right: 40px;
 }
