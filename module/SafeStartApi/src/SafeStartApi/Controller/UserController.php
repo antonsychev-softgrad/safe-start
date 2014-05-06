@@ -22,8 +22,8 @@ class UserController extends RestController
             $userInfo = $this->authService->getStorage()->read();
             if($userInfo->getDeleted()) return $this->_showUserUnavailable('User has been removed');
             if(!$userInfo->getEnabled()) return $this->_showUserUnavailable("User's account is unavailable");
-            if ($this->_checkExpiryDate()) throw new Rest403('You company subscription expired');
-            if (!$this->_checkIfCompanyExists) throw new Rest403('You company has been blocked');
+            if ($this->_checkExpiryDate()) throw new Rest403('Your company subscription expired');
+            if (!$this->_checkIfCompanyExists()) throw new Rest403('Your company has been blocked');
             $errorCode = RestController::USER_ALREADY_LOGGED_IN_ERROR;
 
             $this->answer = array(
@@ -76,7 +76,12 @@ class UserController extends RestController
                     }
                     if ($this->_checkExpiryDate()) {
                         $this->authService->clearIdentity();
-                        throw new Rest403('You company subscription expired');
+                        throw new Rest403('Your company subscription expired');
+                    }
+
+                    if (!$this->_checkIfCompanyExists()) {
+                        $this->authService->clearIdentity();
+                        throw new Rest403('Your company has been blocked');
                     }
                     $user->setLastLogin(new \DateTime());
                     if (isset($this->data->device)) $user->setDevice(strtolower($this->data->device));

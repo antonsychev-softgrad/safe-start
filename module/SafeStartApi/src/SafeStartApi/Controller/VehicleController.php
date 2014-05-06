@@ -288,7 +288,9 @@ class VehicleController extends RestrictedAccessRestController
         //     $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
 
-        $warnings = $this->processChecklistPlugin()->getWarningsFromInspectionFields($checkList);
+        if (! $checkList->getEmailMode()) {
+            $warnings = $this->processChecklistPlugin()->getWarningsFromInspectionFields($checkList);
+        }
         if (!empty($warnings)) $checkList->setWarnings($warnings);
 
         if (!$inspection) $this->em->persist($checkList);

@@ -242,7 +242,8 @@ class CompanyController extends RestrictedAccessRestController
 
         $users = $vehicle->getUsers();
         $responsibleUsers = $vehicle->getResponsibleUsers();
-        $users = array_merge($users, $responsibleUsers);
+
+        $users = new ArrayCollection(array_merge($users->toArray(), $responsibleUsers->toArray()));
 
         $cache = \SafeStartApi\Application::getCache();
         foreach ($users as $user) {
@@ -285,7 +286,6 @@ class CompanyController extends RestrictedAccessRestController
 
         foreach ($items as $item) {
             if ($item->getId() == $this->authService->getIdentity()->getId()) continue;
-            if ($item->getId() == $company->getAdmin()->getId()) continue;
             $this->answer[] = $item->toArray();
         }
 

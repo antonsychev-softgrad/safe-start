@@ -3,6 +3,7 @@
 namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\AdminAccessRestController;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class AdminController extends AdminAccessRestController
 {
@@ -153,6 +154,22 @@ class AdminController extends AdminAccessRestController
                 "errorMessage" => "Company not found."
             );
             return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        $vehicles = $company->getVehicles();
+        foreach ($vehicles as $vehicle) {
+            $users = $vehicle->getUsers();
+            $responsibleUsers = $vehicle->getResponsibleUsers();
+            $users = new ArrayCollection(array_merge($users->toArray(), $responsibleUsers->toArray()));
+
+            $cache = \SafeStartApi\Application::getCache();
+            foreach ($users as $user) {
+                $cashKey = "getUserVehiclesList" . $user->getId();
+                $cache->removeItem($cashKey);
+            }
+
+            $vehicle->setPlantId(time() ." ".$vehicle->getPlantId());
+            $vehicle->setDeleted(1);
         }
 
         $company->setDeleted(1);

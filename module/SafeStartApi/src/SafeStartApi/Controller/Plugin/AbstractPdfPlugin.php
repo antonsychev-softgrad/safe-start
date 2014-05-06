@@ -46,7 +46,7 @@ class AbstractPdfPlugin extends AbstractPlugin
 
     protected function drawVehicleHeader($vehicleData = array(), $companyData = array())
     {
-        if ( !$this->checkList->getEmailMode() && isset($companyData['description'])) {
+        if ($this->checkList && !$this->checkList->getEmailMode() && isset($companyData['description'])) {
             $this->opts['style']['content_height'] = 0;
         }
 
@@ -73,7 +73,7 @@ class AbstractPdfPlugin extends AbstractPlugin
         }
 
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
-        else if (! $this->checkList->getEmailMode()) {
+        else if ($this->checkList && ! $this->checkList->getEmailMode()) {
             $data['Expiry Day'] = '-';
         }
 

@@ -322,6 +322,7 @@ class Vehicle extends BaseEntity
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "expiryDate" => $this->company->getExpiryDate(),
+            "restricted" => $this->company->getRestricted(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
