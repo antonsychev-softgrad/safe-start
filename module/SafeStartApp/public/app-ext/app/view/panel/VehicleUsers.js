@@ -47,10 +47,22 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
     buildList: function () {
         this.removeAll();
 
+        var disabled = false,
+            value = '';
+
         this.store.each(function (user) {
+            disabled = false;
+            if (user.get('role') == 'companyAdmin') {
+                value = 'Admin';
+                disabled = true;
+            } else {
+                value = user.get('assigned');
+            }
             this.add({
                 xtype: 'combobox',
                 editable: false,
+                userRole: user.get('role'),
+                disabled: disabled,
                 name: 'assigned',
                 fieldLabel: user.getFullName(),
                 displayField: 'title',
@@ -60,7 +72,7 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
                 width: 400,
                 labelWidth: 140,
                 cls:'sfa-combobox',
-                value: user.get('assigned'),
+                value: value,
                 store: {
                     fields: ['rank', 'title'],
                     data: [
@@ -68,6 +80,11 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
                         { rank: 'user', title: 'User'},
                         { rank: 'responsible', title: 'Responsible'}
                     ]
+                }, 
+                listeners: {
+                    change: function (combo, value) {
+                        console.log(combo);
+                    }
                 }
 
             });

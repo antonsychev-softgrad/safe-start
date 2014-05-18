@@ -62,6 +62,18 @@ Ext.define('SafeStartExt.view.form.User', {
             displayField: 'title',
             valueField: 'rank',
             allowBlank: false,
+            listeners: {
+                change: function (combo, value) {
+                    if (combo.up('form').getRecord().get('role') == 'companyAdmin') {
+                        combo.setValue('Admin');
+                        combo.setDisabled(true);
+                        combo.up('form').down("checkboxfield[name=enabled]").setDisabled(true);
+                    } else {
+                        combo.setDisabled(false);
+                        combo.up('form').down("checkboxfield[name=enabled]").setDisabled(false);
+                    }
+                }
+            },
             store: Ext.create('Ext.data.Store', {
                 fields: ['rank', 'title'],
                 data: [{

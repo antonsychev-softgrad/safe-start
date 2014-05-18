@@ -174,7 +174,7 @@ Ext.define('SafeStartExt.view.panel.Inspections', {
         return this.down('dataview').getStore();
     },
 
-    openMap: function (lat, lon) {    
+    openMap: function (lat, lon) {
         var panel;
         if (typeof google === 'undefined') {
             Ext.Msg.alert(

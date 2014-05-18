@@ -54,12 +54,14 @@ Ext.define('SafeStartExt.view.form.UserProfile', {
                 maxWidth: 400,
                 items: [{
                     xtype: 'textfield',
+                    inputType: 'password',
                     name: 'newPassword',
                     labelWidth: 130,
                     labelSeparator: '',
                     fieldLabel: 'New'
                 }, {
                     xtype: 'textfield',
+                    inputType: 'password',
                     name: 'confirmPassword',
                     labelWidth: 130,
                     labelSeparator: '',

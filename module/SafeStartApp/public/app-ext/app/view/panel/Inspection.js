@@ -102,6 +102,9 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 form: this.forms[this.forms.length-1]
             });
         }, this);
+        if (! listStore.getCount()) {
+            return;
+        }
         listStore.first().set('isFirst', true);
         var checklistPages = [];
         var additional = listStore.add({
@@ -633,7 +636,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             listeners = {},
             additionalFields;
 
-        if (field.get('additional')) {
+        if (field && field.get('additional')) {
             additionalFields = field.items();
             formAdditionalFields = this.createChecklistFields(additionalFields, form);
             Ext.each(formAdditionalFields, function (field) {
