@@ -11,6 +11,7 @@ Ext.define('SafeStartExt.view.panel.UsersList', {
     minWidth: 250,
     border: 0,
     title: 'Users',
+    overflowY: 'auto',
 
     initComponent: function() {
         var store = SafeStartExt.store.Users.create();

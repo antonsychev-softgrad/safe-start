@@ -11,7 +11,8 @@
                 ->prependStylesheet($this->basePath() . '/css/app.css'); ?>
 
         <script>
-            var SafeStartApp = <?php echo json_encode($this->appConfig); ?>;
+            var SafeStartApp = <?php echo json_encode($this->appConfig); ?>,
+                SafeStartExt = SafeStartApp;
         </script>
 
          <?php

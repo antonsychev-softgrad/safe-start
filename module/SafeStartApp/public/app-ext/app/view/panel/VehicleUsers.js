@@ -12,6 +12,8 @@ Ext.define('SafeStartExt.view.panel.VehicleUsers', {
         type: 'vbox'
     },
 
+    overflowY: 'auto',
+
     initComponent: function () {
         Ext.apply(this, {
             buttonAlign: 'left',

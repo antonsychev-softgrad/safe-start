@@ -162,6 +162,8 @@ Ext.define('SafeStartExt.Application', {
 
     launch: function () {
         Ext.form.field.Base.prototype.validateOnBlur = false;
+        Ext.form.NumberField.prototype.mouseWheelEnabled = false;
+        Ext.form.field.Date.prototype.format = SafeStartApp.dateFormat;
         
         var loadingEl = Ext.get('appLoadingIndicator');
         if (loadingEl) {

@@ -27,6 +27,7 @@ SafeStartApp = SafeStartApp || {
             SafeStartApp[property] = value;
         }
     });
+
 }());
 
 Ext.apply(SafeStartApp, {
