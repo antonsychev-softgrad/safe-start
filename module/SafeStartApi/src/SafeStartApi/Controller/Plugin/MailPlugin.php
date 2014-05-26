@@ -70,10 +70,10 @@ class MailPlugin extends AbstractPlugin
             $bodyParts = array($contentPart);*/
 
             $attachment = new MimePart($html);
-            $attachment->type = 'application/pdf';
+            $attachment->type = 'text/html';
             $attachment->encoding = Mime::ENCODING_BASE64;
             $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
-            $attachment->filename = $subject . '.pdf';
+            $attachment->filename = $subject . '.html';
             $bodyParts[] = $attachment;
             $bodyParts[] = $htmlPart;
 
