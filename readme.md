@@ -45,9 +45,9 @@
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
         Password: ssi2705
-        54.200.245.179 OR ec2-54-200-245-179.us-west-2.compute.amazonaws.com
+        54.201.228.131 OR ec2-54-200-245-179.us-west-2.compute.amazonaws.com
 
-        ssh -i safe-start-root.pem ubuntu@54.200.117.161
+        ssh -i safe-start-root.pem ubuntu@54.201.228.131
 
         git fetch origin
         git checkout -b v1 origin/v1
@@ -140,3 +140,8 @@
             deny all;
         }
     }
+
+ http://database.safestartinspections.com/
+ 54.201.228.131
+ Username: paul@safestartinspections.com
+ Password: ssi2705
