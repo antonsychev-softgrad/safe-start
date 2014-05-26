@@ -3,7 +3,7 @@
 $api = array(
     'params' => array(
         'version' => '1.0-beta',
-        'site_url' => 'http://ec2-54-200-245-179.us-west-2.compute.amazonaws.com',
+        'site_url' => 'http://database.safestartinspections.com',
         'email_static_content_url' => 'https://s3-us-west-2.amazonaws.com/safe-start/emails/',
         'date_format' => 'd/m/Y',
         'time_format' => 'H:i',
