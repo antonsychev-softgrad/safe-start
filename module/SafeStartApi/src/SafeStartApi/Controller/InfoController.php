@@ -97,8 +97,7 @@ class InfoController extends RestController
 
         $this->MailPlugin()->send(
             'Message from contact form',
-            //$config['params']['emailForContacts'],
-            'Anna.Izotova@ocsico.com',
+            $config['params']['emailForContacts'],
             'contact.phtml',
             array(
                 'name' => $name,
