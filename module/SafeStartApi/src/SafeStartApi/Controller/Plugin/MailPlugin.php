@@ -60,10 +60,25 @@ class MailPlugin extends AbstractPlugin
             $body = new MimeMessage();
             $body->setParts($bodyParts);
         } else {
-            $body = new MimeMessage();
+            $content = new MimeMessage();
             $htmlPart = new MimePart($html);
             $htmlPart->type = 'text/html';
-            $body->setParts(array($htmlPart));
+            $content->setParts(array($htmlPart));
+
+            /*$contentPart = new MimePart($content->generateMessage());
+            $contentPart->type = 'multipart/alternative;' . PHP_EOL . ' boundary="' . $content->getMime()->boundary() . '"';
+            $bodyParts = array($contentPart);*/
+
+            $attachment = new MimePart($html);
+            $attachment->type = 'application/pdf';
+            $attachment->encoding = Mime::ENCODING_BASE64;
+            $attachment->disposition = Mime::DISPOSITION_ATTACHMENT;
+            $attachment->filename = $subject . '.pdf';
+            $bodyParts[] = $attachment;
+            $bodyParts[] = $htmlPart;
+
+            $body = new MimeMessage();
+            $body->setParts($bodyParts);
         }
 
         $message->setEncoding('utf-8')
