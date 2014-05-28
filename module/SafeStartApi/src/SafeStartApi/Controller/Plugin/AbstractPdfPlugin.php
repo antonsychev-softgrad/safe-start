@@ -66,10 +66,12 @@ class AbstractPdfPlugin extends AbstractPlugin
           //  'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
 
-        if ($vehicleData['nextServiceDay']) {
-            $data['Estimated Date of Next Service'] = $vehicleData['nextServiceDay'];
-        } else if (! $this->checkList->getEmailMode()) {
-            $data['Estimated Date of Next Service'] = '-';
+        if (!$this->checkList->getEmailMode()) {
+            if ($vehicleData['nextServiceDay']) {
+                $data['Estimated Date of Next Service'] = $vehicleData['nextServiceDay'];
+            } else {
+                $data['Estimated Date of Next Service'] = '-';
+            }
         }
 
         if (isset($companyData['expiry_date']) && !empty($companyData['expiry_date'])) $data['Expiry Day'] = date($this->getController()->moduleConfig['params']['date_format'], $companyData['expiry_date']);
