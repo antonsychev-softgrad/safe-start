@@ -187,6 +187,12 @@ Ext.define('SafeStartExt.view.panel.SystemGeneralReport', {
                     self.addChart();
                     self.chartAdded = true;
                 }
+                var chart = self.down('#SafeStartSystemStatisticChart');
+                if (! result.hideEmail) {
+                    chart.series.getAt(1).showAll();
+                } else {
+                    chart.series.getAt(1).hideAll();
+                }
                 if (result.statistic) {
                     if (result.statistic.total) {
                         data.total = result.statistic.total;
