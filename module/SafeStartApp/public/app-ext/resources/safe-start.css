@@ -2142,3 +2142,9 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 .sfa-statistic.vehicles-reporting .x-btn-inner.x-btn-inner-center {
     padding: 0 12px;
 }
+
+/* When scrolling down on Chrome it shows the background behind. The vertical scroll should not extend beyond the tab base. */
+/* хотя это решение не очень */
+.x-mask {
+    display: none !important;
+}
