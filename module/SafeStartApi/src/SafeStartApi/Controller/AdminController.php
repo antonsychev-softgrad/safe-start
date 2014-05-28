@@ -396,6 +396,7 @@ class AdminController extends AdminAccessRestController
         }
 
         $chart = array();
+        $hideEmail = false;
 
         while ($fromTime < $toTime) {
             if ( $range == 'monthly' ) $date = date('m/Y', $fromTime);
@@ -422,9 +423,14 @@ class AdminController extends AdminAccessRestController
             }
 
 
-            $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
-            $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
-            $value2 = $query->getSingleScalarResult();
+            if ($company) {
+                $value2 = 0;
+                $hideEmail = true;
+            } else {
+                $query = $this->em->createQuery('SELECT COUNT(cl.id) FROM SafeStartApi\Entity\CheckList cl WHERE cl.deleted = 0 AND cl.creation_date >= :from AND  cl.creation_date <= :to AND cl.email_mode = 1');
+                $query->setParameter('from', $fromTimeParam)->setParameter('to', $toTimeParam);
+                $value2 = $query->getSingleScalarResult();
+            }
 
 
             if($company && count($vehicles) <= 0) {
@@ -456,7 +462,8 @@ class AdminController extends AdminAccessRestController
 
         $this->answer = array(
             'done' => true,
-            'statistic' => $statistic
+            'statistic' => $statistic,
+            'hideEmail' => $hideEmail
         );
 
         return $this->AnswerPlugin()->format($this->answer);
