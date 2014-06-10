@@ -9,7 +9,7 @@
  */
 
 defined('APP_ENV')
-|| define('APP_ENV', 'dev');
+|| define('APP_ENV', 'prod');
 
 defined('APP_DEBUG')
 || define('APP_DEBUG', false);
