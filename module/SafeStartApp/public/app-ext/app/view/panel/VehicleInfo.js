@@ -56,6 +56,9 @@ Ext.define('SafeStartExt.view.panel.VehicleInfo', {
             key: 'Project name:', 
             value: vehicle.get('projectName')
         }, {
+            key: 'Expiry date:',
+            value: vehicle.get('expiryDate')
+        }, {
             key: 'Project number:', 
             value: vehicle.get('projectNumber')
         }, {

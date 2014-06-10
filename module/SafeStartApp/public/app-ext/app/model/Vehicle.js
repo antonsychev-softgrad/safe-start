@@ -18,6 +18,7 @@ Ext.define('SafeStartExt.model.Vehicle', {
         {name: 'serviceDueHours', type: 'int', defaultValue: 24},
         {name: 'enabled', defaultValue: 1},
         {name: 'warrantyStartDate', type: 'int', defaultValue: new Date()},
+        {name: 'expiryDate', type: 'int'},
         {name: 'inspectionDueHours', type: 'int', defaultValue: 24},
         {name: 'inspectionDueKms', type: 'int', defaultValue: 500},
         {name: 'lastInspectionDay', type: 'int', defaultValue: null}

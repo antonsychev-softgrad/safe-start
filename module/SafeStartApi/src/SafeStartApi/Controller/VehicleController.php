@@ -456,7 +456,8 @@ class VehicleController extends RestrictedAccessRestController
                 $warnings = $checkList->getWarnings();
                 $vehicle = $checkList->getVehicle();
                 if ($vehicle->getNextServiceDay()) {
-                    $days = (strtotime($vehicle->getNextServiceDay()) - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                    $nextServiceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay())->getTimestamp();
+                    $days = ($nextServiceDate - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
                     if ($days < 1) {
                         $warnings[] = array(
                             'action' => 'next_service_due',

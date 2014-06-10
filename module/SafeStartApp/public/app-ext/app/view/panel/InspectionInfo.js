@@ -47,6 +47,20 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
             this.createContainer('Current odometer', odometerString)
         ]));
 
+        Ext.each(inspection.get('warnings'), function (warning) {
+            if (Ext.isString(warning.text)) {
+                data.push(this.createGroup([], warning.text, 1, 'warning'));
+            } else {
+                switch (warning.type) {
+                    case 'date_incorrect':
+                        data.push(this.createGroup([], 'Inaccurate Current Hours Or Kms', 1, 'warning'));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }, this);
+
         this.checkListId = checklist.id;
         this.vehicleId = vehicle.get('id');
         this.inspectionRecord = inspection;
@@ -116,9 +130,9 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
         };
     },
 
-    createGroup: function (items, title, depth) {
+    createGroup: function (items, title, depth, type) {
         return {
-            type: depth == 1 ? 'top' : 'sub',
+            type: Ext.isString(type) ? type : (depth === 1 ? 'top' : 'sub'),
             title: title,
             items: items
         };

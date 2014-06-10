@@ -146,6 +146,12 @@ class Vehicle extends BaseEntity
     protected $alerts;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true, name="expiry_date")
+     */
+    protected $expiryDate;
+
+
+    /**
      * Convert the object to an array.
      *
      * @return array
@@ -182,6 +188,7 @@ class Vehicle extends BaseEntity
             "currentOdometerHours" => (!is_null($this->getCurrentOdometerHours())) ? $this->getCurrentOdometerHours() : 0,
             "nextServiceDay" => $this->getNextServiceDay(),
             "enabled" => $this->getEnabled(),
+            "expiryDate" => $this->getExpiryDate(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "lastInspectionDay" => $this->getLastInspectionDay()
@@ -248,6 +255,7 @@ class Vehicle extends BaseEntity
             $config = \SafeStartApi\Application::getConfig();
             $date = date($config['params']['date_format'], $serviceDate);
         }
+
 
 
         /* $averageKms = array();
@@ -321,7 +329,7 @@ class Vehicle extends BaseEntity
             "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "expiryDate" => $this->company->getExpiryDate(),
+            "expiryDate" => $this->getExpiryDate(),
             "restricted" => $this->company->getRestricted(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
@@ -447,6 +455,31 @@ class Vehicle extends BaseEntity
         }
 
         return $inspections;
+    }
+
+    /**
+     * Set expiryDate
+     *
+     * @param \DateTime $expiryDate
+     * @return Company
+     */
+    public function setExpiryDate($expiryDate)
+    {
+        $this->expiryDate = $expiryDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get expiryDate
+     *
+     * @return \DateTime 
+     */
+    public function getExpiryDate()
+    {
+        return $this->expiryDate ? $this->expiryDate->getTimestamp() : (
+            $this->company ? $this->company->getExpiryDate() : null
+        );
     }
 
 

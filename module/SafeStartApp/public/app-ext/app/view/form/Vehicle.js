@@ -31,7 +31,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 labelSeparator: '*',
                 allowBlank: false,
                 name: 'title'
-            }, {                
+            }, {
                 xtype: 'textfield',
                 labelWidth: 130,
                 maxWidth: 400,
@@ -60,6 +60,18 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 fieldLabel: 'Project Number',
                 labelSeparator: '',
                 name: 'projectNumber'
+            }, {
+                xtype: 'fieldcontainer',
+                labelWidth: 130,
+                maxWidth: 400,
+                labelSeparator: '',
+                fieldLabel: 'Expiry Date',
+                items: [{
+                    xtype: 'datefield',
+                    name: 'expiryDate',
+                    format: SafeStartExt.dateFormat
+                }],
+                cls: 'sfa-datepicker'
             }, {
                 xtype: 'fieldcontainer',
                 labelWidth: 130,
@@ -185,5 +197,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             this.down('button[name=delete]').enable();
         }
         this.callParent(arguments);
+        this.down('field[name=expiryDate]').setValue(new Date(record.get('expiryDate') * 1000));
     }
 });

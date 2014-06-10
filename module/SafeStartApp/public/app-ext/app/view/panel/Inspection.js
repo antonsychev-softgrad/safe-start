@@ -138,6 +138,12 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             groupName: 'Review'
         });
 
+        if (this.vehicle.get('expiryDate')*1000 < new Date().getTime()) {
+            prevAlerts.unshift({
+                alert_description: 'Subscription has expired'
+            });
+        }
+
         this.showPreviousAlerts(prevAlerts);
 
         this.onNextClick();
@@ -312,6 +318,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             odometerHoursInterval = odometerHours - currentOdometerHours;
             inspectionDueHours = vehicle.get('inspectionDueHours');
             inspectionDueKms = vehicle.get('inspectionDueKms');
+
             if (lastInspectionDate) {
                 inspectionInterval = (new Date().getTime() - lastInspectionDate) / 60 / 60 / 1000;
                 if (inspectionInterval < odometerHoursInterval) {
@@ -355,7 +362,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
 
     getOdometerKmsValue: function () {
         return this.down('numberfield[name=currentOdometerKms]').getValue();
-    }, 
+    },
 
     getFieldsValue: function () {
         var completedForms = [];

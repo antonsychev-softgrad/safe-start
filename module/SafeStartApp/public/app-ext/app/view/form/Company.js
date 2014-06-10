@@ -198,7 +198,6 @@ Ext.define('SafeStartExt.view.form.Company', {
                             var date = this.down('datefield').getValue();
                             values.expiry_date = date.getTime();
                             // me.getRecord().set('expiry_date', values.expiry_date);
-                            console.log(values);
                             this.fireEvent('updateCompanyAction', me.getRecord(), values);
                         }
                     },

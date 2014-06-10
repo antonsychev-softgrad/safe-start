@@ -7,6 +7,7 @@ Ext.define('SafeStartExt.model.Inspection', {
         {name: 'gps', type: 'string'},
         {name: 'hash', type: 'string'},
         {name: 'id', type: 'string'},
+        {name: 'warnings'},
         {name: 'odometer_hours', type: 'string'},
         {name: 'odometer_kms', type: 'string'},
         {name: 'update_date', type: 'int'}

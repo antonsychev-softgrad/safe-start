@@ -139,8 +139,10 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
     {
         $warnings = $this->checkList->getWarnings();
         $vehicle = $this->checkList->getVehicle();
-        if (! $this->checkList->getEmailMode() && $vehicle->getNextServiceDay()) {
-            $days = (strtotime($vehicle->getNextServiceDay()) - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+        if ((! $this->checkList->getEmailMode()) && $vehicle->getNextServiceDay()) {
+            $nextServiceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay())->getTimestamp();
+            $days = ($nextServiceDate - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+
             if ($days < 1) {
                 $warnings[] = array(
                     'action' => 'next_service_due',
