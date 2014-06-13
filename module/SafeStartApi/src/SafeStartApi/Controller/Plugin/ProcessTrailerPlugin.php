@@ -202,17 +202,18 @@ class ProcessTrailerPlugin extends AbstractPlugin
 
         $pdf = $this->getController()->inspectionPdf()->create($newCheckList);
 
+        $admin = $company->getAdmin();
         if (file_exists($pdf)) {
             $this->getController()->MailPlugin()->send(
-                $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
-                'rusffer@gmail.com',
+                $this->getController()->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                $admin->getEmail(),
                 'checklist.phtml',
                 array(
-                    'name' => 'Name of me',
+                    'name' => $admin->getFirstName() . ' ' . $admin->getLastName(),
                     'plantId' => $newCheckList->getVehicle() ? $newCheckList->getVehicle()->getPlantId() : '-',
                     'uploadedByName' => $newCheckList->getOperatorName(),
-                    'siteUrl' => $this->moduleConfig['params']['site_url'],
-                    'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
+                    'siteUrl' => $this->getController()->moduleConfig['params']['site_url'],
+                    'emailStaticContentUrl' => $this->getController()->moduleConfig['params']['email_static_content_url']
                 ),
                 $pdf
             );
