@@ -426,6 +426,10 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             case 'datePicker':
                 var date = el.getValue();
                 if (date) {
+                    console.log(typeof date);
+                    if (typeof date === 'string') {
+                        value = null;
+                    }
                     value = parseInt(date.getTime()/1000, 10);
                 } else {
                     value = null;
