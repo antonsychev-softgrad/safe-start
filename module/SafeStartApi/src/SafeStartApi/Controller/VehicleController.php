@@ -256,7 +256,8 @@ class VehicleController extends RestrictedAccessRestController
             }
         }
 
-        // set current odometer data
+        $warningServiceDue = false;
+        // set current odometer data and check service due
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
             $warningKms = false;
             $checkList->setCurrentOdometer($this->data->odometer);
@@ -265,6 +266,12 @@ class VehicleController extends RestrictedAccessRestController
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_KMS);
             }
             if (!$warningKms) $vehicle->setCurrentOdometerKms($this->data->odometer);
+
+            if ($vehicle->getCurrentOdometerKms() >= $vehicle->getServiceDueKm() - $vehicle->getServiceThresholdKm()) {
+                $warningServiceDue = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_SERVICE_DUE);
+            }
+
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerKms());
         }
@@ -284,6 +291,10 @@ class VehicleController extends RestrictedAccessRestController
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
             }
             if (!$warningHours) $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+
+            if (! $warningServiceDue && $vehicle->getCurrentOdometerHours() >= $vehicle->getServiceDueHours() - $vehicle->getServiceThresholdHours()) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_SERVICE_DUE);
+            }
         // } else {
         //     $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
@@ -320,7 +331,8 @@ class VehicleController extends RestrictedAccessRestController
                 $filedAlerts = $field->getAlerts();
                 if ($filedAlerts) {
                     foreach ($filedAlerts as $filedAlert) {
-                        if ($filedAlert->getVehicle()->getId() == $vehicleId
+                        if ($filedAlert->getVehicle()
+                            && $filedAlert->getVehicle()->getId() == $vehicleId
                             && $filedAlert->getStatus() == \SafeStartApi\Entity\Alert::STATUS_NEW
                             && !$filedAlert->getDeleted()
                         ) {
@@ -348,7 +360,9 @@ class VehicleController extends RestrictedAccessRestController
             $this->em->flush();
         }
 
-        $this->processTrailerPlugin()->processTrailer($checkList, $newAlerts);
+
+
+
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
@@ -361,6 +375,29 @@ class VehicleController extends RestrictedAccessRestController
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
+
+        $trailerPlantId = $this->processTrailerPlugin()->getTrailerPlantIdFromChecklist($checkList);
+        $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $trailer = $repository->findOneBy(array(
+            'plantId' => $trailerPlantId,
+            'deleted' => 0,
+        ));
+        $company = $vehicle->getCompany();
+
+        $vehicleLimitReached = false;
+        if (! $trailer) {
+            if ($company->getRestricted()
+                && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())
+            ) {
+                $this->processTrailerPlugin()->processHiddenTrailer($checkList, $newAlerts);
+                $vehicleLimitReached = true;
+            } else {
+                $this->processTrailerPlugin()->processTrailer(null, $checkList, $newAlerts);
+            }
+        } else {
+            $this->processTrailerPlugin()->processTrailer($trailer, $checkList, $newAlerts);
+        }
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
@@ -375,6 +412,10 @@ class VehicleController extends RestrictedAccessRestController
         } else {
             $this->processChecklistPlugin()->pushNewChecklistNotification($checkList);
             $this->processChecklistPlugin()->setInspectionStatistic($checkList);
+        }
+
+        if ($vehicleLimitReached) {
+            return $this->_showVehicleLimitReached();
         }
 
         return $this->AnswerPlugin()->format($this->answer);
