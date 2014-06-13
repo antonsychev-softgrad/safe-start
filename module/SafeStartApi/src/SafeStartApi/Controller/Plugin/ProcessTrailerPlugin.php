@@ -154,7 +154,18 @@ class ProcessTrailerPlugin extends AbstractPlugin
         if (! $trailerStructure = $this->_findTrailerFieldsStructure($fieldsStructure)) {
             return;
         }
+
         $trailerFieldsData = $this->_getTrailerFieldsData($trailerStructure, $fieldsData);
+        if (! $plantId = strtoupper($this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_PLANT_ID_FIELD_NAME))) {
+            return;
+        }
+
+        //$type = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
+        $model = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_MODEL_FIELD_NAME);
+        if (!$model) {
+            $model = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_TYPE_FIELD_NAME);
+        }
+        $make = $this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_MAKE_FIELD_NAME);
 
         $company = $vehicle->getCompany();
 
