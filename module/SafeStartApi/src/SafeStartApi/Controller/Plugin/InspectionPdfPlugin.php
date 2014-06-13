@@ -140,19 +140,22 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         $warnings = $this->checkList->getWarnings();
         $vehicle = $this->checkList->getVehicle();
         if ((! $this->checkList->getEmailMode()) && $vehicle->getNextServiceDay()) {
-            $nextServiceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay())->getTimestamp();
-            $days = ($nextServiceDate - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+            $date = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
+            if ($date) {
+                $nextServiceDate = $date->getTimestamp();
+                $days = ($nextServiceDate - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
 
-            if ($days < 1) {
-                $warnings[] = array(
-                    'action' => 'next_service_due',
-                    'text' => 'Next service day is ' . $vehicle->getNextServiceDay()
-                );
-            } else if ($days < 30) {
-                $warnings[] = array(
-                    'action' => 'next_service_due',
-                    'text' => sprintf($this->opts['style']['next_service_due'], ceil($days))
-                );
+                if ($days < 1) {
+                    $warnings[] = array(
+                        'action' => 'next_service_due',
+                        'text' => 'Next service day is ' . $vehicle->getNextServiceDay()
+                    );
+                } else if ($days < 30) {
+                    $warnings[] = array(
+                        'action' => 'next_service_due',
+                        'text' => sprintf($this->opts['style']['next_service_due'], ceil($days))
+                    );
+                }
             }
         }
         if ($vehicle->getCompany()) {
