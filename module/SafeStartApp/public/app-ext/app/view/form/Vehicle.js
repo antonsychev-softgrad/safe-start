@@ -86,7 +86,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             }, {
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Next service due',
-                maxWidth: 400,
+                maxWidth: 800,
                 cls: 'sfa-field-group',
                 padding: '1 0 0 0',
                 labelCls: 'sfa-field-group-label',
@@ -96,19 +96,49 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 },
                 labelAlign: 'top',
                 items: [{
-                    xtype: 'numberfield',
-                    //hideTrigger: true,
-                    labelWidth: 130,
-                    labelSeparator: '*',
-                    fieldLabel: 'Hours',
-                    name: 'serviceDueHours'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    padding: '0 0 5 0',
+                    items: [{
+                        xtype: 'numberfield',
+                        labelWidth: 130,
+                        labelSeparator: '*',
+                        fieldLabel: 'Hours',
+                        name: 'serviceDueHours'
+                    }, {
+                        xtype: 'numberfield',
+                        labelWidth: 180,
+                        width: 300,
+                        labelSeparator: '',
+                        fieldLabel: 'Service Reminder Threshold',
+                        name: 'serviceThresholdHours'
+                    }, {
+                        xtype: 'component',
+                        html: 'Hours',
+                        cls: 'x-form-item-label'
+                    }]
                 }, {
-                    xtype: 'numberfield',
-                    //hideTrigger: true,
-                    labelWidth: 130,
-                    labelSeparator: '*',
-                    fieldLabel: 'Kilometers',
-                    name: 'serviceDueKm'
+                    xtype: 'container',
+                    layout: 'hbox',
+                    items: [{
+                        xtype: 'numberfield',
+                        //hideTrigger: true,
+                        labelWidth: 130,
+                        labelSeparator: '*',
+                        fieldLabel: 'Kilometers',
+                        name: 'serviceDueKm'
+                    }, {
+                        xtype: 'numberfield',
+                        labelWidth: 180,
+                        width: 300,
+                        labelSeparator: '',
+                        fieldLabel: 'Service Reminder Threshold',
+                        name: 'serviceThresholdKm'
+                    }, {
+                        xtype: 'component',
+                        html: 'Kms',
+                        cls: 'x-form-item-label'
+                    }]
                 }]
             }, {
                 xtype: 'fieldcontainer',

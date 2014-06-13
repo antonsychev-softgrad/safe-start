@@ -51,9 +51,12 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
             if (Ext.isString(warning.text)) {
                 data.push(this.createGroup([], warning.text, 1, 'warning'));
             } else {
-                switch (warning.type) {
+                switch (warning.action) {
                     case 'date_incorrect':
                         data.push(this.createGroup([], 'Inaccurate Current Hours Or Kms', 1, 'warning'));
+                        break;
+                    case 'service_due':
+                        data.push(this.createGroup([], 'Due For Service', 1, 'warning'));
                         break;
                     default:
                         break;
