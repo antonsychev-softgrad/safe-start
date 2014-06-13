@@ -23,6 +23,7 @@ class RestController extends AbstractActionController
     const KEY_ALREADY_EXISTS_ERROR = 4007;
     const ALREADY_ADMIN_ERROR = 4008;
     const PASS_NOT_EQUAL = 4009;
+    const VEHICLE_LIMIT_ERROR = 4010;
 
     public $moduleConfig;
 
@@ -245,6 +246,14 @@ class RestController extends AbstractActionController
             'errorMessage' => 'User with provided email or username already in use',
         );
         return $this->AnswerPlugin()->format($this->answer, self::ALREADY_ADMIN_ERROR);
+    }
+
+    public function _showVehicleLimitReached()
+    {
+        $this->answer = array(
+            'errorMessage' => 'You have reached your vehicle limit. This Plant ID will not be saved in your Safe Start account',
+        );
+        return $this->AnswerPlugin()->format($this->answer, self::VEHICLE_LIMIT_ERROR);
     }
 
     protected function _showEmailInvalid()

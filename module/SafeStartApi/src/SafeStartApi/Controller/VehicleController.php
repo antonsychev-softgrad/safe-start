@@ -331,7 +331,8 @@ class VehicleController extends RestrictedAccessRestController
                 $filedAlerts = $field->getAlerts();
                 if ($filedAlerts) {
                     foreach ($filedAlerts as $filedAlert) {
-                        if ($filedAlert->getVehicle()->getId() == $vehicleId
+                        if ($filedAlert->getVehicle()
+                            && $filedAlert->getVehicle()->getId() == $vehicleId
                             && $filedAlert->getStatus() == \SafeStartApi\Entity\Alert::STATUS_NEW
                             && !$filedAlert->getDeleted()
                         ) {
@@ -359,7 +360,9 @@ class VehicleController extends RestrictedAccessRestController
             $this->em->flush();
         }
 
-        $this->processTrailerPlugin()->processTrailer($checkList, $newAlerts);
+
+
+
 
         $cache = \SafeStartApi\Application::getCache();
         $cashKey = "getVehicleInspections" . $vehicleId;
@@ -372,6 +375,29 @@ class VehicleController extends RestrictedAccessRestController
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
         $cashKey = "getNewAlertsByVehicle" . $vehicle->getId();
         if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
+
+
+        $trailerPlantId = $this->processTrailerPlugin()->getTrailerPlantIdFromChecklist($checkList);
+        $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        $trailer = $repository->findOneBy(array(
+            'plantId' => $trailerPlantId,
+            'deleted' => 0,
+        ));
+        $company = $vehicle->getCompany();
+
+        $vehicleLimitReached = false;
+        if (! $trailer) {
+            if ($company->getRestricted()
+                && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())
+            ) {
+                $this->processTrailerPlugin()->processHiddenTrailer($checkList, $newAlerts);
+                $vehicleLimitReached = true;
+            } else {
+                $this->processTrailerPlugin()->processTrailer(null, $checkList, $newAlerts);
+            }
+        } else {
+            $this->processTrailerPlugin()->processTrailer($trailer, $checkList, $newAlerts);
+        }
 
         $this->answer = array(
             'checklist' => $checkList->getHash(),
@@ -386,6 +412,10 @@ class VehicleController extends RestrictedAccessRestController
         } else {
             $this->processChecklistPlugin()->pushNewChecklistNotification($checkList);
             $this->processChecklistPlugin()->setInspectionStatistic($checkList);
+        }
+
+        if ($vehicleLimitReached) {
+            return $this->_showVehicleLimitReached();
         }
 
         return $this->AnswerPlugin()->format($this->answer);

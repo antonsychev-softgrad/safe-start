@@ -17,6 +17,9 @@ class CheckList extends BaseEntity
     const WARNING_DATA_DISCREPANCY_KMS = 'date_discrepancy_kms';
     const WARNING_DATA_DISCREPANCY_HOURS = 'date_discrepancy_hours';
 
+    // service due reached
+    const WARNING_SERVICE_DUE = 'service_due';
+
     // 24h/500km per day
     const WARNING_DATA_INCORRECT = 'date_incorrect';
 

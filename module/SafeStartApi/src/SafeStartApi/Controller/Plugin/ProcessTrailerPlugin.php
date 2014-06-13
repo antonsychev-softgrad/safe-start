@@ -11,11 +11,31 @@ class ProcessTrailerPlugin extends AbstractPlugin
     const TRAILER_MAKE_FIELD_NAME = 'Trailer Make';
     const TRAILER_MODEL_FIELD_NAME = 'Trailer Model';
 
-    public function processTrailer(\SafeStartApi\Entity\CheckList $checkList, $alerts) {
+    public function getTrailerPlantIdFromChecklist(\SafeStartApi\Entity\CheckList $checkList) {
+        $vehicle = $checkList->getVehicle();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData());
+
+        if (! $trailerStructure = $this->_findTrailerFieldsStructure($fieldsStructure)) {
+            return null;
+        }
+        $trailerFieldsData = $this->_getTrailerFieldsData($trailerStructure, $fieldsData);
+        if (! $plantId = strtoupper($this->_findFieldValue($trailerStructure, $fieldsData, self::TRAILER_PLANT_ID_FIELD_NAME))) {
+            return null;
+        }
+
+        return $plantId;
+    }
+
+    public function processTrailer($trailer, \SafeStartApi\Entity\CheckList $checkList, $alerts) {
         $vehicle = $checkList->getVehicle();
         $user = $checkList->getUser();
         $fieldsStructure = json_decode($checkList->getFieldsStructure());
         $fieldsData = json_decode($checkList->getFieldsData());
+
+        if (! $plantId = $this->getTrailerPlantIdFromChecklist($checkList)) {
+            return;
+        }
 
         if (! $trailerStructure = $this->_findTrailerFieldsStructure($fieldsStructure)) {
             return;
@@ -35,16 +55,9 @@ class ProcessTrailerPlugin extends AbstractPlugin
         
         $repository = $this->getController()->em->getRepository('SafeStartApi\Entity\Vehicle');
 
-        if ($vehicle->getPlantId() == $plantId) {
-            return;
-        }
+        $company = $vehicle->getCompany();
 
-        $trailer = $repository->findOneBy(array(
-            'plantId' => $plantId,
-            'deleted' => 0,
-        ));
         if (! $trailer) {
-
             $trailer = new \SafeStartApi\Entity\Vehicle();
 
             $trailer->setCompany($vehicle->getCompany());
@@ -70,43 +83,43 @@ class ProcessTrailerPlugin extends AbstractPlugin
                 $trailer->addResponsibleUser($user);
             }
             $this->getController()->em->persist($trailer);
+        }
 
-            $newCheckList = new \SafeStartApi\Entity\CheckList();
-            $uniqId = uniqid();
-            $newCheckList->setHash($uniqId);
-            $newCheckList->setVehicle($trailer);
-            $newCheckList->setUser($user);
 
-            $newCheckList->setFieldsStructure(json_encode(array($trailerStructure)));
-            $newCheckList->setFieldsData(json_encode($trailerFieldsData));
-            $this->getController()->em->persist($newCheckList);
+        $newCheckList = new \SafeStartApi\Entity\CheckList();
+        $uniqId = uniqid();
+        $newCheckList->setHash($uniqId);
+        $newCheckList->setVehicle($trailer);
+        $newCheckList->setUser($user);
 
-            $repField = $this->getController()->em->getRepository('SafeStartApi\Entity\DefaultField');
-            $defFields = $repField->findBy(array('parent' => null, 'title' => self::TRAILER_CHECKLIST_NAME));
+        $newCheckList->setFieldsStructure(json_encode(array($trailerStructure)));
+        $newCheckList->setFieldsData(json_encode($trailerFieldsData));
+        $this->getController()->em->persist($newCheckList);
 
-            foreach ($defFields as $defField) {
-                $newField = new \SafeStartApi\Entity\Field();
-                $newField->setParent(null);
-                $newField->setVehicle($trailer);
-                $newField->setTitle($defField->getTitle());
-                $newField->setDescription($defField->getDescription());
-                $newField->setType($defField->getType());
-                $newField->setAdditional(false);
-                $newField->setTriggerValue($defField->getTriggerValue());
-                $newField->setAlertTitle($defField->getAlertTitle());
-                $newField->setAlertDescription($defField->getAlertDescription());
-                $newField->setAlertCritical($defField->getAlertCritical());
-                $newField->setOrder($defField->getOrder());
-                $newField->setEnabled($defField->getEnabled());
-                $newField->setDeleted($defField->getDeleted());
-                $newField->setAuthor($defField->getAuthor());
-                $this->copyVehicleDefFields($trailer, $defField, $newField);
+        $repField = $this->getController()->em->getRepository('SafeStartApi\Entity\DefaultField');
+        $defFields = $repField->findBy(array('parent' => null, 'title' => self::TRAILER_CHECKLIST_NAME));
 
-                $this->getController()->em->persist($newField);
-                $trailer->addField($newField);
-                $this->getController()->em->persist($trailer);
-            }
-            
+        foreach ($defFields as $defField) {
+            $newField = new \SafeStartApi\Entity\Field();
+            $newField->setParent(null);
+            $newField->setVehicle($trailer);
+            $newField->setTitle($defField->getTitle());
+            $newField->setDescription($defField->getDescription());
+            $newField->setType($defField->getType());
+            $newField->setAdditional(false);
+            $newField->setTriggerValue($defField->getTriggerValue());
+            $newField->setAlertTitle($defField->getAlertTitle());
+            $newField->setAlertDescription($defField->getAlertDescription());
+            $newField->setAlertCritical($defField->getAlertCritical());
+            $newField->setOrder($defField->getOrder());
+            $newField->setEnabled($defField->getEnabled());
+            $newField->setDeleted($defField->getDeleted());
+            $newField->setAuthor($defField->getAuthor());
+            $this->copyVehicleDefFields($trailer, $defField, $newField);
+
+            $this->getController()->em->persist($newField);
+            $trailer->addField($newField);
+            $this->getController()->em->persist($trailer);
         }
 
         $trailerIds = array();
@@ -122,11 +135,78 @@ class ProcessTrailerPlugin extends AbstractPlugin
                 $newAlert->setCheckList($newCheckList);
                 $newAlert->setDescription($alert->getDescription());
                 $newAlert->setImages($alert->getImages());
-                $newAlert->setVehicle($trailer);
+                if ($trailer) {
+                    $newAlert->setVehicle($trailer);
+                }
                 $this->getController()->em->persist($newAlert);
             }
         }
+
         $this->getController()->em->flush();
+    }
+
+    public function processHiddenTrailer(\SafeStartApi\Entity\CheckList $checkList, $alerts) {
+        $vehicle = $checkList->getVehicle();
+        $user = $checkList->getUser();
+        $fieldsStructure = json_decode($checkList->getFieldsStructure());
+        $fieldsData = json_decode($checkList->getFieldsData());
+
+        if (! $trailerStructure = $this->_findTrailerFieldsStructure($fieldsStructure)) {
+            return;
+        }
+        $trailerFieldsData = $this->_getTrailerFieldsData($trailerStructure, $fieldsData);
+
+        $company = $vehicle->getCompany();
+
+        $newCheckList = new \SafeStartApi\Entity\CheckList();
+        $uniqId = uniqid();
+        $newCheckList->setHash($uniqId);
+        $newCheckList->setVehicle($vehicle);
+        $newCheckList->setUser($user);
+        $newCheckList->setFieldsStructure(json_encode(array($trailerStructure)));
+        $newCheckList->setFieldsData(json_encode($trailerFieldsData));
+        $this->getController()->em->persist($newCheckList);
+
+        $repField = $this->getController()->em->getRepository('SafeStartApi\Entity\DefaultField');
+        $defFields = $repField->findBy(array('parent' => null, 'title' => self::TRAILER_CHECKLIST_NAME));
+
+        $trailerIds = array();
+
+        foreach ($trailerStructure->fields as $field) {
+            $trailerIds[] = $field->fieldId;
+        }
+
+        foreach ($alerts as $alert) {
+            if (in_array($alert->getField()->getId(), $trailerIds)) {
+                $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert->setField($alert->getField());
+                $newAlert->setCheckList($newCheckList);
+                $newAlert->setDescription($alert->getDescription());
+                $newAlert->setImages($alert->getImages());
+                if ($trailer) {
+                    $newAlert->setVehicle($trailer);
+                }
+            }
+        }
+
+        $pdf = $this->getController()->inspectionPdf()->create($newCheckList);
+
+        if (file_exists($pdf)) {
+            $this->getController()->MailPlugin()->send(
+                $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                'rusffer@gmail.com',
+                'checklist.phtml',
+                array(
+                    'name' => 'Name of me',
+                    'plantId' => $newCheckList->getVehicle() ? $newCheckList->getVehicle()->getPlantId() : '-',
+                    'uploadedByName' => $newCheckList->getOperatorName(),
+                    'siteUrl' => $this->moduleConfig['params']['site_url'],
+                    'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
+                ),
+                $pdf
+            );
+        }
+        
     }
 
     protected function _findTrailerFieldsStructure($fieldsStructure) {

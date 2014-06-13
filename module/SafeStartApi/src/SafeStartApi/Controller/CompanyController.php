@@ -196,6 +196,8 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setProjectNumber($this->data->projectNumber);
         $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);
         $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
+        $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
+        $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
         if ($this->data->expiryDate) {
             $vehicle->setExpiryDate(new \DateTime($this->data->expiryDate));
         }

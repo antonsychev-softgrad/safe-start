@@ -86,6 +86,16 @@ class Vehicle extends BaseEntity
     protected $serviceDueKm = 0;
 
     /**
+     * @ORM\Column(type="float", name="service_threshold_hours", nullable=true)
+     */
+    protected $serviceThresholdHours = 0;
+
+    /**
+     * @ORM\Column(type="float", name="service_threshold_km", nullable=true)
+     */
+    protected $serviceThresholdKm = 0;
+
+    /**
      * @ORM\Column(type="float", name="current_odometer_hours", nullable=true)
      */
     protected $currentOdometerHours = 0;
@@ -181,6 +191,8 @@ class Vehicle extends BaseEntity
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
             "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
             "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "serviceThresholdKm" => (!is_null($this->getServiceThresholdKm())) ? $this->getServiceThresholdKm() : 0,
+            "serviceThresholdHours" => (!is_null($this->getServiceThresholdHours())) ? $this->getServiceThresholdHours() : 0,
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "warrantyStartDate" => $this->getWarrantyStartDate(),
             "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
@@ -905,6 +917,53 @@ class Vehicle extends BaseEntity
     public function getServiceDueKm()
     {
         return $this->serviceDueKm;
+    }
+
+    /* --- */
+    /**
+     * Set serviceThresholdHours
+     *
+     * @param float $serviceThresholdHours
+     * @return Vehicle
+     */
+    public function setServiceThresholdHours($serviceThresholdHours)
+    {
+        $this->serviceThresholdHours = $serviceThresholdHours;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceThresholdHours
+     *
+     * @return float
+     */
+    public function getServiceThresholdHours()
+    {
+        return $this->serviceThresholdHours;
+    }
+
+    /**
+     * Set serviceThresholdKm
+     *
+     * @param float $serviceThresholdKm
+     * @return Vehicle
+     */
+    public function setServiceThresholdKm($serviceThresholdKm)
+    {
+        $this->serviceThresholdKm = $serviceThresholdKm;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceThresholdKm
+     *
+     * @return float
+     */
+    public function getServiceThresholdKm()
+    {
+        return $this->serviceThresholdKm;
     }
 
     /**
