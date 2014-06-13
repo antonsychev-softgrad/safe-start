@@ -1438,6 +1438,10 @@ font-size: 24px;
         color: #f00;
     }
 
+    .sfa-previous-inspections-info .sfa-group-title-warning {
+        color: #f00;
+    }
+
 
 /* END page Vehisles */
 
@@ -2141,4 +2145,10 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 /* уменьшим ширину кнопок на странице Vehicles -> Reporting -> General */
 .sfa-statistic.vehicles-reporting .x-btn-inner.x-btn-inner-center {
     padding: 0 12px;
+}
+
+/* When scrolling down on Chrome it shows the background behind. The vertical scroll should not extend beyond the tab base. */
+/* хотя это решение не очень */
+.x-mask {
+    display: none !important;
 }

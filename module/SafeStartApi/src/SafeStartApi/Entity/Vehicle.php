@@ -226,10 +226,10 @@ class Vehicle extends BaseEntity
             $kmsLeft = $serviceDueKms - $kms;
             $hoursLeft = $serviceDueHours - $hours;
 
-            if ($deltaKms) {
+            if ($deltaKms && $deltaTime) {
                 $serviceDaysByKms[] = $kmsLeft / ($deltaKms / $deltaTime) + $updateDate;
             }
-            if ($deltaHours) {
+            if ($deltaHours && $deltaTime) {
                 $serviceDaysByHours[] = $hoursLeft / ($deltaHours / $deltaTime) + $updateDate;
             }
 
