@@ -496,18 +496,21 @@ class VehicleController extends RestrictedAccessRestController
                 $warnings = $checkList->getWarnings();
                 $vehicle = $checkList->getVehicle();
                 if ($vehicle->getNextServiceDay()) {
-                    $nextServiceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay())->getTimestamp();
-                    $days = ($nextServiceDate - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
-                    if ($days < 1) {
-                        $warnings[] = array(
-                            'action' => 'next_service_due',
-                            'text' => 'Estimated Date of Next Service Is ' . $vehicle->getNextServiceDay(),
-                        );
-                    } else if ($days < 30) {
-                        $warnings[] = array(
-                            'action' => 'next_service_due',
-                            'text' => 'Next service In ' . ceil($days) . ' Days',
-                        );
+                    $date = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
+                    if ($date) {
+                        $nextServiceDate = $date->getTimestamp();
+                        $days = ($nextServiceDate - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                        if ($days < 1) {
+                            $warnings[] = array(
+                                'action' => 'next_service_due',
+                                'text' => 'Estimated Date of Next Service Is ' . $vehicle->getNextServiceDay(),
+                            );
+                        } else if ($days < 30) {
+                            $warnings[] = array(
+                                'action' => 'next_service_due',
+                                'text' => 'Next service In ' . ceil($days) . ' Days',
+                            );
+                        }
                     }
                 }
                 if ($vehicle->getCompany()) {
