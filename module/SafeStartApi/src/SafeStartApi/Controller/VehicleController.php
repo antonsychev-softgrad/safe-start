@@ -256,7 +256,8 @@ class VehicleController extends RestrictedAccessRestController
             }
         }
 
-        // set current odometer data
+        $warningServiceDue = false;
+        // set current odometer data and check service due
         if ((isset($this->data->odometer) && !empty($this->data->odometer))) {
             $warningKms = false;
             $checkList->setCurrentOdometer($this->data->odometer);
@@ -265,6 +266,12 @@ class VehicleController extends RestrictedAccessRestController
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_KMS);
             }
             if (!$warningKms) $vehicle->setCurrentOdometerKms($this->data->odometer);
+
+            if ($vehicle->getCurrentOdometerKms() >= $vehicle->getServiceDueKm() - $vehicle->getServiceThresholdKm()) {
+                $warningServiceDue = true;
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_SERVICE_DUE);
+            }
+
         } else {
             $checkList->setCurrentOdometer($vehicle->getCurrentOdometerKms());
         }
@@ -284,6 +291,10 @@ class VehicleController extends RestrictedAccessRestController
                 $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_DATA_DISCREPANCY_HOURS);
             }
             if (!$warningHours) $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
+
+            if (! $warningServiceDue && $vehicle->getCurrentOdometerHours() >= $vehicle->getServiceDueHours() - $vehicle->getServiceThresholdHours()) {
+                $checkList->addWarning(\SafeStartApi\Entity\CheckList::WARNING_SERVICE_DUE);
+            }
         // } else {
         //     $checkList->setCurrentOdometer($vehicle->getCurrentOdometerHours());
         }
