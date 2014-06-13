@@ -390,8 +390,7 @@ class VehicleController extends RestrictedAccessRestController
             if ($company->getRestricted()
                 && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())
             ) {
-                $this->processTrailerPlugin()->processHiddenTrailer($checkList, $newAlerts);
-                $vehicleLimitReached = true;
+                $vehicleLimitReached = $this->processTrailerPlugin()->processHiddenTrailer($checkList, $newAlerts);
             } else {
                 $this->processTrailerPlugin()->processTrailer(null, $checkList, $newAlerts);
             }

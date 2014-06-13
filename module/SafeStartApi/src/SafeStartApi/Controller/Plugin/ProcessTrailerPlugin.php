@@ -218,6 +218,7 @@ class ProcessTrailerPlugin extends AbstractPlugin
             );
         }
         
+        return true;
     }
 
     protected function _findTrailerFieldsStructure($fieldsStructure) {
