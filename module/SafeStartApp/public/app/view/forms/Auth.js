@@ -52,7 +52,7 @@ Ext.define('SafeStartApp.view.forms.Auth', {
     },
 
     showForgotPasswordDialog: function() {
-        var dialog = SafeStartApp.view.abstract.dialog.create({
+        var dialog = SafeStartApp.view['abstract'].dialog.create({
             title: 'Enter your email',
             padding: 10,
             width: 400,
