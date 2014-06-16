@@ -267,6 +267,11 @@ Ext.define('SafeStartExt.controller.Company', {
             data: data,
             success: function (result) {
                 me.reloadVehicles(me.vehicle.get('id'), 'inspections', {checklistHash: result.checklist});
+            },
+            failure: function (result) {
+                if (result && result.meta && result.meta.errorCode === 4010) {
+                    me.reloadVehicles(me.vehicle.get('id'), 'inspections');
+                }
             }
         });
     },

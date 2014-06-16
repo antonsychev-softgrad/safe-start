@@ -48,7 +48,7 @@ Ext.define('SafeStartExt.Ajax', {
                     successCallback(result.data || {});
                 }
             } else {
-                me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
+                me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback.bind(this, result));
             }
         };
 
@@ -63,7 +63,7 @@ Ext.define('SafeStartExt.Ajax', {
                 me.processFailure('Operation failed', failureCallback);
                 return;
             }
-            me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
+            me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback.bind(this, result));
         };
 
         this.callParent([options]);
