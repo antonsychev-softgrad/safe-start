@@ -345,6 +345,8 @@ class Vehicle extends BaseEntity
             "restricted" => $this->company->getRestricted(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
+            "serviceThresholdKm" => (!is_null($this->getServiceThresholdKm())) ? $this->getServiceThresholdKm() : 0,
+            "serviceThresholdHours" => (!is_null($this->getServiceThresholdHours())) ? $this->getServiceThresholdHours() : 0,
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
