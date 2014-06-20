@@ -91,7 +91,10 @@ Ext.define('SafeStartExt.controller.Company', {
     updateVehicle: function (vehicle, data) {
         var me = this;
         data.companyId = this.company.get('id');
-        data.expiryDate = Ext.Date.parse(data.expiryDate, SafeStartExt.dateFormat);
+        var date = Ext.Date.parseDate(data.expiryDate, SafeStartExt.dateFormat);
+        if (date) {
+            data.expiryDate = date.getTime()/1000;
+        }
         Ext.applyIf(data, {
             enabled: false
         });

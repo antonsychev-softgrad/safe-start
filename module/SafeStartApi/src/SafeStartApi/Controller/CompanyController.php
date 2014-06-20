@@ -199,7 +199,9 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
         $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
         if ($this->data->expiryDate) {
-            $vehicle->setExpiryDate(new \DateTime($this->data->expiryDate));
+            $expiryDate = new \DateTime();
+            $expiryDate->setTimestamp($this->data->expiryDate);
+            $vehicle->setExpiryDate($expiryDate);
         }
         $vehicle->setCurrentOdometerHours(isset($this->data->currentOdometerHours) ? (float)$this->data->currentOdometerHours : 0);
         $vehicle->setCurrentOdometerKms(isset($this->data->currentOdometerKms) ? (float)$this->data->currentOdometerKms : 0);

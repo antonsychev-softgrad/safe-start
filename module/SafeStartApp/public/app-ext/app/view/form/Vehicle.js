@@ -72,7 +72,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     name: 'expiryDate',
                     format: SafeStartExt.dateFormat
                 }],
-                cls: 'sfa-datepicker'
+                cls: 'sfa-datepicker',
             }, {
                 xtype: 'fieldcontainer',
                 height: 32,
@@ -231,6 +231,6 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
             this.down('button[name=delete]').enable();
         }
         this.callParent(arguments);
-        this.down('field[name=expiryDate]').setValue(new Date(record.get('expiryDate') * 1000));
+        this.down('field[name=expiryDate]').setValue(Ext.Date.format(new Date(record.get('expiryDate') * 1000), SafeStartExt.dateFormat));
     }
 });
