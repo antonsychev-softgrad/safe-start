@@ -62,6 +62,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 name: 'projectNumber'
             }, {
                 xtype: 'fieldcontainer',
+                height: 32,
                 labelWidth: 130,
                 maxWidth: 400,
                 labelSeparator: '',
@@ -74,6 +75,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 cls: 'sfa-datepicker'
             }, {
                 xtype: 'fieldcontainer',
+                height: 32,
                 labelWidth: 130,
                 maxWidth: 400,
                 labelSeparator: '',
@@ -85,10 +87,10 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 }]
             }, {
                 xtype: 'fieldcontainer',
+                height: 110,
                 fieldLabel: 'Next service due',
                 maxWidth: 800,
                 cls: 'sfa-field-group',
-                padding: '1 0 0 0',
                 labelCls: 'sfa-field-group-label',
                 layout: {
                     type: 'vbox',
@@ -142,9 +144,11 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 }]
             }, {
                 xtype: 'fieldcontainer',
+                height: 110,
                 fieldLabel: 'Current Odometer',
                 cls: 'sfa-field-group',
                 labelCls: 'sfa-field-group-label',
+                padding: '1 0 0 0',
                 labelAlign: 'top',
                 layout: {
                     type: 'vbox',
