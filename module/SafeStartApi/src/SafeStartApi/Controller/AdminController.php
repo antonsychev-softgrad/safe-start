@@ -47,7 +47,14 @@ class AdminController extends AdminAccessRestController
         $userRep = $this->em->getRepository('SafeStartApi\Entity\User');
         $user = $userRep->findOneBy(array('email' => $this->data->email));
 
-        if (!$user) {
+        if (! $actionAdd && !$user) {
+            $admin = $company->getAdmin();
+            if ($admin->getEmail() !== $this->data->email) {
+                $admin->setRole('companyManager');
+            }
+        }
+
+        if (! $user) {
             $user = new \SafeStartApi\Entity\User();
             $user->setEmail($this->data->email);
             $user->setFirstName($this->data->firstName);
