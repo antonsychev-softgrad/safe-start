@@ -125,7 +125,13 @@ Ext.define('SafeStartExt.view.form.Company', {
                     value: 1,
                     name: 'max_users',
                     required: true,
-                    fieldLabel: 'Number of users'
+                    fieldLabel: 'Number of users',
+                    listeners: {
+                        change: function (el) {
+                            this.isValid();
+                        },
+                        scope: this
+                    }
                 }, {
                     xtype: 'numberfield',
                     //hideTrigger: true,
@@ -136,7 +142,13 @@ Ext.define('SafeStartExt.view.form.Company', {
                     stepValue: 1,
                     name: 'max_vehicles',
                     required: true,
-                    fieldLabel: 'Number of vehicles'
+                    fieldLabel: 'Number of vehicles',
+                    listeners: {
+                        change: function (el) {
+                            this.isValid();
+                        },
+                        scope: this
+                    }
                 }, {
                     xtype: 'datefield',
                     name: 'expiry_date',
