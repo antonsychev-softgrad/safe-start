@@ -48,7 +48,10 @@ Ext.define('SafeStartExt.Ajax', {
                     successCallback(result.data || {});
                 }
             } else {
-                me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback.bind(this, result));
+                if (typeof failureCallback === 'function') {
+                    failureCallback.bind(this, result);
+                }
+                me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
             }
         };
 
@@ -63,7 +66,10 @@ Ext.define('SafeStartExt.Ajax', {
                 me.processFailure('Operation failed', failureCallback);
                 return;
             }
-            me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback.bind(this, result));
+            if (typeof failureCallback === 'function') {
+                failureCallback.bind(this, result);
+            }
+            me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
         };
 
         this.callParent([options]);
@@ -94,6 +100,6 @@ Ext.define('SafeStartExt.Ajax', {
     }, 
     
     getViewport: function () {
-        return SafeStartExt.getApplication().getViewport();        
+        return SafeStartExt.getApplication().getViewport();
     }
 });
