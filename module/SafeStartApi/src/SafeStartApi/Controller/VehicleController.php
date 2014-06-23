@@ -23,7 +23,16 @@ class VehicleController extends RestrictedAccessRestController
         /* if ($cache->hasItem($cashKey)) {
              $vehiclesList = $cache->getItem($cashKey);
          } else {*/
-        $vehicles = $user->getVehicles();
+        $vehicles = array();
+
+        if ($user->getRole() === 'companyAdmin') {
+            $company = $user->getCompany();
+            if ($company) {
+                $vehicles = $company->getVehicles();
+            }
+        } else {
+            $vehicles = $user->getVehicles();
+        }
 
         foreach ($vehicles as $vehicle) {
             $vehicleData = $vehicle->toResponseArray();

@@ -93,6 +93,7 @@ class AdminController extends AdminAccessRestController
         $this->em->persist($company);
 
         $user->setCompany($company);
+        $user->setRole('companyAdmin');
 
         $this->em->flush();
 
