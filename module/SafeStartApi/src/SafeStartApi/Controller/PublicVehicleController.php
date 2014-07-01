@@ -214,7 +214,7 @@ class PublicVehicleController extends PublicAccessRestController
         if (!$this->_requestIsValid('vehicle/sendCheckListToEmails')) return $this->_showBadRequest();
 
         $hash = $this->data->hash;
-        $inspection = $this->em->getRepository('SafeStartApi\Entity\Checklist')->findOneBy(array(
+        $inspection = $this->em->getRepository('SafeStartApi\Entity\CheckList')->findOneBy(array(
             'hash' => $hash,
             'deleted' => 0,
         ));
