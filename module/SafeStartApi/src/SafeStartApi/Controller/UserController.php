@@ -207,7 +207,7 @@ class UserController extends RestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
 
-            if (!$userId && $company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of users reached');
+            if (!$userId && $company->getRestricted() && ((count($company->getUsers()) + 1) > $company->getMaxUsers())) return $this->_showCompanyLimitReached('Company limit of users reached');
             $user->setCompany($company);
         }
 
