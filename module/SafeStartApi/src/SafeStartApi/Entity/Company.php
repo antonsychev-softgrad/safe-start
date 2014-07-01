@@ -301,7 +301,7 @@ class Company extends BaseEntity
         $users = array();
         if (!$this->users) return $users;
         foreach ($this->users as $user) {
-            if (!$users->getDeleted()) {
+            if (!$user->getDeleted()) {
                 $users[] = $user;
             }
         }
