@@ -523,8 +523,8 @@ class VehicleController extends RestrictedAccessRestController
                     }
                 }
                 if ($vehicle->getCompany()) {
-                    if ($vehicle->getCompany()->getExpiryDate()) {
-                        $days = ($vehicle->getCompany()->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+                    if ($vehicle->getExpiryDate()) {
+                        $days = ($vehicle->getExpiryDate() - $checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
                         if ($days < 1) {
                             $warnings[] = array(
                                 'action' => 'subscription_ending',

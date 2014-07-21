@@ -158,9 +158,9 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
                 }
             }
         }
-        if ($vehicle->getCompany()) {
-            if ($vehicle->getCompany()->getExpiryDate()) {
-                $days = ($vehicle->getCompany()->getExpiryDate() - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
+        if ($vehicle) {
+            if ($vehicle->getExpiryDate()) {
+                $days = ($vehicle->getExpiryDate() - $this->checkList->getCreationDate()->getTimestamp()) / (60 * 60 * 24);
                 if ($days < 1) {
                     $warnings[] = array(
                         'action' => 'subscription_ending',
