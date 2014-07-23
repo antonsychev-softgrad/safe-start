@@ -138,11 +138,11 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
             groupName: 'Review'
         });
 
-        if (this.vehicle.get('expiryDate')*1000 < new Date().getTime()) {
-            prevAlerts.unshift({
-                alert_description: 'Subscription has expired'
-            });
-        }
+//        if (this.vehicle.get('expiryDate')*1000 < new Date().getTime()) {
+//            prevAlerts.unshift({
+//                alert_description: 'Subscription has expired'
+//            });
+//        }
 
         this.showPreviousAlerts(prevAlerts);
 

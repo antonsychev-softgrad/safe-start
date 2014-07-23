@@ -145,6 +145,11 @@ class VehicleController extends RestrictedAccessRestController
         }
 
         $alerts = array_reverse($alerts);
+        //check expiry date of vehicle
+        $curDate = new \DateTime();
+        if(($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1){
+            array_unshift($alerts,array('title'=>'Subscription has expired','alert_description'=>'Subscription has expired'));
+        }
 
         $this->answer = array(
             'checklist' => $checklist,
