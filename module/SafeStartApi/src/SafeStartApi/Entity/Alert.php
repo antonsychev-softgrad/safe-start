@@ -23,6 +23,9 @@ class Alert extends BaseEntity
     const ACTION_STATUS_CHANGED_NEW = 'alert_reopened';
     const ACTION_REFRESHED = 'alert_refreshed';
 
+    //expiry date description
+    const EXPIRY_DATE = 'Vehicle subscription has expired';
+
     /**
      * Constructor
      */
@@ -316,8 +319,8 @@ class Alert extends BaseEntity
         $data = array(
             'id' => $this->getId(),
             'status' => $this->getStatus(),
-            'title' => $this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): '',
-            'alert_description' => $this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): '',
+            'title' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
+            'alert_description' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
             'field' => $this->field ? $this->field->toArray() : null,
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : array(),

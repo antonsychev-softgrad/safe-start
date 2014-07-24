@@ -148,8 +148,39 @@ class VehicleController extends RestrictedAccessRestController
         //check expiry date of vehicle
         $curDate = new \DateTime();
         if(($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1){
-            array_unshift($alerts,array('title'=>'Subscription has expired','alert_description'=>'Subscription has expired'));
+            $fieldRep = $this->em->getRepository('SafeStartApi\Entity\Field');
+            $field = $fieldRep->findOneBy(array('title' => 'Registration expiry','vehicle'=>$vehicle->getId()));
+            if ($field !== null) {
+
+            $addNewAlert = true;
+            $filedAlerts = $field->getAlerts();
+            if ($filedAlerts) {
+                foreach ($filedAlerts as $filedAlert) {
+                    if ($filedAlert->getVehicle()
+                        && $filedAlert->getVehicle()->getId() == $vehicleId
+                        && $filedAlert->getStatus() == \SafeStartApi\Entity\Alert::STATUS_NEW
+                        && !$filedAlert->getDeleted()
+                    ) {
+                        $addNewAlert = false;
+                        $filedAlert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_REFRESHED);
+                        $newAlerts[] = $filedAlert;
+                    }
+                }
+            }
+            if ($addNewAlert) {
+                $newAlert = new \SafeStartApi\Entity\Alert();
+                $newAlert->setField($field);
+                $newAlert->setDescription(\SafeStartApi\Entity\Alert::EXPIRY_DATE);
+                $newAlert->setVehicle($vehicle);
+                $this->em->persist($newAlert);
+            }
+
+            $this->em->flush();
+            $alert = $newAlert ? $newAlert->toArray() : $newAlerts[0]->toArray();
+            array_unshift($alerts,$alert);
         }
+        }
+        //end of expiry date check funcionality
 
         $this->answer = array(
             'checklist' => $checklist,

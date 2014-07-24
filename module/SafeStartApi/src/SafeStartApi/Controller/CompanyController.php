@@ -202,6 +202,15 @@ class CompanyController extends RestrictedAccessRestController
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp($this->data->expiryDate);
             $vehicle->setExpiryDate($expiryDate);
+            //update expiry date's alert if exist
+            $curDate = new \DateTime();
+            $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
+            $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::EXPIRY_DATE,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
+            if($alert && ((($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 0)){
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->persist($alert);
+            }
+            //end
         }
         $vehicle->setCurrentOdometerHours(isset($this->data->currentOdometerHours) ? (float)$this->data->currentOdometerHours : 0);
         $vehicle->setCurrentOdometerKms(isset($this->data->currentOdometerKms) ? (float)$this->data->currentOdometerKms : 0);
