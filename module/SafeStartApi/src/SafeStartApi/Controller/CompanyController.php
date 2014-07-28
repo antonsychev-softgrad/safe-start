@@ -186,7 +186,8 @@ class CompanyController extends RestrictedAccessRestController
             //$vehicle->addResponsibleUser($user);
             $this->copyVehicleDefFields($vehicle);
         }
-
+        $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
+        $curDate = new \DateTime();
         $vehicle->setCompany($company);
         $vehicle->setPlantId($plantId);
         $vehicle->setTitle($this->data->title);
@@ -203,12 +204,10 @@ class CompanyController extends RestrictedAccessRestController
             $expiryDate->setTimestamp($this->data->expiryDate);
             $vehicle->setExpiryDate($expiryDate);
             //update expiry date's alert if exist
-            $curDate = new \DateTime();
-            $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
             $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::EXPIRY_DATE,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
             if($alert && ((($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 0)){
                 $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
-                $this->em->persist($alert);
+                $this->em->remove($alert);
             }
             //end
         }
@@ -221,6 +220,20 @@ class CompanyController extends RestrictedAccessRestController
             $warrantyStartDate = new \DateTime();
             $warrantyStartDate->setTimestamp((int)$this->data->warrantyStartDate);
             $vehicle->setWarrantyStartDate($warrantyStartDate);
+        }
+
+        if(count($vehicle->checkLists) > 2){
+            $serviceDate = new \DateTime($vehicle->getNextServiceDay());
+            $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::DUE_SERVICE,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
+            if($alert && ((($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 1)){
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->remove($alert);
+            }
+        }
+        if(($vehicle->getCurrentOdometerKms() < $vehicle->getServiceDueKm()) && ($vehicle->getCurrentOdometerHours() < $vehicle->getServiceDueHours())){
+            $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::INACCURATE_KM_HR,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
+            $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+            $this->em->remove($alert);
         }
 
         $this->em->persist($vehicle);

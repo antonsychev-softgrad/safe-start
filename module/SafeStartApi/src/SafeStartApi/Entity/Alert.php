@@ -23,8 +23,10 @@ class Alert extends BaseEntity
     const ACTION_STATUS_CHANGED_NEW = 'alert_reopened';
     const ACTION_REFRESHED = 'alert_refreshed';
 
-    //expiry date description
+    //expiry date description and etc
     const EXPIRY_DATE = 'Vehicle subscription has expired';
+    const DUE_SERVICE = 'Due For Service';
+    const INACCURATE_KM_HR = 'Inaccurate Current Hours Or Kms';
 
     /**
      * Constructor
