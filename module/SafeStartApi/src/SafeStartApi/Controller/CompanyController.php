@@ -223,7 +223,7 @@ class CompanyController extends RestrictedAccessRestController
         }
 
         if(count($vehicle->checkLists) > 2){
-            $serviceDate = new \DateTime($vehicle->getNextServiceDay());
+            $serviceDate = new \DateTime(str_replace('/','-',$vehicle->getNextServiceDay()));
             $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::DUE_SERVICE,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
             if($alert && ((($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 1)){
                 $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
@@ -232,8 +232,10 @@ class CompanyController extends RestrictedAccessRestController
         }
         if(($vehicle->getCurrentOdometerKms() < $vehicle->getServiceDueKm()) && ($vehicle->getCurrentOdometerHours() < $vehicle->getServiceDueHours())){
             $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::INACCURATE_KM_HR,'vehicle'=>$vehicle->getId(),'status'=>\SafeStartApi\Entity\Alert::STATUS_NEW));
-            $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
-            $this->em->remove($alert);
+            if($alert){
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->remove($alert);
+            }
         }
 
         $this->em->persist($vehicle);

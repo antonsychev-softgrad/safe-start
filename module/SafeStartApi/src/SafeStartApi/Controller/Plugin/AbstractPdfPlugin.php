@@ -59,12 +59,16 @@ class AbstractPdfPlugin extends AbstractPlugin
             'Vehicle Make' => $vehicleData['title'],
             'Vehicle Model' => $vehicleData['type'],
             'Plant ID' => $vehicleData['plantId'],
-            'Project number' => $vehicleData['projectNumber'],
-            'Project name' => $vehicleData['projectName'],
             'Service due' => $vehicleData['serviceDueKm'] . ' km ' . $vehicleData['serviceDueHours'] . ' hours',
             'Current odometer' => $currentOdometer,
           //  'Estimated Date of Next Service' => $vehicleData['nextServiceDay'] ? $vehicleData['nextServiceDay'] : '-',
         );
+        if($vehicleData['projectNumber'] ){
+            $data['Project number'] = $vehicleData['projectNumber'];
+        }
+        if($vehicleData['projectName']){
+            $data['Project name'] = $vehicleData['projectName'];
+        }
 
         if ($this->checkList && !$this->checkList->getEmailMode()) {
             if ($vehicleData['nextServiceDay']) {
