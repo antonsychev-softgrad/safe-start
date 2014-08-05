@@ -323,7 +323,7 @@ class Alert extends BaseEntity
             'status' => $this->getStatus(),
             'title' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
             'alert_description' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
-            'field' => $this->field ? $this->field->toArray() : null,
+            'field' => $this->field ? $this->field->toArray() : ($this->getDescription() ? array('alert_critical'=>1) : null),
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : array(),
             'description' => $this->getDescription(),
