@@ -40,7 +40,7 @@ class IndexController extends RestController
                 $done = $this->pushNotificationPlugin()->android(array($deviceId), 'fuck yeah', 1);
                 break;
             case 'ios':
-                $done = $this->pushNotificationPlugin()->ios(array($deviceId, "42076023 10fcc5c9 91cfdc0f 57f2bd67 06de26e6 6d02728a 90b587b4 9cba720f"), 'fuck yeah', 1);
+                $done = $this->pushNotificationPlugin()->ios(array($deviceId), 'fuck yeah', 1);
                 break;
         }
 

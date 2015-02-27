@@ -152,8 +152,10 @@ class VehicleController extends RestrictedAccessRestController
             array_unshift($alerts,$alert);
         }
         if(count($vehicle->checkLists) > 2){
-            $serviceDate = new \DateTime(str_replace('/','-',$vehicle->getNextServiceDay()));
-            if((($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1)){
+	    $serviceDate = null;
+      	    if ($vehicle->getNextServiceDay()) $serviceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
+            //$serviceDate = new \DateTime(str_replace('/','-',$vehicle->getNextServiceDay()));
+            if($serviceDate && (($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1)){
                 $alert = $this->checkCurrentInfoAlerts($vehicle, \SafeStartApi\Entity\Alert::DUE_SERVICE);
                 array_unshift($alerts,$alert);
             }
