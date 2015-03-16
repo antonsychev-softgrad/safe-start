@@ -90,9 +90,59 @@ Ext.define('SafeStartExt.view.form.Company', {
                     cls: 'sfa-limited-access',
                     handler: function() {
                         if (this.checked) {
-                            this.up('form').down('[name=subscription]').enable();
+                            if (this.up('form').down('[name=unlim_users]').getValue()) {
+                                this.up('form').down('[name=max_users]').disable();
+                            } else {
+                                this.up('form').down('[name=max_users]').enable();
+                            }
+                            this.up('form').down('[name=max_vehicles]').enable();
                         } else {
-                            this.up('form').down('[name=subscription]').disable();
+                            this.up('form').down('[name=max_users]').disable();
+                            this.up('form').down('[name=max_vehicles]').disable();
+                        }
+                    },
+                    listeners: {
+                        change: function (el) {
+                            this.isValid();
+                        },
+                        scope: this
+                    }
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'unlim_expiry_date',
+                    fieldLabel: 'Unlimited Expiry Date',
+                    labelWidth: 130,
+                    labelSeparator: '',
+                    cls: 'sfa-limited-access',
+                    handler: function() {
+                        if (this.checked) {
+                            this.up('form').down('[name=expiry_date]').disable();
+                        } else {
+                            this.up('form').down('[name=expiry_date]').enable();
+                        }
+                    },
+                    listeners: {
+                        change: function (el) {
+                            this.isValid();
+                        },
+                        scope: this
+                    }
+                },{
+                    xtype: 'checkboxfield',
+                    name: 'unlim_users',
+                    fieldLabel: 'Unlimited Users',
+                    labelWidth: 130,
+                    labelSeparator: '',
+                    cls: 'sfa-limited-access',
+                    handler: function() {
+                        if (this.checked) {
+                            this.up('form').down('[name=max_users]').disable();
+                        } else {
+                            if (this.up('form').down('[name=restricted]').getValue()) {
+                                this.up('form').down('[name=max_users]').enable();
+                            } else {
+                                this.up('form').down('[name=max_users]').disable();
+                            }
                         }
                     },
                     listeners: {
@@ -102,6 +152,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                         scope: this
                     }
                 }]
+
             }, {
                 xtype: 'fieldcontainer',
                 fieldLabel: 'Subscription',
@@ -156,7 +207,7 @@ Ext.define('SafeStartExt.view.form.Company', {
                     labelWidth: 130,
                     altFormats: 'U',
                     format: SafeStartExt.dateFormat,
-                    fieldLabel: 'Expiry Date',
+                    fieldLabel: 'Subscription Expiry',
                     value: new Date(),
                     cls: 'sfa-datepicker sfa-expiry-date'
                 }]
@@ -208,7 +259,12 @@ Ext.define('SafeStartExt.view.form.Company', {
                         if (this.isValid()) {
                             var values = me.getValues();
                             var date = this.down('datefield').getValue();
-                            values.expiry_date = date.getTime();
+                            if(date === null) {
+                                date = new Date();
+                            }
+                            if(date instanceof Date) {
+                                values.expiry_date = date.getTime();
+                            }
                             // me.getRecord().set('expiry_date', values.expiry_date);
                             this.fireEvent('updateCompanyAction', me.getRecord(), values);
                         }

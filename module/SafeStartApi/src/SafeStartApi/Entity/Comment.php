@@ -26,7 +26,7 @@ class Comment extends BaseEntity
     protected $parent_id = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected  $user;

@@ -456,7 +456,45 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleReport', {
     },
 
     sendActionList: function() {
-        SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/send-action-list', {}, function(result) {});
+        var self = this;
+        SafeStartApp.AJAX('vehicle/' + this.record.get('id') + '/send-action-list', {}, function(result) {
+            if (! (Ext.isArray(result.responses) && result.responses.length)) {
+                Ext.Msg.alert('Status', 'List of action could not be sent because respondents not found');
+                return;
+            }
+            Ext.MessageBox.create({
+                layout: 'fit',
+                title: 'Action List has been sent to:',
+                scrollable: true,
+                listeners: {
+                    resize: function (view) {
+                        var maxHeight = this.element.dom.offsetHeight || 320;
+                        var height = result.responses.length * 16 + 130;
+                        view.setHeight(height < maxHeight ? height : maxHeight);
+                    },
+                    scope: self
+                },
+                items: [{
+                    xtype: 'panel',
+                    scroll: 'vertical',
+                    tpl: new Ext.XTemplate(
+                        '<div class="sfa-alerts">',
+                        '<tpl for=".">',
+                        '<div class="sfa-description">','{email}','</div>',
+                        '</tpl>',
+                        '</div>'
+                    ),
+                    data: result.responses
+                }],
+                buttons: [{
+                    text: 'OK',
+                    ui: 'action',
+                    handler: function () {
+                        this.up('sheet').destroy();
+                    }
+                }]
+            }).show();
+        });
     }
 
 });

@@ -354,7 +354,6 @@ Ext.define('SafeStartExt.view._panel.Alerts', {
         var me = this;
         if (alert.get('status') !== status) {
             if (status == 'new') {
-                console.log('increase');
                 this.fireEvent('increaseAlertsCounter');
             } else {
                 this.fireEvent('decreaseAlertsCounter');

@@ -35,4 +35,4 @@ The ideal location for the example builds to reside is the `"./build"` folder:
 This can be specified in the `".sencha/app/build.properties"` file for the
 example applications:
 
-    build.dir=$
+    build.dir=${package.build.dir}/examples/${app.name}

@@ -493,6 +493,32 @@ $routes = array(
                     ),
                 ),
             ),
+            'vehicle-field-update' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehiclefield/:id/update',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'updateVehicleField',
+                    ),
+                ),
+            ),
+            'vehicle-field-delete' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehiclefield/:id/delete',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'deleteVehicleField',
+                    ),
+                ),
+            ),
             'update-vehicle-alert' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -594,6 +620,16 @@ $routes = array(
                     'defaults' => array(
                         'controller' => 'Index',
                         'action' => 'sendPush',
+                    ),
+                ),
+            ),
+            'sync-user' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/user/sync',
+                    'defaults' => array(
+                        'controller' => 'User',
+                        'action' => 'sync',
                     ),
                 ),
             )

@@ -139,7 +139,24 @@ $general = array(
                         )
                     )
                 ),
-
+                'run-sync-db-payments' => array(
+                    'options' => array(
+                        'route' => 'resque run sync-db-payments',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processSyncThirdPartyDb'
+                        )
+                    )
+                ),
+                'run-check-company-payments' => array(
+                    'options' => array(
+                        'route' => 'resque run check-company-payments',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processCheckCompanyPayments'
+                        )
+                    )
+                ),
             ),
         ),
     ),
@@ -184,7 +201,7 @@ $general = array(
             'inspectionFaultPdf' => 'SafeStartApi\Controller\Plugin\InspectionFaultPdfPlugin',
             'inspectionPdf' => 'SafeStartApi\Controller\Plugin\InspectionPdfPlugin',
             'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
-            'processTrailerPlugin' => 'SafeStartApi\Controller\Plugin\ProcessTrailerPlugin',
+            'processAdditionalVehiclePlugin' => 'SafeStartApi\Controller\Plugin\ProcessAdditionalVehiclePlugin',
             'queues' => 'SafeStartApi\Controller\Plugin\QueuePlugin',
             'pushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
             'processChecklistPlugin' => 'SafeStartApi\Controller\Plugin\ProcessChecklistPlugin',

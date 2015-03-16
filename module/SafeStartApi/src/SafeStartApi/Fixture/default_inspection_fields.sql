@@ -83,4 +83,5 @@ INSERT INTO `default_inspection_fields` (`id`, `parent_id`, `author_id`, `type`,
 (81, 9, 1, 'radio', 'Have the secondary ground controls and communication methods been checked?', 'Secondary ground controls', '', 'Secondary ground controls', 'no', 7, '2013-10-04', 1, 1, 0, 0),
 (82, 9, 1, 'radio', 'Is the load sensors and wind meter working properly?', 'Load sensors, wind meter', '', 'Load sensors, wind meter', 'no', 8, '2013-10-04', 1, 1, 0, 0),
 (83, 9, 1, 'radio', 'Are all bolts, locking pins and guides in place?', 'Bolts, locking pins, guides', '', 'Bolts, locking pins, guides', 'no', 9, '2013-10-04', 1, 1, 0, 0);
+('',7, NULL, 'text', 'Plant ID', '', '', '', '', 1, NOW(), 1, 1, 0, 0, NULL);
 

@@ -86,7 +86,7 @@ class RequestLogger extends AbstractHelper
         $logger = $this->serviceLocator->get('RequestLogger');
         $value = (array) $value;
         // log response
-        if (function_exists('yaml_emit')) {
+        /*if (function_exists('yaml_emit')) {
             $writer = new YamlWriter();
             try {
                 $logger->debug($key . ": " . $writer->toString($value));
@@ -94,9 +94,9 @@ class RequestLogger extends AbstractHelper
                 $logger->debug($key .": " . json_encode($value));
             }
 
-        } else {
+        } else {*/
             $logger->debug($key . ": " . json_encode($value));
-        }
+       /* }*/
     }
 
     /**

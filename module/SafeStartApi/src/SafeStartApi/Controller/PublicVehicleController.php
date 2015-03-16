@@ -36,6 +36,8 @@ class PublicVehicleController extends PublicAccessRestController
         $projectNumber = isset($this->data->projectNumber) ? $this->data->projectNumber : '-';
         $serviceDueHours = isset($this->data->serviceDueHours) ? $this->data->serviceDueHours : 0;
         $serviceDueKm = isset($this->data->serviceDueKm) ? $this->data->serviceDueKm : 0;
+        $currentKm = isset($this->data->odometer) ? $this->data->odometer : 0;
+        $currentHours = isset($this->data->odometer_hours) ? $this->data->odometer_hours : 0;
         $title = isset($this->data->title) ? $this->data->title : '-';
         $type = isset($this->data->vehicleType) ? $this->data->vehicleType : '-';
 
@@ -78,6 +80,8 @@ class PublicVehicleController extends PublicAccessRestController
         $vehicle->setServiceDueKm($serviceDueKm);
         $vehicle->setTitle($title);
         $vehicle->setType($type);
+        $vehicle->setCurrentOdometerKms($currentKm);
+        $vehicle->setCurrentOdometerHours($currentHours);
 
         if($persist) $this->em->persist($vehicle);
         $this->em->flush();
@@ -112,8 +116,8 @@ class PublicVehicleController extends PublicAccessRestController
             $checkList->setCurrentOdometerHours($this->data->odometer_hours);
             $vehicle->setCurrentOdometerHours($this->data->odometer_hours);
         } else {
-            $checkList->setCurrentOdometer(null);
-            $vehicle->setCurrentOdometerKms(null);
+            $checkList->setCurrentOdometerHours(null);
+            $vehicle->setCurrentOdometerHours(null);
         }
 
         $checkList->setUserData($userData);
@@ -148,17 +152,38 @@ class PublicVehicleController extends PublicAccessRestController
             'checklist' => $checkList->getHash(),
         );
 
-        if (APP_RESQUE) {
-            \Resque::enqueue('new_email_checklist_uploaded', '\SafeStartApi\Jobs\NewEmailCheckListUploaded', array(
-                'checkListId' => $checkList->getId(),
-                'emails' => $emails
-            ));
-            return $this->AnswerPlugin()->format($this->answer);
-        } else {
-            $pdf = $this->inspectionPdf()->create($checkList);
+//Check this during upload on production server
+//        if (APP_RESQUE) {
+//            \Resque::enqueue('new_email_checklist_uploaded', '\SafeStartApi\Jobs\NewEmailCheckListUploaded', array(
+//                'checkListId' => $checkList->getId(),
+//                'emails' => $emails
+//            ));
+//            return $this->AnswerPlugin()->format($this->answer);
+//        } else {
+            $additionalVehicleInfo = isset($this->data->vehicleFields) ? $this->data->vehicleFields : array();
+            $pdf = $this->inspectionPdf()->create($checkList, $additionalVehicleInfo);
             $this->processChecklistPlugin()->setInspectionStatistic($checkList);
             if (file_exists($pdf)) {
+
+                $checkAccess = function($email) {
+                    $qb = $this->em->createQueryBuilder();
+                    $expr = $qb->expr();
+                    $qb->select($expr->count('e.id'))
+                        ->from('SafeStartApi\Entity\User', 'e')
+                        ->where(
+                            $expr->andX(
+                                $expr->like('e.email', $expr->literal($email)),
+                                $expr->isNotNull('e.password'),
+                                $expr->eq('e.deleted', $expr->literal(0))
+                            )
+                        );
+                    $qb->setMaxResults(1);
+                    $qb->setFirstResult(0);
+                    return (boolean) $qb->getQuery()->getSingleScalarResult();
+                };
+
                 foreach($emails as $email) {
+                    if (empty($email)) continue;
                     $email = (array) $email;
                     $this->MailPlugin()->send(
                         $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
@@ -169,7 +194,8 @@ class PublicVehicleController extends PublicAccessRestController
                             'plantId' => $checkList->getVehicle() ? $checkList->getVehicle()->getPlantId() : '-',
                             'uploadedByName' => $checkList->getOperatorName(),
                             'siteUrl' => $this->moduleConfig['params']['site_url'],
-                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url'],
+                            'showLoginUrl' => $checkAccess($email['email'])
                         ),
                         $pdf
                     );
@@ -181,7 +207,7 @@ class PublicVehicleController extends PublicAccessRestController
                 );
                 return $this->AnswerPlugin()->format($this->answer, 500, 500);
             }
-        }
+//        }
     }
 
     public function getChecklistByHashAction()
@@ -243,7 +269,26 @@ class PublicVehicleController extends PublicAccessRestController
             if (!$link || !file_exists($path)) $path = $this->inspectionPdf()->create($inspection);
 
             if (file_exists($path)) {
+
+                $checkAccess = function($email) {
+                    $qb = $this->em->createQueryBuilder();
+                    $expr = $qb->expr();
+                    $qb->select($expr->count('e.id'))
+                        ->from('SafeStartApi\Entity\User', 'e')
+                        ->where(
+                            $expr->andX(
+                                $expr->like('e.email', $expr->literal($email)),
+                                $expr->isNotNull('e.password'),
+                                $expr->eq('e.deleted', $expr->literal(0))
+                            )
+                        );
+                    $qb->setMaxResults(1);
+                    $qb->setFirstResult(0);
+                    return (boolean) $qb->getQuery()->getSingleScalarResult();
+                };
+
                 foreach($emails as $email) {
+                    if (empty($email)) continue;
                     $email = (array) $email;
                     $this->MailPlugin()->send(
                         $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
@@ -254,7 +299,8 @@ class PublicVehicleController extends PublicAccessRestController
                             'plantId' => $inspection->getVehicle() ? $inspection->getVehicle()->getPlantId() : '-',
                             'uploadedByName' => $inspection->getOperatorName(),
                             'siteUrl' => $this->moduleConfig['params']['site_url'],
-                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url']
+                            'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url'],
+                            'showLoginUrl' => $checkAccess($email['email'])
                         ),
                         $path
                     );

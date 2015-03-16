@@ -207,8 +207,19 @@ class UserController extends RestController
                 return $this->AnswerPlugin()->format($this->answer, 404);
             }
 
-            if (!$userId && $company->getRestricted() && ((count($company->getUsers()) + 1) > $company->getMaxUsers())) return $this->_showCompanyLimitReached('Company limit of users reached');
+            // may need replace 1 on 2
+            if (!$userId && $company->getRestricted() && !$company->getUnlimUsers() && ((count($company->getUsers()) + 1) > $company->getMaxUsers())) return $this->_showCompanyLimitReached('Company limit of users reached');
             $user->setCompany($company);
+        }
+
+        if(!$user->getId()){
+            $companyVehicles = $user->getCompany()->getVehicles();
+            if($companyVehicles){
+                foreach($companyVehicles as $companyVehicle){
+                    $companyVehicle->addUser($user);
+                }
+            }
+
         }
 
         $this->em->flush();
@@ -384,6 +395,11 @@ class UserController extends RestController
             "msg" => "New password was sent to your email"
         );
         return $this->AnswerPlugin()->format($this->answer, 0);
+    }
+
+    public function syncAction(){
+        $this->UserSyncPlugin()->syncUsers();
+
     }
 
 }

@@ -87,12 +87,12 @@
                 },
                 "serviceDueKm": {
                     "description": "Service due Km",
-                    "type": "integer",
+                    "type": "number",
                     "required": true
                 },
                 "serviceDueHours": {
                     "description": "Service due hours",
-                    "type": "integer",
+                    "type": "number",
                     "required": true
                 },
                 "fields": {
@@ -161,12 +161,12 @@
                 },
                 "odometer": {
                     "description": "Current Odometer",
-                    "type": "integer",
+                    "type": "number",
                     "required": false
                 },
                 "odometer_hours": {
                     "description": "Current Odometer Hours",
-                    "type": "integer",
+                    "type": "number",
                     "required": false
                 }
 

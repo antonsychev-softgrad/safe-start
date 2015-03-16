@@ -1,6 +1,6 @@
 .DS*
 .idea
-.sencha
+.sass-cache
 .svn
 ._*
 .~lock.*

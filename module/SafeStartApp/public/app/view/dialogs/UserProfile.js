@@ -1,6 +1,6 @@
 /*Ext.define('SafeStartApp.view.dialogs.UserProfile', {
 
-    extend: 'SafeStartApp.view.abstract.dialog',
+    extend: 'SafeStartApp.view.base.dialog',
 
     xtype: 'SafeStartUserProfileDialog',
 

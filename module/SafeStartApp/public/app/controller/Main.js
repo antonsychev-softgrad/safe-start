@@ -75,7 +75,6 @@ Ext.define('SafeStartApp.controller.Main', {
 
     updateAlertsBadge: function() {
         var self = this;
-        console.log('update');
         if (!SafeStartApp.companyModel || !SafeStartApp.companyModel.get || !SafeStartApp.companyModel.get('id')) return;
         SafeStartApp.AJAX('company/' + SafeStartApp.companyModel.get('id') + '/get-new-incoming?now=' + new Date().getTime(), {}, function (result) {
             if (SafeStartApp.userModel.get('role') == 'superAdmin') {

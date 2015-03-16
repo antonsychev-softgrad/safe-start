@@ -98,7 +98,7 @@ class DefaultField extends BaseEntity
     protected $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="DefaultAlert", mappedBy="field", cascade={"persist", "remove", "merge"})
+     * @ORM\OneToMany(targetEntity="DefaultAlert", mappedBy="default_field", cascade={"persist", "remove", "merge"})
      */
     protected $default_alerts;
 

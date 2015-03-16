@@ -47,6 +47,10 @@ Ext.define('SafeStartExt.controller.Company', {
                 afterrender: this.refreshPage
             },
             'SafeStartExtFormVehicle': {
+            },
+            'SafeStartExtFormVehicleCustomFields': {
+            },
+            'SafeStartExtPanelVehicleFields': {
                 afterrender: this.fillForm,
                 updateVehicleAction: this.updateVehicle,
                 deleteVehicleAction: this.deleteVehicle
@@ -68,6 +72,10 @@ Ext.define('SafeStartExt.controller.Company', {
                 saveField: this.saveChecklistField,
                 deleteField: this.deleteChecklistField
             },
+            'SafeStartExtPanelManageVehicleField': {
+                saveField: this.saveVehicleField,
+                deleteField: this.deleteVehicleField
+            },
             'SafeStartExtPanelVehicleUsers': {
                 saveVehicleUsers: this.saveVehicleUsers
             }
@@ -88,17 +96,18 @@ Ext.define('SafeStartExt.controller.Company', {
         this.changeVehicleAction(vehicle);
     },
 
-    updateVehicle: function (vehicle, data) {
+    updateVehicle: function (vehicle, data, customFields) {
         var me = this;
         data.companyId = this.company.get('id');
         var date = Ext.Date.parseDate(data.expiryDate, SafeStartExt.dateFormat);
         if (date) {
             data.expiryDate = date.getTime()/1000;
         }
+
+        data.customFields = customFields;
         Ext.applyIf(data, {
             enabled: false
         });
-
 
         SafeStartExt.Ajax.request({
             url: 'vehicle/' + vehicle.get('id') + '/update',
@@ -178,8 +187,9 @@ Ext.define('SafeStartExt.controller.Company', {
         }
     },
 
-    fillForm: function (form) {
-        form.loadRecord(this.vehicle);
+    fillForm: function (panel) {
+        panel.setVehicle(this.vehicle);
+        panel.down('SafeStartExtFormVehicleCustomFields').loadFields(this.vehicle.get('customFields'));
     },
 
     loadInspections: function (view) {
@@ -336,5 +346,55 @@ Ext.define('SafeStartExt.controller.Company', {
             url: 'vehicle/' + this.vehicle.get('id') + '/update-users',
             data: {value: values}
         });
+    },
+
+    saveVehicleField: function (form) {
+        var record = form.getRecord();
+        SafeStartExt.Ajax.request({
+            url: 'vehiclefield/' + record.get('id') + '/update',
+            data: record.getWriteData(),
+            success: function (result) {
+                record.beginEdit();
+                if (! record.get('id')) {
+                    record.set('id', result.fieldId);
+                }
+                record.modified = {};
+                record.endEdit();
+                form.loadRecord(record);
+            }
+        });
+    },
+
+    deleteVehicleField: function (form) {
+        var record = form.getRecord();
+        var parent = record.parentNode;
+        if (record.get('id') === 0 && parent) {
+            parent.removeChild(record);
+            if (parent.getDepth()) {
+                form.up('SafeStartExtPanelManageVehicleField').down('treepanel').getSelectionModel().select(parent);
+            }
+            return;
+        }
+
+        Ext.Msg.confirm({
+            msg: 'Do you sure you want to delete this field from checklist?',
+            buttons: Ext.Msg.YESNO,
+            fn: function (result) {
+                if (result !== 'yes') {
+                    return;
+                }
+                SafeStartExt.Ajax.request({
+                    url: 'vehiclefield/' + record.get('id') + '/delete',
+                    success: function(result) {
+                        // record.destroy();
+                        parent.removeChild(record);
+                        if (parent && parent.getDepth() != 0) {
+                            form.up('SafeStartExtPanelManageVehicleField').down('treepanel').getSelectionModel().select(parent);
+                        }
+                    }
+                });
+            }
+        });
     }
+
 });

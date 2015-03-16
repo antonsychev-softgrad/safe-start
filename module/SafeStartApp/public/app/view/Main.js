@@ -2,8 +2,8 @@ Ext.define('SafeStartApp.view.Main', {
     extend: 'Ext.tab.Panel',
     xtype: 'SafeStartMainView',
     requires: [
-        'SafeStartApp.model.User',
-        'SafeStartApp.view.abstract.dialog'
+        'SafeStartApp.model.User'/*,
+        'SafeStartApp.view.base.dialog'*/
     ],
     items: [],
     config: {

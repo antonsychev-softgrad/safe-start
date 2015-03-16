@@ -24,7 +24,7 @@ class Alert extends BaseEntity
     const ACTION_REFRESHED = 'alert_refreshed';
 
     //expiry date description and etc
-    const EXPIRY_DATE = 'Vehicle subscription has expired';
+    const EXPIRY_DATE = 'Vehicle Registration has Expired';
     const DUE_SERVICE = 'Due For Service';
     const INACCURATE_KM_HR = 'Inaccurate Current Hours Or Kms';
 
@@ -325,7 +325,7 @@ class Alert extends BaseEntity
             'alert_description' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
             'field' => $this->field ? $this->field->toArray() : ($this->getDescription() ? array('alert_critical'=>1) : null),
             'vehicle' => $this->getVehicle()->toInfoArray(),
-            'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : array(),
+            'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : (object) array(),
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),

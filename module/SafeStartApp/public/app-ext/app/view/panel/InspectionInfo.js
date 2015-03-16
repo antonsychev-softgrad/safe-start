@@ -34,7 +34,19 @@ Ext.define('SafeStartExt.view.panel.InspectionInfo', {
             this.createContainer('Type of vehicle', vehicle.get('type'))
         ]));
 
-        var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
+        //var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
+        var serviceDueString = '';
+        if (inspection.get('serviceDueKm') > 0) {
+            serviceDueString += inspection.get('serviceDueKm') + ' km';
+        } else {
+            serviceDueString += vehicle.get('serviceDueKm') + ' km';
+        }
+        if (inspection.get('serviceDueHours') > 0) {
+            serviceDueString += ' ' + inspection.get('serviceDueHours') + ' hours';
+        }else {
+            serviceDueString += ' ' + vehicle.get('serviceDueHours') + ' hours';
+        }
+
         var odometerString = '';
         if (inspection.get('odometer_kms') > 0) {
             odometerString += inspection.get('odometer_kms') + ' km';

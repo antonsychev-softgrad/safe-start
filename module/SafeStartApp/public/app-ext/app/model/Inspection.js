@@ -10,6 +10,8 @@ Ext.define('SafeStartExt.model.Inspection', {
         {name: 'warnings'},
         {name: 'odometer_hours', type: 'string'},
         {name: 'odometer_kms', type: 'string'},
+        {name: 'serviceDueKm', type: 'int', defaultValue: 0},
+        {name: 'serviceDueHours', type: 'int', defaultValue: 0},
         {name: 'update_date', type: 'int'}
     ],
 

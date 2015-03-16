@@ -2152,3 +2152,11 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 .x-mask {
     display: none !important;
 }
+
+.sfa-datepicker-custom .x-form-trigger-wrap {width: 150px !important;}
+
+/* In Firefox show error message on one line */
+.x-list-plain {
+    overflow: hidden;
+    white-space: nowrap;
+}

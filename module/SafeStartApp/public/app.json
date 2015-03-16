@@ -7,7 +7,7 @@
     "version": "1.0",
 
     "baseHref": "http://safe-start.dev/",
-
+    
     /**
      * The file path to this application's front HTML document, relative to this app.json file
      */
@@ -136,5 +136,5 @@
      * Uniquely generated id for this application, used as prefix for localStorage keys.
      * Normally you should never change this value.
      */
-    "id": "af3f3141-8425-4b50-810e-c983eab08511"
+    "id": "a1dd155d-b44b-48b7-9788-e430e03d7792"
 }

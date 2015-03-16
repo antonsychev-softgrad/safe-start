@@ -71,10 +71,34 @@ Ext.define('SafeStartApp.view.forms.Company', {
                         cls:'sfa-limited-access',
                         listeners: {
                             change: function(field, slider, thumb, newValue, oldValue) {
-                                if (newValue) {
-                                    this.up('SafeStartCompanyForm').down('fieldset').down('fieldset').enable();
-                                } else {
+                                if (this.up('SafeStartCompanyForm').down('fieldset').down('fieldset').isDisabled() == false) {   // isEnabled
                                     this.up('SafeStartCompanyForm').down('fieldset').down('fieldset').disable();
+                                }
+                                else {
+                                    this.up('SafeStartCompanyForm').down('fieldset').down('fieldset').enable();
+                                    if(this.up('SafeStartCompanyForm').down('[name=unlim_expiry_date]').getValue() == true){
+                                        this.up('SafeStartCompanyForm').down('fieldset').down('[name=expiry_date]').disable();
+                                    } else {
+                                        this.up('SafeStartCompanyForm').down('fieldset').down('[name=expiry_date]').enable();
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        xtype: 'togglefield',
+                        name: 'unlim_expiry_date',
+                        label: 'Unlimited Expiry Date',
+                        cls: 'sfa-limited-access',
+                        listeners: {
+                            change: function(field, slider, thumb, newValue, oldValue) {
+                                if(this.up('SafeStartCompanyForm').down('fieldset').down('fieldset').isDisabled() == false){
+                                if (this.up('SafeStartCompanyForm').down('fieldset').down('[name=expiry_date]').isDisabled() == false) {   // isEnabled
+                                    this.up('SafeStartCompanyForm').down('fieldset').down('[name=expiry_date]').disable();
+                                }
+                                else {
+                                    this.up('SafeStartCompanyForm').down('fieldset').down('[name=expiry_date]').enable();                                 // enable togglefield
+                                }
                                 }
                             }
                         }
@@ -109,7 +133,7 @@ Ext.define('SafeStartApp.view.forms.Company', {
                                 xtype: 'datepickerfield',
                                 name: 'expiry_date',
                                 required: true,
-                                label: 'Expiry Date',
+                                label: 'Subscription Expiry',
                                 dateFormat: SafeStartApp.dateFormat,
                                 value: new Date(),
                                 cls: 'sfa-datepicker',

@@ -37,17 +37,8 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Group', {
                 store: {
                     fields: ['key', 'value'],
                     data: [{
-                        key: 'Checklist Titles Group',
-                        value: 'group' 
-                    }, {
-                        key: 'Radio Buttons Yes|No|N/A',
-                        value: 'radio'
-                    }, {
                         key: 'Checkbox Yes|No',
                         value: 'checkbox'
-                    }, {
-                        key: 'Label',
-                        value: 'label'
                     }, {
                         key: 'Text',
                         value: 'text'

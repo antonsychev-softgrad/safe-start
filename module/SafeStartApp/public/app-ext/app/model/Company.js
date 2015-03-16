@@ -10,6 +10,8 @@ Ext.define('SafeStartExt.model.Company', {
         {name: 'address', type: 'string'},
         {name: 'phone', type: 'string'},
         {name: 'restricted', type: 'boolean', defaultValue: false},
+        {name: 'unlim_expiry_date', type: 'boolean', defaultValue: false},
+        {name: 'unlim_users', type: 'boolean', defaultValue: false},
         {name: 'max_users', type: 'int', defaultValue: 0},
         {name: 'max_vehicles', type: 'int', defaultValue: 0},
         {name: 'expiry_date', type: 'int'}

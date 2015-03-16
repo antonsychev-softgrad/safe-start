@@ -32,6 +32,14 @@ Ext.define('SafeStartApp.model.VehicleInspection', {
             type: 'integer',
             mapping: 'odometer_kms'
         }, {
+            name: 'serviceDueKm',
+            type: 'int',
+            defaultValue: 0
+        }, {
+            name: 'serviceDueHours',
+            type: 'int',
+            defaultValue: 0
+        }, {
             name: 'warnings',
             type: 'auto'
         }, {

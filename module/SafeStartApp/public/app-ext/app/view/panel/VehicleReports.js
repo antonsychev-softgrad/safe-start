@@ -502,8 +502,58 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
     },
 
     sendActionList: function() {
+        var self = this;
         SafeStartExt.Ajax.request({
-            url: 'vehicle/' + this.vehicle.get('id') + '/send-action-list'
+            url: 'vehicle/' + this.vehicle.get('id') + '/send-action-list',
+            success: function(response, opts) {
+                if (! (Ext.isArray(response.responses) && response.responses.length)) {
+                    Ext.Msg.alert('Status', 'List of action could not be sent because respondents not found');
+                    return;
+                }
+
+                var messageBox = Ext.create('Ext.window.Window', {
+                    title: 'Action List has been sent to:',
+                    padding: 10,
+                    maxHeight: self.getHeight() * 0.8,
+                    autoScroll: true,
+                    width: 300,
+                    items: [{
+                        xtype: 'dataview',
+                        width: '100%',
+                        store: {
+                            proxy: 'memory',
+                            fields: ['email']
+                        },
+                        itemSelector: 'div.sfa-previous-alert-item',
+                        tpl: [
+                            '<tpl for=".">',
+                            '<div class="sfa-previous-alert-item" style="font-size: 16px;"> {email} </div>',
+                            '</tpl>'
+                        ].join(''),
+                        data: response.responses
+                    }],
+                    bbar: {
+                        xtype: 'container',
+                        padding: '10 0 0',
+                        layout: {
+                            type: 'hbox',
+                            pack: 'center'
+                        },
+                        items: [{
+                            xtype: 'button',
+                            text: 'OK',
+                            scale: 'medium',
+                            ui: 'blue',
+                            handler: function () {
+                                this.up('window').close();
+                            }
+                        }]
+                    }
+                });
+                self.add(messageBox);
+                messageBox.show();
+            },
+            failure: function(response, opts) { }
         });
     }
 

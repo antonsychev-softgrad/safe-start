@@ -687,9 +687,11 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 }, this);
             };
             listeners.afterrender = function () {
-                var value = this.down('radio[checked]').inputValue;
-                this.fireEvent('checkAdditional', value);
-                this.fireEvent('checkAlert', value);
+                if(this.down('radio[checked]')){
+                    var value = this.down('radio[checked]').inputValue;
+                    this.fireEvent('checkAdditional', value);
+                    this.fireEvent('checkAlert', value);
+                }
             };
         }
 

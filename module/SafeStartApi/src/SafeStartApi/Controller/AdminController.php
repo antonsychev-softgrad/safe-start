@@ -82,13 +82,30 @@ class AdminController extends AdminAccessRestController
         $company->setPhone($this->data->phone);
         $company->setDescription($this->data->description);
         $company->setRestricted((bool)$this->data->restricted);
-        $company->setMaxUsers($this->data->restricted ? (int)$this->data->max_users : 0);
-        $company->setMaxVehicles($this->data->restricted ? (int)$this->data->max_vehicles : 0);
-        if (isset($this->data->restricted)) {
+        $company->setUnlimUsers((bool)$this->data->unlim_users);
+        $company->setUnlimExpiryDate((bool)$this->data->unlim_expiry_date);
+        $company->setMaxUsers($this->data->restricted ? (isset($this->data->max_users) ? (int) $this->data->max_users : 0) : 0);
+        $company->setMaxVehicles($this->data->restricted ? (isset($this->data->max_vehicles) ? (int) $this->data->max_vehicles : 0) : 0);
+
+//        if ($this->data->restricted && !$this->data->unlim_expiry_date) {
+//            $expiryDate = new \DateTime();
+//            $expiryDate->setTimestamp((int)$this->data->expiry_date);
+//            $company->setExpiryDate($expiryDate);
+//        } elseif(!$this->data->restricted || ($this->data->restricted && $this->data->unlim_expiry_date)) {
+//            $expiryDate = new \DateTime('1st January 2999');
+////            $expiryDate->setTimestamp((int)PHP_INT_MAX);
+//            $company->setExpiryDate($expiryDate);
+//        }
+
+        if($this->data->unlim_expiry_date) {
+            $expiryDate = new \DateTime('1st January 2999');
+            $company->setExpiryDate($expiryDate);
+        } else {
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp((int)$this->data->expiry_date);
             $company->setExpiryDate($expiryDate);
         }
+
         $company->setAdmin($user);
         $this->em->persist($company);
 
@@ -178,6 +195,19 @@ class AdminController extends AdminAccessRestController
 
             $vehicle->setPlantId(time() ." ".$vehicle->getPlantId());
             $vehicle->setDeleted(1);
+        }
+
+        $admin = $company->getAdmin();
+        if($admin !== null) {
+
+            $uName = $admin->getUsername();
+            $uEmail = $admin->getEmail();
+            $uAsUniq = hash("sha1", $uEmail . microtime(true));
+
+            $admin->setUsername($uName . '__#' . $uAsUniq);
+            $admin->setEmail($uEmail . '__#' . $uAsUniq);
+            $admin->setEnabled(0);
+            $admin->setDeleted(1);
         }
 
         $company->setDeleted(1);

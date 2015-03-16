@@ -91,11 +91,31 @@ class GetDataPlugin extends AbstractPlugin
                 if (isset($fieldsConfig[$field->getType()]['options'])) $listField['options'] = $fieldsConfig[$field->getType()]['options'];
                 $alertMassage = $field->getAlertTitle();
                 $alertDescription = $field->getAlertDescription();
-                if ((!empty($alertMassage) || !empty($alertDescription)) && empty($listField['items'])) {
+
+                $tempDescription = "";
+                switch(true) {
+                    case !empty($alertDescription):
+                        $tempDescription = $alertDescription;
+                        break;
+                    case !empty($alertMassage):
+                        $tempDescription = $alertMassage;
+                        break;
+                    case ("" !== $field->getDescription()):
+                        $tempDescription = $field->getDescription();
+                        break;
+                    case ("" !== $field->getTitle()):
+                        $tempDescription = $field->getTitle();
+                        break;
+                    default:
+                        $tempDescription = "";
+                        break;
+                }
+
+                if ((!empty($alertMassage) || !empty($tempDescription)) && empty($listField['items'])) {
                     $listField['alerts'] = array(
                         array(
                             'alertMessage' => $field->getAlertTitle(),
-                            'alertDescription' => $field->getAlertDescription(),
+                            'alertDescription' => $tempDescription,
                             'critical' => $field->getAlertCritical(),
                             'triggerValue' => $field->getTriggerValue() ? $field->getTriggerValue() : '',
                         )

@@ -4,6 +4,7 @@ Ext.define('SafeStartExt.Ajax', {
     singleton: true,
 
     baseHref: "/api/",
+    fnErrorCodes: [4006],
 
     request: function(options) {
         var me = this,
@@ -42,7 +43,6 @@ Ext.define('SafeStartExt.Ajax', {
                 me.processFailure('Operation failed', failureCallback);
                 return;
             }
-
             if (result.meta && result.meta.status == 200 && !parseInt(result.meta.errorCode, 10)) {
                 if (typeof successCallback === 'function') {
                     successCallback(result.data || {});
@@ -51,7 +51,11 @@ Ext.define('SafeStartExt.Ajax', {
                 if (typeof failureCallback === 'function') {
                     failureCallback.bind(this, result);
                 }
-                me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
+                if (!me.useErrorFn(parseInt(result.meta.errorCode, 10))) {
+                    me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
+                } else {
+                    me.processOtherFailure(result, failureCallback);
+                }
             }
         };
 
@@ -66,13 +70,45 @@ Ext.define('SafeStartExt.Ajax', {
                 me.processFailure('Operation failed', failureCallback);
                 return;
             }
+
             if (typeof failureCallback === 'function') {
                 failureCallback.bind(this, result);
             }
-            me.processFailure((result.data && result.data.errorMessage) || 'Operation failed', failureCallback);
+            me.processOtherFailure(result, failureCallback);
         };
 
         this.callParent([options]);
+    },
+
+    useErrorFn: function(code) {
+        var use = (-1 != this.fnErrorCodes.indexOf(code)) ? true: false;
+        return use;
+    },
+
+    processOtherFailure: function(result, callback) {
+        if (result.meta && result.meta.status == 200 && parseInt(result.meta.errorCode, 10)) {
+            var errorCode = result.meta.errorCode;
+            switch (errorCode) {
+                case 4006:
+                    Ext.Msg.show({
+                        title:'You Have Reached Your Subscription Limit!',
+                        msg: 'If you would like to add more vehicles to your Safe Start account please purchase additional vehicle subscriptions.',
+                        buttons: Ext.Msg.YESNO,
+                        buttonText:{
+                            yes: 'Buy Now',
+                            no: 'No Thanks'
+                        },
+                        fn: function(btn) {
+                            if(btn === 'yes') {
+                                window.open('http://safestartinspections.com/pricing/','_blank');
+                            }
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
     },
 
     processFailure: function (message, callback) {

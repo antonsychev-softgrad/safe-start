@@ -261,5 +261,22 @@ $api = array(
         'limitForLoggedInUsers' => 50,
         'limitForUnloggedUsers' => 30,
         'limitTime' => 60,
-    )
+    ),
+    "3rdParty" => array(
+        'connectionParams' => array(
+            'dbname'   => 'paulmc_wrdp1',
+            'user'     => 'paulmc_wrdpuser',
+            'password' => 'K&p)X6h$OIMM',
+            'host'     => '192.232.217.142',
+            'port'     => '3306',
+            'driver'   => 'pdo_mysql',
+            'charset'  => 'UTF8',
+        ),
+        'dbPrefix' => 'wp_',
+        'availableTypes' => array(
+            'Annual'  => 1,
+            'Monthly' => 2,
+            'Free'    => 7,
+        ),
+    ),
 );

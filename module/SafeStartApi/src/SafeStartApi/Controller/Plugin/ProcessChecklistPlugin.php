@@ -152,7 +152,7 @@ class ProcessChecklistPlugin extends AbstractPlugin
                     if ($delta <= (int) $field->triggerValue) {
                         $warnings[] = array(
                             'action' => 'custom_checklist_warning',
-                            'text' => ($delta > 0) ? sprintf($field->alertDescription, round($delta)) : (($field->fieldDescription ? $field->fieldDescriptio : $field->fieldName) . ' has expired')
+                            'text' => ($delta > 0) ? sprintf($field->alertDescription, round($delta)) : (($field->fieldDescription ? $field->fieldDescription : $field->fieldName) . ' has expired')
                         );
                     }
                 }

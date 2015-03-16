@@ -11,6 +11,6 @@ Ext.application({
     
     appFolder: '/app-ext/app',
     appPropery: 'app',
-
+    
     autoCreateViewport: false
 });

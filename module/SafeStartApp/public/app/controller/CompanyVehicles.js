@@ -85,7 +85,6 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
     onSelectAction: function (record, silent) {
         this.selectedRecord = this.getNavMain().getActiveItem().getStore().getNode();
         this.selectedNodeId = record.get('id');
-
         switch (record.get('action')) {
             case 'info':
                 this.getInfoPanel().setActiveItem(this.getVehicleForm());
@@ -114,6 +113,9 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             case 'users':
                 this.loadUsers(record.parentNode.get('id'));
                 this.getInfoPanel().setActiveItem(this.getVehicleUsersPanel());
+                break;
+            case 'update-field':
+                // ToDo
                 break;
         }
     },
@@ -200,16 +202,19 @@ Ext.define('SafeStartApp.controller.CompanyVehicles', {
             } else {
                 formValues.companyId = SafeStartApp.userModel.get('companyId');
             }
-            SafeStartApp.AJAX('vehicle/' + vehicleForm.getValues().id + '/update', formValues, function (result) {
-                if (result.vehicleId) {
-                    self._reloadStore(result.vehicleId);
-                    vehicleForm.down('hiddenfield[name=id]').setValue(result.vehicleId);
-                    if (SafeStartApp.userModel.get('role') !== 'companyUser') {
-                        vehicleForm.down('button[name=delete-data]').show();
+
+            SafeStartApp.AJAX('vehicle/' + vehicleForm.getValues().id + '/update', formValues,
+                function (result) {
+                    if (result.vehicleId) {
+                        self._reloadStore(result.vehicleId);
+                        vehicleForm.down('hiddenfield[name=id]').setValue(result.vehicleId);
+                        if (SafeStartApp.userModel.get('role') !== 'companyUser') {
+                            vehicleForm.down('button[name=delete-data]').show();
+                        }
+                        vehicleForm.down('button[name=reset-data]').hide();
                     }
-                    vehicleForm.down('button[name=reset-data]').hide();
                 }
-            });
+            );
         }
     },
 

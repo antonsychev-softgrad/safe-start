@@ -23,6 +23,8 @@ class Company extends BaseEntity
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->restricted = false;
+        $this->unlim_expiry_date = false;
+        $this->unlim_users = false;
     }
 
     /**
@@ -107,6 +109,26 @@ class Company extends BaseEntity
      * @ORM\Column(type="text", name="logo", nullable = true)
      */
     protected $logo;
+
+    /**
+     * @ORM\Column(type="boolean", name="unlim_expiry_date", nullable=true)
+     */
+    protected $unlim_expiry_date;
+
+    /**
+     * @ORM\Column(type="boolean", name="unlim_users", nullable=true)
+     */
+    protected $unlim_users;
+
+    /**
+     * @ORM\Column(type="string", name="payment_type", nullable=true)
+     */
+    protected $payment_type = "Free";
+
+    /**
+     * @ORM\Column(type="datetime", name="payment_date", nullable=true)
+     */
+    protected $payment_date;
 
     /**
      * Get id
@@ -498,6 +520,8 @@ class Company extends BaseEntity
         $company['title'] = $this->getTitle();
         $company['address'] = $this->getAddress();
         $company['restricted'] = $this->restricted;
+        $company['unlim_expiry_date'] = $this->unlim_expiry_date;
+        $company['unlim_users'] = $this->unlim_users;
         $company['phone'] = $this->phone;
         $company['description'] = $this->description;
         $company['logo'] = $this->logo;
@@ -525,5 +549,97 @@ class Company extends BaseEntity
         }
 
         return false;
+    }
+
+    /**
+     * Set unlim_expiry_date
+     *
+     * @param boolean $unlimExpiryDate
+     * @return Company
+     */
+    public function setUnlimExpiryDate($unlimExpiryDate)
+    {
+        $this->unlim_expiry_date = $unlimExpiryDate;
+    
+        return $this;
+    }
+
+    /**
+     * Get unlim_expiry_date
+     *
+     * @return boolean 
+     */
+    public function getUnlimExpiryDate()
+    {
+        return $this->unlim_expiry_date;
+    }
+
+    /**
+     * Set unlim_users
+     *
+     * @param boolean $unlimUsers
+     * @return Company
+     */
+    public function setUnlimUsers($unlimUsers)
+    {
+        $this->unlim_users = $unlimUsers;
+
+        return $this;
+    }
+
+    /**
+     * Get unlim_users
+     *
+     * @return boolean
+     */
+    public function getUnlimUsers()
+    {
+        return $this->unlim_users;
+    }
+
+    /**
+     * Set payment_type
+     *
+     * @param string $payment_type
+     * @return Company
+     */
+    public function setPaymentType($payment_type)
+    {
+        $this->payment_type = $payment_type;
+
+        return $this;
+    }
+
+    /**
+     * Get payment_type
+     *
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        return $this->payment_type;
+    }
+
+    /**
+     * Set payment_date
+     *
+     * @param \DateTime $payment_date
+     * @return Company
+     */
+    public function setPaymentDate($payment_date)
+    {
+        $this->payment_date = $payment_date;
+
+        return $this;
+    }
+
+    /**
+     * Get payment_date
+     *
+     * @return \DateTime
+     */
+    public function getPaymentDate()
+    {
+        return $this->payment_date ? $this->payment_date->getTimestamp() : null;
     }
 }

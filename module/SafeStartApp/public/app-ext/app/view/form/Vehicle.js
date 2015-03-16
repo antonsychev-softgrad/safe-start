@@ -17,28 +17,31 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
     },
     autoScroll: true,
     buttonAlign: 'left',
-    cls: 'sfa-vehicle-form',
+    cls: 'sfa-vehicle-fields-form',
     padding: 20,
 
     initComponent: function () {
         var me = this;
         Ext.apply(this, {
-            items: [{
-                xtype: 'textfield',
-                fieldLabel: 'Model',
-                maxWidth: 400,
-                labelWidth: 130,
-                labelSeparator: '*',
-                allowBlank: false,
-                name: 'title'
-            }, {
-                xtype: 'textfield',
-                labelWidth: 130,
-                maxWidth: 400,
-                fieldLabel: 'Make',
-                labelSeparator: '',
-                name: 'type'
-            }, {
+            items: [
+//                {
+//                xtype: 'textfield',
+//                fieldLabel: 'Model',
+//                maxWidth: 400,
+//                labelWidth: 130,
+//                labelSeparator: '*',
+//                allowBlank: false,
+//                name: 'title'
+//            },
+//                {
+//                xtype: 'textfield',
+//                labelWidth: 130,
+//                maxWidth: 400,
+//                fieldLabel: 'Make',
+//                labelSeparator: '',
+//                name: 'type'
+//            },
+                {
                 xtype: 'textfield',
                 labelWidth: 130,
                 maxWidth: 400,
@@ -46,33 +49,35 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 labelSeparator: '*',
                 allowBlank: false,
                 name: 'plantId'
-            }, {
-                xtype: 'textfield',
-                labelWidth: 130,
-                maxWidth: 400,
-                fieldLabel: 'Project Name',
-                labelSeparator: '',
-                name: 'projectName'
-            }, {
-                xtype: 'textfield',
-                labelWidth: 130,
-                maxWidth: 400,
-                fieldLabel: 'Project Number',
-                labelSeparator: '',
-                name: 'projectNumber'
-            }, {
+            },
+//                {
+//                xtype: 'textfield',
+//                labelWidth: 130,
+//                maxWidth: 400,
+//                fieldLabel: 'Project Name',
+//                labelSeparator: '',
+//                name: 'projectName'
+//            }, {
+//                xtype: 'textfield',
+//                labelWidth: 130,
+//                maxWidth: 400,
+//                fieldLabel: 'Project Number',
+//                labelSeparator: '',
+//                name: 'projectNumber'
+//            },
+                {
                 xtype: 'fieldcontainer',
                 height: 32,
                 labelWidth: 130,
                 maxWidth: 400,
                 labelSeparator: '',
-                fieldLabel: 'Expiry Date',
+                fieldLabel: 'Registration Expiry',
                 items: [{
                     xtype: 'datefield',
                     name: 'expiryDate',
                     format: SafeStartExt.dateFormat
                 }],
-                cls: 'sfa-datepicker',
+                cls: 'sfa-datepicker'
             }, {
                 xtype: 'fieldcontainer',
                 height: 32,
@@ -182,54 +187,54 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     name: 'nextServiceDay'
                 }],
                 cls: 'sfa-datepicker'
-            }],
-            bbar: [{
-                xtype: 'container',
-                defaults: {
-                    xtype: 'button',
-                    margin: '4 8'
-                },
-                items: [{
-                    text: 'Delete',
-                    ui: 'red',
-                    name: 'delete',
-                    scale: 'medium',
-                    minWidth: 140,
-                    handler: function () {
-                        Ext.Msg.confirm({
-                            title: 'Confirmation',
-                            msg: 'Are you sure want to delete this vehicle?',
-                            buttons: Ext.Msg.YESNO,
-                            fn: function (btn) {
-                                if (btn !== 'yes') {
-                                    return;
-                                }
-                                me.fireEvent('deleteVehicleAction', me.getRecord());
-                            }
-                        });
-                    }
-                }, {
-                    text: 'Save',
-                    ui: 'blue',
-                    scale: 'medium',
-                    minWidth: 140,
-                    handler: function () {
-                        if (me.isValid()) {
-                            me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
-                        }
-                    }
-                }]
             }]
+//            bbar: [{
+//                xtype: 'container',
+//                defaults: {
+//                    xtype: 'button',
+//                    margin: '4 8'
+//                },
+//                items: [{
+//                    text: 'Delete',
+//                    ui: 'red',
+//                    name: 'delete',
+//                    scale: 'medium',
+//                    minWidth: 140,
+//                    handler: function () {
+//                        Ext.Msg.confirm({
+//                            title: 'Confirmation',
+//                            msg: 'Are you sure want to delete this vehicle?',
+//                            buttons: Ext.Msg.YESNO,
+//                            fn: function (btn) {
+//                                if (btn !== 'yes') {
+//                                    return;
+//                                }
+//                                me.fireEvent('deleteVehicleAction', me.getRecord());
+//                            }
+//                        });
+//                    }
+//                }, {
+//                    text: 'Save',
+//                    ui: 'blue',
+//                    scale: 'medium',
+//                    minWidth: 140,
+//                    handler: function () {
+//                        if (me.isValid()) {
+//                            me.fireEvent('updateVehicleAction', me.getRecord(), me.getValues());
+//                        }
+//                    }
+//                }]
+//            }]
         });
         this.callParent();
     },
 
     loadRecord: function (record) {
-        if (! record.get('id')) {
-            this.down('button[name=delete]').disable();
-        } else {
-            this.down('button[name=delete]').enable();
-        }
+//        if (! record.get('id')) {
+//            this.down('button[name=delete]').disable();
+//        } else {
+//            this.down('button[name=delete]').enable();
+//        }
         this.callParent(arguments);
         this.down('field[name=expiryDate]').setValue(Ext.Date.format(new Date(record.get('expiryDate') * 1000), SafeStartExt.dateFormat));
     }

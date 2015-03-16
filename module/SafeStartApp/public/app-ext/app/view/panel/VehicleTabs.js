@@ -1,13 +1,14 @@
 Ext.define('SafeStartExt.view.panel.VehicleTabs', {
     extend: 'Ext.container.Container',
     requires: [
-        'SafeStartExt.view.form.Vehicle',
+        'SafeStartExt.view.panel.VehicleFields',
         'SafeStartExt.view.panel.Inspections',
         'SafeStartExt.view.panel.VehicleAlerts',
         'SafeStartExt.view.panel.Inspection',
         'SafeStartExt.view.panel.ManageChecklist',
         'SafeStartExt.view.panel.VehicleUsers',
-        'SafeStartExt.view.panel.VehicleReports'
+        'SafeStartExt.view.panel.VehicleReports',
+        'SafeStartExt.view.panel.ManageVehicleField'
     ],
     xtype: 'SafeStartExtPanelVehicleTabs',
     border: 0,
@@ -81,7 +82,7 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
             };
             switch (tab.action) {
                 case 'info': 
-                    tab.xtype = 'SafeStartExtFormVehicle';
+                    tab.xtype = 'SafeStartExtPanelVehicleFields';
                     break;
                 case 'inspections':
                     tab.xtype = 'SafeStartExtPanelInspections';
@@ -97,6 +98,9 @@ Ext.define('SafeStartExt.view.panel.VehicleTabs', {
                     break;
                 case 'update-checklist':
                     tab.xtype = 'SafeStartExtPanelManageChecklist';
+                    break;
+                case 'update-field':
+                    tab.xtype = 'SafeStartExtPanelManageVehicleField';
                     break;
                 case 'users':
                     tab.xtype = 'SafeStartExtPanelVehicleUsers';

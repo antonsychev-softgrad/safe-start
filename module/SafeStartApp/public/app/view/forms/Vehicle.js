@@ -21,11 +21,11 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 required: true,
                 name: 'title'
             },
-            {
-                xtype: 'textfield',
-                label: 'Model',
-                name: 'type'
-            },
+//            {
+//                xtype: 'textfield',
+//                label: 'Model',
+//                name: 'type'
+//            },
             {
                 xtype: 'textfield',
                 label: 'Plant ID',
@@ -38,11 +38,11 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                 required: true,
                 name: 'registration'
             },*/
-            {
-                xtype: 'textfield',
-                label: 'Project Name',
-                name: 'projectName'
-            },
+//            {
+//                xtype: 'textfield',
+//                label: 'Project Name',
+//                name: 'projectName'
+//            },
            /* {
                 xtype: 'datepickerfield',
                 name: 'warrantyStartDate',
@@ -55,11 +55,11 @@ Ext.define('SafeStartApp.view.forms.Vehicle', {
                     yearTo: new Date().getFullYear() + 1
                 }
             },*/
-            {
-                xtype: 'textfield',
-                label: 'Project Number',
-                name: 'projectNumber'
-            },
+//            {
+//                xtype: 'textfield',
+//                label: 'Project Number',
+//                name: 'projectNumber'
+//            },
             {
                 xtype: 'togglefield',
                 name: 'enabled',

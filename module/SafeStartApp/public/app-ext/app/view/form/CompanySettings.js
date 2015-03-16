@@ -144,7 +144,7 @@ Ext.define('SafeStartExt.view.form.CompanySettings', {
                 }, {
                     xtype: 'textfield',
                     name: 'expiry_date_formatted',
-                    label: 'Expiry Date',
+                    label: 'Subscription Expiry',
                     getValue: function() {
                         return Ext.Date.format(new Date(this.getRawValue() * 1000), SafeStartExt.dateFormat);
                     }

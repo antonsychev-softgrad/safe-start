@@ -44,7 +44,7 @@ class DefaultAlert extends BaseEntity
     protected $check_list;
 
     /**
-     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="alerts")
+     * @ORM\ManyToOne(targetEntity="DefaultField", inversedBy="default_alerts")
      * @ORM\JoinColumn(name="default_field_id", referencedColumnName="id")
      **/
     protected $default_field;

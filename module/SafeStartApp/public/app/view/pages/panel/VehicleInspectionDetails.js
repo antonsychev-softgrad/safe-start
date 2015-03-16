@@ -70,8 +70,17 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             infoGroup.push(this.createContainer('Operator name', inspection.get('operator_name')));
         }
 
+
+        // fix miliseconds
+        var tempCreationDate = checklist.creationDate.date;
+        var re = new RegExp(/\.\d+$/gi);
+        var match = tempCreationDate.match(re);
+        if(match !== null) {
+            tempCreationDate = tempCreationDate.replace(re, '');
+        }
+
         var inspectionDate = Ext.Date.format(
-            Ext.Date.parse(checklist.creationDate.date, 'Y-m-d H:i:s'), 
+            Ext.Date.parse(tempCreationDate, 'Y-m-d H:i:s'),
             SafeStartApp.dateFormat + ' ' + SafeStartApp.timeFormat
         );
         infoGroup.push(this.createContainer('Date and Time', inspectionDate));
@@ -100,9 +109,20 @@ Ext.define('SafeStartApp.view.pages.panel.VehicleInspectionDetails', {
             this.createGroup(warningsGroup);
         }
 
-        var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
-        var odometerString = '';
+        //var serviceDueString = vehicle.get('serviceDueKm') + ' km '+ vehicle.get('serviceDueHours') + ' hours';
+        var serviceDueString = '';
+        if (inspection.get('serviceDueKm') > 0) {
+            serviceDueString += inspection.get('serviceDueKm') + ' km';
+        } else {
+            serviceDueString += vehicle.get('serviceDueKm') + ' km';
+        }
+        if (inspection.get('serviceDueHours') > 0) {
+            serviceDueString += ' ' + inspection.get('serviceDueHours') + ' hours';
+        }else {
+            serviceDueString += ' ' + vehicle.get('serviceDueHours') + ' hours';
+        }
 
+        var odometerString = '';
         if (inspection.get('odometerKms')) {
             odometerString += inspection.get('odometerKms') + ' km';
         }

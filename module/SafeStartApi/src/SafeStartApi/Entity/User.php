@@ -23,6 +23,10 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User extends BaseEntity
 {
+    const USER_ROLE = 'companyUser';
+    const MANAGER_ROLE = 'companyManager';
+    const ADMIN_ROLE = 'companyAdmin';
+
     /**
      * Constructor
      */

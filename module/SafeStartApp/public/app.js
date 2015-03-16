@@ -34,6 +34,7 @@ Ext.apply(SafeStartApp, {
     userModel: {},
     companyModel: {},
     mainMenuLoaded: false,
+    fnErrorCodes: [4006],
     AJAX: function (url, data, successCalBack, failureCalBack, silent) {
         var self = this;
         var meta = {
@@ -55,7 +56,11 @@ Ext.apply(SafeStartApp, {
                 if (result.meta && result.meta.status == 200 && !parseInt(result.meta.errorCode)) {
                     if (successCalBack && typeof successCalBack == 'function') successCalBack(result.data || {});
                 } else {
-                    self.showRequestFailureInfoMsg(result, failureCalBack);
+                    if (!self.useErrorFn(parseInt(result.meta.errorCode))) {
+                        self.showRequestFailureInfoMsg(result, failureCalBack);
+                    } else {
+                        self.processOtherFailure(result, failureCalBack);
+                    }
                 }
             },
             failure: function (response) {
@@ -63,6 +68,42 @@ Ext.apply(SafeStartApp, {
                 self.showRequestFailureInfoMsg(Ext.decode(response.responseText), failureCalBack);
             }
         });
+    },
+
+    useErrorFn: function(code) {
+        var use = (-1 != this.fnErrorCodes.indexOf(code)) ? true: false;
+        return use;
+    },
+
+    processOtherFailure: function(result, failureCalBack) {
+
+        var func = Ext.emptyFn();
+        if (failureCalBack && typeof failureCalBack == 'function') func = failureCalBack;
+
+        if (result.meta && result.meta.status == 200 && parseInt(result.meta.errorCode, 10)) {
+            var errorCode = result.meta.errorCode;
+            switch (errorCode) {
+                case 4006:
+                    Ext.Msg.show({
+                        title: 'You Have Reached Your Subscription Limit!',
+                        message: 'If you would like to add more vehicles to your Safe Start account please purchase additional vehicle subscriptions.',
+                        buttons: //Ext.MessageBox.YESNO,
+                            [
+                                {text: 'Buy Now', itemId: 'yes', ui: 'action'},
+                                {text: 'No Thanks', itemId: 'no'}
+                            ],
+                        fn: function (btn) {
+                            if (btn === 'yes') {
+                                window.open('http://safestartinspections.com/pricing/','_blank');
+                            }
+                            return;
+                        }
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
     },
 
     getHash: function (len, charSet) {

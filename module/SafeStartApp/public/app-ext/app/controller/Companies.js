@@ -64,9 +64,31 @@ Ext.define('SafeStartExt.controller.Companies', {
         this.getCompanyFormPanel().getForm().loadRecord(company);
 
         if (company.get('restricted')) {
-            this.getCompanyFormPanel().down('[name=subscription]').enable();
+            if (this.getCompanyFormPanel().down('[name=unlim_users]').getValue()) {
+                this.getCompanyFormPanel().down('[name=max_users]').disable();
+            } else {
+                this.getCompanyFormPanel().down('[name=max_users]').enable();
+            }
+            this.getCompanyFormPanel().down('[name=max_vehicles]').enable();
+//            this.getCompanyFormPanel().down('[name=subscription]').enable();
         } else {
-            this.getCompanyFormPanel().down('[name=subscription]').disable();
+//            this.getCompanyFormPanel().down('[name=subscription]').disable();
+            this.getCompanyFormPanel().down('[name=max_users]').disable();
+            this.getCompanyFormPanel().down('[name=max_vehicles]').disable();
+        }
+        if (company.get('unlim_expiry_date')) {
+            this.getCompanyFormPanel().down('[name=expiry_date]').disable();
+        } else {
+            this.getCompanyFormPanel().down('[name=expiry_date]').enable();
+        }
+        if (company.get('unlim_users')) {
+            this.getCompanyFormPanel().down('[name=max_users]').disable();
+        } else {
+            if (company.get('restricted')) {
+                this.getCompanyFormPanel().down('[name=max_users]').enable();
+            } else {
+                this.getCompanyFormPanel().down('[name=max_users]').disable();
+            }
         }
     },
 
@@ -106,7 +128,6 @@ Ext.define('SafeStartExt.controller.Companies', {
 
     updateCompany: function(company, values) {
         this._prepareFields(company, values);
-
         var me = this;
         SafeStartExt.Ajax.request({
             url: 'admin/company/' + values.id + '/update',
@@ -166,14 +187,20 @@ Ext.define('SafeStartExt.controller.Companies', {
         }
         if (values.expiry_date) {
             values.expiry_date = new Date(values.expiry_date).getTime() / 1000;
+        } else if(!values.expiry_date && company) {
+            values.expiry_date = company.get('expiry_date');
+        } else {
+            values.expiry_date = null;
         }
         
         values.restricted = (values.restricted === 'on') ? 1 : 0;
+        values.unlim_expiry_date = (values.unlim_expiry_date === 'on') ? 1 : 0;
+        values.unlim_users = (values.unlim_users === 'on') ? 1 : 0;
 
         if (!values.restricted && company) {
             values.max_users = company.get('max_users');
             values.max_vehicles = company.get('max_vehicles');
-            values.expiry_date = company.get('expiry_date');
+            //values.expiry_date = company.get('expiry_date');
         } else if (!values.restricted && !company) {
             values.max_users = null;
             values.max_vehicles = null;

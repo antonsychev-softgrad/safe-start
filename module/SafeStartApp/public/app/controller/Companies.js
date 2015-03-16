@@ -60,6 +60,7 @@ Ext.define('SafeStartApp.controller.Companies', {
         this.currentCompanyForm.setRecord(record);
         try {
             if (!record.get('restricted')) this.currentCompanyForm.down('fieldset').down('fieldset').disable();
+            if (!record.get('unlim_expiry_date')) this.currentCompanyForm.down('fieldset').down('[name=expiry_date]').enable();
             if (record.get('expiry_date')) this.currentCompanyForm.down('datepickerfield').setValue(new Date(record.get('expiry_date') * 1000));
             this.currentCompanyForm.down('button[name=delete-data]').show();
             this.currentCompanyForm.down('button[name=send-credentials]').show();

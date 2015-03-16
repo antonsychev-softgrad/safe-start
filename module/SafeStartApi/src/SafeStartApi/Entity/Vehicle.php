@@ -5,6 +5,7 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\Entity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use SafeStartApi\Entity\User;
+use SafeStartApi\Controller\Plugin\GetDataPlugin;
 
 /**
  * @ORM\Entity
@@ -203,7 +204,8 @@ class Vehicle extends BaseEntity
             "expiryDate" => $this->getExpiryDate(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
-            "lastInspectionDay" => $this->getLastInspectionDay()
+            "lastInspectionDay" => $this->getLastInspectionDay(),
+            "customFields" => $this->getCustomFields()
         );
     }
 
@@ -213,9 +215,9 @@ class Vehicle extends BaseEntity
     public function getNextServiceDay()
     {
         $date = '-';
-        if (count($this->checkLists) < 2) return $date;
+        $checkLists = $this->getCheckLists();
+        if (count($checkLists) < 2) return $date;
 
-        $checkLists = $this->checkLists->toArray();
         $firstCheckList = array_shift($checkLists);
         $lastKms = $firstCheckList->getCurrentOdometer();
         $lastHours = $firstCheckList->getCurrentOdometerHours();
@@ -261,14 +263,20 @@ class Vehicle extends BaseEntity
             $averageServiceDateByHours = 0;
         }
 
-        $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
+        if($averageServiceDateByKms && $averageServiceDateByHours) {
+            $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
+        } elseif($averageServiceDateByKms) {
+            $serviceDate = $averageServiceDateByKms;
+        } elseif($averageServiceDateByHours) {
+            $serviceDate = $averageServiceDateByHours;
+        } else {
+            $serviceDate = 0;
+        }
 
         if ($serviceDate !== 0) {
             $config = \SafeStartApi\Application::getConfig();
             $date = date($config['params']['date_format'], $serviceDate);
         }
-
-
 
         /* $averageKms = array();
          $averageHours = array();
@@ -350,7 +358,8 @@ class Vehicle extends BaseEntity
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
-            "lastInspectionDay" => $this->getLastInspectionDay()
+            "lastInspectionDay" => $this->getLastInspectionDay(),
+            "customFields" => $this->getCustomFields()
         );
     }
 
@@ -429,6 +438,12 @@ class Vehicle extends BaseEntity
                         'id' => $this->getId() . '-users',
                         'action' => 'users',
                         'text' => 'Manage Users',
+                        'leaf' => true,
+                    );
+                    $menuItems[] = array(
+                        'id' => $this->getId() . '-update-vehicleField',
+                        'action' => 'update-field',
+                        'text' => 'Manage Vehicle Fields',
                         'leaf' => true,
                     );
                     break;
@@ -1187,12 +1202,12 @@ class Vehicle extends BaseEntity
     /**
      * Add checklists
      *
-     * @param \SafeStartApi\Entity\CheckList $users
+     * @param \SafeStartApi\Entity\CheckList $checklist
      * @return Company
      */
-    public function addCheckList(\SafeStartApi\Entity\CheckList $users)
+    public function addCheckList(\SafeStartApi\Entity\CheckList $checklist)
     {
-        $this->checkLists[] = $users;
+        $this->checkLists[] = $checklist;
 
         return $this;
     }
@@ -1200,11 +1215,11 @@ class Vehicle extends BaseEntity
     /**
      * Remove checklists
      *
-     * @param \SafeStartApi\Entity\CheckList $users
+     * @param \SafeStartApi\Entity\CheckList $checklist
      */
-    public function removeCheckList(\SafeStartApi\Entity\CheckList $users)
+    public function removeCheckList(\SafeStartApi\Entity\CheckList $checklist)
     {
-        $this->checkLists->removeElement($users);
+        $this->checkLists->removeElement($checklist);
     }
 
     /**
@@ -1440,5 +1455,81 @@ class Vehicle extends BaseEntity
             $badge = $days. ' Days Since Last';
         }
         return $badge;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFields(){
+
+        $em = \SafeStartApi\Application::getEntityManager();
+        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\VehicleField al WHERE al.vehicle = ?1');
+        $query->setParameter(1, $this);
+
+        $items = $query->getResult();
+
+        $getFieldsIds = function($items) {
+            $fieldsIds = array();
+            foreach ($items as $item) {
+                if ($item->getParent() != null) {
+                    $fieldsIds[] = $item->getId();
+                }
+            }
+            return $fieldsIds;
+        };
+
+        $findParentKey = function($item, $fieldsIds) use (&$findParentKey) {
+            $parentId = $item->getParent() ? $item->getParent()->getId() : null;
+            if (!$parentId) return null;
+            return (in_array($parentId, $fieldsIds)) ? $parentId : $findParentKey($item->getParent(), $fieldsIds);
+        };
+
+        $fieldsIds = $getFieldsIds($items);
+
+        $fields = array();
+        foreach ($items as $item) {
+            $field = array();
+            if ($item->getParent() != null) {
+                $parentId = $item->getParent()->getId();
+                $field['id'] = $item->getId();
+                $field['title'] = $item->getTitle();
+                $field['type'] = $item->getType();
+                $field['default_value'] = $item->getDefaultValue();
+                if (in_array($parentId, $fieldsIds)) {
+                    $parentKey = $findParentKey($item, array_keys($fields));
+                    $fields[$parentKey]['data'][] = $field;
+                } else {
+                    $fields[$item->getId()] = $field;
+                }
+            }
+        }
+
+        $result = array();
+        foreach ($fields as $field) {
+            $row = array();
+            $row['id'] = $field['id'];
+            $row['title'] = $field['title'];
+            $row['type'] = $field['type'];
+            $row['default_value'] = $field['default_value'];
+            $result[] = $row;
+            if (isset($field['data'])) {
+                $result = array_merge($result, $field['data']);
+            }
+        }
+
+//        $fields = array();
+//
+//        foreach($items as $item){
+//            $field = array();
+//            if($item->getParent() != NULL){
+//                $field['id'] = $item->getId();
+//                $field['title'] = $item->getTitle();
+//                $field['type'] = $item->getType();
+//                $field['default_value'] = $item->getDefaultValue();
+//                $fields[] = $field;
+//            }
+//        }
+
+        return $result;
     }
 }

@@ -37,7 +37,7 @@ class CheckList extends BaseEntity
     protected $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vehicle")
+     * @ORM\ManyToOne(targetEntity="Vehicle", inversedBy="checkLists")
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      **/
     protected $vehicle;
@@ -76,6 +76,16 @@ class CheckList extends BaseEntity
      * @ORM\Column(type="string", nullable=true)
      */
     protected $current_odometer_hours;
+
+    /**
+     * @ORM\Column(type="string", name="current_service_due_kms", nullable=true)
+     */
+    protected $currentServiceDueKms;
+
+    /**
+     * @ORM\Column(type="string", name="current_service_due_hours", nullable=true)
+     */
+    protected $currentServiceDueHours;
 
     /**
      * @ORM\Column(type="json_array")
@@ -138,6 +148,7 @@ class CheckList extends BaseEntity
      * @ORM\Column(type="boolean")
      */
     protected $email_mode = 0;
+
 
     /**
      * Constructor
@@ -600,6 +611,8 @@ class CheckList extends BaseEntity
             'operator_name' => $this->getOperatorName(),
             'odometer_kms' => $this->getCurrentOdometer(),
             'odometer_hours' => $this->getCurrentOdometerHours(),
+            'serviceDueKm' => $this->getCurrentServiceDueKms(),
+            'serviceDueHours' => $this->getCurrentServiceDueHours(),
             'creation_date' => $this->getCreationDate()->getTimestamp(),
             'update_date' => $this->getUpdateDate()->getTimestamp(),
             'vehicle' => $this->getVehicle()->toInfoArray(),
@@ -748,5 +761,49 @@ class CheckList extends BaseEntity
         return $this;
     }
 
+    /**
+     * Set currentServiceDueKms
+     *
+     * @param string $currentServiceDueKms
+     * @return CheckList
+     */
+    public function setCurrentServiceDueKms($value)
+    {
+        $this->currentServiceDueKms = $value;
 
+        return $this;
+    }
+
+    /**
+     * Get currentServiceDueKms
+     *
+     * @return string
+     */
+    public function getCurrentServiceDueKms()
+    {
+        return $this->currentServiceDueKms ? $this->currentServiceDueKms : 0;
+    }
+
+    /**
+     * Set currentServiceDueHours
+     *
+     * @param string $currentServiceDueHours
+     * @return CheckList
+     */
+    public function setCurrentServiceDueHours($value)
+    {
+        $this->currentServiceDueHours = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get currentServiceDueHours
+     *
+     * @return string
+     */
+    public function getCurrentServiceDueHours()
+    {
+        return $this->currentServiceDueHours ? $this->currentServiceDueHours : 0;
+    }
 }

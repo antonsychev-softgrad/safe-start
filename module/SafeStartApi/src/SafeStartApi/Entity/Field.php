@@ -113,6 +113,12 @@ class Field extends BaseEntity
      */
     protected $author;
 
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Checklist")
+//     * @ORM\JoinColumn(name="checklist_id", referencedColumnName="id", unique=false, onDelete="SET NULL")
+//     */
+//    protected $checklist;
+
     /**
      * Constructor
      */
@@ -613,4 +619,27 @@ class Field extends BaseEntity
     {
         return $this->alert_critical;
     }
+
+//    /**
+//     * Set checklist
+//     *
+//     * @param \SafeStartApi\Entity\CheckList $checklist
+//     * @return Field
+//     */
+//    public function setChecklist(\SafeStartApi\Entity\CheckList $checklist = null)
+//    {
+//        $this->checklist = $checklist;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Get author
+//     *
+//     * @return \SafeStartApi\Entity\CheckList
+//     */
+//    public function getChecklist()
+//    {
+//        return $this->checklist;
+//    }
 }
