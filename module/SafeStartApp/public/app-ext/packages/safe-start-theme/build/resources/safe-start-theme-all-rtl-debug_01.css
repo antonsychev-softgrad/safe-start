@@ -3478,6 +3478,17 @@ body {
  * The sprite to use as the background-image for Tools
  */
 /**
+ * @class Ext.selection.CheckboxModel
+ */
+/**
+ * @var {number}
+ * The horizontal space before the checkbox
+ */
+/**
+ * @var {number}
+ * The horizontal space after the checkbox
+ */
+/**
  * @class Ext.slider.Multi
  */
 /**
@@ -3875,17 +3886,6 @@ body {
 /**
  * @var {boolean}
  * True to include the "default" tabbar UI
- */
-/**
- * @class Ext.selection.CheckboxModel
- */
-/**
- * @var {number}
- * The horizontal space before the checkbox
- */
-/**
- * @var {number}
- * The horizontal space after the checkbox
  */
 /**
  * @class Ext.tree.Panel
@@ -5345,6 +5345,18 @@ td.x-grid-rowwrap .x-grid-cell {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0; }
 
+/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/selection/CheckboxModel.scss */
+.x-column-header-checkbox .x-column-header-text {
+  display: block;
+  background-repeat: no-repeat;
+  font-size: 0; }
+
+/* line 7, ../../../../ext/packages/ext-theme-base/sass/src/selection/CheckboxModel.scss */
+.x-grid-cell-row-checker {
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  font-size: 0; }
+
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/slider/Multi.scss */
 .x-slider {
   outline: none;
@@ -5384,18 +5396,6 @@ a.x-tab {
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/tab/Bar.scss */
 .x-tab-bar {
   position: relative; }
-
-/* line 1, ../../../../ext/packages/ext-theme-base/sass/src/selection/CheckboxModel.scss */
-.x-column-header-checkbox .x-column-header-text {
-  display: block;
-  background-repeat: no-repeat;
-  font-size: 0; }
-
-/* line 7, ../../../../ext/packages/ext-theme-base/sass/src/selection/CheckboxModel.scss */
-.x-grid-cell-row-checker {
-  vertical-align: middle;
-  background-repeat: no-repeat;
-  font-size: 0; }
 
 /* line 1, ../../../../ext/packages/ext-theme-base/sass/src/tab/Panel.scss */
 .x-tab {
@@ -15622,6 +15622,32 @@ a.x-rtl .x-menu-item-text {
   background-position: top right;
   background-image: url(images/sizer/sw-handle.png); }
 
+/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
+.x-column-header-checkbox {
+  border-color: #f5f5f5; }
+
+/* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
+.x-grid-row-checker,
+.x-column-header-checkbox .x-column-header-text {
+  height: 15px;
+  width: 15px;
+  background-image: url(images/form/checkbox.png);
+  line-height: 15px; }
+
+/* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
+.x-column-header-checkbox .x-column-header-inner {
+  padding: 7px 4px 7px 4px; }
+
+/* line 19, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
+.x-grid-cell-row-checker .x-grid-cell-inner {
+  padding: 5px 4px 4px 4px; }
+
+/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
+.x-grid-hd-checker-on .x-column-header-text,
+.x-grid-row-selected .x-grid-row-checker,
+.x-grid-row-checked .x-grid-row-checker {
+  background-position: 0 -15px; }
+
 /* Horizontal styles */
 /* line 2, ../../../../ext/packages/ext-theme-neutral/sass/src/slider/Multi.scss */
 .x-slider-horz {
@@ -17402,32 +17428,6 @@ body.x-nbr .x-tab-default-right-frameInfo {
   border-width: 0;
   padding: 0;
   height: 36px; }
-
-/* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
-.x-column-header-checkbox {
-  border-color: #f5f5f5; }
-
-/* line 6, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
-.x-grid-row-checker,
-.x-column-header-checkbox .x-column-header-text {
-  height: 15px;
-  width: 15px;
-  background-image: url(images/form/checkbox.png);
-  line-height: 15px; }
-
-/* line 15, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
-.x-column-header-checkbox .x-column-header-inner {
-  padding: 7px 4px 7px 4px; }
-
-/* line 19, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
-.x-grid-cell-row-checker .x-grid-cell-inner {
-  padding: 5px 4px 4px 4px; }
-
-/* line 32, ../../../../ext/packages/ext-theme-neutral/sass/src/selection/CheckboxModel.scss */
-.x-grid-hd-checker-on .x-column-header-text,
-.x-grid-row-selected .x-grid-row-checker,
-.x-grid-row-checked .x-grid-row-checker {
-  background-position: 0 -15px; }
 
 /* line 1, ../../../../ext/packages/ext-theme-neutral/sass/src/tree/Panel.scss */
 .x-tree-expander {

@@ -76,7 +76,7 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
             node: !isBrowser && (typeof require === 'function'),
             phantom: (typeof phantom !== 'undefined' && phantom.fs)
         },
-        _tags = {},
+        _tags = (Ext.platformTags = {}),
 
     //<debug>
         _debug = function (message) {
@@ -151,8 +151,6 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
             Request: Request,
 
             Entry: Entry,
-
-            platformTags: _tags,
 
             /**
              * The defult function that detects various platforms and sets tags
@@ -251,7 +249,7 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
                     ios: (uaTags.iPad || uaTags.iPhone || uaTags.iPod),
                     android: uaTags.Android || uaTags.Silk,
                     blackberry: isBlackberry,
-                    safari: uaTags.Safari && isBlackberry,
+                    safari: uaTags.Safari && !isBlackberry,
                     chrome: uaTags.Chrome,
                     ie10: isIE10,
                     windows: isIE10 || uaTags.Trident,
@@ -305,19 +303,14 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
                 return platform;
             },
 
-            getPlatformTags: function () {
-                return Boot.platformTags;
-            },
-
             filterPlatform: function (platform) {
                 platform = [].concat(platform);
-                var tags = Boot.getPlatformTags(),
-                    len, p, tag;
+                var len, p, tag;
 
                 for (len = platform.length, p = 0; p < len; p++) {
                     tag = platform[p];
-                    if (tags.hasOwnProperty(tag)) {
-                        return !!tags[tag];
+                    if (_tags.hasOwnProperty(tag)) {
+                        return !!_tags[tag];
                     }
                 }
                 return false;
@@ -374,7 +367,7 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
                 origin = window.location.origin ||
                     window.location.protocol +
                     "//" +
-                    window.location.hostnaBoot +
+                    window.location.hostname +
                     (window.location.port ? ':' + window.location.port: '');
                 Boot.origin = origin;
 
@@ -820,7 +813,7 @@ Ext.Boot = Ext.Boot || (function (emptyFn) {
                 expanded;
 
             if (!me.expanded) {
-                expanded = this.expandUrls(urls);
+                expanded = this.expandUrls(urls, true);
                 me.expanded = true;
             } else {
                 expanded = urls;
@@ -1581,6 +1574,7 @@ Ext.Loader.addClassPathMappings({
   "Ext.EventObjectImpl": "../../ext/src/EventObject.js",
   "Ext.Msg": "../../ext/src/window/MessageBox.js",
   "Ext.Supports": "../../ext/src/Support.js",
+  "Ext.cmd": "../../../../../../../../../../../C:/Sencha/Cmd/5.1.2.52/plugins/src",
   "Ext.core.DomHelper": "../../ext/src/dom/Helper.js",
   "Ext.core.DomQuery": "../../ext/src/dom/Query.js",
   "Ext.rtl.EventObjectImpl": "../../ext/src/rtl/EventObject.js",

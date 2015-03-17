@@ -20,11 +20,10 @@ config/autoload/api.test.php
 module/SafeStartApp/public/lib
 module/SafeStartApp/public/build/SafeStartApp/production/deltas
 module/SafeStartApp/public/build/SafeStartApp/production/deltas/app.js
+module/SafeStartApp/public/build/temp
+module/SafeStartApp/public/app-ext/build/temp
 
 /module/SafeStartApp/public/resources/css/safe-start-09okt local.css
-
 /module/SafeStartApp/public/resources/css/safe-start-05sep.css
-
 /module/SafeStartApp/public/resources/css/app-28avg.css
-
 /module/SafeStartApp/public/resources/css/app-15avg.css
