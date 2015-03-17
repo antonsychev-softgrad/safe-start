@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "status": 200,
+    "errorCode": 0
+  },
+  "data": [
+    {
+      "ver": "v1",
+      "latest": false,
+      "url": "http://database.safestartinspections.com/"
+    },
+    {
+      "ver": "v2",
+      "latest": true,
+      "url": "http://safe-start.dev2.ocsico.com/"
+    }
+  ]
+}
