@@ -12,7 +12,6 @@
 composer.phar
 composer.lock
 vendor
-/data
 node_modules
 config/autoload/api.dev.php
 config/autoload/api.prod.php
