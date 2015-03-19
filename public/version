@@ -12,7 +12,7 @@
     {
       "ver": "v2",
       "latest": true,
-      "url": "http://safe-start.dev2.ocsico.com/"
+      "url": "http://database.safestartinspections.com:81/"
     }
   ]
 }
