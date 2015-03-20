@@ -32,10 +32,16 @@
                 case 'prod':
                     $VER = 1.009;
                     if (isMobile()) {
-                        $S3URL = 'https://s3-us-west-2.amazonaws.com/safe-start/sencha-touch/build/v1.0/';
-                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/app.css?ver='.$VER);
-                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/safe-start.css?ver='.$VER);
-                        $this->headScript()->appendFile($S3URL . 'app.js?ver='.$VER);
+//                        $S3URL = 'https://s3-us-west-2.amazonaws.com/safe-start/sencha-touch/build/v1.0/';
+//                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/app.css?ver='.$VER);
+//                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/safe-start.css?ver='.$VER);
+//                        $this->headScript()->appendFile($S3URL . 'app.js?ver='.$VER);
+                        
+                        $pathToApp = '/build/production/SafeStartApp';
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
+                        
                     } else {
                         $pathToApp = '/app-ext/build/production/SafeStartExt';
                         $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
