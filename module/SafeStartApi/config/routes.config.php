@@ -632,7 +632,17 @@ $routes = array(
                         'action' => 'sync',
                     ),
                 ),
-            )
+            ),
+            'version' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/version',
+                    'defaults' => array(
+                        'controller' => 'Index',
+                        'action' => 'version',
+                    ),
+                ),
+            ),
         ),
     ),
 );

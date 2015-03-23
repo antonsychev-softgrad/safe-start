@@ -28,6 +28,34 @@ class IndexController extends RestController
         return $this->AnswerPlugin()->format($this->answer);
     }
 
+    public function versionAction()
+    {
+        $content = @file_get_contents(dirname($_SERVER['SCRIPT_FILENAME']) . '/version');
+        if($content) {
+            $this->answer = json_decode($content, true);
+        } else {
+
+            $https = !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'on') === 0 ||
+                !empty($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+                strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
+            $url =
+                ($https ? 'https://' : 'http://').
+                (!empty($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'].'@' : '').
+                (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'].
+                    ($https && $_SERVER['SERVER_PORT'] === 443 ||
+                    $_SERVER['SERVER_PORT'] === 80 ? '' : ':'.$_SERVER['SERVER_PORT'])));
+
+            $this->answer = array(
+                array(
+                  'ver' => 'v1',
+                  'latest' => true,
+                  'url' => $url),
+            );
+        }
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
     public function sendPushAction()
     {
         $device = $this->params('device');

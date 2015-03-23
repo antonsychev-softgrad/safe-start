@@ -1,9 +1,4 @@
-{
-  "meta": {
-    "status": 200,
-    "errorCode": 0
-  },
-  "data": [
+[
     {
       "ver": "v1",
       "latest": false,
@@ -15,4 +10,3 @@
       "url": "http://database.safestartinspections.com:81/"
     }
   ]
-}
