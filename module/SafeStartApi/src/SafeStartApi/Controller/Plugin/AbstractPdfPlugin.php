@@ -79,7 +79,23 @@ class AbstractPdfPlugin extends AbstractPlugin
 //    }
     if ($vehicleData['customFields']) {
         foreach($vehicleData['customFields'] as $customField){
-            $data[$customField['title']] = $customField['default_value'];
+
+            if($customField['type'] === 'checkbox') {
+                switch($customField['default_value']) {
+                    case 'on':
+                        $default_value = 'yes';
+                        break;
+                    case 'off':
+                        $default_value = 'no';
+                        break;
+                    default:
+                        $default_value = $customField['default_value'];
+                        break;
+                }
+            } else {
+                $default_value = $customField['default_value'];
+            }
+            $data[$customField['title']] = $default_value;
         }
     }
 
