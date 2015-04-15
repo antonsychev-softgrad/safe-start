@@ -254,7 +254,7 @@ $api = array(
         ),
         'apple' => array(
             'key' => __DIR__ . '/CertApsProd.pem',
-            'password' => '',
+            'password' => 'XaD9NwXrCD',
         )
     ),
     'requestsLimit' => array(
