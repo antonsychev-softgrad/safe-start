@@ -190,15 +190,15 @@ class Vehicle extends BaseEntity
             'title' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
-            "serviceDueKm" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
-            "serviceDueHours" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
-            "serviceThresholdKm" => (!is_null($this->getServiceThresholdKm())) ? $this->getServiceThresholdKm() : 0,
-            "serviceThresholdHours" => (!is_null($this->getServiceThresholdHours())) ? $this->getServiceThresholdHours() : 0,
+            "serviceDueKm" => $this->getServiceDueKm(),
+            "serviceDueHours" => $this->getServiceDueHours(),
+            "serviceThresholdKm" => $this->getServiceThresholdKm(),
+            "serviceThresholdHours" => $this->getServiceThresholdHours(),
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "warrantyStartDate" => $this->getWarrantyStartDate(),
             "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
-            "currentOdometerKms" => (!is_null($this->getCurrentOdometerKms())) ? $this->getCurrentOdometerKms() : 0,
-            "currentOdometerHours" => (!is_null($this->getCurrentOdometerHours())) ? $this->getCurrentOdometerHours() : 0,
+            "currentOdometerKms" => $this->getCurrentOdometerKms(),
+            "currentOdometerHours" => $this->getCurrentOdometerHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
             "enabled" => $this->getEnabled(),
             "expiryDate" => $this->getExpiryDate(),
@@ -216,8 +216,9 @@ class Vehicle extends BaseEntity
     {
         $date = '-';
         $checkLists = $this->getCheckLists();
-        if (count($checkLists) < 2) return $date;
+        if (sizeof($checkLists) < 2) return $date;
 
+        /* second variant: * /
         $firstCheckList = array_shift($checkLists);
         $lastKms = $firstCheckList->getCurrentOdometer();
         $lastHours = $firstCheckList->getCurrentOdometerHours();
@@ -277,8 +278,10 @@ class Vehicle extends BaseEntity
             $config = \SafeStartApi\Application::getConfig();
             $date = date($config['params']['date_format'], $serviceDate);
         }
+        /* end second variant. */
 
-        /* $averageKms = array();
+        /* first variant: * /
+         $averageKms = array();
          $averageHours = array();
          $lastCheckListDate = $this->getCreationDate()->getTimestamp();
          $lastKm = 0;
@@ -313,7 +316,72 @@ class Vehicle extends BaseEntity
                  $config = \SafeStartApi\Application::getConfig();
                  $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
              }
-         }*/
+         }
+        /* end first variant. */
+
+
+        /* third variant: */
+        $firstCheckList = array_shift($checkLists);
+        $lastKms = $firstCheckList->getCurrentOdometer();
+        $lastHours = $firstCheckList->getCurrentOdometerHours();
+        $lastUpdateDate = $firstCheckList->getUpdateDate()->getTimestamp();
+
+        $serviceDaysByKms = array();
+        $serviceDaysByHours = array();
+
+        foreach($checkLists as $checkList) {
+
+            $curKms = $checkList->getCurrentOdometer();
+            $curHours = $checkList->getCurrentOdometerHours();
+            $curUpdateDate = $checkList->getUpdateDate()->getTimestamp();
+
+            $intervalKms = $curKms - $lastKms;
+            $intervalHours = $curHours - $lastHours;
+            $intervalUpdateDate = ($curUpdateDate - $lastUpdateDate);
+
+            if($intervalKms > 0 && $intervalUpdateDate) {
+                $serviceDaysByKms[] = $intervalKms / $intervalUpdateDate;
+            }
+
+            if($intervalHours > 0 && $intervalUpdateDate) {
+                $serviceDaysByHours[] = $intervalHours / $intervalUpdateDate;
+            }
+
+            $lastKms = $curKms;
+            $lastHours = $curHours;
+            $lastUpdateDate = $curUpdateDate;
+        }
+
+        if (count($serviceDaysByKms)) {
+            $averageServiceDateByKms = array_sum($serviceDaysByKms) / count($serviceDaysByKms);
+            $averageServiceDateByKms = round(($this->getServiceDueKm() - $this->getCurrentOdometerKms()) / $averageServiceDateByKms);
+        } else {
+            $averageServiceDateByKms = 0;
+        }
+        if (count($serviceDaysByHours)) {
+            $averageServiceDateByHours = array_sum($serviceDaysByHours) / count($serviceDaysByHours);
+            $averageServiceDateByHours = round(($this->getServiceDueHours() - $this->getCurrentOdometerHours()) / $averageServiceDateByHours);
+        } else {
+            $averageServiceDateByHours = 0;
+        }
+
+        if($averageServiceDateByKms > 0 && $averageServiceDateByHours > 0) {
+            $serviceDate = min($averageServiceDateByKms, $averageServiceDateByHours);
+        } elseif($averageServiceDateByKms > 0) {
+            $serviceDate = $averageServiceDateByKms;
+        } elseif($averageServiceDateByHours > 0) {
+            $serviceDate = $averageServiceDateByHours;
+        } else {
+            $serviceDate = 0;
+        }
+
+        if ($serviceDate !== 0) {
+            $currentDate = new \DateTime();
+            $currentDate->add(new \DateInterval(sprintf("PT%dS", (int) $serviceDate)));
+            $config = \SafeStartApi\Application::getConfig();
+            $date = date($config['params']['date_format'], $currentDate->getTimestamp());
+        }
+        /* end third variant. */
 
         return $date;
     }
@@ -346,15 +414,15 @@ class Vehicle extends BaseEntity
             'vehicleName' => (!is_null($this->getTitle())) ? $this->getTitle() : '',
             "projectName" => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
             "projectNumber" => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
-            "kmsUntilNext" => (!is_null($this->getServiceDueKm())) ? $this->getServiceDueKm() : 0,
-            "hoursUntilNext" => (!is_null($this->getServiceDueHours())) ? $this->getServiceDueHours() : 0,
+            "kmsUntilNext" => $this->getServiceDueKm(),
+            "hoursUntilNext" => $this->getServiceDueHours(),
             "plantId" => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
             "expiryDate" => $this->getExpiryDate(),
             "restricted" => $this->company->getRestricted(),
             "currentOdometerKms" => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
-            "serviceThresholdKm" => (!is_null($this->getServiceThresholdKm())) ? $this->getServiceThresholdKm() : 0,
-            "serviceThresholdHours" => (!is_null($this->getServiceThresholdHours())) ? $this->getServiceThresholdHours() : 0,
+            "serviceThresholdKm" => $this->getServiceThresholdKm(),
+            "serviceThresholdHours" => $this->getServiceThresholdHours(),
             "inspectionDueKms" => $this->getInspectionDueKms(),
             "inspectionDueHours" => $this->getInspectionDueHours(),
             "nextServiceDay" => $this->getNextServiceDay(),
@@ -910,7 +978,7 @@ class Vehicle extends BaseEntity
      */
     public function getServiceDueHours()
     {
-        return $this->serviceDueHours;
+        return (float) $this->serviceDueHours;
     }
 
     /**
@@ -933,7 +1001,7 @@ class Vehicle extends BaseEntity
      */
     public function getServiceDueKm()
     {
-        return $this->serviceDueKm;
+        return (float) $this->serviceDueKm;
     }
 
     /* --- */
@@ -957,7 +1025,7 @@ class Vehicle extends BaseEntity
      */
     public function getServiceThresholdHours()
     {
-        return $this->serviceThresholdHours;
+        return (float) $this->serviceThresholdHours;
     }
 
     /**
@@ -980,7 +1048,7 @@ class Vehicle extends BaseEntity
      */
     public function getServiceThresholdKm()
     {
-        return $this->serviceThresholdKm;
+        return (float) $this->serviceThresholdKm;
     }
 
     /**
