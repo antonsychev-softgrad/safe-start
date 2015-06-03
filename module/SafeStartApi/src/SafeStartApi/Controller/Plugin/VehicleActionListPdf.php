@@ -2,6 +2,7 @@
 
 use ZendPdf;
 use SafeStartApi\Model\ImageProcessor;
+use SafeStartApi\Entity\Alert;
 
 class VehicleActionListPdf extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
@@ -61,7 +62,7 @@ class VehicleActionListPdf extends \SafeStartApi\Controller\Plugin\AbstractPdfPl
         if ($days < 1) {
           $warnings[] = array(
             'action' => 'subscription_ending',
-            'text' => 'Your subscription has expired'
+            'text' => Alert::EXPIRY_DATE,
           );
         } else if ($days < 30) {
           $warnings[] = array(

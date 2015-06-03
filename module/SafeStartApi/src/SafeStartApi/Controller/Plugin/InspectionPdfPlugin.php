@@ -3,6 +3,7 @@
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use ZendPdf;
 use SafeStartApi\Model\ImageProcessor;
+use SafeStartApi\Entity\Alert;
 
 class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlugin
 {
@@ -189,7 +190,7 @@ class InspectionPdfPlugin extends \SafeStartApi\Controller\Plugin\AbstractPdfPlu
         if ($days < 1) {
           $warnings[] = array(
             'action' => 'subscription_ending',
-            'text' => 'Your subscription has expired'
+            'text' => Alert::EXPIRY_DATE,
           );
         } else if ($days < 30) {
           $warnings[] = array(

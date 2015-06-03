@@ -24,7 +24,7 @@ class Alert extends BaseEntity
     const ACTION_REFRESHED = 'alert_refreshed';
 
     //expiry date description and etc
-    const EXPIRY_DATE = 'Vehicle Registration has Expired';
+    const EXPIRY_DATE = 'Vehicle registration has expired';
     const DUE_SERVICE = 'Due For Service';
     const INACCURATE_KM_HR = 'Inaccurate Current Hours Or Kms';
 

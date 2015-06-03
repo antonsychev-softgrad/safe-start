@@ -4,6 +4,7 @@ namespace SafeStartApi\Controller;
 
 use SafeStartApi\Base\RestrictedAccessRestController;
 use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Entity\Alert;
 use SafeStartApi\Application;
 
 class VehicleController extends RestrictedAccessRestController
@@ -635,12 +636,12 @@ class VehicleController extends RestrictedAccessRestController
             if ($days < 1) {
               $warnings[] = array(
                 'action' => 'subscription_ending',
-                'text' => 'Your subscription has expired'
+                'text' => Alert::EXPIRY_DATE,
               );
             } else if ($days < 30) {
               $warnings[] = array(
                 'action' => 'subscription_ending',
-                'text' => 'Subscription Expires In ' . ceil($days) . ' Days',
+                'text' => sprintf('Vehicle registration expires in %d days', ceil($days)),
               );
             }
           }
