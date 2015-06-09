@@ -1,6 +1,10 @@
 <?php
 namespace SafeStartApi\Controller\Plugin;
 
+use SafeStartApi\Entity\CheckList;
+use SafeStartApi\Entity\Field;
+use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Entity\VehicleField;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class ProcessAdditionalVehiclePlugin extends AbstractPlugin
@@ -22,9 +26,28 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
     const DEFAULT_VEHICLE_FIELD_PROJECT_NAME = 'Project Name';
     const DEFAULT_VEHICLE_FIELD_PROJECT_NUMBER = 'Project Number';
 
+    public static $defaultFields = array(
+        array(
+            'type'  => 'text',
+            'title' => self::DEFAULT_VEHICLE_FIELD_MODEL
+        ),
+        array(
+            'type'  => 'text',
+            'title' => self::DEFAULT_VEHICLE_FIELD_MAKE
+        ),
+        array(
+            'type'  => 'text',
+            'title' => self::DEFAULT_VEHICLE_FIELD_PROJECT_NAME
+        ),
+        array(
+            'type'  => 'text',
+            'title' => self::DEFAULT_VEHICLE_FIELD_PROJECT_NUMBER
+        )
+    );
+
     private $ignoreChecklistFields = array('Plant ID','Type of trailer','Trailer Make','Registration expiry','Hours');
 
-    public function getVehiclePlantIdFromChecklist(\SafeStartApi\Entity\CheckList $checkList, $vehicleType) {
+    public function getVehiclePlantIdFromChecklist(CheckList $checkList, $vehicleType) {
          $vehicle = $checkList->getVehicle();
         $fieldsStructure = json_decode($checkList->getFieldsStructure());
         $fieldsData = json_decode($checkList->getFieldsData());
@@ -55,7 +78,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
         return $plantId;
     }
 
-    public function processVehicle($trailer, \SafeStartApi\Entity\CheckList $checkList, $alerts, $vehicleType) {
+    public function processVehicle($trailer, CheckList $checkList, $alerts, $vehicleType) {
         $vehicle = $checkList->getVehicle();
         $user = $checkList->getUser();
         $fieldsStructure = json_decode($checkList->getFieldsStructure());
@@ -101,7 +124,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
         $company = $vehicle->getCompany();
 
         if (! $trailer) {
-            $trailer = new \SafeStartApi\Entity\Vehicle();
+            $trailer = new Vehicle();
 
             $trailer->setCompany($vehicle->getCompany());
             $trailer->setPlantId($plantId);
@@ -146,7 +169,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
 //        $defFields = $repField->findBy(array('parent' => null, 'title' => self::TRAILER_CHECKLIST_NAME));
 
             foreach ($defFields as $defField) {
-                $newField = new \SafeStartApi\Entity\Field();
+                $newField = new Field();
                 $newField->setParent(null);
                 $newField->setVehicle($trailer);
                 $newField->setTitle($defField->getTitle());
@@ -171,7 +194,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
             $this->getController()->em->flush();
         }
 
-        $newCheckList = new \SafeStartApi\Entity\CheckList();
+        $newCheckList = new CheckList();
         $uniqId = uniqid();
         $newCheckList->setHash($uniqId);
         $newCheckList->setVehicle($trailer);
@@ -224,7 +247,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
         $this->checkDefaultCustomFields($trailer);
     }
 
-    public function processHiddenVehicle(\SafeStartApi\Entity\CheckList $checkList, $alerts, $vehicleType) {
+    public function processHiddenVehicle(CheckList $checkList, $alerts, $vehicleType) {
         $vehicle = $checkList->getVehicle();
         $user = $checkList->getUser();
         $fieldsStructure = json_decode($checkList->getFieldsStructure());
@@ -260,7 +283,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
 
         $company = $vehicle->getCompany();
 
-        $newCheckList = new \SafeStartApi\Entity\CheckList();
+        $newCheckList = new CheckList();
         $uniqId = uniqid();
         $newCheckList->setHash($uniqId);
         $newCheckList->setVehicle($vehicle);
@@ -456,7 +479,7 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
             if(in_array($defField->title,$this->ignoreChecklistFields)){
                 continue;
             }
-            $newField = new \SafeStartApi\Entity\Field();
+            $newField = new Field();
 
             $newField->setParent($parent);
             $newField->setVehicle($vehicle);
@@ -485,27 +508,29 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
         }
     }
 
-    public function checkDefaultCustomFields($vehicle)
+
+    public function checkDefaultCustomFields($vehicle, $fields = array())
     {
         $defaultsFieldsTrigger = false;
         if ($vehicle) {
-            $defaultFields = array(array('type' => 'text', 'title' => self::DEFAULT_VEHICLE_FIELD_MODEL), array('type' => 'text', 'title' => self::DEFAULT_VEHICLE_FIELD_MAKE), array('type' => 'text', 'title' => self::DEFAULT_VEHICLE_FIELD_PROJECT_NAME), array('type' => 'text', 'title' => self::DEFAULT_VEHICLE_FIELD_PROJECT_NUMBER));
-            $action = 'create';
-
-            $vehicleField = $this->getController()->em->getRepository('SafeStartApi\Entity\VehicleField')->findBy(array('vehicle' => $vehicle, 'title' => self::DEFAULT_VEHICLE_FIELDS));
+            $vehicleField = $this->getController()->em->getRepository('SafeStartApi\Entity\VehicleField')->findBy(array(
+                'vehicle' => $vehicle,
+                'title'   => self::DEFAULT_VEHICLE_FIELDS
+            ));
             if ($vehicleField) {
                 $defaultsFieldsTrigger = true;
             }
             if (!$defaultsFieldsTrigger) {
-                $parentField = new \SafeStartApi\Entity\VehicleField();
+                $parentField = new VehicleField();
                 $parentField->setTitle(self::DEFAULT_VEHICLE_FIELDS);
                 $parentField->setType('root');
                 $parentField->setVehicle($vehicle);
                 $this->getController()->em->persist($parentField);
 
-                if($parentField){
-                    foreach($defaultFields as $defaultField){
-                        $field = new \SafeStartApi\Entity\VehicleField();
+                if ($parentField) {
+
+                    $createField = function($defaultField = array(), $value = null) use ($parentField, $vehicle) {
+                        $field = new VehicleField();
                         $field->setParent($parentField);
 
                         $field->setTitle($defaultField['title']);
@@ -517,12 +542,23 @@ class ProcessAdditionalVehiclePlugin extends AbstractPlugin
                         $field->setEnabled(1);
                         $field->setAlertCritical(isset($this->data->alert_critical) ? (int)$this->data->alert_critical : 0);
                         $field->setVehicle($vehicle);
+                        $field->setDefaultValue($value);
 
                         $this->getController()->em->persist($field);
                         $user = $this->getController()->em->getRepository('SafeStartApi\Entity\User')->findById(1);
                         $field->setAuthor($user[0]);
                         $parentField->setAuthor($user[0]);
+                    };
 
+                    if(!empty($fields) && sizeof(self::$defaultFields) == sizeof($fields)) {
+                        foreach (array_values($fields) as $key => $value) {
+                            $defaultField = self::$defaultFields[$key];
+                            $createField($defaultField, $value);
+                        }
+                    } else {
+                        foreach (self::$defaultFields as $defaultField) {
+                            $createField($defaultField);
+                        }
                     }
                 }
                 $this->getController()->em->flush();

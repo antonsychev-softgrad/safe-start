@@ -88,6 +88,13 @@ Ext.define('SafeStartExt.controller.Company', {
 
     addVehicle: function () {
         var vehicle = SafeStartExt.model.MenuVehicle.create({});
+        vehicle.set('customFields', [
+            {id: 0, title: "Model", type: "text", default_value: null},
+            {id: 0, title: "Make", type: "text", default_value: null},
+            {id: 0, title: "Project Name", type: "text", default_value: null},
+            {id: 0, title: "Project Number", type: "text", default_value: null}
+        ]);
+
         vehicle.pages().add([{
             action: 'info',
             text: 'Current Information'

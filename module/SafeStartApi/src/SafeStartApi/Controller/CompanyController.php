@@ -140,140 +140,167 @@ class CompanyController extends RestrictedAccessRestController
   /**
    * @return mixed
    */
-  public function updateVehicleAction()
-  {
-    if (isset($this->data->companyId)) {
-      $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
-      if (!$company) {
-        $this->answer = array(
-          "errorMessage" => "Company not found."
-        );
-        return $this->AnswerPlugin()->format($this->answer, 404);
-      }
-    } else {
-      return $this->_showBadRequest();
-    }
+    public function updateVehicleAction()
+    {
+        if (isset($this->data->companyId)) {
+            $company = $this->em->find('SafeStartApi\Entity\Company', $this->data->companyId);
+            if (!$company) {
+                $this->answer = array(
+                    "errorMessage" => "Company not found."
+                );
 
-    $vehicleId = (int)$this->params('id');
-    //$user = \SafeStartApi\Application::getCurrentUser();
-    $plantId = strtoupper($this->data->plantId);
-    $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
-    if ($vehicleId) {
-      $vehicle = $repository->find($vehicleId);
-      if (!$vehicle) {
-        $this->answer = array(
-          "errorMessage" => "Vehicle not found."
-        );
-        return $this->AnswerPlugin()->format($this->answer, 404);
-      }
-      if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
-      if ($vehicle->getPlantId() != $plantId) {
-        $vehicleWithSentPlantId = $repository->findOneBy(array(
-          'plantId' => $plantId,
-          'deleted' => 0,
-        ));
-        if (!is_null($vehicleWithSentPlantId)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
-      }
-    } else {
-      $vehicle = $repository->findOneBy(array(
-        'plantId' => $plantId,
-        'deleted' => 0,
-      ));
-      if (!is_null($vehicle)) return $this->_showKeyExists('Vehicle with this Plant ID already exists');
-      if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
-      if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) return $this->_showCompanyLimitReached('Company limit of vehicles reached');
-      $vehicle = new \SafeStartApi\Entity\Vehicle();
-      //$vehicle->addResponsibleUser($user);
-      $this->copyVehicleDefFields($vehicle);
-
-        //set User role for vehicle users
-        $users = $company->getUsers();
-        foreach ($users as $user) {
-            if ($user->getRole() === User::ADMIN_ROLE) continue;
-            $vehicle->addUser($user);
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+        } else {
+            return $this->_showBadRequest();
         }
-    }
-    $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
-    $curDate = new \DateTime();
-    $vehicle->setCompany($company);
-    $vehicle->setPlantId($plantId);
-//    $vehicle->setTitle($this->data->title);
-//    $vehicle->setType($this->data->type);
-    $vehicle->setEnabled((int)$this->data->enabled);
-//    $vehicle->setProjectName($this->data->projectName);
-//    $vehicle->setProjectNumber($this->data->projectNumber);
-    $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);
-    $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
-    $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
-    $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
-    if (isset($this->data->expiryDate) && !empty($this->data->expiryDate)) {
-      $expiryDate = new \DateTime();
-      $expiryDate->setTimestamp($this->data->expiryDate);
-      $vehicle->setExpiryDate($expiryDate);
-      //update expiry date's alert if exist
-      $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::EXPIRY_DATE, 'vehicle' => $vehicle->getId(), 'status' => \SafeStartApi\Entity\Alert::STATUS_NEW));
-      if ($alert && ((($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 0)) {
-        $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
-        $this->em->remove($alert);
-      }
-      //end
-    }
-    $vehicle->setCurrentOdometerHours(isset($this->data->currentOdometerHours) ? (float)$this->data->currentOdometerHours : 0);
-    $vehicle->setCurrentOdometerKms(isset($this->data->currentOdometerKms) ? (float)$this->data->currentOdometerKms : 0);
-    $vehicle->setInspectionDueKms(isset($this->data->inspectionDueKms) ? (int)$this->data->inspectionDueKms : 0);
-    $vehicle->setInspectionDueHours(isset($this->data->inspectionDueHours) ? (int)$this->data->inspectionDueHours : 0);
-    if (isset($this->data->warrantyStartOdometer)) $vehicle->setWarrantyStartOdometer($this->data->warrantyStartOdometer);
-    if (isset($this->data->warrantyStartDate)) {
-      $warrantyStartDate = new \DateTime();
-      $warrantyStartDate->setTimestamp((int)$this->data->warrantyStartDate);
-      $vehicle->setWarrantyStartDate($warrantyStartDate);
-    }
 
-    if(isset($this->data->customFields)){
-        $customFields = (array) $this->data->customFields;
-        foreach($customFields as $key=>$customField){
-            $field = $this->em->find('SafeStartApi\Entity\VehicleField', $key);
-            if($field){
-                $field->setDefaultValue($customField);
-                $this->em->persist($field);
+        $vehicleId = (int)$this->params('id');
+        //$user = \SafeStartApi\Application::getCurrentUser();
+        $plantId    = strtoupper($this->data->plantId);
+        $repository = $this->em->getRepository('SafeStartApi\Entity\Vehicle');
+        if ($vehicleId) {
+            $vehicle = $repository->find($vehicleId);
+            if (!$vehicle) {
+                $this->answer = array(
+                    "errorMessage" => "Vehicle not found."
+                );
+
+                return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+            if (!$vehicle->haveAccess($this->authService->getStorage()->read()))
+                return $this->_showUnauthorisedRequest();
+            if ($vehicle->getPlantId() != $plantId) {
+                $vehicleWithSentPlantId = $repository->findOneBy(array(
+                    'plantId' => $plantId,
+                    'deleted' => 0,
+                ));
+                if (!is_null($vehicleWithSentPlantId))
+                    return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            }
+        } else {
+            $vehicle = $repository->findOneBy(array(
+                'plantId' => $plantId,
+                'deleted' => 0,
+            ));
+            if (!is_null($vehicle)) {
+                return $this->_showKeyExists('Vehicle with this Plant ID already exists');
+            }
+            if (!$company->haveAccess($this->authService->getStorage()->read())) {
+                return $this->_showUnauthorisedRequest();
+            }
+            if ($company->getRestricted() && ((count($company->getVehicles()) + 1) > $company->getMaxVehicles())) {
+                return $this->_showCompanyLimitReached('Company limit of vehicles reached');
+            }
+            $vehicle = new \SafeStartApi\Entity\Vehicle();
+            //$vehicle->addResponsibleUser($user);
+            $this->copyVehicleDefFields($vehicle);
+
+            //set User role for vehicle users
+            $users = $company->getUsers();
+            foreach ($users as $user) {
+                if ($user->getRole() === User::ADMIN_ROLE) {
+                    continue;
+                }
+                $vehicle->addUser($user);
             }
         }
+        $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
+        $curDate  = new \DateTime();
+        $vehicle->setCompany($company);
+        $vehicle->setPlantId($plantId);
+        //    $vehicle->setTitle($this->data->title);
+        //    $vehicle->setType($this->data->type);
+        $vehicle->setEnabled((int)$this->data->enabled);
+        //    $vehicle->setProjectName($this->data->projectName);
+        //    $vehicle->setProjectNumber($this->data->projectNumber);
+        $vehicle->setServiceDueKm((int)$this->data->serviceDueKm);
+        $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
+        $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
+        $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
+        if (isset($this->data->expiryDate) && !empty($this->data->expiryDate)) {
+            $expiryDate = new \DateTime();
+            $expiryDate->setTimestamp($this->data->expiryDate);
+            $vehicle->setExpiryDate($expiryDate);
+            //update expiry date's alert if exist
+            $alert = $alertRep->findOneBy(array(
+                'description' => \SafeStartApi\Entity\Alert::EXPIRY_DATE,
+                'vehicle'     => $vehicle->getId(),
+                'status'      => \SafeStartApi\Entity\Alert::STATUS_NEW
+            ));
+            if ($alert && ((($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 0)) {
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->remove($alert);
+            }
+            //end
+        }
+        $vehicle->setCurrentOdometerHours(isset($this->data->currentOdometerHours) ? (float)$this->data->currentOdometerHours : 0);
+        $vehicle->setCurrentOdometerKms(isset($this->data->currentOdometerKms) ? (float)$this->data->currentOdometerKms : 0);
+        $vehicle->setInspectionDueKms(isset($this->data->inspectionDueKms) ? (int)$this->data->inspectionDueKms : 0);
+        $vehicle->setInspectionDueHours(isset($this->data->inspectionDueHours) ? (int)$this->data->inspectionDueHours : 0);
+        if (isset($this->data->warrantyStartOdometer))
+            $vehicle->setWarrantyStartOdometer($this->data->warrantyStartOdometer);
+        if (isset($this->data->warrantyStartDate)) {
+            $warrantyStartDate = new \DateTime();
+            $warrantyStartDate->setTimestamp((int)$this->data->warrantyStartDate);
+            $vehicle->setWarrantyStartDate($warrantyStartDate);
+        }
+
+        if (count($vehicle->checkLists) > 2) {
+            $serviceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
+            $alert       = $alertRep->findOneBy(array(
+                'description' => \SafeStartApi\Entity\Alert::DUE_SERVICE,
+                'vehicle'     => $vehicle->getId(),
+                'status'      => \SafeStartApi\Entity\Alert::STATUS_NEW
+            ));
+            if ($alert && ((($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 1)) {
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->remove($alert);
+            }
+        }
+        if (($vehicle->getCurrentOdometerKms() < $vehicle->getServiceDueKm()) && ($vehicle->getCurrentOdometerHours() < $vehicle->getServiceDueHours())) {
+            $alert = $alertRep->findOneBy(array(
+                'description' => \SafeStartApi\Entity\Alert::INACCURATE_KM_HR,
+                'vehicle'     => $vehicle->getId(),
+                'status'      => \SafeStartApi\Entity\Alert::STATUS_NEW
+            ));
+            if ($alert) {
+                $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
+                $this->em->remove($alert);
+            }
+        }
+
+        if (isset($this->data->customFields)) {
+            $customFields = (array)$this->data->customFields;
+            foreach ($customFields as $key => $customField) {
+                $field = $this->em->find('SafeStartApi\Entity\VehicleField', $key);
+                if ($field) {
+                    $field->setDefaultValue($customField);
+                    $this->em->persist($field);
+                }
+            }
+        } else {
+            $customFields = array();
+        }
+
+        $this->em->persist($vehicle);
+        $this->em->flush();
+
+        $vehiclePlugin = $this->processAdditionalVehiclePlugin();
+        $vehiclePlugin->checkDefaultCustomFields($vehicle, $customFields);
+
+        $cache   = \SafeStartApi\Application::getCache();
+        $cashKey = "getCompanyVehicles" . $company->getId();
+        if ($cache->hasItem($cashKey))
+            $cache->removeItem($cashKey);
+
+        $this->answer = array(
+            'done'      => true,
+            'vehicleId' => $vehicle->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
     }
-
-    if (count($vehicle->checkLists) > 2) {
-      $serviceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
-      $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::DUE_SERVICE, 'vehicle' => $vehicle->getId(), 'status' => \SafeStartApi\Entity\Alert::STATUS_NEW));
-      if ($alert && ((($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24)) > 1)) {
-        $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
-        $this->em->remove($alert);
-      }
-    }
-    if (($vehicle->getCurrentOdometerKms() < $vehicle->getServiceDueKm()) && ($vehicle->getCurrentOdometerHours() < $vehicle->getServiceDueHours())) {
-      $alert = $alertRep->findOneBy(array('description' => \SafeStartApi\Entity\Alert::INACCURATE_KM_HR, 'vehicle' => $vehicle->getId(), 'status' => \SafeStartApi\Entity\Alert::STATUS_NEW));
-      if ($alert) {
-        $alert->setStatus(\SafeStartApi\Entity\Alert::STATUS_CLOSED);
-        $this->em->remove($alert);
-      }
-    }
-
-    $this->em->persist($vehicle);
-
-    $this->em->flush();
-
-    $vehiclePlugin = $this->processAdditionalVehiclePlugin();
-    $vehiclePlugin->checkDefaultCustomFields($vehicle);
-
-    $cache = \SafeStartApi\Application::getCache();
-    $cashKey = "getCompanyVehicles" . $company->getId();
-    if ($cache->hasItem($cashKey)) $cache->removeItem($cashKey);
-
-    $this->answer = array(
-      'done' => true,
-      'vehicleId' => $vehicle->getId(),
-    );
-
-    return $this->AnswerPlugin()->format($this->answer);
-  }
 
   /**
    * @return mixed
