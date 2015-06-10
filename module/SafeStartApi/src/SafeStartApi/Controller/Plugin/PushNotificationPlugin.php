@@ -2,21 +2,20 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use ZendService\Google\Gcm\Client as GoogleGcmClient;
-use ZendService\Google\Gcm\Message as GoogleGcmMessage;
-use ZendService\Google\Exception\RuntimeException as GoogleGcmRuntimeException;
-
 use ZendService\Apple\Apns\Client\Message as AppleApnsClient;
 use ZendService\Apple\Apns\Message as AppleApnsMessage;
-use ZendService\Apple\Apns\Message\Alert as AppleApnsMessageAlert;
 use ZendService\Apple\Apns\Response\Message as AppleApnsResponse;
-use ZendService\Apple\Apns\Exception\RuntimeException as AppleApnsRuntimeException;
-use SafeStartApi\Entity\Vehicle;
+use ZendService\Apple\Exception\RuntimeException as AppleApnsRuntimeException;
+use ZendService\Google\Exception\RuntimeException as GoogleGcmRuntimeException;
+use ZendService\Google\Gcm\Client as GoogleGcmClient;
+use ZendService\Google\Gcm\Message as GoogleGcmMessage;
 
 class PushNotificationPlugin extends AbstractPlugin
 {
     private $googleClient = null;
     private $appleClient = null;
+
+    const PUSH_TOKEN_LENGTH = 64;
 
     public function pushNotification($ids, $msg = '', $badge = 0, $device = 'android')
     {
@@ -65,7 +64,10 @@ class PushNotificationPlugin extends AbstractPlugin
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
-        $this->appleClient->open(AppleApnsClient::SANDBOX_URI, $config['externalApi']['apple']['key'], $config['externalApi']['apple']['password']);
+        $this->appleClient->open(
+            AppleApnsClient::SANDBOX_URI,
+            $config['externalApi']['apple']['key'],
+            $config['externalApi']['apple']['password']);
         $logger = $this->getController()->getServiceLocator()->get('PushLogger');
         $logger->debug("\n\n\n============ iOS Push Notification ==================\n");
         if (!$this->appleClient) {
@@ -76,7 +78,9 @@ class PushNotificationPlugin extends AbstractPlugin
         $done = 0;
 
         foreach ((array)$ids as $id) {
-            if (empty($id)) continue;
+            if (empty($id) || strlen($id) != self::PUSH_TOKEN_LENGTH) {
+                continue;
+            }
             $done += $this->_ios($id, $msg, $badge);
         }
 
@@ -89,7 +93,7 @@ class PushNotificationPlugin extends AbstractPlugin
     private function _ios($token, $msg = '', $badge = 0)
     {
         $logger = $this->getController()->getServiceLocator()->get('PushLogger');
-        $message = new AppleApnsMessage();
+        $message = new CustomApnsMessage();
         $message->setId('safe-start-app');
         $message->setToken($token);
         $message->setBadge($badge);
@@ -97,7 +101,7 @@ class PushNotificationPlugin extends AbstractPlugin
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
-        } catch (\Exception $e) {
+        } catch (AppleApnsRuntimeException $e) {
             $logger->debug("Exception: " . $e->getMessage());
             return false;
         }
