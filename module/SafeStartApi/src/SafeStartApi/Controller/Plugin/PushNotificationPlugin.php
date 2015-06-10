@@ -65,7 +65,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
         $this->appleClient->open(
-            AppleApnsClient::SANDBOX_URI,
+            APP_ENV == 'prod' ? AppleApnsClient::PRODUCTION_URI : AppleApnsClient::SANDBOX_URI,
             $config['externalApi']['apple']['key'],
             $config['externalApi']['apple']['password']);
         $logger = $this->getController()->getServiceLocator()->get('PushLogger');
@@ -98,6 +98,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setToken($token);
         $message->setBadge($badge);
         $message->setAlert($msg);
+        $message->setSilentPushFlag(true);
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);
