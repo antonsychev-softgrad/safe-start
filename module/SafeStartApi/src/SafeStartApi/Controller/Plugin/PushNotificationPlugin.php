@@ -22,7 +22,7 @@ class PushNotificationPlugin extends AbstractPlugin
         if ($device == 'android') {
             $this->android($ids, $msg, $badge);
         } else {
-            $this->ios($ids, $msg, $badge);
+            $this->ios($ids, $msg);
         }
     }
 
@@ -60,7 +60,7 @@ class PushNotificationPlugin extends AbstractPlugin
         }
     }
 
-    public function ios($ids, $msg = '', $badge = 0)
+    public function ios($ids, $msg = '', $badge = 1)
     {
         $this->appleClient = new AppleApnsClient();
         $config = $this->getController()->getServiceLocator()->get('Config');
@@ -79,6 +79,7 @@ class PushNotificationPlugin extends AbstractPlugin
 
         foreach ((array)$ids as $id) {
             if (empty($id) || strlen($id) != self::PUSH_TOKEN_LENGTH) {
+                $logger->debug("Error: the token provided was not of the proper size");
                 continue;
             }
             $done += $this->_ios($id, $msg, $badge);
@@ -98,7 +99,7 @@ class PushNotificationPlugin extends AbstractPlugin
         $message->setToken($token);
         $message->setBadge($badge);
         $message->setAlert($msg);
-        $message->setSilentPushFlag(true);
+        $message->setSilentPushFlag(false);
         try {
             $logger->debug("Device Token: " . $token);
             $response = $this->appleClient->send($message);

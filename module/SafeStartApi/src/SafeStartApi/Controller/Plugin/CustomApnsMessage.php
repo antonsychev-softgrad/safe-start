@@ -4,6 +4,7 @@
 namespace SafeStartApi\Controller\Plugin;
 
 use ZendService\Apple\Apns\Message as AppleApnsMessage;
+use Zend\Json\Encoder as JsonEncoder;
 
 class CustomApnsMessage extends AppleApnsMessage
 {
@@ -43,11 +44,11 @@ class CustomApnsMessage extends AppleApnsMessage
         $length = strlen($payload);
 
         $frame =
-                pack("CnH*", 1, 32, $this->token).//token
-                pack("CnA*", 2, $length, $payload).//payload
-                pack("CnA*", 3, 32, $this->id).//push id
-                pack("CnH*", 4, 32, $this->expire).//expire
-                pack("CnH*", 5, 8, 10);//priority
+            pack("CnH*", 1, 32, $this->token).//token
+            pack("CnA*", 2, $length, $payload).//payload
+            pack("CnA*", 3, 4, substr((string)$this->id, 0, 4)).//push id
+            pack("CnN", 4, 4, $this->expire).//expire
+            pack("CnC", 5, 1, 10);//priority
         $frameSize = strlen($frame);
         return pack("CN", 2, $frameSize).$frame;
     }
