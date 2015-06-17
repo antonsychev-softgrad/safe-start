@@ -187,8 +187,6 @@ class Vehicle extends BaseEntity
             "plantId"              => $this->getPlantId(),
             'type'                 => $this->getType(),
             'title'                => $this->getTitle(),
-            "projectName"          => $this->getProjectName(),
-            "projectNumber"        => $this->getProjectNumber(),
         );
 
         $customFields = $this->getCustomFields();
@@ -197,13 +195,9 @@ class Vehicle extends BaseEntity
         }
 
         $exports = array_merge($exports, array(
-            "serviceDueKm"         => $this->getServiceDueKm(),
+            "expiryDate"           => date($config['params']['date_format'], $this->getExpiryDate()),
             "currentOdometerKms"   => $this->getCurrentOdometerKms(),
             "currentOdometerHours" => $this->getCurrentOdometerHours(),
-            "nextServiceDay"       => $this->getNextServiceDay(),
-            "enabled"              => $this->getEnabled() ? 'true' : 'false',
-            "expiryDate"           => date($config['params']['date_format'], $this->getExpiryDate()),
-            "lastInspectionDay"    => date($config['params']['date_format'], $this->getLastInspectionDay()),
         ));
 
         return $exports;
@@ -321,27 +315,30 @@ class Vehicle extends BaseEntity
         });
 
         $vehicleData = array_merge($vehicleData, array(
-            "km's" => $kms,
-            "hours" => $hours
+            "km's in selected period" => $kms,
+            "hours in selected period" => $hours
         ));
 
         $header = array_map(function($key) use ($humanize) {
             return $humanize($key);
         }, array_keys($vehicleData));
-        $results[] = array_merge(array('Vehicle'), $header);
-        array_unshift($vehicleData, '');
-        $results[] = $vehicleData;
+        $results[] = array_merge($header, array('Alerts'));
 
         $alerts = $this->getAlertsByPeriod($from, $to, true);
         if(sizeof($alerts)){
-            $header = array_map(function($key) use ($humanize) {
-                return $humanize($key);
-            }, array_keys($alerts[0]));
-            $results[] = array_merge(array('Alerts'), $header);
+            $i = 0;
+            $size = sizeof($vehicleData) + 1;
             foreach($alerts as $alert) {
-                array_unshift($alert, '');
-                $results[] = $alert;
+                if($i++ == 0) {
+                    $vehicleData[] = reset($alert);
+                    $results[] = $vehicleData;
+                } else {
+                    $alert = array_pad($alert, -$size, '');
+                    $results[] = $alert;
+                }
             }
+        } else {
+            $results[] = $vehicleData;
         }
 
         return $results;

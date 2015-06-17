@@ -340,19 +340,18 @@ class Alert extends BaseEntity
 
     public function toExportArray()
     {
-        $config = \SafeStartApi\Application::getConfig();
-
-        $comments = $this->getComments();
-        $comments = array_map(function($item) {
-            return $item['update_date'] . ": " . preg_replace("/\s+/s", ' ', $item['content']);
-        }, $comments);
+//        $config = \SafeStartApi\Application::getConfig();
+//        $comments = $this->getComments();
+//        $comments = array_map(function($item) {
+//            return $item['update_date'] . ": " . preg_replace("/\s+/s", ' ', $item['content']);
+//        }, $comments);
 
         $data = array(
             'title' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
-            'status' => $this->getStatus(),
-            'creation_date' => date($config['params']['date_format'], $this->getCreationDate()->getTimestamp()),
-            'update_date' => date($config['params']['date_format'], $this->getUpdateDate()->getTimestamp()),
-            'comments' => implode("\r\n", $comments),
+//            'status' => $this->getStatus(),
+//            'creation_date' => date($config['params']['date_format'], $this->getCreationDate()->getTimestamp()),
+//            'update_date' => date($config['params']['date_format'], $this->getUpdateDate()->getTimestamp()),
+//            'comments' => implode("\r\n", $comments),
         );
         return $data;
     }
