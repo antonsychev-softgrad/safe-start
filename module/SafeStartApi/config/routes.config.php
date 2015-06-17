@@ -160,6 +160,21 @@ $routes = array(
                     ),
                 ),
             ),
+            'export-vehicle-data' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/export/:from/:to[/]',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                        'from' => '[0-9]*',
+                        'to' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'export'
+                    ),
+                ),
+            ),
             'print-vehicle-action-list' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -401,6 +416,21 @@ $routes = array(
                     'defaults' => array(
                         'controller' => 'Company',
                         'action' => 'deleteVehicle',
+                    ),
+                ),
+            ),
+            'export-company-vehicles' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/company/:id/export/:from/:to[/]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                        'from' => '[0-9]+',
+                        'to' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'export-vehicles'
                     ),
                 ),
             ),

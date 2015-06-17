@@ -37,6 +37,7 @@ Ext.define('SafeStartExt.controller.Companies', {
                 updateCompanyAction: this.updateCompany,
                 deleteCompanyAction: this.deleteCompany,
                 manageCompanyAction: this.manageCompany,
+                exportCompanyAction: this.exportCompany,
                 sendPasswordAction: this.sendPassword
             },
             'SafeStartExtComponentCompanies': {
@@ -155,6 +156,88 @@ Ext.define('SafeStartExt.controller.Companies', {
 
     manageCompany: function(company) {
         this.getMainPanel().fireEvent('changeTab', 'Company');
+    },
+
+    exportCompany: function (company) {
+        var win = Ext.widget('window', {
+            title: 'Export Vehicle List',
+            closeAction: 'hide',
+            layout: 'fit',
+            resizable: false,
+            modal: true,
+            items: Ext.create('Ext.form.Panel', {
+                width: 350,
+                border: false,
+                bodyBorder: false,
+                fieldDefaults: {
+                    labelWidth: 75,
+                    msgTarget: 'side'
+                },
+                defaults: {
+                    margins: '0 0 10 0'
+                },
+                layout: {
+                    type: 'vbox',
+                    align: 'stretch'
+                },
+                buttonAlign: 'center',
+                bodyPadding: 10,
+                items: [{
+                    xtype: 'fieldcontainer',
+                    fieldLabel: 'Select start and end dates for a report',
+                    maxWidth: 400,
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    labelAlign: 'top',
+                    items: [{
+                        xtype: 'datefield',
+                        name: 'from',
+                        fieldLabel: 'From',
+                        dateFormat: SafeStartExt.dateFormat,
+                        cls: 'sfa-datepicker',
+                        value: new Date(),
+                        allowBlank: false
+                    }, {
+                        xtype: 'datefield',
+                        name: 'to',
+                        fieldLabel: 'To',
+                        dateFormat: SafeStartExt.dateFormat,
+                        cls: 'sfa-datepicker',
+                        value: new Date(),
+                        allowBlank: false
+                    }]
+                }],
+                buttons: [{
+                    text: 'Cancel',
+                    handler: function () {
+                        //this.up('form').getForm().reset();
+                        this.up('window').hide();
+                    }
+                }, {
+                    name: 'print',
+                    text: 'Export',
+                    handler: function () {
+                        if (this.up('form').getForm().isValid()) {
+                            var form = this.up('form').getForm();
+                            var from = Math.round(form.findField('from').getValue().getTime() / 1000);
+                            var to = Math.round(form.findField('to').getValue().getTime() / 1000);
+                            var url = '/api/company/' + company.getId() + '/export/' +
+                                from + '/' + to;
+
+                            this.up('window').hide();
+
+                            window.open(url, '_blank');
+                        }
+                    }
+                }]
+            })
+        });
+
+        win.show();
     },
 
     sendPassword: function(company) {

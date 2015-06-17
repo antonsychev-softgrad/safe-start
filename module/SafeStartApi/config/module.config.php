@@ -205,6 +205,7 @@ $general = array(
             'queues' => 'SafeStartApi\Controller\Plugin\QueuePlugin',
             'pushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
             'processChecklistPlugin' => 'SafeStartApi\Controller\Plugin\ProcessChecklistPlugin',
+            'ExportToCsvPlugin'=> 'SafeStartApi\Controller\Plugin\ExportToCsvPlugin',
         )
     ),
     'session' => array(

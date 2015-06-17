@@ -95,6 +95,15 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
                             xtype: 'button',
                             ui: 'blue',
                             scale: 'medium',
+                            name: 'export-data',
+                            text: 'Export',
+                            handler: function() {
+                                this.up('SafeStartExtPanelVehicleReports').exportData();
+                            }
+                        }, {
+                            xtype: 'button',
+                            ui: 'blue',
+                            scale: 'medium',
                             name: 'send-action-list',
                             text: 'Send Action List',
                             handler: function() {
@@ -499,6 +508,15 @@ Ext.define('SafeStartExt.view.panel.VehicleReports', {
 
     printActionList: function() {
         window.open('/api/vehicle/' + this.vehicle.get('id') + '/print-action-list/vehicle_action_list_' + this.vehicle.get('id') + '.pdf', '_blank');
+    },
+
+    exportData: function() {
+        var from = Math.round(this.down('datefield[name=from]').getValue().getTime() / 1000);
+        var to = Math.round(this.down('datefield[name=to]').getValue().getTime() / 1000);
+        var url = '/api/vehicle/' + this.vehicle.get('id') + '/export/' +
+            from + '/' + to;
+
+        window.open(url, '_blank');
     },
 
     sendActionList: function() {

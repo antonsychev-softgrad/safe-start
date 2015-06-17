@@ -342,6 +342,34 @@ class CompanyController extends RestrictedAccessRestController
     return $this->AnswerPlugin()->format($this->answer);
   }
 
+    public function exportVehiclesAction() {
+
+        $companyId = (int)$this->params('id', 0);
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+        if (!$company)
+            return $this->_showNotFound("Company not found.");
+
+        $from = new \DateTime();
+        $from->setTimestamp((int)$this->params('from', 0));
+
+        $to = new \DateTime();
+        $to->setTimestamp((int)$this->params('to', 0));
+
+        $results = array();
+        $vehicles = $company->getVehicles();
+        if(sizeof($vehicles)) {
+            foreach($vehicles as $vehicle) {
+                // php 5.6 not supported for a server :(
+                $vehicleData = $vehicle->getExportData($from, $to);
+                $results = array_merge($results, $vehicleData);
+                $results[] = array('');
+                $results[] = array('');
+            }
+        }
+
+        return $this->ExportToCsvPlugin()->export($results);
+    }
+
   /**
    * @return mixed
    */

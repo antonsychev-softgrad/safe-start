@@ -249,6 +249,16 @@ Ext.define('SafeStartExt.view.form.Company', {
                     }
                 }, {
                     xtype: 'button',
+                    text: 'Export',
+                    ui: 'blue',
+                    name: 'export-data',
+                    scale: 'medium',
+                    minWidth: 140,
+                    handler: function() {
+                        me.fireEvent('exportCompanyAction', me.getRecord());
+                    }
+                },{
+                    xtype: 'button',
                     text: 'Save',
                     ui: 'blue',
                     name: 'save-data',

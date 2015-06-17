@@ -915,6 +915,29 @@ class VehicleController extends RestrictedAccessRestController
     return true;
   }
 
+    public function exportAction()
+    {
+        $vehicleId = (int)$this->params('id');
+
+        $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+        if (!$vehicle)
+            return $this->_showNotFound("Vehicle not found.");
+        if (!$vehicle->haveAccess($this->authService->getStorage()->read()))
+            return $this->_showUnauthorisedRequest();
+
+        $from = new \DateTime();
+        $from->setTimestamp((int)$this->params('from', 0));
+
+        $to = new \DateTime();
+        $to->setTimestamp((int)$this->params('to', 0));
+
+        $vehicleData = $vehicle->getExportData($from, $to);
+        $vehicleData[] = array('');
+        $vehicleData[] = array('');
+
+        return $this->ExportToCsvPlugin()->export($vehicleData);
+    }
+
   public function verifyPrintActionListAction()
   {
     $vehicles = array();
