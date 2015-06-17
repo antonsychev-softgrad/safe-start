@@ -278,6 +278,8 @@ class Vehicle extends BaseEntity
 
     public function getExportData($from, $to) {
 
+        $to->modify('+1 day');
+
         $humanize = function($world) {
             return ucfirst(preg_replace('~(?<=\\w)([A-Z])|[_-]+~', ' $1', $world));
         };
