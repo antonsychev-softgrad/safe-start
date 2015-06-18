@@ -61,10 +61,27 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                 itemSelector: 'div.sfa-vehicle-item',
                 tpl: new Ext.XTemplate(
                     '<tpl for=".">',
-                    '<div class=sfa-vehicle-item>',
+                    '<div class="sfa-vehicle-item sfa-inspection-icon {[this.getState(values.lastInspectionDay)]}">',
                     '{text}',
                     '</div>',
-                    '</tpl>'
+                    '</tpl>',
+                    {
+                        getState: function(timestamp) {
+                            var current = new Date(timestamp * 1000);
+                            var today = new Date();
+                                today.setHours(0, 0, 0, 0);
+                            var week = new Date();
+                                week.setDate(today.getDate() - 7);
+                            var cls = "sfa-inspection-";
+                            if(current > today)
+                                cls += 'success';
+                            else if(today >= current && current > week)
+                                cls += 'warning';
+                            else
+                                cls += 'error';
+                            return cls;
+                        }
+                    }
                 ),
                 store: store,
                 listeners: {

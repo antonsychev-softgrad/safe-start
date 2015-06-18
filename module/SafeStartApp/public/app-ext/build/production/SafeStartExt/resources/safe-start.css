@@ -1318,7 +1318,22 @@ font-size: 24px;
 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item {
     border-bottom: 1px solid #DEDEDE;
     border-top: 1px solid #fff;
-    padding: 12px 15px 12px 18px;
+    padding: 12px 15px 12px 32px;
+}
+
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.sfa-inspection-icon {
+    background-repeat: no-repeat;
+    background-position: 8% center;
+    background-size: 8px;
+}
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.sfa-inspection-success {
+    background-image: url(img/sfa-inspection-success.png);
+}
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.sfa-inspection-warning {
+    background-image: url(img/sfa-inspection-warning.png);
+}
+.sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item.sfa-inspection-error {
+    background-image: url(img/sfa-inspection-error.png);
 }
 
 .sfa-left-coll .x-fit-item.x-component .sfa-vehicle-item:first-child {
