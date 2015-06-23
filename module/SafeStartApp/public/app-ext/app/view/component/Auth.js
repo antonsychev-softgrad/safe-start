@@ -38,11 +38,11 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     margin: '0 0 20 0',
                     width: '100%'
                 },
-                autoEl: {
-                    tag: 'form',
-                    method: 'post',
-                    action: ''
-                },
+                //autoEl: {
+                //    tag: 'form',
+                //    method: 'post',
+                //    action: ''
+                //},
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Sign In',
@@ -55,18 +55,16 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     handler: function (btn) {
                         var form = btn.up('form');
                         if (form.getForm().isValid()) {
-
-                            form.url = SafeStartExt.Ajax.baseHref + 'user/login';
-                            form.submit({
-                                success: function(f, a) {},
-                                failure: function(f, a) {}
-                            });
-
+                            //form.url = SafeStartExt.Ajax.baseHref + 'user/login';
+                            //form.submit({
+                            //    success: function(f, a) {},
+                            //    failure: function(f, a) {}
+                            //});
                             form.up('SafeStartExtComponentAuth').fireEvent('loginAction', form.getForm().getValues());
                         }
                     },
                     scope: this
-                }, {
+                }/*, {
                     xtype: 'checkboxfield',
                     name: 'remember',
                     boxLabel: 'Remember Me',
@@ -76,7 +74,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     checked: false,
                     boxLabelAlign: 'before',
                     cls: 'sfa-auth-field-remember'
-                }],
+                }*/],
                 items: [{
                     xtype: 'textfield',
                     height: 56,

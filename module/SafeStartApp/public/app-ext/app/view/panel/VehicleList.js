@@ -13,6 +13,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
 
     initComponent: function () {
         var store = SafeStartExt.store.MenuVehicles.create({});
+        var searchFields = ['plantId', 'title', 'type', 'customFields'];
 
         Ext.apply(this, {
             tbar: {
@@ -40,7 +41,27 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                             change: function (textfield, value) {
                                 store.clearFilter();
                                 if (value) {
-                                    store.filter('title', value);
+                                    var filters = [
+                                        new Ext.util.Filter({
+                                            filterFn: function (item) {
+                                                var regex = new RegExp(value, 'ig');
+                                                var match = false;
+                                                Ext.Object.each(item.data, function (property, value) {
+                                                    if(searchFields.indexOf(property) > -1) {
+                                                        if(property === 'customFields' && Array.isArray(value)) {
+                                                            Ext.Array.each(value, function(o){
+                                                                match = match || regex.test(String(o.default_value));
+                                                            });
+                                                        } else {
+                                                            match = match || regex.test(String(value));
+                                                        }
+                                                    }
+                                                });
+                                                return match;
+                                            }
+                                        })
+                                    ];
+                                    store.filter(filters);
                                 }
                             }
                         }
