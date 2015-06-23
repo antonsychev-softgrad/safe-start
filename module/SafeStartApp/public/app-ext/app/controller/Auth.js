@@ -56,12 +56,13 @@ Ext.define('SafeStartExt.controller.Auth', {
             url: 'user/login',
             data: data,
             success: function() {
-                viewport.fireEvent('reloadMainMenu');
-                viewport.down('SafeStartExtMain').on('mainMenuLoaded', function() {
-                    Ext.History.setHash('');
-                }, this, {
-                    single: true
-                });
+                //viewport.fireEvent('reloadMainMenu');
+                //viewport.down('SafeStartExtMain').on('mainMenuLoaded', function() {
+                //    Ext.History.setHash('');
+                //}, this, {
+                //    single: true
+                //});
+                window.location.reload(true);
             }
         });
     },

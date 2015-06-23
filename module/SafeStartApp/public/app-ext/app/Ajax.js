@@ -86,27 +86,37 @@ Ext.define('SafeStartExt.Ajax', {
     },
 
     processOtherFailure: function(result, callback) {
-        if (result.meta && result.meta.status == 200 && parseInt(result.meta.errorCode, 10)) {
-            var errorCode = result.meta.errorCode;
-            switch (errorCode) {
-                case 4006:
-                    Ext.Msg.show({
-                        title:'You Have Reached Your Subscription Limit!',
-                        msg: 'If you would like to add more vehicles to your Safe Start account please purchase additional vehicle subscriptions.',
-                        buttons: Ext.Msg.YESNO,
-                        buttonText:{
-                            yes: 'Buy Now',
-                            no: 'No Thanks'
-                        },
-                        fn: function(btn) {
-                            if(btn === 'yes') {
-                                window.open('http://safestartinspections.com/pricing/','_blank');
+        if (result.meta && parseInt(result.meta.errorCode, 10)) {
+            var errorCode = result.meta.errorCode || result.meta.status;
+            if(result.meta.status == 200) {
+                switch (errorCode) {
+                    case 4006:
+                        Ext.Msg.show({
+                            title:'You Have Reached Your Subscription Limit!',
+                            msg: 'If you would like to add more vehicles to your Safe Start account please purchase additional vehicle subscriptions.',
+                            buttons: Ext.Msg.YESNO,
+                            buttonText:{
+                                yes: 'Buy Now',
+                                no: 'No Thanks'
+                            },
+                            fn: function(btn) {
+                                if(btn === 'yes') {
+                                    window.open('http://safestartinspections.com/pricing/','_blank');
+                                }
                             }
-                        }
-                    });
-                    break;
-                default:
-                    break;
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                switch (errorCode) {
+                    case 401:
+                        window.location.reload(true);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     },

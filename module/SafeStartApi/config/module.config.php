@@ -209,20 +209,25 @@ $general = array(
         )
     ),
     'session' => array(
-        'config' => array(
-            'class' => 'Zend\Session\Config\SessionConfig',
+        'config'     => array(
+            'class'   => 'Zend\Session\Config\SessionConfig',
             'options' => array(
-                'name' => 'SafeStartApi',
-                'remember_me_seconds' => 3600,
-              //  'cookie_lifetime' => 3600,
-               // 'use_cookies' => true,
-                'save_path' => __DIR__ . '/../../../data/sessions',
+                'name'             => 'SafeStartApi',
+                'save_path'        => __DIR__ . '/../../../data/sessions',
+
+                'use_cookies'      => true,
+                'use_only_cookies' => true,
+                'cookie_lifetime'  => 0,
+                'gc_probability'   => 1,
+                'gc_divisor'       => 1, // gc_probability / gc_divisor = 1 => 100%
+                'gc_maxlifetime'   => 1440,
+                'use_trans_sid'    => false,
             ),
         ),
-        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
         'validators' => array(
-            'Zend\Session\Validator\RemoteAddr'/*,
-            'Zend\Session\Validator\HttpUserAgent',*/
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
         ),
     ),
 );

@@ -23,7 +23,7 @@
                         $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
                     } else {
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/bootstrap.css');
-                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css');
+                        //$this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css'); // file not found
                         $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/ext/ext-all.js');
                         $this->headScript()->appendFile($this->basePath() . '/app-ext/app.js');

@@ -797,7 +797,19 @@ overflow-x: hidden !important;
 .x-ie8p .sfa-form-contact .x-panel-form input.x-form-field.x-form-text{
     height: 40px !important;
 }
-
+.sfa-form-auth .x-panel-form .sfa-auth-field-remember {
+    right: 0 !important;
+    left: auto !important;
+}
+.sfa-form-auth .x-panel-form .sfa-auth-field-remember .x-form-cb-label {
+    font-size: inherit;
+}
+.sfa-form-auth .x-panel-form .sfa-auth-field-remember .x-form-field.x-form-checkbox {
+    border: none;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
+}
 .sfa-form-auth > div.x-box-inner > div.x-box-target > .x-panel-form > .x-toolbar-footer {
     padding-left: 0;
 }

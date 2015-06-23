@@ -38,25 +38,51 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     margin: '0 0 20 0',
                     width: '100%'
                 },
+                autoEl: {
+                    tag: 'form',
+                    method: 'post',
+                    action: ''
+                },
                 buttonAlign: 'left',
                 buttons: [{
                     text: 'Sign In',
                     ui: 'green',
                     scale: 'medium',
                     name: 'sign-in',
+                    xtype: 'button',
+                    type: 'submit',
+                    preventDefault: false,
                     handler: function (btn) {
                         var form = btn.up('form');
                         if (form.getForm().isValid()) {
+
+                            form.url = SafeStartExt.Ajax.baseHref + 'user/login';
+                            form.submit({
+                                success: function(f, a) {},
+                                failure: function(f, a) {}
+                            });
+
                             form.up('SafeStartExtComponentAuth').fireEvent('loginAction', form.getForm().getValues());
                         }
                     },
                     scope: this
+                }, {
+                    xtype: 'checkboxfield',
+                    name: 'remember',
+                    boxLabel: 'Remember Me',
+                    id: 'remember',
+                    inputValue: '1',
+                    uncheckedValue: '0',
+                    checked: false,
+                    boxLabelAlign: 'before',
+                    cls: 'sfa-auth-field-remember'
                 }],
                 items: [{
                     xtype: 'textfield',
                     height: 56,
                     labelAlign: 'top',
                     name: 'username',
+                    inputId: 'username',
                     allowBlank: false,
                     fieldLabel: 'Username',
                     enableKeyEvents: true,
@@ -66,6 +92,11 @@ Ext.define('SafeStartExt.view.component.Auth', {
                             if (eventObject.getKey() == Ext.EventObject.ENTER) {
                                 btn.handler(btn);
                             }
+                        },
+                        afterrender:function(cmp){
+                            cmp.inputEl.set({
+                                autocomplete:'on'
+                            });
                         }
                     }
                 }, {
@@ -74,6 +105,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     height: 56,
                     labelAlign: 'top',
                     name: 'password',
+                    inputId: 'password',
                     allowBlank: false,
                     fieldLabel: 'Password',
                     enableKeyEvents: true,
@@ -83,6 +115,11 @@ Ext.define('SafeStartExt.view.component.Auth', {
                             if (eventObject.getKey() == Ext.EventObject.ENTER) {
                                 btn.handler(btn);
                             }
+                        },
+                        afterrender:function(cmp){
+                            cmp.inputEl.set({
+                                autocomplete:'on'
+                            });
                         }
                     }
                 }, {
