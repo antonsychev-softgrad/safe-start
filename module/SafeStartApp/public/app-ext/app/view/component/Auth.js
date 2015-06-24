@@ -64,7 +64,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
                         }
                     },
                     scope: this
-                }/*, {
+                }, {
                     xtype: 'checkboxfield',
                     name: 'remember',
                     boxLabel: 'Remember Me',
@@ -74,7 +74,7 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     checked: false,
                     boxLabelAlign: 'before',
                     cls: 'sfa-auth-field-remember'
-                }*/],
+                }],
                 items: [{
                     xtype: 'textfield',
                     height: 56,
