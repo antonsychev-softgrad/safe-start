@@ -38,29 +38,52 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     margin: '0 0 20 0',
                     width: '100%'
                 },
-                //autoEl: {
-                //    tag: 'form',
-                //    method: 'post',
-                //    action: ''
-                //},
+                autoEl: {
+                    tag: 'form',
+                    method: 'post',
+                    action: ''
+                },
                 buttonAlign: 'left',
-                buttons: [{
+                buttons: [/*{ // add hidden input[type=submit] only for fucking IE, but this not working too with ExtJS fireEvent('click') or other functionality
+                    xtype: 'component',
+                    name: 'submit-btn',
+                    autoEl: {
+                        tag: 'input',
+                        type: 'submit',
+                        value: 'Submit',
+                        style: 'display:none'
+                    },
+                    listeners: {
+                        afterrender: function(component) {
+                            component.mon(component.el, 'click', function(){
+                            }, this);
+                        },
+                        single: true
+                    }
+                }, */{
                     text: 'Sign In',
                     ui: 'green',
                     scale: 'medium',
                     name: 'sign-in',
                     xtype: 'button',
-                    type: 'submit',
-                    preventDefault: false,
+                    preventDefault: true,
                     handler: function (btn) {
                         var form = btn.up('form');
                         if (form.getForm().isValid()) {
-                            //form.url = SafeStartExt.Ajax.baseHref + 'user/login';
-                            //form.submit({
-                            //    success: function(f, a) {},
-                            //    failure: function(f, a) {}
-                            //});
                             form.up('SafeStartExtComponentAuth').fireEvent('loginAction', form.getForm().getValues());
+                        } else {
+                            return false;
+                        }
+                    },
+                    listeners: {
+                        beforeRender: function(cmp){
+                            Ext.apply(cmp.autoEl, {
+                                tag: 'button',
+                                role: 'button',
+                                hidefocus: 'on',
+                                unselectable: 'on',
+                                type: 'submit'
+                            });
                         }
                     },
                     scope: this
@@ -129,8 +152,8 @@ Ext.define('SafeStartExt.view.component.Auth', {
                         html: 'Forgot password?' 
                     },
                     listeners: {
-                        render: function(c){
-                            c.getEl().on({
+                        render: function(container){
+                            container.getEl().on({
                                 click: function() {
                                     me.showForgotPasswordDialog();
                                 }
