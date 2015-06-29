@@ -121,7 +121,7 @@ class VehicleController extends RestrictedAccessRestController
 //    if ($cache->hasItem($cashKey) && !$inspection) {
 //      $checklist = $cache->getItem($cashKey);
 //    } else {
-      $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1');
+      $query = $this->em->createQuery('SELECT f FROM SafeStartApi\Entity\Field f WHERE f.deleted = 0 AND f.enabled = 1 AND f.vehicle = ?1 ORDER BY f.order ASC');
       $query->setParameter(1, $vehicle);
       $items = $query->getResult();
       $checklist = $this->GetDataPlugin()->buildChecklist($items, $inspection);

@@ -117,6 +117,7 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
                         name: 'save-field',
                         handler: function (btn) {
                             this.onSaveField(btn.up('form'));
+                            this.onRefresh(true);
                         },
                         scope: this
                     }]
@@ -293,12 +294,14 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
         this.down('treepanel').getSelectionModel().select([field]);
     },
 
-    onRefresh: function () {
+    onRefresh: function (silent) {
         var store = this.down('treepanel').getStore();
-        this.setLoading(true, true);
+        if(silent !== true)
+            this.setLoading(true, true);
 
         store.on('load', function () {
-            this.setLoading(false);
+            if(silent !== true)
+                this.setLoading(false);
             if (this.activeRecord) {
                 this.down('treepanel').getSelectionModel().deselect(this.activeRecord);
             }

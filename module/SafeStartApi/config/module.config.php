@@ -219,7 +219,7 @@ $general = array(
                 'use_only_cookies' => true,
                 'cookie_lifetime'  => 0,
                 'gc_probability'   => 1,
-                'gc_divisor'       => 1, // gc_probability / gc_divisor = 1 => 100%
+                'gc_divisor'       => 1000, // gc_probability / gc_divisor = 1 => 100%
                 'gc_maxlifetime'   => 1440,
                 'use_trans_sid'    => false,
             ),

@@ -99,6 +99,7 @@ class UserController extends RestController
                     $this->em->flush();
 
                     if(isset($this->data->remember) && $this->data->remember) {
+                        $this->sessionManager->getConfig()->setRememberMeSeconds(self::REMEMBER_ME_SECONDS);
                         $this->sessionManager->rememberMe(self::REMEMBER_ME_SECONDS);
                     } else {
                         $this->sessionManager->forgetMe();

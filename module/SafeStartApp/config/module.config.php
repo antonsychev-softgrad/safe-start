@@ -92,9 +92,14 @@ return array(
             'class' => 'Zend\Session\Config\SessionConfig',
             'options' => array(
                 'name' => 'SafeStartApi',
-                'remember_me_seconds' => 3600,
-                  'use_cookies' => true,
-                'save_path' =>  __DIR__ . '/../../../data/sessions',
+                'save_path'        => __DIR__ . '/../../../data/sessions',
+                'use_cookies'      => true,
+                'use_only_cookies' => true,
+                'cookie_lifetime'  => 0,
+                'gc_probability'   => 1,
+                'gc_divisor'       => 1000, // gc_probability / gc_divisor = 1 => 100%
+                'gc_maxlifetime'   => 1440,
+                'use_trans_sid'    => false,
             ),
         ),
         'storage' => 'Zend\Session\Storage\SessionArrayStorage',
