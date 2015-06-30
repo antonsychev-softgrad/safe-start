@@ -90,7 +90,61 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     name: 'enabled',
                     inputValue: true
                 }]
-            }, {
+            },
+
+
+                {
+                    xtype: 'fieldcontainer',
+                    name: 'usage-value',
+                    fieldLabel: 'Check inspections by:',
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    padding: '1 0 0 0',
+                    labelAlign: 'top',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    maxWidth: 400,
+                    height: 110,
+                    allowBlank: false,
+                    msgTarget: 'side',
+                    autoFitErrors: false,
+                    hidden: true,
+                    fieldDefaults: {
+                        labelWidth: 130,
+                        labelSeparator: '',
+                        inputValue: true,
+                        uncheckedValue: false
+                    },
+                    items: [{
+                        xtype: 'checkboxfield',
+                        name: 'useKms',
+                        fieldLabel: 'Km\'s',
+                        handler: function () {
+                            if (this.checked) {
+                                this.up('form').down('[name=useHours]').setValue(false);
+                            } else {
+                                this.up('form').down('[name=useHours]').setValue(true);
+                            }
+                        }
+                    }, {
+                        xtype: 'checkboxfield',
+                        name: 'useHours',
+                        fieldLabel: 'Hours',
+                        handler: function () {
+                            if (this.checked) {
+                                this.up('form').down('[name=useKms]').setValue(false);
+                            } else {
+                                this.up('form').down('[name=useKms]').setValue(true);
+                            }
+                        }
+                    }]
+                },
+
+
+
+            {
                 xtype: 'fieldcontainer',
                 height: 110,
                 fieldLabel: 'Next service due',
@@ -104,6 +158,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                 labelAlign: 'top',
                 items: [{
                     xtype: 'container',
+                    name: 'service-due-hours',
                     layout: 'hbox',
                     padding: '0 0 5 0',
                     items: [{
@@ -126,6 +181,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     }]
                 }, {
                     xtype: 'container',
+                    name: 'service-due-kms',
                     layout: 'hbox',
                     items: [{
                         xtype: 'numberfield',
@@ -235,7 +291,15 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
 //        } else {
 //            this.down('button[name=delete]').enable();
 //        }
+
+        var expiryDate = record.get('expiryDate');
+        if (!expiryDate) {
+            expiryDate = new Date().getTime();
+        } else {
+            expiryDate = expiryDate * 1000;
+        }
+
         this.callParent(arguments);
-        this.down('field[name=expiryDate]').setValue(Ext.Date.format(new Date(record.get('expiryDate') * 1000), SafeStartExt.dateFormat));
+        this.down('field[name=expiryDate]').setValue(Ext.Date.format(new Date(expiryDate), SafeStartExt.dateFormat));
     }
 });

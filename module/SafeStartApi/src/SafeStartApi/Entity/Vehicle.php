@@ -161,6 +161,15 @@ class Vehicle extends BaseEntity
      */
     protected $expiryDate;
 
+    /**
+     * @ORM\Column(type="boolean", name="use_kms", nullable=false, options={"default":1})
+     */
+    protected $useKms = 1;
+
+    /**
+     * @ORM\Column(type="boolean", name="use_hours", nullable=false, options={"default":1})
+     */
+    protected $useHours = 1;
 
     /**
      * Convert the object to an array.
@@ -229,7 +238,9 @@ class Vehicle extends BaseEntity
             "inspectionDueKms"      => $this->getInspectionDueKms(),
             "inspectionDueHours"    => $this->getInspectionDueHours(),
             "lastInspectionDay"     => $this->getLastInspectionDay(),
-            "customFields"          => $this->getCustomFields()
+            "customFields"          => $this->getCustomFields(),
+            'useKms'                => $this->getUseKms(),
+            'useHours'              => $this->getUseHours(),
         );
     }
 
@@ -257,7 +268,10 @@ class Vehicle extends BaseEntity
             "inspectionDueHours"    => $this->getInspectionDueHours(),
             "nextServiceDay"        => $this->getNextServiceDay(),
             "lastInspectionDay"     => $this->getLastInspectionDay(),
-            "customFields"          => $this->getCustomFields()
+            "customFields"          => $this->getCustomFields(),
+
+            'useKms' => $this->getUseKms(),
+            'useHours' => $this->getUseHours(),
         );
     }
 
@@ -477,12 +491,16 @@ class Vehicle extends BaseEntity
             $intervalHours      = $curHours - $lastHours;
             $intervalUpdateDate = ($curUpdateDate - $lastUpdateDate);
 
-            if ($intervalKms > 0 && $intervalUpdateDate) {
-                $serviceDaysByKms[] = $intervalKms / $intervalUpdateDate;
+            if($this->getUseKms()) {
+                if ($intervalKms > 0 && $intervalUpdateDate) {
+                    $serviceDaysByKms[] = $intervalKms / $intervalUpdateDate;
+                }
             }
 
-            if ($intervalHours > 0 && $intervalUpdateDate) {
-                $serviceDaysByHours[] = $intervalHours / $intervalUpdateDate;
+            if($this->getUseHours()) {
+                if ($intervalHours > 0 && $intervalUpdateDate) {
+                    $serviceDaysByHours[] = $intervalHours / $intervalUpdateDate;
+                }
             }
 
             $lastKms        = $curKms;
@@ -513,12 +531,10 @@ class Vehicle extends BaseEntity
             $serviceDate = 0;
         }
 
-        if ($serviceDate !== 0) {
-            $currentDate = new \DateTime();
-            $currentDate->add(new \DateInterval(sprintf("PT%dS", (int)$serviceDate)));
-            $config = \SafeStartApi\Application::getConfig();
-            $date   = date($config['params']['date_format'], $currentDate->getTimestamp());
-        }
+        $currentDate = new \DateTime();
+        $currentDate->add(new \DateInterval(sprintf("PT%dS", (int)$serviceDate)));
+        $config = \SafeStartApi\Application::getConfig();
+        $date   = date($config['params']['date_format'], $currentDate->getTimestamp());
 
         /* end third variant. */
 
@@ -1209,6 +1225,52 @@ class Vehicle extends BaseEntity
     public function getDeleted()
     {
         return $this->deleted;
+    }
+
+    /**
+     * Set useKms
+     *
+     * @param boolean $useKms
+     * @return Vehicle
+     */
+    public function setUseKms($useKms)
+    {
+        $this->useKms = $useKms;
+
+        return $this;
+    }
+
+    /**
+     * Get useKms
+     *
+     * @return boolean
+     */
+    public function getUseKms()
+    {
+        return $this->useKms;
+    }
+
+    /**
+     * Set useHours
+     *
+     * @param boolean $useHours
+     * @return Vehicle
+     */
+    public function setUseHours($useHours)
+    {
+        $this->useHours = $useHours;
+
+        return $this;
+    }
+
+    /**
+     * Get useHours
+     *
+     * @return boolean
+     */
+    public function getUseHours()
+    {
+        return $this->useHours;
     }
 
     /**

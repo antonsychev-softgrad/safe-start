@@ -204,6 +204,8 @@ class CompanyController extends RestrictedAccessRestController
                 }
                 $vehicle->addUser($user);
             }
+            $vehicle->setUseKms((int)$this->data->useKms);
+            $vehicle->getUseHours((int)$this->data->useHours);
         }
         $alertRep = $this->em->getRepository('SafeStartApi\Entity\Alert');
         $curDate  = new \DateTime();

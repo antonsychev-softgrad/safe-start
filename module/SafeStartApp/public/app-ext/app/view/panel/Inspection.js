@@ -949,7 +949,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 minValue: 0,
                 maxValue: 100000000,
                 name: 'currentOdometerKms',
-                value: this.vehicle.get('currentOdometerKms')
+                value: this.vehicle.get('currentOdometerKms', 0),
+                disabled: !this.vehicle.get('useKms')
             }, {
                 xtype: 'numberfield',
                 fieldLabel: 'Hours',
@@ -957,7 +958,8 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 cls:'sfa-pre-start-inspection-review-hours',
                 maxValue: 100000000,
                 name: 'currentOdometerHours',
-                value: this.vehicle.get('currentOdometerHours')
+                value: this.vehicle.get('currentOdometerHours', 0),
+                disabled: !this.vehicle.get('useHours')
             }]
         });
 

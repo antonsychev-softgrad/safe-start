@@ -75,8 +75,19 @@ Ext.define('SafeStartExt.view.panel.VehicleFields', {
 
     setVehicle: function (record) {
         if (! record.get('id')) {
+            this.down('fieldcontainer[name=usage-value]').show();
             this.down('button[name=delete]').disable();
         } else {
+            //if(! record.get('useKms')) {
+            //    this.down('container[name=service-due-kms]').disable();
+            //} else {
+            //    this.down('container[name=service-due-kms]').enable();
+            //}
+            //if(! record.get('useHours')) {
+            //    this.down('container[name=service-due-hours]').disable();
+            //} else {
+            //    this.down('container[name=service-due-hours]').enable();
+            //}
             this.down('button[name=delete]').enable();
         }
         this.getVehicleForm().loadRecord(record);
