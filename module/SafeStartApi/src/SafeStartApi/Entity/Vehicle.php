@@ -365,10 +365,11 @@ class Vehicle extends BaseEntity
      */
     public function getNextServiceDay()
     {
-        $date       = '-';
+        $config = \SafeStartApi\Application::getConfig();
+        $currentDate = new \DateTime();
         $checkLists = $this->getCheckLists();
         if (sizeof($checkLists) < 2)
-            return $date;
+            return date($config['params']['date_format'], $currentDate->getTimestamp());
 
         /* second variant: * /
         $firstCheckList = array_shift($checkLists);
@@ -530,10 +531,8 @@ class Vehicle extends BaseEntity
         } else {
             $serviceDate = 0;
         }
-
-        $currentDate = new \DateTime();
+        
         $currentDate->add(new \DateInterval(sprintf("PT%dS", (int)$serviceDate)));
-        $config = \SafeStartApi\Application::getConfig();
         $date   = date($config['params']['date_format'], $currentDate->getTimestamp());
 
         /* end third variant. */
