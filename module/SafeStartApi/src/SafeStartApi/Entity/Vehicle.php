@@ -531,7 +531,7 @@ class Vehicle extends BaseEntity
         } else {
             $serviceDate = 0;
         }
-        
+
         $currentDate->add(new \DateInterval(sprintf("PT%dS", (int)$serviceDate)));
         $date   = date($config['params']['date_format'], $currentDate->getTimestamp());
 

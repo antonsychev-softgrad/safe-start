@@ -950,7 +950,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 maxValue: 100000000,
                 name: 'currentOdometerKms',
                 value: this.vehicle.get('currentOdometerKms', 0),
-                disabled: !this.vehicle.get('useKms')
+                hidden: !this.vehicle.get('useKms')
             }, {
                 xtype: 'numberfield',
                 fieldLabel: 'Hours',
@@ -959,7 +959,7 @@ Ext.define('SafeStartExt.view.panel.Inspection', {
                 maxValue: 100000000,
                 name: 'currentOdometerHours',
                 value: this.vehicle.get('currentOdometerHours', 0),
-                disabled: !this.vehicle.get('useHours')
+                hidden: !this.vehicle.get('useHours')
             }]
         });
 

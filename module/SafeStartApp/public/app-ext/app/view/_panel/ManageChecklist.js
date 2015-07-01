@@ -117,7 +117,6 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
                         name: 'save-field',
                         handler: function (btn) {
                             this.onSaveField(btn.up('form'));
-                            this.onRefresh(true);
                         },
                         scope: this
                     }]

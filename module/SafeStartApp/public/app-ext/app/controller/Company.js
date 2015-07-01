@@ -65,7 +65,8 @@ Ext.define('SafeStartExt.controller.Company', {
                 itemclick: this.setInspectionInfo
             },
             'SafeStartExtPanelInspection': {
-                afterrender: this.createInspection,
+                activate: this.createInspection,
+                //afterrender: this.createInspection,
                 completeInspectionAction: this.completeInspection
             },
             'SafeStartExtPanelManageChecklist': {
@@ -311,6 +312,7 @@ Ext.define('SafeStartExt.controller.Company', {
                 }
                 record.modified = {};
                 record.endEdit();
+                form.up('SafeStartExtPanelManageChecklist').down('treepanel').getStore().load();
                 form.loadRecord(record);
             }
         });
@@ -339,6 +341,7 @@ Ext.define('SafeStartExt.controller.Company', {
                     success: function(result) {
                         // record.destroy();
                         parent.removeChild(record);
+                        form.up('SafeStartExtPanelManageChecklist').down('treepanel').getStore().load();
                         if (parent && parent.getDepth() != 0) {
                             form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
                         }
