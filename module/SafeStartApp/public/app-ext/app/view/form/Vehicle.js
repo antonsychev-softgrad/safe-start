@@ -94,7 +94,7 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
 
 
                 {
-                    xtype: 'fieldcontainer',
+                    xtype: 'checkboxgroup',
                     name: 'usage-value',
                     fieldLabel: 'Check inspections by:',
                     cls: 'sfa-field-group',
@@ -111,6 +111,64 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                     msgTarget: 'side',
                     autoFitErrors: false,
                     hidden: true,
+                    labelableRenderTpl: [
+                        // body row. If a heighted Field (eg TextArea, HtmlEditor, this must greedily consume height.
+                        '<tr role="presentation" id="{id}-inputRow" <tpl if="inFormLayout">id="{id}"</tpl> class="{inputRowCls}">',
+                            // Label cell
+                            '<tpl if="labelOnLeft">',
+                                '<td role="presentation" id="{id}-labelCell" style="{labelCellStyle}" {labelCellAttrs}>',
+                                    '{beforeLabelTpl}',
+                                    '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}"',
+                                        '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
+                                        // Required for Opera
+                                        ' unselectable="on"',
+                                    '>',
+                                        '{beforeLabelTextTpl}',
+                                        '<tpl if="fieldLabel">{fieldLabel}{labelSeparator}</tpl>',
+                                        '{afterLabelTextTpl}',
+                                    '</label>',
+                                    '{afterLabelTpl}',
+                                '</td>',
+                            '</tpl>',
+                            // Body of the input. That will be an input element, or, from a TriggerField, a table containing an input cell and trigger cell(s)
+                            '<td role="presentation" class="{baseBodyCls} {fieldBodyCls} {extraFieldBodyCls}" id="{id}-bodyEl" colspan="{bodyColspan}" role="presentation">',
+                                '{beforeBodyEl}',
+                                // Label just sits on top of the input field if labelAlign === 'top'
+                                '<tpl if="labelAlign==\'top\'">',
+                                    '{beforeLabelTpl}',
+                                    '<div role="presentation" id="{id}-labelCell" style="{labelCellStyle}">',
+                                        '<label id="{id}-labelEl" {labelAttrTpl}<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}"',
+                                            '<tpl if="labelStyle"> style="{labelStyle}"</tpl>',
+                                            // Required for Opera
+                                            ' unselectable="on"',
+                                        '>',
+                                            '{beforeLabelTextTpl}',
+                                            '<tpl if="fieldLabel">{fieldLabel}{labelSeparator}</tpl>',
+                                            '{afterLabelTextTpl}',
+                                        '</label>',
+                                    '</div>',
+                                    '{afterLabelTpl}',
+                                '</tpl>',
+                                '{beforeSubTpl}',
+                                '{[values.$comp.getSubTplMarkup(values)]}',
+                                '{afterSubTpl}',
+                            // Final TD. It's a side error element unless there's a floating external one
+                            '<tpl if="msgTarget===\'side\'">',
+                                '{afterBodyEl}',
+                                '</td>',
+                                '<td role="presentation" id="{id}-sideErrorCell" vAlign="middle" style="{[values.autoFitErrors ? \'display:none\' : \'\']}" width="{errorIconWidth}">',
+                                    '<div role="presentation" id="{id}-errorEl" class="{errorMsgCls}" style="display:none"></div>',
+                                '</td>',
+                            '<tpl elseif="msgTarget==\'under\'">',
+                                '<div role="presentation" id="{id}-errorEl" class="{errorMsgClass}" colspan="2" style="display:none"></div>',
+                                '{afterBodyEl}',
+                                '</td>',
+                            '</tpl>',
+                        '</tr>',
+                        {
+                            disableFormats: true
+                        }
+                    ],
                     fieldDefaults: {
                         labelWidth: 130,
                         labelSeparator: '',
@@ -122,22 +180,22 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                         name: 'useKms',
                         fieldLabel: 'Km\'s',
                         handler: function () {
-                            if (this.checked) {
-                                this.up('form').down('[name=useHours]').setValue(false);
-                            } else {
-                                this.up('form').down('[name=useHours]').setValue(true);
-                            }
+                            //if (this.checked) {
+                            //    this.up('form').down('[name=useHours]').setValue(false);
+                            //} else {
+                            //    this.up('form').down('[name=useHours]').setValue(true);
+                            //}
                         }
                     }, {
                         xtype: 'checkboxfield',
                         name: 'useHours',
                         fieldLabel: 'Hours',
                         handler: function () {
-                            if (this.checked) {
-                                this.up('form').down('[name=useKms]').setValue(false);
-                            } else {
-                                this.up('form').down('[name=useKms]').setValue(true);
-                            }
+                            //if (this.checked) {
+                            //    this.up('form').down('[name=useKms]').setValue(false);
+                            //} else {
+                            //    this.up('form').down('[name=useKms]').setValue(true);
+                            //}
                         }
                     }]
                 },
