@@ -968,6 +968,29 @@ font-size: 24px;
     font-size: 16px;
     display: inline-block;
 }
+
+.sfa-left-coll .sfa-export-button {
+    left: 10px !important;
+    width: 213px !important;
+    padding: 8px 5px 9px 21px;
+    text-align: left;
+    border-radius: 5px;
+    border-color: transparent;
+    border-width: 0px;
+    border-style: solid;
+    background-image: none;
+    background-color: #3085B6;
+    margin-bottom: 10px;
+}
+
+.sfa-left-coll .sfa-export-button span.x-btn-inner {
+    font-size: 16px;
+    font-weight: normal;
+    font-family: "Archivo Narrow","Helvetica-Neue",Helvetica,"BBAlpha Sans",sans-serif;
+    color: #FFF;
+    text-align: left;
+    padding: 0px 5px;
+}
 /*
 
 

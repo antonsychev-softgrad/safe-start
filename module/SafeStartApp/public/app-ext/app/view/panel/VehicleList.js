@@ -14,6 +14,8 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
     initComponent: function () {
         var store = SafeStartExt.store.MenuVehicles.create({});
         var searchFields = ['plantId', 'title', 'type', 'customFields'];
+        var ignoreRoles = ['companyUser', 'guest'];
+        var hidden = ignoreRoles.indexOf(SafeStartExt.getApplication().getUserRecord().get('role')) + 1;
 
         Ext.apply(this, {
             tbar: {
@@ -23,6 +25,15 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                     align: 'stretch'
                 },
                 items: [{
+                    text: 'Export vehicles data',
+                    name: 'export-data',
+                    cls:'sfa-export-button',
+                    ui: 'blue',
+                    hidden: !!hidden,
+                    handler: function () {
+                        this.up('SafeStartExtPanelVehicleList').fireEvent('exportCompanyAction');
+                    }
+                }, {
                     text: 'Add vehicle',
                     cls:'sfa-add-button',
                     handler: function () {

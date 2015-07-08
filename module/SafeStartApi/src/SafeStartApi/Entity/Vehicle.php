@@ -188,30 +188,6 @@ class Vehicle extends BaseEntity
         ));
     }
 
-    public function toExportArray()
-    {
-        $config = \SafeStartApi\Application::getConfig();
-
-        $exports = array(
-            "plantId"              => $this->getPlantId(),
-            'type'                 => $this->getType(),
-            'title'                => $this->getTitle(),
-        );
-
-        $customFields = $this->getCustomFields();
-        foreach ($customFields as $k => $f) {
-            $exports[$f['title']] = $f['default_value'];
-        }
-
-        $exports = array_merge($exports, array(
-            "expiryDate"           => date($config['params']['date_format'], $this->getExpiryDate()),
-            "currentOdometerKms"   => $this->getCurrentOdometerKms(),
-            "currentOdometerHours" => $this->getCurrentOdometerHours(),
-        ));
-
-        return $exports;
-    }
-
     /**
      * @return array
      */
@@ -292,11 +268,12 @@ class Vehicle extends BaseEntity
 
     public function getExportData($from, $to) {
 
-        $to->modify('+1 day');
-
+        $config = \SafeStartApi\Application::getConfig();
         $humanize = function($world) {
             return ucfirst(preg_replace('~(?<=\\w)([A-Z])|[_-]+~', ' $1', $world));
         };
+
+        $to->modify('+1 day');
 
         $em = \SafeStartApi\Application::getEntityManager();
         $qb = $em->createQueryBuilder();
@@ -324,32 +301,48 @@ class Vehicle extends BaseEntity
             $hours = (int)$items[0]->getCurrentOdometerHours() - (int)$items[count($items) - 1]->getCurrentOdometerHours();
         }
 
-        // php 5.6 not supported for a server :(
-        $vehicleData = $this->toExportArray();
-        $vehicleData = array_filter($vehicleData, function($item) {
-            return !empty($item);
-        });
+        $vehicleData = array(
+            'Plant Id'                 => $this->getPlantId(),
+            'Expiry date'              => date($config['params']['date_format'], $this->getExpiryDate()),
+            'Current odometer kms'     => $this->getCurrentOdometerKms(),
+            'Current odometer hours'   => $this->getCurrentOdometerHours(),
+            'Km\'s in selected period' => $kms,
+            'Hours in selected period' => $hours,
+            'Alerts'                   => '',
+            'Model'                    => (!is_null($this->getTitle())) ? $this->getTitle() : '',
+            'Make'                     => (!is_null($this->type)) ? $this->getType() : '',
+            'Project Name'             => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            'Project Number'           => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
+        );
 
-        $vehicleData = array_merge($vehicleData, array(
-            "km's in selected period" => $kms,
-            "hours in selected period" => $hours
-        ));
+        $customFields = $this->getCustomFields();
+        foreach ($customFields as $k => $f) {
+            if((array_key_exists($f['title'], $vehicleData)
+                    && $vehicleData[$f['title']] === '')
+                || !empty($f['default_value'])) {
+                $vehicleData[$f['title']] = $f['default_value'];
+            }
+        }
 
+        $header = array_keys($vehicleData);
+        $alertColPos = array_search('Alerts', $header);
         $header = array_map(function($key) use ($humanize) {
             return $humanize($key);
-        }, array_keys($vehicleData));
-        $results[] = array_merge($header, array('Alerts'));
+        }, $header);
+        $results[] = $header;
 
         $alerts = $this->getAlertsByPeriod($from, $to, true);
         if(sizeof($alerts)){
             $i = 0;
-            $size = sizeof($vehicleData) + 1;
             foreach($alerts as $alert) {
                 if($i++ == 0) {
-                    $vehicleData[] = reset($alert);
+                    array_splice($vehicleData, $alertColPos, 1, reset($alert));
+
+                    //var_dump($vehicleData, $alertColPos, reset($alert));
+
                     $results[] = $vehicleData;
                 } else {
-                    $alert = array_pad($alert, -$size, '');
+                    $alert = array_pad($alert, -($alertColPos + 1), '');
                     $results[] = $alert;
                 }
             }
