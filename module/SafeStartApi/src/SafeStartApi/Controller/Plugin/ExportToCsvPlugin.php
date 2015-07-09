@@ -8,9 +8,9 @@ use Zend\Http\Request;
 class ExportToCsvPlugin extends AbstractPlugin
 {
     protected $options = array(
-        "delimiter" => ";",
-        "enclosure" => '"',
-        "name" => "export",
+        'delimiter' => ';',
+        'enclosure' => '"',
+        'name' => 'export',
     );
 
     public function __invoke(array $options = array()) {
@@ -20,12 +20,12 @@ class ExportToCsvPlugin extends AbstractPlugin
 
     protected function setOptions(array $options = array()) {
 
-        $os = $this->getOS();
-        if(preg_match("/(windows)|(Unknown)/isU", $os, $match)) {
-            $this->options["delimiter"] = ";";
-        } else {
-            $this->options["delimiter"] = ",";
-        }
+//        $os = $this->getOS();
+//        if(preg_match("/(windows)|(Unknown)/isU", $os, $match)) {
+//            $this->options["delimiter"] = ';';
+//        } else {
+//            $this->options["delimiter"] = ',';
+//        }
 
         $moduleConfig = $this->getController()->getServiceLocator()->get('Config');
         $exportConfig = !empty($moduleConfig['export']) ? $moduleConfig['export'] : array();
@@ -35,7 +35,7 @@ class ExportToCsvPlugin extends AbstractPlugin
         }
 
         if(empty($this->options['name'])) {
-            $this->options['name'] = "export";
+            $this->options['name'] = 'export';
         }
 
         return $this;
@@ -141,9 +141,9 @@ class ExportToCsvPlugin extends AbstractPlugin
 
 
     public function export(array $data = array()) {
-        ini_set("max_execution_time", 0);
+        ini_set('max_execution_time', 0);
 
-        $csv_name = preg_replace("/\.csv$/isU", '', $this->options['name']) . "_" . gmdate('YmdHis');
+        $csv_name = preg_replace("/\.csv$/isU", '', $this->options['name']) . '_' . gmdate('YmdHis');
 
         $fp = fopen('php://output', 'w');
         ob_start();
