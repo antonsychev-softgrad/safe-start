@@ -492,6 +492,8 @@ class VehicleController extends RestrictedAccessRestController
     }
     //aux end
 
+    $this->processChecklistPlugin()->sendCheckListEmails($checkList);
+
     $this->answer = array(
       'checklist' => $checkList->getHash(),
     );

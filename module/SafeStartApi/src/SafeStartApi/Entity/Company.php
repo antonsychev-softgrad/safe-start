@@ -19,9 +19,9 @@ class Company extends BaseEntity
      */
     public function __construct()
     {
-        $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->vehicles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->responsibleUsers = new ArrayCollection();
+        $this->users = new ArrayCollection();
+        $this->vehicles = new ArrayCollection();
         $this->restricted = false;
         $this->unlim_expiry_date = false;
         $this->unlim_users = false;
@@ -129,6 +129,11 @@ class Company extends BaseEntity
      * @ORM\Column(type="datetime", name="payment_date", nullable=true)
      */
     protected $payment_date;
+
+    /**
+     * @ORM\Column(type="json_array", name="other_users", nullable=true)
+     */
+    protected $otherUsers = [];
 
     /**
      * Get id
@@ -507,48 +512,28 @@ class Company extends BaseEntity
     {
         return $this->admin;
     }
-
+    
     /**
-     * Convert the object to an array.
+     * Set otherUsers
      *
-     * @return array
+     * @param array $otherUsers
+     * @return Company
      */
-    public function toArray()
+    public function setOtherUsers($otherUsers)
     {
-        $company = array();
-        $company['id'] = $this->getId();
-        $company['title'] = $this->getTitle();
-        $company['address'] = $this->getAddress();
-        $company['restricted'] = $this->restricted;
-        $company['unlim_expiry_date'] = $this->unlim_expiry_date;
-        $company['unlim_users'] = $this->unlim_users;
-        $company['phone'] = $this->phone;
-        $company['description'] = $this->description;
-        $company['logo'] = $this->logo;
-        $company['max_users'] = $this->getMaxUsers();
-        $company['max_vehicles'] = $this->getMaxVehicles();
-        $company['expiry_date'] = $this->getExpiryDate();
-        $company['email'] = $this->admin->email;
-        $company['firstName'] = $this->admin->firstName;
-        return $company;
+        $this->otherUsers = $otherUsers;
+
+        return $this;
     }
 
-    public function haveAccess(User $user)
+    /**
+     * Get otherUsers
+     *
+     * @return array 
+     */
+    public function getOtherUsers()
     {
-        $companyAdmin = $this->getAdmin();
-        if($user->getId() == $companyAdmin->getId()) {
-            return true;
-        }
-
-        if($user->getRole() == 'superAdmin') {
-            return true;
-        }
-
-        if($user->getRole() == 'companyManager' && $user->getCompany()->getId() == $this->getId()) {
-            return true;
-        }
-
-        return false;
+        return $this->otherUsers;
     }
 
     /**
@@ -560,14 +545,14 @@ class Company extends BaseEntity
     public function setUnlimExpiryDate($unlimExpiryDate)
     {
         $this->unlim_expiry_date = $unlimExpiryDate;
-    
+
         return $this;
     }
 
     /**
      * Get unlim_expiry_date
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getUnlimExpiryDate()
     {
@@ -641,5 +626,49 @@ class Company extends BaseEntity
     public function getPaymentDate()
     {
         return $this->payment_date ? $this->payment_date->getTimestamp() : null;
+    }
+
+    /**
+     * Convert the object to an array.
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $company = array();
+        $company['id'] = $this->getId();
+        $company['title'] = $this->getTitle();
+        $company['address'] = $this->getAddress();
+        $company['restricted'] = $this->restricted;
+        $company['unlim_expiry_date'] = $this->unlim_expiry_date;
+        $company['unlim_users'] = $this->unlim_users;
+        $company['phone'] = $this->phone;
+        $company['description'] = $this->description;
+        $company['logo'] = $this->logo;
+        $company['max_users'] = $this->getMaxUsers();
+        $company['max_vehicles'] = $this->getMaxVehicles();
+        $company['expiry_date'] = $this->getExpiryDate();
+        $company['email'] = $this->admin->email;
+        $company['firstName'] = $this->admin->firstName;
+        $company['other_users'] = $this->otherUsers;
+        return $company;
+    }
+
+    public function haveAccess(User $user)
+    {
+        $companyAdmin = $this->getAdmin();
+        if($user->getId() == $companyAdmin->getId()) {
+            return true;
+        }
+
+        if($user->getRole() == 'superAdmin') {
+            return true;
+        }
+
+        if($user->getRole() == 'companyManager' && $user->getCompany()->getId() == $this->getId()) {
+            return true;
+        }
+
+        return false;
     }
 }

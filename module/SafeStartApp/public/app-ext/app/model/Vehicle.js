@@ -26,7 +26,8 @@ Ext.define('SafeStartExt.model.Vehicle', {
         {name: 'lastInspectionDay', type: 'int', defaultValue: null},
         {name: 'customFields' , type:'auto'},
         {name: 'useKms', type: 'boolean', defaultValue: true},
-        {name: 'useHours', type: 'boolean', defaultValue: true}
+        {name: 'useHours', type: 'boolean', defaultValue: true},
+        {name: 'automaticSending', type: 'boolean', defaultValue: false}
     ],
 
     proxy: {

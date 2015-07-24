@@ -25,7 +25,7 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                     align: 'stretch'
                 },
                 items: [{
-                    text: 'Export vehicles data',
+                    text: 'Export vehicle data',
                     name: 'export-data',
                     cls:'sfa-export-button',
                     ui: 'blue',

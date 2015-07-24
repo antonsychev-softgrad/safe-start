@@ -24,9 +24,9 @@ class CompanyController extends RestrictedAccessRestController
       return $this->AnswerPlugin()->format($this->answer, 404);
     }
 
-    if (!$company->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+    if (!$company->haveAccess($this->authService->getStorage()->read()))
+        return $this->_showUnauthorisedRequest();
 
-    // set company data
     $company->setTitle($this->data->title);
     $company->setAddress($this->data->address);
     $company->setPhone($this->data->phone);
@@ -41,8 +41,42 @@ class CompanyController extends RestrictedAccessRestController
     );
 
     return $this->AnswerPlugin()->format($this->answer);
-
   }
+
+    public function updateOtherUsersAction()
+    {
+        $companyId = (int)$this->params('id');
+        $company = $this->em->find('SafeStartApi\Entity\Company', $companyId);
+        if (!$company) {
+            $this->answer = array(
+                "errorMessage" => "Company not found."
+            );
+            return $this->AnswerPlugin()->format($this->answer, 404);
+        }
+
+        if (!$company->haveAccess($this->authService->getStorage()->read()))
+            return $this->_showUnauthorisedRequest();
+
+        if(isset($this->data->other_users) && !empty($this->data->other_users)) {
+            $otherUsers = (array) $this->data->other_users;
+            $otherUsers = array_unique($otherUsers);
+            $company->setOtherUsers($otherUsers);
+            unset($otherUsers);
+        } else {
+            $company->setOtherUsers(null);
+        }
+
+        $this->em->flush();
+
+        $this->answer = array(
+            'done' => true,
+            'companyId' => $company->getId(),
+        );
+
+        return $this->AnswerPlugin()->format($this->answer);
+    }
+
+
 
   /**
    * @return mixed
@@ -183,7 +217,7 @@ class CompanyController extends RestrictedAccessRestController
                 'plantId' => $plantId,
                 'deleted' => 0,
             ));
-            if (!is_null($vehicle)) {
+            if ($vehicle) {
                 return $this->_showKeyExists('Vehicle with this Plant ID already exists');
             }
             if (!$company->haveAccess($this->authService->getStorage()->read())) {
@@ -220,6 +254,7 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
         $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
         $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
+        $vehicle->setAutomaticSending($this->data->automaticSending);
         if (isset($this->data->expiryDate) && !empty($this->data->expiryDate)) {
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp($this->data->expiryDate);

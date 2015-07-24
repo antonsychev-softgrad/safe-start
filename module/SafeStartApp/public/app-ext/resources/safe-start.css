@@ -2154,8 +2154,8 @@ table.x-form-trigger-wrap td.x-trigger-cell {
 }
 
 .x-form-dirty .x-form-invalid-icon {
-    position: relative;
-    left: -23px;
+    /*position: relative;*/
+    /*left: -23px;*/
 }
 
 /* на форме авторизации буквы в ие9 обрезались снизу для ie9 и выше */

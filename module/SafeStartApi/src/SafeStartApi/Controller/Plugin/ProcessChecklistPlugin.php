@@ -5,6 +5,43 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 class ProcessChecklistPlugin extends AbstractPlugin
 {
+
+    public function sendCheckListEmails(\SafeStartApi\Entity\CheckList $checkList)
+    {
+        $this->moduleConfig = $this->getController()->getServiceLocator()->get('Config');
+
+        $vehicle = $checkList->getVehicle();
+        if(!$vehicle->getAutomaticSending()) {
+            return;
+        }
+
+        $emails = $vehicle->getCompany()->getOtherUsers();
+        if(empty($emails)) {
+            return;
+        }
+
+        $pdf = $this->getController()->inspectionPdf()->create($checkList);
+        $this->setInspectionStatistic($checkList);
+        if (file_exists($pdf)) {
+            foreach ($emails as $email) {
+                $this->getController()->MailPlugin()->send(
+                    $this->moduleConfig['params']['emailSubjects']['new_vehicle_inspection'],
+                    $email,
+                    'checklist.phtml',
+                    array(
+                        'name' => $email,
+                        'plantId' => $vehicle->getPlantId(),
+                        'uploadedByName' => $checkList->getOperatorName(),
+                        'siteUrl' => $this->moduleConfig['params']['site_url'],
+                        'emailStaticContentUrl' => $this->moduleConfig['params']['email_static_content_url'],
+                        'showLoginUrl' => false,
+                    ),
+                    $pdf
+                );
+            }
+        }
+    }
+
     public function pushNewChecklistNotification(\SafeStartApi\Entity\CheckList $checkList)
     {
         $this->moduleConfig = $this->getController()->getServiceLocator()->get('Config');

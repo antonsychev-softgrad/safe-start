@@ -5,7 +5,8 @@ Ext.define('SafeStartExt.view.component.CompanySettings', {
 
     requires: [
         'SafeStartExt.view.container.TopNav',
-        'SafeStartExt.view.form.CompanySettings'
+        'SafeStartExt.view.panel.CompanyAdditionalInfo',
+        'SafeStartExt.view.panel.CompanyOtherUsers'
     ],
     layout: {
         type: 'vbox',
@@ -21,16 +22,19 @@ Ext.define('SafeStartExt.view.component.CompanySettings', {
             }, {
                 xtype: 'container',
                 flex: 1,
-                padding: 20,
-                cls: 'sfa-info-container',
                 layout: {
                     type: 'fit'
                 },
                 items: [{
-                    xtype: 'SafeStartExtFormCompanySettings',
-                    defaults: {
-                        maxWidth: 400,
-                        labelWidth: 130
+                    xtype: 'tabpanel',
+                    cls: 'sfa-info-container sfa-system-settings sfa-vehicles-tabpanel',
+                    height: '100%',
+                    items: [{
+                        xtype: 'SafeStartExtPanelCompanyAdditionalInfo'
+                    }, {
+                        xtype: 'SafeStartExtPanelCompanyOtherUsers'
+                    }],
+                    listeners: {
                     }
                 }]
             }]

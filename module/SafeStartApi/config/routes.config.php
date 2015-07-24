@@ -639,6 +639,19 @@ $routes = array(
                     ),
                 ),
             ),
+            'company-update-other-users' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/company/:id/update-other-users',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Company',
+                        'action' => 'update-other-users'
+                    ),
+                ),
+            ),
             'test-push-notification' => array(
                 'type' => 'Segment',
                 'options' => array(

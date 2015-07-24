@@ -17,7 +17,7 @@ Ext.define('SafeStartExt.view.form.CompanySettings', {
         align: 'stretch'
     },
     autoScroll: true,
-    minWidth: 512,
+    minWidth: 400,
 
     initComponent: function() {
         Ext.apply(this, {
@@ -25,10 +25,10 @@ Ext.define('SafeStartExt.view.form.CompanySettings', {
                 xtype: 'container',
                 padding: 10,
                 layout: {
-                    type: 'hbox',
-                    pack: 'end'
+                    type: 'vbox'
                 },
                 maxWidth: 400,
+                margin: '0 10',
                 items: [{
                     xtype: 'button',
                     text: 'Save',

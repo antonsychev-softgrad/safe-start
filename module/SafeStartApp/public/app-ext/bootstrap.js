@@ -933,7 +933,9 @@ Ext.ClassManager.addNameAlternateMappings({
   "SafeStartExt.view.panel.Alerts": [],
   "SafeStartExt.view.panel.CheckListsChangesReport": [],
   "SafeStartExt.view.panel.CompaniesList": [],
+  "SafeStartExt.view.panel.CompanyAdditionalInfo": [],
   "SafeStartExt.view.panel.CompanyInfo": [],
+  "SafeStartExt.view.panel.CompanyOtherUsers": [],
   "SafeStartExt.view.panel.Inspection": [],
   "SafeStartExt.view.panel.InspectionBreakdownsReport": [],
   "SafeStartExt.view.panel.InspectionInfo": [],
@@ -2103,8 +2105,14 @@ Ext.ClassManager.addNameAliasMappings({
   "SafeStartExt.view.panel.CompaniesList": [
     "widget.SafeStartExtPanelCompaniesList"
   ],
+  "SafeStartExt.view.panel.CompanyAdditionalInfo": [
+    "widget.SafeStartExtPanelCompanyAdditionalInfo"
+  ],
   "SafeStartExt.view.panel.CompanyInfo": [
     "widget.SafeStartExtPanelCompanyInfo"
+  ],
+  "SafeStartExt.view.panel.CompanyOtherUsers": [
+    "widget.SafeStartExtPanelCompanyOtherUsers"
   ],
   "SafeStartExt.view.panel.Inspection": [
     "widget.SafeStartExtPanelInspection"

@@ -42,14 +42,14 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
 //                name: 'type'
 //            },
                 {
-                xtype: 'textfield',
-                labelWidth: 130,
-                maxWidth: 400,
-                fieldLabel: 'Plant ID',
-                labelSeparator: '*',
-                allowBlank: false,
-                name: 'plantId'
-            },
+                    xtype: 'textfield',
+                    labelWidth: 130,
+                    maxWidth: 400,
+                    fieldLabel: 'Plant ID',
+                    labelSeparator: '*',
+                    allowBlank: false,
+                    name: 'plantId'
+                },
 //                {
 //                xtype: 'textfield',
 //                labelWidth: 130,
@@ -66,34 +66,43 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
 //                name: 'projectNumber'
 //            },
                 {
-                xtype: 'fieldcontainer',
-                height: 32,
-                labelWidth: 130,
-                maxWidth: 400,
-                labelSeparator: '',
-                fieldLabel: 'Registration Expiry',
-                items: [{
-                    xtype: 'datefield',
-                    name: 'expiryDate',
-                    format: SafeStartExt.dateFormat
-                }],
-                cls: 'sfa-datepicker'
-            }, {
-                xtype: 'fieldcontainer',
-                height: 32,
-                labelWidth: 130,
-                maxWidth: 400,
-                labelSeparator: '',
-                fieldLabel: 'Enabled',
-                items: [{
-                    xtype: 'checkboxfield',
-                    name: 'enabled',
-                    inputValue: true
-                }]
-            },
-
-
-                {
+                    xtype: 'fieldcontainer',
+                    height: 32,
+                    labelWidth: 130,
+                    maxWidth: 400,
+                    labelSeparator: '',
+                    fieldLabel: 'Registration Expiry',
+                    items: [{
+                        xtype: 'datefield',
+                        name: 'expiryDate',
+                        format: SafeStartExt.dateFormat
+                    }],
+                    cls: 'sfa-datepicker'
+                }, {
+                    xtype: 'fieldcontainer',
+                    height: 32,
+                    labelWidth: 130,
+                    maxWidth: 400,
+                    labelSeparator: '',
+                    fieldLabel: 'Enabled',
+                    items: [{
+                        xtype: 'checkboxfield',
+                        name: 'enabled',
+                        inputValue: true
+                    }]
+                }, {
+                    xtype: 'fieldcontainer',
+                    height: 32,
+                    labelWidth: 130,
+                    maxWidth: 400,
+                    labelSeparator: '',
+                    fieldLabel: 'Automatically Send Email',
+                    items: [{
+                        xtype: 'checkboxfield',
+                        name: 'automaticSending',
+                        inputValue: true
+                    }]
+                }, {
                     xtype: 'checkboxgroup',
                     name: 'usage-value',
                     fieldLabel: 'Check inspections by:',
@@ -198,110 +207,106 @@ Ext.define('SafeStartExt.view.form.Vehicle', {
                             //}
                         }
                     }]
-                },
-
-
-
-            {
-                xtype: 'fieldcontainer',
-                height: 110,
-                fieldLabel: 'Next service due',
-                maxWidth: 800,
-                cls: 'sfa-field-group',
-                labelCls: 'sfa-field-group-label',
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch'
-                },
-                labelAlign: 'top',
-                items: [{
-                    xtype: 'container',
-                    name: 'service-due-hours',
-                    layout: 'hbox',
-                    padding: '0 0 5 0',
+                }, {
+                    xtype: 'fieldcontainer',
+                    height: 110,
+                    fieldLabel: 'Next service due',
+                    maxWidth: 800,
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    labelAlign: 'top',
                     items: [{
-                        xtype: 'numberfield',
-                        labelWidth: 130,
-                        labelSeparator: '*',
-                        fieldLabel: 'Hours',
-                        name: 'serviceDueHours'
+                        xtype: 'container',
+                        name: 'service-due-hours',
+                        layout: 'hbox',
+                        padding: '0 0 5 0',
+                        items: [{
+                            xtype: 'numberfield',
+                            labelWidth: 130,
+                            labelSeparator: '*',
+                            fieldLabel: 'Hours',
+                            name: 'serviceDueHours'
+                        }, {
+                            xtype: 'numberfield',
+                            labelWidth: 180,
+                            width: 300,
+                            labelSeparator: '',
+                            fieldLabel: 'Service Reminder Threshold',
+                            name: 'serviceThresholdHours'
+                        }, {
+                            xtype: 'component',
+                            html: 'Hours',
+                            cls: 'x-form-item-label'
+                        }]
                     }, {
-                        xtype: 'numberfield',
-                        labelWidth: 180,
-                        width: 300,
-                        labelSeparator: '',
-                        fieldLabel: 'Service Reminder Threshold',
-                        name: 'serviceThresholdHours'
-                    }, {
-                        xtype: 'component',
-                        html: 'Hours',
-                        cls: 'x-form-item-label'
+                        xtype: 'container',
+                        name: 'service-due-kms',
+                        layout: 'hbox',
+                        items: [{
+                            xtype: 'numberfield',
+                            //hideTrigger: true,
+                            labelWidth: 130,
+                            labelSeparator: '*',
+                            fieldLabel: 'Kilometers',
+                            name: 'serviceDueKm'
+                        }, {
+                            xtype: 'numberfield',
+                            labelWidth: 180,
+                            width: 300,
+                            labelSeparator: '',
+                            fieldLabel: 'Service Reminder Threshold',
+                            name: 'serviceThresholdKm'
+                        }, {
+                            xtype: 'component',
+                            html: 'Kms',
+                            cls: 'x-form-item-label'
+                        }]
                     }]
                 }, {
-                    xtype: 'container',
-                    name: 'service-due-kms',
-                    layout: 'hbox',
+                    xtype: 'fieldcontainer',
+                    height: 110,
+                    fieldLabel: 'Current Odometer',
+                    cls: 'sfa-field-group',
+                    labelCls: 'sfa-field-group-label',
+                    padding: '1 0 0 0',
+                    labelAlign: 'top',
+                    layout: {
+                        type: 'vbox',
+                        align: 'stretch'
+                    },
+                    maxWidth: 400,
                     items: [{
                         xtype: 'numberfield',
                         //hideTrigger: true,
+                        fieldLabel: 'Hours',
                         labelWidth: 130,
-                        labelSeparator: '*',
-                        fieldLabel: 'Kilometers',
-                        name: 'serviceDueKm'
+                        labelSeparator: '',
+                        name: 'currentOdometerHours'
                     }, {
                         xtype: 'numberfield',
-                        labelWidth: 180,
-                        width: 300,
+                        //hideTrigger: true,
+                        labelWidth: 130,
+                        fieldLabel: 'Kilometers',
                         labelSeparator: '',
-                        fieldLabel: 'Service Reminder Threshold',
-                        name: 'serviceThresholdKm'
-                    }, {
-                        xtype: 'component',
-                        html: 'Kms',
-                        cls: 'x-form-item-label'
+                        name: 'currentOdometerKms'
                     }]
-                }]
-            }, {
-                xtype: 'fieldcontainer',
-                height: 110,
-                fieldLabel: 'Current Odometer',
-                cls: 'sfa-field-group',
-                labelCls: 'sfa-field-group-label',
-                padding: '1 0 0 0',
-                labelAlign: 'top',
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch'
-                },
-                maxWidth: 400,
-                items: [{
-                    xtype: 'numberfield',
-                    //hideTrigger: true,
-                    fieldLabel: 'Hours',
-                    labelWidth: 130,
-                    labelSeparator: '',
-                    name: 'currentOdometerHours'
                 }, {
-                    xtype: 'numberfield',
-                    //hideTrigger: true,
+                    xtype: 'fieldcontainer',
                     labelWidth: 130,
-                    fieldLabel: 'Kilometers',
+                    maxWidth: 400,
                     labelSeparator: '',
-                    name: 'currentOdometerKms'
+                    fieldLabel: 'Next Service Day',
+                    items: [{
+                        xtype: 'datefield',
+                        disabled: true,
+                        name: 'nextServiceDay'
+                    }],
+                    cls: 'sfa-datepicker'
                 }]
-            }, {
-                xtype: 'fieldcontainer',
-                labelWidth: 130,
-                maxWidth: 400,
-                labelSeparator: '',
-                fieldLabel: 'Next Service Day',
-                items: [{
-                    xtype: 'datefield',
-                    disabled: true,
-                    name: 'nextServiceDay'
-                }],
-                cls: 'sfa-datepicker'
-            }]
 //            bbar: [{
 //                xtype: 'container',
 //                defaults: {

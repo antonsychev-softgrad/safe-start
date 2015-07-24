@@ -2,10 +2,15 @@
 
 namespace SafeStartApi\Entity;
 
-use SafeStartApi\Base\Entity as BaseEntity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use SafeStartApi\Application as App;
+use SafeStartApi\Base\Entity as BaseEntity;
+use SafeStartApi\Entity\Alert;
+use SafeStartApi\Entity\CheckList;
+use SafeStartApi\Entity\Company;
+use SafeStartApi\Entity\Field;
 use SafeStartApi\Entity\User;
-use SafeStartApi\Controller\Plugin\GetDataPlugin;
 
 /**
  * @ORM\Entity
@@ -14,18 +19,6 @@ use SafeStartApi\Controller\Plugin\GetDataPlugin;
  */
 class Vehicle extends BaseEntity
 {
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users            = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->responsibleUsers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->checkLists       = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->alerts           = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->creation_date    = new \DateTime();
-    }
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -172,6 +165,24 @@ class Vehicle extends BaseEntity
     protected $useHours = 1;
 
     /**
+     * @ORM\Column(type="boolean", name="automatic_sending", nullable=false, options={"default":0})
+     */
+    protected $automaticSending = 0;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users            = new ArrayCollection();
+        $this->responsibleUsers = new ArrayCollection();
+        $this->checkLists       = new ArrayCollection();
+        $this->alerts           = new ArrayCollection();
+        $this->creation_date    = new \DateTime();
+    }
+
+    /**
      * Convert the object to an array.
      *
      * @return array
@@ -179,10 +190,10 @@ class Vehicle extends BaseEntity
     public function toArray()
     {
         return array_merge($this->toInfoArray(), array(
-            "users"            => array_map(function ($user) {
+            'users'            => array_map(function ($user) {
                 return $user->toInfoArray();
             }, (array)$this->users->toArray()),
-            "responsibleUsers" => array_map(function ($user) {
+            'responsibleUsers' => array_map(function ($user) {
                 return $user->toInfoArray();
             }, (array)$this->responsibleUsers->toArray()),
         ));
@@ -197,26 +208,27 @@ class Vehicle extends BaseEntity
             'id'                    => (!is_null($this->id)) ? $this->id : '',
             'type'                  => (!is_null($this->type)) ? $this->getType() : '',
             'title'                 => (!is_null($this->getTitle())) ? $this->getTitle() : '',
-            "projectName"           => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber"         => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
-            "serviceDueKm"          => $this->getServiceDueKm(),
-            "serviceDueHours"       => $this->getServiceDueHours(),
-            "serviceThresholdKm"    => $this->getServiceThresholdKm(),
-            "serviceThresholdHours" => $this->getServiceThresholdHours(),
-            "plantId"               => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "warrantyStartDate"     => $this->getWarrantyStartDate(),
-            "warrantyStartOdometer" => $this->getWarrantyStartOdometer(),
-            "currentOdometerKms"    => $this->getCurrentOdometerKms(),
-            "currentOdometerHours"  => $this->getCurrentOdometerHours(),
-            "nextServiceDay"        => $this->getNextServiceDay(),
-            "enabled"               => $this->getEnabled(),
-            "expiryDate"            => $this->getExpiryDate(),
-            "inspectionDueKms"      => $this->getInspectionDueKms(),
-            "inspectionDueHours"    => $this->getInspectionDueHours(),
-            "lastInspectionDay"     => $this->getLastInspectionDay(),
-            "customFields"          => $this->getCustomFields(),
+            'projectName'           => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            'projectNumber'         => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
+            'serviceDueKm'          => $this->getServiceDueKm(),
+            'serviceDueHours'       => $this->getServiceDueHours(),
+            'serviceThresholdKm'    => $this->getServiceThresholdKm(),
+            'serviceThresholdHours' => $this->getServiceThresholdHours(),
+            'plantId'               => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
+            'warrantyStartDate'     => $this->getWarrantyStartDate(),
+            'warrantyStartOdometer' => $this->getWarrantyStartOdometer(),
+            'currentOdometerKms'    => $this->getCurrentOdometerKms(),
+            'currentOdometerHours'  => $this->getCurrentOdometerHours(),
+            'nextServiceDay'        => $this->getNextServiceDay(),
+            'enabled'               => $this->getEnabled(),
+            'expiryDate'            => $this->getExpiryDate(),
+            'inspectionDueKms'      => $this->getInspectionDueKms(),
+            'inspectionDueHours'    => $this->getInspectionDueHours(),
+            'lastInspectionDay'     => $this->getLastInspectionDay(),
+            'customFields'          => $this->getCustomFields(),
             'useKms'                => $this->getUseKms(),
             'useHours'              => $this->getUseHours(),
+            'automaticSending'      => $this->getAutomaticSending()
         );
     }
 
@@ -229,25 +241,25 @@ class Vehicle extends BaseEntity
             'vehicleId'             => (!is_null($this->id)) ? $this->id : '',
             'type'                  => (!is_null($this->type)) ? $this->getType() : '',
             'vehicleName'           => (!is_null($this->getTitle())) ? $this->getTitle() : '',
-            "projectName"           => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
-            "projectNumber"         => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
-            "kmsUntilNext"          => $this->getServiceDueKm(),
-            "hoursUntilNext"        => $this->getServiceDueHours(),
-            "plantId"               => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
-            "expiryDate"            => $this->getExpiryDate(),
-            "restricted"            => $this->company->getRestricted(),
-            "currentOdometerKms"    => $this->getCurrentOdometerKms(),
-            "currentOdometerHours"  => $this->getCurrentOdometerHours(),
-            "serviceThresholdKm"    => $this->getServiceThresholdKm(),
-            "serviceThresholdHours" => $this->getServiceThresholdHours(),
-            "inspectionDueKms"      => $this->getInspectionDueKms(),
-            "inspectionDueHours"    => $this->getInspectionDueHours(),
-            "nextServiceDay"        => $this->getNextServiceDay(),
-            "lastInspectionDay"     => $this->getLastInspectionDay(),
-            "customFields"          => $this->getCustomFields(),
-
-            'useKms' => $this->getUseKms(),
-            'useHours' => $this->getUseHours(),
+            'projectName'           => (!is_null($this->getProjectName())) ? $this->getProjectName() : '',
+            'projectNumber'         => (!is_null($this->getProjectNumber())) ? $this->getProjectNumber() : '',
+            'kmsUntilNext'          => $this->getServiceDueKm(),
+            'hoursUntilNext'        => $this->getServiceDueHours(),
+            'plantId'               => (!is_null($this->getPlantId())) ? $this->getPlantId() : '',
+            'expiryDate'            => $this->getExpiryDate(),
+            'restricted'            => $this->company->getRestricted(),
+            'currentOdometerKms'    => $this->getCurrentOdometerKms(),
+            'currentOdometerHours'  => $this->getCurrentOdometerHours(),
+            'serviceThresholdKm'    => $this->getServiceThresholdKm(),
+            'serviceThresholdHours' => $this->getServiceThresholdHours(),
+            'inspectionDueKms'      => $this->getInspectionDueKms(),
+            'inspectionDueHours'    => $this->getInspectionDueHours(),
+            'nextServiceDay'        => $this->getNextServiceDay(),
+            'lastInspectionDay'     => $this->getLastInspectionDay(),
+            'customFields'          => $this->getCustomFields(),
+            'automaticSending'      => $this->getAutomaticSending(),
+            'useKms'                => $this->getUseKms(),
+            'useHours'              => $this->getUseHours(),
         );
     }
 
@@ -266,16 +278,1027 @@ class Vehicle extends BaseEntity
         return $vehicleData;
     }
 
+    /**
+     * @return array
+     */
+    public function getMenuItems()
+    {
+        $menuItems = array();
+        $user      = App::getCurrentUser();
+        if ($user) {
+            $menuItems[] = array(
+                'id'     => $this->getId() . '-info',
+                'action' => 'info',
+                'text'   => 'Current Information',
+                'leaf'   => true,
+            );
+            $menuItems[] = array(
+                'id'     => $this->getId() . '-fill-checklist',
+                'action' => 'fill-checklist',
+                'text'   => 'Perform An Inspection',
+                'leaf'   => true,
+            );
+
+            if (count($this->getAlerts()) > 0) {
+                $menuItems[] = array(
+                    'id'      => $this->getId() . '-alerts',
+                    'action'  => 'alerts',
+                    'text'    => 'Alerts',
+                    'counter' => count($this->getOpenAlerts()),
+                    'leaf'    => true,
+                );
+            }
+            if (count($this->getCheckLists()) > 0) {
+                $menuItems[] = array(
+                    'id'     => $this->getId() . '-inspections',
+                    'action' => 'inspections',
+                    'text'   => 'Previous Inspections',
+                    // 'counter' => count($this->getCheckLists()),
+                    'badge'  => $this->getCheckListsBadge(),
+                    'leaf'   => true
+                );
+            }
+            if (count($this->getCheckLists()) > 0) {
+                $menuItems[] = array(
+                    'id'     => $this->getId() . '-report',
+                    'action' => 'report',
+                    'text'   => 'Reporting',
+                    'leaf'   => true,
+                );
+            }
+            switch ($user->getRole()) {
+                case 'superAdmin':
+                case 'companyAdmin':
+                case 'companyManager':
+                    $menuItems[] = array(
+                        'id'     => $this->getId() . '-update-checklist',
+                        'action' => 'update-checklist',
+                        'text'   => 'Manage Checklists',
+                        'leaf'   => true,
+                    );
+                    $menuItems[] = array(
+                        'id'     => $this->getId() . '-users',
+                        'action' => 'users',
+                        'text'   => 'Manage Users',
+                        'leaf'   => true,
+                    );
+                    $menuItems[] = array(
+                        'id'     => $this->getId() . '-update-vehicleField',
+                        'action' => 'update-field',
+                        'text'   => 'Manage Vehicle Fields',
+                        'leaf'   => true,
+                    );
+                    break;
+            }
+        }
+        return $menuItems;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get useKms
+     *
+     * @return boolean
+     */
+    public function getUseKms()
+    {
+        return $this->useKms;
+    }
+
+    /**
+     * Set useKms
+     *
+     * @param boolean $useKms
+     * @return Vehicle
+     */
+    public function setUseKms($useKms)
+    {
+        $this->useKms = $useKms;
+
+        return $this;
+    }
+
+    /**
+     * Get useHours
+     *
+     * @return boolean
+     */
+    public function getUseHours()
+    {
+        return $this->useHours;
+    }
+
+    /**
+     * Set useHours
+     *
+     * @param boolean $useHours
+     * @return Vehicle
+     */
+    public function setUseHours($useHours)
+    {
+        $this->useHours = $useHours;
+
+        return $this;
+    }
+
+    /**
+     * Get enabled
+     *
+     * @return boolean
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set enabled
+     *
+     * @param boolean $enabled
+     * @return Vehicle
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * Get expiryDate
+     *
+     * @return \DateTime
+     */
+    public function getExpiryDate()
+    {
+        return $this->expiryDate ? $this->expiryDate->getTimestamp() : (
+        $this->company ? $this->company->getExpiryDate() : null
+        );
+    }
+
+    /**
+     * Set expiryDate
+     *
+     * @param \DateTime $expiryDate
+     * @return Company
+     */
+    public function setExpiryDate($expiryDate)
+    {
+        $this->expiryDate = $expiryDate;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInspectionDueKms()
+    {
+        return (int)($this->inspectionDueKms ? $this->inspectionDueKms : 500);
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setInspectionDueKms($value)
+    {
+        $this->inspectionDueKms = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getInspectionDueHours()
+    {
+        return (int)($this->inspectionDueHours ? $this->inspectionDueHours : 24);
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setInspectionDueHours($value)
+    {
+        $this->inspectionDueHours = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return null
+     */
+    public function getLastInspectionDay()
+    {
+        $inspection = $this->getLastInspection();
+        if ($inspection) {
+            return $inspection->getCreationDate()->getTimestamp();
+        }
+
+        return null;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getLastInspection()
+    {
+        if (!empty($this->checkLists)) {
+            return $this->checkLists->last();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getNetServiceDueHours()
+    {
+        //todo: calculate next service km
+        return $this->serviceDueHours;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNetServiceDueKms()
+    {
+        return $this->serviceDueKm;
+    }
+
+    /**
+     * Get deleted
+     *
+     * @return boolean
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set deleted
+     *
+     * @param boolean $deleted
+     * @return Vehicle
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * Get automaticSending
+     *
+     * @return boolean
+     */
+    public function getAutomaticSending()
+    {
+        return $this->automaticSending;
+    }
+
+    /**
+     * Set automaticSending
+     *
+     * @param boolean $automaticSending
+     * @return Vehicle
+     */
+    public function setAutomaticSending($automaticSending)
+    {
+        $this->automaticSending = $automaticSending;
+
+        return $this;
+    }
+
+    /**
+     * Add responsible
+     *
+     * @param User $responsible
+     * @return Vehicle
+     */
+    public function addResponsibleUser(User $responsible)
+    {
+        $this->responsibleUsers[] = $responsible;
+
+        return $this;
+    }
+
+    /**
+     * Remove responsible
+     *
+     * @param User $responsible
+     */
+    public function removeResponsibleUser(User $responsible)
+    {
+        $this->responsibleUsers->removeElement($responsible);
+    }
+
+    /**
+     *
+     */
+    public function removeResponsibleUsers()
+    {
+        if (empty($this->responsibleUsers))
+            return true;
+        $cache = App::getCache();
+        $users = clone $this->responsibleUsers;
+        foreach ($users as $user) {
+            $cashKey = 'getUserVehiclesList' . $user->getId();
+            if ($cache->hasItem($cashKey))
+                $cache->removeItem($cashKey);
+            $this->responsibleUsers->removeElement($user);
+        }
+        $this->responsibleUsers->clear();
+        $this->responsibleUsers = null;
+
+        return true;
+    }
+
+    /**
+     * Get responsible
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getResponsibleUsers()
+    {
+        $users = new ArrayCollection();
+        if (!$this->responsibleUsers)
+            return $users;
+        foreach ($this->responsibleUsers as $user) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
+                $users->add($user);
+            }
+        }
+
+        return $users;
+    }
+
+    /**
+     * Add users
+     *
+     * @param User $users
+     * @return Vehicle
+     */
+    public function addUser(User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param User $users
+     */
+    public function removeUser(User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     *
+     */
+    public function removeUsers()
+    {
+        if (empty($this->users))
+            return true;
+        $cache = App::getCache();
+        foreach ($this->users as $user) {
+            $cashKey = 'getUserVehiclesList' . $user->getId();
+            if ($cache->hasItem($cashKey))
+                $cache->removeItem($cashKey);
+        }
+        $this->users->clear();
+        $this->users = null;
+
+        return true;
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        $users = new ArrayCollection();
+        if (!$this->users)
+            return $users;
+        foreach ($this->users as $user) {
+            if (!$user->getDeleted() && $user->getEnabled()) {
+                $users->add($user);
+            }
+        }
+
+        return $users;
+    }
+
+    /**
+     * Add fields
+     *
+     * @param Field $fields
+     * @return Vehicle
+     */
+    public function addField(Field $fields)
+    {
+        $this->fields[] = $fields;
+
+        return $this;
+    }
+
+    /**
+     * Remove fields
+     *
+     * @param Field $fields
+     */
+    public function removeField(Field $fields)
+    {
+        $this->fields->removeElement($fields);
+    }
+
+    /**
+     * Get fields
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Add checklists
+     *
+     * @param CheckList $checklist
+     * @return Company
+     */
+    public function addCheckList(CheckList $checklist)
+    {
+        $this->checkLists[] = $checklist;
+
+        return $this;
+    }
+
+    /**
+     * Remove checklists
+     *
+     * @param CheckList $checklist
+     */
+    public function removeCheckList(CheckList $checklist)
+    {
+        $this->checkLists->removeElement($checklist);
+    }
+
+    /**
+     * Remove checklists
+     */
+    public function removeCheckLists()
+    {
+        $this->checkLists->clear();
+    }
+
+    /**
+     * Add alert
+     *
+     * @param Alert $alert
+     * @return Company
+     */
+    public function addAlert(Alert $alert)
+    {
+        $this->alerts[] = $alert;
+
+        return $this;
+    }
+
+    /**
+     * Remove alert
+     *
+     * @param Alert $alert
+     */
+    public function removeAlert(Alert $alert)
+    {
+        $this->alerts->removeElement($alert);
+    }
+
+    /**
+     * Remove alerts
+     */
+    public function removeAlerts()
+    {
+        $this->alerts->clear();
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creation_date;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Vehicle
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creation_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get company
+     *
+     * @return Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set company
+     *
+     * @param Company $company
+     * @return Vehicle
+     */
+    public function setCompany(Company $company = null)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return Vehicle
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get vehicleName
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set vehicleName
+     *
+     * @param string $vehicleName
+     * @return Vehicle
+     */
+    public function setTitle($vehicleName)
+    {
+        $this->title = $vehicleName;
+
+        return $this;
+    }
+
+    /**
+     * Get projectName
+     *
+     * @return string
+     */
+    public function getProjectName()
+    {
+        return $this->projectName;
+    }
+
+    /**
+     * Set projectName
+     *
+     * @param string $projectName
+     * @return Vehicle
+     */
+    public function setProjectName($projectName)
+    {
+        $this->projectName = $projectName;
+
+        return $this;
+    }
+
+    /**
+     * Get projectNumber
+     *
+     * @return string
+     */
+    public function getProjectNumber()
+    {
+        return $this->projectNumber;
+    }
+
+    /**
+     * Set projectNumber
+     *
+     * @param string $projectNumber
+     * @return Vehicle
+     */
+    public function setProjectNumber($projectNumber)
+    {
+        $this->projectNumber = $projectNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceDueKm
+     *
+     * @return float
+     */
+    public function getServiceDueKm()
+    {
+        return (float)$this->serviceDueKm;
+    }
+
+    /**
+     * Set serviceDueKm
+     *
+     * @param float $serviceDueKm
+     * @return Vehicle
+     */
+    public function setServiceDueKm($serviceDueKm)
+    {
+        $this->serviceDueKm = $serviceDueKm;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceDueHours
+     *
+     * @return float
+     */
+    public function getServiceDueHours()
+    {
+        return (float)$this->serviceDueHours;
+    }
+
+    /**
+     * Set serviceDueHours
+     *
+     * @param float $serviceDueHours
+     * @return Vehicle
+     */
+    public function setServiceDueHours($serviceDueHours)
+    {
+        $this->serviceDueHours = $serviceDueHours;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceThresholdKm
+     *
+     * @return float
+     */
+    public function getServiceThresholdKm()
+    {
+        return (float)$this->serviceThresholdKm;
+    }
+
+    /**
+     * Set serviceThresholdKm
+     *
+     * @param float $serviceThresholdKm
+     * @return Vehicle
+     */
+    public function setServiceThresholdKm($serviceThresholdKm)
+    {
+        $this->serviceThresholdKm = $serviceThresholdKm;
+
+        return $this;
+    }
+
+    /**
+     * Get serviceThresholdHours
+     *
+     * @return float
+     */
+    public function getServiceThresholdHours()
+    {
+        return (float)$this->serviceThresholdHours;
+    }
+
+    /**
+     * Set serviceThresholdHours
+     *
+     * @param float $serviceThresholdHours
+     * @return Vehicle
+     */
+    public function setServiceThresholdHours($serviceThresholdHours)
+    {
+        $this->serviceThresholdHours = $serviceThresholdHours;
+
+        return $this;
+    }
+
+    /**
+     * Get plantId
+     *
+     * @return string
+     */
+    public function getPlantId()
+    {
+        return $this->plantId;
+    }
+
+    /**
+     * Set plantId
+     *
+     * @param string $plantId
+     * @return Vehicle
+     */
+    public function setPlantId($plantId)
+    {
+        $this->plantId = strtoupper($plantId);
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return \DateTime
+     */
+    public function getWarrantyStartDate()
+    {
+        return $this->warranty_start_date ? $this->warranty_start_date->getTimestamp() : null;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param \DateTime $creationDate
+     * @return Vehicle
+     */
+    public function setWarrantyStartDate($creationDate)
+    {
+        $this->warranty_start_date = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creation_date
+     *
+     * @return float
+     */
+    public function getWarrantyStartOdometer()
+    {
+        return $this->warranty_start_odometer;
+    }
+
+    /**
+     * Set creation_date
+     *
+     * @param $creationDate
+     * @return Vehicle
+     */
+    public function setWarrantyStartOdometer($creationDate)
+    {
+        $this->warranty_start_odometer = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentOdometerKms()
+    {
+        return (float)($this->currentOdometerKms ? $this->currentOdometerKms : 0);
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setCurrentOdometerKms($value)
+    {
+        $this->currentOdometerKms = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrentOdometerHours()
+    {
+        return (float)($this->currentOdometerHours ? $this->currentOdometerHours : 0);
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function setCurrentOdometerHours($value)
+    {
+        $this->currentOdometerHours = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get checklists
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCheckLists()
+    {
+        $alerts = array();
+        if (!$this->checkLists)
+            return $alerts;
+        foreach ($this->checkLists as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+
+        return $alerts;
+    }
+
+    /**
+     * Get alerts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAlerts()
+    {
+        $alerts = array();
+        if (!$this->alerts)
+            return $alerts;
+        foreach ($this->alerts as $alert) {
+            if (!$alert->getDeleted()) {
+                $alerts[] = $alert;
+            }
+        }
+
+        return $alerts;
+    }
+
+    /**
+     * Get open alerts
+     *
+     * @return array
+     */
+    public function getOpenAlerts()
+    {
+        $alerts     = $this->getAlerts();
+        $openAlerts = array();
+        foreach ($alerts as $alert) {
+            if ($alert->getStatus() === Alert::STATUS_NEW) {
+                $openAlerts[] = $alert;
+            }
+        }
+
+        return $openAlerts;
+    }
+
+    public function getCheckListsBadge()
+    {
+        $badge             = '';
+        $lastInspectionDay = $this->getLastInspectionDay();
+        $now               = time();
+        $delta             = $now - $lastInspectionDay;
+        $days              = floor($delta / 60 / 60 / 24);
+        if ($days) {
+            $badge = $days . ' Days Since Last';
+        }
+
+        return $badge;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFields()
+    {
+        $em    = App::getEntityManager();
+        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\VehicleField al WHERE al.vehicle = ?1');
+        $query->setParameter(1, $this);
+
+        $items = $query->getResult();
+
+        $getFieldsIds = function ($items) {
+            $fieldsIds = array();
+            foreach ($items as $item) {
+                if ($item->getParent() != null) {
+                    $fieldsIds[] = $item->getId();
+                }
+            }
+
+            return $fieldsIds;
+        };
+
+        $findParentKey = function ($item, $fieldsIds) use (&$findParentKey) {
+            $parentId = $item->getParent() ? $item->getParent()->getId() : null;
+            if (!$parentId)
+                return null;
+
+            return (in_array($parentId, $fieldsIds)) ? $parentId : $findParentKey($item->getParent(), $fieldsIds);
+        };
+
+        $fieldsIds = $getFieldsIds($items);
+
+        $fields = array();
+        foreach ($items as $item) {
+            $field = array();
+            if ($item->getParent() != null) {
+                $parentId               = $item->getParent()->getId();
+                $field['id']            = $item->getId();
+                $field['title']         = $item->getTitle();
+                $field['type']          = $item->getType();
+                $field['default_value'] = $item->getDefaultValue();
+                if (in_array($parentId, $fieldsIds)) {
+                    $parentKey                    = $findParentKey($item, array_keys($fields));
+                    $fields[$parentKey]['data'][] = $field;
+                } else {
+                    $fields[$item->getId()] = $field;
+                }
+            }
+        }
+
+        $result = array();
+        foreach ($fields as $field) {
+            $row                  = array();
+            $row['id']            = $field['id'];
+            $row['title']         = $field['title'];
+            $row['type']          = $field['type'];
+            $row['default_value'] = $field['default_value'];
+            $result[]             = $row;
+            if (isset($field['data'])) {
+                $result = array_merge($result, $field['data']);
+            }
+        }
+
+        //        $fields = array();
+        //
+        //        foreach($items as $item){
+        //            $field = array();
+        //            if($item->getParent() != NULL){
+        //                $field['id'] = $item->getId();
+        //                $field['title'] = $item->getTitle();
+        //                $field['type'] = $item->getType();
+        //                $field['default_value'] = $item->getDefaultValue();
+        //                $fields[] = $field;
+        //            }
+        //        }
+
+        return $result;
+    }
+
     public function getExportData($from, $to) {
 
-        $config = \SafeStartApi\Application::getConfig();
+        $config = App::getConfig();
         $humanize = function($world) {
             return ucfirst(preg_replace('~(?<=\\w)([A-Z])|[_-]+~', ' $1', $world));
         };
 
         $to->modify('+1 day');
 
-        $em = \SafeStartApi\Application::getEntityManager();
+        $em = App::getEntityManager();
         $qb = $em->createQueryBuilder();
         $qb->select('e')
             ->from('SafeStartApi\Entity\CheckList', 'e')
@@ -358,7 +1381,7 @@ class Vehicle extends BaseEntity
      */
     public function getNextServiceDay()
     {
-        $config = \SafeStartApi\Application::getConfig();
+        $config = App::getConfig();
         $currentDate = new \DateTime();
         $checkLists = $this->getCheckLists();
         if (sizeof($checkLists) < 2)
@@ -421,7 +1444,7 @@ class Vehicle extends BaseEntity
         }
 
         if ($serviceDate !== 0) {
-            $config = \SafeStartApi\Application::getConfig();
+            $config = App::getConfig();
             $date = date($config['params']['date_format'], $serviceDate);
         }
         /* end second variant. */
@@ -459,7 +1482,7 @@ class Vehicle extends BaseEntity
                  $averageNextServiceSec = $averageNextServiceSec2;
              }
              if (!empty($averageNextServiceSec)) {
-                 $config = \SafeStartApi\Application::getConfig();
+                 $config = App::getConfig();
                  $date = date($config['params']['date_format'], time() + $averageNextServiceSec);
              }
          }
@@ -534,96 +1557,32 @@ class Vehicle extends BaseEntity
     }
 
     /**
-     * @return int
-     */
-    public function getNetServiceDueHours()
-    {
-        //todo: calculate next service km
-        return $this->serviceDueHours;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNetServiceDueKms()
-    {
-        return $this->serviceDueKm;
-    }
-
-    /**
+     * @param \DateTime $from
+     * @param \DateTime $to
      * @return array
      */
-    public function getMenuItems()
+    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null, $export = false)
     {
-        $menuItems = array();
-        $user      = \SafeStartApi\Application::getCurrentUser();
-        if ($user) {
-            $menuItems[] = array(
-                'id'     => $this->getId() . '-info',
-                'action' => 'info',
-                'text'   => 'Current Information',
-                'leaf'   => true,
-            );
-            $menuItems[] = array(
-                'id'     => $this->getId() . '-fill-checklist',
-                'action' => 'fill-checklist',
-                'text'   => 'Perform An Inspection',
-                'leaf'   => true,
-            );
+        //if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
+        //if (!$to) $to = new \DateTime();
+        $alerts = array();
 
-            if (count($this->getAlerts()) > 0) {
-                $menuItems[] = array(
-                    'id'      => $this->getId() . '-alerts',
-                    'action'  => 'alerts',
-                    'text'    => 'Alerts',
-                    'counter' => count($this->getOpenAlerts()),
-                    'leaf'    => true,
-                );
-            }
-            if (count($this->getCheckLists()) > 0) {
-                $menuItems[] = array(
-                    'id'     => $this->getId() . '-inspections',
-                    'action' => 'inspections',
-                    'text'   => 'Previous Inspections',
-                    // 'counter' => count($this->getCheckLists()),
-                    'badge'  => $this->getCheckListsBadge(),
-                    'leaf'   => true
-                );
-            }
-            if (count($this->getCheckLists()) > 0) {
-                $menuItems[] = array(
-                    'id'     => $this->getId() . '-report',
-                    'action' => 'report',
-                    'text'   => 'Reporting',
-                    'leaf'   => true,
-                );
-            }
-            switch ($user->getRole()) {
-                case 'superAdmin':
-                case 'companyAdmin':
-                case 'companyManager':
-                    $menuItems[] = array(
-                        'id'     => $this->getId() . '-update-checklist',
-                        'action' => 'update-checklist',
-                        'text'   => 'Manage Checklists',
-                        'leaf'   => true,
-                    );
-                    $menuItems[] = array(
-                        'id'     => $this->getId() . '-users',
-                        'action' => 'users',
-                        'text'   => 'Manage Users',
-                        'leaf'   => true,
-                    );
-                    $menuItems[] = array(
-                        'id'     => $this->getId() . '-update-vehicleField',
-                        'action' => 'update-field',
-                        'text'   => 'Manage Vehicle Fields',
-                        'leaf'   => true,
-                    );
-                    break;
+        $em    = App::getEntityManager();
+        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\Alert al WHERE al.vehicle = ?1 AND al.deleted = 0 AND al.update_date >= :from AND al.update_date <= :to  ORDER BY al.update_date DESC');
+        $query->setParameter(1, $this)
+            ->setParameter('from', $from)
+            ->setParameter('to', $to);
+
+        $items = $query->getResult();
+        foreach ($items as $item) {
+            if ($export) {
+                $alerts[] = $item->toExportArray();
+            } else {
+                $alerts[] = $item->toArray();
             }
         }
-        return $menuItems;
+
+        return $alerts;
     }
 
     /**
@@ -634,7 +1593,7 @@ class Vehicle extends BaseEntity
 
         $inspections = array();
 
-        $sl = \SafeStartApi\Application::getCurrentControllerServiceLocator();
+        $sl = App::getCurrentControllerServiceLocator();
         $em = $sl->get('Doctrine\ORM\EntityManager');
 
         $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 ORDER BY cl.update_date DESC');
@@ -645,12 +1604,12 @@ class Vehicle extends BaseEntity
             foreach ($items as $checkList) {
                 $checkListData = array();
 
-                $checkListData['id']            = "checklist-" . $checkList->getId();
+                $checkListData['id']            = 'checklist-' . $checkList->getId();
                 $checkListData['checkListId']   = $checkList->getId();
                 $checkListData['checkListHash'] = $checkList->getHash();
                 $checkListData['action']        = 'check-list';
-                $config                         = \SafeStartApi\Application::getConfig();
-                $checkListData['text']          = $checkList->getCreationDate()->format($config['params']['date_format'] . " " . $config['params']['time_format']);
+                $config                         = App::getConfig();
+                $checkListData['text']          = $checkList->getCreationDate()->format($config['params']['date_format'] . ' ' . $config['params']['time_format']);
                 $checkListData['leaf']          = true;
 
                 $inspections[] = $checkListData;
@@ -660,63 +1619,12 @@ class Vehicle extends BaseEntity
         return $inspections;
     }
 
-    /**
-     * Set expiryDate
-     *
-     * @param \DateTime $expiryDate
-     * @return Company
-     */
-    public function setExpiryDate($expiryDate)
-    {
-        $this->expiryDate = $expiryDate;
-
-        return $this;
-    }
-
-    /**
-     * Get expiryDate
-     *
-     * @return \DateTime
-     */
-    public function getExpiryDate()
-    {
-        return $this->expiryDate ? $this->expiryDate->getTimestamp() : (
-            $this->company ? $this->company->getExpiryDate() : null
-        );
-    }
-
-
-    /**
-     * @return mixed|null
-     */
-    public function getLastInspection()
-    {
-        if (!empty($this->checkLists)) {
-            return $this->checkLists->last();
-        } else {
-            return null;
-        }
-    }
-
     public function getPrevInspectionDay()
     {
         if (count($this->checkLists) < 2)
             return null;
 
         return $this->checkLists[count($this->checkLists) - 2]->getCreationDate()->getTimestamp();
-    }
-
-    /**
-     * @return null
-     */
-    public function getLastInspectionDay()
-    {
-        $inspection = $this->getLastInspection();
-        if ($inspection) {
-            return $inspection->getCreationDate()->getTimestamp();
-        }
-
-        return null;
     }
 
     /**
@@ -733,7 +1641,7 @@ class Vehicle extends BaseEntity
         $to->modify('tomorrow');
         $to->modify('1 second ago');
 
-        $em    = \SafeStartApi\Application::getEntityManager();
+        $em    = App::getEntityManager();
         $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
         $query->setParameter(1, $this)
             ->setParameter('from', $from)
@@ -787,35 +1695,6 @@ class Vehicle extends BaseEntity
     }
 
     /**
-     * @param \DateTime $from
-     * @param \DateTime $to
-     * @return array
-     */
-    public function getAlertsByPeriod(\DateTime $from = null, \DateTime $to = null, $export = false)
-    {
-        //if (!$from) $from = new \DateTime(date('Y-m-d', time() - 30 * 24 * 60 * 60));
-        //if (!$to) $to = new \DateTime();
-        $alerts = array();
-
-        $em    = \SafeStartApi\Application::getEntityManager();
-        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\Alert al WHERE al.vehicle = ?1 AND al.deleted = 0 AND al.update_date >= :from AND al.update_date <= :to  ORDER BY al.update_date DESC');
-        $query->setParameter(1, $this)
-            ->setParameter('from', $from)
-            ->setParameter('to', $to);
-
-        $items = $query->getResult();
-        foreach ($items as $item) {
-            if ($export) {
-                $alerts[] = $item->toExportArray();
-            } else {
-                $alerts[] = $item->toArray();
-            }
-        }
-
-        return $alerts;
-    }
-
-    /**
      * @return array
      */
     public function getCurrentDayOdometerUsage()
@@ -825,11 +1704,11 @@ class Vehicle extends BaseEntity
             'hours' => 0,
         );
 
-        $em = \SafeStartApi\Application::getEntityManager();
+        $em = App::getEntityManager();
 
-        $beginOfDay = strtotime("midnight", time());
-        $endOfDay   = strtotime("tomorrow", $beginOfDay);
-        $startDay   = strtotime("midnight", time()) - 24 * 60 * 60;
+        $beginOfDay = strtotime('midnight', time());
+        $endOfDay   = strtotime('tomorrow', $beginOfDay);
+        $startDay   = strtotime('midnight', time()) - 24 * 60 * 60;
         $from       = new \DateTime(date('Y-m-d', $beginOfDay));
         $start      = new \DateTime(date('Y-m-d', $startDay));
         $to         = new \DateTime(date('Y-m-d', $endOfDay));
@@ -844,8 +1723,8 @@ class Vehicle extends BaseEntity
         if (!count($items)) {
             $query = $em->createQuery('SELECT cl FROM SafeStartApi\Entity\CheckList cl WHERE cl.vehicle = ?1 AND cl.deleted = 0 AND cl.update_date >= :from AND  cl.update_date <= :to  ORDER BY cl.update_date DESC');
             $query->setParameter(1, $this)
-            ->setParameter('from', $from)
-            ->setParameter('to', $to);
+                ->setParameter('from', $from)
+                ->setParameter('to', $to);
             $items = $query->getResult();
 
             if (count($items) < 2)
@@ -876,761 +1755,6 @@ class Vehicle extends BaseEntity
         );
 
         return $usage;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCurrentOdometerKms()
-    {
-        return (float)($this->currentOdometerKms ? $this->currentOdometerKms : 0);
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setCurrentOdometerKms($value)
-    {
-        $this->currentOdometerKms = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCurrentOdometerHours()
-    {
-        return (float)($this->currentOdometerHours ? $this->currentOdometerHours : 0);
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setCurrentOdometerHours($value)
-    {
-        $this->currentOdometerHours = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getInspectionDueKms()
-    {
-        return (int)($this->inspectionDueKms ? $this->inspectionDueKms : 500);
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setInspectionDueKms($value)
-    {
-        $this->inspectionDueKms = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getInspectionDueHours()
-    {
-        return (int)($this->inspectionDueHours ? $this->inspectionDueHours : 24);
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setInspectionDueHours($value)
-    {
-        $this->inspectionDueHours = $value;
-
-        return $this;
-    }
-
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set type
-     *
-     * @param string $type
-     * @return Vehicle
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set plantId
-     *
-     * @param string $plantId
-     * @return Vehicle
-     */
-    public function setPlantId($plantId)
-    {
-        $this->plantId = strtoupper($plantId);
-
-        return $this;
-    }
-
-    /**
-     * Get plantId
-     *
-     * @return string
-     */
-    public function getPlantId()
-    {
-        return $this->plantId;
-    }
-
-    /**
-     * Set vehicleName
-     *
-     * @param string $vehicleName
-     * @return Vehicle
-     */
-    public function setTitle($vehicleName)
-    {
-        $this->title = $vehicleName;
-
-        return $this;
-    }
-
-    /**
-     * Get vehicleName
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set projectName
-     *
-     * @param string $projectName
-     * @return Vehicle
-     */
-    public function setProjectName($projectName)
-    {
-        $this->projectName = $projectName;
-
-        return $this;
-    }
-
-    /**
-     * Get projectName
-     *
-     * @return string
-     */
-    public function getProjectName()
-    {
-        return $this->projectName;
-    }
-
-    /**
-     * Set projectNumber
-     *
-     * @param string $projectNumber
-     * @return Vehicle
-     */
-    public function setProjectNumber($projectNumber)
-    {
-        $this->projectNumber = $projectNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get projectNumber
-     *
-     * @return string
-     */
-    public function getProjectNumber()
-    {
-        return $this->projectNumber;
-    }
-
-    /**
-     * Set serviceDueHours
-     *
-     * @param float $serviceDueHours
-     * @return Vehicle
-     */
-    public function setServiceDueHours($serviceDueHours)
-    {
-        $this->serviceDueHours = $serviceDueHours;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceDueHours
-     *
-     * @return float
-     */
-    public function getServiceDueHours()
-    {
-        return (float)$this->serviceDueHours;
-    }
-
-    /**
-     * Set serviceDueKm
-     *
-     * @param float $serviceDueKm
-     * @return Vehicle
-     */
-    public function setServiceDueKm($serviceDueKm)
-    {
-        $this->serviceDueKm = $serviceDueKm;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceDueKm
-     *
-     * @return float
-     */
-    public function getServiceDueKm()
-    {
-        return (float)$this->serviceDueKm;
-    }
-
-    /* --- */
-    /**
-     * Set serviceThresholdHours
-     *
-     * @param float $serviceThresholdHours
-     * @return Vehicle
-     */
-    public function setServiceThresholdHours($serviceThresholdHours)
-    {
-        $this->serviceThresholdHours = $serviceThresholdHours;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceThresholdHours
-     *
-     * @return float
-     */
-    public function getServiceThresholdHours()
-    {
-        return (float)$this->serviceThresholdHours;
-    }
-
-    /**
-     * Set serviceThresholdKm
-     *
-     * @param float $serviceThresholdKm
-     * @return Vehicle
-     */
-    public function setServiceThresholdKm($serviceThresholdKm)
-    {
-        $this->serviceThresholdKm = $serviceThresholdKm;
-
-        return $this;
-    }
-
-    /**
-     * Get serviceThresholdKm
-     *
-     * @return float
-     */
-    public function getServiceThresholdKm()
-    {
-        return (float)$this->serviceThresholdKm;
-    }
-
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return Vehicle
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-
-        return $this;
-    }
-
-    /**
-     * Get enabled
-     *
-     * @return boolean
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
-
-    /**
-     * Set deleted
-     *
-     * @param boolean $deleted
-     * @return Vehicle
-     */
-    public function setDeleted($deleted)
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    /**
-     * Get deleted
-     *
-     * @return boolean
-     */
-    public function getDeleted()
-    {
-        return $this->deleted;
-    }
-
-    /**
-     * Set useKms
-     *
-     * @param boolean $useKms
-     * @return Vehicle
-     */
-    public function setUseKms($useKms)
-    {
-        $this->useKms = $useKms;
-
-        return $this;
-    }
-
-    /**
-     * Get useKms
-     *
-     * @return boolean
-     */
-    public function getUseKms()
-    {
-        return $this->useKms;
-    }
-
-    /**
-     * Set useHours
-     *
-     * @param boolean $useHours
-     * @return Vehicle
-     */
-    public function setUseHours($useHours)
-    {
-        $this->useHours = $useHours;
-
-        return $this;
-    }
-
-    /**
-     * Get useHours
-     *
-     * @return boolean
-     */
-    public function getUseHours()
-    {
-        return $this->useHours;
-    }
-
-    /**
-     * Set company
-     *
-     * @param \SafeStartApi\Entity\Company $company
-     * @return Vehicle
-     */
-    public function setCompany(\SafeStartApi\Entity\Company $company = null)
-    {
-        $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * Get company
-     *
-     * @return \SafeStartApi\Entity\Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * Add responsible
-     *
-     * @param \SafeStartApi\Entity\User $responsible
-     * @return Vehicle
-     */
-    public function addResponsibleUser(\SafeStartApi\Entity\User $responsible)
-    {
-        $this->responsibleUsers[] = $responsible;
-
-        return $this;
-    }
-
-    /**
-     * Remove responsible
-     *
-     * @param \SafeStartApi\Entity\User $responsible
-     */
-    public function removeResponsibleUser(\SafeStartApi\Entity\User $responsible)
-    {
-        $this->responsibleUsers->removeElement($responsible);
-    }
-
-    /**
-     *
-     */
-    public function removeResponsibleUsers()
-    {
-        if (empty($this->responsibleUsers))
-            return true;
-        $cache = \SafeStartApi\Application::getCache();
-        $users = clone $this->responsibleUsers;
-        foreach ($users as $user) {
-            $cashKey = "getUserVehiclesList" . $user->getId();
-            if ($cache->hasItem($cashKey))
-                $cache->removeItem($cashKey);
-            $this->responsibleUsers->removeElement($user);
-        }
-        $this->responsibleUsers->clear();
-        $this->responsibleUsers = null;
-
-        return true;
-    }
-
-    /**
-     * Get responsible
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getResponsibleUsers()
-    {
-        $users = new \Doctrine\Common\Collections\ArrayCollection();
-        if (!$this->responsibleUsers)
-            return $users;
-        foreach ($this->responsibleUsers as $user) {
-            if (!$user->getDeleted() && $user->getEnabled()) {
-                $users->add($user);
-            }
-        }
-
-        return $users;
-    }
-
-    /**
-     * Add users
-     *
-     * @param \SafeStartApi\Entity\User $users
-     * @return Vehicle
-     */
-    public function addUser(\SafeStartApi\Entity\User $users)
-    {
-        $this->users[] = $users;
-
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param \SafeStartApi\Entity\User $users
-     */
-    public function removeUser(\SafeStartApi\Entity\User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     *
-     */
-    public function removeUsers()
-    {
-        if (empty($this->users))
-            return true;
-        $cache = \SafeStartApi\Application::getCache();
-        foreach ($this->users as $user) {
-            $cashKey = "getUserVehiclesList" . $user->getId();
-            if ($cache->hasItem($cashKey))
-                $cache->removeItem($cashKey);
-        }
-        $this->users->clear();
-        $this->users = null;
-
-        return true;
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUsers()
-    {
-        $users = new \Doctrine\Common\Collections\ArrayCollection();
-        if (!$this->users)
-            return $users;
-        foreach ($this->users as $user) {
-            if (!$user->getDeleted() && $user->getEnabled()) {
-                $users->add($user);
-            }
-        }
-
-        return $users;
-    }
-
-    /**
-     * Add fields
-     *
-     * @param \SafeStartApi\Entity\Field $fields
-     * @return Vehicle
-     */
-    public function addField(\SafeStartApi\Entity\Field $fields)
-    {
-        $this->fields[] = $fields;
-
-        return $this;
-    }
-
-    /**
-     * Remove fields
-     *
-     * @param \SafeStartApi\Entity\Field $fields
-     */
-    public function removeField(\SafeStartApi\Entity\Field $fields)
-    {
-        $this->fields->removeElement($fields);
-    }
-
-    /**
-     * Get fields
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Add checklists
-     *
-     * @param \SafeStartApi\Entity\CheckList $checklist
-     * @return Company
-     */
-    public function addCheckList(\SafeStartApi\Entity\CheckList $checklist)
-    {
-        $this->checkLists[] = $checklist;
-
-        return $this;
-    }
-
-    /**
-     * Remove checklists
-     *
-     * @param \SafeStartApi\Entity\CheckList $checklist
-     */
-    public function removeCheckList(\SafeStartApi\Entity\CheckList $checklist)
-    {
-        $this->checkLists->removeElement($checklist);
-    }
-
-    /**
-     * Get checklists
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCheckLists()
-    {
-        $alerts = array();
-        if (!$this->checkLists)
-            return $alerts;
-        foreach ($this->checkLists as $alert) {
-            if (!$alert->getDeleted()) {
-                $alerts[] = $alert;
-            }
-        }
-
-        return $alerts;
-    }
-
-    /**
-     * Remove checklists
-     */
-    public function removeCheckLists()
-    {
-        $this->checkLists->clear();
-    }
-
-    /**
-     * Add alert
-     *
-     * @param \SafeStartApi\Entity\Alert $alert
-     * @return Company
-     */
-    public function addAlert(\SafeStartApi\Entity\Alert $alert)
-    {
-        $this->alerts[] = $alert;
-
-        return $this;
-    }
-
-    /**
-     * Remove alert
-     *
-     * @param \SafeStartApi\Entity\Alert $alert
-     */
-    public function removeAlert(\SafeStartApi\Entity\Alert $alert)
-    {
-        $this->alerts->removeElement($alert);
-    }
-
-    /**
-     * Get alerts
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAlerts()
-    {
-        $alerts = array();
-        if (!$this->alerts)
-            return $alerts;
-        foreach ($this->alerts as $alert) {
-            if (!$alert->getDeleted()) {
-                $alerts[] = $alert;
-            }
-        }
-
-        return $alerts;
-    }
-
-    /**
-     * Get open alerts
-     *
-     * @return array
-     */
-    public function getOpenAlerts()
-    {
-        $alerts     = $this->getAlerts();
-        $openAlerts = array();
-        foreach ($alerts as $alert) {
-            if ($alert->getStatus() === \SafeStartApi\Entity\Alert::STATUS_NEW) {
-                $openAlerts[] = $alert;
-            }
-        }
-
-        return $openAlerts;
-    }
-
-    /**
-     * Remove alerts
-     */
-    public function removeAlerts()
-    {
-        $this->alerts->clear();
-    }
-
-    /**
-     * Set creation_date
-     *
-     * @param \DateTime $creationDate
-     * @return Vehicle
-     */
-    public function setCreationDate($creationDate)
-    {
-        $this->creation_date = $creationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get creation_date
-     *
-     * @return \DateTime
-     */
-    public function getCreationDate()
-    {
-        return $this->creation_date;
-    }
-
-    /**
-     * Set creation_date
-     *
-     * @param \DateTime $creationDate
-     * @return Vehicle
-     */
-    public function setWarrantyStartDate($creationDate)
-    {
-        $this->warranty_start_date = $creationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get creation_date
-     *
-     * @return \DateTime
-     */
-    public function getWarrantyStartDate()
-    {
-        return $this->warranty_start_date ? $this->warranty_start_date->getTimestamp() : null;
-    }
-
-
-    /**
-     * Set creation_date
-     *
-     * @param $creationDate
-     * @return Vehicle
-     */
-    public function setWarrantyStartOdometer($creationDate)
-    {
-        $this->warranty_start_odometer = $creationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get creation_date
-     *
-     * @return float
-     */
-    public function getWarrantyStartOdometer()
-    {
-        return $this->warranty_start_odometer;
     }
 
     /**
@@ -1673,7 +1797,7 @@ class Vehicle extends BaseEntity
         if (!$to)
             $to = new \DateTime();
 
-        $em = \SafeStartApi\Application::getEntityManager();
+        $em = App::getEntityManager();
 
         $fromTime = $from->getTimestamp();
         $toTime   = $to->getTimestamp();
@@ -1700,99 +1824,5 @@ class Vehicle extends BaseEntity
         }
 
         return $chart;
-    }
-
-    public function getCheckListsBadge()
-    {
-        $badge             = '';
-        $lastInspectionDay = $this->getLastInspectionDay();
-        $now               = time();
-        $delta             = $now - $lastInspectionDay;
-        $days              = floor($delta / 60 / 60 / 24);
-        if ($days) {
-            $badge = $days . ' Days Since Last';
-        }
-
-        return $badge;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCustomFields()
-    {
-
-        $em    = \SafeStartApi\Application::getEntityManager();
-        $query = $em->createQuery('SELECT al FROM SafeStartApi\Entity\VehicleField al WHERE al.vehicle = ?1');
-        $query->setParameter(1, $this);
-
-        $items = $query->getResult();
-
-        $getFieldsIds = function ($items) {
-            $fieldsIds = array();
-            foreach ($items as $item) {
-                if ($item->getParent() != null) {
-                    $fieldsIds[] = $item->getId();
-                }
-            }
-
-            return $fieldsIds;
-        };
-
-        $findParentKey = function ($item, $fieldsIds) use (&$findParentKey) {
-            $parentId = $item->getParent() ? $item->getParent()->getId() : null;
-            if (!$parentId)
-                return null;
-
-            return (in_array($parentId, $fieldsIds)) ? $parentId : $findParentKey($item->getParent(), $fieldsIds);
-        };
-
-        $fieldsIds = $getFieldsIds($items);
-
-        $fields = array();
-        foreach ($items as $item) {
-            $field = array();
-            if ($item->getParent() != null) {
-                $parentId               = $item->getParent()->getId();
-                $field['id']            = $item->getId();
-                $field['title']         = $item->getTitle();
-                $field['type']          = $item->getType();
-                $field['default_value'] = $item->getDefaultValue();
-                if (in_array($parentId, $fieldsIds)) {
-                    $parentKey                    = $findParentKey($item, array_keys($fields));
-                    $fields[$parentKey]['data'][] = $field;
-                } else {
-                    $fields[$item->getId()] = $field;
-                }
-            }
-        }
-
-        $result = array();
-        foreach ($fields as $field) {
-            $row                  = array();
-            $row['id']            = $field['id'];
-            $row['title']         = $field['title'];
-            $row['type']          = $field['type'];
-            $row['default_value'] = $field['default_value'];
-            $result[]             = $row;
-            if (isset($field['data'])) {
-                $result = array_merge($result, $field['data']);
-            }
-        }
-
-//        $fields = array();
-//
-//        foreach($items as $item){
-//            $field = array();
-//            if($item->getParent() != NULL){
-//                $field['id'] = $item->getId();
-//                $field['title'] = $item->getTitle();
-//                $field['type'] = $item->getType();
-//                $field['default_value'] = $item->getDefaultValue();
-//                $fields[] = $field;
-//            }
-//        }
-
-        return $result;
     }
 }

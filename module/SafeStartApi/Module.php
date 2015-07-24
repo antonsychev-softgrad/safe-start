@@ -300,8 +300,12 @@ class Module
                 },
                 'mail.transport' => function ($sm) {
                     $config = $sm->get('config');
-                    $transport = new \Zend\Mail\Transport\Smtp();
-                    $transport->setOptions(new \Zend\Mail\Transport\SmtpOptions($config['mail']['transport']['options']));
+                    if(isset($config['mail']['transport']['options']) && !empty($config['mail']['transport']['options'])) {
+                        $transport = new \Zend\Mail\Transport\Smtp();
+                        $transport->setOptions(new \Zend\Mail\Transport\SmtpOptions($config['mail']['transport']['options']));
+                    } else {
+                        $transport = new \Zend\Mail\Transport\Sendmail();
+                    }
 
                     return $transport;
                 },
