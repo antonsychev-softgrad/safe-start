@@ -288,6 +288,10 @@ Ext.define('SafeStartExt.view._panel.ManageChecklist', {
             field.set('parentId', parentField.get('id'));
         }
 
+        if (parentField.parentNode) {
+            field.set('iconCls', 'sfa-icon-leaf');
+        }
+
         parentField.appendChild(field);
         parentField.expand();
         this.down('treepanel').getSelectionModel().select([field]);

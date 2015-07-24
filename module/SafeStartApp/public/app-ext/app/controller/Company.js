@@ -391,6 +391,7 @@ Ext.define('SafeStartExt.controller.Company', {
 
     saveChecklistField: function (form) {
         var record = form.getRecord();
+        var parent = record.parentNode;
         SafeStartExt.Ajax.request({
             url: 'checklist/' + record.get('id') + '/update',
             data: record.getWriteData(),
@@ -401,7 +402,7 @@ Ext.define('SafeStartExt.controller.Company', {
                 }
                 record.modified = {};
                 record.endEdit();
-                form.up('SafeStartExtPanelManageChecklist').down('treepanel').getStore().load();
+                form.up('SafeStartExtPanelManageChecklist').down('treepanel').getStore().sort();
                 form.loadRecord(record);
             }
         });
@@ -430,7 +431,6 @@ Ext.define('SafeStartExt.controller.Company', {
                     success: function(result) {
                         // record.destroy();
                         parent.removeChild(record);
-                        form.up('SafeStartExtPanelManageChecklist').down('treepanel').getStore().load();
                         if (parent && parent.getDepth() != 0) {
                             form.up('SafeStartExtPanelManageChecklist').down('treepanel').getSelectionModel().select(parent);
                         }
