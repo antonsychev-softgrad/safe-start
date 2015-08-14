@@ -1360,9 +1360,6 @@ class Vehicle extends BaseEntity
             foreach($alerts as $alert) {
                 if($i++ == 0) {
                     array_splice($vehicleData, $alertColPos, 1, reset($alert));
-
-                    //var_dump($vehicleData, $alertColPos, reset($alert));
-
                     $results[] = $vehicleData;
                 } else {
                     $alert = array_pad($alert, -($alertColPos + 1), '');

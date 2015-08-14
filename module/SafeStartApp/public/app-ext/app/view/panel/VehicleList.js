@@ -100,14 +100,14 @@ Ext.define('SafeStartExt.view.panel.VehicleList', {
                     {
                         getState: function(timestamp) {
                             var current = new Date(timestamp * 1000);
-                            var today = new Date();
-                                today.setHours(0, 0, 0, 0);
+                            var halfday = new Date();
+                                halfday.setHours(halfday.getHours() - 12);
                             var week = new Date();
-                                week.setDate(today.getDate() - 7);
+                                week.setDate(week.getDate() - 7);
                             var cls = "sfa-inspection-";
-                            if(current > today)
+                            if(current > halfday)
                                 cls += 'success';
-                            else if(today >= current && current > week)
+                            else if(halfday >= current && current > week)
                                 cls += 'warning';
                             else
                                 cls += 'error';
