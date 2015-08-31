@@ -47,7 +47,7 @@ class IndexController extends RestController
 
             $this->answer = array(
                 array(
-                  'ver' => 'v1',
+                  'ver' => 'v2',
                   'latest' => true,
                   'url' => $url),
             );
