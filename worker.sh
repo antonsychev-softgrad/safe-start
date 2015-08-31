@@ -1,6 +1,6 @@
 #!/bin/bash
 
-queues=default,new_checklist_uploaded,new_email_checklist_uploaded
+queues=default,new_checklist_uploaded,new_email_checklist_uploaded,sync_db_payments,check_company_payments
 
 basedir=`dirname $0`
 cd $basedir
