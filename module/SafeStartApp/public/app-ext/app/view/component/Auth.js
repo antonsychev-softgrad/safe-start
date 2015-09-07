@@ -108,12 +108,12 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     fieldLabel: 'Username',
                     enableKeyEvents: true,
                     listeners: {
-                        keyup: function(textfield, eventObject){
-                            var btn = this.up('form').down('button[name=sign-in]');
-                            if (eventObject.getKey() == Ext.EventObject.ENTER) {
-                                btn.handler(btn);
-                            }
-                        },
+                        //keyup: function(textfield, eventObject){
+                        //    var btn = this.up('form').down('button[name=sign-in]');
+                        //    if (eventObject.getKey() == Ext.EventObject.ENTER) {
+                        //        btn.handler(btn);
+                        //    }
+                        //},
                         afterrender:function(cmp){
                             cmp.inputEl.set({
                                 autocomplete:'on'
@@ -131,12 +131,12 @@ Ext.define('SafeStartExt.view.component.Auth', {
                     fieldLabel: 'Password',
                     enableKeyEvents: true,
                     listeners: {
-                        keyup: function(textfield, eventObject){
-                            var btn = this.up('form').down('button[name=sign-in]');
-                            if (eventObject.getKey() == Ext.EventObject.ENTER) {
-                                btn.handler(btn);
-                            }
-                        },
+                        //keyup: function(textfield, eventObject){
+                        //    var btn = this.up('form').down('button[name=sign-in]');
+                        //    if (eventObject.getKey() == Ext.EventObject.ENTER) {
+                        //        btn.handler(btn);
+                        //    }
+                        //},
                         afterrender:function(cmp){
                             cmp.inputEl.set({
                                 autocomplete:'on'
