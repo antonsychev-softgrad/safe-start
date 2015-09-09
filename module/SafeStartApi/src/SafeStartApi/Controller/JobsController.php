@@ -2,6 +2,7 @@
 
 namespace SafeStartApi\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Console\Request as ConsoleRequest;
 use Zend\Mvc\MvcEvent;
@@ -555,7 +556,7 @@ class JobsController extends AbstractActionController
                         $adminForCompany->setAdmin(null);
                         $em->flush($adminForCompany);
                         $msg = sprintf(
-                            "[Conflict data] This user with email %s is admin for deleted company %s. Admin for company has been removed.",
+                            "[Conflict data] This user with email %s is admin for deleted company %s. \nAdmin for company has been removed.",
                             $user->getEmail(),
                             $adminForCompany->getTitle());
                         $this->logger->info($msg);

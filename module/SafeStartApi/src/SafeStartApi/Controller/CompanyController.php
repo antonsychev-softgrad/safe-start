@@ -254,7 +254,7 @@ class CompanyController extends RestrictedAccessRestController
         $vehicle->setServiceDueHours((int)$this->data->serviceDueHours);
         $vehicle->setServiceThresholdKm((int)$this->data->serviceThresholdKm);
         $vehicle->setServiceThresholdHours((int)$this->data->serviceThresholdHours);
-        $vehicle->setAutomaticSending($this->data->automaticSending);
+        $vehicle->setAutomaticSending((int)$this->data->automaticSending);
         if (isset($this->data->expiryDate) && !empty($this->data->expiryDate)) {
             $expiryDate = new \DateTime();
             $expiryDate->setTimestamp($this->data->expiryDate);
