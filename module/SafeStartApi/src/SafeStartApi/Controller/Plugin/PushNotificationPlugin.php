@@ -80,8 +80,12 @@ class PushNotificationPlugin extends AbstractPlugin
         foreach ((array)$ids as $id) {
             if (empty($id) || strlen($id) != self::PUSH_TOKEN_LENGTH) {
                 $logger->debug("Error: the token provided was not of the proper size");
+                $logger->debug(sprintf("Length of token: %s/%s", strlen((string)$id), self::PUSH_TOKEN_LENGTH));
                 continue;
             }
+
+            $this->logUserInfoByDeviceId($id);
+
             $done += $this->_ios($id, $msg, $badge);
         }
 
@@ -89,6 +93,20 @@ class PushNotificationPlugin extends AbstractPlugin
 
         return $done;
 
+    }
+
+    protected function logUserInfoByDeviceId($deviceId) {
+        $logger = $this->getController()->getServiceLocator()->get('PushLogger');
+        $em = $this->getController()->em;
+        $repository = $em->getRepository('SafeStartApi\Entity\User');
+        $user = $repository->findOneBy(array('deviceId' => $deviceId));
+        if($user) {
+            $logger->debug("User info: " . json_encode($user->toInfoArray()));
+        } else {
+            $logger->debug("User info: not found");
+        }
+
+        return $user;
     }
 
     private function _ios($token, $msg = '', $badge = 0)
