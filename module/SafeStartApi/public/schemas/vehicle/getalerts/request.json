@@ -1,0 +1,34 @@
+{
+    "description": "Get Alerts request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "period": {
+                    "description": "Get alerts for this period in seconds",
+                    "type": "integer",
+                    "required": false
+                },
+                "vehicleId": {
+                    "description": "Vehicle ID",
+                    "type": "integer",
+                    "required": false
+                }
+            }
+        }
+    }
+}

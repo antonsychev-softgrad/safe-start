@@ -1,14 +1,27 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for ZF2",
-    "license": "BSD-3-Clause",
+    "name": "safestart/api-and-web-panel",
+    "description": "Safe Start APP",
+    "license": "",
     "keywords": [
-        "framework",
-        "zf2"
+        "zf2",
+        ""
     ],
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": ">2.2.0rc1"
+        "zendframework/zendframework": "2.*",
+        "doctrine/doctrine-orm-module":"*@stable",
+        "zendframework/zend-developer-tools": "dev-master",
+        "rwoverdijk/assetmanager": "*",
+        "justinrainbow/json-schema": "~1.3",
+        "doctrine/data-fixtures": "*@dev",
+        "doctrine/common": "~2.3",
+        "doctrine/annotations": ">=1.0",
+        "doctrine/dbal": ">=2.4-dev",
+        "imagine/imagine": "*@dev",
+        "zendframework/zendpdf": "dev-develop",
+        "zendframework/zendservice-apple-apns": "1.*",
+        "zendframework/zendservice-google-gcm": "1.*",
+        "chrisboulton/php-resque": "1.2.x"
     }
 }

@@ -1,0 +1,76 @@
+{
+    "description": "User login response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "status": {
+                    "description": " HTTP status code",
+                    "type": "integer",
+                    "required": true
+                },
+                "errorCode": {
+                    "description": "If errorCode == 0 auth success",
+                    "type": "number",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "description": "Response data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "authToken": {
+                    "description": "Auth token should be set us X-Auth-Token in request header",
+                    "type": "string",
+                    "required": true
+                },
+                "userInfo": {
+                    "description": "User db data",
+                    "type": "object",
+                    "required": false,
+                    "properties": {
+                        "email": {
+                            "description": "User's email",
+                            "type": "string",
+                            "required": true
+                        },
+                        "username": {
+                            "description": "User's username",
+                            "type": "string",
+                            "required": true
+                        },
+                        "firstName": {
+                            "description": "User's first name",
+                            "type": "string",
+                            "required": false
+                        },
+                        "lastName": {
+                            "description": "User's last name",
+                            "type": "string",
+                            "required": false
+                        },
+                        "secondName": {
+                            "description": "User's second name",
+                            "type": "string",
+                            "required": false
+                        },
+                        "companyId": {
+                            "description": "Company Id",
+                            "type": "integer",
+                            "required": false
+                        }
+                    }
+                },
+                "errorMessage": {
+                    "type": "string",
+                    "required": false
+                }
+            }
+        }
+    }
+}

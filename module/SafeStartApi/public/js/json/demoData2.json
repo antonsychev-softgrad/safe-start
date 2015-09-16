@@ -1,0 +1,31 @@
+{
+    "type": "userData",
+    "name": "FIO",
+    "response": {
+        "firstName" : "Petrenko",
+        "lastName" : "Segey",
+        "age" : 28,
+        "adress" : {
+            "street": "Pushkina",
+            "build": 145,
+            "flat": 47
+        }
+    },
+    "success": {
+        "qqq" : "qqqQQQ",
+        "www" : "wwwWWW",
+        "eee" : 1234561,
+        "rrr" : {
+            "rrr1": "Pushkina",
+            "rrr2": 145,
+            "rrr3": 47,
+            "rrr4": {
+                "fff1": "fff1",
+                "fff2": "fff2",
+                "fff3": "fff3"
+            },
+            "qwerty": "qwerty"
+        }
+    }
+
+}

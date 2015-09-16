@@ -1,0 +1,55 @@
+Ext.define('SafeStartApp.model.VehicleInspection', {
+    extend: "Ext.data.Model",
+    config: {
+        fields: [{
+            name: 'checkListId', 
+            type: 'int'
+        }, {
+            name: 'title', 
+            type: 'string'
+        }, {
+            name: 'creationDate', 
+            type: 'datetime',
+            mapping: 'creation_date'
+        }, {
+            name: 'data',
+            type: 'auto'
+        }, {
+            name: 'gps',
+            type: 'string'
+        }, {
+            name: 'id',
+            type: 'number'
+        }, {
+            name: 'hash',
+            type: 'string'
+        }, {
+            name: 'odometerHours',
+            type: 'integer',
+            mapping: 'odometer_hours'
+        }, {
+            name: 'odometerKms',
+            type: 'integer',
+            mapping: 'odometer_kms'
+        }, {
+            name: 'serviceDueKm',
+            type: 'int',
+            defaultValue: 0
+        }, {
+            name: 'serviceDueHours',
+            type: 'int',
+            defaultValue: 0
+        }, {
+            name: 'warnings',
+            type: 'auto'
+        }, {
+            name: 'operator_name',
+            type: 'auto'
+        }],
+        associations: [{
+            type: 'hasOne',
+            model: 'SafeStartApp.model.Vehicle',
+            name: 'vehicle'
+        }]
+    }
+});

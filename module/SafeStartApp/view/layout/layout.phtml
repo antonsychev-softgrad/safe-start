@@ -1,0 +1,98 @@
+<?php echo $this->doctype(); ?>
+
+<?php $env = APP_ENV; ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Safe Start App')->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/favicon_16.ico'))
+                ->prependStylesheet($this->basePath() . '/css/app.css'); ?>
+
+        <script>
+            var SafeStartApp = <?php echo json_encode($this->appConfig); ?>,
+                SafeStartExt = SafeStartApp;
+        </script>
+
+         <?php
+            switch($env) {
+                case 'dev':
+                    if (isMobile()) {
+                        $microLoaderScript = 'development.js';
+                        $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    } else {
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/bootstrap.css');
+                        //$this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start-all.css'); // file not found
+                        $this->headLink()->appendStylesheet($this->basePath() . '/app-ext/resources/safe-start.css');
+                        $this->headScript()->appendFile($this->basePath() . '/app-ext/ext/ext-all.js');
+                        $this->headScript()->appendFile($this->basePath() . '/app-ext/app.js');
+                    }
+                    break;
+                case 'prod':
+                    $VER = 1.009;
+                    if (isMobile()) {
+//                        $S3URL = 'https://s3-us-west-2.amazonaws.com/safe-start/sencha-touch/build/v1.0/';
+//                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/app.css?ver='.$VER);
+//                        $this->headLink()->appendStylesheet($S3URL . 'resources/css/safe-start.css?ver='.$VER);
+//                        $this->headScript()->appendFile($S3URL . 'app.js?ver='.$VER);
+                        
+                        $pathToApp = '/build/production/SafeStartApp';
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
+                        $this->headLink()->appendStylesheet($this->basePath() . 'resources/css/app.css?ver='.$VER);
+                        $this->headLink()->appendStylesheet($this->basePath() . 'resources/css/safe-start.css?ver='.$VER);
+                        
+                    } else {
+                        $pathToApp = '/app-ext/build/production/SafeStartExt';
+                        $this->headScript()->appendFile($this->basePath() . $pathToApp . '/app.js?ver='.$VER);
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start-all.css');
+                        $this->headLink()->appendStylesheet($this->basePath() . $pathToApp . '/resources/safe-start.css?ver='.$VER);
+                    }
+                    break;
+                case 'testing':
+                    $microLoaderScript = 'testing.js';
+                    $this->headScript()->appendFile($this->basePath() . '/touch/microloader/' . $microLoaderScript);
+                    break;
+            }
+
+            function isIe9() {
+                $ieVersion = null;
+                if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false) {
+                    preg_match_all('/MSIE (\d+)/', $_SERVER['HTTP_USER_AGENT'], $matches);
+                    $ieVersion = $matches[1][0];
+                }
+                return $ieVersion && $ieVersion <= 9;
+            }
+
+            function isMobile() {
+                $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
+                if (stripos($ua, 'android') !== false
+                    || stripos($ua, 'ipod') !== false
+                    || stripos($ua, 'ipad') !== false 
+                    || stripos($ua, 'iphone') !== false
+                ) {
+                    return true;
+                }
+                return false;
+            }
+
+            echo $this->headScript();
+            echo $this->headLink();
+        ?>
+        <link href='http://fonts.googleapis.com/css?family=Archivo+Narrow' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <?php echo $this->content; ?>
+        <?php echo $this->inlineScript() ?>
+        <script type="text/javascript">
+            window.qbaka || (function(a,c){a.__qbaka_eh=a.onerror;a.__qbaka_reports=[];a.onerror=function(){a.__qbaka_reports.push(arguments);if(a.__qbaka_eh)try{a.__qbaka_eh.apply(a,arguments)}catch(b){}};a.onerror.qbaka=1;a.qbaka={report:function(){a.__qbaka_reports.push([arguments, new Error()]);},customParams:{},set:function(a,b){qbaka.customParams[a]=b},exec:function(a){try{a()}catch(b){qbaka.reportException(b)}},reportException:function(){}};var b=c.createElement("script"),e=c.getElementsByTagName("script")[0],d=function(){e.parentNode.insertBefore(b,e)};b.type="text/javascript";b.async=!0;b.src="//cdn.qbaka.net/reporting.js";"[object Opera]"==a.opera?c.addEventListener("DOMContentLoaded",d):d();qbaka.key="f871c55d966a7e14acce89fbf2ea7f9e"})(window,document);qbaka.options={autoStacktrace:1,trackEvents:1};
+        </script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+            google.load("maps", "3", {
+                other_params: "sensor=false"
+            });
+        </script>
+
+    </body>
+</html>

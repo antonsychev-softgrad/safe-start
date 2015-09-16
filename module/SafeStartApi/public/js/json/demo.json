@@ -1,0 +1,13 @@
+{
+    "title": "Данные о пользователях",
+    "description": "Данные о пользователя проекта, имеющих доступ к ядерным боеголовкам.",
+    "data": {
+        "request1": {
+            "url": "js/json/demoData1.json"
+        },
+        "request2": {
+            "url": "js/json/demoData2.json"
+        }
+    }
+
+}

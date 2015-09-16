@@ -1,0 +1,16 @@
+<?php
+
+$errorCode = $this->answer ? 0 : 2041;
+
+$output = array(
+    'meta' => array(
+        'status' => isset($this->statusCode) ? $this->statusCode : 200,
+        'errorCode' => isset($this->errorCode) ? $this->errorCode : $errorCode,
+    ),
+    'data' => isset($this->answer) ? $this->answer : array('errorMessage' => 'no content')
+);
+
+$this->getlogResponse($output);
+echo json_encode($output);
+
+

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Email Template</title>
+    <style type="text/css">
+        @font-face {
+            font-family: 'HelveticaNeueRegular';
+            src: url('<?php echo $this->emailStaticContentUrl; ?>font/helveticaneue.eot');
+            src: url('<?php echo $this->emailStaticContentUrl; ?>font/helveticaneue.eot') format('embedded-opentype'), url('<?php echo $this->emailStaticContentUrl; ?>font/helveticaneue.woff') format('woff'), url('<?php echo $this->emailStaticContentUrl; ?>font/helveticaneue.ttf') format('truetype'), url('<?php echo $this->emailStaticContentUrl; ?>font/helveticaneue.svg#HelveticaNeueRegular') format('svg');
+        }
+        body {
+            background: #e5e9ec;
+            font-size: 13.99px;
+            color: #8c9297;
+            font-family: 'HelveticaNeueRegular';
+        }
+        table td {
+            margin-top: -1px;
+        }
+        table {
+            border-collapse:collapse;
+        }
+        strong {
+            color: #4c5052;
+        }
+        ul li {
+            background: url("<?php echo $this->emailStaticContentUrl; ?>images/bullet.png") no-repeat scroll 0 9px transparent;
+            display: inline-block;
+            padding: 0 0 0 8px;
+        }
+        .footer a {
+            color: #8c9297;
+            text-decoration:underline;
+        }
+    </style>
+</head>
+
+<body>
+<table width="600" border="0" align="center">
+    <tr>
+        <td height="110" align="center" bgcolor="#e5e9ec"><a href="#" target="_blank"><img src="<?php echo $this->emailStaticContentUrl; ?>images/logo.png" width="222" height="59" alt="logo" /></a></td>
+    </tr>
+    <tr>
+        <td align="center" style="color:#2e7fb7; padding: 24px; border-radius: 20px 20px 0 0; background: #fafafa;"></td>
+    </tr>
+    <tr>
+        <td  bgcolor="#fff" style="padding:24px"><table width="500" border="0" align="center">
+                <tr><td> To reset your password, simply click the link: 
+                    <a href="<?php echo $this->siteUrl; ?>/api/user/resetpassword/<?php echo $recoveryToken;?>">Reset URL</a> </td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr><td><strong>Please note that the link will expire three hours after this email was sent.</strong>
+                <tr><td>&nbsp;</td></tr>
+                <tr> <td>If you have any queries, please send us an email at <a href="mailto:support@safestartinspections.com">support@safestartinspections.com. </a></td></tr>
+                <tr><td>&nbsp;</td></tr>
+                <tr> <td>Thanks, </td></tr>
+                <tr> <td>The Safe Start Inspections Team </td></tr>
+            </table></td>
+    </tr>
+    <tr>
+        <td align="left"><img src="<?php echo $this->emailStaticContentUrl; ?>images/footer.png" width="608" /></td>
+    <tr>
+        <td align="center" class="footer"><ul>
+                <li><a href="http://safestartinspections.com">Home</a></li>
+                <li><a href="http://safestartinspections.com/contact">Contact</a></li>
+                <li><a href="http://safestartinspections.com/privacy-policy">Privacy Policy</a></li>
+                <li><a href="http://safestartinspections.com/terms">Terms & Conditions</a></li>
+            </ul>
+</table>
+</body>
+</html>
+
+
+

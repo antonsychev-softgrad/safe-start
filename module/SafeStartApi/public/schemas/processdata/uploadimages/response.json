@@ -1,0 +1,60 @@
+{
+    "description": "Upload and create thumbnails image(s) response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "status": {
+                    "description": "HTTP status code",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "description": "File info",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "hash": {
+                    "description": "File name without extension (hash)",
+                    "type": "string",
+                    "required": true
+                },
+                "ext": {
+                    "description": "File name extension",
+                    "type": "string",
+                    "required": true
+                },
+                "type": {
+                    "description": "File name mimeType",
+                    "type": "string",
+                    "required": true
+                },
+                "sizes": {
+                    "description": "List of file thumb names",
+                    "type": "array",
+                    "required": true,
+                    "items": {
+                        "description": "Thumb params (thumbName - name for thumb params (e.g. full, medium, small, ...))",
+                        "type": "object",
+                        "required": true,
+                        "properties": {
+                            "thumbName": "Thumb params (e.g. 1024x768, 200x200, ...)",
+                            "type": "string",
+                            "required": true
+                        }
+                    }
+                },
+                "error": {
+                    "description": "Error message",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        }
+    }
+}

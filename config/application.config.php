@@ -1,9 +1,22 @@
 <?php
+defined('APP_ENV') || define('APP_ENV', 'dev');
+$env = APP_ENV;
+
+$modules =  array(
+    'DoctrineModule',
+    'AssetManager',
+    'DoctrineORMModule',
+    'SafeStartApp',
+    'SafeStartApi',
+);
+
+if ($env == 'dev') {
+ //   $modules[] = 'ZendDeveloperTools';
+}
+
 return array(
     // This should be an array of module namespaces used in the application.
-    'modules' => array(
-        'Application',
-    ),
+    'modules' => $modules,
 
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => array(
@@ -20,32 +33,23 @@ return array(
         // modules are loaded. These effectively override configuration
         // provided by modules themselves. Paths may use GLOB_BRACE notation.
         'config_glob_paths' => array(
-            'config/autoload/{,*.}{global,local}.php',
+            sprintf('config/autoload/{,*.}{global,%s,local}.php', $env)
         ),
 
-        // Whether or not to enable a configuration cache.
-        // If enabled, the merged configuration will be cached and used in
-        // subsequent requests.
-        //'config_cache_enabled' => $booleanValue,
+        // Use the $env value to determine the state of the flag
+        'config_cache_enabled' => ($env == 'prod'),
 
-        // The key used to create the configuration cache file name.
-        //'config_cache_key' => $stringKey,
+        'config_cache_key' => 'safe_start_api',
 
-        // Whether or not to enable a module class map cache.
-        // If enabled, creates a module class map cache which will be used
-        // by in future requests, to reduce the autoloading process.
-        //'module_map_cache_enabled' => $booleanValue,
+        // Use the $env value to determine the state of the flag
+        'module_map_cache_enabled' => ($env == 'prod'),
 
-        // The key used to create the class map cache file name.
-        //'module_map_cache_key' => $stringKey,
+        'module_map_cache_key' => 'safe_start_api_module_map',
 
-        // The path in which to cache merged configuration.
-        //'cache_dir' => $stringPath,
+        'cache_dir' => 'data/cache/modulecache',
 
-        // Whether or not to enable modules dependency checking.
-        // Enabled by default, prevents usage of modules that depend on other modules
-        // that weren't loaded.
-        // 'check_dependencies' => true,
+        // Use the $env value to determine the state of the flag
+        'check_dependencies' => ($env != 'prod'),
     ),
 
     // Used to create an own service manager. May contain one or more child arrays.

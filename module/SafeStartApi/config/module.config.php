@@ -1,0 +1,235 @@
+<?php
+
+require('routes.config.php');
+require('api.config.php');
+
+$general = array(
+    'router' => array(
+        'routes' => $routes
+    ),
+    'service_manager' => array(
+        'abstract_factories' => array(
+            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
+            'Zend\Log\LoggerAbstractServiceFactory',
+        ),
+        'aliases' => array(
+            'translator' => 'MvcTranslator',
+        ),
+    ),
+    'translator' => array(
+        'locale' => 'en_US',
+        'translation_file_patterns' => array(
+            array(
+                'type' => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern' => '%s.mo',
+            ),
+        ),
+    ),
+    'controllers' => array(
+        'invokables' => array(
+            'SafeStartApi\Controller\Index' => 'SafeStartApi\Controller\IndexController',
+            'SafeStartApi\Controller\Docs' => 'SafeStartApi\Controller\DocsController',
+            'SafeStartApi\Controller\Cron' => 'SafeStartApi\Controller\CronController',
+            'SafeStartApi\Controller\User' => 'SafeStartApi\Controller\UserController',
+            'SafeStartApi\Controller\WebPanel' => 'SafeStartApi\Controller\WebPanelController',
+            'SafeStartApi\Controller\Vehicle' => 'SafeStartApi\Controller\VehicleController',
+            'SafeStartApi\Controller\PublicVehicle' => 'SafeStartApi\Controller\PublicVehicleController',
+            'SafeStartApi\Controller\Doctrine' => 'SafeStartApi\Controller\DoctrineController',
+            'SafeStartApi\Controller\Resque' => 'SafeStartApi\Controller\ResqueController',
+            'SafeStartApi\Controller\Jobs' => 'SafeStartApi\Controller\JobsController',
+            'SafeStartApi\Controller\UserProfile' => 'SafeStartApi\Controller\UserProfileController',
+            'SafeStartApi\Controller\Admin' => 'SafeStartApi\Controller\AdminController',
+            'SafeStartApi\Controller\Company' => 'SafeStartApi\Controller\CompanyController',
+            'SafeStartApi\Controller\ProcessData' => 'SafeStartApi\Controller\ProcessDataController',
+            'SafeStartApi\Controller\Info' => 'SafeStartApi\Controller\InfoController',
+        ),
+    ),
+    'view_manager' => array(
+        'display_not_found_reason' => true,
+        'display_exceptions' => true,
+        'template_map' => array(
+            'ajax/layout' => __DIR__ . '/../view/ajax/layout.phtml',
+        ),
+        'template_path_stack' => array(
+            __DIR__ . '/../view',
+        ),
+    ),
+    'console' => array(
+        'router' => array(
+            'routes' => array(
+                'ping-api' => array(
+                    'options' => array(
+                        'route' => 'ping api [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'index'
+                        )
+                    )
+                ),
+                'run-sub-expiry-email-notify' => array(
+                    'options' => array(
+                        'route' => 'api email-notify',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'processSubExpiryEmailNotify'
+                        )
+                    )
+                ),
+                'run-sub-expiry-push-notify' => array(
+                    'options' => array(
+                        'route' => 'api push-notify',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'processSubExpiryPushNotify'
+                        )
+                    )
+                ),
+                'set-def-bd-data' => array(
+                    'options' => array(
+                        'route' => 'doctrine set-def-data [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Doctrine',
+                            'action' => 'setDefData'
+                        )
+                    )
+                ),
+                'run-php-resque' => array(
+                    'options' => array(
+                        'route' => 'resque start [--verbose|-v]',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Resque',
+                            'action' => 'start'
+                        )
+                    )
+                ),
+                'run-new-db-checklist-uploaded' => array(
+                    'options' => array(
+                        'route' => 'resque run new-db-checklist-uploaded --checkListId=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processNewDbCheckList'
+                        )
+                    )
+                ),
+                'run-new-email-checklist-uploaded' => array(
+                    'options' => array(
+                        'route' => 'resque run new-email-checklist-uploaded --checkListId= --emails=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processNewEmailCheckList'
+                        )
+                    )
+                ),
+                'run-checklist-resend' => array(
+                    'options' => array(
+                        'route' => 'resque run checklist-resend --checkListId= --emails=',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processCheckListResend'
+                        )
+                    )
+                ),
+                'run-ping-email' => array(
+                    'options' => array(
+                        'route' => 'resque run ping-email',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => ' pingEmail'
+                        )
+                    )
+                ),
+                'run-sync-db-payments' => array(
+                    'options' => array(
+                        'route' => 'resque run sync-db-payments',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processSyncThirdPartyDb'
+                        )
+                    )
+                ),
+                'run-check-company-payments' => array(
+                    'options' => array(
+                        'route' => 'resque run check-company-payments',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Jobs',
+                            'action' => 'processCheckCompanyPayments'
+                        )
+                    )
+                ),
+            ),
+        ),
+    ),
+    'doctrine' => array(
+        'driver' => array(
+            'application_entities' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/SafeStartApi/Entity')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'SafeStartApi\Entity' => 'application_entities'
+                )
+            )
+        ),
+        'authentication' => array(
+            'orm_default' => array(
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'SafeStartApi\Entity\User',
+                'credential_property' => 'password',
+                'credential_callable' => 'SafeStartApi\Entity\User::verifyPassword'
+            ),
+        )
+    ),
+    'asset_manager' => array(
+        'resolver_configs' => array(
+            'paths' => array(
+                'SafeStartApi' => __DIR__ . '/../public',
+            ),
+        ),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
+            'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
+            'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
+            'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',
+            'UploadPlugin' => 'SafeStartApi\Controller\Plugin\UploadPlugin',
+            'vehicleReportPdf' => 'SafeStartApi\Controller\Plugin\VehicleReportPdfPlugin',
+            'vehicleActionListPdf' => 'SafeStartApi\Controller\Plugin\VehicleActionListPdf',
+            'inspectionFaultPdf' => 'SafeStartApi\Controller\Plugin\InspectionFaultPdfPlugin',
+            'inspectionPdf' => 'SafeStartApi\Controller\Plugin\InspectionPdfPlugin',
+            'GetDataPlugin' => 'SafeStartApi\Controller\Plugin\GetDataPlugin',
+            'processAdditionalVehiclePlugin' => 'SafeStartApi\Controller\Plugin\ProcessAdditionalVehiclePlugin',
+            'queues' => 'SafeStartApi\Controller\Plugin\QueuePlugin',
+            'pushNotificationPlugin' => 'SafeStartApi\Controller\Plugin\PushNotificationPlugin',
+            'processChecklistPlugin' => 'SafeStartApi\Controller\Plugin\ProcessChecklistPlugin',
+            'ExportToCsvPlugin'=> 'SafeStartApi\Controller\Plugin\ExportToCsvPlugin',
+        )
+    ),
+    'session' => array(
+        'config'     => array(
+            'class'   => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name'             => 'SafeStartApi',
+                'save_path'        => __DIR__ . '/../../../data/sessions',
+
+                'use_cookies'      => true,
+                'use_only_cookies' => true,
+                'cookie_lifetime'  => 0,
+                'gc_probability'   => 1,
+                'gc_divisor'       => 1000, // gc_probability / gc_divisor = 1 => 100%
+                'gc_maxlifetime'   => 1440,
+                'use_trans_sid'    => false,
+            ),
+        ),
+        'storage'    => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
+);
+
+return array_merge($general, $api);
