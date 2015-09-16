@@ -1,0 +1,577 @@
+
+
+@include extjs-button-ui(
+    $ui: 'tab-large',
+
+    $border-radius: 3px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 0 0 0 0,
+    $text-padding: 0px 0px 0px 0px,
+
+    $background-color: transparent,
+    $background-color-over: transparent,
+    $background-color-focus: transparent,
+    $background-color-pressed: #292a2d,
+    $background-color-disabled: transparent,
+
+    $background-gradient: null,
+    $background-gradient-over: null,
+    $background-gradient-focus: null,
+    $background-gradient-pressed: null,
+    $background-gradient-disabled: null,
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 12px,
+    $font-size-over: 12px,
+    $font-size-focus: 12px,
+    $font-size-pressed: 12px,
+    $font-size-disabled: 12px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: 32px,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+.x-btn-tab-large-pressed {
+    @include box-shadow(inset 0px 0px 2px 1px rgba(24, 24, 24, 0.44));
+}
+
+@include extjs-button-ui(
+    $ui: 'green-large',
+
+    $border-radius: 9px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 14px 40px 14px 40px,
+    $text-padding: 0px 0px 0px 0px,
+
+    $background-color: #6C9804,
+    $background-color-over: #6C9804,
+    $background-color-focus: #6C9804,
+    $background-color-pressed: #628904,
+    $background-color-disabled: #6C9804,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 24px,
+    $font-size-over: 24px,
+    $font-size-focus: 24px,
+    $font-size-pressed: 24px,
+    $font-size-disabled: 24px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'green-medium',
+
+    $border-radius: 7px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 7px,
+    $text-padding: 30px,
+
+    $background-color: #6C9804,
+    $background-color-over: #6C9804,
+    $background-color-focus: #6C9804,
+    $background-color-pressed: #628904,
+    $background-color-disabled: #6C9804,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 18px,
+    $font-size-over: 18px,
+    $font-size-focus: 18px,
+    $font-size-pressed: 18px,
+    $font-size-disabled: 18px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: 18px,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'green-small',
+
+    $border-radius: 5px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 6px 20px 6px 20px,
+    $text-padding: 0px 0px 0px 0px,
+
+    $background-color: #6C9804,
+    $background-color-over: #6C9804,
+    $background-color-focus: #6C9804,
+    $background-color-pressed: #628904,
+    $background-color-disabled: #6C9804,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 14px,
+    $font-size-over: 14px,
+    $font-size-focus: 14px,
+    $font-size-pressed: 14px,
+    $font-size-disabled: 14px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+
+
+
+@include extjs-button-ui(
+    $ui: 'transparent-medium',
+
+    $border-radius: 0,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 3px 8px 3px 8px,
+    $text-padding: 0px 0px 0px 0px,
+
+    $background-color: transparent,
+    $background-color-over: transparent,
+    $background-color-focus: transparent,
+    $background-color-pressed: transparent,
+    $background-color-disabled: transparent,
+
+    $background-gradient: none,
+    $background-gradient-over: none,
+    $background-gradient-focus: none,
+    $background-gradient-pressed: none,
+    $background-gradient-disabled: none,
+
+    $color: #558FAC,
+    $color-over: #75AFCC,
+    $color-focus: #558FAC,
+    $color-pressed: #75AFCC,
+    $color-disabled: #C5DFEC,
+
+    $font-size: 18px,
+    $font-size-over: 18px,
+    $font-size-focus: 18px,
+    $font-size-pressed: 18px,
+    $font-size-disabled: 18px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'blue-medium',
+
+    $border-radius: 7px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 7px,
+    $text-padding: 30px,
+
+    $background-color: #3085B6,
+    $background-color-over: #3085B6,
+    $background-color-focus: #3085B6,
+    $background-color-pressed: #0062A7,
+    $background-color-disabled: #3085B6,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 18px,
+    $font-size-over: 18px,
+    $font-size-focus: 18px,
+    $font-size-pressed: 18px,
+    $font-size-disabled: 18px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: 18px,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'red-small',
+
+    $border-radius: 5px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 6px 20px 6px 20px,
+    $text-padding: 0px 0px 0px 0px,
+
+    $background-color: #C70505,
+    $background-color-over: #C70505,
+    $background-color-focus: #C70505,
+    $background-color-pressed: #C70505,
+    $background-color-disabled: #C70505,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 14px,
+    $font-size-over: 14px,
+    $font-size-focus: 14px,
+    $font-size-pressed: 14px,
+    $font-size-disabled: 14px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'red-medium',
+
+    $border-radius: 7px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 7px,
+    $text-padding: 30px,
+
+    $background-color: #C70505,
+    $background-color-over: #C70505,
+    $background-color-focus: #C70505,
+    $background-color-pressed: #C70505,
+    $background-color-disabled: #C70505,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 18px,
+    $font-size-over: 18px,
+    $font-size-focus: 18px,
+    $font-size-pressed: 18px,
+    $font-size-disabled: 18px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: 18px,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+@include extjs-button-ui(
+    $ui: 'red-large',
+
+    $border-radius: 9px,
+    $border-width: 0,
+
+    $border-color: transparent,
+    $border-color-over: transparent,
+    $border-color-focus: transparent,
+    $border-color-pressed: transparent,
+    $border-color-disabled: transparent,
+
+    $padding: 6px 40px 6px 40px,
+    $text-padding: 6px 0px 6px 0px,
+
+    $background-color: #C70505,
+    $background-color-over: #C70505,
+    $background-color-focus: #C70505,
+    $background-color-pressed: #C70505,
+    $background-color-disabled: #C70505,
+
+    $background-gradient: 'custom-button',
+    $background-gradient-over: 'custom-button-over',
+    $background-gradient-focus: 'custom-button-focus',
+    $background-gradient-pressed: 'custom-button-pressed',
+    $background-gradient-disabled: 'custom-button',
+
+    $color: #FFF,
+    $color-over: #FFF,
+    $color-focus: #FFF,
+    $color-pressed: #FFF,
+    $color-disabled: #FFF,
+
+    $font-size: 24px,
+    $font-size-over: 24px,
+    $font-size-focus: 24px,
+    $font-size-pressed: 24px,
+    $font-size-disabled: 24px,
+
+    $font-weight: normal,
+    $font-weight-over: normal,
+    $font-weight-focus: normal,
+    $font-weight-pressed: normal,
+    $font-weight-disabled: normal,
+
+    $font-family: $button-small-font-family,
+    $font-family-over: $button-small-font-family-over,
+    $font-family-focus: $button-small-font-family-focus,
+    $font-family-pressed: $button-small-font-family-pressed,
+    $font-family-disabled: $button-small-font-family-disabled,
+
+    $icon-size: $button-small-icon-size,
+    $glyph-color: $button-default-glyph-color,
+    $glyph-opacity: $button-default-glyph-opacity,
+    $arrow-width: $button-small-arrow-width,
+    $arrow-height: $button-small-arrow-height,
+    $split-width: $button-small-split-width,
+    $split-height: $button-small-split-height,
+    $opacity-disabled: $button-opacity-disabled,
+    $inner-opacity-disabled: $button-inner-opacity-disabled
+);
+
+.x-btn-blue-medium, .x-btn-green-medium, .x-btn-red-medium {
+    -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25), inset 0px 2px 0px 0px rgba(255,255,255,0.4);
+    -moz-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25),  inset 0px 2px 0px 0px rgba(255,255,255,0.4);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25),  inset 0px 2px 0px 0px rgba(255,255,255,0.4);
+}
+
+// .x-toolbar > .x-box-inner {
+//     overflow: visible;
+// }
+

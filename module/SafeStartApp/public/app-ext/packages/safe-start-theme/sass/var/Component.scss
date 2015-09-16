@@ -1,0 +1,38 @@
+$font-family: 'Archivo Narrow',"Helvetica-Neue", Helvetica, "BBAlpha Sans", sans-serif;
+
+$border-layout-ct-background-color: #e8e8e8;
+
+
+$form-field-height: 30px;
+$form-field-font-size: 16px;
+$form-label-font-size: 16px;
+$form-label-font-color: #333;
+$form-field-text-color: #333;
+
+$form-toolbar-label-color: #1368a4;
+
+
+
+
+@function linear-gradient-custom-button($direction, $bg-color) {
+    @return linear-gradient($direction, color_stops(
+        // mix(#fff, $bg-color, 40%),
+        $bg-color,
+        $bg-color - #343F32 100%
+    ));
+}
+
+@function linear-gradient-custom-button-over($direction, $bg-color) {
+    @return linear-gradient-custom-button($direction, $bg-color);
+}
+
+@function linear-gradient-custom-button-pressed($direction, $bg-color) {
+    @return linear-gradient($direction, color_stops(
+        $bg-color,
+        mix(#fff, $bg-color, 10%) 4%
+    ));
+}
+
+@function linear-gradient-custom-button-disabled($direction, $bg-color) {
+    @return linear-gradient-custom-button($direction, $bg-color);
+}

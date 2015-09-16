@@ -1,0 +1,39 @@
+{
+    "description": "Send contact",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "name": {
+                    "description": "Name",
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
+                    "description": "Email",
+                    "type": "string",
+                    "required": true
+                },
+                "message": {
+                    "description": "Message",
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

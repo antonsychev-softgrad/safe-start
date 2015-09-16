@@ -1,0 +1,18 @@
+{
+    "description": "Get image by UserId and FileName response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "status": {
+                    "description": "HTTP status code",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        }
+    }
+}

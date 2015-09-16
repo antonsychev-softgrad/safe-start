@@ -1,0 +1,99 @@
+{
+    "description": "Get Alerts response",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Response meta",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "status": {
+                    "description": "HTTP status code",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        },
+        "data": {
+            "description": "Response data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "alerts": {
+                    "description": "Alerts",
+                    "type": "array",
+                    "required": false,
+                    "items": {
+                        "description": "Alert",
+                        "type": "object",
+                        "required": false,
+                        "properties": {
+                            "id": {
+                                "description": "Alert id",
+                                "type": "integer",
+                                "required": true
+                            },
+                            "status": {
+                                "description": "Status",
+                                "type": "string",
+                                "required": true
+                            },
+                            "title": {
+                                "description": "Title",
+                                "type": "string",
+                                "required": true
+                            },
+                            "description": {
+                                "description": "Description",
+                                "type": "string",
+                                "required": true
+                            },
+                            "images": {
+                                "description": "Images",
+                                "type": "array",
+                                "required": false,
+                                "items": {
+                                    "description": "Image name (e.g. file_name or file_name.ext)",
+                                    "type": "string",
+                                    "required": false
+                                }
+                            },
+                            "thumbnail": {
+                                "description": "Thumbnail",
+                                "type": "string",
+                                "required": true
+                            },
+                            "comments": {
+                                "description": "Comments",
+                                "type": "array",
+                                "required": false,
+                                "items": {
+                                    "description": "Comment",
+                                    "type": "object",
+                                    "required": true,
+                                    "properties": {
+                                        "id": {
+                                            "description": "Comment ID",
+                                            "type": "integer",
+                                            "required": true
+                                        },
+                                        "content": {
+                                            "description": "Comment content",
+                                            "type": "string",
+                                            "required": true
+                                        }
+                                    }
+                                }
+                            },
+                            "creation_date": {
+                                "description": "Date",
+                                "type": "integer",
+                                "required": false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

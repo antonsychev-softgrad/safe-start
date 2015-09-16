@@ -1,0 +1,342 @@
+{
+    "name": "API reference",
+    "description": "Safe Start APP API reference",
+    "properties": {
+        "/api/index/ping": {
+            "description": "Check if API is alive",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "index/ping/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "index/ping/response.json"
+                    }
+                }
+            }
+        },
+        "/api/user/login": {
+            "description": "User login",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "user/login/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "user/login/response.json"
+                    }
+                }
+            }
+        },
+        "/api/user/logout": {
+            "description": "User logout",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "user/logout/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "user/logout/response.json"
+                    }
+                }
+            }
+        },
+        "/api/user/[id]/profile/update": {
+            "description": "Update own user profile",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "userprofile/update/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "userprofile/update/response.json"
+                    }
+                }
+            }
+        },
+        "/api/user/profile/updateSignature": {
+            "description": "Update user's signature",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "userprofile/updatesignature/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "userprofile/updatesignature/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/getList": {
+            "description": "Get vehicles list of authorised user",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getlist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getlist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/getInfo": {
+            "description": "Get vehicle info by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getinfo/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getinfo/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/getInfoByPlantId": {
+            "description": "Get vehicle info by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getinfobyplantid/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getinfobyplantid/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/getChecklist": {
+            "description": "Get vehicle checklist by vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/getChecklistByHash": {
+            "description": "Get vehicle checklist by Hash",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getchecklistbyhash/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/[id]/completeChecklist": {
+            "description": "Complete vehicle's checklist with vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/completechecklist/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/ChecklistToEmail": {
+            "description": "Send checklist to Email",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/checklisttoemail/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/checklisttoemail/response.json"
+                    }
+                }
+            }
+        },
+        "/api/vehicle/getAlerts": {
+            "description": "Get vehicle alerts",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/getalerts/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/getalerts/response.json"
+                    }
+                }
+            }
+        },
+        "/vehicle/inspection/delete": {
+            "description": "Delete inspection",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/deleteinspection/response.json"
+                    }
+                }
+            }
+        },
+        "/vehicle/deleteAlert": {
+            "description": "Delete alert",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/deletealert/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/deletealert/response.json"
+                    }
+                }
+            }
+        },
+        "/api/upload-images": {
+            "description": "Upload Images",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/uploadimages/response.json"
+                    }
+                }
+            }
+        },
+        "/api/checklist/[id]/generate-pdf": {
+            "description": "Generate PDF with CheckList ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "processdata/generatepdf/response.json"
+                    }
+                }
+            }
+        },
+        "/api/image/[image]/[size]": {
+            "description": "Get image by FileName",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/getimage/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/getimage/response.json"
+                    }
+                }
+            }
+        },
+        "info/getdefaultchecklist": {
+            "description": "Get default checklist",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/getdefaultchecklist/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/getdefaultchecklist/response.json"
+                    }
+                }
+            }
+        },
+        "info/contact": {
+            "description": "Send contact form",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "info/contact/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "info/contact/response.json"
+                    }
+                }
+            }
+        },
+        "api/publicvehicle/sendCheckListToEmails": {
+            "description": "Send CheckList To Emails",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/sendCheckListToEmails/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/sendCheckListToEmails/response.json"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "description": "User login request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                },
+                "deviceId": {
+                    "description": "Unique ID of device",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Company ID",
+                    "type": "integer",
+                    "required": true
+                },
+                "title": {
+                    "description": "Company title",
+                    "type": "string",
+                    "required": true
+                },
+                "email": {
+                    "description": "Company email",
+                    "type": "string",
+                    "required": true
+                },
+                "firstName": {
+                    "description": "Company's admin first name",
+                    "type": "string",
+                    "required": true
+                },
+                "address": {
+                    "description": "Company address",
+                    "type": "string",
+                    "required": false
+                },
+                "phone": {
+                    "description": "Company phone",
+                    "type": "string",
+                    "required": false
+                },
+                "description": {
+                    "description": "Company description",
+                    "type": "string",
+                    "required": false
+                },
+                "restricted": {
+                    "description": "Is company restricted",
+                    "type": "integer",
+                    "required": false
+                },
+                "max_users": {
+                    "description": "Company's max users",
+                    "type": "integer",
+                    "required": false
+                },
+                "max_vehicles": {
+                    "description": "Company's max vehicles",
+                    "type": "integer",
+                    "required": false
+                },
+                "expiry_date": {
+                    "description": "Company's expiry date",
+                    "type": ["integer", "null"],
+                    "required": false
+                }
+            }
+        }
+    }
+}

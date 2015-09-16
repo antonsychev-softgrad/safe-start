@@ -1,0 +1,29 @@
+{
+    "description": "Delete alert request",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "id" : {
+                    "description": "Alert ID",
+                    "type": "integer",
+                    "required": true
+                }
+            }
+        }
+    }
+}

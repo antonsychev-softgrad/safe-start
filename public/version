@@ -1,0 +1,12 @@
+[
+    {
+      "ver": "v1",
+      "latest": false,
+      "url": "http://database.safestartinspections.com:81/"
+    },
+    {
+      "ver": "v2",
+      "latest": true,
+      "url": "http://database.safestartinspections.com/"
+    }
+  ]

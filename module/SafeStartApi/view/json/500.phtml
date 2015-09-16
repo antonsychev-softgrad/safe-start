@@ -1,0 +1,24 @@
+<?php
+
+$data = isset($this->answer) ? $this->answer : array('done' => false, 'error' => '500 api exception occurred');
+if (APP_DEBUG) {
+    if (isset($this->exception) && $this->exception instanceof Exception) {
+        $data['trace'] = array(
+            'file' => $this->exception->getFile() . ':' . $this->exception->getLine(),
+            'message' => $this->exception->getMessage(),
+            'stack' => $this->exception->getTraceAsString(),
+        );
+        $data['errorMessage'] =  $this->exception->getMessage();
+    }
+}
+
+$output = array(
+    'meta' => array(
+        'status' => 500,
+        'errorCode' => 500,
+    ),
+    'data' => $data
+);
+
+$this->getlogResponse($output);
+echo json_encode($output);
