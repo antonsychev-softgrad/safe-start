@@ -1,46 +1,27 @@
-#1. Test server access:
-##
-    http://safe-start.dev2.ocsico.com/
-    http://safe-start.dev2.ocsico.local/
-    ftp://safe-start.dev2.ocsico.local/
-    http://phpmyadmin.ocsico.com
+#1. PHP vendors install:
+        php composer.phar update
 
-    login: safe-start
-    pass: Newpassw0rd
-
-#2. GIT access
-##
-    git clone https://ocsico@bitbucket.org/ocsico/safe-start.git
-
-    login: ocsico
-    pass: Pass!@
-
-#3. PHP vendors install:
-##
-   php composer.phar update
-
-#4. MySQL\Doctrine 2:
+#2. MySQL\Doctrine 2:
 
 ##a) Update\Create:
         ./vendor/bin/doctrine-module orm:schema-tool:create
         ./vendor/bin/doctrine-module orm:schema-tool:update
         ./vendor/bin/doctrine-module orm:validate-schema
 
-
 ##b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
 
-
-##c) own console command
+##c) Own console command
         php ./public/index.php doctrine set-def-data
 
-#5. Sencha
-##
-   a) Build JS
-   cd ./module/SafeStartApp/public/
-   sencha app build production
+#3. Sencha
 
-#6. Production
+##a) Build JS
+       cd ./module/SafeStartApp/public/
+       sencha app build production
+
+#4. Production
+
 ##a) Console:
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
@@ -64,20 +45,18 @@
         Password: GHHxEG1Tcr+s
 
 
-#7 PHP RESQUE
-##
-    a) Run:
+#5. PHP RESQUE
+
+##a) Run:
     php ./public/index.php resque start --verbose
 
-    b) Check system process:
+##b) Check system process:
     ps u | grep resque.php
 
-    c)Soft stopping workers:
+##c) Soft stopping workers:
     kill -QUIT YOUR-WORKER-PID
 
-
-#8. nginx ZF2 conf
-##
+#6. nginx ZF2 conf
     server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
