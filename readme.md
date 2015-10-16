@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #1. Test server access:
 ##
     http://safe-start.dev2.ocsico.com/
@@ -20,12 +21,19 @@
    php composer.phar update
 
 #4. MySQL\Doctrine 2:
+=======
+#1. PHP vendors install:
+        php composer.phar update
+
+#2. MySQL\Doctrine 2:
+>>>>>>> 36a89d497344026c70268ee7312b09e9170916dd
 
 ##a) Update\Create:
         ./vendor/bin/doctrine-module orm:schema-tool:create
         ./vendor/bin/doctrine-module orm:schema-tool:update
         ./vendor/bin/doctrine-module orm:validate-schema
 
+<<<<<<< HEAD
 
 ##b) Generate setters:
         ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
@@ -41,6 +49,22 @@
    sencha app build production
 
 #6. Production
+=======
+##b) Generate setters:
+        ./vendor/bin/doctrine-module orm:generate-entities ./module/SafeStartApi/src/ --filter Company --generate-annotations=true
+
+##c) Own console command
+        php ./public/index.php doctrine set-def-data
+
+#3. Sencha
+
+##a) Build JS
+       cd ./module/SafeStartApp/public/
+       sencha app build production
+
+#4. Production
+
+>>>>>>> 36a89d497344026c70268ee7312b09e9170916dd
 ##a) Console:
         https://console.aws.amazon.com
         Username: paul@safestartinspections.com
@@ -64,6 +88,7 @@
         Password: GHHxEG1Tcr+s
 
 
+<<<<<<< HEAD
 #7 PHP RESQUE
 ##
     a) Run:
@@ -78,6 +103,20 @@
 
 #8. nginx ZF2 conf
 ##
+=======
+#5. PHP RESQUE
+
+##a) Run:
+    php ./public/index.php resque start --verbose
+
+##b) Check system process:
+    ps u | grep resque.php
+
+##c) Soft stopping workers:
+    kill -QUIT YOUR-WORKER-PID
+
+#6. nginx ZF2 conf
+>>>>>>> 36a89d497344026c70268ee7312b09e9170916dd
     server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
