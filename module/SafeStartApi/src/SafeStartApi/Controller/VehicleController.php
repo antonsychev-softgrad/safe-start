@@ -1117,6 +1117,11 @@ class VehicleController extends RestrictedAccessRestController
             array_unshift($alerts, $alert);
         }
 
+        $alerts = array_filter($alerts, function($value) {
+            return !empty($value) && is_array($value);
+        });
+        $alerts = array_values($alerts);
+
         return $alerts;
     }
 }

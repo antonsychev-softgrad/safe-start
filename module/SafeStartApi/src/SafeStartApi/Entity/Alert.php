@@ -318,11 +318,19 @@ class Alert extends BaseEntity
      */
     public function toArray()
     {
+
+        $title = $this->getDescription()
+            ? $this->getDescription()
+            : ($this->field
+                ? ($this->field->getAlertDescription()
+                    ? $this->field->getAlertDescription() : $this->field->getAlertTitle())
+                : '');
+
         $data = array(
             'id' => $this->getId(),
             'status' => $this->getStatus(),
-            'title' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
-            'alert_description' => $this->getDescription() ? $this->getDescription():($this->field ?($this->field->getAlertDescription() ? $this->field->getAlertDescription() : $this->field->getAlertTitle()): ''),
+            'title' => $title,
+            'alert_description' => $title,
             'field' => $this->field ? $this->field->toArray() : ($this->getDescription() ? array('alert_critical'=>1) : null),
             'vehicle' => $this->getVehicle()->toInfoArray(),
             'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : (object) array(),
