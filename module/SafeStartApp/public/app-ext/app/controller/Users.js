@@ -134,6 +134,30 @@ Ext.define('SafeStartExt.controller.Users', {
         }
 
         var form = Ext.create('SafeStartExt.view.form.User');
+
+        var store = this.getUsersListView().getListStore();
+        var existsCompanyAdmin = false;
+        store.data.each(function(item, index, totalItems ) {
+            if(!existsCompanyAdmin && item.get('role') == 'companyAdmin') {
+                existsCompanyAdmin = true;
+            }
+        });
+
+        var roleStore = form.down("combobox[name=role]").store;
+        var roleInStore = roleStore.find('rank', 'companyAdmin');
+        if(!existsCompanyAdmin) {
+            if(-1 == roleInStore) {
+                roleStore.insert(0, {
+                    rank: 'companyAdmin',
+                    title: 'Admin'
+                });
+            }
+        } else {
+            if(-1 != roleInStore) {
+                roleStore.removeAt(roleInStore);
+            }
+        }
+
         this.getUserInfoPanel().add(form);
     },
 
