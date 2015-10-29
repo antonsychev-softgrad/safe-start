@@ -217,10 +217,12 @@ class UserController extends RestController
         $user->setPosition($this->data->position);
         $user->setDepartment($this->data->department);
 
+        $oldRole = $user->getRole();
         if (isset($this->data->role)) {
             if (!in_array($this->data->role, array(
                 'companyUser',
-                'companyManager'
+                'companyManager',
+                'companyAdmin'
             ))
             ) {
                 $this->answer = array(
@@ -244,6 +246,11 @@ class UserController extends RestController
                 );
 
                 return $this->AnswerPlugin()->format($this->answer, 404);
+            }
+
+            if($oldRole !== $user->getRole() && 'companyAdmin' === $user->getRole()) {
+                $company->getAdmin()->setRole('companyManager');
+                $company->setAdmin($user);
             }
 
             // may need replace 1 on 2
