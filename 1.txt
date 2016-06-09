@@ -1,0 +1,82 @@
+On branch release/v2
+Your branch is ahead of 'origin/release/v2' by 1683 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   config/autoload/global.php
+	modified:   data/cache/.gitignore
+	modified:   module/SafeStartApi/config/module.config.php
+	modified:   module/SafeStartApi/config/routes.config.php
+	modified:   module/SafeStartApi/public/schemas/docs.json
+	modified:   module/SafeStartApi/src/SafeStartApi/Controller/CompanyController.php
+	modified:   module/SafeStartApi/src/SafeStartApi/Controller/CronController.php
+	modified:   module/SafeStartApi/src/SafeStartApi/Controller/PublicVehicleController.php
+	modified:   module/SafeStartApi/src/SafeStartApi/Controller/VehicleController.php
+	modified:   module/SafeStartApi/src/SafeStartApi/Entity/Alert.php
+	modified:   module/SafeStartApi/src/SafeStartApi/Entity/Field.php
+	modified:   module/SafeStartApp/public/app-ext/app/model/Alert.js
+	modified:   module/SafeStartApp/public/app-ext/app/model/InspectionField.js
+	modified:   module/SafeStartApp/public/app-ext/app/view/_panel/Alerts.js
+	modified:   module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/Checkbox.js
+	modified:   module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/DatePicker.js
+	modified:   module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/Radio.js
+	modified:   module/SafeStartApp/public/app-ext/app/view/panel/Alerts.js
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/SafeStartExt-all_01.css
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners-all.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-corners.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-disabled-corners.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-focus-corners.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-over-corners.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-blue-medium-pressed-corners.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-green-medium-corners-all.gif
+	modified:   module/SafeStartApp/public/app-ext/build/production/SafeStartExt/resources/images/btn/btn-red-medium-corners-all.gif
+	modified:   module/SafeStartApp/view/layout/layout.phtml
+	modified:   worker.sh
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	1.txt
+	module/SafeStartApi/config/module.config.php.bak
+	module/SafeStartApi/config/routes.config.php.bak
+	module/SafeStartApi/public/schemas/docs.json.bak
+	module/SafeStartApi/public/schemas/vehicle/addfaultreport/
+	module/SafeStartApi/public/schemas/vehicle/addservicereport/
+	module/SafeStartApi/src/SafeStartApi/Controller/CompanyController.php.bak
+	module/SafeStartApi/src/SafeStartApi/Controller/CompanyController.php.bak1
+	module/SafeStartApi/src/SafeStartApi/Controller/CronController.php.bak
+	module/SafeStartApi/src/SafeStartApi/Controller/Plugin/AlertReminderPlugin.php
+	module/SafeStartApi/src/SafeStartApi/Controller/Plugin/AlertReminderPlugin.php.bak
+	module/SafeStartApi/src/SafeStartApi/Controller/PublicVehicleController.php.bak
+	module/SafeStartApi/src/SafeStartApi/Controller/VehicleController.php.bak
+	module/SafeStartApi/src/SafeStartApi/Entity/Alert.php.bak
+	module/SafeStartApi/src/SafeStartApi/Entity/FaultReport.php
+	module/SafeStartApi/src/SafeStartApi/Entity/FaultReport.php.bak
+	module/SafeStartApi/src/SafeStartApi/Entity/Field.php.bak
+	module/SafeStartApi/src/SafeStartApi/Entity/ServiceReport.php
+	module/SafeStartApi/src/SafeStartApi/Entity/ServiceReport.php.bak
+	module/SafeStartApi/view/mail/initialalertmail.phtml
+	module/SafeStartApi/view/mail/initialalertmail.phtml.bak
+	module/SafeStartApi/view/mail/monitorwarningmail.phtml
+	module/SafeStartApi/view/mail/monitorwarningmail.phtml.bak
+	module/SafeStartApi/view/mail/overduealertmail.phtml
+	module/SafeStartApi/view/mail/overduealertmail.phtml.bak
+	module/SafeStartApi/view/mail/warningmail.phtml
+	module/SafeStartApi/view/mail/warningmail.phtml.bak
+	module/SafeStartApp/public/app-ext/app/model/Alert.js.bak
+	module/SafeStartApp/public/app-ext/app/model/InspectionField.js.bak
+	module/SafeStartApp/public/app-ext/app/view/_panel/Alerts.js.bak
+	module/SafeStartApp/public/app-ext/app/view/_panel/Alerts.js.bak1
+	module/SafeStartApp/public/app-ext/app/view/_panel/Alerts.js.save
+	module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/Checkbox.js.bak
+	module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/DatePicker.js.bak
+	module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/Radio.js.1.bak
+	module/SafeStartApp/public/app-ext/app/view/form/inspectionfield/Radio.js.bak
+	module/SafeStartApp/public/app-ext/app/view/panel/Alerts.js.bak
+	module/SafeStartApp/view/layout/layout.phtml.bak
+	public/sqlonline.php
+
+no changes added to commit (use "git add" and/or "git commit -a")

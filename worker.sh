@@ -13,5 +13,5 @@ nohup sudo -u www-data QUEUE=$queues \
         VVERBOSE=1 \
         APP_INCLUDE=$project_dir/module/SafeStartApi/jobs_classes_autoloader.php \
         php $project_dir/vendor/chrisboulton/php-resque/resque.php \
-        >> $project_dir/data/logs/resque/$DATE 2>&1 &
+        > /dev/null &
 
