@@ -1,0 +1,49 @@
+{
+    "description": "Adds fault report",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "faultSummary": {
+                    "description": "Fault summary",
+                    "type": "string",
+                    "required": true
+                },
+                "faultDescription": {
+                    "description": "Fault description",
+                    "type": "string",
+                    "required": true
+                },
+                "isCritical": {
+                    "description": "Is fault critical",
+                    "type": "boolean",
+                    "required": true
+                },
+                "images": {
+                    "description": "Photo's",
+                    "type": "array",
+                    "required": false,
+                    "items": {
+                        "description": "Image name (e.g. file_name or file_name.ext)",
+                        "type": "string",
+                        "required": true
+                    }
+                }
+            }
+        }
+    }
+}

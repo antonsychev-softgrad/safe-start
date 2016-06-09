@@ -92,6 +92,14 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
                 fieldLabel: 'Alert Description'
             }, {
                 xtype: 'numberfield',
+                maxValue: 60,
+                minValue: 0,
+                stepValue: 1,
+                name: 'faultRectification',
+                required: true,
+                fieldLabel: 'Fault Rectification'
+            }, {
+                xtype: 'numberfield',
                 maxValue: 1000,
                 minValue: 0,
                 stepValue: 1,
@@ -117,6 +125,10 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
             this.down('datefield[name=defaultValue]').setValue(new Date(date * 1000));
             this.down('datefield[name=defaultValue]').originalValue = this.down('datefield[name=defaultValue]').getValue();
         }
+        
+        if ( this.down('field[name=id]').getValue() == 0 ) {
+            this.down('field[name=faultRectification]').setValue(7);
+        }
     },
 
     validate: function () {
@@ -131,6 +143,16 @@ Ext.define('SafeStartExt.view.form.inspectionfield.DatePicker', {
         }) !== true) { // compare with return value of Ext.each
             return false;
         }
+        
+        var fr = parseInt(this.down('field[name=faultRectification]').getValue());
+        if (fr < 0 || fr > 60) {
+            Ext.Msg.alert({
+                msg: 'Field Fault Rectification can\'t have a value greater than 60',
+                buttons: Ext.Msg.OK
+            });
+            return false;
+        }
+        
         return true;
     }
 

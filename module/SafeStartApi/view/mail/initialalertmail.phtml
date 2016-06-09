@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        body {
+            background: #e5e9ec;
+            font-size: 13.99px;
+            color: #8c9297;
+            font-family: 'Helvetica';
+        }
+    </style>
+</head>
+
+<body>
+A fault has been identified on <?php echo $this->plantId; ?>. The fault has been identified by <?php echo $this->user; ?>.
+<br />
+Fault Description: <?php echo $this->alertDescription; ?>
+<br />
+<?php
+	$site = $this->site;
+	foreach ($this->images as $image)
+	{
+		$src = "$site/api/image/$image";
+		$imgTag = "<img src='$src'><br />";
+
+		echo $imgTag;
+	}
+?>
+This fault is due for rectification by <?php echo $this->dueDate; ?>.
+<br />
+Please access the <a href="<?php echo $this->actionLink; ?>">Safe Start Database</a> to report on the status of the alert and if the required corrective action has been implemented.
+
+</body>
+</html>

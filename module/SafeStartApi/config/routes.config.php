@@ -227,6 +227,32 @@ $routes = array(
                     ),
                 ),
             ),
+            'add-fault-report' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/:id/addfaultreport',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'addfaultreport',
+                    ),
+                ),
+            ),
+            'add-service-report' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/alert/:id/addservicereport',
+                    'constraints' => array(
+                        'id' => '[0-9]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Vehicle',
+                        'action' => 'addservicereport',
+                    ),
+                ),
+            ),
             'send-checklist-to-email' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -234,6 +260,16 @@ $routes = array(
                     'defaults' => array(
                         'controller' => 'PublicVehicle',
                         'action' => 'checklistToEmail',
+                    ),
+                ),
+            ),
+            'send-alerts-to-email' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/vehicle/alertsttoemail',
+                    'defaults' => array(
+                        'controller' => 'PublicVehicle',
+                        'action' => 'alertsToEmail',
                     ),
                 ),
             ),

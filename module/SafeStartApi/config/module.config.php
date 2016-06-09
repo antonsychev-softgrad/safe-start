@@ -76,6 +76,15 @@ $general = array(
                         )
                     )
                 ),
+                'run-sub-expiry-alert-email-notify' => array(
+                    'options' => array(
+                        'route' => 'api alert-email-notify',
+                        'defaults' => array(
+                            'controller' => 'SafeStartApi\Controller\Cron',
+                            'action' => 'alertsToEmail'
+                        )
+                    )
+                ),
                 'run-sub-expiry-push-notify' => array(
                     'options' => array(
                         'route' => 'api push-notify',
@@ -192,6 +201,7 @@ $general = array(
     'controller_plugins' => array(
         'invokables' => array(
             'AnswerPlugin' => 'SafeStartApi\Controller\Plugin\AnswerPlugin',
+            'AlertReminderPlugin' => 'SafeStartApi\Controller\Plugin\AlertReminderPlugin',
             'AclPlugin' => 'SafeStartApi\Controller\Plugin\AclPlugin',
             'MailPlugin' => 'SafeStartApi\Controller\Plugin\MailPlugin',
             'ValidationPlugin' => 'SafeStartApi\Controller\Plugin\ValidationPlugin',

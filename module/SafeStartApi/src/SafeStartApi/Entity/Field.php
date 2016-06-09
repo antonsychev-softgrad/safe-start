@@ -113,6 +113,11 @@ class Field extends BaseEntity
      */
     protected $author;
 
+    /**
+     * @ORM\Column(type="integer", name="fault_rectification")
+     */
+    protected $fault_rectification = 0;
+
 //    /**
 //     * @ORM\ManyToOne(targetEntity="Checklist")
 //     * @ORM\JoinColumn(name="checklist_id", referencedColumnName="id", unique=false, onDelete="SET NULL")
@@ -161,6 +166,7 @@ class Field extends BaseEntity
             'default_value' => (!is_null($this->getDefaultValue())) ? $this->getDefaultValue() : '',
             'additional' => (int)$this->additional,
             'default_value' => $this->default_value,
+            'fault_rectification' => $this->getFaultRectification(),
             'parentId' => $this->getParent() ? $this->getParent()->getId() : null,
             'vehicleId' => $this->getVehicle() ? $this->getVehicle()->getId() : null
         );
@@ -618,6 +624,33 @@ class Field extends BaseEntity
     public function getAlertCritical()
     {
         return $this->alert_critical;
+    }
+
+    /**
+     * Set fault rectification
+     *
+     * @param integer $days
+     * @return Field
+     */
+    public function setFaultRectification($days)
+    {
+        $this->fault_rectification = $days;
+
+        return $this;
+    }
+
+    /**
+     * Get fault rectification
+     *
+     * @return boolean
+     */
+    public function getFaultRectification()
+    {
+        $fault_rectification = $this->fault_rectification
+        ? $this->fault_rectification
+        : ($this->alert_critical ? 7 : 14);
+
+        return $fault_rectification;
     }
 
 //    /**

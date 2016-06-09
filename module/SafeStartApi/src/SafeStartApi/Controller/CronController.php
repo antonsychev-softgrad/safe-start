@@ -81,6 +81,12 @@ class CronController extends AbstractActionController
         $this->logger->info("Run Process Subscription Expiry Email Notification \r\n");
     }
 
+    // Sends reminder emails
+    public function alertsToEmailAction()
+    {
+        $this->AlertReminderPlugin()->sendAlertReminders();
+    }
+
     public function processSubExpiryPushNotifyAction() 
     {
         $request = $this->getRequest();

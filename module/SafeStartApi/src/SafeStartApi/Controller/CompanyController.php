@@ -746,7 +746,15 @@ class CompanyController extends RestrictedAccessRestController
       $alerts = $this->getAlertsByCompany($company, $filters);
     }
 
-    $alerts = array_reverse($alerts);
+    // $alerts = array_reverse($alerts);
+    uasort($alerts, function($a, $b)
+    {
+        if ($a['status'] == $b['status']) {
+            return $a['creation_date'] == $b['creation_date'] ? 0 : ($a['creation_date'] < $b['creation_date'] ? 1 : -1);
+        }
+
+        return ($a['status'] == 'new') ? -1 : 1;
+    });
 
     if ($alerts) {
       if (count($alerts) < ($page - 1) * $limit) {
@@ -809,7 +817,7 @@ class CompanyController extends RestrictedAccessRestController
     $curDate = new \DateTime();
     if ((($vehicle->getExpiryDate() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1)) {
       $alert = $this->checkCurrentInfoAlerts($vehicle, \SafeStartApi\Entity\Alert::EXPIRY_DATE);
-      array_unshift($alerts, $alert);
+      array_push($alerts, $alert);
     }
 
     $dueForServiceAlertTrigger = false;
@@ -818,7 +826,7 @@ class CompanyController extends RestrictedAccessRestController
       if ($vehicle->getNextServiceDay()) $serviceDate = \DateTime::createFromFormat('d/m/Y', $vehicle->getNextServiceDay());
       if ($serviceDate && (($serviceDate->getTimestamp() - $curDate->getTimestamp()) / (60 * 60 * 24) < 1)) {
         $alert = $this->checkCurrentInfoAlerts($vehicle, \SafeStartApi\Entity\Alert::DUE_SERVICE);
-        array_unshift($alerts, $alert);
+        array_push($alerts, $alert);
         $dueForServiceAlertTrigger = true;
       }
     }
@@ -830,10 +838,22 @@ class CompanyController extends RestrictedAccessRestController
                 array_unshift($alerts, $alertService);
             }
         }
-        array_unshift($alerts, $alert);
+        array_push($alerts, $alert);
     }
     /*      $cache->setItem($cashKey, $data);
       }*/
+
+    $vehicleAlerts = $vehicle->getAlerts();
+    foreach ($vehicleAlerts as $vehicleAlert) {
+        if ($vehicleAlert->getFaultReport() != null) {
+            array_push($alerts, $vehicleAlert->toArray());
+        }
+    }
+
+    $alerts = array_filter($alerts, function($value) {
+        return !empty($value) && is_array($value) && sizeof($value) > 0;
+    });
+    $alerts = array_values($alerts);
 
     return $alerts;
   }

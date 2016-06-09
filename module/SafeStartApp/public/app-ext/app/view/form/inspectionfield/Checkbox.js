@@ -108,11 +108,28 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
             }, {
                 xtype: 'checkbox',
                 name: 'alertCritical',
-                fieldLabel: 'Alert Critical?'
+                fieldLabel: 'Alert Critical?',
+                listeners: {
+                    change: function (combo) {
+                        if ( this.down('field[name=id]').getValue() == 0 ) {
+                            var ac = this.down('field[name=alertCritical]').getValue();
+                            this.down('field[name=faultRectification]').setValue(ac? 14: 7);
+                        }
+                    },
+                    scope: this
+                }
             }, {
                 xtype: 'textfield',
                 name: 'alertDescription',
                 fieldLabel: 'Alert Description'
+            }, {
+                xtype: 'numberfield',
+                maxValue: 60,
+                minValue: 0,
+                stepValue: 1,
+                name: 'faultRectification',
+                required: true,
+                fieldLabel: 'Fault Rectification'
             }, {
                 xtype: 'numberfield',
                 maxValue: 1000,
@@ -134,6 +151,10 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
         this.down('field[name=type]').suspendEvents();
         this.callParent(arguments);
         this.down('field[name=type]').resumeEvents();
+        if ( this.down('field[name=id]').getValue() == 0 ) {
+            var ac = this.down('field[name=alertCritical]').getValue();
+            this.down('field[name=faultRectification]').setValue(ac? 14: 7);
+        }
     },
 
     validate: function () {
@@ -158,6 +179,16 @@ Ext.define('SafeStartExt.view.form.inspectionfield.Checkbox', {
             });
             return false;
         }
+        
+        var fr = parseInt(this.down('field[name=faultRectification]').getValue());
+        if (fr < 0 || fr > 60) {
+            Ext.Msg.alert({
+                msg: 'Field Fault Rectification can\'t have a value greater than 60',
+                buttons: Ext.Msg.OK
+            });
+            return false;
+        }
+        
         return true;
     }
 });

@@ -1,0 +1,59 @@
+{
+    "description": "Adds service report",
+    "type": "object",
+    "properties": {
+        "meta": {
+            "description": "Request meta",
+            "type": "object",
+            "properties": {
+                "requestId": {
+                    "description": "Unique ID of request",
+                    "type": "string",
+                    "required": false
+                }
+            }
+        },
+        "data": {
+            "description": "Request data",
+            "type": "object",
+            "required": true,
+            "properties": {
+                "description": {
+                    "description": "Work description",
+                    "type": "string",
+                    "required": true
+                },
+                "repaired": {
+                    "description": "Is repaired",
+                    "type": "boolean",
+                    "required": true
+                },
+                "gps": {
+                    "description": "GPS coords, '%s;%s' -> 'latitude;longitude'",
+                    "type": "string",
+                    "required": false
+                },
+                "location": {
+                    "description":"Some predefined place",
+                    "type": "string",
+                    "required": false
+                },
+                "operator_name": {
+                    "description": "Current User Name",
+                    "type": "string",
+                    "required": false
+                },
+                "odometer": {
+                    "description": "Current Odometer Kms",
+                    "type": "integer",
+                    "required": false
+                },
+                "odometer_hours": {
+                    "description": "Current Odometer Hours",
+                    "type": "integer",
+                    "required": false
+                }
+            }
+        }
+    }
+}

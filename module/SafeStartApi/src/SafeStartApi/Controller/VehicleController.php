@@ -5,10 +5,12 @@ namespace SafeStartApi\Controller;
 use SafeStartApi\Base\RestrictedAccessRestController;
 use SafeStartApi\Entity\Vehicle;
 use SafeStartApi\Entity\Alert;
+use SafeStartApi\Entity\ServiceReport;
 use SafeStartApi\Application;
 
 class VehicleController extends RestrictedAccessRestController
 {
+  const MONITOR_DAYS = 60;
 
   public function getListAction()
   {
@@ -395,8 +397,36 @@ class VehicleController extends RestrictedAccessRestController
     if (!empty($this->data->alerts) && is_array($this->data->alerts)) {
       $alerts = $this->data->alerts;
       foreach ($alerts as $alert) {
-        $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
+        $field = null;
+        if ($alert->fieldId > 0) {
+            $field = $this->em->find('SafeStartApi\Entity\Field', $alert->fieldId);
+        }
         if ($field === null) {
+
+          if ($alert->fieldId == 0)
+          {
+              $newAlert = new \SafeStartApi\Entity\Alert();
+              $newAlert->setCheckList($checkList);
+              $newAlert->setDefaultsForRenew();
+              $newAlert->setFaultReport(true);
+              $newAlert->setVehicle($vehicle);
+              $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
+              $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
+              $dueDate = new \DateTime();
+              $dueDate->add(new \DateInterval('P'. ($alert->iscritical ? '7' : '14'). 'D'));
+              $newAlert->setDueDate($dueDate);
+
+              $this->em->persist($newAlert);
+              if (!empty($alert->faultdescription))
+              {
+                  $this->em->flush();
+
+                  $newAlert->addComment($alert->faultdescription);
+                  $this->em->persist($newAlert);
+              }
+              $newAlerts[] = $newAlert;
+          }
+
           continue;
         }
         $addNewAlert = true;
@@ -413,6 +443,7 @@ class VehicleController extends RestrictedAccessRestController
               if (!empty($alert->comment)) $filedAlert->addComment($alert->comment);
               if (!empty($alert->images)) $filedAlert->setImages(array_merge((array)$filedAlert->getImages(), (array)$alert->images));
               $filedAlert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_REFRESHED);
+              $filedAlert->setDefaultsForRenew();
               $newAlerts[] = $filedAlert;
             }
           }
@@ -424,14 +455,21 @@ class VehicleController extends RestrictedAccessRestController
           $newAlert->setDescription(!empty($alert->comment) ? $alert->comment : null);
           $newAlert->setImages(!empty($alert->images) ? $alert->images : array());
           $newAlert->setVehicle($vehicle);
+          $newAlert->setDefaultsForRenew();
           $this->em->persist($newAlert);
           $newAlerts[] = $newAlert;
         }
 
       }
-      $this->em->flush();
-    }
 
+      $this->em->flush();
+
+      $reminderPlugin = $this->AlertReminderPlugin();
+      foreach ($newAlerts as $newAlert)
+      {
+          $reminderPlugin->sendReminder($newAlert, 'initialalertmail.phtml');
+      }
+    }
 
     $cache = \SafeStartApi\Application::getCache();
     $cashKey = "getVehicleInspections" . $vehicleId;
@@ -690,6 +728,8 @@ class VehicleController extends RestrictedAccessRestController
     $vehicle = $alert->getVehicle();
     if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
 
+    $done = true;
+
     if (isset($this->data->status)) {
       if ($alert->getStatus() != $this->data->status) {
         switch ($this->data->status) {
@@ -702,7 +742,31 @@ class VehicleController extends RestrictedAccessRestController
         }
       }
       $alert->setStatus($this->data->status);
+    } else if (isset($this->data->dueDate)) {
+        if ($alert->getMonitor() == 0)
+        {
+            $prev_value = clone $alert->getDueDate();
+            $next_value = new \DateTime();
+            $next_value->setTimestamp($this->data->dueDate);
+            $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_FAULT_RECTIFICATION_EXTEND, array(
+                'prev_value' => $prev_value->format('Y-m-d'),
+                'next_value' => $next_value->format('Y-m-d'),
+            ));
+            $alert->setDueDate($next_value);
+            $alert->setMailStatus(\SafeStartApi\Entity\Alert::MAIL_STATUS_SENT_INITIAL);
+        } else {
+            $done = false;
+        }
+    } else if (isset($this->data->action) && $this->data->action == 'monitor') {
+        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_FAULT_RECTIFICATION_MONITOR);
+        // $dueDate = clone $alert->getCreationDate();
+        $dueDate = clone $alert->getDueDate();
+        $dueDate->add(new \DateInterval('P'. self::MONITOR_DAYS. 'D'));
+        $alert->setDueDate($dueDate);
+        $alert->setMonitor(1);
+        $alert->setMailStatus(\SafeStartApi\Entity\Alert::MAIL_STATUS_SENT_INITIAL);
     }
+
     if (isset($this->data->new_comment) && !empty($this->data->new_comment)) $alert->addComment($this->data->new_comment);
     $this->em->persist($alert);
     $this->em->flush();
@@ -716,7 +780,7 @@ class VehicleController extends RestrictedAccessRestController
     $openAlertsCount = count($vehicle->getOpenAlerts());
 
     $this->answer = array(
-      'done' => true,
+      'done' => $done,
       'openAlertsCount' => $openAlertsCount,
     );
 
@@ -1061,6 +1125,153 @@ class VehicleController extends RestrictedAccessRestController
 
   }
 
+  public function addServiceReportAction()
+  {
+    if (!$this->_requestIsValid('vehicle/addservicereport')) return $this->_showBadRequest();
+
+    $id = $this->params('id');
+    $alert = $this->em->find('SafeStartApi\Entity\Alert', $id);
+
+    if (!$alert) return $this->_showNotFound("Alert not found.");
+
+    $vehicle = $alert->getVehicle();
+
+    if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+    if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+    $user = $this->authService->getStorage()->read();
+
+    if ($this->data->repaired)
+    {
+        $status = \SafeStartApi\Entity\Alert::STATUS_CLOSED;
+        $alert->addHistoryItem(\SafeStartApi\Entity\Alert::ACTION_STATUS_CHANGED_CLOSED);
+        $alert->setStatus($status);
+        $this->em->persist($alert);
+    }
+
+    $serviceReport = new \SafeStartApi\Entity\ServiceReport();
+    $serviceReport->setUser($user);
+    $serviceReport->setAlert($alert);
+    $serviceReport->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+    $serviceReport->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
+    $serviceReport->setDescription((isset($this->data->description) && !empty($this->data->description)) ? $this->data->description : null);
+    $serviceReport->setRepaired($this->data->repaired);
+
+    if (isset($this->data->operator_name) && !empty($this->data->operator_name))
+    {
+        $serviceReport->setOperatorName($this->data->operator_name);
+    }
+    else
+    {
+        $serviceReport->setOperatorName($user->getFullName());
+    }
+
+    if ((isset($this->data->odometer) && !empty($this->data->odometer)))
+    {
+      $serviceReport->setCurrentOdometer($this->data->odometer);
+    }
+    else
+    {
+      $serviceReport->setCurrentOdometer($vehicle->getCurrentOdometerKms());
+    }
+
+    if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours)))
+    {
+      $serviceReport->setCurrentOdometerHours($this->data->odometer_hours);
+    }
+    else
+    {
+      $serviceReport->setCurrentOdometerHours($vehicle->getCurrentOdometerHours());
+    }
+
+    $this->em->persist($serviceReport);
+    $this->em->flush();
+
+    $this->answer = array(
+      'done' => true
+    );
+
+    return $this->AnswerPlugin()->format($this->answer);
+  }
+
+  public function addFaultReportAction()
+  {
+    if (!$this->_requestIsValid('vehicle/addfaultreport')) return $this->_showBadRequest();
+
+    $vehicleId = $this->params('id');
+    $vehicle = $this->em->find('SafeStartApi\Entity\Vehicle', $vehicleId);
+
+    if (!$vehicle) return $this->_showNotFound("Vehicle not found.");
+    if (!$vehicle->haveAccess($this->authService->getStorage()->read())) return $this->_showUnauthorisedRequest();
+
+    $faultSummary = $this->data->faultSummary;
+    $faultDescription = $this->data->faultDescription;
+    $isCritical = (bool)$this->data->isCritical;
+
+    $user = $this->authService->getStorage()->read();
+    $faultReport = new \SafeStartApi\Entity\FaultReport();
+    $faultReport->setUser($user);
+    $faultReport->setGpsCoords((isset($this->data->gps) && !empty($this->data->gps)) ? $this->data->gps : null);
+    $faultReport->setLocation((isset($this->data->location) && !empty($this->data->location)) ? $this->data->location : null);
+
+    if (isset($this->data->operator_name) && !empty($this->data->operator_name))
+    {
+        $faultReport->setOperatorName($this->data->operator_name);
+    }
+    else
+    {
+        $faultReport->setOperatorName($user->getFullName());
+    }
+
+    if ((isset($this->data->odometer) && !empty($this->data->odometer)))
+    {
+      $faultReport->setCurrentOdometer($this->data->odometer);
+    }
+    else
+    {
+      $faultReport->setCurrentOdometer($vehicle->getCurrentOdometerKms());
+    }
+
+    if ((isset($this->data->odometer_hours) && !empty($this->data->odometer_hours)))
+    {
+      $faultReport->setCurrentOdometerHours($this->data->odometer_hours);
+    }
+    else
+    {
+      $faultReport->setCurrentOdometerHours($vehicle->getCurrentOdometerHours());
+    }
+
+    $this->em->persist($faultReport);
+    $this->em->flush();
+
+    $newAlert = new \SafeStartApi\Entity\Alert();
+    $newAlert->setDefaultsForRenew();
+    $newAlert->setFaultReport($faultReport);
+    $newAlert->setVehicle($vehicle);
+    $newAlert->setDescription($faultSummary);
+    $newAlert->setImages(!empty($data->images) ? $data->images : array());
+    $dueDate = new \DateTime();
+    $dueDate->add(new \DateInterval('P'. ($isCritical ? '7' : '14'). 'D'));
+    $newAlert->setDueDate($dueDate);
+
+    $this->em->persist($newAlert);
+    $this->em->flush();
+
+    $newAlert->addComment($faultDescription);
+
+    $this->em->persist($newAlert);
+    $this->em->flush();
+
+    $reminderPlugin = $this->AlertReminderPlugin();
+    $reminderPlugin->sendReminder($newAlert, 'initialalertmail.phtml');
+
+    $this->answer = array(
+      'done' => true
+    );
+
+    return $this->AnswerPlugin()->format($this->answer);
+  }
+
   private function checkCurrentInfoAlerts(Vehicle $vehicle, $desc)
   {
     $newAlert = null;
@@ -1118,7 +1329,7 @@ class VehicleController extends RestrictedAccessRestController
         }
 
         $alerts = array_filter($alerts, function($value) {
-            return !empty($value) && is_array($value);
+            return !empty($value) && is_array($value) && sizeof($value) > 0;
         });
         $alerts = array_values($alerts);
 

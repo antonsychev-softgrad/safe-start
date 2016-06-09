@@ -178,6 +178,22 @@
                 }
             }
         },
+        "/api/vehicle/[id]/addFaultReport": {
+            "description": "Add fault report for vehicle ID",
+            "type": "object",
+            "properties": {
+                "request": {
+                    "properties": {
+                        "$ref": "vehicle/addfaultreport/request.json"
+                    }
+                },
+                "response": {
+                    "properties": {
+                        "$ref": "vehicle/addfaultreport/response.json"
+                    }
+                }
+            }
+        },
         "/api/vehicle/ChecklistToEmail": {
             "description": "Send checklist to Email",
             "type": "object",

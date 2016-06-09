@@ -210,6 +210,12 @@ class PublicVehicleController extends PublicAccessRestController
 //        }
     }
 
+    // Sends reminder emails
+    public function alertsToEmailAction()
+    {
+        $this->AlertReminderPlugin()->sendAlertReminders(true);
+    }
+
     public function getChecklistByHashAction()
     {
         if (!$this->_requestIsValid('vehicle/getchecklistbyhash')) return $this->_showBadRequest();

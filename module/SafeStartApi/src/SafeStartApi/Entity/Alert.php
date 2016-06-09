@@ -5,6 +5,7 @@ namespace SafeStartApi\Entity;
 use SafeStartApi\Base\CommentedEntity as BaseEntity;
 use Doctrine\ORM\Mapping as ORM;
 use SafeStartApi\Entity\Vehicle;
+use SafeStartApi\Entity\FaultReport;
 
 /**
  * @ORM\Entity
@@ -22,11 +23,19 @@ class Alert extends BaseEntity
     const ACTION_STATUS_CHANGED_CLOSED = 'alert_closed';
     const ACTION_STATUS_CHANGED_NEW = 'alert_reopened';
     const ACTION_REFRESHED = 'alert_refreshed';
+    const ACTION_FAULT_RECTIFICATION_EXTEND = 'alert_fault_extend';
+    const ACTION_FAULT_RECTIFICATION_MONITOR = 'alert_fault_monitor';
 
     //expiry date description and etc
     const EXPIRY_DATE = 'Vehicle registration has expired';
     const DUE_SERVICE = 'Due For Service';
     const INACCURATE_KM_HR = 'Inaccurate Current Hours Or Kms';
+
+    //mail statuses
+    const MAIL_STATUS_SENT_INITIAL = 10;
+    const MAIL_STATUS_SENT_7DAYS = 20;
+    const MAIL_STATUS_SENT_24HOURS = 30;
+    const MAIL_STATUS_SENT_OVERDUE = 40;
 
     /**
      * Constructor
@@ -34,6 +43,7 @@ class Alert extends BaseEntity
     public function __construct()
     {
         $this->status = self::STATUS_NEW;
+        $this->serviceReports = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -65,6 +75,11 @@ class Alert extends BaseEntity
      * @ORM\JoinColumn(name="vehicle_id", referencedColumnName="id")
      **/
     protected $vehicle;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ServiceReport", mappedBy="alert", cascade={"persist", "remove", "merge"})
+     */
+    protected $serviceReports;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -99,11 +114,32 @@ class Alert extends BaseEntity
     protected $deleted = 0;
 
     /**
+     * @ORM\ManyToOne(targetEntity="FaultReport")
+     * @ORM\JoinColumn(name="fault_report_id", referencedColumnName="id")
+     **/
+    protected $faultReport;
+
+    /**
      * @ORM\Column(type="json_array", nullable=true)
      *
      * PHP array using json_encode() and json_decode()
      */
     protected $history = '';
+
+    /**
+     * @ORM\Column(type="datetime", name="due_date")
+     */
+    protected $due_date;
+
+    /**
+     * @ORM\Column(type="boolean", name="monitor")
+     */
+    protected $monitor = 0;
+
+    /**
+     * @ORM\Column(type="integer", name="mail_status")
+     */
+    protected $mail_status = 0;
 
     /**
      * @ORM\PrePersist
@@ -112,6 +148,18 @@ class Alert extends BaseEntity
     {
         if (!$this->creation_date) $this->setCreationDate(new \DateTime());
         $this->setUpdateDate(new \DateTime());
+
+        if (!$this->due_date)
+        {
+            $field = $this->getField();
+            if ($field)
+            {
+                $faultRectification = $field->getFaultRectification();
+	            $due_date = clone $this->getCreationDate();
+                $due_date->add(new \DateInterval("P{$faultRectification}D"));
+                $this->setCreationDate($due_date);
+            }
+        }
     }
 
     /**
@@ -124,6 +172,35 @@ class Alert extends BaseEntity
         return $this->id;
     }
 
+    /**
+     * Add service report
+     *
+     * @param \SafeStartApi\Entity\ServiceReport $alerts
+     * @return Alert
+     */
+    public function addServiceReport(\SafeStartApi\Entity\ServiceReport $serviceReports)
+    {
+        $this->serviceReports[] = $serviceReports;
+
+        return $this;
+    }
+
+    /**
+     * Get service reports
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getServiceReports()
+    {
+        $serviceReports = array();
+        if (!$this->serviceReports) return $serviceReports;
+        foreach ($this->serviceReports as $serviceReport) {
+            if (!$serviceReport->getDeleted()) {
+                $serviceReports[] = $serviceReport;
+            }
+        }
+        return $serviceReports;
+    }
 
     /**
      * Set comment
@@ -172,7 +249,7 @@ class Alert extends BaseEntity
     }
 
     /**
-     * Set images
+     * Set history
      *
      * @param array $history
      * @return Alert
@@ -185,13 +262,18 @@ class Alert extends BaseEntity
         return $this;
     }
 
-    public function addHistoryItem($action = '')
+    public function addHistoryItem($action = '', $ext = null)
     {
-        $this->setHistory(array(array(
+        $data = array(
            'date' => time(),
            'user' => \SafeStartApi\Application::getCurrentUser()->toInfoArray(),
            'action' => $action
-        )));
+        );
+        if ($ext != null)
+        {
+            $data = array_merge($data, $ext);
+        }
+        $this->setHistory(array($data));
     }
 
     public function getRefreshedTimes()
@@ -333,7 +415,8 @@ class Alert extends BaseEntity
             'alert_description' => $title,
             'field' => $this->field ? $this->field->toArray() : ($this->getDescription() ? array('alert_critical'=>1) : null),
             'vehicle' => $this->getVehicle()->toInfoArray(),
-            'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : (object) array(),
+            'user' => $this->check_list ? $this->check_list->getUser()->toInfoArray() : ($this->getFaultReport() ? $this->getFaultReport()->getUser()->toInfoArray() : (object) array()),
+            'fault_report' => $this->getFaultReport() ? $this->getFaultReport()->toArray() : (object) array(),
             'description' => $this->getDescription(),
             'images' => $this->getImages(),
             'thumbnail' => $this->getThumbnail(),
@@ -341,8 +424,22 @@ class Alert extends BaseEntity
             'creation_date' => $this->getCreationDate()->getTimestamp(),
             'update_date' => $this->getUpdateDate()->getTimestamp(),
             'history' => $this->getHistory(),
-            'refreshed_times' => $this->getRefreshedTimes()
+            'due_date' => $this->getDueDate()->getTimestamp(),
+            'monitor' => (int)$this->monitor,
+            'mail_status' => $this->getMailStatus(),
+            'refreshed_times' => $this->getRefreshedTimes(),
+            'service_reports' => array()
         );
+
+        $reports = $this->getServiceReports();
+        if ($reports && sizeof($reports) > 0)
+        {
+            foreach ($reports as $report)
+            {
+                $data['service_reports'][] = $report->toArray();
+            }
+        }
+
         return $data;
     }
 
@@ -418,6 +515,29 @@ class Alert extends BaseEntity
     }
 
     /**
+     * Get faultReport
+     *
+     * @return \SafeStartApi\Entity\FaultReport
+     */
+    public function getFaultReport()
+    {
+        return $this->faultReport;
+    }
+
+    /**
+     * Set faultReport
+     *
+     * @param \SafeStartApi\Entity\FaultReport $faultReport
+     * @return Alert
+     */
+    public function setFaultReport(\SafeStartApi\Entity\FaultReport $faultReport = null)
+    {
+        $this->faultReport = $faultReport;
+
+        return $this;
+    }
+
+    /**
      * Set creation_date
      *
      * @param \DateTime $creationDate
@@ -438,5 +558,117 @@ class Alert extends BaseEntity
     public function getUpdateDate()
     {
         return $this->update_date;
+    }
+
+    /**
+     * Set due_date
+     *
+     * @param \DateTime $date
+     * @return CheckList
+     */
+    public function setDueDate($date)
+    {
+        $this->due_date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Set defaults
+     *
+     * @return Alert
+     */
+    public function setDefaultsForRenew()
+    {
+        $field = $this->getField();
+        $creation_date = $this->creation_date ? $this->creation_date : new \DateTime();
+        if ($field)
+        {
+            $faultRectification = $field->getFaultRectification();
+            $due_date = clone $creation_date;
+            $due_date->add(new \DateInterval("P{$faultRectification}D"));
+        }
+        else
+        {
+            $due_date = clone $creation_date;
+        }
+
+        $this->due_date = $due_date;
+        $this->setMonitor(0);
+        $this->setMailStatus(0);
+
+        return $this;
+    }
+
+    /**
+     * Get due_date
+     *
+     * @return \DateTime
+     */
+    public function getDueDate()
+    {
+		$due_date = $this->due_date;
+        if (!$due_date)
+        {
+            $field = $this->getField();
+            if ($field)
+            {
+                $faultRectification = $field->getFaultRectification();
+	            $due_date = clone $this->getCreationDate();
+                $due_date->add(new \DateInterval("P{$faultRectification}D"));
+            }
+			else
+            {
+	            $due_date = clone $this->getCreationDate();
+            }
+        }
+
+        return $due_date;
+    }
+
+    /**
+     * Set monitor
+     *
+     * @param boolean $monitor
+     * @return CheckList
+     */
+    public function setMonitor($monitor)
+    {
+        $this->monitor = $monitor;
+
+        return $this;
+    }
+
+    /**
+     * Get monitor
+     *
+     * @return boolean
+     */
+    public function getMonitor()
+    {
+        return $this->monitor;
+    }
+
+    /**
+     * Set mail_status
+     *
+     * @param integer $mail_status
+     * @return CheckList
+     */
+    public function setMailStatus($mail_status)
+    {
+        $this->mail_status = $mail_status;
+
+        return $this;
+    }
+
+    /**
+     * Get mail_status
+     *
+     * @return integer
+     */
+    public function getMailStatus()
+    {
+        return $this->mail_status;
     }
 }

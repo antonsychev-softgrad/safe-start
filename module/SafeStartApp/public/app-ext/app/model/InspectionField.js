@@ -9,6 +9,8 @@ Ext.define('SafeStartExt.model.InspectionField', {
     }, {
         name: 'alertCritical', type: 'boolean', mapping: 'alert_critical'
     }, {
+        name: 'faultRectification', type: 'int', mapping: 'fault_rectification'
+    }, {
         name: 'alertDescription', type: 'string', mapping: 'alert_description'
     }, {
         name: 'alertMessage', type: 'string', mapping: 'alert_title'
